@@ -8,7 +8,7 @@ require (
 	cosmossdk.io/api v0.7.6
 	cosmossdk.io/client/v2 v2.0.0-beta.8
 	cosmossdk.io/collections v0.4.0
-	cosmossdk.io/core v0.11.2
+	cosmossdk.io/core v1.0.0
 	cosmossdk.io/errors v1.0.2
 	cosmossdk.io/log v1.5.1
 	cosmossdk.io/math v1.5.3
@@ -41,6 +41,8 @@ require (
 	google.golang.org/grpc v1.72.0
 	gotest.tools/v3 v3.5.2
 )
+
+require cosmossdk.io/schema v1.0.0 // indirect
 
 require (
 	cel.dev/expr v0.20.0 // indirect
