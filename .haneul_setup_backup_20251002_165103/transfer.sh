@@ -1,7 +1,7 @@
 #!/bin/sh
 
-export HANEULD_NODE="http://localhost:26657"
-CHAIN_A_ARGS="--from haneul1 --keyring-backend test --chain-id local-1 --home $HOME/.haneul1/ --node http://localhost:26657 --yes"
+export JUNOD_NODE="http://localhost:26657"
+CHAIN_A_ARGS="--from juno1 --keyring-backend test --chain-id local-1 --home $HOME/.juno1/ --node http://localhost:26657 --yes"
 
 # junod q ibc channel channels
 

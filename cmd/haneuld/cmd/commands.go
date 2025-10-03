@@ -29,7 +29,7 @@ import (
 )
 
 var tempDir = func() string {
-	dir, err := os.MkdirTemp("", "juno")
+	dir, err := os.MkdirTemp("", "haneul")
 	if err != nil {
 		panic("failed to create temp dir: " + err.Error())
 	}
@@ -149,7 +149,7 @@ func appExport(
 	appOpts servertypes.AppOptions,
 	modulesToExport []string,
 ) (servertypes.ExportedApp, error) {
-	var junoApp *app.App
+	var haneulApp *app.App
 	homePath, ok := appOpts.Get(flags.FlagHome).(string)
 	if !ok || homePath == "" {
 		return servertypes.ExportedApp{}, errors.New("application home is not set")
@@ -157,7 +157,7 @@ func appExport(
 
 	loadLatest := height == -1
 	var emptyWasmOpts []wasmkeeper.Option
-	junoApp = app.New(
+	haneulApp = app.New(
 		logger,
 		db,
 		traceStore,
@@ -168,10 +168,10 @@ func appExport(
 	)
 
 	if height != -1 {
-		if err := junoApp.LoadHeight(height); err != nil {
+		if err := haneulApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	}
 
-	return junoApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
+	return haneulApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
 }

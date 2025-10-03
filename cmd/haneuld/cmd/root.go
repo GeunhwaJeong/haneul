@@ -156,7 +156,7 @@ func NewRootCmd() *cobra.Command {
 			customCmtConfig := initCometConfig(timeoutCommit)
 
 			// Force faster block times
-			err = os.Setenv("JUNOD_CONSENSUS_TIMEOUT_COMMIT", cast.ToString(timeoutCommit))
+			err = os.Setenv("HANEULD_CONSENSUS_TIMEOUT_COMMIT", cast.ToString(timeoutCommit))
 			if err != nil {
 				return err
 			}
@@ -272,14 +272,14 @@ func SetCustomEnvVariablesFromClientToml(ctx client.Context) {
 	}
 
 	// gas
-	setEnvFromConfig("gas", "JUNOD_GAS")
-	setEnvFromConfig("gas-prices", "JUNOD_GAS_PRICES")
-	setEnvFromConfig("gas-adjustment", "JUNOD_GAS_ADJUSTMENT")
+	setEnvFromConfig("gas", "HANEULD_GAS")
+	setEnvFromConfig("gas-prices", "HANEULD_GAS_PRICES")
+	setEnvFromConfig("gas-adjustment", "HANEULD_GAS_ADJUSTMENT")
 	// fees
-	setEnvFromConfig("fees", "JUNOD_FEES")
-	setEnvFromConfig("fee-account", "JUNOD_FEE_ACCOUNT")
+	setEnvFromConfig("fees", "HANEULD_FEES")
+	setEnvFromConfig("fee-account", "HANEULD_FEE_ACCOUNT")
 	// memo
-	setEnvFromConfig("note", "JUNOD_NOTE")
+	setEnvFromConfig("note", "HANEULD_NOTE")
 }
 
 func initRootCmd(

@@ -2,7 +2,7 @@
 # === Helper Functions ===
 # ========================
 function query_contract {
-    ARGS=${3:-$HANEULD_COMMAND_ARGS}
+    ARGS=${3:-$JUNOD_COMMAND_ARGS}
     junod query wasm contract-state smart $1 $2 --output json $ARGS
 }
 
@@ -11,7 +11,7 @@ function wasm_cmd {
     MESSAGE=$2
     FUNDS=$3
     SHOW_LOG=${4:dont_show}
-    ARGS=${5:-$HANEULD_COMMAND_ARGS}
+    ARGS=${5:-$JUNOD_COMMAND_ARGS}
     echo "EXECUTE $MESSAGE on $CONTRACT"
 
     # if length of funds is 0, then no funds are sent
@@ -36,5 +36,5 @@ function mint_cw721 {
     OWNER=$3
     TOKEN_URI=$4
     EXECUTED_MINT_JSON=`printf '{"mint":{"token_id":"%s","owner":"%s","token_uri":"%s"}}' $TOKEN_ID $OWNER $TOKEN_URI`
-    TXMINT=$($BINARY tx wasm execute "$CONTRACT_ADDR" "$EXECUTED_MINT_JSON" $HANEULD_COMMAND_ARGS | jq -r '.txhash') && echo $TXMINT
+    TXMINT=$($BINARY tx wasm execute "$CONTRACT_ADDR" "$EXECUTED_MINT_JSON" $JUNOD_COMMAND_ARGS | jq -r '.txhash') && echo $TXMINT
 }
