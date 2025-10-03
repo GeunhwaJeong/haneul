@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package gaia.globalfee.module.v1;
+package haneul.globalfee.module.v1;
 
 import "cosmos/app/v1alpha1/module.proto";
 
-// Module is the config object of the mint module.
+// Module is the config object of the globalfee module.
 message Module {
   option (cosmos.app.v1alpha1.module) = {go_import: "github.com/GeunhwaJeong/haneul/x/globalfee"};
 

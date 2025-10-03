@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: juno/cwhooks/v1/query.proto
+// source: haneul/cwhooks/v1/query.proto
 
 package cwhooksv1
 
@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Query_Params_FullMethodName              = "/juno.cwhooks.v1.Query/Params"
-	Query_StakingContracts_FullMethodName    = "/juno.cwhooks.v1.Query/StakingContracts"
-	Query_GovernanceContracts_FullMethodName = "/juno.cwhooks.v1.Query/GovernanceContracts"
+	Query_Params_FullMethodName              = "/haneul.cwhooks.v1.Query/Params"
+	Query_StakingContracts_FullMethodName    = "/haneul.cwhooks.v1.Query/StakingContracts"
+	Query_GovernanceContracts_FullMethodName = "/haneul.cwhooks.v1.Query/GovernanceContracts"
 )
 
 // QueryClient is the client API for Query service.
@@ -186,7 +186,7 @@ func _Query_GovernanceContracts_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Query_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "juno.cwhooks.v1.Query",
+	ServiceName: "haneul.cwhooks.v1.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -203,5 +203,5 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "juno/cwhooks/v1/query.proto",
+	Metadata: "haneul/cwhooks/v1/query.proto",
 }

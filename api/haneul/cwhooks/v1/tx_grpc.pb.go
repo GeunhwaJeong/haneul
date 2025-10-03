@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: juno/cwhooks/v1/tx.proto
+// source: haneul/cwhooks/v1/tx.proto
 
 package cwhooksv1
 
@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Msg_UpdateParams_FullMethodName         = "/juno.cwhooks.v1.Msg/UpdateParams"
-	Msg_RegisterStaking_FullMethodName      = "/juno.cwhooks.v1.Msg/RegisterStaking"
-	Msg_UnregisterStaking_FullMethodName    = "/juno.cwhooks.v1.Msg/UnregisterStaking"
-	Msg_RegisterGovernance_FullMethodName   = "/juno.cwhooks.v1.Msg/RegisterGovernance"
-	Msg_UnregisterGovernance_FullMethodName = "/juno.cwhooks.v1.Msg/UnregisterGovernance"
+	Msg_UpdateParams_FullMethodName         = "/haneul.cwhooks.v1.Msg/UpdateParams"
+	Msg_RegisterStaking_FullMethodName      = "/haneul.cwhooks.v1.Msg/RegisterStaking"
+	Msg_UnregisterStaking_FullMethodName    = "/haneul.cwhooks.v1.Msg/UnregisterStaking"
+	Msg_RegisterGovernance_FullMethodName   = "/haneul.cwhooks.v1.Msg/RegisterGovernance"
+	Msg_UnregisterGovernance_FullMethodName = "/haneul.cwhooks.v1.Msg/UnregisterGovernance"
 )
 
 // MsgClient is the client API for Msg service.
@@ -260,7 +260,7 @@ func _Msg_UnregisterGovernance_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Msg_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "juno.cwhooks.v1.Msg",
+	ServiceName: "haneul.cwhooks.v1.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -285,5 +285,5 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "juno/cwhooks/v1/tx.proto",
+	Metadata: "haneul/cwhooks/v1/tx.proto",
 }

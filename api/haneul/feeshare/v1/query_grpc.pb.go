@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: juno/feeshare/v1/query.proto
+// source: haneul/feeshare/v1/query.proto
 
 package feesharev1
 
@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Query_FeeShares_FullMethodName           = "/juno.feeshare.v1.Query/FeeShares"
-	Query_FeeShare_FullMethodName            = "/juno.feeshare.v1.Query/FeeShare"
-	Query_Params_FullMethodName              = "/juno.feeshare.v1.Query/Params"
-	Query_DeployerFeeShares_FullMethodName   = "/juno.feeshare.v1.Query/DeployerFeeShares"
-	Query_WithdrawerFeeShares_FullMethodName = "/juno.feeshare.v1.Query/WithdrawerFeeShares"
+	Query_FeeShares_FullMethodName           = "/haneul.feeshare.v1.Query/FeeShares"
+	Query_FeeShare_FullMethodName            = "/haneul.feeshare.v1.Query/FeeShare"
+	Query_Params_FullMethodName              = "/haneul.feeshare.v1.Query/Params"
+	Query_DeployerFeeShares_FullMethodName   = "/haneul.feeshare.v1.Query/DeployerFeeShares"
+	Query_WithdrawerFeeShares_FullMethodName = "/haneul.feeshare.v1.Query/WithdrawerFeeShares"
 )
 
 // QueryClient is the client API for Query service.
@@ -262,7 +262,7 @@ func _Query_WithdrawerFeeShares_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Query_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "juno.feeshare.v1.Query",
+	ServiceName: "haneul.feeshare.v1.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -287,5 +287,5 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "juno/feeshare/v1/query.proto",
+	Metadata: "haneul/feeshare/v1/query.proto",
 }

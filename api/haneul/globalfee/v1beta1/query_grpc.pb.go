@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: gaia/globalfee/v1beta1/query.proto
+// source: haneul/globalfee/v1beta1/query.proto
 
 package globalfeev1beta1
 
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Query_MinimumGasPrices_FullMethodName = "/gaia.globalfee.v1beta1.Query/MinimumGasPrices"
+	Query_MinimumGasPrices_FullMethodName = "/haneul.globalfee.v1beta1.Query/MinimumGasPrices"
 )
 
 // QueryClient is the client API for Query service.
@@ -114,7 +114,7 @@ func _Query_MinimumGasPrices_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Query_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "gaia.globalfee.v1beta1.Query",
+	ServiceName: "haneul.globalfee.v1beta1.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -123,5 +123,5 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "gaia/globalfee/v1beta1/query.proto",
+	Metadata: "haneul/globalfee/v1beta1/query.proto",
 }

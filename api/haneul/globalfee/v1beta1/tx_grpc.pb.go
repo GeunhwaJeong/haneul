@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: gaia/globalfee/v1beta1/tx.proto
+// source: haneul/globalfee/v1beta1/tx.proto
 
 package globalfeev1beta1
 
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Msg_UpdateParams_FullMethodName = "/gaia.globalfee.v1beta1.Msg/UpdateParams"
+	Msg_UpdateParams_FullMethodName = "/haneul.globalfee.v1beta1.Msg/UpdateParams"
 )
 
 // MsgClient is the client API for Msg service.
@@ -28,7 +28,7 @@ const (
 //
 // Msg defines the x/globalfee Msg service.
 type MsgClient interface {
-	// UpdateParams defines a governance operation for updating the x/mint module
+	// UpdateParams defines a governance operation for updating the x/globalfee module
 	// parameters. The authority is hard-coded to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 }
@@ -57,7 +57,7 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 //
 // Msg defines the x/globalfee Msg service.
 type MsgServer interface {
-	// UpdateParams defines a governance operation for updating the x/mint module
+	// UpdateParams defines a governance operation for updating the x/globalfee module
 	// parameters. The authority is hard-coded to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	mustEmbedUnimplementedMsgServer()
@@ -116,7 +116,7 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Msg_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "gaia.globalfee.v1beta1.Msg",
+	ServiceName: "haneul.globalfee.v1beta1.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -125,5 +125,5 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "gaia/globalfee/v1beta1/tx.proto",
+	Metadata: "haneul/globalfee/v1beta1/tx.proto",
 }

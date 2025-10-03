@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: juno/feepay/v1/query.proto
+// source: haneul/feepay/v1/query.proto
 
 package feepayv1
 
@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Query_FeePayContract_FullMethodName         = "/juno.feepay.v1.Query/FeePayContract"
-	Query_FeePayContracts_FullMethodName        = "/juno.feepay.v1.Query/FeePayContracts"
-	Query_FeePayContractUses_FullMethodName     = "/juno.feepay.v1.Query/FeePayContractUses"
-	Query_FeePayWalletIsEligible_FullMethodName = "/juno.feepay.v1.Query/FeePayWalletIsEligible"
-	Query_Params_FullMethodName                 = "/juno.feepay.v1.Query/Params"
+	Query_FeePayContract_FullMethodName         = "/haneul.feepay.v1.Query/FeePayContract"
+	Query_FeePayContracts_FullMethodName        = "/haneul.feepay.v1.Query/FeePayContracts"
+	Query_FeePayContractUses_FullMethodName     = "/haneul.feepay.v1.Query/FeePayContractUses"
+	Query_FeePayWalletIsEligible_FullMethodName = "/haneul.feepay.v1.Query/FeePayWalletIsEligible"
+	Query_Params_FullMethodName                 = "/haneul.feepay.v1.Query/Params"
 )
 
 // QueryClient is the client API for Query service.
@@ -258,7 +258,7 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Query_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "juno.feepay.v1.Query",
+	ServiceName: "haneul.feepay.v1.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -283,5 +283,5 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "juno/feepay/v1/query.proto",
+	Metadata: "haneul/feepay/v1/query.proto",
 }

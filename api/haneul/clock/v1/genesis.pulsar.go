@@ -20,8 +20,8 @@ var (
 )
 
 func init() {
-	file_juno_clock_v1_genesis_proto_init()
-	md_GenesisState = File_juno_clock_v1_genesis_proto.Messages().ByName("GenesisState")
+	file_haneul_clock_v1_genesis_proto_init()
+	md_GenesisState = File_haneul_clock_v1_genesis_proto.Messages().ByName("GenesisState")
 	fd_GenesisState_params = md_GenesisState.Fields().ByName("params")
 }
 
@@ -34,7 +34,7 @@ func (x *GenesisState) ProtoReflect() protoreflect.Message {
 }
 
 func (x *GenesisState) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_clock_v1_genesis_proto_msgTypes[0]
+	mi := &file_haneul_clock_v1_genesis_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -111,13 +111,13 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.clock.v1.GenesisState.params":
+	case "haneul.clock.v1.GenesisState.params":
 		return x.Params != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -129,13 +129,13 @@ func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool 
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.clock.v1.GenesisState.params":
+	case "haneul.clock.v1.GenesisState.params":
 		x.Params = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -147,14 +147,14 @@ func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.clock.v1.GenesisState.params":
+	case "haneul.clock.v1.GenesisState.params":
 		value := x.Params
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.GenesisState does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.GenesisState does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -170,13 +170,13 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.clock.v1.GenesisState.params":
+	case "haneul.clock.v1.GenesisState.params":
 		x.Params = value.Message().Interface().(*Params)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -192,16 +192,16 @@ func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.GenesisState.params":
+	case "haneul.clock.v1.GenesisState.params":
 		if x.Params == nil {
 			x.Params = new(Params)
 		}
 		return protoreflect.ValueOfMessage(x.Params.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -210,14 +210,14 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.GenesisState.params":
+	case "haneul.clock.v1.GenesisState.params":
 		m := new(Params)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -227,7 +227,7 @@ func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) 
 func (x *fastReflection_GenesisState) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.clock.v1.GenesisState", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.clock.v1.GenesisState", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -455,8 +455,8 @@ var (
 )
 
 func init() {
-	file_juno_clock_v1_genesis_proto_init()
-	md_Params = File_juno_clock_v1_genesis_proto.Messages().ByName("Params")
+	file_haneul_clock_v1_genesis_proto_init()
+	md_Params = File_haneul_clock_v1_genesis_proto.Messages().ByName("Params")
 	fd_Params_contract_gas_limit = md_Params.Fields().ByName("contract_gas_limit")
 }
 
@@ -469,7 +469,7 @@ func (x *Params) ProtoReflect() protoreflect.Message {
 }
 
 func (x *Params) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_clock_v1_genesis_proto_msgTypes[1]
+	mi := &file_haneul_clock_v1_genesis_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -546,13 +546,13 @@ func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, proto
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.clock.v1.Params.contract_gas_limit":
+	case "haneul.clock.v1.Params.contract_gas_limit":
 		return x.ContractGasLimit != uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -564,13 +564,13 @@ func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.clock.v1.Params.contract_gas_limit":
+	case "haneul.clock.v1.Params.contract_gas_limit":
 		x.ContractGasLimit = uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -582,14 +582,14 @@ func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.clock.v1.Params.contract_gas_limit":
+	case "haneul.clock.v1.Params.contract_gas_limit":
 		value := x.ContractGasLimit
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.Params does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.Params does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -605,13 +605,13 @@ func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) pro
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.clock.v1.Params.contract_gas_limit":
+	case "haneul.clock.v1.Params.contract_gas_limit":
 		x.ContractGasLimit = value.Uint()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -627,13 +627,13 @@ func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value proto
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.Params.contract_gas_limit":
-		panic(fmt.Errorf("field contract_gas_limit of message juno.clock.v1.Params is not mutable"))
+	case "haneul.clock.v1.Params.contract_gas_limit":
+		panic(fmt.Errorf("field contract_gas_limit of message haneul.clock.v1.Params is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -642,13 +642,13 @@ func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protore
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_Params) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.Params.contract_gas_limit":
+	case "haneul.clock.v1.Params.contract_gas_limit":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -658,7 +658,7 @@ func (x *fastReflection_Params) NewField(fd protoreflect.FieldDescriptor) protor
 func (x *fastReflection_Params) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.clock.v1.Params", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.clock.v1.Params", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -857,7 +857,7 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 // versions:
 // 	protoc-gen-go v1.27.0
 // 	protoc        (unknown)
-// source: juno/clock/v1/genesis.proto
+// source: haneul/clock/v1/genesis.proto
 
 const (
 	// Verify that this generated code is sufficiently up-to-date.
@@ -879,7 +879,7 @@ type GenesisState struct {
 func (x *GenesisState) Reset() {
 	*x = GenesisState{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_clock_v1_genesis_proto_msgTypes[0]
+		mi := &file_haneul_clock_v1_genesis_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -893,7 +893,7 @@ func (*GenesisState) ProtoMessage() {}
 
 // Deprecated: Use GenesisState.ProtoReflect.Descriptor instead.
 func (*GenesisState) Descriptor() ([]byte, []int) {
-	return file_juno_clock_v1_genesis_proto_rawDescGZIP(), []int{0}
+	return file_haneul_clock_v1_genesis_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GenesisState) GetParams() *Params {
@@ -916,7 +916,7 @@ type Params struct {
 func (x *Params) Reset() {
 	*x = Params{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_clock_v1_genesis_proto_msgTypes[1]
+		mi := &file_haneul_clock_v1_genesis_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -930,7 +930,7 @@ func (*Params) ProtoMessage() {}
 
 // Deprecated: Use Params.ProtoReflect.Descriptor instead.
 func (*Params) Descriptor() ([]byte, []int) {
-	return file_juno_clock_v1_genesis_proto_rawDescGZIP(), []int{1}
+	return file_haneul_clock_v1_genesis_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Params) GetContractGasLimit() uint64 {
@@ -940,55 +940,56 @@ func (x *Params) GetContractGasLimit() uint64 {
 	return 0
 }
 
-var File_juno_clock_v1_genesis_proto protoreflect.FileDescriptor
+var File_haneul_clock_v1_genesis_proto protoreflect.FileDescriptor
 
-var file_juno_clock_v1_genesis_proto_rawDesc = []byte{
-	0x0a, 0x1b, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f,
-	0x67, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x6a,
-	0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x1a, 0x11, 0x61, 0x6d,
-	0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a,
-	0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x48, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73,
-	0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x38, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f,
-	0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde,
-	0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x22,
-	0x3c, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x2c, 0x0a, 0x12, 0x63, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x67, 0x61, 0x73, 0x5f, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x47,
-	0x61, 0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x3a, 0x04, 0xe8, 0xa0, 0x1f, 0x01, 0x42, 0x9f, 0x01,
-	0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b,
-	0x2e, 0x76, 0x31, 0x42, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x50, 0x72, 0x6f, 0x74,
-	0x6f, 0x50, 0x01, 0x5a, 0x26, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69,
-	0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b,
-	0x2f, 0x76, 0x31, 0x3b, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x4a, 0x43,
-	0x58, 0xaa, 0x02, 0x0d, 0x4a, 0x75, 0x6e, 0x6f, 0x2e, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x56,
-	0x31, 0xca, 0x02, 0x0d, 0x4a, 0x75, 0x6e, 0x6f, 0x5c, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x5c, 0x56,
-	0x31, 0xe2, 0x02, 0x19, 0x4a, 0x75, 0x6e, 0x6f, 0x5c, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x5c, 0x56,
-	0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0f,
-	0x4a, 0x75, 0x6e, 0x6f, 0x3a, 0x3a, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x3a, 0x3a, 0x56, 0x31, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_haneul_clock_v1_genesis_proto_rawDesc = []byte{
+	0x0a, 0x1d, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76,
+	0x31, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12,
+	0x0f, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31,
+	0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67,
+	0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x4a, 0x0a, 0x0c, 0x47, 0x65, 0x6e,
+	0x65, 0x73, 0x69, 0x73, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x3a, 0x0a, 0x06, 0x70, 0x61, 0x72,
+	0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x68, 0x61, 0x6e, 0x65,
+	0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70,
+	0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x3c, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12,
+	0x2c, 0x0a, 0x12, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x67, 0x61, 0x73, 0x5f,
+	0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x10, 0x63, 0x6f, 0x6e,
+	0x74, 0x72, 0x61, 0x63, 0x74, 0x47, 0x61, 0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x3a, 0x04, 0xe8,
+	0xa0, 0x1f, 0x01, 0x42, 0xab, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x68, 0x61, 0x6e, 0x65,
+	0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x42, 0x0c, 0x47, 0x65, 0x6e,
+	0x65, 0x73, 0x69, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x28, 0x63, 0x6f, 0x73,
+	0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x61,
+	0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x3b, 0x63, 0x6c,
+	0x6f, 0x63, 0x6b, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x48, 0x43, 0x58, 0xaa, 0x02, 0x0f, 0x48, 0x61,
+	0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x0f,
+	0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x5c, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x5c, 0x56, 0x31, 0xe2,
+	0x02, 0x1b, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x5c, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x5c, 0x56,
+	0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x11,
+	0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x3a, 0x3a, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x3a, 0x3a, 0x56,
+	0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_juno_clock_v1_genesis_proto_rawDescOnce sync.Once
-	file_juno_clock_v1_genesis_proto_rawDescData = file_juno_clock_v1_genesis_proto_rawDesc
+	file_haneul_clock_v1_genesis_proto_rawDescOnce sync.Once
+	file_haneul_clock_v1_genesis_proto_rawDescData = file_haneul_clock_v1_genesis_proto_rawDesc
 )
 
-func file_juno_clock_v1_genesis_proto_rawDescGZIP() []byte {
-	file_juno_clock_v1_genesis_proto_rawDescOnce.Do(func() {
-		file_juno_clock_v1_genesis_proto_rawDescData = protoimpl.X.CompressGZIP(file_juno_clock_v1_genesis_proto_rawDescData)
+func file_haneul_clock_v1_genesis_proto_rawDescGZIP() []byte {
+	file_haneul_clock_v1_genesis_proto_rawDescOnce.Do(func() {
+		file_haneul_clock_v1_genesis_proto_rawDescData = protoimpl.X.CompressGZIP(file_haneul_clock_v1_genesis_proto_rawDescData)
 	})
-	return file_juno_clock_v1_genesis_proto_rawDescData
+	return file_haneul_clock_v1_genesis_proto_rawDescData
 }
 
-var file_juno_clock_v1_genesis_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_juno_clock_v1_genesis_proto_goTypes = []interface{}{
-	(*GenesisState)(nil), // 0: juno.clock.v1.GenesisState
-	(*Params)(nil),       // 1: juno.clock.v1.Params
+var file_haneul_clock_v1_genesis_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_haneul_clock_v1_genesis_proto_goTypes = []interface{}{
+	(*GenesisState)(nil), // 0: haneul.clock.v1.GenesisState
+	(*Params)(nil),       // 1: haneul.clock.v1.Params
 }
-var file_juno_clock_v1_genesis_proto_depIdxs = []int32{
-	1, // 0: juno.clock.v1.GenesisState.params:type_name -> juno.clock.v1.Params
+var file_haneul_clock_v1_genesis_proto_depIdxs = []int32{
+	1, // 0: haneul.clock.v1.GenesisState.params:type_name -> haneul.clock.v1.Params
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -996,13 +997,13 @@ var file_juno_clock_v1_genesis_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_juno_clock_v1_genesis_proto_init() }
-func file_juno_clock_v1_genesis_proto_init() {
-	if File_juno_clock_v1_genesis_proto != nil {
+func init() { file_haneul_clock_v1_genesis_proto_init() }
+func file_haneul_clock_v1_genesis_proto_init() {
+	if File_haneul_clock_v1_genesis_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_juno_clock_v1_genesis_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_clock_v1_genesis_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GenesisState); i {
 			case 0:
 				return &v.state
@@ -1014,7 +1015,7 @@ func file_juno_clock_v1_genesis_proto_init() {
 				return nil
 			}
 		}
-		file_juno_clock_v1_genesis_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_clock_v1_genesis_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Params); i {
 			case 0:
 				return &v.state
@@ -1031,18 +1032,18 @@ func file_juno_clock_v1_genesis_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_juno_clock_v1_genesis_proto_rawDesc,
+			RawDescriptor: file_haneul_clock_v1_genesis_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_juno_clock_v1_genesis_proto_goTypes,
-		DependencyIndexes: file_juno_clock_v1_genesis_proto_depIdxs,
-		MessageInfos:      file_juno_clock_v1_genesis_proto_msgTypes,
+		GoTypes:           file_haneul_clock_v1_genesis_proto_goTypes,
+		DependencyIndexes: file_haneul_clock_v1_genesis_proto_depIdxs,
+		MessageInfos:      file_haneul_clock_v1_genesis_proto_msgTypes,
 	}.Build()
-	File_juno_clock_v1_genesis_proto = out.File
-	file_juno_clock_v1_genesis_proto_rawDesc = nil
-	file_juno_clock_v1_genesis_proto_goTypes = nil
-	file_juno_clock_v1_genesis_proto_depIdxs = nil
+	File_haneul_clock_v1_genesis_proto = out.File
+	file_haneul_clock_v1_genesis_proto_rawDesc = nil
+	file_haneul_clock_v1_genesis_proto_goTypes = nil
+	file_haneul_clock_v1_genesis_proto_depIdxs = nil
 }

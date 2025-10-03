@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: juno/drip/v1/tx.proto
+// source: haneul/drip/v1/tx.proto
 
 package dripv1
 
@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Msg_DistributeTokens_FullMethodName = "/juno.drip.v1.Msg/DistributeTokens"
-	Msg_UpdateParams_FullMethodName     = "/juno.drip.v1.Msg/UpdateParams"
+	Msg_DistributeTokens_FullMethodName = "/haneul.drip.v1.Msg/DistributeTokens"
+	Msg_UpdateParams_FullMethodName     = "/haneul.drip.v1.Msg/UpdateParams"
 )
 
 // MsgClient is the client API for Msg service.
@@ -152,7 +152,7 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Msg_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "juno.drip.v1.Msg",
+	ServiceName: "haneul.drip.v1.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -165,5 +165,5 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "juno/drip/v1/tx.proto",
+	Metadata: "haneul/drip/v1/tx.proto",
 }

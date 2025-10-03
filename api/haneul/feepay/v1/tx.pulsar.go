@@ -25,8 +25,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgRegisterFeePayContract = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgRegisterFeePayContract")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgRegisterFeePayContract = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgRegisterFeePayContract")
 	fd_MsgRegisterFeePayContract_sender_address = md_MsgRegisterFeePayContract.Fields().ByName("sender_address")
 	fd_MsgRegisterFeePayContract_fee_pay_contract = md_MsgRegisterFeePayContract.Fields().ByName("fee_pay_contract")
 }
@@ -40,7 +40,7 @@ func (x *MsgRegisterFeePayContract) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgRegisterFeePayContract) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[0]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -123,15 +123,15 @@ func (x *fastReflection_MsgRegisterFeePayContract) Range(f func(protoreflect.Fie
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgRegisterFeePayContract) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgRegisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.sender_address":
 		return x.SenderAddress != ""
-	case "juno.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
 		return x.FeePayContract != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -143,15 +143,15 @@ func (x *fastReflection_MsgRegisterFeePayContract) Has(fd protoreflect.FieldDesc
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgRegisterFeePayContract) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgRegisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.sender_address":
 		x.SenderAddress = ""
-	case "juno.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
 		x.FeePayContract = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -163,17 +163,17 @@ func (x *fastReflection_MsgRegisterFeePayContract) Clear(fd protoreflect.FieldDe
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgRegisterFeePayContract) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.feepay.v1.MsgRegisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.sender_address":
 		value := x.SenderAddress
 		return protoreflect.ValueOfString(value)
-	case "juno.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
 		value := x.FeePayContract
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContract does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContract does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -189,15 +189,15 @@ func (x *fastReflection_MsgRegisterFeePayContract) Get(descriptor protoreflect.F
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgRegisterFeePayContract) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgRegisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.sender_address":
 		x.SenderAddress = value.Interface().(string)
-	case "juno.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
 		x.FeePayContract = value.Message().Interface().(*FeePayContract)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -213,18 +213,18 @@ func (x *fastReflection_MsgRegisterFeePayContract) Set(fd protoreflect.FieldDesc
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgRegisterFeePayContract) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
 		if x.FeePayContract == nil {
 			x.FeePayContract = new(FeePayContract)
 		}
 		return protoreflect.ValueOfMessage(x.FeePayContract.ProtoReflect())
-	case "juno.feepay.v1.MsgRegisterFeePayContract.sender_address":
-		panic(fmt.Errorf("field sender_address of message juno.feepay.v1.MsgRegisterFeePayContract is not mutable"))
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.sender_address":
+		panic(fmt.Errorf("field sender_address of message haneul.feepay.v1.MsgRegisterFeePayContract is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -233,16 +233,16 @@ func (x *fastReflection_MsgRegisterFeePayContract) Mutable(fd protoreflect.Field
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgRegisterFeePayContract) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgRegisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.sender_address":
 		return protoreflect.ValueOfString("")
-	case "juno.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
+	case "haneul.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract":
 		m := new(FeePayContract)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -252,7 +252,7 @@ func (x *fastReflection_MsgRegisterFeePayContract) NewField(fd protoreflect.Fiel
 func (x *fastReflection_MsgRegisterFeePayContract) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgRegisterFeePayContract", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgRegisterFeePayContract", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -522,8 +522,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgRegisterFeePayContractResponse = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgRegisterFeePayContractResponse")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgRegisterFeePayContractResponse = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgRegisterFeePayContractResponse")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgRegisterFeePayContractResponse)(nil)
@@ -535,7 +535,7 @@ func (x *MsgRegisterFeePayContractResponse) ProtoReflect() protoreflect.Message 
 }
 
 func (x *MsgRegisterFeePayContractResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[1]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -608,9 +608,9 @@ func (x *fastReflection_MsgRegisterFeePayContractResponse) Has(fd protoreflect.F
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -624,9 +624,9 @@ func (x *fastReflection_MsgRegisterFeePayContractResponse) Clear(fd protoreflect
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -640,9 +640,9 @@ func (x *fastReflection_MsgRegisterFeePayContractResponse) Get(descriptor protor
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -660,9 +660,9 @@ func (x *fastReflection_MsgRegisterFeePayContractResponse) Set(fd protoreflect.F
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -680,9 +680,9 @@ func (x *fastReflection_MsgRegisterFeePayContractResponse) Mutable(fd protorefle
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -693,9 +693,9 @@ func (x *fastReflection_MsgRegisterFeePayContractResponse) NewField(fd protorefl
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgRegisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgRegisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgRegisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -705,7 +705,7 @@ func (x *fastReflection_MsgRegisterFeePayContractResponse) NewField(fd protorefl
 func (x *fastReflection_MsgRegisterFeePayContractResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgRegisterFeePayContractResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgRegisterFeePayContractResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -880,8 +880,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgUnregisterFeePayContract = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgUnregisterFeePayContract")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgUnregisterFeePayContract = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgUnregisterFeePayContract")
 	fd_MsgUnregisterFeePayContract_sender_address = md_MsgUnregisterFeePayContract.Fields().ByName("sender_address")
 	fd_MsgUnregisterFeePayContract_contract_address = md_MsgUnregisterFeePayContract.Fields().ByName("contract_address")
 }
@@ -895,7 +895,7 @@ func (x *MsgUnregisterFeePayContract) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgUnregisterFeePayContract) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[2]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -978,15 +978,15 @@ func (x *fastReflection_MsgUnregisterFeePayContract) Range(f func(protoreflect.F
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgUnregisterFeePayContract) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.sender_address":
 		return x.SenderAddress != ""
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.contract_address":
 		return x.ContractAddress != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -998,15 +998,15 @@ func (x *fastReflection_MsgUnregisterFeePayContract) Has(fd protoreflect.FieldDe
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUnregisterFeePayContract) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.sender_address":
 		x.SenderAddress = ""
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.contract_address":
 		x.ContractAddress = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1018,17 +1018,17 @@ func (x *fastReflection_MsgUnregisterFeePayContract) Clear(fd protoreflect.Field
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgUnregisterFeePayContract) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.sender_address":
 		value := x.SenderAddress
 		return protoreflect.ValueOfString(value)
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.contract_address":
 		value := x.ContractAddress
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1044,15 +1044,15 @@ func (x *fastReflection_MsgUnregisterFeePayContract) Get(descriptor protoreflect
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUnregisterFeePayContract) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.sender_address":
 		x.SenderAddress = value.Interface().(string)
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.contract_address":
 		x.ContractAddress = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1068,15 +1068,15 @@ func (x *fastReflection_MsgUnregisterFeePayContract) Set(fd protoreflect.FieldDe
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUnregisterFeePayContract) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.sender_address":
-		panic(fmt.Errorf("field sender_address of message juno.feepay.v1.MsgUnregisterFeePayContract is not mutable"))
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.contract_address":
-		panic(fmt.Errorf("field contract_address of message juno.feepay.v1.MsgUnregisterFeePayContract is not mutable"))
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.sender_address":
+		panic(fmt.Errorf("field sender_address of message haneul.feepay.v1.MsgUnregisterFeePayContract is not mutable"))
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.contract_address":
+		panic(fmt.Errorf("field contract_address of message haneul.feepay.v1.MsgUnregisterFeePayContract is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1085,15 +1085,15 @@ func (x *fastReflection_MsgUnregisterFeePayContract) Mutable(fd protoreflect.Fie
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgUnregisterFeePayContract) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.sender_address":
 		return protoreflect.ValueOfString("")
-	case "juno.feepay.v1.MsgUnregisterFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgUnregisterFeePayContract.contract_address":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1103,7 +1103,7 @@ func (x *fastReflection_MsgUnregisterFeePayContract) NewField(fd protoreflect.Fi
 func (x *fastReflection_MsgUnregisterFeePayContract) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgUnregisterFeePayContract", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgUnregisterFeePayContract", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1362,8 +1362,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgUnregisterFeePayContractResponse = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgUnregisterFeePayContractResponse")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgUnregisterFeePayContractResponse = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgUnregisterFeePayContractResponse")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgUnregisterFeePayContractResponse)(nil)
@@ -1375,7 +1375,7 @@ func (x *MsgUnregisterFeePayContractResponse) ProtoReflect() protoreflect.Messag
 }
 
 func (x *MsgUnregisterFeePayContractResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[3]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1448,9 +1448,9 @@ func (x *fastReflection_MsgUnregisterFeePayContractResponse) Has(fd protoreflect
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1464,9 +1464,9 @@ func (x *fastReflection_MsgUnregisterFeePayContractResponse) Clear(fd protorefle
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1480,9 +1480,9 @@ func (x *fastReflection_MsgUnregisterFeePayContractResponse) Get(descriptor prot
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1500,9 +1500,9 @@ func (x *fastReflection_MsgUnregisterFeePayContractResponse) Set(fd protoreflect
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1520,9 +1520,9 @@ func (x *fastReflection_MsgUnregisterFeePayContractResponse) Mutable(fd protoref
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1533,9 +1533,9 @@ func (x *fastReflection_MsgUnregisterFeePayContractResponse) NewField(fd protore
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUnregisterFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUnregisterFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUnregisterFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1545,7 +1545,7 @@ func (x *fastReflection_MsgUnregisterFeePayContractResponse) NewField(fd protore
 func (x *fastReflection_MsgUnregisterFeePayContractResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgUnregisterFeePayContractResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgUnregisterFeePayContractResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1772,8 +1772,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgFundFeePayContract = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgFundFeePayContract")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgFundFeePayContract = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgFundFeePayContract")
 	fd_MsgFundFeePayContract_sender_address = md_MsgFundFeePayContract.Fields().ByName("sender_address")
 	fd_MsgFundFeePayContract_contract_address = md_MsgFundFeePayContract.Fields().ByName("contract_address")
 	fd_MsgFundFeePayContract_amount = md_MsgFundFeePayContract.Fields().ByName("amount")
@@ -1788,7 +1788,7 @@ func (x *MsgFundFeePayContract) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgFundFeePayContract) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[4]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1877,17 +1877,17 @@ func (x *fastReflection_MsgFundFeePayContract) Range(f func(protoreflect.FieldDe
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgFundFeePayContract) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgFundFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.sender_address":
 		return x.SenderAddress != ""
-	case "juno.feepay.v1.MsgFundFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.contract_address":
 		return x.ContractAddress != ""
-	case "juno.feepay.v1.MsgFundFeePayContract.amount":
+	case "haneul.feepay.v1.MsgFundFeePayContract.amount":
 		return len(x.Amount) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1899,17 +1899,17 @@ func (x *fastReflection_MsgFundFeePayContract) Has(fd protoreflect.FieldDescript
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgFundFeePayContract) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgFundFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.sender_address":
 		x.SenderAddress = ""
-	case "juno.feepay.v1.MsgFundFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.contract_address":
 		x.ContractAddress = ""
-	case "juno.feepay.v1.MsgFundFeePayContract.amount":
+	case "haneul.feepay.v1.MsgFundFeePayContract.amount":
 		x.Amount = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1921,13 +1921,13 @@ func (x *fastReflection_MsgFundFeePayContract) Clear(fd protoreflect.FieldDescri
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgFundFeePayContract) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.feepay.v1.MsgFundFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.sender_address":
 		value := x.SenderAddress
 		return protoreflect.ValueOfString(value)
-	case "juno.feepay.v1.MsgFundFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.contract_address":
 		value := x.ContractAddress
 		return protoreflect.ValueOfString(value)
-	case "juno.feepay.v1.MsgFundFeePayContract.amount":
+	case "haneul.feepay.v1.MsgFundFeePayContract.amount":
 		if len(x.Amount) == 0 {
 			return protoreflect.ValueOfList(&_MsgFundFeePayContract_3_list{})
 		}
@@ -1935,9 +1935,9 @@ func (x *fastReflection_MsgFundFeePayContract) Get(descriptor protoreflect.Field
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContract does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContract does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1953,19 +1953,19 @@ func (x *fastReflection_MsgFundFeePayContract) Get(descriptor protoreflect.Field
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgFundFeePayContract) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgFundFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.sender_address":
 		x.SenderAddress = value.Interface().(string)
-	case "juno.feepay.v1.MsgFundFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.contract_address":
 		x.ContractAddress = value.Interface().(string)
-	case "juno.feepay.v1.MsgFundFeePayContract.amount":
+	case "haneul.feepay.v1.MsgFundFeePayContract.amount":
 		lv := value.List()
 		clv := lv.(*_MsgFundFeePayContract_3_list)
 		x.Amount = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1981,21 +1981,21 @@ func (x *fastReflection_MsgFundFeePayContract) Set(fd protoreflect.FieldDescript
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgFundFeePayContract) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgFundFeePayContract.amount":
+	case "haneul.feepay.v1.MsgFundFeePayContract.amount":
 		if x.Amount == nil {
 			x.Amount = []*v1beta1.Coin{}
 		}
 		value := &_MsgFundFeePayContract_3_list{list: &x.Amount}
 		return protoreflect.ValueOfList(value)
-	case "juno.feepay.v1.MsgFundFeePayContract.sender_address":
-		panic(fmt.Errorf("field sender_address of message juno.feepay.v1.MsgFundFeePayContract is not mutable"))
-	case "juno.feepay.v1.MsgFundFeePayContract.contract_address":
-		panic(fmt.Errorf("field contract_address of message juno.feepay.v1.MsgFundFeePayContract is not mutable"))
+	case "haneul.feepay.v1.MsgFundFeePayContract.sender_address":
+		panic(fmt.Errorf("field sender_address of message haneul.feepay.v1.MsgFundFeePayContract is not mutable"))
+	case "haneul.feepay.v1.MsgFundFeePayContract.contract_address":
+		panic(fmt.Errorf("field contract_address of message haneul.feepay.v1.MsgFundFeePayContract is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2004,18 +2004,18 @@ func (x *fastReflection_MsgFundFeePayContract) Mutable(fd protoreflect.FieldDesc
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgFundFeePayContract) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgFundFeePayContract.sender_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.sender_address":
 		return protoreflect.ValueOfString("")
-	case "juno.feepay.v1.MsgFundFeePayContract.contract_address":
+	case "haneul.feepay.v1.MsgFundFeePayContract.contract_address":
 		return protoreflect.ValueOfString("")
-	case "juno.feepay.v1.MsgFundFeePayContract.amount":
+	case "haneul.feepay.v1.MsgFundFeePayContract.amount":
 		list := []*v1beta1.Coin{}
 		return protoreflect.ValueOfList(&_MsgFundFeePayContract_3_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContract"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContract"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContract does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2025,7 +2025,7 @@ func (x *fastReflection_MsgFundFeePayContract) NewField(fd protoreflect.FieldDes
 func (x *fastReflection_MsgFundFeePayContract) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgFundFeePayContract", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgFundFeePayContract", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2340,8 +2340,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgFundFeePayContractResponse = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgFundFeePayContractResponse")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgFundFeePayContractResponse = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgFundFeePayContractResponse")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgFundFeePayContractResponse)(nil)
@@ -2353,7 +2353,7 @@ func (x *MsgFundFeePayContractResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgFundFeePayContractResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[5]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2426,9 +2426,9 @@ func (x *fastReflection_MsgFundFeePayContractResponse) Has(fd protoreflect.Field
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2442,9 +2442,9 @@ func (x *fastReflection_MsgFundFeePayContractResponse) Clear(fd protoreflect.Fie
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2458,9 +2458,9 @@ func (x *fastReflection_MsgFundFeePayContractResponse) Get(descriptor protorefle
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2478,9 +2478,9 @@ func (x *fastReflection_MsgFundFeePayContractResponse) Set(fd protoreflect.Field
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2498,9 +2498,9 @@ func (x *fastReflection_MsgFundFeePayContractResponse) Mutable(fd protoreflect.F
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2511,9 +2511,9 @@ func (x *fastReflection_MsgFundFeePayContractResponse) NewField(fd protoreflect.
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgFundFeePayContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgFundFeePayContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgFundFeePayContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2523,7 +2523,7 @@ func (x *fastReflection_MsgFundFeePayContractResponse) NewField(fd protoreflect.
 func (x *fastReflection_MsgFundFeePayContractResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgFundFeePayContractResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgFundFeePayContractResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2699,8 +2699,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgUpdateFeePayContractWalletLimit = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgUpdateFeePayContractWalletLimit")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgUpdateFeePayContractWalletLimit = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgUpdateFeePayContractWalletLimit")
 	fd_MsgUpdateFeePayContractWalletLimit_sender_address = md_MsgUpdateFeePayContractWalletLimit.Fields().ByName("sender_address")
 	fd_MsgUpdateFeePayContractWalletLimit_contract_address = md_MsgUpdateFeePayContractWalletLimit.Fields().ByName("contract_address")
 	fd_MsgUpdateFeePayContractWalletLimit_wallet_limit = md_MsgUpdateFeePayContractWalletLimit.Fields().ByName("wallet_limit")
@@ -2715,7 +2715,7 @@ func (x *MsgUpdateFeePayContractWalletLimit) ProtoReflect() protoreflect.Message
 }
 
 func (x *MsgUpdateFeePayContractWalletLimit) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[6]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2804,17 +2804,17 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Range(f func(protore
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
 		return x.SenderAddress != ""
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
 		return x.ContractAddress != ""
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
 		return x.WalletLimit != uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2826,17 +2826,17 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Has(fd protoreflect.
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
 		x.SenderAddress = ""
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
 		x.ContractAddress = ""
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
 		x.WalletLimit = uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2848,20 +2848,20 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Clear(fd protoreflec
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
 		value := x.SenderAddress
 		return protoreflect.ValueOfString(value)
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
 		value := x.ContractAddress
 		return protoreflect.ValueOfString(value)
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
 		value := x.WalletLimit
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2877,17 +2877,17 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Get(descriptor proto
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
 		x.SenderAddress = value.Interface().(string)
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
 		x.ContractAddress = value.Interface().(string)
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
 		x.WalletLimit = value.Uint()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2903,17 +2903,17 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Set(fd protoreflect.
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
-		panic(fmt.Errorf("field sender_address of message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit is not mutable"))
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
-		panic(fmt.Errorf("field contract_address of message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit is not mutable"))
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
-		panic(fmt.Errorf("field wallet_limit of message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit is not mutable"))
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
+		panic(fmt.Errorf("field sender_address of message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit is not mutable"))
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
+		panic(fmt.Errorf("field contract_address of message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit is not mutable"))
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
+		panic(fmt.Errorf("field wallet_limit of message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2922,17 +2922,17 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) Mutable(fd protorefl
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.sender_address":
 		return protoreflect.ValueOfString("")
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.contract_address":
 		return protoreflect.ValueOfString("")
-	case "juno.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
+	case "haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit.wallet_limit":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2942,7 +2942,7 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) NewField(fd protoref
 func (x *fastReflection_MsgUpdateFeePayContractWalletLimit) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgUpdateFeePayContractWalletLimit", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -3228,8 +3228,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgUpdateFeePayContractWalletLimitResponse = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgUpdateFeePayContractWalletLimitResponse")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgUpdateFeePayContractWalletLimitResponse = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgUpdateFeePayContractWalletLimitResponse")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgUpdateFeePayContractWalletLimitResponse)(nil)
@@ -3241,7 +3241,7 @@ func (x *MsgUpdateFeePayContractWalletLimitResponse) ProtoReflect() protoreflect
 }
 
 func (x *MsgUpdateFeePayContractWalletLimitResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[7]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3314,9 +3314,9 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimitResponse) Has(fd proto
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3330,9 +3330,9 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimitResponse) Clear(fd pro
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3346,9 +3346,9 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimitResponse) Get(descript
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -3366,9 +3366,9 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimitResponse) Set(fd proto
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3386,9 +3386,9 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimitResponse) Mutable(fd p
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3399,9 +3399,9 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimitResponse) NewField(fd 
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3411,7 +3411,7 @@ func (x *fastReflection_MsgUpdateFeePayContractWalletLimitResponse) NewField(fd 
 func (x *fastReflection_MsgUpdateFeePayContractWalletLimitResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -3586,8 +3586,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgUpdateParams = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgUpdateParams")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgUpdateParams = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgUpdateParams")
 	fd_MsgUpdateParams_authority = md_MsgUpdateParams.Fields().ByName("authority")
 	fd_MsgUpdateParams_params = md_MsgUpdateParams.Fields().ByName("params")
 }
@@ -3601,7 +3601,7 @@ func (x *MsgUpdateParams) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgUpdateParams) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[8]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3684,15 +3684,15 @@ func (x *fastReflection_MsgUpdateParams) Range(f func(protoreflect.FieldDescript
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgUpdateParams) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateParams.authority":
+	case "haneul.feepay.v1.MsgUpdateParams.authority":
 		return x.Authority != ""
-	case "juno.feepay.v1.MsgUpdateParams.params":
+	case "haneul.feepay.v1.MsgUpdateParams.params":
 		return x.Params != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3704,15 +3704,15 @@ func (x *fastReflection_MsgUpdateParams) Has(fd protoreflect.FieldDescriptor) bo
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateParams) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateParams.authority":
+	case "haneul.feepay.v1.MsgUpdateParams.authority":
 		x.Authority = ""
-	case "juno.feepay.v1.MsgUpdateParams.params":
+	case "haneul.feepay.v1.MsgUpdateParams.params":
 		x.Params = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3724,17 +3724,17 @@ func (x *fastReflection_MsgUpdateParams) Clear(fd protoreflect.FieldDescriptor) 
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgUpdateParams) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.feepay.v1.MsgUpdateParams.authority":
+	case "haneul.feepay.v1.MsgUpdateParams.authority":
 		value := x.Authority
 		return protoreflect.ValueOfString(value)
-	case "juno.feepay.v1.MsgUpdateParams.params":
+	case "haneul.feepay.v1.MsgUpdateParams.params":
 		value := x.Params
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParams does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParams does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -3750,15 +3750,15 @@ func (x *fastReflection_MsgUpdateParams) Get(descriptor protoreflect.FieldDescri
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateParams) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateParams.authority":
+	case "haneul.feepay.v1.MsgUpdateParams.authority":
 		x.Authority = value.Interface().(string)
-	case "juno.feepay.v1.MsgUpdateParams.params":
+	case "haneul.feepay.v1.MsgUpdateParams.params":
 		x.Params = value.Message().Interface().(*Params)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3774,18 +3774,18 @@ func (x *fastReflection_MsgUpdateParams) Set(fd protoreflect.FieldDescriptor, va
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateParams) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateParams.params":
+	case "haneul.feepay.v1.MsgUpdateParams.params":
 		if x.Params == nil {
 			x.Params = new(Params)
 		}
 		return protoreflect.ValueOfMessage(x.Params.ProtoReflect())
-	case "juno.feepay.v1.MsgUpdateParams.authority":
-		panic(fmt.Errorf("field authority of message juno.feepay.v1.MsgUpdateParams is not mutable"))
+	case "haneul.feepay.v1.MsgUpdateParams.authority":
+		panic(fmt.Errorf("field authority of message haneul.feepay.v1.MsgUpdateParams is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3794,16 +3794,16 @@ func (x *fastReflection_MsgUpdateParams) Mutable(fd protoreflect.FieldDescriptor
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgUpdateParams) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feepay.v1.MsgUpdateParams.authority":
+	case "haneul.feepay.v1.MsgUpdateParams.authority":
 		return protoreflect.ValueOfString("")
-	case "juno.feepay.v1.MsgUpdateParams.params":
+	case "haneul.feepay.v1.MsgUpdateParams.params":
 		m := new(Params)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3813,7 +3813,7 @@ func (x *fastReflection_MsgUpdateParams) NewField(fd protoreflect.FieldDescripto
 func (x *fastReflection_MsgUpdateParams) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgUpdateParams", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgUpdateParams", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4083,8 +4083,8 @@ var (
 )
 
 func init() {
-	file_juno_feepay_v1_tx_proto_init()
-	md_MsgUpdateParamsResponse = File_juno_feepay_v1_tx_proto.Messages().ByName("MsgUpdateParamsResponse")
+	file_haneul_feepay_v1_tx_proto_init()
+	md_MsgUpdateParamsResponse = File_haneul_feepay_v1_tx_proto.Messages().ByName("MsgUpdateParamsResponse")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgUpdateParamsResponse)(nil)
@@ -4096,7 +4096,7 @@ func (x *MsgUpdateParamsResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgUpdateParamsResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feepay_v1_tx_proto_msgTypes[9]
+	mi := &file_haneul_feepay_v1_tx_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4169,9 +4169,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Has(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4185,9 +4185,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Clear(fd protoreflect.FieldDesc
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4201,9 +4201,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Get(descriptor protoreflect.Fie
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParamsResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParamsResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4221,9 +4221,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Set(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4241,9 +4241,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Mutable(fd protoreflect.FieldDe
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4254,9 +4254,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) NewField(fd protoreflect.FieldD
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feepay.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feepay.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feepay.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4266,7 +4266,7 @@ func (x *fastReflection_MsgUpdateParamsResponse) NewField(fd protoreflect.FieldD
 func (x *fastReflection_MsgUpdateParamsResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feepay.v1.MsgUpdateParamsResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feepay.v1.MsgUpdateParamsResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4438,7 +4438,7 @@ func (x *fastReflection_MsgUpdateParamsResponse) ProtoMethods() *protoiface.Meth
 // versions:
 // 	protoc-gen-go v1.27.0
 // 	protoc        (unknown)
-// source: juno/feepay/v1/tx.proto
+// source: haneul/feepay/v1/tx.proto
 
 const (
 	// Verify that this generated code is sufficiently up-to-date.
@@ -4462,7 +4462,7 @@ type MsgRegisterFeePayContract struct {
 func (x *MsgRegisterFeePayContract) Reset() {
 	*x = MsgRegisterFeePayContract{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[0]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4476,7 +4476,7 @@ func (*MsgRegisterFeePayContract) ProtoMessage() {}
 
 // Deprecated: Use MsgRegisterFeePayContract.ProtoReflect.Descriptor instead.
 func (*MsgRegisterFeePayContract) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{0}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *MsgRegisterFeePayContract) GetSenderAddress() string {
@@ -4503,7 +4503,7 @@ type MsgRegisterFeePayContractResponse struct {
 func (x *MsgRegisterFeePayContractResponse) Reset() {
 	*x = MsgRegisterFeePayContractResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[1]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4517,7 +4517,7 @@ func (*MsgRegisterFeePayContractResponse) ProtoMessage() {}
 
 // Deprecated: Use MsgRegisterFeePayContractResponse.ProtoReflect.Descriptor instead.
 func (*MsgRegisterFeePayContractResponse) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{1}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{1}
 }
 
 // The message to unregister a fee pay contract.
@@ -4535,7 +4535,7 @@ type MsgUnregisterFeePayContract struct {
 func (x *MsgUnregisterFeePayContract) Reset() {
 	*x = MsgUnregisterFeePayContract{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[2]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4549,7 +4549,7 @@ func (*MsgUnregisterFeePayContract) ProtoMessage() {}
 
 // Deprecated: Use MsgUnregisterFeePayContract.ProtoReflect.Descriptor instead.
 func (*MsgUnregisterFeePayContract) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{2}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *MsgUnregisterFeePayContract) GetSenderAddress() string {
@@ -4576,7 +4576,7 @@ type MsgUnregisterFeePayContractResponse struct {
 func (x *MsgUnregisterFeePayContractResponse) Reset() {
 	*x = MsgUnregisterFeePayContractResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[3]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4590,7 +4590,7 @@ func (*MsgUnregisterFeePayContractResponse) ProtoMessage() {}
 
 // Deprecated: Use MsgUnregisterFeePayContractResponse.ProtoReflect.Descriptor instead.
 func (*MsgUnregisterFeePayContractResponse) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{3}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{3}
 }
 
 // The message to fund a fee pay contract
@@ -4610,7 +4610,7 @@ type MsgFundFeePayContract struct {
 func (x *MsgFundFeePayContract) Reset() {
 	*x = MsgFundFeePayContract{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[4]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4624,7 +4624,7 @@ func (*MsgFundFeePayContract) ProtoMessage() {}
 
 // Deprecated: Use MsgFundFeePayContract.ProtoReflect.Descriptor instead.
 func (*MsgFundFeePayContract) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{4}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *MsgFundFeePayContract) GetSenderAddress() string {
@@ -4658,7 +4658,7 @@ type MsgFundFeePayContractResponse struct {
 func (x *MsgFundFeePayContractResponse) Reset() {
 	*x = MsgFundFeePayContractResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[5]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4672,7 +4672,7 @@ func (*MsgFundFeePayContractResponse) ProtoMessage() {}
 
 // Deprecated: Use MsgFundFeePayContractResponse.ProtoReflect.Descriptor instead.
 func (*MsgFundFeePayContractResponse) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{5}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{5}
 }
 
 // The message to update a fee pay contract wallet limit.
@@ -4692,7 +4692,7 @@ type MsgUpdateFeePayContractWalletLimit struct {
 func (x *MsgUpdateFeePayContractWalletLimit) Reset() {
 	*x = MsgUpdateFeePayContractWalletLimit{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[6]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4706,7 +4706,7 @@ func (*MsgUpdateFeePayContractWalletLimit) ProtoMessage() {}
 
 // Deprecated: Use MsgUpdateFeePayContractWalletLimit.ProtoReflect.Descriptor instead.
 func (*MsgUpdateFeePayContractWalletLimit) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{6}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *MsgUpdateFeePayContractWalletLimit) GetSenderAddress() string {
@@ -4740,7 +4740,7 @@ type MsgUpdateFeePayContractWalletLimitResponse struct {
 func (x *MsgUpdateFeePayContractWalletLimitResponse) Reset() {
 	*x = MsgUpdateFeePayContractWalletLimitResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[7]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4754,7 +4754,7 @@ func (*MsgUpdateFeePayContractWalletLimitResponse) ProtoMessage() {}
 
 // Deprecated: Use MsgUpdateFeePayContractWalletLimitResponse.ProtoReflect.Descriptor instead.
 func (*MsgUpdateFeePayContractWalletLimitResponse) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{7}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{7}
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -4774,7 +4774,7 @@ type MsgUpdateParams struct {
 func (x *MsgUpdateParams) Reset() {
 	*x = MsgUpdateParams{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[8]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4788,7 +4788,7 @@ func (*MsgUpdateParams) ProtoMessage() {}
 
 // Deprecated: Use MsgUpdateParams.ProtoReflect.Descriptor instead.
 func (*MsgUpdateParams) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{8}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *MsgUpdateParams) GetAuthority() string {
@@ -4816,7 +4816,7 @@ type MsgUpdateParamsResponse struct {
 func (x *MsgUpdateParamsResponse) Reset() {
 	*x = MsgUpdateParamsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feepay_v1_tx_proto_msgTypes[9]
+		mi := &file_haneul_feepay_v1_tx_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4830,225 +4830,228 @@ func (*MsgUpdateParamsResponse) ProtoMessage() {}
 
 // Deprecated: Use MsgUpdateParamsResponse.ProtoReflect.Descriptor instead.
 func (*MsgUpdateParamsResponse) Descriptor() ([]byte, []int) {
-	return file_juno_feepay_v1_tx_proto_rawDescGZIP(), []int{9}
+	return file_haneul_feepay_v1_tx_proto_rawDescGZIP(), []int{9}
 }
 
-var File_juno_feepay_v1_tx_proto protoreflect.FileDescriptor
+var File_haneul_feepay_v1_tx_proto protoreflect.FileDescriptor
 
-var file_juno_feepay_v1_tx_proto_rawDesc = []byte{
-	0x0a, 0x17, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76, 0x31,
-	0x2f, 0x74, 0x78, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e,
-	0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f,
-	0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x63, 0x6f,
-	0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x63, 0x6f,
-	0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x6d, 0x73, 0x67, 0x2f, 0x76, 0x31, 0x2f, 0x6d, 0x73, 0x67, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x5f, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61,
-	0x79, 0x2f, 0x76, 0x31, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x1a, 0x1c, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76,
-	0x31, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22,
-	0xef, 0x01, 0x0a, 0x19, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46,
-	0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x3f, 0x0a,
-	0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52,
-	0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x48,
-	0x0a, 0x10, 0x66, 0x65, 0x65, 0x5f, 0x70, 0x61, 0x79, 0x5f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61,
-	0x63, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e,
-	0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79,
-	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x0e, 0x66, 0x65, 0x65, 0x50, 0x61, 0x79,
-	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x3a, 0x47, 0x88, 0xa0, 0x1f, 0x00, 0xe8, 0xa0,
-	0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x8a, 0xe7, 0xb0, 0x2a, 0x27, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x78,
-	0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73,
+var file_haneul_feepay_v1_tx_proto_rawDesc = []byte{
+	0x0a, 0x19, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f,
+	0x76, 0x31, 0x2f, 0x74, 0x78, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x10, 0x68, 0x61, 0x6e,
+	0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x1a, 0x11, 0x61,
+	0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x1a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x1a, 0x17, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x6d, 0x73, 0x67, 0x2f, 0x76, 0x31, 0x2f,
+	0x6d, 0x73, 0x67, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
+	0x73, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f,
+	0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1d, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c,
+	0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61,
+	0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f,
+	0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x73, 0x69,
+	0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xf1, 0x01, 0x0a, 0x19, 0x4d, 0x73, 0x67, 0x52,
+	0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e,
+	0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f,
+	0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2,
+	0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73,
+	0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x41,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x4a, 0x0a, 0x10, 0x66, 0x65, 0x65, 0x5f, 0x70, 0x61,
+	0x79, 0x5f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x20, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79,
+	0x2e, 0x76, 0x31, 0x2e, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
+	0x63, 0x74, 0x52, 0x0e, 0x66, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
+	0x63, 0x74, 0x3a, 0x47, 0x88, 0xa0, 0x1f, 0x00, 0xe8, 0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a,
+	0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x8a,
+	0xe7, 0xb0, 0x2a, 0x27, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61,
+	0x79, 0x2f, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65,
+	0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x22, 0x23, 0x0a, 0x21, 0x4d,
+	0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79,
+	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0xee, 0x01, 0x0a, 0x1b, 0x4d, 0x73, 0x67, 0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74,
+	0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
+	0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65,
+	0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69,
+	0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73,
+	0x73, 0x12, 0x43, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64,
+	0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d,
+	0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53,
+	0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x41,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x3a, 0x49, 0x88, 0xa0, 0x1f, 0x00, 0xe8, 0xa0, 0x1f, 0x00,
+	0x82, 0xe7, 0xb0, 0x2a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72,
+	0x65, 0x73, 0x73, 0x8a, 0xe7, 0xb0, 0x2a, 0x29, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x66,
+	0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x4d, 0x73, 0x67, 0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73,
 	0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
-	0x74, 0x22, 0x23, 0x0a, 0x21, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72,
-	0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xee, 0x01, 0x0a, 0x1b, 0x4d, 0x73, 0x67, 0x55, 0x6e,
-	0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f,
-	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72,
-	0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18,
-	0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65,
-	0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72,
-	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x43, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72,
-	0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0f, 0x63, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x3a, 0x49, 0x88, 0xa0,
-	0x1f, 0x00, 0xe8, 0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65,
-	0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x8a, 0xe7, 0xb0, 0x2a, 0x29, 0x6a, 0x75,
-	0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x4d, 0x73, 0x67, 0x55,
-	0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43,
-	0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x22, 0x25, 0x0a, 0x23, 0x4d, 0x73, 0x67, 0x55, 0x6e,
-	0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f,
-	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xdd,
-	0x02, 0x0a, 0x15, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6e, 0x64, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79,
-	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65, 0x6e, 0x64,
-	0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64,
-	0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65, 0x6e, 0x64,
-	0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x43, 0x0a, 0x10, 0x63, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
-	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0f, 0x63,
-	0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x79,
-	0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19,
-	0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde, 0x1f, 0x00, 0xaa,
-	0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f,
-	0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f,
-	0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7, 0xb0, 0x2a, 0x0c,
-	0x6c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8, 0xe7, 0xb0, 0x2a,
-	0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x3a, 0x43, 0x88, 0xa0, 0x1f, 0x00, 0xe8,
+	0x74, 0x22, 0x25, 0x0a, 0x23, 0x4d, 0x73, 0x67, 0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74,
+	0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xdd, 0x02, 0x0a, 0x15, 0x4d, 0x73, 0x67,
+	0x46, 0x75, 0x6e, 0x64, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
+	0x63, 0x74, 0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64,
+	0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74,
+	0x72, 0x69, 0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72,
+	0x65, 0x73, 0x73, 0x12, 0x43, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f,
+	0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2,
+	0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73,
+	0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
+	0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x79, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75,
+	0x6e, 0x74, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
+	0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43,
+	0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde, 0x1f, 0x00, 0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74,
+	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63,
+	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e,
+	0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7, 0xb0, 0x2a, 0x0c, 0x6c, 0x65, 0x67, 0x61, 0x63, 0x79,
+	0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f,
+	0x75, 0x6e, 0x74, 0x3a, 0x43, 0x88, 0xa0, 0x1f, 0x00, 0xe8, 0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0,
+	0x2a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x8a, 0xe7, 0xb0, 0x2a, 0x23, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x66, 0x65, 0x65, 0x70,
+	0x61, 0x79, 0x2f, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6e, 0x64, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79,
+	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x22, 0x1f, 0x0a, 0x1d, 0x4d, 0x73, 0x67, 0x46,
+	0x75, 0x6e, 0x64, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x9f, 0x02, 0x0a, 0x22, 0x4d, 0x73,
+	0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e,
+	0x74, 0x72, 0x61, 0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74,
+	0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65,
+	0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69,
+	0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73,
+	0x73, 0x12, 0x43, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64,
+	0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d,
+	0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53,
+	0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x41,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x21, 0x0a, 0x0c, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74,
+	0x5f, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0b, 0x77, 0x61,
+	0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x3a, 0x50, 0x88, 0xa0, 0x1f, 0x00, 0xe8,
 	0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61,
-	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x8a, 0xe7, 0xb0, 0x2a, 0x23, 0x6a, 0x75, 0x6e, 0x6f, 0x2f,
-	0x78, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6e, 0x64,
-	0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x22, 0x1f,
-	0x0a, 0x1d, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6e, 0x64, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43,
-	0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x9f, 0x02, 0x0a, 0x22, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x65, 0x65,
-	0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c, 0x65,
-	0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72,
-	0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18,
-	0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65,
-	0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72,
-	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x43, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72,
-	0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0f, 0x63, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x21, 0x0a, 0x0c,
-	0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x5f, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x0b, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x3a,
-	0x50, 0x88, 0xa0, 0x1f, 0x00, 0xe8, 0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a, 0x0e, 0x73, 0x65,
-	0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x8a, 0xe7, 0xb0, 0x2a,
-	0x30, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x4d,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x8a, 0xe7, 0xb0, 0x2a, 0x30, 0x6a, 0x75, 0x6e, 0x6f, 0x2f,
+	0x78, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
+	0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x22, 0x2c, 0x0a, 0x2a, 0x4d,
 	0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f,
 	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69,
-	0x74, 0x22, 0x2c, 0x0a, 0x2a, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x65,
-	0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c,
-	0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0xbe, 0x01, 0x0a, 0x0f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72,
-	0x61, 0x6d, 0x73, 0x12, 0x36, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d,
-	0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67,
-	0x52, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x39, 0x0a, 0x06, 0x70,
-	0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x6a, 0x75,
-	0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72,
-	0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06,
-	0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x3a, 0x38, 0x88, 0xa0, 0x1f, 0x00, 0xe8, 0xa0, 0x1f, 0x00,
-	0x82, 0xe7, 0xb0, 0x2a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x8a, 0xe7,
-	0xb0, 0x2a, 0x1d, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79,
-	0x2f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x22, 0x19, 0x0a, 0x17, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72,
-	0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0xfc, 0x05, 0x0a, 0x03,
-	0x4d, 0x73, 0x67, 0x12, 0x9b, 0x01, 0x0a, 0x16, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72,
-	0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x29,
-	0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e,
-	0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61,
-	0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x1a, 0x31, 0x2e, 0x6a, 0x75, 0x6e, 0x6f,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xc0, 0x01, 0x0a, 0x0f, 0x4d, 0x73,
+	0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x36, 0x0a,
+	0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64,
+	0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x09, 0x61, 0x75, 0x74, 0x68,
+	0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x3b, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66,
+	0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42,
+	0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x3a, 0x38, 0x88, 0xa0, 0x1f, 0x00, 0xe8, 0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a,
+	0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x8a, 0xe7, 0xb0, 0x2a, 0x1d, 0x6a,
+	0x75, 0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x4d, 0x73, 0x67,
+	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x19, 0x0a, 0x17,
+	0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x90, 0x06, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12,
+	0x9f, 0x01, 0x0a, 0x16, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50,
+	0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x2b, 0x2e, 0x68, 0x61, 0x6e,
+	0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73,
+	0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43,
+	0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x1a, 0x33, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c,
 	0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x52, 0x65,
 	0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74,
 	0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x23, 0x82, 0xd3,
 	0xe4, 0x93, 0x02, 0x1d, 0x22, 0x1b, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70,
 	0x61, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x74, 0x78, 0x2f, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65,
-	0x72, 0x12, 0xa3, 0x01, 0x0a, 0x18, 0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72,
-	0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x2b,
-	0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e,
-	0x4d, 0x73, 0x67, 0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65,
-	0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x1a, 0x33, 0x2e, 0x6a, 0x75,
-	0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67,
-	0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79,
-	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x25, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1f, 0x22, 0x1d, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f,
-	0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x74, 0x78, 0x2f, 0x75, 0x6e, 0x72,
-	0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x12, 0x8b, 0x01, 0x0a, 0x12, 0x46, 0x75, 0x6e, 0x64,
-	0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x25,
-	0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e,
-	0x4d, 0x73, 0x67, 0x46, 0x75, 0x6e, 0x64, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x1a, 0x2d, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65,
-	0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6e, 0x64, 0x46, 0x65,
+	0x72, 0x12, 0xa7, 0x01, 0x0a, 0x18, 0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72,
+	0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x2d,
+	0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76,
+	0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46,
+	0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x1a, 0x35, 0x2e,
+	0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31,
+	0x2e, 0x4d, 0x73, 0x67, 0x55, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x46, 0x65,
 	0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x19, 0x22, 0x17, 0x2f, 0x6a,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x25, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1f, 0x22, 0x1d, 0x2f, 0x6a,
 	0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x74, 0x78,
-	0x2f, 0x66, 0x75, 0x6e, 0x64, 0x12, 0xc1, 0x01, 0x0a, 0x1f, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x57, 0x61,
-	0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x32, 0x2e, 0x6a, 0x75, 0x6e, 0x6f,
+	0x2f, 0x75, 0x6e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x12, 0x8f, 0x01, 0x0a, 0x12,
+	0x46, 0x75, 0x6e, 0x64, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
+	0x63, 0x74, 0x12, 0x27, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70,
+	0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x46, 0x75, 0x6e, 0x64, 0x46, 0x65, 0x65,
+	0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x1a, 0x2f, 0x2e, 0x68, 0x61,
+	0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d,
+	0x73, 0x67, 0x46, 0x75, 0x6e, 0x64, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74,
+	0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1f, 0x82, 0xd3,
+	0xe4, 0x93, 0x02, 0x19, 0x22, 0x17, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70,
+	0x61, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x74, 0x78, 0x2f, 0x66, 0x75, 0x6e, 0x64, 0x12, 0xc5, 0x01,
+	0x0a, 0x1f, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f,
+	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69,
+	0x74, 0x12, 0x34, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61,
+	0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x65,
+	0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c,
+	0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x1a, 0x3c, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c,
 	0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70,
 	0x64, 0x61, 0x74, 0x65, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
-	0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x1a, 0x3a, 0x2e,
-	0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d,
-	0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x65, 0x65, 0x50, 0x61, 0x79, 0x43, 0x6f,
-	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69,
-	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2e, 0x82, 0xd3, 0xe4, 0x93, 0x02,
-	0x28, 0x22, 0x26, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f,
-	0x76, 0x31, 0x2f, 0x74, 0x78, 0x2f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x77, 0x61, 0x6c,
-	0x6c, 0x65, 0x74, 0x5f, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x58, 0x0a, 0x0c, 0x55, 0x70, 0x64,
-	0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x1f, 0x2e, 0x6a, 0x75, 0x6e, 0x6f,
-	0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x27, 0x2e, 0x6a, 0x75, 0x6e,
-	0x6f, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55,
+	0x63, 0x74, 0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x28, 0x22, 0x26, 0x2f,
+	0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x74,
+	0x78, 0x2f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x5f,
+	0x6c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x5c, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50,
+	0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x21, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66,
+	0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x29, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75,
+	0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55,
 	0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a, 0x01, 0x42, 0xa1, 0x01, 0x0a, 0x12, 0x63,
-	0x6f, 0x6d, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x76,
-	0x31, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x28, 0x63, 0x6f,
-	0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x6a,
-	0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76, 0x31, 0x3b, 0x66, 0x65,
-	0x65, 0x70, 0x61, 0x79, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x4a, 0x46, 0x58, 0xaa, 0x02, 0x0e, 0x4a,
-	0x75, 0x6e, 0x6f, 0x2e, 0x46, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x0e,
-	0x4a, 0x75, 0x6e, 0x6f, 0x5c, 0x46, 0x65, 0x65, 0x70, 0x61, 0x79, 0x5c, 0x56, 0x31, 0xe2, 0x02,
-	0x1a, 0x4a, 0x75, 0x6e, 0x6f, 0x5c, 0x46, 0x65, 0x65, 0x70, 0x61, 0x79, 0x5c, 0x56, 0x31, 0x5c,
-	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x4a, 0x75,
-	0x6e, 0x6f, 0x3a, 0x3a, 0x46, 0x65, 0x65, 0x70, 0x61, 0x79, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a, 0x01, 0x42, 0xad, 0x01, 0x0a, 0x14, 0x63,
+	0x6f, 0x6d, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79,
+	0x2e, 0x76, 0x31, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2a,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69,
+	0x2f, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x2f, 0x76,
+	0x31, 0x3b, 0x66, 0x65, 0x65, 0x70, 0x61, 0x79, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x48, 0x46, 0x58,
+	0xaa, 0x02, 0x10, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x46, 0x65, 0x65, 0x70, 0x61, 0x79,
+	0x2e, 0x56, 0x31, 0xca, 0x02, 0x10, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x5c, 0x46, 0x65, 0x65,
+	0x70, 0x61, 0x79, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x1c, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x5c,
+	0x46, 0x65, 0x65, 0x70, 0x61, 0x79, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74,
+	0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x12, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x3a, 0x3a,
+	0x46, 0x65, 0x65, 0x70, 0x61, 0x79, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
-	file_juno_feepay_v1_tx_proto_rawDescOnce sync.Once
-	file_juno_feepay_v1_tx_proto_rawDescData = file_juno_feepay_v1_tx_proto_rawDesc
+	file_haneul_feepay_v1_tx_proto_rawDescOnce sync.Once
+	file_haneul_feepay_v1_tx_proto_rawDescData = file_haneul_feepay_v1_tx_proto_rawDesc
 )
 
-func file_juno_feepay_v1_tx_proto_rawDescGZIP() []byte {
-	file_juno_feepay_v1_tx_proto_rawDescOnce.Do(func() {
-		file_juno_feepay_v1_tx_proto_rawDescData = protoimpl.X.CompressGZIP(file_juno_feepay_v1_tx_proto_rawDescData)
+func file_haneul_feepay_v1_tx_proto_rawDescGZIP() []byte {
+	file_haneul_feepay_v1_tx_proto_rawDescOnce.Do(func() {
+		file_haneul_feepay_v1_tx_proto_rawDescData = protoimpl.X.CompressGZIP(file_haneul_feepay_v1_tx_proto_rawDescData)
 	})
-	return file_juno_feepay_v1_tx_proto_rawDescData
+	return file_haneul_feepay_v1_tx_proto_rawDescData
 }
 
-var file_juno_feepay_v1_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
-var file_juno_feepay_v1_tx_proto_goTypes = []interface{}{
-	(*MsgRegisterFeePayContract)(nil),                  // 0: juno.feepay.v1.MsgRegisterFeePayContract
-	(*MsgRegisterFeePayContractResponse)(nil),          // 1: juno.feepay.v1.MsgRegisterFeePayContractResponse
-	(*MsgUnregisterFeePayContract)(nil),                // 2: juno.feepay.v1.MsgUnregisterFeePayContract
-	(*MsgUnregisterFeePayContractResponse)(nil),        // 3: juno.feepay.v1.MsgUnregisterFeePayContractResponse
-	(*MsgFundFeePayContract)(nil),                      // 4: juno.feepay.v1.MsgFundFeePayContract
-	(*MsgFundFeePayContractResponse)(nil),              // 5: juno.feepay.v1.MsgFundFeePayContractResponse
-	(*MsgUpdateFeePayContractWalletLimit)(nil),         // 6: juno.feepay.v1.MsgUpdateFeePayContractWalletLimit
-	(*MsgUpdateFeePayContractWalletLimitResponse)(nil), // 7: juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse
-	(*MsgUpdateParams)(nil),                            // 8: juno.feepay.v1.MsgUpdateParams
-	(*MsgUpdateParamsResponse)(nil),                    // 9: juno.feepay.v1.MsgUpdateParamsResponse
-	(*FeePayContract)(nil),                             // 10: juno.feepay.v1.FeePayContract
+var file_haneul_feepay_v1_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_haneul_feepay_v1_tx_proto_goTypes = []interface{}{
+	(*MsgRegisterFeePayContract)(nil),                  // 0: haneul.feepay.v1.MsgRegisterFeePayContract
+	(*MsgRegisterFeePayContractResponse)(nil),          // 1: haneul.feepay.v1.MsgRegisterFeePayContractResponse
+	(*MsgUnregisterFeePayContract)(nil),                // 2: haneul.feepay.v1.MsgUnregisterFeePayContract
+	(*MsgUnregisterFeePayContractResponse)(nil),        // 3: haneul.feepay.v1.MsgUnregisterFeePayContractResponse
+	(*MsgFundFeePayContract)(nil),                      // 4: haneul.feepay.v1.MsgFundFeePayContract
+	(*MsgFundFeePayContractResponse)(nil),              // 5: haneul.feepay.v1.MsgFundFeePayContractResponse
+	(*MsgUpdateFeePayContractWalletLimit)(nil),         // 6: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit
+	(*MsgUpdateFeePayContractWalletLimitResponse)(nil), // 7: haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse
+	(*MsgUpdateParams)(nil),                            // 8: haneul.feepay.v1.MsgUpdateParams
+	(*MsgUpdateParamsResponse)(nil),                    // 9: haneul.feepay.v1.MsgUpdateParamsResponse
+	(*FeePayContract)(nil),                             // 10: haneul.feepay.v1.FeePayContract
 	(*v1beta1.Coin)(nil),                               // 11: cosmos.base.v1beta1.Coin
-	(*Params)(nil),                                     // 12: juno.feepay.v1.Params
+	(*Params)(nil),                                     // 12: haneul.feepay.v1.Params
 }
-var file_juno_feepay_v1_tx_proto_depIdxs = []int32{
-	10, // 0: juno.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract:type_name -> juno.feepay.v1.FeePayContract
-	11, // 1: juno.feepay.v1.MsgFundFeePayContract.amount:type_name -> cosmos.base.v1beta1.Coin
-	12, // 2: juno.feepay.v1.MsgUpdateParams.params:type_name -> juno.feepay.v1.Params
-	0,  // 3: juno.feepay.v1.Msg.RegisterFeePayContract:input_type -> juno.feepay.v1.MsgRegisterFeePayContract
-	2,  // 4: juno.feepay.v1.Msg.UnregisterFeePayContract:input_type -> juno.feepay.v1.MsgUnregisterFeePayContract
-	4,  // 5: juno.feepay.v1.Msg.FundFeePayContract:input_type -> juno.feepay.v1.MsgFundFeePayContract
-	6,  // 6: juno.feepay.v1.Msg.UpdateFeePayContractWalletLimit:input_type -> juno.feepay.v1.MsgUpdateFeePayContractWalletLimit
-	8,  // 7: juno.feepay.v1.Msg.UpdateParams:input_type -> juno.feepay.v1.MsgUpdateParams
-	1,  // 8: juno.feepay.v1.Msg.RegisterFeePayContract:output_type -> juno.feepay.v1.MsgRegisterFeePayContractResponse
-	3,  // 9: juno.feepay.v1.Msg.UnregisterFeePayContract:output_type -> juno.feepay.v1.MsgUnregisterFeePayContractResponse
-	5,  // 10: juno.feepay.v1.Msg.FundFeePayContract:output_type -> juno.feepay.v1.MsgFundFeePayContractResponse
-	7,  // 11: juno.feepay.v1.Msg.UpdateFeePayContractWalletLimit:output_type -> juno.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse
-	9,  // 12: juno.feepay.v1.Msg.UpdateParams:output_type -> juno.feepay.v1.MsgUpdateParamsResponse
+var file_haneul_feepay_v1_tx_proto_depIdxs = []int32{
+	10, // 0: haneul.feepay.v1.MsgRegisterFeePayContract.fee_pay_contract:type_name -> haneul.feepay.v1.FeePayContract
+	11, // 1: haneul.feepay.v1.MsgFundFeePayContract.amount:type_name -> cosmos.base.v1beta1.Coin
+	12, // 2: haneul.feepay.v1.MsgUpdateParams.params:type_name -> haneul.feepay.v1.Params
+	0,  // 3: haneul.feepay.v1.Msg.RegisterFeePayContract:input_type -> haneul.feepay.v1.MsgRegisterFeePayContract
+	2,  // 4: haneul.feepay.v1.Msg.UnregisterFeePayContract:input_type -> haneul.feepay.v1.MsgUnregisterFeePayContract
+	4,  // 5: haneul.feepay.v1.Msg.FundFeePayContract:input_type -> haneul.feepay.v1.MsgFundFeePayContract
+	6,  // 6: haneul.feepay.v1.Msg.UpdateFeePayContractWalletLimit:input_type -> haneul.feepay.v1.MsgUpdateFeePayContractWalletLimit
+	8,  // 7: haneul.feepay.v1.Msg.UpdateParams:input_type -> haneul.feepay.v1.MsgUpdateParams
+	1,  // 8: haneul.feepay.v1.Msg.RegisterFeePayContract:output_type -> haneul.feepay.v1.MsgRegisterFeePayContractResponse
+	3,  // 9: haneul.feepay.v1.Msg.UnregisterFeePayContract:output_type -> haneul.feepay.v1.MsgUnregisterFeePayContractResponse
+	5,  // 10: haneul.feepay.v1.Msg.FundFeePayContract:output_type -> haneul.feepay.v1.MsgFundFeePayContractResponse
+	7,  // 11: haneul.feepay.v1.Msg.UpdateFeePayContractWalletLimit:output_type -> haneul.feepay.v1.MsgUpdateFeePayContractWalletLimitResponse
+	9,  // 12: haneul.feepay.v1.Msg.UpdateParams:output_type -> haneul.feepay.v1.MsgUpdateParamsResponse
 	8,  // [8:13] is the sub-list for method output_type
 	3,  // [3:8] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
@@ -5056,15 +5059,15 @@ var file_juno_feepay_v1_tx_proto_depIdxs = []int32{
 	0,  // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_juno_feepay_v1_tx_proto_init() }
-func file_juno_feepay_v1_tx_proto_init() {
-	if File_juno_feepay_v1_tx_proto != nil {
+func init() { file_haneul_feepay_v1_tx_proto_init() }
+func file_haneul_feepay_v1_tx_proto_init() {
+	if File_haneul_feepay_v1_tx_proto != nil {
 		return
 	}
-	file_juno_feepay_v1_feepay_proto_init()
-	file_juno_feepay_v1_genesis_proto_init()
+	file_haneul_feepay_v1_feepay_proto_init()
+	file_haneul_feepay_v1_genesis_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_juno_feepay_v1_tx_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgRegisterFeePayContract); i {
 			case 0:
 				return &v.state
@@ -5076,7 +5079,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgRegisterFeePayContractResponse); i {
 			case 0:
 				return &v.state
@@ -5088,7 +5091,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgUnregisterFeePayContract); i {
 			case 0:
 				return &v.state
@@ -5100,7 +5103,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgUnregisterFeePayContractResponse); i {
 			case 0:
 				return &v.state
@@ -5112,7 +5115,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgFundFeePayContract); i {
 			case 0:
 				return &v.state
@@ -5124,7 +5127,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgFundFeePayContractResponse); i {
 			case 0:
 				return &v.state
@@ -5136,7 +5139,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgUpdateFeePayContractWalletLimit); i {
 			case 0:
 				return &v.state
@@ -5148,7 +5151,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgUpdateFeePayContractWalletLimitResponse); i {
 			case 0:
 				return &v.state
@@ -5160,7 +5163,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgUpdateParams); i {
 			case 0:
 				return &v.state
@@ -5172,7 +5175,7 @@ func file_juno_feepay_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feepay_v1_tx_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feepay_v1_tx_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgUpdateParamsResponse); i {
 			case 0:
 				return &v.state
@@ -5189,18 +5192,18 @@ func file_juno_feepay_v1_tx_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_juno_feepay_v1_tx_proto_rawDesc,
+			RawDescriptor: file_haneul_feepay_v1_tx_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_juno_feepay_v1_tx_proto_goTypes,
-		DependencyIndexes: file_juno_feepay_v1_tx_proto_depIdxs,
-		MessageInfos:      file_juno_feepay_v1_tx_proto_msgTypes,
+		GoTypes:           file_haneul_feepay_v1_tx_proto_goTypes,
+		DependencyIndexes: file_haneul_feepay_v1_tx_proto_depIdxs,
+		MessageInfos:      file_haneul_feepay_v1_tx_proto_msgTypes,
 	}.Build()
-	File_juno_feepay_v1_tx_proto = out.File
-	file_juno_feepay_v1_tx_proto_rawDesc = nil
-	file_juno_feepay_v1_tx_proto_goTypes = nil
-	file_juno_feepay_v1_tx_proto_depIdxs = nil
+	File_haneul_feepay_v1_tx_proto = out.File
+	file_haneul_feepay_v1_tx_proto_rawDesc = nil
+	file_haneul_feepay_v1_tx_proto_goTypes = nil
+	file_haneul_feepay_v1_tx_proto_depIdxs = nil
 }

@@ -24,8 +24,8 @@ var (
 )
 
 func init() {
-	file_juno_clock_v1_query_proto_init()
-	md_QueryClockContractsRequest = File_juno_clock_v1_query_proto.Messages().ByName("QueryClockContractsRequest")
+	file_haneul_clock_v1_query_proto_init()
+	md_QueryClockContractsRequest = File_haneul_clock_v1_query_proto.Messages().ByName("QueryClockContractsRequest")
 	fd_QueryClockContractsRequest_pagination = md_QueryClockContractsRequest.Fields().ByName("pagination")
 }
 
@@ -38,7 +38,7 @@ func (x *QueryClockContractsRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryClockContractsRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_clock_v1_query_proto_msgTypes[0]
+	mi := &file_haneul_clock_v1_query_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -115,13 +115,13 @@ func (x *fastReflection_QueryClockContractsRequest) Range(f func(protoreflect.Fi
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_QueryClockContractsRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsRequest.pagination":
+	case "haneul.clock.v1.QueryClockContractsRequest.pagination":
 		return x.Pagination != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -133,13 +133,13 @@ func (x *fastReflection_QueryClockContractsRequest) Has(fd protoreflect.FieldDes
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractsRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsRequest.pagination":
+	case "haneul.clock.v1.QueryClockContractsRequest.pagination":
 		x.Pagination = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -151,14 +151,14 @@ func (x *fastReflection_QueryClockContractsRequest) Clear(fd protoreflect.FieldD
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_QueryClockContractsRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.clock.v1.QueryClockContractsRequest.pagination":
+	case "haneul.clock.v1.QueryClockContractsRequest.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -174,13 +174,13 @@ func (x *fastReflection_QueryClockContractsRequest) Get(descriptor protoreflect.
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractsRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsRequest.pagination":
+	case "haneul.clock.v1.QueryClockContractsRequest.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageRequest)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -196,16 +196,16 @@ func (x *fastReflection_QueryClockContractsRequest) Set(fd protoreflect.FieldDes
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractsRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsRequest.pagination":
+	case "haneul.clock.v1.QueryClockContractsRequest.pagination":
 		if x.Pagination == nil {
 			x.Pagination = new(v1beta1.PageRequest)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -214,14 +214,14 @@ func (x *fastReflection_QueryClockContractsRequest) Mutable(fd protoreflect.Fiel
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_QueryClockContractsRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsRequest.pagination":
+	case "haneul.clock.v1.QueryClockContractsRequest.pagination":
 		m := new(v1beta1.PageRequest)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -231,7 +231,7 @@ func (x *fastReflection_QueryClockContractsRequest) NewField(fd protoreflect.Fie
 func (x *fastReflection_QueryClockContractsRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.clock.v1.QueryClockContractsRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.clock.v1.QueryClockContractsRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -511,8 +511,8 @@ var (
 )
 
 func init() {
-	file_juno_clock_v1_query_proto_init()
-	md_QueryClockContractsResponse = File_juno_clock_v1_query_proto.Messages().ByName("QueryClockContractsResponse")
+	file_haneul_clock_v1_query_proto_init()
+	md_QueryClockContractsResponse = File_haneul_clock_v1_query_proto.Messages().ByName("QueryClockContractsResponse")
 	fd_QueryClockContractsResponse_clock_contracts = md_QueryClockContractsResponse.Fields().ByName("clock_contracts")
 	fd_QueryClockContractsResponse_pagination = md_QueryClockContractsResponse.Fields().ByName("pagination")
 }
@@ -526,7 +526,7 @@ func (x *QueryClockContractsResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryClockContractsResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_clock_v1_query_proto_msgTypes[1]
+	mi := &file_haneul_clock_v1_query_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -609,15 +609,15 @@ func (x *fastReflection_QueryClockContractsResponse) Range(f func(protoreflect.F
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_QueryClockContractsResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsResponse.clock_contracts":
+	case "haneul.clock.v1.QueryClockContractsResponse.clock_contracts":
 		return len(x.ClockContracts) != 0
-	case "juno.clock.v1.QueryClockContractsResponse.pagination":
+	case "haneul.clock.v1.QueryClockContractsResponse.pagination":
 		return x.Pagination != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -629,15 +629,15 @@ func (x *fastReflection_QueryClockContractsResponse) Has(fd protoreflect.FieldDe
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractsResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsResponse.clock_contracts":
+	case "haneul.clock.v1.QueryClockContractsResponse.clock_contracts":
 		x.ClockContracts = nil
-	case "juno.clock.v1.QueryClockContractsResponse.pagination":
+	case "haneul.clock.v1.QueryClockContractsResponse.pagination":
 		x.Pagination = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -649,20 +649,20 @@ func (x *fastReflection_QueryClockContractsResponse) Clear(fd protoreflect.Field
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_QueryClockContractsResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.clock.v1.QueryClockContractsResponse.clock_contracts":
+	case "haneul.clock.v1.QueryClockContractsResponse.clock_contracts":
 		if len(x.ClockContracts) == 0 {
 			return protoreflect.ValueOfList(&_QueryClockContractsResponse_1_list{})
 		}
 		listValue := &_QueryClockContractsResponse_1_list{list: &x.ClockContracts}
 		return protoreflect.ValueOfList(listValue)
-	case "juno.clock.v1.QueryClockContractsResponse.pagination":
+	case "haneul.clock.v1.QueryClockContractsResponse.pagination":
 		value := x.Pagination
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -678,17 +678,17 @@ func (x *fastReflection_QueryClockContractsResponse) Get(descriptor protoreflect
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractsResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsResponse.clock_contracts":
+	case "haneul.clock.v1.QueryClockContractsResponse.clock_contracts":
 		lv := value.List()
 		clv := lv.(*_QueryClockContractsResponse_1_list)
 		x.ClockContracts = *clv.list
-	case "juno.clock.v1.QueryClockContractsResponse.pagination":
+	case "haneul.clock.v1.QueryClockContractsResponse.pagination":
 		x.Pagination = value.Message().Interface().(*v1beta1.PageResponse)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -704,22 +704,22 @@ func (x *fastReflection_QueryClockContractsResponse) Set(fd protoreflect.FieldDe
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractsResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsResponse.clock_contracts":
+	case "haneul.clock.v1.QueryClockContractsResponse.clock_contracts":
 		if x.ClockContracts == nil {
 			x.ClockContracts = []*ClockContract{}
 		}
 		value := &_QueryClockContractsResponse_1_list{list: &x.ClockContracts}
 		return protoreflect.ValueOfList(value)
-	case "juno.clock.v1.QueryClockContractsResponse.pagination":
+	case "haneul.clock.v1.QueryClockContractsResponse.pagination":
 		if x.Pagination == nil {
 			x.Pagination = new(v1beta1.PageResponse)
 		}
 		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -728,17 +728,17 @@ func (x *fastReflection_QueryClockContractsResponse) Mutable(fd protoreflect.Fie
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_QueryClockContractsResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractsResponse.clock_contracts":
+	case "haneul.clock.v1.QueryClockContractsResponse.clock_contracts":
 		list := []*ClockContract{}
 		return protoreflect.ValueOfList(&_QueryClockContractsResponse_1_list{list: &list})
-	case "juno.clock.v1.QueryClockContractsResponse.pagination":
+	case "haneul.clock.v1.QueryClockContractsResponse.pagination":
 		m := new(v1beta1.PageResponse)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -748,7 +748,7 @@ func (x *fastReflection_QueryClockContractsResponse) NewField(fd protoreflect.Fi
 func (x *fastReflection_QueryClockContractsResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.clock.v1.QueryClockContractsResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.clock.v1.QueryClockContractsResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1032,8 +1032,8 @@ var (
 )
 
 func init() {
-	file_juno_clock_v1_query_proto_init()
-	md_QueryClockContractRequest = File_juno_clock_v1_query_proto.Messages().ByName("QueryClockContractRequest")
+	file_haneul_clock_v1_query_proto_init()
+	md_QueryClockContractRequest = File_haneul_clock_v1_query_proto.Messages().ByName("QueryClockContractRequest")
 	fd_QueryClockContractRequest_contract_address = md_QueryClockContractRequest.Fields().ByName("contract_address")
 }
 
@@ -1046,7 +1046,7 @@ func (x *QueryClockContractRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryClockContractRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_clock_v1_query_proto_msgTypes[2]
+	mi := &file_haneul_clock_v1_query_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1123,13 +1123,13 @@ func (x *fastReflection_QueryClockContractRequest) Range(f func(protoreflect.Fie
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_QueryClockContractRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractRequest.contract_address":
+	case "haneul.clock.v1.QueryClockContractRequest.contract_address":
 		return x.ContractAddress != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1141,13 +1141,13 @@ func (x *fastReflection_QueryClockContractRequest) Has(fd protoreflect.FieldDesc
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractRequest.contract_address":
+	case "haneul.clock.v1.QueryClockContractRequest.contract_address":
 		x.ContractAddress = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1159,14 +1159,14 @@ func (x *fastReflection_QueryClockContractRequest) Clear(fd protoreflect.FieldDe
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_QueryClockContractRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.clock.v1.QueryClockContractRequest.contract_address":
+	case "haneul.clock.v1.QueryClockContractRequest.contract_address":
 		value := x.ContractAddress
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1182,13 +1182,13 @@ func (x *fastReflection_QueryClockContractRequest) Get(descriptor protoreflect.F
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractRequest.contract_address":
+	case "haneul.clock.v1.QueryClockContractRequest.contract_address":
 		x.ContractAddress = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1204,13 +1204,13 @@ func (x *fastReflection_QueryClockContractRequest) Set(fd protoreflect.FieldDesc
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractRequest.contract_address":
-		panic(fmt.Errorf("field contract_address of message juno.clock.v1.QueryClockContractRequest is not mutable"))
+	case "haneul.clock.v1.QueryClockContractRequest.contract_address":
+		panic(fmt.Errorf("field contract_address of message haneul.clock.v1.QueryClockContractRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1219,13 +1219,13 @@ func (x *fastReflection_QueryClockContractRequest) Mutable(fd protoreflect.Field
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_QueryClockContractRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractRequest.contract_address":
+	case "haneul.clock.v1.QueryClockContractRequest.contract_address":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1235,7 +1235,7 @@ func (x *fastReflection_QueryClockContractRequest) NewField(fd protoreflect.Fiel
 func (x *fastReflection_QueryClockContractRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.clock.v1.QueryClockContractRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.clock.v1.QueryClockContractRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1452,8 +1452,8 @@ var (
 )
 
 func init() {
-	file_juno_clock_v1_query_proto_init()
-	md_QueryClockContractResponse = File_juno_clock_v1_query_proto.Messages().ByName("QueryClockContractResponse")
+	file_haneul_clock_v1_query_proto_init()
+	md_QueryClockContractResponse = File_haneul_clock_v1_query_proto.Messages().ByName("QueryClockContractResponse")
 	fd_QueryClockContractResponse_clock_contract = md_QueryClockContractResponse.Fields().ByName("clock_contract")
 }
 
@@ -1466,7 +1466,7 @@ func (x *QueryClockContractResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryClockContractResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_clock_v1_query_proto_msgTypes[3]
+	mi := &file_haneul_clock_v1_query_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1543,13 +1543,13 @@ func (x *fastReflection_QueryClockContractResponse) Range(f func(protoreflect.Fi
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_QueryClockContractResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractResponse.clock_contract":
+	case "haneul.clock.v1.QueryClockContractResponse.clock_contract":
 		return x.ClockContract != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1561,13 +1561,13 @@ func (x *fastReflection_QueryClockContractResponse) Has(fd protoreflect.FieldDes
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractResponse.clock_contract":
+	case "haneul.clock.v1.QueryClockContractResponse.clock_contract":
 		x.ClockContract = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1579,14 +1579,14 @@ func (x *fastReflection_QueryClockContractResponse) Clear(fd protoreflect.FieldD
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_QueryClockContractResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.clock.v1.QueryClockContractResponse.clock_contract":
+	case "haneul.clock.v1.QueryClockContractResponse.clock_contract":
 		value := x.ClockContract
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1602,13 +1602,13 @@ func (x *fastReflection_QueryClockContractResponse) Get(descriptor protoreflect.
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractResponse.clock_contract":
+	case "haneul.clock.v1.QueryClockContractResponse.clock_contract":
 		x.ClockContract = value.Message().Interface().(*ClockContract)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1624,16 +1624,16 @@ func (x *fastReflection_QueryClockContractResponse) Set(fd protoreflect.FieldDes
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryClockContractResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractResponse.clock_contract":
+	case "haneul.clock.v1.QueryClockContractResponse.clock_contract":
 		if x.ClockContract == nil {
 			x.ClockContract = new(ClockContract)
 		}
 		return protoreflect.ValueOfMessage(x.ClockContract.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1642,14 +1642,14 @@ func (x *fastReflection_QueryClockContractResponse) Mutable(fd protoreflect.Fiel
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_QueryClockContractResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryClockContractResponse.clock_contract":
+	case "haneul.clock.v1.QueryClockContractResponse.clock_contract":
 		m := new(ClockContract)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryClockContractResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryClockContractResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryClockContractResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1659,7 +1659,7 @@ func (x *fastReflection_QueryClockContractResponse) NewField(fd protoreflect.Fie
 func (x *fastReflection_QueryClockContractResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.clock.v1.QueryClockContractResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.clock.v1.QueryClockContractResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1886,8 +1886,8 @@ var (
 )
 
 func init() {
-	file_juno_clock_v1_query_proto_init()
-	md_QueryParamsRequest = File_juno_clock_v1_query_proto.Messages().ByName("QueryParamsRequest")
+	file_haneul_clock_v1_query_proto_init()
+	md_QueryParamsRequest = File_haneul_clock_v1_query_proto.Messages().ByName("QueryParamsRequest")
 }
 
 var _ protoreflect.Message = (*fastReflection_QueryParamsRequest)(nil)
@@ -1899,7 +1899,7 @@ func (x *QueryParamsRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryParamsRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_clock_v1_query_proto_msgTypes[4]
+	mi := &file_haneul_clock_v1_query_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1972,9 +1972,9 @@ func (x *fastReflection_QueryParamsRequest) Has(fd protoreflect.FieldDescriptor)
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1988,9 +1988,9 @@ func (x *fastReflection_QueryParamsRequest) Clear(fd protoreflect.FieldDescripto
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2004,9 +2004,9 @@ func (x *fastReflection_QueryParamsRequest) Get(descriptor protoreflect.FieldDes
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2024,9 +2024,9 @@ func (x *fastReflection_QueryParamsRequest) Set(fd protoreflect.FieldDescriptor,
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2044,9 +2044,9 @@ func (x *fastReflection_QueryParamsRequest) Mutable(fd protoreflect.FieldDescrip
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2057,9 +2057,9 @@ func (x *fastReflection_QueryParamsRequest) NewField(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsRequest"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2069,7 +2069,7 @@ func (x *fastReflection_QueryParamsRequest) NewField(fd protoreflect.FieldDescri
 func (x *fastReflection_QueryParamsRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.clock.v1.QueryParamsRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.clock.v1.QueryParamsRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2243,8 +2243,8 @@ var (
 )
 
 func init() {
-	file_juno_clock_v1_query_proto_init()
-	md_QueryParamsResponse = File_juno_clock_v1_query_proto.Messages().ByName("QueryParamsResponse")
+	file_haneul_clock_v1_query_proto_init()
+	md_QueryParamsResponse = File_haneul_clock_v1_query_proto.Messages().ByName("QueryParamsResponse")
 	fd_QueryParamsResponse_params = md_QueryParamsResponse.Fields().ByName("params")
 }
 
@@ -2257,7 +2257,7 @@ func (x *QueryParamsResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryParamsResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_clock_v1_query_proto_msgTypes[5]
+	mi := &file_haneul_clock_v1_query_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2334,13 +2334,13 @@ func (x *fastReflection_QueryParamsResponse) Range(f func(protoreflect.FieldDesc
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_QueryParamsResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryParamsResponse.params":
+	case "haneul.clock.v1.QueryParamsResponse.params":
 		return x.Params != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2352,13 +2352,13 @@ func (x *fastReflection_QueryParamsResponse) Has(fd protoreflect.FieldDescriptor
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryParamsResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryParamsResponse.params":
+	case "haneul.clock.v1.QueryParamsResponse.params":
 		x.Params = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2370,14 +2370,14 @@ func (x *fastReflection_QueryParamsResponse) Clear(fd protoreflect.FieldDescript
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_QueryParamsResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.clock.v1.QueryParamsResponse.params":
+	case "haneul.clock.v1.QueryParamsResponse.params":
 		value := x.Params
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2393,13 +2393,13 @@ func (x *fastReflection_QueryParamsResponse) Get(descriptor protoreflect.FieldDe
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryParamsResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryParamsResponse.params":
+	case "haneul.clock.v1.QueryParamsResponse.params":
 		x.Params = value.Message().Interface().(*Params)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2415,16 +2415,16 @@ func (x *fastReflection_QueryParamsResponse) Set(fd protoreflect.FieldDescriptor
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueryParamsResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryParamsResponse.params":
+	case "haneul.clock.v1.QueryParamsResponse.params":
 		if x.Params == nil {
 			x.Params = new(Params)
 		}
 		return protoreflect.ValueOfMessage(x.Params.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2433,14 +2433,14 @@ func (x *fastReflection_QueryParamsResponse) Mutable(fd protoreflect.FieldDescri
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_QueryParamsResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.clock.v1.QueryParamsResponse.params":
+	case "haneul.clock.v1.QueryParamsResponse.params":
 		m := new(Params)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.clock.v1.QueryParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.clock.v1.QueryParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.clock.v1.QueryParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2450,7 +2450,7 @@ func (x *fastReflection_QueryParamsResponse) NewField(fd protoreflect.FieldDescr
 func (x *fastReflection_QueryParamsResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.clock.v1.QueryParamsResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.clock.v1.QueryParamsResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2676,7 +2676,7 @@ func (x *fastReflection_QueryParamsResponse) ProtoMethods() *protoiface.Methods 
 // versions:
 // 	protoc-gen-go v1.27.0
 // 	protoc        (unknown)
-// source: juno/clock/v1/query.proto
+// source: haneul/clock/v1/query.proto
 
 const (
 	// Verify that this generated code is sufficiently up-to-date.
@@ -2698,7 +2698,7 @@ type QueryClockContractsRequest struct {
 func (x *QueryClockContractsRequest) Reset() {
 	*x = QueryClockContractsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_clock_v1_query_proto_msgTypes[0]
+		mi := &file_haneul_clock_v1_query_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2712,7 +2712,7 @@ func (*QueryClockContractsRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryClockContractsRequest.ProtoReflect.Descriptor instead.
 func (*QueryClockContractsRequest) Descriptor() ([]byte, []int) {
-	return file_juno_clock_v1_query_proto_rawDescGZIP(), []int{0}
+	return file_haneul_clock_v1_query_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *QueryClockContractsRequest) GetPagination() *v1beta1.PageRequest {
@@ -2737,7 +2737,7 @@ type QueryClockContractsResponse struct {
 func (x *QueryClockContractsResponse) Reset() {
 	*x = QueryClockContractsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_clock_v1_query_proto_msgTypes[1]
+		mi := &file_haneul_clock_v1_query_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2751,7 +2751,7 @@ func (*QueryClockContractsResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryClockContractsResponse.ProtoReflect.Descriptor instead.
 func (*QueryClockContractsResponse) Descriptor() ([]byte, []int) {
-	return file_juno_clock_v1_query_proto_rawDescGZIP(), []int{1}
+	return file_haneul_clock_v1_query_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *QueryClockContractsResponse) GetClockContracts() []*ClockContract {
@@ -2781,7 +2781,7 @@ type QueryClockContractRequest struct {
 func (x *QueryClockContractRequest) Reset() {
 	*x = QueryClockContractRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_clock_v1_query_proto_msgTypes[2]
+		mi := &file_haneul_clock_v1_query_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2795,7 +2795,7 @@ func (*QueryClockContractRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryClockContractRequest.ProtoReflect.Descriptor instead.
 func (*QueryClockContractRequest) Descriptor() ([]byte, []int) {
-	return file_juno_clock_v1_query_proto_rawDescGZIP(), []int{2}
+	return file_haneul_clock_v1_query_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *QueryClockContractRequest) GetContractAddress() string {
@@ -2818,7 +2818,7 @@ type QueryClockContractResponse struct {
 func (x *QueryClockContractResponse) Reset() {
 	*x = QueryClockContractResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_clock_v1_query_proto_msgTypes[3]
+		mi := &file_haneul_clock_v1_query_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2832,7 +2832,7 @@ func (*QueryClockContractResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryClockContractResponse.ProtoReflect.Descriptor instead.
 func (*QueryClockContractResponse) Descriptor() ([]byte, []int) {
-	return file_juno_clock_v1_query_proto_rawDescGZIP(), []int{3}
+	return file_haneul_clock_v1_query_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *QueryClockContractResponse) GetClockContract() *ClockContract {
@@ -2852,7 +2852,7 @@ type QueryParamsRequest struct {
 func (x *QueryParamsRequest) Reset() {
 	*x = QueryParamsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_clock_v1_query_proto_msgTypes[4]
+		mi := &file_haneul_clock_v1_query_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2866,7 +2866,7 @@ func (*QueryParamsRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryParamsRequest.ProtoReflect.Descriptor instead.
 func (*QueryParamsRequest) Descriptor() ([]byte, []int) {
-	return file_juno_clock_v1_query_proto_rawDescGZIP(), []int{4}
+	return file_haneul_clock_v1_query_proto_rawDescGZIP(), []int{4}
 }
 
 // QueryClockContractsResponse is the response type for the Query/ClockContracts RPC method.
@@ -2881,7 +2881,7 @@ type QueryParamsResponse struct {
 func (x *QueryParamsResponse) Reset() {
 	*x = QueryParamsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_clock_v1_query_proto_msgTypes[5]
+		mi := &file_haneul_clock_v1_query_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2895,7 +2895,7 @@ func (*QueryParamsResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryParamsResponse.ProtoReflect.Descriptor instead.
 func (*QueryParamsResponse) Descriptor() ([]byte, []int) {
-	return file_juno_clock_v1_query_proto_rawDescGZIP(), []int{5}
+	return file_haneul_clock_v1_query_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *QueryParamsResponse) GetParams() *Params {
@@ -2905,140 +2905,143 @@ func (x *QueryParamsResponse) GetParams() *Params {
 	return nil
 }
 
-var File_juno_clock_v1_query_proto protoreflect.FileDescriptor
+var File_haneul_clock_v1_query_proto protoreflect.FileDescriptor
 
-var file_juno_clock_v1_query_proto_rawDesc = []byte{
-	0x0a, 0x19, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f,
-	0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x6a, 0x75, 0x6e,
-	0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e,
-	0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x2a, 0x63,
-	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x71, 0x75, 0x65, 0x72, 0x79,
-	0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x2f, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x71, 0x75, 0x65, 0x72, 0x79,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x5f, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67,
-	0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
-	0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63,
-	0x6b, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x1a, 0x1b, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f,
-	0x67, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x64, 0x0a,
-	0x1a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72,
-	0x61, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70,
-	0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75,
-	0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x22, 0xb8, 0x01, 0x0a, 0x1b, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f,
-	0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x12, 0x50, 0x0a, 0x0f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x63, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x6a,
-	0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6c, 0x6f,
-	0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00,
-	0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x0e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74,
-	0x72, 0x61, 0x63, 0x74, 0x73, 0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d,
-	0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x60,
-	0x0a, 0x19, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74,
-	0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x43, 0x0a, 0x10, 0x63,
-	0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52,
-	0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
-	0x22, 0x6c, 0x0a, 0x1a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f,
-	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4e,
-	0x0a, 0x0e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c,
+var file_haneul_clock_v1_query_proto_rawDesc = []byte{
+	0x0a, 0x1b, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76,
+	0x31, 0x2f, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0f, 0x68,
+	0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x1a, 0x11,
+	0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x1a, 0x2a, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x71,
+	0x75, 0x65, 0x72, 0x79, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x70, 0x61, 0x67,
+	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x63,
+	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x71,
+	0x75, 0x65, 0x72, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63, 0x6f, 0x73, 0x6d,
+	0x6f, 0x73, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x68, 0x61, 0x6e, 0x65, 0x75,
+	0x6c, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1d, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x63,
+	0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x64, 0x0a, 0x1a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c,
+	0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
+	0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52,
+	0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xba, 0x01, 0x0a, 0x1b,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
+	0x63, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x52, 0x0a, 0x0f, 0x63,
+	0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c,
 	0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74,
 	0x72, 0x61, 0x63, 0x74, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52,
-	0x0d, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x22, 0x14,
-	0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x22, 0x4f, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72,
-	0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x38, 0x0a, 0x06, 0x70,
-	0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x6a, 0x75,
-	0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61,
-	0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70,
-	0x61, 0x72, 0x61, 0x6d, 0x73, 0x32, 0xae, 0x03, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12,
-	0x8e, 0x01, 0x0a, 0x0e, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
-	0x74, 0x73, 0x12, 0x29, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e,
-	0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e,
-	0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75,
+	0x0e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x12,
+	0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73,
+	0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
+	0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61,
+	0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x60, 0x0a, 0x19, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x43, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
+	0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42,
+	0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72,
+	0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72,
+	0x61, 0x63, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x6e, 0x0a, 0x1a, 0x51, 0x75,
 	0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
-	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x25, 0x88, 0xe7, 0xb0, 0x2a, 0x01,
-	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1a, 0x12, 0x18, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x63, 0x6c,
-	0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73,
-	0x12, 0x9e, 0x01, 0x0a, 0x0d, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
-	0x63, 0x74, 0x12, 0x28, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x50, 0x0a, 0x0e, 0x63, 0x6c, 0x6f, 0x63,
+	0x6b, 0x5f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x1e, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e,
+	0x76, 0x31, 0x2e, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
+	0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x0d, 0x63, 0x6c, 0x6f,
+	0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x22, 0x14, 0x0a, 0x12, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x22, 0x51, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3a, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c,
+	0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
+	0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72,
+	0x61, 0x6d, 0x73, 0x32, 0xba, 0x03, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x92, 0x01,
+	0x0a, 0x0e, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73,
+	0x12, 0x2b, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e,
 	0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x29, 0x2e, 0x6a,
-	0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x38, 0x88, 0xe7, 0xb0, 0x2a, 0x01, 0x82, 0xd3,
-	0xe4, 0x93, 0x02, 0x2d, 0x12, 0x2b, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63,
-	0x6b, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x2f, 0x7b,
-	0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
-	0x7d, 0x12, 0x73, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x21, 0x2e, 0x6a, 0x75,
-	0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22,
-	0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0x22, 0x88, 0xe7, 0xb0, 0x2a, 0x01, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x17, 0x12,
-	0x15, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f,
-	0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x9d, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x6a,
-	0x75, 0x6e, 0x6f, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x42, 0x0a, 0x51, 0x75,
-	0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x26, 0x63, 0x6f, 0x73, 0x6d,
-	0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x6a, 0x75, 0x6e,
-	0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x3b, 0x63, 0x6c, 0x6f, 0x63, 0x6b,
-	0x76, 0x31, 0xa2, 0x02, 0x03, 0x4a, 0x43, 0x58, 0xaa, 0x02, 0x0d, 0x4a, 0x75, 0x6e, 0x6f, 0x2e,
-	0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x0d, 0x4a, 0x75, 0x6e, 0x6f, 0x5c,
-	0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x19, 0x4a, 0x75, 0x6e, 0x6f, 0x5c,
-	0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
-	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0f, 0x4a, 0x75, 0x6e, 0x6f, 0x3a, 0x3a, 0x43, 0x6c, 0x6f,
-	0x63, 0x6b, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2c, 0x2e,
+	0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
+	0x63, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x25, 0x88, 0xe7, 0xb0,
+	0x2a, 0x01, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1a, 0x12, 0x18, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f,
+	0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
+	0x74, 0x73, 0x12, 0xa2, 0x01, 0x0a, 0x0d, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e, 0x74,
+	0x72, 0x61, 0x63, 0x74, 0x12, 0x2a, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c,
+	0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63,
+	0x6b, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x2b, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e,
+	0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x43, 0x6f, 0x6e,
+	0x74, 0x72, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x38, 0x88,
+	0xe7, 0xb0, 0x2a, 0x01, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2d, 0x12, 0x2b, 0x2f, 0x6a, 0x75, 0x6e,
+	0x6f, 0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x6f, 0x6e, 0x74, 0x72,
+	0x61, 0x63, 0x74, 0x73, 0x2f, 0x7b, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x7d, 0x12, 0x77, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x12, 0x23, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x63, 0x6c, 0x6f, 0x63, 0x6b,
+	0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x24, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e,
+	0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61,
+	0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x22, 0x88, 0xe7,
+	0xb0, 0x2a, 0x01, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x17, 0x12, 0x15, 0x2f, 0x6a, 0x75, 0x6e, 0x6f,
+	0x2f, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73,
+	0x42, 0xa9, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e,
+	0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x76, 0x31, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50,
+	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x28, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64,
+	0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f,
+	0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x76, 0x31, 0x3b, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x76, 0x31,
+	0xa2, 0x02, 0x03, 0x48, 0x43, 0x58, 0xaa, 0x02, 0x0f, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e,
+	0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x0f, 0x48, 0x61, 0x6e, 0x65, 0x75,
+	0x6c, 0x5c, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x1b, 0x48, 0x61, 0x6e,
+	0x65, 0x75, 0x6c, 0x5c, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42,
+	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x11, 0x48, 0x61, 0x6e, 0x65, 0x75,
+	0x6c, 0x3a, 0x3a, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_juno_clock_v1_query_proto_rawDescOnce sync.Once
-	file_juno_clock_v1_query_proto_rawDescData = file_juno_clock_v1_query_proto_rawDesc
+	file_haneul_clock_v1_query_proto_rawDescOnce sync.Once
+	file_haneul_clock_v1_query_proto_rawDescData = file_haneul_clock_v1_query_proto_rawDesc
 )
 
-func file_juno_clock_v1_query_proto_rawDescGZIP() []byte {
-	file_juno_clock_v1_query_proto_rawDescOnce.Do(func() {
-		file_juno_clock_v1_query_proto_rawDescData = protoimpl.X.CompressGZIP(file_juno_clock_v1_query_proto_rawDescData)
+func file_haneul_clock_v1_query_proto_rawDescGZIP() []byte {
+	file_haneul_clock_v1_query_proto_rawDescOnce.Do(func() {
+		file_haneul_clock_v1_query_proto_rawDescData = protoimpl.X.CompressGZIP(file_haneul_clock_v1_query_proto_rawDescData)
 	})
-	return file_juno_clock_v1_query_proto_rawDescData
+	return file_haneul_clock_v1_query_proto_rawDescData
 }
 
-var file_juno_clock_v1_query_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
-var file_juno_clock_v1_query_proto_goTypes = []interface{}{
-	(*QueryClockContractsRequest)(nil),  // 0: juno.clock.v1.QueryClockContractsRequest
-	(*QueryClockContractsResponse)(nil), // 1: juno.clock.v1.QueryClockContractsResponse
-	(*QueryClockContractRequest)(nil),   // 2: juno.clock.v1.QueryClockContractRequest
-	(*QueryClockContractResponse)(nil),  // 3: juno.clock.v1.QueryClockContractResponse
-	(*QueryParamsRequest)(nil),          // 4: juno.clock.v1.QueryParamsRequest
-	(*QueryParamsResponse)(nil),         // 5: juno.clock.v1.QueryParamsResponse
+var file_haneul_clock_v1_query_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_haneul_clock_v1_query_proto_goTypes = []interface{}{
+	(*QueryClockContractsRequest)(nil),  // 0: haneul.clock.v1.QueryClockContractsRequest
+	(*QueryClockContractsResponse)(nil), // 1: haneul.clock.v1.QueryClockContractsResponse
+	(*QueryClockContractRequest)(nil),   // 2: haneul.clock.v1.QueryClockContractRequest
+	(*QueryClockContractResponse)(nil),  // 3: haneul.clock.v1.QueryClockContractResponse
+	(*QueryParamsRequest)(nil),          // 4: haneul.clock.v1.QueryParamsRequest
+	(*QueryParamsResponse)(nil),         // 5: haneul.clock.v1.QueryParamsResponse
 	(*v1beta1.PageRequest)(nil),         // 6: cosmos.base.query.v1beta1.PageRequest
-	(*ClockContract)(nil),               // 7: juno.clock.v1.ClockContract
+	(*ClockContract)(nil),               // 7: haneul.clock.v1.ClockContract
 	(*v1beta1.PageResponse)(nil),        // 8: cosmos.base.query.v1beta1.PageResponse
-	(*Params)(nil),                      // 9: juno.clock.v1.Params
+	(*Params)(nil),                      // 9: haneul.clock.v1.Params
 }
-var file_juno_clock_v1_query_proto_depIdxs = []int32{
-	6, // 0: juno.clock.v1.QueryClockContractsRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	7, // 1: juno.clock.v1.QueryClockContractsResponse.clock_contracts:type_name -> juno.clock.v1.ClockContract
-	8, // 2: juno.clock.v1.QueryClockContractsResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	7, // 3: juno.clock.v1.QueryClockContractResponse.clock_contract:type_name -> juno.clock.v1.ClockContract
-	9, // 4: juno.clock.v1.QueryParamsResponse.params:type_name -> juno.clock.v1.Params
-	0, // 5: juno.clock.v1.Query.ClockContracts:input_type -> juno.clock.v1.QueryClockContractsRequest
-	2, // 6: juno.clock.v1.Query.ClockContract:input_type -> juno.clock.v1.QueryClockContractRequest
-	4, // 7: juno.clock.v1.Query.Params:input_type -> juno.clock.v1.QueryParamsRequest
-	1, // 8: juno.clock.v1.Query.ClockContracts:output_type -> juno.clock.v1.QueryClockContractsResponse
-	3, // 9: juno.clock.v1.Query.ClockContract:output_type -> juno.clock.v1.QueryClockContractResponse
-	5, // 10: juno.clock.v1.Query.Params:output_type -> juno.clock.v1.QueryParamsResponse
+var file_haneul_clock_v1_query_proto_depIdxs = []int32{
+	6, // 0: haneul.clock.v1.QueryClockContractsRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	7, // 1: haneul.clock.v1.QueryClockContractsResponse.clock_contracts:type_name -> haneul.clock.v1.ClockContract
+	8, // 2: haneul.clock.v1.QueryClockContractsResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	7, // 3: haneul.clock.v1.QueryClockContractResponse.clock_contract:type_name -> haneul.clock.v1.ClockContract
+	9, // 4: haneul.clock.v1.QueryParamsResponse.params:type_name -> haneul.clock.v1.Params
+	0, // 5: haneul.clock.v1.Query.ClockContracts:input_type -> haneul.clock.v1.QueryClockContractsRequest
+	2, // 6: haneul.clock.v1.Query.ClockContract:input_type -> haneul.clock.v1.QueryClockContractRequest
+	4, // 7: haneul.clock.v1.Query.Params:input_type -> haneul.clock.v1.QueryParamsRequest
+	1, // 8: haneul.clock.v1.Query.ClockContracts:output_type -> haneul.clock.v1.QueryClockContractsResponse
+	3, // 9: haneul.clock.v1.Query.ClockContract:output_type -> haneul.clock.v1.QueryClockContractResponse
+	5, // 10: haneul.clock.v1.Query.Params:output_type -> haneul.clock.v1.QueryParamsResponse
 	8, // [8:11] is the sub-list for method output_type
 	5, // [5:8] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
@@ -3046,15 +3049,15 @@ var file_juno_clock_v1_query_proto_depIdxs = []int32{
 	0, // [0:5] is the sub-list for field type_name
 }
 
-func init() { file_juno_clock_v1_query_proto_init() }
-func file_juno_clock_v1_query_proto_init() {
-	if File_juno_clock_v1_query_proto != nil {
+func init() { file_haneul_clock_v1_query_proto_init() }
+func file_haneul_clock_v1_query_proto_init() {
+	if File_haneul_clock_v1_query_proto != nil {
 		return
 	}
-	file_juno_clock_v1_clock_proto_init()
-	file_juno_clock_v1_genesis_proto_init()
+	file_haneul_clock_v1_clock_proto_init()
+	file_haneul_clock_v1_genesis_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_juno_clock_v1_query_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_clock_v1_query_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryClockContractsRequest); i {
 			case 0:
 				return &v.state
@@ -3066,7 +3069,7 @@ func file_juno_clock_v1_query_proto_init() {
 				return nil
 			}
 		}
-		file_juno_clock_v1_query_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_clock_v1_query_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryClockContractsResponse); i {
 			case 0:
 				return &v.state
@@ -3078,7 +3081,7 @@ func file_juno_clock_v1_query_proto_init() {
 				return nil
 			}
 		}
-		file_juno_clock_v1_query_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_clock_v1_query_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryClockContractRequest); i {
 			case 0:
 				return &v.state
@@ -3090,7 +3093,7 @@ func file_juno_clock_v1_query_proto_init() {
 				return nil
 			}
 		}
-		file_juno_clock_v1_query_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_clock_v1_query_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryClockContractResponse); i {
 			case 0:
 				return &v.state
@@ -3102,7 +3105,7 @@ func file_juno_clock_v1_query_proto_init() {
 				return nil
 			}
 		}
-		file_juno_clock_v1_query_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_clock_v1_query_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryParamsRequest); i {
 			case 0:
 				return &v.state
@@ -3114,7 +3117,7 @@ func file_juno_clock_v1_query_proto_init() {
 				return nil
 			}
 		}
-		file_juno_clock_v1_query_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_clock_v1_query_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryParamsResponse); i {
 			case 0:
 				return &v.state
@@ -3131,18 +3134,18 @@ func file_juno_clock_v1_query_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_juno_clock_v1_query_proto_rawDesc,
+			RawDescriptor: file_haneul_clock_v1_query_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_juno_clock_v1_query_proto_goTypes,
-		DependencyIndexes: file_juno_clock_v1_query_proto_depIdxs,
-		MessageInfos:      file_juno_clock_v1_query_proto_msgTypes,
+		GoTypes:           file_haneul_clock_v1_query_proto_goTypes,
+		DependencyIndexes: file_haneul_clock_v1_query_proto_depIdxs,
+		MessageInfos:      file_haneul_clock_v1_query_proto_msgTypes,
 	}.Build()
-	File_juno_clock_v1_query_proto = out.File
-	file_juno_clock_v1_query_proto_rawDesc = nil
-	file_juno_clock_v1_query_proto_goTypes = nil
-	file_juno_clock_v1_query_proto_depIdxs = nil
+	File_haneul_clock_v1_query_proto = out.File
+	file_haneul_clock_v1_query_proto_rawDesc = nil
+	file_haneul_clock_v1_query_proto_goTypes = nil
+	file_haneul_clock_v1_query_proto_depIdxs = nil
 }

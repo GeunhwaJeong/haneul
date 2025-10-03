@@ -73,8 +73,8 @@ var (
 )
 
 func init() {
-	file_juno_feeshare_v1_genesis_proto_init()
-	md_GenesisState = File_juno_feeshare_v1_genesis_proto.Messages().ByName("GenesisState")
+	file_haneul_feeshare_v1_genesis_proto_init()
+	md_GenesisState = File_haneul_feeshare_v1_genesis_proto.Messages().ByName("GenesisState")
 	fd_GenesisState_params = md_GenesisState.Fields().ByName("params")
 	fd_GenesisState_fee_share = md_GenesisState.Fields().ByName("fee_share")
 }
@@ -88,7 +88,7 @@ func (x *GenesisState) ProtoReflect() protoreflect.Message {
 }
 
 func (x *GenesisState) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feeshare_v1_genesis_proto_msgTypes[0]
+	mi := &file_haneul_feeshare_v1_genesis_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -171,15 +171,15 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.GenesisState.params":
+	case "haneul.feeshare.v1.GenesisState.params":
 		return x.Params != nil
-	case "juno.feeshare.v1.GenesisState.fee_share":
+	case "haneul.feeshare.v1.GenesisState.fee_share":
 		return len(x.FeeShare) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -191,15 +191,15 @@ func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool 
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.GenesisState.params":
+	case "haneul.feeshare.v1.GenesisState.params":
 		x.Params = nil
-	case "juno.feeshare.v1.GenesisState.fee_share":
+	case "haneul.feeshare.v1.GenesisState.fee_share":
 		x.FeeShare = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -211,10 +211,10 @@ func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.feeshare.v1.GenesisState.params":
+	case "haneul.feeshare.v1.GenesisState.params":
 		value := x.Params
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "juno.feeshare.v1.GenesisState.fee_share":
+	case "haneul.feeshare.v1.GenesisState.fee_share":
 		if len(x.FeeShare) == 0 {
 			return protoreflect.ValueOfList(&_GenesisState_2_list{})
 		}
@@ -222,9 +222,9 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.GenesisState does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.GenesisState does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -240,17 +240,17 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.GenesisState.params":
+	case "haneul.feeshare.v1.GenesisState.params":
 		x.Params = value.Message().Interface().(*Params)
-	case "juno.feeshare.v1.GenesisState.fee_share":
+	case "haneul.feeshare.v1.GenesisState.fee_share":
 		lv := value.List()
 		clv := lv.(*_GenesisState_2_list)
 		x.FeeShare = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -266,12 +266,12 @@ func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.GenesisState.params":
+	case "haneul.feeshare.v1.GenesisState.params":
 		if x.Params == nil {
 			x.Params = new(Params)
 		}
 		return protoreflect.ValueOfMessage(x.Params.ProtoReflect())
-	case "juno.feeshare.v1.GenesisState.fee_share":
+	case "haneul.feeshare.v1.GenesisState.fee_share":
 		if x.FeeShare == nil {
 			x.FeeShare = []*FeeShare{}
 		}
@@ -279,9 +279,9 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -290,17 +290,17 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.GenesisState.params":
+	case "haneul.feeshare.v1.GenesisState.params":
 		m := new(Params)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "juno.feeshare.v1.GenesisState.fee_share":
+	case "haneul.feeshare.v1.GenesisState.fee_share":
 		list := []*FeeShare{}
 		return protoreflect.ValueOfList(&_GenesisState_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.GenesisState"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.GenesisState"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.GenesisState does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -310,7 +310,7 @@ func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) 
 func (x *fastReflection_GenesisState) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feeshare.v1.GenesisState", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feeshare.v1.GenesisState", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -642,8 +642,8 @@ var (
 )
 
 func init() {
-	file_juno_feeshare_v1_genesis_proto_init()
-	md_Params = File_juno_feeshare_v1_genesis_proto.Messages().ByName("Params")
+	file_haneul_feeshare_v1_genesis_proto_init()
+	md_Params = File_haneul_feeshare_v1_genesis_proto.Messages().ByName("Params")
 	fd_Params_enable_fee_share = md_Params.Fields().ByName("enable_fee_share")
 	fd_Params_developer_shares = md_Params.Fields().ByName("developer_shares")
 	fd_Params_allowed_denoms = md_Params.Fields().ByName("allowed_denoms")
@@ -658,7 +658,7 @@ func (x *Params) ProtoReflect() protoreflect.Message {
 }
 
 func (x *Params) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_feeshare_v1_genesis_proto_msgTypes[1]
+	mi := &file_haneul_feeshare_v1_genesis_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -747,17 +747,17 @@ func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, proto
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.Params.enable_fee_share":
+	case "haneul.feeshare.v1.Params.enable_fee_share":
 		return x.EnableFeeShare != false
-	case "juno.feeshare.v1.Params.developer_shares":
+	case "haneul.feeshare.v1.Params.developer_shares":
 		return x.DeveloperShares != ""
-	case "juno.feeshare.v1.Params.allowed_denoms":
+	case "haneul.feeshare.v1.Params.allowed_denoms":
 		return len(x.AllowedDenoms) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -769,17 +769,17 @@ func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.Params.enable_fee_share":
+	case "haneul.feeshare.v1.Params.enable_fee_share":
 		x.EnableFeeShare = false
-	case "juno.feeshare.v1.Params.developer_shares":
+	case "haneul.feeshare.v1.Params.developer_shares":
 		x.DeveloperShares = ""
-	case "juno.feeshare.v1.Params.allowed_denoms":
+	case "haneul.feeshare.v1.Params.allowed_denoms":
 		x.AllowedDenoms = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -791,13 +791,13 @@ func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.feeshare.v1.Params.enable_fee_share":
+	case "haneul.feeshare.v1.Params.enable_fee_share":
 		value := x.EnableFeeShare
 		return protoreflect.ValueOfBool(value)
-	case "juno.feeshare.v1.Params.developer_shares":
+	case "haneul.feeshare.v1.Params.developer_shares":
 		value := x.DeveloperShares
 		return protoreflect.ValueOfString(value)
-	case "juno.feeshare.v1.Params.allowed_denoms":
+	case "haneul.feeshare.v1.Params.allowed_denoms":
 		if len(x.AllowedDenoms) == 0 {
 			return protoreflect.ValueOfList(&_Params_3_list{})
 		}
@@ -805,9 +805,9 @@ func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) pro
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.Params does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.Params does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -823,19 +823,19 @@ func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) pro
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.Params.enable_fee_share":
+	case "haneul.feeshare.v1.Params.enable_fee_share":
 		x.EnableFeeShare = value.Bool()
-	case "juno.feeshare.v1.Params.developer_shares":
+	case "haneul.feeshare.v1.Params.developer_shares":
 		x.DeveloperShares = value.Interface().(string)
-	case "juno.feeshare.v1.Params.allowed_denoms":
+	case "haneul.feeshare.v1.Params.allowed_denoms":
 		lv := value.List()
 		clv := lv.(*_Params_3_list)
 		x.AllowedDenoms = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -851,21 +851,21 @@ func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value proto
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.Params.allowed_denoms":
+	case "haneul.feeshare.v1.Params.allowed_denoms":
 		if x.AllowedDenoms == nil {
 			x.AllowedDenoms = []string{}
 		}
 		value := &_Params_3_list{list: &x.AllowedDenoms}
 		return protoreflect.ValueOfList(value)
-	case "juno.feeshare.v1.Params.enable_fee_share":
-		panic(fmt.Errorf("field enable_fee_share of message juno.feeshare.v1.Params is not mutable"))
-	case "juno.feeshare.v1.Params.developer_shares":
-		panic(fmt.Errorf("field developer_shares of message juno.feeshare.v1.Params is not mutable"))
+	case "haneul.feeshare.v1.Params.enable_fee_share":
+		panic(fmt.Errorf("field enable_fee_share of message haneul.feeshare.v1.Params is not mutable"))
+	case "haneul.feeshare.v1.Params.developer_shares":
+		panic(fmt.Errorf("field developer_shares of message haneul.feeshare.v1.Params is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -874,18 +874,18 @@ func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protore
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_Params) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.feeshare.v1.Params.enable_fee_share":
+	case "haneul.feeshare.v1.Params.enable_fee_share":
 		return protoreflect.ValueOfBool(false)
-	case "juno.feeshare.v1.Params.developer_shares":
+	case "haneul.feeshare.v1.Params.developer_shares":
 		return protoreflect.ValueOfString("")
-	case "juno.feeshare.v1.Params.allowed_denoms":
+	case "haneul.feeshare.v1.Params.allowed_denoms":
 		list := []string{}
 		return protoreflect.ValueOfList(&_Params_3_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.feeshare.v1.Params"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.feeshare.v1.Params"))
 		}
-		panic(fmt.Errorf("message juno.feeshare.v1.Params does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.feeshare.v1.Params does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -895,7 +895,7 @@ func (x *fastReflection_Params) NewField(fd protoreflect.FieldDescriptor) protor
 func (x *fastReflection_Params) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.feeshare.v1.Params", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.feeshare.v1.Params", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1190,7 +1190,7 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 // versions:
 // 	protoc-gen-go v1.27.0
 // 	protoc        (unknown)
-// source: juno/feeshare/v1/genesis.proto
+// source: haneul/feeshare/v1/genesis.proto
 
 const (
 	// Verify that this generated code is sufficiently up-to-date.
@@ -1214,7 +1214,7 @@ type GenesisState struct {
 func (x *GenesisState) Reset() {
 	*x = GenesisState{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feeshare_v1_genesis_proto_msgTypes[0]
+		mi := &file_haneul_feeshare_v1_genesis_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1228,7 +1228,7 @@ func (*GenesisState) ProtoMessage() {}
 
 // Deprecated: Use GenesisState.ProtoReflect.Descriptor instead.
 func (*GenesisState) Descriptor() ([]byte, []int) {
-	return file_juno_feeshare_v1_genesis_proto_rawDescGZIP(), []int{0}
+	return file_haneul_feeshare_v1_genesis_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GenesisState) GetParams() *Params {
@@ -1266,7 +1266,7 @@ type Params struct {
 func (x *Params) Reset() {
 	*x = Params{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_feeshare_v1_genesis_proto_msgTypes[1]
+		mi := &file_haneul_feeshare_v1_genesis_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1280,7 +1280,7 @@ func (*Params) ProtoMessage() {}
 
 // Deprecated: Use Params.ProtoReflect.Descriptor instead.
 func (*Params) Descriptor() ([]byte, []int) {
-	return file_juno_feeshare_v1_genesis_proto_rawDescGZIP(), []int{1}
+	return file_haneul_feeshare_v1_genesis_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Params) GetEnableFeeShare() bool {
@@ -1304,75 +1304,77 @@ func (x *Params) GetAllowedDenoms() []string {
 	return nil
 }
 
-var File_juno_feeshare_v1_genesis_proto protoreflect.FileDescriptor
+var File_haneul_feeshare_v1_genesis_proto protoreflect.FileDescriptor
 
-var file_juno_feeshare_v1_genesis_proto_rawDesc = []byte{
-	0x0a, 0x1e, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2f,
-	0x76, 0x31, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x12, 0x10, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e,
-	0x76, 0x31, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x5f, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66, 0x65, 0x65,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x8f, 0x01, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65,
-	0x73, 0x69, 0x73, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x3b, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61,
-	0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e,
-	0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61,
-	0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70,
-	0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x42, 0x0a, 0x09, 0x66, 0x65, 0x65, 0x5f, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e,
-	0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x46, 0x65, 0x65, 0x53,
-	0x68, 0x61, 0x72, 0x65, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52,
-	0x08, 0x66, 0x65, 0x65, 0x53, 0x68, 0x61, 0x72, 0x65, 0x22, 0xc2, 0x01, 0x0a, 0x06, 0x50, 0x61,
-	0x72, 0x61, 0x6d, 0x73, 0x12, 0x28, 0x0a, 0x10, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x5f, 0x66,
-	0x65, 0x65, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0e,
-	0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x46, 0x65, 0x65, 0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x61,
-	0x0a, 0x10, 0x64, 0x65, 0x76, 0x65, 0x6c, 0x6f, 0x70, 0x65, 0x72, 0x5f, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x36, 0xc8, 0xde, 0x1f, 0x00, 0xda, 0xde,
-	0x1f, 0x1b, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d,
-	0x61, 0x74, 0x68, 0x2e, 0x4c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x44, 0x65, 0x63, 0xd2, 0xb4, 0x2d,
-	0x0a, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x44, 0x65, 0x63, 0xa8, 0xe7, 0xb0, 0x2a, 0x01,
-	0x52, 0x0f, 0x64, 0x65, 0x76, 0x65, 0x6c, 0x6f, 0x70, 0x65, 0x72, 0x53, 0x68, 0x61, 0x72, 0x65,
-	0x73, 0x12, 0x25, 0x0a, 0x0e, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x65, 0x64, 0x5f, 0x64, 0x65, 0x6e,
-	0x6f, 0x6d, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0d, 0x61, 0x6c, 0x6c, 0x6f, 0x77,
-	0x65, 0x64, 0x44, 0x65, 0x6e, 0x6f, 0x6d, 0x73, 0x3a, 0x04, 0xe8, 0xa0, 0x1f, 0x01, 0x42, 0xb4,
-	0x01, 0x0a, 0x14, 0x63, 0x6f, 0x6d, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x66, 0x65, 0x65, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x2e, 0x76, 0x31, 0x42, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73,
-	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2c, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73,
-	0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x66,
-	0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2f, 0x76, 0x31, 0x3b, 0x66, 0x65, 0x65, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x4a, 0x46, 0x58, 0xaa, 0x02, 0x10, 0x4a, 0x75,
-	0x6e, 0x6f, 0x2e, 0x46, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x56, 0x31, 0xca, 0x02,
-	0x10, 0x4a, 0x75, 0x6e, 0x6f, 0x5c, 0x46, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x56,
-	0x31, 0xe2, 0x02, 0x1c, 0x4a, 0x75, 0x6e, 0x6f, 0x5c, 0x46, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
-	0xea, 0x02, 0x12, 0x4a, 0x75, 0x6e, 0x6f, 0x3a, 0x3a, 0x46, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_haneul_feeshare_v1_genesis_proto_rawDesc = []byte{
+	0x0a, 0x20, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x2f, 0x76, 0x31, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x12, 0x12, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x73, 0x68,
+	0x61, 0x72, 0x65, 0x2e, 0x76, 0x31, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d,
+	0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
+	0x73, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f,
+	0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x21, 0x68, 0x61, 0x6e, 0x65,
+	0x75, 0x6c, 0x2f, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x66,
+	0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x93, 0x01,
+	0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x3d,
+	0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a,
+	0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00,
+	0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x44, 0x0a,
+	0x09, 0x66, 0x65, 0x65, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x1c, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61,
+	0x72, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x46, 0x65, 0x65, 0x53, 0x68, 0x61, 0x72, 0x65, 0x42, 0x09,
+	0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x08, 0x66, 0x65, 0x65, 0x53, 0x68,
+	0x61, 0x72, 0x65, 0x22, 0xc2, 0x01, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x28,
+	0x0a, 0x10, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x5f, 0x66, 0x65, 0x65, 0x5f, 0x73, 0x68, 0x61,
+	0x72, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0e, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65,
+	0x46, 0x65, 0x65, 0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x61, 0x0a, 0x10, 0x64, 0x65, 0x76, 0x65,
+	0x6c, 0x6f, 0x70, 0x65, 0x72, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x42, 0x36, 0xc8, 0xde, 0x1f, 0x00, 0xda, 0xde, 0x1f, 0x1b, 0x63, 0x6f, 0x73, 0x6d,
+	0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d, 0x61, 0x74, 0x68, 0x2e, 0x4c, 0x65,
+	0x67, 0x61, 0x63, 0x79, 0x44, 0x65, 0x63, 0xd2, 0xb4, 0x2d, 0x0a, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
+	0x73, 0x2e, 0x44, 0x65, 0x63, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x0f, 0x64, 0x65, 0x76, 0x65,
+	0x6c, 0x6f, 0x70, 0x65, 0x72, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x12, 0x25, 0x0a, 0x0e, 0x61,
+	0x6c, 0x6c, 0x6f, 0x77, 0x65, 0x64, 0x5f, 0x64, 0x65, 0x6e, 0x6f, 0x6d, 0x73, 0x18, 0x03, 0x20,
+	0x03, 0x28, 0x09, 0x52, 0x0d, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x65, 0x64, 0x44, 0x65, 0x6e, 0x6f,
+	0x6d, 0x73, 0x3a, 0x04, 0xe8, 0xa0, 0x1f, 0x01, 0x42, 0xc0, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d,
+	0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x2e, 0x76, 0x31, 0x42, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x50, 0x72, 0x6f, 0x74,
+	0x6f, 0x50, 0x01, 0x5a, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69,
+	0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x66, 0x65, 0x65,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x2f, 0x76, 0x31, 0x3b, 0x66, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x48, 0x46, 0x58, 0xaa, 0x02, 0x12, 0x48, 0x61, 0x6e, 0x65,
+	0x75, 0x6c, 0x2e, 0x46, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x56, 0x31, 0xca, 0x02,
+	0x12, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x5c, 0x46, 0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x5c, 0x56, 0x31, 0xe2, 0x02, 0x1e, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x5c, 0x46, 0x65, 0x65,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
+	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x14, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x3a, 0x3a, 0x46,
+	0x65, 0x65, 0x73, 0x68, 0x61, 0x72, 0x65, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
-	file_juno_feeshare_v1_genesis_proto_rawDescOnce sync.Once
-	file_juno_feeshare_v1_genesis_proto_rawDescData = file_juno_feeshare_v1_genesis_proto_rawDesc
+	file_haneul_feeshare_v1_genesis_proto_rawDescOnce sync.Once
+	file_haneul_feeshare_v1_genesis_proto_rawDescData = file_haneul_feeshare_v1_genesis_proto_rawDesc
 )
 
-func file_juno_feeshare_v1_genesis_proto_rawDescGZIP() []byte {
-	file_juno_feeshare_v1_genesis_proto_rawDescOnce.Do(func() {
-		file_juno_feeshare_v1_genesis_proto_rawDescData = protoimpl.X.CompressGZIP(file_juno_feeshare_v1_genesis_proto_rawDescData)
+func file_haneul_feeshare_v1_genesis_proto_rawDescGZIP() []byte {
+	file_haneul_feeshare_v1_genesis_proto_rawDescOnce.Do(func() {
+		file_haneul_feeshare_v1_genesis_proto_rawDescData = protoimpl.X.CompressGZIP(file_haneul_feeshare_v1_genesis_proto_rawDescData)
 	})
-	return file_juno_feeshare_v1_genesis_proto_rawDescData
+	return file_haneul_feeshare_v1_genesis_proto_rawDescData
 }
 
-var file_juno_feeshare_v1_genesis_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_juno_feeshare_v1_genesis_proto_goTypes = []interface{}{
-	(*GenesisState)(nil), // 0: juno.feeshare.v1.GenesisState
-	(*Params)(nil),       // 1: juno.feeshare.v1.Params
-	(*FeeShare)(nil),     // 2: juno.feeshare.v1.FeeShare
+var file_haneul_feeshare_v1_genesis_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_haneul_feeshare_v1_genesis_proto_goTypes = []interface{}{
+	(*GenesisState)(nil), // 0: haneul.feeshare.v1.GenesisState
+	(*Params)(nil),       // 1: haneul.feeshare.v1.Params
+	(*FeeShare)(nil),     // 2: haneul.feeshare.v1.FeeShare
 }
-var file_juno_feeshare_v1_genesis_proto_depIdxs = []int32{
-	1, // 0: juno.feeshare.v1.GenesisState.params:type_name -> juno.feeshare.v1.Params
-	2, // 1: juno.feeshare.v1.GenesisState.fee_share:type_name -> juno.feeshare.v1.FeeShare
+var file_haneul_feeshare_v1_genesis_proto_depIdxs = []int32{
+	1, // 0: haneul.feeshare.v1.GenesisState.params:type_name -> haneul.feeshare.v1.Params
+	2, // 1: haneul.feeshare.v1.GenesisState.fee_share:type_name -> haneul.feeshare.v1.FeeShare
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -1380,14 +1382,14 @@ var file_juno_feeshare_v1_genesis_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_juno_feeshare_v1_genesis_proto_init() }
-func file_juno_feeshare_v1_genesis_proto_init() {
-	if File_juno_feeshare_v1_genesis_proto != nil {
+func init() { file_haneul_feeshare_v1_genesis_proto_init() }
+func file_haneul_feeshare_v1_genesis_proto_init() {
+	if File_haneul_feeshare_v1_genesis_proto != nil {
 		return
 	}
-	file_juno_feeshare_v1_feeshare_proto_init()
+	file_haneul_feeshare_v1_feeshare_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_juno_feeshare_v1_genesis_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feeshare_v1_genesis_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GenesisState); i {
 			case 0:
 				return &v.state
@@ -1399,7 +1401,7 @@ func file_juno_feeshare_v1_genesis_proto_init() {
 				return nil
 			}
 		}
-		file_juno_feeshare_v1_genesis_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_feeshare_v1_genesis_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Params); i {
 			case 0:
 				return &v.state
@@ -1416,18 +1418,18 @@ func file_juno_feeshare_v1_genesis_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_juno_feeshare_v1_genesis_proto_rawDesc,
+			RawDescriptor: file_haneul_feeshare_v1_genesis_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_juno_feeshare_v1_genesis_proto_goTypes,
-		DependencyIndexes: file_juno_feeshare_v1_genesis_proto_depIdxs,
-		MessageInfos:      file_juno_feeshare_v1_genesis_proto_msgTypes,
+		GoTypes:           file_haneul_feeshare_v1_genesis_proto_goTypes,
+		DependencyIndexes: file_haneul_feeshare_v1_genesis_proto_depIdxs,
+		MessageInfos:      file_haneul_feeshare_v1_genesis_proto_msgTypes,
 	}.Build()
-	File_juno_feeshare_v1_genesis_proto = out.File
-	file_juno_feeshare_v1_genesis_proto_rawDesc = nil
-	file_juno_feeshare_v1_genesis_proto_goTypes = nil
-	file_juno_feeshare_v1_genesis_proto_depIdxs = nil
+	File_haneul_feeshare_v1_genesis_proto = out.File
+	file_haneul_feeshare_v1_genesis_proto_rawDesc = nil
+	file_haneul_feeshare_v1_genesis_proto_goTypes = nil
+	file_haneul_feeshare_v1_genesis_proto_depIdxs = nil
 }

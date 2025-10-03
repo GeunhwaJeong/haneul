@@ -76,8 +76,8 @@ var (
 )
 
 func init() {
-	file_juno_drip_v1_tx_proto_init()
-	md_MsgDistributeTokens = File_juno_drip_v1_tx_proto.Messages().ByName("MsgDistributeTokens")
+	file_haneul_drip_v1_tx_proto_init()
+	md_MsgDistributeTokens = File_haneul_drip_v1_tx_proto.Messages().ByName("MsgDistributeTokens")
 	fd_MsgDistributeTokens_sender_address = md_MsgDistributeTokens.Fields().ByName("sender_address")
 	fd_MsgDistributeTokens_amount = md_MsgDistributeTokens.Fields().ByName("amount")
 }
@@ -91,7 +91,7 @@ func (x *MsgDistributeTokens) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgDistributeTokens) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_drip_v1_tx_proto_msgTypes[0]
+	mi := &file_haneul_drip_v1_tx_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -174,15 +174,15 @@ func (x *fastReflection_MsgDistributeTokens) Range(f func(protoreflect.FieldDesc
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgDistributeTokens) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgDistributeTokens.sender_address":
+	case "haneul.drip.v1.MsgDistributeTokens.sender_address":
 		return x.SenderAddress != ""
-	case "juno.drip.v1.MsgDistributeTokens.amount":
+	case "haneul.drip.v1.MsgDistributeTokens.amount":
 		return len(x.Amount) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokens"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokens"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -194,15 +194,15 @@ func (x *fastReflection_MsgDistributeTokens) Has(fd protoreflect.FieldDescriptor
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgDistributeTokens) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgDistributeTokens.sender_address":
+	case "haneul.drip.v1.MsgDistributeTokens.sender_address":
 		x.SenderAddress = ""
-	case "juno.drip.v1.MsgDistributeTokens.amount":
+	case "haneul.drip.v1.MsgDistributeTokens.amount":
 		x.Amount = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokens"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokens"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -214,10 +214,10 @@ func (x *fastReflection_MsgDistributeTokens) Clear(fd protoreflect.FieldDescript
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgDistributeTokens) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.drip.v1.MsgDistributeTokens.sender_address":
+	case "haneul.drip.v1.MsgDistributeTokens.sender_address":
 		value := x.SenderAddress
 		return protoreflect.ValueOfString(value)
-	case "juno.drip.v1.MsgDistributeTokens.amount":
+	case "haneul.drip.v1.MsgDistributeTokens.amount":
 		if len(x.Amount) == 0 {
 			return protoreflect.ValueOfList(&_MsgDistributeTokens_2_list{})
 		}
@@ -225,9 +225,9 @@ func (x *fastReflection_MsgDistributeTokens) Get(descriptor protoreflect.FieldDe
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokens"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokens"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokens does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokens does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -243,17 +243,17 @@ func (x *fastReflection_MsgDistributeTokens) Get(descriptor protoreflect.FieldDe
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgDistributeTokens) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgDistributeTokens.sender_address":
+	case "haneul.drip.v1.MsgDistributeTokens.sender_address":
 		x.SenderAddress = value.Interface().(string)
-	case "juno.drip.v1.MsgDistributeTokens.amount":
+	case "haneul.drip.v1.MsgDistributeTokens.amount":
 		lv := value.List()
 		clv := lv.(*_MsgDistributeTokens_2_list)
 		x.Amount = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokens"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokens"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -269,19 +269,19 @@ func (x *fastReflection_MsgDistributeTokens) Set(fd protoreflect.FieldDescriptor
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgDistributeTokens) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgDistributeTokens.amount":
+	case "haneul.drip.v1.MsgDistributeTokens.amount":
 		if x.Amount == nil {
 			x.Amount = []*v1beta1.Coin{}
 		}
 		value := &_MsgDistributeTokens_2_list{list: &x.Amount}
 		return protoreflect.ValueOfList(value)
-	case "juno.drip.v1.MsgDistributeTokens.sender_address":
-		panic(fmt.Errorf("field sender_address of message juno.drip.v1.MsgDistributeTokens is not mutable"))
+	case "haneul.drip.v1.MsgDistributeTokens.sender_address":
+		panic(fmt.Errorf("field sender_address of message haneul.drip.v1.MsgDistributeTokens is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokens"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokens"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -290,16 +290,16 @@ func (x *fastReflection_MsgDistributeTokens) Mutable(fd protoreflect.FieldDescri
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgDistributeTokens) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgDistributeTokens.sender_address":
+	case "haneul.drip.v1.MsgDistributeTokens.sender_address":
 		return protoreflect.ValueOfString("")
-	case "juno.drip.v1.MsgDistributeTokens.amount":
+	case "haneul.drip.v1.MsgDistributeTokens.amount":
 		list := []*v1beta1.Coin{}
 		return protoreflect.ValueOfList(&_MsgDistributeTokens_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokens"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokens"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokens does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -309,7 +309,7 @@ func (x *fastReflection_MsgDistributeTokens) NewField(fd protoreflect.FieldDescr
 func (x *fastReflection_MsgDistributeTokens) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.drip.v1.MsgDistributeTokens", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.drip.v1.MsgDistributeTokens", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -581,8 +581,8 @@ var (
 )
 
 func init() {
-	file_juno_drip_v1_tx_proto_init()
-	md_MsgDistributeTokensResponse = File_juno_drip_v1_tx_proto.Messages().ByName("MsgDistributeTokensResponse")
+	file_haneul_drip_v1_tx_proto_init()
+	md_MsgDistributeTokensResponse = File_haneul_drip_v1_tx_proto.Messages().ByName("MsgDistributeTokensResponse")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgDistributeTokensResponse)(nil)
@@ -594,7 +594,7 @@ func (x *MsgDistributeTokensResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgDistributeTokensResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_drip_v1_tx_proto_msgTypes[1]
+	mi := &file_haneul_drip_v1_tx_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -667,9 +667,9 @@ func (x *fastReflection_MsgDistributeTokensResponse) Has(fd protoreflect.FieldDe
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokensResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokensResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -683,9 +683,9 @@ func (x *fastReflection_MsgDistributeTokensResponse) Clear(fd protoreflect.Field
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokensResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokensResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -699,9 +699,9 @@ func (x *fastReflection_MsgDistributeTokensResponse) Get(descriptor protoreflect
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokensResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokensResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokensResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokensResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -719,9 +719,9 @@ func (x *fastReflection_MsgDistributeTokensResponse) Set(fd protoreflect.FieldDe
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokensResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokensResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -739,9 +739,9 @@ func (x *fastReflection_MsgDistributeTokensResponse) Mutable(fd protoreflect.Fie
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokensResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokensResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -752,9 +752,9 @@ func (x *fastReflection_MsgDistributeTokensResponse) NewField(fd protoreflect.Fi
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgDistributeTokensResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgDistributeTokensResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgDistributeTokensResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -764,7 +764,7 @@ func (x *fastReflection_MsgDistributeTokensResponse) NewField(fd protoreflect.Fi
 func (x *fastReflection_MsgDistributeTokensResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.drip.v1.MsgDistributeTokensResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.drip.v1.MsgDistributeTokensResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -939,8 +939,8 @@ var (
 )
 
 func init() {
-	file_juno_drip_v1_tx_proto_init()
-	md_MsgUpdateParams = File_juno_drip_v1_tx_proto.Messages().ByName("MsgUpdateParams")
+	file_haneul_drip_v1_tx_proto_init()
+	md_MsgUpdateParams = File_haneul_drip_v1_tx_proto.Messages().ByName("MsgUpdateParams")
 	fd_MsgUpdateParams_authority = md_MsgUpdateParams.Fields().ByName("authority")
 	fd_MsgUpdateParams_params = md_MsgUpdateParams.Fields().ByName("params")
 }
@@ -954,7 +954,7 @@ func (x *MsgUpdateParams) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgUpdateParams) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_drip_v1_tx_proto_msgTypes[2]
+	mi := &file_haneul_drip_v1_tx_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1037,15 +1037,15 @@ func (x *fastReflection_MsgUpdateParams) Range(f func(protoreflect.FieldDescript
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_MsgUpdateParams) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgUpdateParams.authority":
+	case "haneul.drip.v1.MsgUpdateParams.authority":
 		return x.Authority != ""
-	case "juno.drip.v1.MsgUpdateParams.params":
+	case "haneul.drip.v1.MsgUpdateParams.params":
 		return x.Params != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1057,15 +1057,15 @@ func (x *fastReflection_MsgUpdateParams) Has(fd protoreflect.FieldDescriptor) bo
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateParams) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgUpdateParams.authority":
+	case "haneul.drip.v1.MsgUpdateParams.authority":
 		x.Authority = ""
-	case "juno.drip.v1.MsgUpdateParams.params":
+	case "haneul.drip.v1.MsgUpdateParams.params":
 		x.Params = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1077,17 +1077,17 @@ func (x *fastReflection_MsgUpdateParams) Clear(fd protoreflect.FieldDescriptor) 
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_MsgUpdateParams) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "juno.drip.v1.MsgUpdateParams.authority":
+	case "haneul.drip.v1.MsgUpdateParams.authority":
 		value := x.Authority
 		return protoreflect.ValueOfString(value)
-	case "juno.drip.v1.MsgUpdateParams.params":
+	case "haneul.drip.v1.MsgUpdateParams.params":
 		value := x.Params
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParams does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParams does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1103,15 +1103,15 @@ func (x *fastReflection_MsgUpdateParams) Get(descriptor protoreflect.FieldDescri
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateParams) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgUpdateParams.authority":
+	case "haneul.drip.v1.MsgUpdateParams.authority":
 		x.Authority = value.Interface().(string)
-	case "juno.drip.v1.MsgUpdateParams.params":
+	case "haneul.drip.v1.MsgUpdateParams.params":
 		x.Params = value.Message().Interface().(*Params)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1127,18 +1127,18 @@ func (x *fastReflection_MsgUpdateParams) Set(fd protoreflect.FieldDescriptor, va
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgUpdateParams) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgUpdateParams.params":
+	case "haneul.drip.v1.MsgUpdateParams.params":
 		if x.Params == nil {
 			x.Params = new(Params)
 		}
 		return protoreflect.ValueOfMessage(x.Params.ProtoReflect())
-	case "juno.drip.v1.MsgUpdateParams.authority":
-		panic(fmt.Errorf("field authority of message juno.drip.v1.MsgUpdateParams is not mutable"))
+	case "haneul.drip.v1.MsgUpdateParams.authority":
+		panic(fmt.Errorf("field authority of message haneul.drip.v1.MsgUpdateParams is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1147,16 +1147,16 @@ func (x *fastReflection_MsgUpdateParams) Mutable(fd protoreflect.FieldDescriptor
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_MsgUpdateParams) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "juno.drip.v1.MsgUpdateParams.authority":
+	case "haneul.drip.v1.MsgUpdateParams.authority":
 		return protoreflect.ValueOfString("")
-	case "juno.drip.v1.MsgUpdateParams.params":
+	case "haneul.drip.v1.MsgUpdateParams.params":
 		m := new(Params)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParams"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParams"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParams does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1166,7 +1166,7 @@ func (x *fastReflection_MsgUpdateParams) NewField(fd protoreflect.FieldDescripto
 func (x *fastReflection_MsgUpdateParams) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.drip.v1.MsgUpdateParams", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.drip.v1.MsgUpdateParams", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1436,8 +1436,8 @@ var (
 )
 
 func init() {
-	file_juno_drip_v1_tx_proto_init()
-	md_MsgUpdateParamsResponse = File_juno_drip_v1_tx_proto.Messages().ByName("MsgUpdateParamsResponse")
+	file_haneul_drip_v1_tx_proto_init()
+	md_MsgUpdateParamsResponse = File_haneul_drip_v1_tx_proto.Messages().ByName("MsgUpdateParamsResponse")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgUpdateParamsResponse)(nil)
@@ -1449,7 +1449,7 @@ func (x *MsgUpdateParamsResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *MsgUpdateParamsResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_juno_drip_v1_tx_proto_msgTypes[3]
+	mi := &file_haneul_drip_v1_tx_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1522,9 +1522,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Has(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1538,9 +1538,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Clear(fd protoreflect.FieldDesc
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1554,9 +1554,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Get(descriptor protoreflect.Fie
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParamsResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParamsResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1574,9 +1574,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Set(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1594,9 +1594,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) Mutable(fd protoreflect.FieldDe
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1607,9 +1607,9 @@ func (x *fastReflection_MsgUpdateParamsResponse) NewField(fd protoreflect.FieldD
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: juno.drip.v1.MsgUpdateParamsResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: haneul.drip.v1.MsgUpdateParamsResponse"))
 		}
-		panic(fmt.Errorf("message juno.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message haneul.drip.v1.MsgUpdateParamsResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1619,7 +1619,7 @@ func (x *fastReflection_MsgUpdateParamsResponse) NewField(fd protoreflect.FieldD
 func (x *fastReflection_MsgUpdateParamsResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in juno.drip.v1.MsgUpdateParamsResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in haneul.drip.v1.MsgUpdateParamsResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1791,7 +1791,7 @@ func (x *fastReflection_MsgUpdateParamsResponse) ProtoMethods() *protoiface.Meth
 // versions:
 // 	protoc-gen-go v1.27.0
 // 	protoc        (unknown)
-// source: juno/drip/v1/tx.proto
+// source: haneul/drip/v1/tx.proto
 
 const (
 	// Verify that this generated code is sufficiently up-to-date.
@@ -1815,7 +1815,7 @@ type MsgDistributeTokens struct {
 func (x *MsgDistributeTokens) Reset() {
 	*x = MsgDistributeTokens{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_drip_v1_tx_proto_msgTypes[0]
+		mi := &file_haneul_drip_v1_tx_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1829,7 +1829,7 @@ func (*MsgDistributeTokens) ProtoMessage() {}
 
 // Deprecated: Use MsgDistributeTokens.ProtoReflect.Descriptor instead.
 func (*MsgDistributeTokens) Descriptor() ([]byte, []int) {
-	return file_juno_drip_v1_tx_proto_rawDescGZIP(), []int{0}
+	return file_haneul_drip_v1_tx_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *MsgDistributeTokens) GetSenderAddress() string {
@@ -1856,7 +1856,7 @@ type MsgDistributeTokensResponse struct {
 func (x *MsgDistributeTokensResponse) Reset() {
 	*x = MsgDistributeTokensResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_drip_v1_tx_proto_msgTypes[1]
+		mi := &file_haneul_drip_v1_tx_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1870,7 +1870,7 @@ func (*MsgDistributeTokensResponse) ProtoMessage() {}
 
 // Deprecated: Use MsgDistributeTokensResponse.ProtoReflect.Descriptor instead.
 func (*MsgDistributeTokensResponse) Descriptor() ([]byte, []int) {
-	return file_juno_drip_v1_tx_proto_rawDescGZIP(), []int{1}
+	return file_haneul_drip_v1_tx_proto_rawDescGZIP(), []int{1}
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -1890,7 +1890,7 @@ type MsgUpdateParams struct {
 func (x *MsgUpdateParams) Reset() {
 	*x = MsgUpdateParams{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_drip_v1_tx_proto_msgTypes[2]
+		mi := &file_haneul_drip_v1_tx_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1904,7 +1904,7 @@ func (*MsgUpdateParams) ProtoMessage() {}
 
 // Deprecated: Use MsgUpdateParams.ProtoReflect.Descriptor instead.
 func (*MsgUpdateParams) Descriptor() ([]byte, []int) {
-	return file_juno_drip_v1_tx_proto_rawDescGZIP(), []int{2}
+	return file_haneul_drip_v1_tx_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *MsgUpdateParams) GetAuthority() string {
@@ -1932,7 +1932,7 @@ type MsgUpdateParamsResponse struct {
 func (x *MsgUpdateParamsResponse) Reset() {
 	*x = MsgUpdateParamsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_juno_drip_v1_tx_proto_msgTypes[3]
+		mi := &file_haneul_drip_v1_tx_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1946,114 +1946,116 @@ func (*MsgUpdateParamsResponse) ProtoMessage() {}
 
 // Deprecated: Use MsgUpdateParamsResponse.ProtoReflect.Descriptor instead.
 func (*MsgUpdateParamsResponse) Descriptor() ([]byte, []int) {
-	return file_juno_drip_v1_tx_proto_rawDescGZIP(), []int{3}
+	return file_haneul_drip_v1_tx_proto_rawDescGZIP(), []int{3}
 }
 
-var File_juno_drip_v1_tx_proto protoreflect.FileDescriptor
+var File_haneul_drip_v1_tx_proto protoreflect.FileDescriptor
 
-var file_juno_drip_v1_tx_proto_rawDesc = []byte{
-	0x0a, 0x15, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x64, 0x72, 0x69, 0x70, 0x2f, 0x76, 0x31, 0x2f, 0x74,
-	0x78, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0c, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x64, 0x72,
-	0x69, 0x70, 0x2e, 0x76, 0x31, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69,
-	0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
-	0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x63, 0x6f,
-	0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
-	0x2f, 0x6d, 0x73, 0x67, 0x2f, 0x76, 0x31, 0x2f, 0x6d, 0x73, 0x67, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x1a, 0x19, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f,
-	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f,
-	0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61,
-	0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x1a, 0x1a, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x64, 0x72, 0x69, 0x70, 0x2f, 0x76, 0x31, 0x2f, 0x67,
-	0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x8e, 0x02, 0x0a,
-	0x13, 0x4d, 0x73, 0x67, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x54, 0x6f,
-	0x6b, 0x65, 0x6e, 0x73, 0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61,
-	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4,
-	0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
-	0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x41, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x79, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18,
-	0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62,
-	0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e,
-	0x42, 0x46, 0xc8, 0xde, 0x1f, 0x00, 0xaa, 0xdf, 0x1f, 0x28, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
-	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d,
-	0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69,
-	0x6e, 0x73, 0x9a, 0xe7, 0xb0, 0x2a, 0x0c, 0x6c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f,
-	0x69, 0x6e, 0x73, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74,
-	0x3a, 0x3b, 0xe8, 0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a, 0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65,
-	0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x8a, 0xe7, 0xb0, 0x2a, 0x1f, 0x6a, 0x75,
-	0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x64, 0x72, 0x69, 0x70, 0x2f, 0x4d, 0x73, 0x67, 0x44, 0x69, 0x73,
-	0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x22, 0x1d, 0x0a,
-	0x1b, 0x4d, 0x73, 0x67, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x54, 0x6f,
-	0x6b, 0x65, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xba, 0x01, 0x0a,
-	0x0f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x12, 0x36, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
-	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x09, 0x61,
-	0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x37, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61,
-	0x6d, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e,
-	0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09,
-	0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d,
-	0x73, 0x3a, 0x36, 0x88, 0xa0, 0x1f, 0x00, 0xe8, 0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a, 0x09,
-	0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x8a, 0xe7, 0xb0, 0x2a, 0x1b, 0x6a, 0x75,
-	0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x64, 0x72, 0x69, 0x70, 0x2f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64,
-	0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x19, 0x0a, 0x17, 0x4d, 0x73, 0x67,
-	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x32, 0xf1, 0x01, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x8c, 0x01, 0x0a,
-	0x10, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e,
-	0x73, 0x12, 0x21, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31,
-	0x2e, 0x4d, 0x73, 0x67, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x54, 0x6f,
-	0x6b, 0x65, 0x6e, 0x73, 0x1a, 0x29, 0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x64, 0x72, 0x69, 0x70,
-	0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74,
-	0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x2a, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x24, 0x22, 0x22, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x64,
-	0x72, 0x69, 0x70, 0x2f, 0x76, 0x31, 0x2f, 0x74, 0x78, 0x2f, 0x64, 0x69, 0x73, 0x74, 0x72, 0x69,
-	0x62, 0x75, 0x74, 0x65, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x12, 0x54, 0x0a, 0x0c, 0x55,
-	0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x1d, 0x2e, 0x6a, 0x75,
-	0x6e, 0x6f, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x25, 0x2e, 0x6a, 0x75, 0x6e,
-	0x6f, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64,
+var file_haneul_drip_v1_tx_proto_rawDesc = []byte{
+	0x0a, 0x17, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x64, 0x72, 0x69, 0x70, 0x2f, 0x76, 0x31,
+	0x2f, 0x74, 0x78, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0e, 0x68, 0x61, 0x6e, 0x65, 0x75,
+	0x6c, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f,
+	0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x63, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x63, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x6d, 0x73, 0x67, 0x2f, 0x76, 0x31, 0x2f, 0x6d, 0x73, 0x67, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x19, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x5f, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61,
+	0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2f, 0x64, 0x72, 0x69,
+	0x70, 0x2f, 0x76, 0x31, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x22, 0x8e, 0x02, 0x0a, 0x13, 0x4d, 0x73, 0x67, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69,
+	0x62, 0x75, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x12, 0x3f, 0x0a, 0x0e, 0x73, 0x65,
+	0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0d, 0x73, 0x65,
+	0x6e, 0x64, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x79, 0x0a, 0x06, 0x61,
+	0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x46, 0xc8, 0xde, 0x1f, 0x00, 0xaa, 0xdf, 0x1f, 0x28,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
+	0x73, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2f, 0x74, 0x79, 0x70,
+	0x65, 0x73, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x73, 0x9a, 0xe7, 0xb0, 0x2a, 0x0c, 0x6c, 0x65, 0x67,
+	0x61, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x69, 0x6e, 0x73, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06,
+	0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x3a, 0x3b, 0xe8, 0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a,
+	0x0e, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x8a,
+	0xe7, 0xb0, 0x2a, 0x1f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x64, 0x72, 0x69, 0x70, 0x2f,
+	0x4d, 0x73, 0x67, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x54, 0x6f, 0x6b,
+	0x65, 0x6e, 0x73, 0x22, 0x1d, 0x0a, 0x1b, 0x4d, 0x73, 0x67, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69,
+	0x62, 0x75, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0xbc, 0x01, 0x0a, 0x0f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x36, 0x0a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63,
+	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72,
+	0x69, 0x6e, 0x67, 0x52, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x39,
+	0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16,
+	0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x2e,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a,
+	0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x3a, 0x36, 0x88, 0xa0, 0x1f, 0x00, 0xe8,
+	0xa0, 0x1f, 0x00, 0x82, 0xe7, 0xb0, 0x2a, 0x09, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74,
+	0x79, 0x8a, 0xe7, 0xb0, 0x2a, 0x1b, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x78, 0x2f, 0x64, 0x72, 0x69,
+	0x70, 0x2f, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x22, 0x19, 0x0a, 0x17, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61,
+	0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0xf9, 0x01, 0x0a,
+	0x03, 0x4d, 0x73, 0x67, 0x12, 0x90, 0x01, 0x0a, 0x10, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62,
+	0x75, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x12, 0x23, 0x2e, 0x68, 0x61, 0x6e, 0x65,
+	0x75, 0x6c, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x69,
+	0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x1a, 0x2b,
+	0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x2e,
+	0x4d, 0x73, 0x67, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x54, 0x6f, 0x6b,
+	0x65, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2a, 0x82, 0xd3, 0xe4,
+	0x93, 0x02, 0x24, 0x22, 0x22, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f, 0x64, 0x72, 0x69, 0x70, 0x2f,
+	0x76, 0x31, 0x2f, 0x74, 0x78, 0x2f, 0x64, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65,
+	0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x73, 0x12, 0x58, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x1f, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c,
+	0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x27, 0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75,
+	0x6c, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64,
 	0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a, 0x01, 0x42, 0x93, 0x01, 0x0a, 0x10, 0x63, 0x6f, 0x6d,
-	0x2e, 0x6a, 0x75, 0x6e, 0x6f, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x42, 0x07, 0x54,
-	0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x24, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
-	0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x6a, 0x75, 0x6e, 0x6f, 0x2f,
-	0x64, 0x72, 0x69, 0x70, 0x2f, 0x76, 0x31, 0x3b, 0x64, 0x72, 0x69, 0x70, 0x76, 0x31, 0xa2, 0x02,
-	0x03, 0x4a, 0x44, 0x58, 0xaa, 0x02, 0x0c, 0x4a, 0x75, 0x6e, 0x6f, 0x2e, 0x44, 0x72, 0x69, 0x70,
-	0x2e, 0x56, 0x31, 0xca, 0x02, 0x0c, 0x4a, 0x75, 0x6e, 0x6f, 0x5c, 0x44, 0x72, 0x69, 0x70, 0x5c,
-	0x56, 0x31, 0xe2, 0x02, 0x18, 0x4a, 0x75, 0x6e, 0x6f, 0x5c, 0x44, 0x72, 0x69, 0x70, 0x5c, 0x56,
-	0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e,
-	0x4a, 0x75, 0x6e, 0x6f, 0x3a, 0x3a, 0x44, 0x72, 0x69, 0x70, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a, 0x01, 0x42, 0x9f, 0x01, 0x0a, 0x12, 0x63, 0x6f, 0x6d,
+	0x2e, 0x68, 0x61, 0x6e, 0x65, 0x75, 0x6c, 0x2e, 0x64, 0x72, 0x69, 0x70, 0x2e, 0x76, 0x31, 0x42,
+	0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x26, 0x63, 0x6f, 0x73, 0x6d,
+	0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x61, 0x6e,
+	0x65, 0x75, 0x6c, 0x2f, 0x64, 0x72, 0x69, 0x70, 0x2f, 0x76, 0x31, 0x3b, 0x64, 0x72, 0x69, 0x70,
+	0x76, 0x31, 0xa2, 0x02, 0x03, 0x48, 0x44, 0x58, 0xaa, 0x02, 0x0e, 0x48, 0x61, 0x6e, 0x65, 0x75,
+	0x6c, 0x2e, 0x44, 0x72, 0x69, 0x70, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x0e, 0x48, 0x61, 0x6e, 0x65,
+	0x75, 0x6c, 0x5c, 0x44, 0x72, 0x69, 0x70, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x1a, 0x48, 0x61, 0x6e,
+	0x65, 0x75, 0x6c, 0x5c, 0x44, 0x72, 0x69, 0x70, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d,
+	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x48, 0x61, 0x6e, 0x65, 0x75, 0x6c,
+	0x3a, 0x3a, 0x44, 0x72, 0x69, 0x70, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
-	file_juno_drip_v1_tx_proto_rawDescOnce sync.Once
-	file_juno_drip_v1_tx_proto_rawDescData = file_juno_drip_v1_tx_proto_rawDesc
+	file_haneul_drip_v1_tx_proto_rawDescOnce sync.Once
+	file_haneul_drip_v1_tx_proto_rawDescData = file_haneul_drip_v1_tx_proto_rawDesc
 )
 
-func file_juno_drip_v1_tx_proto_rawDescGZIP() []byte {
-	file_juno_drip_v1_tx_proto_rawDescOnce.Do(func() {
-		file_juno_drip_v1_tx_proto_rawDescData = protoimpl.X.CompressGZIP(file_juno_drip_v1_tx_proto_rawDescData)
+func file_haneul_drip_v1_tx_proto_rawDescGZIP() []byte {
+	file_haneul_drip_v1_tx_proto_rawDescOnce.Do(func() {
+		file_haneul_drip_v1_tx_proto_rawDescData = protoimpl.X.CompressGZIP(file_haneul_drip_v1_tx_proto_rawDescData)
 	})
-	return file_juno_drip_v1_tx_proto_rawDescData
+	return file_haneul_drip_v1_tx_proto_rawDescData
 }
 
-var file_juno_drip_v1_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_juno_drip_v1_tx_proto_goTypes = []interface{}{
-	(*MsgDistributeTokens)(nil),         // 0: juno.drip.v1.MsgDistributeTokens
-	(*MsgDistributeTokensResponse)(nil), // 1: juno.drip.v1.MsgDistributeTokensResponse
-	(*MsgUpdateParams)(nil),             // 2: juno.drip.v1.MsgUpdateParams
-	(*MsgUpdateParamsResponse)(nil),     // 3: juno.drip.v1.MsgUpdateParamsResponse
+var file_haneul_drip_v1_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_haneul_drip_v1_tx_proto_goTypes = []interface{}{
+	(*MsgDistributeTokens)(nil),         // 0: haneul.drip.v1.MsgDistributeTokens
+	(*MsgDistributeTokensResponse)(nil), // 1: haneul.drip.v1.MsgDistributeTokensResponse
+	(*MsgUpdateParams)(nil),             // 2: haneul.drip.v1.MsgUpdateParams
+	(*MsgUpdateParamsResponse)(nil),     // 3: haneul.drip.v1.MsgUpdateParamsResponse
 	(*v1beta1.Coin)(nil),                // 4: cosmos.base.v1beta1.Coin
-	(*Params)(nil),                      // 5: juno.drip.v1.Params
+	(*Params)(nil),                      // 5: haneul.drip.v1.Params
 }
-var file_juno_drip_v1_tx_proto_depIdxs = []int32{
-	4, // 0: juno.drip.v1.MsgDistributeTokens.amount:type_name -> cosmos.base.v1beta1.Coin
-	5, // 1: juno.drip.v1.MsgUpdateParams.params:type_name -> juno.drip.v1.Params
-	0, // 2: juno.drip.v1.Msg.DistributeTokens:input_type -> juno.drip.v1.MsgDistributeTokens
-	2, // 3: juno.drip.v1.Msg.UpdateParams:input_type -> juno.drip.v1.MsgUpdateParams
-	1, // 4: juno.drip.v1.Msg.DistributeTokens:output_type -> juno.drip.v1.MsgDistributeTokensResponse
-	3, // 5: juno.drip.v1.Msg.UpdateParams:output_type -> juno.drip.v1.MsgUpdateParamsResponse
+var file_haneul_drip_v1_tx_proto_depIdxs = []int32{
+	4, // 0: haneul.drip.v1.MsgDistributeTokens.amount:type_name -> cosmos.base.v1beta1.Coin
+	5, // 1: haneul.drip.v1.MsgUpdateParams.params:type_name -> haneul.drip.v1.Params
+	0, // 2: haneul.drip.v1.Msg.DistributeTokens:input_type -> haneul.drip.v1.MsgDistributeTokens
+	2, // 3: haneul.drip.v1.Msg.UpdateParams:input_type -> haneul.drip.v1.MsgUpdateParams
+	1, // 4: haneul.drip.v1.Msg.DistributeTokens:output_type -> haneul.drip.v1.MsgDistributeTokensResponse
+	3, // 5: haneul.drip.v1.Msg.UpdateParams:output_type -> haneul.drip.v1.MsgUpdateParamsResponse
 	4, // [4:6] is the sub-list for method output_type
 	2, // [2:4] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -2061,14 +2063,14 @@ var file_juno_drip_v1_tx_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_juno_drip_v1_tx_proto_init() }
-func file_juno_drip_v1_tx_proto_init() {
-	if File_juno_drip_v1_tx_proto != nil {
+func init() { file_haneul_drip_v1_tx_proto_init() }
+func file_haneul_drip_v1_tx_proto_init() {
+	if File_haneul_drip_v1_tx_proto != nil {
 		return
 	}
-	file_juno_drip_v1_genesis_proto_init()
+	file_haneul_drip_v1_genesis_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_juno_drip_v1_tx_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_drip_v1_tx_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgDistributeTokens); i {
 			case 0:
 				return &v.state
@@ -2080,7 +2082,7 @@ func file_juno_drip_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_drip_v1_tx_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_drip_v1_tx_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgDistributeTokensResponse); i {
 			case 0:
 				return &v.state
@@ -2092,7 +2094,7 @@ func file_juno_drip_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_drip_v1_tx_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_drip_v1_tx_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgUpdateParams); i {
 			case 0:
 				return &v.state
@@ -2104,7 +2106,7 @@ func file_juno_drip_v1_tx_proto_init() {
 				return nil
 			}
 		}
-		file_juno_drip_v1_tx_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_haneul_drip_v1_tx_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MsgUpdateParamsResponse); i {
 			case 0:
 				return &v.state
@@ -2121,18 +2123,18 @@ func file_juno_drip_v1_tx_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_juno_drip_v1_tx_proto_rawDesc,
+			RawDescriptor: file_haneul_drip_v1_tx_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_juno_drip_v1_tx_proto_goTypes,
-		DependencyIndexes: file_juno_drip_v1_tx_proto_depIdxs,
-		MessageInfos:      file_juno_drip_v1_tx_proto_msgTypes,
+		GoTypes:           file_haneul_drip_v1_tx_proto_goTypes,
+		DependencyIndexes: file_haneul_drip_v1_tx_proto_depIdxs,
+		MessageInfos:      file_haneul_drip_v1_tx_proto_msgTypes,
 	}.Build()
-	File_juno_drip_v1_tx_proto = out.File
-	file_juno_drip_v1_tx_proto_rawDesc = nil
-	file_juno_drip_v1_tx_proto_goTypes = nil
-	file_juno_drip_v1_tx_proto_depIdxs = nil
+	File_haneul_drip_v1_tx_proto = out.File
+	file_haneul_drip_v1_tx_proto_rawDesc = nil
+	file_haneul_drip_v1_tx_proto_goTypes = nil
+	file_haneul_drip_v1_tx_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: juno/clock/v1/tx.proto
+// source: haneul/clock/v1/tx.proto
 
 package clockv1
 
@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Msg_RegisterClockContract_FullMethodName   = "/juno.clock.v1.Msg/RegisterClockContract"
-	Msg_UnregisterClockContract_FullMethodName = "/juno.clock.v1.Msg/UnregisterClockContract"
-	Msg_UnjailClockContract_FullMethodName     = "/juno.clock.v1.Msg/UnjailClockContract"
-	Msg_UpdateParams_FullMethodName            = "/juno.clock.v1.Msg/UpdateParams"
+	Msg_RegisterClockContract_FullMethodName   = "/haneul.clock.v1.Msg/RegisterClockContract"
+	Msg_UnregisterClockContract_FullMethodName = "/haneul.clock.v1.Msg/UnregisterClockContract"
+	Msg_UnjailClockContract_FullMethodName     = "/haneul.clock.v1.Msg/UnjailClockContract"
+	Msg_UpdateParams_FullMethodName            = "/haneul.clock.v1.Msg/UpdateParams"
 )
 
 // MsgClient is the client API for Msg service.
@@ -230,7 +230,7 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Msg_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "juno.clock.v1.Msg",
+	ServiceName: "haneul.clock.v1.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -251,5 +251,5 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "juno/clock/v1/tx.proto",
+	Metadata: "haneul/clock/v1/tx.proto",
 }

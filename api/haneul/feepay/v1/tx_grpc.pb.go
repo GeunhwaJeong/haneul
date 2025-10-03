@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: juno/feepay/v1/tx.proto
+// source: haneul/feepay/v1/tx.proto
 
 package feepayv1
 
@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Msg_RegisterFeePayContract_FullMethodName          = "/juno.feepay.v1.Msg/RegisterFeePayContract"
-	Msg_UnregisterFeePayContract_FullMethodName        = "/juno.feepay.v1.Msg/UnregisterFeePayContract"
-	Msg_FundFeePayContract_FullMethodName              = "/juno.feepay.v1.Msg/FundFeePayContract"
-	Msg_UpdateFeePayContractWalletLimit_FullMethodName = "/juno.feepay.v1.Msg/UpdateFeePayContractWalletLimit"
-	Msg_UpdateParams_FullMethodName                    = "/juno.feepay.v1.Msg/UpdateParams"
+	Msg_RegisterFeePayContract_FullMethodName          = "/haneul.feepay.v1.Msg/RegisterFeePayContract"
+	Msg_UnregisterFeePayContract_FullMethodName        = "/haneul.feepay.v1.Msg/UnregisterFeePayContract"
+	Msg_FundFeePayContract_FullMethodName              = "/haneul.feepay.v1.Msg/FundFeePayContract"
+	Msg_UpdateFeePayContractWalletLimit_FullMethodName = "/haneul.feepay.v1.Msg/UpdateFeePayContractWalletLimit"
+	Msg_UpdateParams_FullMethodName                    = "/haneul.feepay.v1.Msg/UpdateParams"
 )
 
 // MsgClient is the client API for Msg service.
@@ -258,7 +258,7 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Msg_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "juno.feepay.v1.Msg",
+	ServiceName: "haneul.feepay.v1.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -283,5 +283,5 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "juno/feepay/v1/tx.proto",
+	Metadata: "haneul/feepay/v1/tx.proto",
 }

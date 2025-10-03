@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: juno/clock/v1/query.proto
+// source: haneul/clock/v1/query.proto
 
 package clockv1
 
@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Query_ClockContracts_FullMethodName = "/juno.clock.v1.Query/ClockContracts"
-	Query_ClockContract_FullMethodName  = "/juno.clock.v1.Query/ClockContract"
-	Query_Params_FullMethodName         = "/juno.clock.v1.Query/Params"
+	Query_ClockContracts_FullMethodName = "/haneul.clock.v1.Query/ClockContracts"
+	Query_ClockContract_FullMethodName  = "/haneul.clock.v1.Query/ClockContract"
+	Query_Params_FullMethodName         = "/haneul.clock.v1.Query/Params"
 )
 
 // QueryClient is the client API for Query service.
@@ -186,7 +186,7 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Query_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "juno.clock.v1.Query",
+	ServiceName: "haneul.clock.v1.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -203,5 +203,5 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "juno/clock/v1/query.proto",
+	Metadata: "haneul/clock/v1/query.proto",
 }

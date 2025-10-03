@@ -15,6 +15,5 @@ cd ..
 
 # move proto files to the right places
 cp -r ./github.com/GeunhwaJeong/haneul/x/* x/
-cp -r ./github.com/cosmos/gaia/x/* x/
 
 rm -rf ./github.com

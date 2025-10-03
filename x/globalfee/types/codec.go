@@ -10,8 +10,8 @@ import (
 
 // RegisterLegacyAminoCodec registers concrete types on the LegacyAmino codec
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(Params{}, "gaia/x/globalfee/Params", nil)
-	legacy.RegisterAminoMsg(cdc, &MsgUpdateParams{}, "gaia/x/globalfee/MsgUpdateParams")
+	cdc.RegisterConcrete(Params{}, "haneul/x/globalfee/Params", nil)
+	legacy.RegisterAminoMsg(cdc, &MsgUpdateParams{}, "haneul/x/globalfee/MsgUpdateParams")
 }
 
 func RegisterInterfaces(registry types.InterfaceRegistry) {
