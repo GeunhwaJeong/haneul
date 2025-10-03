@@ -9,7 +9,7 @@ parent:
 
 ## Abstract
 
-This document specifies the internal `x/drip` module of Juno Network.
+This document specifies the internal `x/drip` module of Haneul Network.
 
 The `x/drip` allows specific addresses (usually smart contracts) to send tokens to the fee_pool module in order to perform a live airdrop to Juno Stakers.
 

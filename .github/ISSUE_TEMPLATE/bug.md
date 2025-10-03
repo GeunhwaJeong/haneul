@@ -8,7 +8,7 @@ assignees: ''
 
 #### Specifications
 
-Juno version: `Junod version`
+Haneul version: `Haneuld version`
 OS & Version: Windows/Linux/OSX
 Commit hash: 
 

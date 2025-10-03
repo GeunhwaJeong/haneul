@@ -13,7 +13,7 @@ v                     without deliberation
 
 <!-- Why do we need this feature? 
 What problems may be addressed by introducing this feature?
-What benefits does Juno stand to gain by including this feature?
+What benefits does Haneul stand to gain by including this feature?
 Are there any disadvantages to including this feature? -->
 
 ## Proposal

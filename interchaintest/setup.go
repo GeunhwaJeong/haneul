@@ -61,7 +61,7 @@ var (
 
 	junoConfig = ibc.ChainConfig{
 		Type:                "cosmos",
-		Name:                "juno",
+		Name:          "haneul",
 		ChainID:             "haneul-2",
 		Images:              []ibc.DockerImage{HaneulImage},
 		Bin:                 "haneuld",
@@ -136,8 +136,8 @@ func CreateThisBranchChain(t *testing.T, numVals, numFull int) []ibc.Chain {
 func CreateChainWithCustomConfig(t *testing.T, numVals, numFull int, config ibc.ChainConfig) []ibc.Chain {
 	cf := interchaintest.NewBuiltinChainFactory(zaptest.NewLogger(t), []*interchaintest.ChainSpec{
 		{
-			Name:          "juno",
-			ChainName:     "juno",
+			Name:          "haneul",
+			ChainName:          "haneul",
 			Version:       config.Images[0].Version,
 			ChainConfig:   config,
 			NumValidators: &numVals,

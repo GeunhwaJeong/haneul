@@ -3,7 +3,7 @@ package module
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 
-	feepayv1 "github.com/GeunhwaJeong/haneul/api/juno/feepay/v1"
+	feepayv1 "github.com/GeunhwaJeong/haneul/api/haneul/feepay/v1"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.

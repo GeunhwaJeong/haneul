@@ -1,5 +1,5 @@
-# docker build . -t cosmoscontracts/haneul:latest
-# docker run --rm -it cosmoscontracts/haneul:latest /bin/sh
+# docker build . -t geunhwajeong/haneul:latest
+# docker run --rm -it geunhwajeong/haneul:latest /bin/sh
 FROM golang:1.23.9-alpine AS go-builder
 
 # this comes from standard alpine nightly file

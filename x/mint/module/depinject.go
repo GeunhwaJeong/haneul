@@ -9,7 +9,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 
-	modulev1 "github.com/GeunhwaJeong/haneul/api/juno/mint/module/v1"
+	modulev1 "github.com/GeunhwaJeong/haneul/api/haneul/mint/module/v1"
 	"github.com/GeunhwaJeong/haneul/x/mint/keeper"
 	"github.com/GeunhwaJeong/haneul/x/mint/types"
 )

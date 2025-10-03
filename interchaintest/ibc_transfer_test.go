@@ -32,7 +32,7 @@ func TestJunoGaiaIBCTransfer(t *testing.T) {
 
 	cf := interchaintest.NewBuiltinChainFactory(zaptest.NewLogger(t), []*interchaintest.ChainSpec{
 		{
-			Name:          "juno",
+			Name:          "haneul",
 			ChainConfig:   junoConfig,
 			NumValidators: &numVals,
 			NumFullNodes:  &numFullNodes,

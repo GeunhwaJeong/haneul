@@ -12,7 +12,7 @@ func GetDockerImageInfo() (repo, version string) {
 	branchVersion, found := os.LookupEnv("BRANCH_CI")
 	if !found {
 		// make local-image
-		repo = "juno"
+		repo = "haneul"
 		branchVersion = "local"
 	}
 

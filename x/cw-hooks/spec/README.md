@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This document specifies the internal `x/cw-hooks` module of Juno Network.
+This document specifies the internal `x/cw-hooks` module of Haneul Network.
 
 The `x/cw-hooks` module allows specific contracts to be executed at the end of every block. This allows the smart contract to perform actions that may need to happen every block, or at set block intervals.
 

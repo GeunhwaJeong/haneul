@@ -53,7 +53,7 @@ func TestPacketForwardMiddlewareRouter(t *testing.T) {
 	// base config which all networks will use as defaults.
 	baseCfg := ibc.ChainConfig{
 		Type:                "cosmos",
-		Name:                "juno",
+		Name:          "haneul",
 		ChainID:             "", // change this for each
 		Images:              []ibc.DockerImage{JunoImage},
 		Bin:                 "junod",
@@ -88,25 +88,25 @@ func TestPacketForwardMiddlewareRouter(t *testing.T) {
 
 	cf := interchaintest.NewBuiltinChainFactory(zaptest.NewLogger(t), []*interchaintest.ChainSpec{
 		{
-			Name:          "juno",
+			Name:          "haneul",
 			ChainConfig:   configA,
 			NumValidators: &numVals,
 			NumFullNodes:  &numFullNodes,
 		},
 		{
-			Name:          "juno",
+			Name:          "haneul",
 			ChainConfig:   configB,
 			NumValidators: &numVals,
 			NumFullNodes:  &numFullNodes,
 		},
 		{
-			Name:          "juno",
+			Name:          "haneul",
 			ChainConfig:   configC,
 			NumValidators: &numVals,
 			NumFullNodes:  &numFullNodes,
 		},
 		{
-			Name:          "juno",
+			Name:          "haneul",
 			ChainConfig:   configD,
 			NumValidators: &numVals,
 			NumFullNodes:  &numFullNodes,

@@ -37,13 +37,13 @@ func TestJunoIBCHooks(t *testing.T) {
 
 	cf := interchaintest.NewBuiltinChainFactory(zaptest.NewLogger(t), []*interchaintest.ChainSpec{
 		{
-			Name:          "juno",
+			Name:          "haneul",
 			ChainConfig:   junoConfig,
 			NumValidators: &numVals,
 			NumFullNodes:  &numFullNodes,
 		},
 		{
-			Name:          "juno",
+			Name:          "haneul",
 			ChainConfig:   cfg2,
 			NumValidators: &numVals,
 			NumFullNodes:  &numFullNodes,
