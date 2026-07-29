@@ -12,7 +12,7 @@ envs:
     rpc: "http://bogus.invalid/"
     ws: ~
     basic_auth: ~
-    chain_id: 35834a8a
+    chain_id: a0053d9e
   - alias: devnet
     rpc: "http://bogus.invalid/"
     ws: ~
