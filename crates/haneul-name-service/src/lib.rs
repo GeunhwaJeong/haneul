@@ -223,11 +223,11 @@ impl NameServiceConfig {
     // Create a config based on the package and object ids published on mainnet
     pub fn mainnet() -> Self {
         const MAINNET_NS_PACKAGE_ADDRESS: &str =
-            "0xd22b24490e0bae52676651b4f56660a5ff8022a2576e0089f79b3c88d44e08f0";
+            "0x047dfbd82298ec1c2c70b5743a8c4a00614ff864a580069c635f2dad3a7c76fa";
         const MAINNET_NS_REGISTRY_ID: &str =
-            "0xe64cd9db9f829c6cc405d9790bd71567ae07259855f4fba6f02c84f52298c106";
+            "0xf539703ae28a9f324729506626766909f800a7e40ec90c6f2c8e865103d96525";
         const MAINNET_NS_REVERSE_REGISTRY_ID: &str =
-            "0x2fd099e17a292d2bc541df474f9fafa595653848cbabb2d7a4656ec786a1969f";
+            "0x60b38f5be27728c4c2e8861cf4213e9841c2ed0807236ffc583f4980af73f773";
 
         let package_address = HaneulAddress::from_str(MAINNET_NS_PACKAGE_ADDRESS).unwrap();
         let registry_id = ObjectID::from_str(MAINNET_NS_REGISTRY_ID).unwrap();
