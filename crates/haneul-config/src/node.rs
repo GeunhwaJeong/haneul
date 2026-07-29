@@ -789,19 +789,6 @@ pub fn default_zklogin_oauth_providers() -> BTreeMap<Chain, BTreeSet<String>> {
         "Facebook".to_string(),
         "Twitch".to_string(),
         "Apple".to_string(),
-        "KarrierOne".to_string(),
-        "Credenza3".to_string(),
-        "Playtron".to_string(),
-        "Onefc".to_string(),
-        "Threedos".to_string(),
-        "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es".to_string(), // Trace, external partner
-        "Arden".to_string(),
-        "FanTV".to_string(),
-        "EveFrontier".to_string(),
-        "TestEveFrontier".to_string(),
-        "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz".to_string(), // Decot, external partner
-        "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg".to_string(), // test Gamma Prime, external partner
-        "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E".to_string(), // Gamma Prime, external partner
     ]);
     map.insert(Chain::Mainnet, providers.clone());
     map.insert(Chain::Testnet, providers);
