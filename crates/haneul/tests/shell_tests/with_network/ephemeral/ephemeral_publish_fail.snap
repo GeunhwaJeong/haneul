@@ -54,6 +54,6 @@ Failed to publish the Move module(s), reason: Your package is already published.
  - If you are doing a test publish, you can either specify a new file with `--pubfile-path`, or remove the entry from your existing ephemeral publication file.
 
 ----- stderr -----
-INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY Haneul
+INCLUDING DEPENDENCY MoveStdlib
 BUILDING a

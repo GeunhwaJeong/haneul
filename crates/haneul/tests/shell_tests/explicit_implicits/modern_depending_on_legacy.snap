@@ -14,7 +14,7 @@ exit_code: 0
 ----- stdout -----
 
 ----- stderr -----
-INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY Haneul
+INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY legacy_can_use_legacy
 BUILDING modern_depending_on_legacy

@@ -51,6 +51,7 @@ event.yaml
 funds_accumulator.yaml
 groth16.yaml
 group_ops.yaml
+haneul.yaml
 hash.yaml
 hex.yaml
 hmac.yaml
@@ -72,7 +73,6 @@ prover.yaml
 random.yaml
 rangeproofs.yaml
 ristretto255.yaml
-haneul.yaml
 table.yaml
 table_vec.yaml
 token.yaml

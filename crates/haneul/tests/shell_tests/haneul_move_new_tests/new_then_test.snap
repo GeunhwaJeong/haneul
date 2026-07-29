@@ -13,8 +13,8 @@ cd example && haneul move --client.config $CONFIG test
 success: true
 exit_code: 0
 ----- stdout -----
-INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY Haneul
+INCLUDING DEPENDENCY MoveStdlib
 BUILDING example
 Running Move unit tests
 Test result: OK. Total tests: 0; passed: 0; failed: 0

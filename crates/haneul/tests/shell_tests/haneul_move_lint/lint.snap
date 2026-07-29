@@ -14,8 +14,8 @@ COLOR_MODE=NONE haneul move --client.config $CONFIG lint -p example
 success: true
 exit_code: 0
 ----- stdout -----
-INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY Haneul
+INCLUDING DEPENDENCY MoveStdlib
 BUILDING example
 
 ----- stderr -----
