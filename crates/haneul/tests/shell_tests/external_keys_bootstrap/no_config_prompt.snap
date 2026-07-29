@@ -64,7 +64,7 @@ envs:
     rpc: "https://fullnode.mainnet.haneul.io:443"
     ws: ~
     basic_auth: ~
-    chain_id: 35834a8a
+    chain_id: a0053d9e
   - alias: devnet
     rpc: "https://fullnode.devnet.haneul.io:443"
     ws: ~

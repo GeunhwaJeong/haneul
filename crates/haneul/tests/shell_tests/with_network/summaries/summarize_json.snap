@@ -53,6 +53,7 @@ event.json
 funds_accumulator.json
 groth16.json
 group_ops.json
+haneul.json
 hash.json
 hex.json
 hmac.json
@@ -74,7 +75,6 @@ prover.json
 random.json
 rangeproofs.json
 ristretto255.json
-haneul.json
 table.json
 table_vec.json
 token.json

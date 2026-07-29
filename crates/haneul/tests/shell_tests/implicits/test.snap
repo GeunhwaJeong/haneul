@@ -12,8 +12,8 @@ haneul move --client.config $CONFIG test -p example 2> /dev/null
 success: true
 exit_code: 0
 ----- stdout -----
-INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY Haneul
+INCLUDING DEPENDENCY MoveStdlib
 BUILDING example
 Running Move unit tests
 Test result: OK. Total tests: 0; passed: 0; failed: 0

@@ -17,8 +17,8 @@ cat data/overlapping_summaries/package_summaries/address_mapping.json
 success: true
 exit_code: 0
 ----- stdout -----
-INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY Haneul
+INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY child_pkg
 INCLUDING DEPENDENCY other_child
 BUILDING overlapping_summaries
@@ -26,11 +26,11 @@ BUILDING overlapping_summaries
 Summary generation successful. Summaries stored in 'package_summaries'
 address_mapping.json
 child_pkg
+haneul
 other_child
 overlapping_summaries
 root_package_metadata.json
 std
-haneul
 {
   "id": {
     "address": "child_pkg",
@@ -201,10 +201,10 @@ haneul
   "enums": {}
 }{
   "child_pkg": "0x0000000000000000000000000000000000000000000000000000000000005870",
+  "haneul": "0x0000000000000000000000000000000000000000000000000000000000000002",
   "other_child": "0x000000000000000000000000000000000000000000000000000000000000000c",
   "overlapping_summaries": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "std": "0x0000000000000000000000000000000000000000000000000000000000000001",
-  "haneul": "0x0000000000000000000000000000000000000000000000000000000000000002"
+  "std": "0x0000000000000000000000000000000000000000000000000000000000000001"
 }
 ----- stderr -----
 [NOTE] Dependencies on Haneul, MoveStdlib, Bridge, DeepBook, and HaneulSystem are automatically added, but this feature is disabled for your package because you have explicitly included dependencies on Haneul. Consider removing these dependencies from `Move.toml`.
