@@ -77,39 +77,13 @@ validator_configs:
     zklogin-oauth-providers:
       Mainnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Testnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Unknown:
         - Apple
@@ -256,39 +230,13 @@ validator_configs:
     zklogin-oauth-providers:
       Mainnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Testnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Unknown:
         - Apple
@@ -435,39 +383,13 @@ validator_configs:
     zklogin-oauth-providers:
       Mainnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Testnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Unknown:
         - Apple
@@ -614,39 +536,13 @@ validator_configs:
     zklogin-oauth-providers:
       Mainnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Testnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Unknown:
         - Apple
@@ -793,39 +689,13 @@ validator_configs:
     zklogin-oauth-providers:
       Mainnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Testnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Unknown:
         - Apple
@@ -972,39 +842,13 @@ validator_configs:
     zklogin-oauth-providers:
       Mainnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Testnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Unknown:
         - Apple
@@ -1151,39 +995,13 @@ validator_configs:
     zklogin-oauth-providers:
       Mainnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Testnet:
         - Apple
-        - Arden
-        - "AwsTenant-region:ap-southeast-1-tenant_id:ap-southeast-1_2QQPyQXDz"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_4HdQTpt3E"
-        - "AwsTenant-region:eu-north-1-tenant_id:eu-north-1_Bpct2JyBg"
-        - "AwsTenant-region:eu-west-3-tenant_id:eu-west-3_gGVCx53Es"
-        - Credenza3
-        - EveFrontier
         - Facebook
-        - FanTV
         - Google
-        - KarrierOne
-        - Onefc
-        - Playtron
-        - TestEveFrontier
-        - Threedos
         - Twitch
       Unknown:
         - Apple
