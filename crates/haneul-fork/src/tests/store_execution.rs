@@ -571,7 +571,7 @@ fn test_read_child_object_uses_highest_local_version_within_bound() {
     store.local().write_object(&child_v5).unwrap();
     store.local().write_object(&child_v7).unwrap();
 
-    let child = haneul_types::storage::ChildObjectResolver::read_child_object(
+    let child = haneul_types::storage::RuntimeObjectResolver::read_child_object(
         &store,
         &parent,
         &child_id,
@@ -610,7 +610,7 @@ async fn test_read_child_object_falls_back_to_remote_root_version() {
 
     let store =
         DataStore::new_for_testing_with_remote(temp.path().to_path_buf(), server.uri(), checkpoint);
-    let read = haneul_types::storage::ChildObjectResolver::read_child_object(
+    let read = haneul_types::storage::RuntimeObjectResolver::read_child_object(
         &store,
         &parent,
         &child_id,
@@ -636,7 +636,7 @@ fn test_read_child_object_rejects_wrong_owner_after_bounded_lookup() {
 
     store.local().write_object(&child).unwrap();
 
-    let err = haneul_types::storage::ChildObjectResolver::read_child_object(
+    let err = haneul_types::storage::RuntimeObjectResolver::read_child_object(
         &store,
         &parent,
         &child_id,

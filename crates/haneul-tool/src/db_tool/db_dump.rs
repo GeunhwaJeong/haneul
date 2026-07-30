@@ -3,6 +3,7 @@
 
 use anyhow::{Ok, anyhow};
 use clap::{Parser, ValueEnum};
+#[cfg(not(tidehunter))]
 use comfy_table::{Cell, ContentArrangement, Row, Table};
 use haneul_config::node::AuthorityStorePruningConfig;
 use haneul_core::authority::authority_per_epoch_store::AuthorityEpochTables;
@@ -14,7 +15,6 @@ use haneul_core::authority::authority_store_tables::AuthorityPerpetualTables;
 use haneul_core::checkpoints::CheckpointStore;
 use haneul_core::epoch::committee_store::CommitteeStoreTables;
 use haneul_core::jsonrpc_index::IndexStoreTables;
-use haneul_core::rpc_index::RpcIndexStore;
 use haneul_types::base_types::EpochId;
 use prometheus::Registry;
 use std::collections::BTreeMap;
@@ -160,6 +160,9 @@ pub fn print_table_metadata(
 
         eprintln!("{}", table);
     }
+    // Table metadata is only available for the rocksdb backend.
+    #[cfg(tidehunter)]
+    let _ = (store_name, epoch, db_path, table_name);
     Ok(())
 }
 
@@ -179,7 +182,6 @@ pub async fn prune_objects(db_path: PathBuf) -> anyhow::Result<()> {
         &db_path.join("checkpoints"),
         Arc::new(PrunerWatermarks::default()),
     );
-    let rpc_index = RpcIndexStore::new_without_init(&db_path);
     let highest_pruned_checkpoint = checkpoint_store
         .get_highest_pruned_checkpoint_seq_number()?
         .unwrap_or(0);
@@ -199,7 +201,6 @@ pub async fn prune_objects(db_path: PathBuf) -> anyhow::Result<()> {
     AuthorityStorePruner::prune_objects_for_eligible_epochs(
         &perpetual_db,
         &checkpoint_store,
-        Some(&rpc_index),
         None,
         pruning_config,
         metrics,
@@ -219,7 +220,6 @@ pub async fn prune_checkpoints(db_path: PathBuf) -> anyhow::Result<()> {
         &db_path.join("checkpoints"),
         Arc::new(PrunerWatermarks::default()),
     );
-    let rpc_index = RpcIndexStore::new_without_init(&db_path);
     let metrics = AuthorityStorePruningMetrics::new(&Registry::default());
     info!("Pruning setup for db at path: {:?}", db_path.display());
     let pruning_config = AuthorityStorePruningConfig {
@@ -232,7 +232,6 @@ pub async fn prune_checkpoints(db_path: PathBuf) -> anyhow::Result<()> {
     AuthorityStorePruner::prune_checkpoints_for_eligible_epochs(
         &perpetual_db,
         &checkpoint_store,
-        Some(&rpc_index),
         None,
         pruning_config,
         metrics,

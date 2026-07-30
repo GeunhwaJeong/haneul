@@ -17,6 +17,8 @@ use haneul_rpc::proto::haneul::rpc::v2::dynamic_field::DynamicFieldKind;
 use haneul_sdk_types::Address;
 use haneul_types::base_types::ObjectID;
 use haneul_types::full_checkpoint_content::ObjectSet;
+use haneul_types::storage::DynamicFieldKey;
+use move_core_types::language_storage::StructTag;
 use prost::Message;
 use prost_types::FieldMask;
 
@@ -80,8 +82,14 @@ pub fn list_dynamic_fields(
         FieldMaskTree::from(read_mask)
     };
 
-    let mut iter =
-        indexes.dynamic_field_iter(parent.into(), page_token.map(|t| t.field_id.into()))?;
+    let mut iter = indexes.dynamic_field_iter(
+        parent.into(),
+        page_token.map(|t| DynamicFieldKey {
+            parent: parent.into(),
+            field_id: t.field_id.into(),
+            object_type: t.object_type,
+        }),
+    )?;
     let mut dynamic_fields = Vec::with_capacity(page_size);
     let mut size_bytes = 0;
     while let Some(key) = iter
@@ -111,6 +119,7 @@ pub fn list_dynamic_fields(
             encode_page_token(PageToken {
                 parent,
                 field_id: cursor.field_id.into(),
+                object_type: cursor.object_type,
             })
         });
 
@@ -137,6 +146,7 @@ fn encode_page_token(page_token: PageToken) -> Bytes {
 struct PageToken {
     parent: Address,
     field_id: Address,
+    object_type: StructTag,
 }
 
 fn get_dynamic_field(

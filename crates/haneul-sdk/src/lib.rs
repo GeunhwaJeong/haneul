@@ -108,6 +108,7 @@ use crate::apis::{CoinReadApi, EventApi, GovernanceApi, QuorumDriverApi, ReadApi
 use crate::error::{Error, HaneulRpcResult};
 
 pub mod apis;
+pub mod digests;
 pub mod error;
 pub mod haneul_client_config;
 pub mod json_rpc_error;

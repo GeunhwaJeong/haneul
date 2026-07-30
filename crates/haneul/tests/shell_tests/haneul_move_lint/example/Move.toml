@@ -1,6 +1,13 @@
 [package]
 name = "example"
 edition = "2024.beta"
+# Depend on the framework locally (copied into the sandbox by the test harness) so the
+# test does not hit the network to resolve the implicit `haneul`/`std` git dependencies.
+implicit-dependencies = false
 
 [addresses]
 example = "0x0"
+
+[dependencies]
+haneul = { local = "../haneul-framework" }
+std = { local = "../move-stdlib" }

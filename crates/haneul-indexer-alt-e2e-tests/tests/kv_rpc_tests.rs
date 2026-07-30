@@ -3,6 +3,7 @@
 
 use std::collections::BTreeSet;
 use std::path::PathBuf;
+use std::time::Duration;
 
 use haneul_indexer_alt_e2e_tests::FullCluster;
 use haneul_indexer_alt_e2e_tests::OffchainClusterConfig;
@@ -13,45 +14,38 @@ use haneul_kv_rpc::StageConfig;
 use haneul_kv_rpc::StagesConfig;
 use haneul_rpc::field::FieldMask;
 use haneul_rpc::field::FieldMaskUtil;
+use haneul_rpc::proto::haneul::rpc::v2::AffectedAddressFilter;
+use haneul_rpc::proto::haneul::rpc::v2::AffectedObjectFilter;
+use haneul_rpc::proto::haneul::rpc::v2::EmitModuleFilter;
+use haneul_rpc::proto::haneul::rpc::v2::EventFilter;
+use haneul_rpc::proto::haneul::rpc::v2::EventLiteral;
+use haneul_rpc::proto::haneul::rpc::v2::EventStreamHeadFilter;
+use haneul_rpc::proto::haneul::rpc::v2::EventTerm;
+use haneul_rpc::proto::haneul::rpc::v2::EventTypeFilter;
 use haneul_rpc::proto::haneul::rpc::v2::GetCheckpointRequest;
 use haneul_rpc::proto::haneul::rpc::v2::GetObjectRequest;
+use haneul_rpc::proto::haneul::rpc::v2::GetServiceInfoRequest;
 use haneul_rpc::proto::haneul::rpc::v2::GetTransactionRequest;
+use haneul_rpc::proto::haneul::rpc::v2::ListCheckpointsRequest;
+use haneul_rpc::proto::haneul::rpc::v2::ListCheckpointsResponse;
+use haneul_rpc::proto::haneul::rpc::v2::ListEventsRequest;
+use haneul_rpc::proto::haneul::rpc::v2::ListEventsResponse;
+use haneul_rpc::proto::haneul::rpc::v2::ListTransactionsRequest;
+use haneul_rpc::proto::haneul::rpc::v2::ListTransactionsResponse;
+use haneul_rpc::proto::haneul::rpc::v2::MoveCallFilter;
+use haneul_rpc::proto::haneul::rpc::v2::Ordering;
+use haneul_rpc::proto::haneul::rpc::v2::PackageWriteFilter;
+use haneul_rpc::proto::haneul::rpc::v2::QueryEndReason;
+use haneul_rpc::proto::haneul::rpc::v2::QueryOptions;
+use haneul_rpc::proto::haneul::rpc::v2::SenderFilter;
+use haneul_rpc::proto::haneul::rpc::v2::TransactionFilter;
+use haneul_rpc::proto::haneul::rpc::v2::TransactionLiteral;
+use haneul_rpc::proto::haneul::rpc::v2::TransactionTerm;
+use haneul_rpc::proto::haneul::rpc::v2::Watermark;
+use haneul_rpc::proto::haneul::rpc::v2::event_literal;
 use haneul_rpc::proto::haneul::rpc::v2::get_checkpoint_request::CheckpointId;
 use haneul_rpc::proto::haneul::rpc::v2::ledger_service_client::LedgerServiceClient;
-use haneul_rpc::proto::haneul::rpc::v2alpha::AffectedAddressFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::AffectedObjectFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::CheckpointItem;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EmitModuleFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventItem;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventLiteral;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventPredicate;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventStreamHeadFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventTerm;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventTypeFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::ListCheckpointsRequest;
-use haneul_rpc::proto::haneul::rpc::v2alpha::ListEventsRequest;
-use haneul_rpc::proto::haneul::rpc::v2alpha::ListTransactionsRequest;
-use haneul_rpc::proto::haneul::rpc::v2alpha::MoveCallFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::Ordering;
-use haneul_rpc::proto::haneul::rpc::v2alpha::PackageWriteFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::QueryEndReason;
-use haneul_rpc::proto::haneul::rpc::v2alpha::QueryOptions;
-use haneul_rpc::proto::haneul::rpc::v2alpha::SenderFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionItem;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionLiteral;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionPredicate;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionTerm;
-use haneul_rpc::proto::haneul::rpc::v2alpha::Watermark;
-use haneul_rpc::proto::haneul::rpc::v2alpha::event_literal;
-use haneul_rpc::proto::haneul::rpc::v2alpha::event_predicate;
-use haneul_rpc::proto::haneul::rpc::v2alpha::ledger_service_client::LedgerServiceClient as KvLedgerServiceClient;
-use haneul_rpc::proto::haneul::rpc::v2alpha::list_checkpoints_response;
-use haneul_rpc::proto::haneul::rpc::v2alpha::list_events_response;
-use haneul_rpc::proto::haneul::rpc::v2alpha::list_transactions_response;
-use haneul_rpc::proto::haneul::rpc::v2alpha::transaction_literal;
-use haneul_rpc::proto::haneul::rpc::v2alpha::transaction_predicate;
+use haneul_rpc::proto::haneul::rpc::v2::transaction_literal;
 use haneul_test_transaction_builder::TestTransactionBuilder;
 use haneul_types::base_types::HaneulAddress;
 use haneul_types::base_types::ObjectID;
@@ -72,33 +66,46 @@ const DEFAULT_CHECKPOINT_RANGE_END: u64 = 3_000_000;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum WmFrame {
+    /// Frame carrying a payload and its watermark.
     Item,
+    /// Payload-less frame carrying a watermark: progress beacons and the
+    /// natural-completion / ScanLimit terminal frames.
     Standalone,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum TerminalFrame {
+    Item,
+    Standalone,
+    Bare,
+}
+
 struct TransactionsResult {
-    transactions: Vec<TransactionItem>,
+    transactions: Vec<ListTransactionsResponse>,
     end: bool,
     end_cursor: Option<prost::bytes::Bytes>,
     end_reason: Option<QueryEndReason>,
+    terminal_frame: Option<TerminalFrame>,
     ordering: Ordering,
     frames: Vec<(WmFrame, Watermark)>,
 }
 
 struct EventsResult {
-    events: Vec<EventItem>,
+    events: Vec<ListEventsResponse>,
     end: bool,
     end_cursor: Option<prost::bytes::Bytes>,
     end_reason: Option<QueryEndReason>,
+    terminal_frame: Option<TerminalFrame>,
     ordering: Ordering,
     frames: Vec<(WmFrame, Watermark)>,
 }
 
 struct CheckpointsResult {
-    checkpoints: Vec<CheckpointItem>,
+    checkpoints: Vec<ListCheckpointsResponse>,
     end: bool,
     end_cursor: Option<prost::bytes::Bytes>,
     end_reason: Option<QueryEndReason>,
+    terminal_frame: Option<TerminalFrame>,
     ordering: Ordering,
     frames: Vec<(WmFrame, Watermark)>,
 }
@@ -106,16 +113,65 @@ struct CheckpointsResult {
 fn request_ordering(options: Option<&QueryOptions>) -> Ordering {
     options.map(|o| o.ordering()).unwrap_or(Ordering::Ascending)
 }
+/// A cluster whose kv-rpc server serves the List APIs. They are off by default,
+/// matching production, so every test in this file opts in.
+async fn list_api_cluster() -> FullCluster {
+    list_api_cluster_with_config(KvRpcConfig::default()).await
+}
+
+/// [`list_api_cluster`] for tests that also need to tune the kv-rpc config.
+async fn list_api_cluster_with_config(mut kv_rpc_config: KvRpcConfig) -> FullCluster {
+    kv_rpc_config.enable_list_apis = Some(true);
+    FullCluster::new_with_configs(
+        Simulacrum::new(),
+        OffchainClusterConfig {
+            kv_rpc_config,
+            ..Default::default()
+        },
+        &prometheus::Registry::new(),
+    )
+    .await
+    .expect("Failed to create cluster")
+}
+
+async fn wait_for_kv_checkpoint(cluster: &FullCluster, required_checkpoint: u64) {
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+        .await
+        .expect("connect to KV RPC service-info endpoint");
+    let mut last_observed = None;
+
+    tokio::time::timeout(Duration::from_secs(30), async {
+        loop {
+            if let Ok(response) = client
+                .get_service_info(GetServiceInfoRequest::default())
+                .await
+            {
+                last_observed = response.into_inner().checkpoint_height;
+                if last_observed.is_some_and(|checkpoint| checkpoint >= required_checkpoint) {
+                    return;
+                }
+            }
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+    })
+    .await
+    .unwrap_or_else(|_| {
+        panic!(
+            "KV RPC did not advertise checkpoint {required_checkpoint} within 30s; \
+             last advertised checkpoint was {last_observed:?}"
+        )
+    });
+}
 
 /// The event's ledger position now lives on the embedded `Event`, not the
-/// enclosing `EventItem`; these accessors read it back for assertions.
-fn event_transaction_digest(item: &EventItem) -> Option<String> {
+/// response frame; these accessors read it back for assertions.
+fn event_transaction_digest(item: &ListEventsResponse) -> Option<String> {
     item.event
         .as_ref()
         .and_then(|event| event.transaction_digest.clone())
 }
 
-fn event_index_of(item: &EventItem) -> Option<u32> {
+fn event_index_of(item: &ListEventsResponse) -> Option<u32> {
     item.event.as_ref().and_then(|event| event.event_index)
 }
 
@@ -265,6 +321,26 @@ fn assert_item_limit_end(end: bool, reason: Option<QueryEndReason>) {
     assert_eq!(reason, Some(QueryEndReason::ItemLimit));
 }
 
+fn assert_item_limit_fused(terminal_frame: Option<TerminalFrame>, frames: &[(WmFrame, Watermark)]) {
+    assert_eq!(
+        terminal_frame,
+        Some(TerminalFrame::Item),
+        "ItemLimit must be fused onto the final payload"
+    );
+    assert!(
+        matches!(frames.last(), Some((WmFrame::Item, _))),
+        "ItemLimit must not append a standalone watermark frame"
+    );
+}
+
+fn assert_standalone_terminal(terminal_frame: Option<TerminalFrame>) {
+    assert_eq!(
+        terminal_frame,
+        Some(TerminalFrame::Standalone),
+        "natural and ScanLimit completion must use one payload-free watermark+end frame"
+    );
+}
+
 /// Walks every Watermark frame (item-embedded + standalone) in delivery order
 /// and asserts the per-frame wire contract:
 ///   - `cursor` is always populated.
@@ -314,7 +390,7 @@ fn assert_checkpoint_cursors(result: &CheckpointsResult) {
     assert_watermark_contract(&result.frames, result.ordering);
 }
 
-fn checkpoint_sequence(response: &CheckpointItem) -> u64 {
+fn checkpoint_sequence(response: &ListCheckpointsResponse) -> u64 {
     response
         .checkpoint
         .as_ref()
@@ -323,7 +399,7 @@ fn checkpoint_sequence(response: &CheckpointItem) -> u64 {
 }
 
 async fn list_transactions_result(
-    client: &mut KvLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListTransactionsRequest,
 ) -> TransactionsResult {
     let ordering = request_ordering(request.options.as_ref());
@@ -337,33 +413,32 @@ async fn list_transactions_result(
     let mut end = false;
     let mut end_cursor = None;
     let mut end_reason = None;
+    let mut terminal_frame = None;
     while let Some(response) = stream.message().await.unwrap() {
-        match response.response.expect("list_transactions response frame") {
-            list_transactions_response::Response::Item(item) => {
-                assert!(!end, "item frame after end");
-                let wm = item
-                    .watermark
-                    .clone()
-                    .expect("transaction item must carry a watermark");
-                if let Some(c) = wm.cursor.clone() {
-                    end_cursor = Some(c);
-                }
-                frames.push((WmFrame::Item, wm));
-                transactions.push(item);
-            }
-            list_transactions_response::Response::Watermark(w) => {
-                assert!(!end, "watermark frame after end");
-                if let Some(c) = w.cursor.clone() {
-                    end_cursor = Some(c);
-                }
-                frames.push((WmFrame::Standalone, w));
-            }
-            list_transactions_response::Response::End(end_frame) => {
-                assert!(!end, "duplicate end frame");
-                end = true;
-                end_reason = Some(end_frame.reason());
-            }
-            other => panic!("unexpected list_transactions response frame: {other:?}"),
+        assert!(!end, "frame after end");
+        if let Some(c) = response.watermark.as_ref().and_then(|w| w.cursor.clone()) {
+            end_cursor = Some(c);
+        }
+        if let Some(end_frame) = &response.end {
+            end = true;
+            end_reason = Some(end_frame.reason());
+            terminal_frame = Some(if response.transaction.is_some() {
+                TerminalFrame::Item
+            } else if response.watermark.is_some() {
+                TerminalFrame::Standalone
+            } else {
+                TerminalFrame::Bare
+            });
+        }
+        if response.transaction.is_some() {
+            let wm = response
+                .watermark
+                .clone()
+                .expect("transaction item must carry a watermark");
+            frames.push((WmFrame::Item, wm));
+            transactions.push(response);
+        } else if let Some(wm) = response.watermark {
+            frames.push((WmFrame::Standalone, wm));
         }
     }
     TransactionsResult {
@@ -371,13 +446,14 @@ async fn list_transactions_result(
         end,
         end_cursor,
         end_reason,
+        terminal_frame,
         ordering,
         frames,
     }
 }
 
 async fn list_events_result(
-    client: &mut KvLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListEventsRequest,
 ) -> EventsResult {
     let ordering = request_ordering(request.options.as_ref());
@@ -387,33 +463,32 @@ async fn list_events_result(
     let mut end = false;
     let mut end_cursor = None;
     let mut end_reason = None;
+    let mut terminal_frame = None;
     while let Some(response) = stream.message().await.unwrap() {
-        match response.response.expect("list_events response frame") {
-            list_events_response::Response::Item(item) => {
-                assert!(!end, "item frame after end");
-                let wm = item
-                    .watermark
-                    .clone()
-                    .expect("event item must carry a watermark");
-                if let Some(c) = wm.cursor.clone() {
-                    end_cursor = Some(c);
-                }
-                frames.push((WmFrame::Item, wm));
-                events.push(item);
-            }
-            list_events_response::Response::Watermark(w) => {
-                assert!(!end, "watermark frame after end");
-                if let Some(c) = w.cursor.clone() {
-                    end_cursor = Some(c);
-                }
-                frames.push((WmFrame::Standalone, w));
-            }
-            list_events_response::Response::End(end_frame) => {
-                assert!(!end, "duplicate end frame");
-                end = true;
-                end_reason = Some(end_frame.reason());
-            }
-            other => panic!("unexpected list_events response frame: {other:?}"),
+        assert!(!end, "frame after end");
+        if let Some(c) = response.watermark.as_ref().and_then(|w| w.cursor.clone()) {
+            end_cursor = Some(c);
+        }
+        if let Some(end_frame) = &response.end {
+            end = true;
+            end_reason = Some(end_frame.reason());
+            terminal_frame = Some(if response.event.is_some() {
+                TerminalFrame::Item
+            } else if response.watermark.is_some() {
+                TerminalFrame::Standalone
+            } else {
+                TerminalFrame::Bare
+            });
+        }
+        if response.event.is_some() {
+            let wm = response
+                .watermark
+                .clone()
+                .expect("event item must carry a watermark");
+            frames.push((WmFrame::Item, wm));
+            events.push(response);
+        } else if let Some(wm) = response.watermark {
+            frames.push((WmFrame::Standalone, wm));
         }
     }
     EventsResult {
@@ -421,13 +496,14 @@ async fn list_events_result(
         end,
         end_cursor,
         end_reason,
+        terminal_frame,
         ordering,
         frames,
     }
 }
 
 async fn list_checkpoints_result(
-    client: &mut KvLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListCheckpointsRequest,
 ) -> CheckpointsResult {
     let ordering = request_ordering(request.options.as_ref());
@@ -437,33 +513,32 @@ async fn list_checkpoints_result(
     let mut end = false;
     let mut end_cursor = None;
     let mut end_reason = None;
+    let mut terminal_frame = None;
     while let Some(response) = stream.message().await.unwrap() {
-        match response.response.expect("list_checkpoints response frame") {
-            list_checkpoints_response::Response::Item(item) => {
-                assert!(!end, "item frame after end");
-                let wm = item
-                    .watermark
-                    .clone()
-                    .expect("checkpoint item must carry a watermark");
-                if let Some(c) = wm.cursor.clone() {
-                    end_cursor = Some(c);
-                }
-                frames.push((WmFrame::Item, wm));
-                checkpoints.push(item);
-            }
-            list_checkpoints_response::Response::Watermark(w) => {
-                assert!(!end, "watermark frame after end");
-                if let Some(c) = w.cursor.clone() {
-                    end_cursor = Some(c);
-                }
-                frames.push((WmFrame::Standalone, w));
-            }
-            list_checkpoints_response::Response::End(end_frame) => {
-                assert!(!end, "duplicate end frame");
-                end = true;
-                end_reason = Some(end_frame.reason());
-            }
-            other => panic!("unexpected list_checkpoints response frame: {other:?}"),
+        assert!(!end, "frame after end");
+        if let Some(c) = response.watermark.as_ref().and_then(|w| w.cursor.clone()) {
+            end_cursor = Some(c);
+        }
+        if let Some(end_frame) = &response.end {
+            end = true;
+            end_reason = Some(end_frame.reason());
+            terminal_frame = Some(if response.checkpoint.is_some() {
+                TerminalFrame::Item
+            } else if response.watermark.is_some() {
+                TerminalFrame::Standalone
+            } else {
+                TerminalFrame::Bare
+            });
+        }
+        if response.checkpoint.is_some() {
+            let wm = response
+                .watermark
+                .clone()
+                .expect("checkpoint item must carry a watermark");
+            frames.push((WmFrame::Item, wm));
+            checkpoints.push(response);
+        } else if let Some(wm) = response.watermark {
+            frames.push((WmFrame::Standalone, wm));
         }
     }
     CheckpointsResult {
@@ -471,13 +546,14 @@ async fn list_checkpoints_result(
         end,
         end_cursor,
         end_reason,
+        terminal_frame,
         ordering,
         frames,
     }
 }
 
 async fn expect_invalid_list_transactions(
-    client: &mut KvLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListTransactionsRequest,
 ) {
     let err = client
@@ -488,7 +564,7 @@ async fn expect_invalid_list_transactions(
 }
 
 async fn expect_invalid_list_events(
-    client: &mut KvLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListEventsRequest,
 ) {
     let err = client
@@ -499,7 +575,7 @@ async fn expect_invalid_list_events(
 }
 
 async fn expect_invalid_list_checkpoints(
-    client: &mut KvLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListCheckpointsRequest,
 ) {
     let err = client
@@ -701,60 +777,57 @@ fn ev_not_sender_only_filter(addr: HaneulAddress) -> EventFilter {
     filter
 }
 
-fn tx_include(predicate: transaction_predicate::Predicate) -> TransactionLiteral {
-    let mut p = TransactionPredicate::default();
-    p.predicate = Some(predicate);
+fn tx_include(predicate: transaction_literal::Predicate) -> TransactionLiteral {
     let mut literal = TransactionLiteral::default();
-    literal.polarity = Some(transaction_literal::Polarity::Include(p));
+    literal.predicate = Some(predicate);
     literal
 }
 
-fn tx_exclude(predicate: transaction_predicate::Predicate) -> TransactionLiteral {
-    let mut p = TransactionPredicate::default();
-    p.predicate = Some(predicate);
+fn tx_exclude(predicate: transaction_literal::Predicate) -> TransactionLiteral {
     let mut literal = TransactionLiteral::default();
-    literal.polarity = Some(transaction_literal::Polarity::Exclude(p));
+    literal.predicate = Some(predicate);
+    literal.negated = true;
     literal
 }
 
 fn tx_sender_literal(addr: HaneulAddress) -> TransactionLiteral {
     let mut s = SenderFilter::default();
     s.address = Some(addr.to_string());
-    tx_include(transaction_predicate::Predicate::Sender(s))
+    tx_include(transaction_literal::Predicate::Sender(s))
 }
 
 fn tx_not_sender_literal(addr: HaneulAddress) -> TransactionLiteral {
     let mut s = SenderFilter::default();
     s.address = Some(addr.to_string());
-    tx_exclude(transaction_predicate::Predicate::Sender(s))
+    tx_exclude(transaction_literal::Predicate::Sender(s))
 }
 
 fn tx_move_call_literal(path: &str) -> TransactionLiteral {
     let mut mc = MoveCallFilter::default();
     mc.function = Some(path.to_string());
-    tx_include(transaction_predicate::Predicate::MoveCall(mc))
+    tx_include(transaction_literal::Predicate::MoveCall(mc))
 }
 
 fn tx_emit_module_literal(path: &str) -> TransactionLiteral {
     let mut em = EmitModuleFilter::default();
     em.module = Some(path.to_string());
-    tx_include(transaction_predicate::Predicate::EmitModule(em))
+    tx_include(transaction_literal::Predicate::EmitModule(em))
 }
 
 fn tx_event_type_literal(path: &str) -> TransactionLiteral {
     let mut et = EventTypeFilter::default();
     et.event_type = Some(path.to_string());
-    tx_include(transaction_predicate::Predicate::EventType(et))
+    tx_include(transaction_literal::Predicate::EventType(et))
 }
 
 fn tx_event_stream_head_literal(stream_id: ObjectID) -> TransactionLiteral {
     let mut esh = EventStreamHeadFilter::default();
     esh.stream_id = Some(stream_id.to_canonical_string(true));
-    tx_include(transaction_predicate::Predicate::EventStreamHead(esh))
+    tx_include(transaction_literal::Predicate::EventStreamHead(esh))
 }
 
 fn tx_package_write_literal() -> TransactionLiteral {
-    tx_include(transaction_predicate::Predicate::PackageWrite(
+    tx_include(transaction_literal::Predicate::PackageWrite(
         PackageWriteFilter::default(),
     ))
 }
@@ -793,38 +866,35 @@ fn tx_and(filters: Vec<TransactionFilter>) -> TransactionFilter {
     tx_filter(literals)
 }
 
-fn ev_include(predicate: event_predicate::Predicate) -> EventLiteral {
-    let mut p = EventPredicate::default();
-    p.predicate = Some(predicate);
+fn ev_include(predicate: event_literal::Predicate) -> EventLiteral {
     let mut literal = EventLiteral::default();
-    literal.polarity = Some(event_literal::Polarity::Include(p));
+    literal.predicate = Some(predicate);
     literal
 }
 
-fn ev_exclude(predicate: event_predicate::Predicate) -> EventLiteral {
-    let mut p = EventPredicate::default();
-    p.predicate = Some(predicate);
+fn ev_exclude(predicate: event_literal::Predicate) -> EventLiteral {
     let mut literal = EventLiteral::default();
-    literal.polarity = Some(event_literal::Polarity::Exclude(p));
+    literal.predicate = Some(predicate);
+    literal.negated = true;
     literal
 }
 
 fn ev_sender_literal(addr: HaneulAddress) -> EventLiteral {
     let mut s = SenderFilter::default();
     s.address = Some(addr.to_string());
-    ev_include(event_predicate::Predicate::Sender(s))
+    ev_include(event_literal::Predicate::Sender(s))
 }
 
 fn ev_not_sender_literal(addr: HaneulAddress) -> EventLiteral {
     let mut s = SenderFilter::default();
     s.address = Some(addr.to_string());
-    ev_exclude(event_predicate::Predicate::Sender(s))
+    ev_exclude(event_literal::Predicate::Sender(s))
 }
 
 fn ev_event_stream_head_literal(stream_id: ObjectID) -> EventLiteral {
     let mut esh = EventStreamHeadFilter::default();
     esh.stream_id = Some(stream_id.to_canonical_string(true));
-    ev_include(event_predicate::Predicate::EventStreamHead(esh))
+    ev_include(event_literal::Predicate::EventStreamHead(esh))
 }
 
 fn ev_sender(addr: HaneulAddress) -> EventFilter {
@@ -834,13 +904,13 @@ fn ev_sender(addr: HaneulAddress) -> EventFilter {
 fn ev_emit_module(path: &str) -> EventFilter {
     let mut em = EmitModuleFilter::default();
     em.module = Some(path.to_string());
-    ev_filter(vec![ev_include(event_predicate::Predicate::EmitModule(em))])
+    ev_filter(vec![ev_include(event_literal::Predicate::EmitModule(em))])
 }
 
 fn ev_event_type(path: &str) -> EventFilter {
     let mut et = EventTypeFilter::default();
     et.event_type = Some(path.to_string());
-    ev_filter(vec![ev_include(event_predicate::Predicate::EventType(et))])
+    ev_filter(vec![ev_include(event_literal::Predicate::EventType(et))])
 }
 
 fn ev_event_stream_head(stream_id: ObjectID) -> EventFilter {
@@ -859,9 +929,36 @@ fn ev_and(filters: Vec<EventFilter>) -> EventFilter {
 
 // --- Tests ---
 
+/// Upgrading the binary must not start serving the List APIs: providers that
+/// have not backfilled the pipelines behind them opt in explicitly.
+#[tokio::test]
+async fn test_list_apis_disabled_unless_enabled() {
+    let mut cluster = FullCluster::new().await.unwrap();
+    let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
+    transfer_self(&mut cluster, sender, &kp, gas).await;
+    let checkpoint = cluster.create_checkpoint().await;
+
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+        .await
+        .unwrap();
+
+    let mut req = ListTransactionsRequest::default();
+    req.options = Some(query_options(10));
+    let status = client
+        .list_transactions(req)
+        .await
+        .expect_err("List APIs must be unavailable by default");
+    assert_eq!(status.code(), tonic::Code::Unimplemented, "{status:?}");
+
+    // The service-info height is still served, bounded by the base pipelines
+    // alone. Waiting for it to reach the checkpoint asserts it actually
+    // advances, which a stale cached height would not.
+    wait_for_kv_checkpoint(&cluster, checkpoint.sequence_number).await;
+}
+
 #[tokio::test]
 async fn test_json_read_mask() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     let (pkg_id, gas) =
@@ -996,14 +1093,14 @@ async fn test_json_read_mask() {
 
 #[tokio::test]
 async fn test_list_transactions_unfiltered() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     let (tx_digest, _) = transfer_self(&mut cluster, sender, &kp, gas).await;
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -1064,14 +1161,14 @@ async fn test_list_transactions_unfiltered() {
 
 #[tokio::test]
 async fn test_list_transactions_with_sender_filter() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     transfer_self(&mut cluster, sender, &kp, gas).await;
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -1091,7 +1188,7 @@ async fn test_list_transactions_with_sender_filter() {
 
 #[tokio::test]
 async fn test_list_package_write_filter() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     // Publish a Move package (a package write); capture its digest directly off
@@ -1125,7 +1222,7 @@ async fn test_list_package_write_filter() {
     let checkpoint = cluster.create_checkpoint().await;
     let cp = checkpoint.sequence_number;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -1169,7 +1266,7 @@ async fn test_list_package_write_filter() {
 
 #[tokio::test]
 async fn test_list_transactions_query_options() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, mut gas) = cluster.funded_account(20 * DEFAULT_GAS_BUDGET).unwrap();
 
     // Execute several transactions to ensure options.
@@ -1181,8 +1278,11 @@ async fn test_list_transactions_query_options() {
     let tx_checkpoint = cluster.create_checkpoint().await;
     let tx_start = tx_checkpoint.sequence_number;
     let tx_end = tx_start + 1;
+    // `tx_end` is exclusive and intentionally has no transaction row. Wait for
+    // the last in-range checkpoint while preserving that missing-boundary shape.
+    wait_for_kv_checkpoint(&cluster, tx_start).await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -1202,6 +1302,7 @@ async fn test_list_transactions_query_options() {
     );
     assert_item_limit_end(response1.end, response1.end_reason);
     assert_transaction_cursors(&response1);
+    assert_item_limit_fused(response1.terminal_frame, &response1.frames);
     let cursor = transaction_end_cursor(&response1, "first response should have an end cursor");
 
     // Second response using the last item cursor.
@@ -1224,6 +1325,7 @@ async fn test_list_transactions_query_options() {
     );
     assert_eq!(response2.end_reason, Some(QueryEndReason::CheckpointBound));
     assert_transaction_cursors(&response2);
+    assert_standalone_terminal(response2.terminal_frame);
     let final_cursor = last_transaction_cursor(&response2, "final response should have a cursor");
 
     let mut req3 = ListTransactionsRequest::default();
@@ -1271,6 +1373,10 @@ async fn test_list_transactions_query_options() {
     let reverse1 = list_transactions_result(&mut client, reverse_req).await;
     assert_eq!(reverse1.transactions.len(), 2, "reverse response size");
     assert_item_limit_end(reverse1.end, reverse1.end_reason);
+    assert!(
+        reverse1.end,
+        "descending transaction request must complete without Internal when the exclusive tx_end row is absent"
+    );
     assert_transaction_cursors(&reverse1);
     let cursor = transaction_end_cursor(
         &reverse1,
@@ -1319,6 +1425,7 @@ async fn test_list_transactions_query_options() {
     let exact_result = list_transactions_result(&mut client, exact_req).await;
     assert_eq!(exact_result.transactions.len(), 3, "exact response size");
     assert_item_limit_end(exact_result.end, exact_result.end_reason);
+    assert_item_limit_fused(exact_result.terminal_frame, &exact_result.frames);
     let exact_first_cursor = first_transaction_cursor(
         &exact_result,
         "exact transaction response should have a first cursor",
@@ -1387,7 +1494,7 @@ async fn test_list_transactions_query_options() {
 
 #[tokio::test]
 async fn test_list_events_unfiltered() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     let (pkg_id, gas) =
@@ -1405,7 +1512,7 @@ async fn test_list_events_unfiltered() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -1453,9 +1560,9 @@ async fn test_list_events_unfiltered() {
 /// channel. The unfiltered `list_events` path scans `tx_seq_digest` rows bounded
 /// by `endpoint.max_limit_items` (the *source* limit, NOT the request's
 /// `limit_items`); when the event-derived tx range exceeds that bound,
-/// `clamp_tx_scan_range` flags `scan_limited`, the producer yields a frontier
-/// watermark followed by a bare `BitmapScanError::ScanLimit`, and the refactored
-/// handler arm maps it to `QueryEndReason::ScanLimit` with a resume cursor. This
+/// `clamp_tx_scan_range` flags `scan_limited`, and the handler returns a folded
+/// final frame carrying both the frontier watermark and
+/// `QueryEndReason::ScanLimit` with a resume cursor. This
 /// is the one full-stack path that drives a real `ScanLimit` terminal end to end
 /// (a genuine multi-leaf bitmap-bucket `SCAN_LIMIT` is unreachable in a feasible
 /// dataset; the merge/collapse path is covered by evaluator unit tests).
@@ -1474,26 +1581,37 @@ async fn test_list_events_unfiltered_row_cap_scan_limit_resumes() {
         }),
         ..Default::default()
     };
-    let mut cluster = FullCluster::new_with_configs(
-        Simulacrum::new(),
-        OffchainClusterConfig {
-            kv_rpc_config,
-            ..Default::default()
-        },
-        &prometheus::Registry::new(),
-    )
-    .await
-    .unwrap();
+    let mut cluster = list_api_cluster_with_config(kv_rpc_config).await;
 
-    // Seed several EVENT-LESS transactions (self-transfers emit no Move events),
-    // each in its own checkpoint, so the event-derived tx scan range spans more
-    // than the 2-row source cap.
-    let (sender, kp, mut gas) = cluster.funded_account(20 * DEFAULT_GAS_BUDGET).unwrap();
-    for _ in 0..5 {
+    // Seed a tx span wider than the two-row source cap, with real events
+    // interleaved among event-less transfers. This makes resume coverage
+    // non-vacuous: every event must survive pagination exactly once.
+    let (sender, kp, mut gas) = cluster.funded_account(30 * DEFAULT_GAS_BUDGET).unwrap();
+    gas = transfer_in_own_checkpoint(&mut cluster, sender, &kp, gas).await;
+    let (pkg_id, next_gas) =
+        publish_package(&mut cluster, sender, &kp, gas, emit_test_event_pkg_path()).await;
+    gas = next_gas;
+    cluster.create_checkpoint().await;
+    let mut emitted_digests = Vec::new();
+    for _ in 0..3 {
         gas = transfer_in_own_checkpoint(&mut cluster, sender, &kp, gas).await;
+        let (digest, next_gas) = call_move(
+            &mut cluster,
+            sender,
+            &kp,
+            gas,
+            pkg_id,
+            "emit_test_event",
+            "emit_test_event",
+        )
+        .await;
+        emitted_digests.push(digest.to_string());
+        gas = next_gas;
+        cluster.create_checkpoint().await;
     }
+    let _ = transfer_in_own_checkpoint(&mut cluster, sender, &kp, gas).await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -1508,10 +1626,22 @@ async fn test_list_events_unfiltered_row_cap_scan_limit_resumes() {
         Some(QueryEndReason::ScanLimit),
         "unfiltered scan past the row cap must terminate with SCAN_LIMIT"
     );
+    assert_standalone_terminal(first.terminal_frame);
+    assert_event_cursors(&first);
     let resume = first
         .end_cursor
         .clone()
         .expect("SCAN_LIMIT page must carry a resume cursor");
+    let mut ascending_events: Vec<_> = first
+        .events
+        .iter()
+        .map(|response| {
+            (
+                event_transaction_digest(response).expect("event digest populated"),
+                event_index_of(response).expect("event index populated"),
+            )
+        })
+        .collect();
 
     // Resume from the frontier cursor: the scan must advance (no replay) and
     // terminate on a reached-end reason once the remaining rows fit the cap.
@@ -1525,6 +1655,12 @@ async fn test_list_events_unfiltered_row_cap_scan_limit_resumes() {
         req.read_mask = Some(event_type_and_position_mask());
         req.options = Some(query_options_maybe_after(100, cursor.clone()));
         let page = list_events_result(&mut client, req).await;
+        ascending_events.extend(page.events.iter().map(|response| {
+            (
+                event_transaction_digest(response).expect("event digest populated"),
+                event_index_of(response).expect("event index populated"),
+            )
+        }));
         reason = page.end_reason.expect("each page carries an end reason");
         match reason {
             QueryEndReason::ScanLimit => {
@@ -1543,11 +1679,97 @@ async fn test_list_events_unfiltered_row_cap_scan_limit_resumes() {
             other => panic!("unexpected resume end_reason: {other:?}"),
         }
     }
+
+    let mut req = ListEventsRequest::default();
+    req.read_mask = Some(event_type_and_position_mask());
+    req.options = Some(query_options_descending(100));
+    let first = list_events_result(&mut client, req).await;
+    assert_eq!(first.end_reason, Some(QueryEndReason::ScanLimit));
+    assert_standalone_terminal(first.terminal_frame);
+    assert_event_cursors(&first);
+    let mut descending_events: Vec<_> = first
+        .events
+        .iter()
+        .map(|response| {
+            (
+                event_transaction_digest(response).expect("event digest populated"),
+                event_index_of(response).expect("event index populated"),
+            )
+        })
+        .collect();
+
+    let mut reason = QueryEndReason::ScanLimit;
+    let mut cursor = first.end_cursor.clone();
+    let mut iterations = 0;
+    while reason == QueryEndReason::ScanLimit {
+        iterations += 1;
+        assert!(iterations <= 16, "descending resume loop did not terminate");
+        let mut req = ListEventsRequest::default();
+        req.read_mask = Some(event_type_and_position_mask());
+        req.options = Some(query_options_descending_maybe_before(100, cursor.clone()));
+        let page = list_events_result(&mut client, req).await;
+        assert_event_cursors(&page);
+        descending_events.extend(page.events.iter().map(|response| {
+            (
+                event_transaction_digest(response).expect("event digest populated"),
+                event_index_of(response).expect("event index populated"),
+            )
+        }));
+        reason = page
+            .end_reason
+            .expect("each descending page carries an end reason");
+        match reason {
+            QueryEndReason::ScanLimit => {
+                assert_standalone_terminal(page.terminal_frame);
+                let next = page
+                    .end_cursor
+                    .clone()
+                    .expect("descending SCAN_LIMIT page carries a resume cursor");
+                assert_ne!(
+                    Some(&next),
+                    cursor.as_ref(),
+                    "descending resume cursor must strictly retreat, not replay"
+                );
+                cursor = Some(next);
+            }
+            QueryEndReason::LedgerTip | QueryEndReason::CheckpointBound => break,
+            other => panic!("unexpected descending resume end_reason: {other:?}"),
+        }
+    }
+
+    let ascending_unique: std::collections::HashSet<_> = ascending_events.iter().cloned().collect();
+    assert_eq!(
+        ascending_unique.len(),
+        ascending_events.len(),
+        "ascending ScanLimit resume must not duplicate events"
+    );
+    let descending_unique: std::collections::HashSet<_> =
+        descending_events.iter().cloned().collect();
+    assert_eq!(
+        descending_unique.len(),
+        descending_events.len(),
+        "descending ScanLimit resume must not duplicate events"
+    );
+    descending_events.reverse();
+    assert_eq!(
+        descending_events, ascending_events,
+        "ascending and descending ScanLimit drains must cover the same events"
+    );
+    for digest in emitted_digests {
+        assert_eq!(
+            ascending_events
+                .iter()
+                .filter(|(event_digest, _)| event_digest == &digest)
+                .count(),
+            1,
+            "emitted event transaction {digest} must appear exactly once"
+        );
+    }
 }
 
 #[tokio::test]
 async fn test_list_events_with_emit_module_filter() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     let (pkg_id, gas) =
@@ -1565,17 +1787,17 @@ async fn test_list_events_with_emit_module_filter() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
     // Filter by emit_module matching our package.
-    let mut emit_mod = haneul_rpc::proto::haneul::rpc::v2alpha::EmitModuleFilter::default();
+    let mut emit_mod = haneul_rpc::proto::haneul::rpc::v2::EmitModuleFilter::default();
     emit_mod.module = Some(format!(
         "{}::emit_test_event",
         pkg_id.to_canonical_string(true)
     ));
-    let filter = ev_filter(vec![ev_include(event_predicate::Predicate::EmitModule(
+    let filter = ev_filter(vec![ev_include(event_literal::Predicate::EmitModule(
         emit_mod,
     ))]);
 
@@ -1606,7 +1828,7 @@ async fn test_list_events_with_emit_module_filter() {
 
 #[tokio::test]
 async fn test_list_events_query_options() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     let (pkg_id, mut gas) =
@@ -1630,15 +1852,18 @@ async fn test_list_events_query_options() {
     let event_checkpoint = cluster.create_checkpoint().await;
     let event_start = event_checkpoint.sequence_number;
     let event_end = event_start + 1;
+    // `event_end` is exclusive and intentionally has no transaction row. Wait for
+    // the last in-range checkpoint while preserving that missing-boundary shape.
+    wait_for_kv_checkpoint(&cluster, event_start).await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
     // Use emit_module filter to find only events from our package.
-    let mut emit_mod = haneul_rpc::proto::haneul::rpc::v2alpha::EmitModuleFilter::default();
+    let mut emit_mod = haneul_rpc::proto::haneul::rpc::v2::EmitModuleFilter::default();
     emit_mod.module = Some(pkg_id.to_canonical_string(true));
-    let ev_filter = ev_filter(vec![ev_include(event_predicate::Predicate::EmitModule(
+    let ev_filter = ev_filter(vec![ev_include(event_literal::Predicate::EmitModule(
         emit_mod,
     ))]);
 
@@ -1658,6 +1883,7 @@ async fn test_list_events_query_options() {
     );
     assert_item_limit_end(response1.end, response1.end_reason);
     assert_event_cursors(&response1);
+    assert_item_limit_fused(response1.terminal_frame, &response1.frames);
     let cursor = event_end_cursor(&response1, "first response should have an end cursor");
 
     let mut req2 = ListEventsRequest::default();
@@ -1698,6 +1924,10 @@ async fn test_list_events_query_options() {
     let reverse1 = list_events_result(&mut client, reverse_req).await;
     assert_eq!(reverse1.events.len(), 1, "first reverse response size");
     assert_item_limit_end(reverse1.end, reverse1.end_reason);
+    assert!(
+        reverse1.end,
+        "descending event request must complete without Internal when the exclusive event_end row is absent"
+    );
     assert_event_cursors(&reverse1);
     let cursor = event_end_cursor(
         &reverse1,
@@ -1728,6 +1958,7 @@ async fn test_list_events_query_options() {
     let exact_result = list_events_result(&mut client, exact_req).await;
     assert_eq!(exact_result.events.len(), 3, "exact event response size");
     assert_item_limit_end(exact_result.end, exact_result.end_reason);
+    assert_item_limit_fused(exact_result.terminal_frame, &exact_result.frames);
     let exact_first_cursor = first_event_cursor(
         &exact_result,
         "exact event response should have a first cursor",
@@ -1752,6 +1983,7 @@ async fn test_list_events_query_options() {
         "exclusive event cursor bounds should leave the middle event"
     );
     assert_eq!(bounded.end_reason, Some(QueryEndReason::CursorBound));
+    assert_standalone_terminal(bounded.terminal_frame);
 
     let mut bounded_desc_req = ListEventsRequest::default();
     bounded_desc_req.read_mask = Some(event_type_and_position_mask());
@@ -1770,6 +2002,8 @@ async fn test_list_events_query_options() {
         "descending exclusive event cursor bounds should leave the middle event"
     );
     assert_eq!(bounded_desc.end_reason, Some(QueryEndReason::CursorBound));
+    assert_standalone_terminal(bounded_desc.terminal_frame);
+    assert_event_cursors(&bounded_desc);
 
     let mut exact_next_req = ListEventsRequest::default();
     exact_next_req.read_mask = Some(event_type_and_position_mask());
@@ -1794,7 +2028,7 @@ async fn test_list_events_query_options() {
 
 #[tokio::test]
 async fn test_list_transactions_or_prefix_and_event_predicates() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(20 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_c, kp_c, gas_c) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
@@ -1844,7 +2078,7 @@ async fn test_list_transactions_or_prefix_and_event_predicates() {
 
     cluster.create_checkpoint().await;
 
-    let client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -1925,7 +2159,7 @@ async fn test_list_transactions_or_prefix_and_event_predicates() {
 
 #[tokio::test]
 async fn test_list_events_sender_or_filter() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(20 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_c, kp_c, gas_c) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
@@ -1972,7 +2206,7 @@ async fn test_list_events_sender_or_filter() {
 
     cluster.create_checkpoint().await;
 
-    let client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2012,7 +2246,7 @@ async fn test_list_events_sender_or_filter() {
 
 #[tokio::test]
 async fn test_list_event_stream_head_filter() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     let (pkg, gas) = publish_package(
@@ -2036,7 +2270,7 @@ async fn test_list_event_stream_head_filter() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2085,7 +2319,7 @@ async fn test_list_event_stream_head_filter() {
 
 #[tokio::test]
 async fn test_list_transactions_combinator_and() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -2127,7 +2361,7 @@ async fn test_list_transactions_combinator_and() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2165,7 +2399,7 @@ async fn test_list_transactions_combinator_and() {
 
 #[tokio::test]
 async fn test_list_transactions_combinator_or_not() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -2174,7 +2408,7 @@ async fn test_list_transactions_combinator_or_not() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2208,7 +2442,7 @@ async fn test_list_transactions_combinator_or_not() {
 
 #[tokio::test]
 async fn test_list_transactions_unanchored_negation() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -2217,7 +2451,7 @@ async fn test_list_transactions_unanchored_negation() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2270,7 +2504,7 @@ async fn test_list_transactions_unanchored_negation() {
 
 #[tokio::test]
 async fn test_list_transactions_recipient_and_affected_object() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, _kp_b, _gas_b) = cluster.funded_account(DEFAULT_GAS_BUDGET).unwrap();
 
@@ -2300,7 +2534,7 @@ async fn test_list_transactions_recipient_and_affected_object() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2310,7 +2544,7 @@ async fn test_list_transactions_recipient_and_affected_object() {
     let mut req = ListTransactionsRequest::default();
     req.read_mask = Some(FieldMask::from_paths(["digest"]));
     req.filter = Some(tx_filter(vec![tx_include(
-        transaction_predicate::Predicate::AffectedAddress(r),
+        transaction_literal::Predicate::AffectedAddress(r),
     )]));
     req.options = Some(query_options(100));
     let resp = list_transactions_result(&mut client, req).await;
@@ -2329,7 +2563,7 @@ async fn test_list_transactions_recipient_and_affected_object() {
     let mut req = ListTransactionsRequest::default();
     req.read_mask = Some(FieldMask::from_paths(["digest"]));
     req.filter = Some(tx_filter(vec![tx_include(
-        transaction_predicate::Predicate::AffectedObject(ao),
+        transaction_literal::Predicate::AffectedObject(ao),
     )]));
     req.options = Some(query_options(100));
     let resp = list_transactions_result(&mut client, req).await;
@@ -2345,7 +2579,7 @@ async fn test_list_transactions_recipient_and_affected_object() {
 
 #[tokio::test]
 async fn test_list_events_event_type_cascading_and_generics() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     let (pkg, gas) =
@@ -2374,7 +2608,7 @@ async fn test_list_events_event_type_cascading_and_generics() {
 
     cluster.create_checkpoint().await;
 
-    let client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2433,7 +2667,7 @@ async fn test_list_events_event_type_cascading_and_generics() {
 
 #[tokio::test]
 async fn test_list_events_combinator_and() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -2469,7 +2703,7 @@ async fn test_list_events_combinator_and() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2500,7 +2734,7 @@ async fn test_list_events_combinator_and() {
 
 #[tokio::test]
 async fn test_list_events_combinator_or_not() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -2536,11 +2770,11 @@ async fn test_list_events_combinator_or_not() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
-    // Anchored DNF: sender A and not sender B — exercises EventLiteral::Exclude.
+    // Anchored DNF: sender A and not sender B — exercises a negated EventLiteral.
     let filter = ev_filter(vec![
         ev_sender_literal(sender_a),
         ev_not_sender_literal(sender_b),
@@ -2570,7 +2804,7 @@ async fn test_list_events_combinator_or_not() {
 
 #[tokio::test]
 async fn test_list_events_unanchored_negation() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -2606,7 +2840,7 @@ async fn test_list_events_unanchored_negation() {
 
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2654,7 +2888,7 @@ async fn test_list_events_unanchored_negation() {
 
 #[tokio::test]
 async fn test_list_events_query_options_multi_event_tx() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     let (pkg, gas) =
@@ -2715,7 +2949,7 @@ async fn test_list_events_query_options_multi_event_tx() {
     let emit_start = emit_checkpoint.sequence_number;
     let emit_end = emit_start + 1;
 
-    let client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -2925,14 +3159,14 @@ async fn test_list_events_query_options_multi_event_tx() {
 
 #[tokio::test]
 async fn test_list_filter_edge_cases() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     // One trivial tx to have something indexed.
     transfer_self(&mut cluster, sender, &kp, gas).await;
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3113,12 +3347,12 @@ async fn test_list_filter_edge_cases() {
 
 #[tokio::test]
 async fn test_list_limit_items_over_cap_is_coerced() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     transfer_self(&mut cluster, sender, &kp, gas).await;
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3145,7 +3379,7 @@ async fn test_list_limit_items_over_cap_is_coerced() {
 
 #[tokio::test]
 async fn test_list_checkpoints_unfiltered_range() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, mut gas) = cluster.funded_account(20 * DEFAULT_GAS_BUDGET).unwrap();
 
     // Three checkpoints, each containing one transfer tx.
@@ -3153,7 +3387,7 @@ async fn test_list_checkpoints_unfiltered_range() {
         gas = transfer_in_own_checkpoint(&mut cluster, sender, &kp, gas).await;
     }
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3184,7 +3418,7 @@ async fn test_list_checkpoints_unfiltered_range() {
 
 #[tokio::test]
 async fn test_list_checkpoints_with_sender_filter() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -3193,7 +3427,7 @@ async fn test_list_checkpoints_with_sender_filter() {
     // Checkpoint with sender_b's tx.
     transfer_in_own_checkpoint(&mut cluster, sender_b, &kp_b, gas_b).await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3232,7 +3466,7 @@ async fn test_list_checkpoints_with_sender_filter() {
 
 #[tokio::test]
 async fn test_list_checkpoints_combinator_or() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_c, kp_c, gas_c) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
@@ -3244,7 +3478,7 @@ async fn test_list_checkpoints_combinator_or() {
     transfer_in_own_checkpoint(&mut cluster, sender_c, &kp_c, gas_c).await;
     let cp_c = cluster.latest_checkpoint().await.unwrap().unwrap();
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3273,7 +3507,7 @@ async fn test_list_checkpoints_combinator_or() {
 
 #[tokio::test]
 async fn test_list_checkpoints_unanchored_negation() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -3282,7 +3516,7 @@ async fn test_list_checkpoints_unanchored_negation() {
     transfer_in_own_checkpoint(&mut cluster, sender_b, &kp_b, gas_b).await;
     let cp_b = cluster.latest_checkpoint().await.unwrap().unwrap();
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3314,7 +3548,7 @@ async fn test_list_checkpoints_unanchored_negation() {
 
 #[tokio::test]
 async fn test_list_checkpoints_query_options() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, mut gas) = cluster.funded_account(20 * DEFAULT_GAS_BUDGET).unwrap();
 
     // Three checkpoints, each with one transfer tx. The helper threads the
@@ -3329,7 +3563,7 @@ async fn test_list_checkpoints_query_options() {
     let checkpoint_start = *checkpoint_seqs.first().unwrap();
     let checkpoint_end = checkpoint_seqs.last().unwrap() + 1;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3376,6 +3610,7 @@ async fn test_list_checkpoints_query_options() {
     );
     assert_eq!(response2.end_reason, Some(QueryEndReason::CheckpointBound));
     assert_checkpoint_cursors(&response2);
+    assert_standalone_terminal(response2.terminal_frame);
 
     let response2_seqs: Vec<u64> = response2
         .checkpoints
@@ -3474,6 +3709,25 @@ async fn test_list_checkpoints_query_options() {
         "exact checkpoint response size"
     );
     assert_item_limit_end(exact_result.end, exact_result.end_reason);
+    assert_item_limit_fused(exact_result.terminal_frame, &exact_result.frames);
+    assert_eq!(
+        standalone_watermark_count(&exact_result.frames),
+        0,
+        "ItemLimit must not emit a standalone watermark frame"
+    );
+    assert!(
+        matches!(exact_result.frames.last(), Some((WmFrame::Item, _))),
+        "ItemLimit must end on the last item frame"
+    );
+    assert_eq!(
+        exact_result
+            .checkpoints
+            .last()
+            .and_then(|response| response.end.as_ref())
+            .map(|end| end.reason()),
+        Some(QueryEndReason::ItemLimit),
+        "last checkpoint item must carry the ItemLimit end"
+    );
     let exact_first_cursor = first_checkpoint_cursor(
         &exact_result,
         "exact checkpoint response should have a first cursor",
@@ -3539,7 +3793,7 @@ async fn test_list_checkpoints_query_options() {
 
 #[tokio::test]
 async fn test_list_checkpoints_combinator_and() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -3588,7 +3842,7 @@ async fn test_list_checkpoints_combinator_and() {
     cluster.create_checkpoint().await;
     let cp_b_call = cluster.latest_checkpoint().await.unwrap().unwrap();
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3624,11 +3878,11 @@ async fn test_list_checkpoints_combinator_and() {
 
 #[tokio::test]
 async fn test_list_checkpoints_empty_range_past_watermark() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     transfer_in_own_checkpoint(&mut cluster, sender, &kp, gas).await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3646,20 +3900,23 @@ async fn test_list_checkpoints_empty_range_past_watermark() {
 
 #[tokio::test]
 async fn test_list_checkpoints_with_transactions_read_mask() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, mut gas) = cluster.funded_account(20 * DEFAULT_GAS_BUDGET).unwrap();
 
-    // Two checkpoints, each containing one transfer tx. Capture the digests
-    // so we can confirm the populated `transactions[].digest` matches.
+    // One checkpoint with three self-transfers. The transfers chain the same
+    // gas object, so they are causally ordered and appear in the checkpoint
+    // contents in build order — capture that order to assert exact per-cp
+    // `transactions[].digest` order (not just set membership).
     let mut expected_digests: Vec<haneul_types::digests::TransactionDigest> = Vec::new();
-    for _ in 0..2 {
+    for _ in 0..3 {
         let (digest, new_gas) = transfer_self(&mut cluster, sender, &kp, gas).await;
-        cluster.create_checkpoint().await;
         expected_digests.push(digest);
         gas = new_gas;
     }
+    let checkpoint = cluster.create_checkpoint().await;
+    let seq = checkpoint.sequence_number;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3672,29 +3929,35 @@ async fn test_list_checkpoints_with_transactions_read_mask() {
 
     let resp = list_checkpoints_result(&mut client, req).await;
 
-    let returned_digests: std::collections::HashSet<String> = resp
+    let proto_cp = resp
         .checkpoints
         .iter()
-        .flat_map(|cp| {
-            let proto_cp = cp.checkpoint.as_ref().expect("checkpoint populated");
-            proto_cp
-                .transactions
-                .iter()
-                .filter_map(|tx| tx.digest.clone())
-        })
-        .collect();
+        .filter_map(|cp| cp.checkpoint.as_ref())
+        .find(|cp| cp.sequence_number == Some(seq))
+        .expect("checkpoint with our sequence number returned");
 
-    for expected in &expected_digests {
-        assert!(
-            returned_digests.contains(&expected.to_string()),
-            "expected digest {expected} to appear in transactions[].digest, got {returned_digests:?}"
-        );
-    }
+    // The checkpoint also contains system transactions (e.g. a
+    // consensus-commit prologue) around our transfers, so filter the returned
+    // digests down to the ones we created and assert their relative order is
+    // preserved end-to-end — that is what the Stage C reconstruction must get
+    // right regardless of BigTable row arrival order.
+    let expected: Vec<String> = expected_digests.iter().map(|d| d.to_string()).collect();
+    let expected_set: std::collections::HashSet<&String> = expected.iter().collect();
+    let returned_ours: Vec<String> = proto_cp
+        .transactions
+        .iter()
+        .filter_map(|tx| tx.digest.clone())
+        .filter(|d| expected_set.contains(d))
+        .collect();
+    assert_eq!(
+        returned_ours, expected,
+        "our transactions must appear in transactions[].digest in checkpoint contents order"
+    );
 }
 
 #[tokio::test]
 async fn test_list_checkpoints_with_objects_read_mask() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
 
     // One checkpoint with a transfer; capture the gas object id so we can
@@ -3703,7 +3966,7 @@ async fn test_list_checkpoints_with_objects_read_mask() {
     transfer_self(&mut cluster, sender, &kp, gas).await;
     cluster.create_checkpoint().await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3757,7 +4020,7 @@ async fn test_list_checkpoints_with_objects_read_mask() {
 // `objects` read mask silently returned empty.
 #[tokio::test]
 async fn test_get_checkpoint_with_transactions_and_objects() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender, kp, gas) = cluster.funded_account(10 * DEFAULT_GAS_BUDGET).unwrap();
     let gas_id_string = gas.0.to_canonical_string(true);
 
@@ -3847,13 +4110,13 @@ async fn build_sparse_layout(
 
 #[tokio::test]
 async fn test_list_transactions_sparse_filter_emits_watermarks() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(40 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(2 * DEFAULT_GAS_BUDGET).unwrap();
 
     // 20 noise checkpoints, 1 match, 20 more noise — `noise_after > 0`
-    // guarantees the scan reaches EOF on a non-matching frontier, so the
-    // coalescer flushes a trailing standalone Watermark.
+    // guarantees the scan reaches EOF on a non-matching frontier, so the flat
+    // trace includes a payload-less watermark on the folded final end frame.
     let match_cp = build_sparse_layout(
         &mut cluster,
         sender_a,
@@ -3867,7 +4130,7 @@ async fn test_list_transactions_sparse_filter_emits_watermarks() {
     )
     .await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3894,6 +4157,8 @@ async fn test_list_transactions_sparse_filter_emits_watermarks() {
         "matched tx is in the expected checkpoint"
     );
 
+    // Payload-less watermark frames, including the folded final `{watermark, end}`
+    // frame, are recorded as standalone frames in the trace.
     assert!(
         standalone_watermark_count(&resp.frames) >= 1,
         "sparse scan must emit at least one standalone Watermark frame"
@@ -3903,9 +4168,10 @@ async fn test_list_transactions_sparse_filter_emits_watermarks() {
         Some(QueryEndReason::LedgerTip),
         "scan should reach the ledger tip"
     );
+    assert_standalone_terminal(resp.terminal_frame);
 
-    // The last cursor (item-embedded or standalone) round-trips to an empty
-    // ledger-tip response — proves the trailing standalone WM is a real
+    // The last cursor from any flat frame round-trips to an empty ledger-tip
+    // response — proves the trailing payload-less watermark is a real
     // resumption point, not a wire decoration.
     let last_cursor = resp.end_cursor.clone().expect("trailing cursor present");
     let mut next_req = ListTransactionsRequest::default();
@@ -3931,7 +4197,7 @@ async fn test_list_transactions_sparse_filter_emits_watermarks() {
 
 #[tokio::test]
 async fn test_list_events_sparse_filter_emits_watermarks() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, mut gas_a) = cluster.funded_account(50 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(5 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -3965,7 +4231,7 @@ async fn test_list_events_sparse_filter_emits_watermarks() {
     }
     let _ = gas_a;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -3982,11 +4248,14 @@ async fn test_list_events_sparse_filter_emits_watermarks() {
         1,
         "exactly one sender_b event should match"
     );
+    // Payload-less watermark frames, including the folded final `{watermark, end}`
+    // frame, are recorded as standalone frames in the trace.
     assert!(
         standalone_watermark_count(&resp.frames) >= 1,
         "sparse event scan must emit at least one standalone Watermark frame"
     );
     assert_eq!(resp.end_reason, Some(QueryEndReason::LedgerTip));
+    assert_standalone_terminal(resp.terminal_frame);
 
     let last_cursor = resp.end_cursor.clone().expect("trailing cursor present");
     let mut next_req = ListEventsRequest::default();
@@ -4008,13 +4277,13 @@ async fn test_list_events_sparse_filter_emits_watermarks() {
     );
 }
 
-/// Every standalone Watermark cursor returned in `frames` must be a valid
-/// resume point: a follow-up query with `after = <that cursor>` must not
-/// replay any of the original `seen_digests` that came at or before that
-/// cursor in the original delivery order.
+/// Every payload-less watermark frame recorded as `Standalone` (including the
+/// folded terminal `{ watermark, end }` frame) must be a valid resume point:
+/// a follow-up query with `after = <that cursor>` must not replay any of the
+/// original `seen_digests` that came at or before that cursor.
 #[tokio::test]
 async fn test_list_transactions_resume_from_standalone_watermark() {
-    let mut cluster = FullCluster::new().await.unwrap();
+    let mut cluster = list_api_cluster().await;
     let (sender_a, kp_a, gas_a) = cluster.funded_account(40 * DEFAULT_GAS_BUDGET).unwrap();
     let (sender_b, kp_b, gas_b) = cluster.funded_account(2 * DEFAULT_GAS_BUDGET).unwrap();
 
@@ -4031,7 +4300,7 @@ async fn test_list_transactions_resume_from_standalone_watermark() {
     )
     .await;
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
 
@@ -4107,14 +4376,6 @@ async fn test_list_transactions_resume_from_standalone_watermark() {
     );
 }
 
-// NOTE: ScanLimit end-reason resumption is intentionally NOT covered e2e.
-// `BUCKET_SIZE = 65_536` (transaction_bitmap_index) means any feasible test
-// dataset fits in a single bitmap bucket, so a real bucket-budget exhaustion
-// cannot be provoked without either mocking BigTable or making BUCKET_SIZE
-// configurable — both are out of scope. The ScanLimit cursor contract is
-// unit-tested in `haneul-inverted-index` (budget validation) and handler-level
-// tests in `haneul-kv-rpc`.
-
 /// Execute `n` self-transfers from `sender` (each matched by a sender filter on
 /// `sender`), then create a single checkpoint containing them. Returns that
 /// checkpoint's sequence number and the updated gas ref.
@@ -4143,7 +4404,7 @@ fn is_resumable(reason: QueryEndReason) -> bool {
 /// Drain a filtered `ListTransactions` fully, following cursors, and return the
 /// distinct set of checkpoint sequence numbers its transactions fall in.
 async fn drain_transaction_checkpoints(
-    client: &mut KvLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     filter: TransactionFilter,
     ascending: bool,
     limit: u32,
@@ -4180,7 +4441,7 @@ async fn drain_transaction_checkpoints(
 /// Drain a filtered `ListCheckpoints` fully, following cursors, and return the
 /// set of checkpoint sequence numbers plus the final terminal reason.
 async fn drain_checkpoint_set(
-    client: &mut KvLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     filter: TransactionFilter,
     ascending: bool,
     limit: u32,
@@ -4236,16 +4497,7 @@ async fn test_list_checkpoints_dense_bucket_matches_transactions() {
         ..Default::default()
     };
 
-    let mut cluster = FullCluster::new_with_configs(
-        Simulacrum::new(),
-        OffchainClusterConfig {
-            kv_rpc_config,
-            ..Default::default()
-        },
-        &prometheus::Registry::new(),
-    )
-    .await
-    .unwrap();
+    let mut cluster = list_api_cluster_with_config(kv_rpc_config).await;
 
     let (match_sender, match_kp, mut match_gas) =
         cluster.funded_account(60 * DEFAULT_GAS_BUDGET).unwrap();
@@ -4278,7 +4530,7 @@ async fn test_list_checkpoints_dense_bucket_matches_transactions() {
     let expected: BTreeSet<u64> = [cp_lo, cp_m1, cp_m2, cp_hi].into_iter().collect();
     assert_eq!(expected.len(), 4, "distinct matching checkpoints");
 
-    let mut client = KvLedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
+    let mut client = LedgerServiceClient::connect(cluster.kv_rpc_url().to_string())
         .await
         .unwrap();
     let filter = tx_sender(match_sender);

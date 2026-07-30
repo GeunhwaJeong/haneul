@@ -16,7 +16,7 @@ use haneul_system::staking_pool::{
     PoolTokenExchangeRate,
     StakedHaneul,
     StakingPool,
-    FungibleStakedHaneul
+    FungibleStakedHaneul,
 };
 use haneul_system::validator_cap::{Self, ValidatorOperationCap};
 

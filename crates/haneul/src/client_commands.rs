@@ -63,6 +63,7 @@ use haneul_rpc_api::{
 use haneul_sdk::{
     HANEUL_COIN_TYPE, HANEUL_DEVNET_URL, HANEUL_LOCAL_NETWORK_URL, HANEUL_LOCAL_NETWORK_URL_0,
     HANEUL_TESTNET_URL,
+    digests::chain_id_base58,
     haneul_client_config::{HaneulClientConfig, HaneulEnv},
     haneul_sdk_types::bcs::ToBcs,
     wallet_context::WalletContext,
@@ -110,7 +111,6 @@ use tabled::{
 use haneul_keys::key_derive;
 use haneul_package_alt::{BuildParams, HaneulFlavor, find_environment};
 use haneul_source_validation::{BytecodeSourceVerifier, ValidationMode};
-use haneul_types::digests::ChainIdentifier;
 use move_package_alt::{
     RootPackage,
     schema::{OriginalID, Publication, PublishAddresses, PublishedID},
@@ -194,9 +194,18 @@ pub enum HaneulClientCommands {
         processing: TxProcessingArgs,
     },
 
-    /// Query the chain identifier from the rpc endpoint.
+    /// Query the chain identifier from the rpc endpoint. Prints it in both encodings: the full
+    /// Base58-encoded genesis checkpoint digest (as returned by the gRPC and GraphQL APIs) and
+    /// the legacy hex short form. Either can be used as a chain ID in the `[environments]`
+    /// section of `Move.toml`.
+    ///
+    /// Use --format=[base58|hex] to print only the specified format.
     #[clap(name = "chain-identifier")]
-    ChainIdentifier,
+    ChainIdentifier {
+        /// The format for chain identifier output, either base58 or hex.
+        #[clap(long, required = false)]
+        format: Option<ChainIdentifierFormat>,
+    },
 
     /// Query a dynamic field by its address.
     #[clap(name = "dynamic-field")]
@@ -800,6 +809,14 @@ pub struct UpgradeArgs {
 
     #[clap(flatten)]
     pub processing: TxProcessingArgs,
+}
+
+/// The format for chain identifier output, either base58 or hex.
+#[derive(clap::ValueEnum, Clone, Copy, Debug, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum ChainIdentifierFormat {
+    Base58,
+    Hex,
 }
 
 /// Returns the pubfile path, or a default based on the environment alias if not specified
@@ -1544,9 +1561,33 @@ impl HaneulClientCommands {
                 let _ = context.cache_chain_id().await?;
                 HaneulClientCommandResult::NoOutput
             }
-            HaneulClientCommands::ChainIdentifier => {
-                let ci = context.cache_chain_id().await?;
-                HaneulClientCommandResult::ChainIdentifier(ci)
+            HaneulClientCommands::ChainIdentifier { format } => {
+                // Keep populating the client.yaml chain-id cache, as other commands rely on it.
+                let hex = context.cache_chain_id().await?;
+                let base58 = chain_id_base58(&context.get_chain_identifier().await?);
+
+                match format {
+                    Some(ChainIdentifierFormat::Hex) => {
+                        return Ok(HaneulClientCommandResult::ChainIdentifier(
+                            ChainIdentifierOutput {
+                                base58: "".to_string(),
+                                hex,
+                            },
+                        ));
+                    }
+                    Some(ChainIdentifierFormat::Base58) => {
+                        return Ok(HaneulClientCommandResult::ChainIdentifier(
+                            ChainIdentifierOutput {
+                                base58,
+                                hex: "".to_string(),
+                            },
+                        ));
+                    }
+                    None => HaneulClientCommandResult::ChainIdentifier(ChainIdentifierOutput {
+                        base58,
+                        hex,
+                    }),
+                }
             }
             HaneulClientCommands::SplitCoin {
                 coin_id,
@@ -2336,9 +2377,6 @@ impl Display for HaneulClientCommandResult {
             HaneulClientCommandResult::SyncClientState => {
                 writeln!(writer, "Client state sync complete.")?;
             }
-            HaneulClientCommandResult::ChainIdentifier(ci) => {
-                writeln!(writer, "{}", ci)?;
-            }
             HaneulClientCommandResult::Switch(response) => {
                 write!(writer, "{}", response)?;
             }
@@ -2471,6 +2509,9 @@ impl Display for HaneulClientCommandResult {
             }
             HaneulClientCommandResult::DevInspect(response) => {
                 writeln!(f, "{}", Pretty(response))?;
+            }
+            HaneulClientCommandResult::ChainIdentifier(ci) => {
+                write!(f, "{}", ci)?;
             }
         }
         write!(f, "{}", writer.trim_end_matches('\n'))
@@ -2791,6 +2832,16 @@ pub struct AddressesOutput {
     pub addresses: Vec<(String, HaneulAddress)>,
 }
 
+/// The chain identifier in both supported encodings: the full Base58-encoded genesis checkpoint
+/// digest (as returned by the gRPC and GraphQL APIs) and the legacy hex short form (its first
+/// 4 bytes). Either can be used as a chain ID in the `[environments]` section of `Move.toml`.
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ChainIdentifierOutput {
+    pub base58: String,
+    pub hex: String,
+}
+
 /// Balance data prepared for both human-readable and JSON CLI output.
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -2904,7 +2955,7 @@ pub enum HaneulClientCommandResult {
     ActiveEnv(Option<String>),
     Addresses(AddressesOutput),
     Balance(Vec<BalanceOutput>, bool),
-    ChainIdentifier(String),
+    ChainIdentifier(ChainIdentifierOutput),
     ComputeTransactionDigest(TransactionData),
     DynamicFieldQuery(proto::ListDynamicFieldsResponse),
     DryRun(SimulateTransactionResponse),
@@ -2950,6 +3001,23 @@ impl Display for SwitchResponse {
         if let Some(env) = &self.env {
             writeln!(writer, "Active environment switched to [{env}]")?;
         }
+        write!(f, "{}", writer)
+    }
+}
+
+impl Display for ChainIdentifierOutput {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut writer = String::new();
+
+        if self.base58.is_empty() {
+            writeln!(writer, "{}", self.hex)?;
+        } else if self.hex.is_empty() {
+            writeln!(writer, "{}", self.base58)?;
+        } else {
+            writeln!(writer, "Base58: {}", self.base58)?;
+            writeln!(writer, "Hex: {}", self.hex)?;
+        }
+
         write!(f, "{}", writer)
     }
 }
@@ -4023,7 +4091,8 @@ async fn upgrade_command(
         .sender
         .unwrap_or(context.infer_sender(&payment.gas).await?);
     let client = context.grpc_client()?;
-    let chain_id = client.get_chain_identifier().await?.to_string();
+    let chain_identifier = client.get_chain_identifier().await?;
+    let chain_id = chain_identifier.to_string();
 
     // For upgrade, we want to force the root package to have `0x0` as its address
     build_config.root_as_zero = true;
@@ -4090,13 +4159,8 @@ async fn upgrade_command(
     if !skip_verify_compatibility {
         let protocol_version = client.get_protocol_config(None).await?.protocol_version();
 
-        let protocol_config = ProtocolConfig::get_for_version(
-            protocol_version.into(),
-            match ChainIdentifier::from_chain_short_id(&chain_id) {
-                Some(chain_id) => chain_id.chain(),
-                None => Chain::Unknown,
-            },
-        );
+        let protocol_config =
+            ProtocolConfig::get_for_version(protocol_version.into(), chain_identifier.chain());
         check_compatibility(
             client.clone(),
             package_id,

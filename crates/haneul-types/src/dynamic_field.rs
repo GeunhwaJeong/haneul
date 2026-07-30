@@ -8,7 +8,7 @@ use crate::haneul_serde::HaneulTypeTag;
 use crate::haneul_serde::Readable;
 use crate::id::UID;
 use crate::object::{MoveObject, Object};
-use crate::storage::{ChildObjectResolver, ObjectStore};
+use crate::storage::{ObjectStore, RuntimeObjectResolver};
 use crate::{HANEUL_FRAMEWORK_ADDRESS, MoveTypeTagTrait, ObjectID, SequenceNumber};
 use fastcrypto::encoding::Base64;
 use fastcrypto::hash::HashFunction;
@@ -573,9 +573,9 @@ where
     /// If the field does not exist, return None.
     pub fn load_object(
         self,
-        child_object_resolver: &dyn ChildObjectResolver,
+        runtime_object_resolver: &dyn RuntimeObjectResolver,
     ) -> Result<Option<DynamicFieldObject<K>>, HaneulError> {
-        child_object_resolver
+        runtime_object_resolver
             .read_child_object(&self.0, &self.1, self.2)
             .map(|r| r.map(DynamicFieldObject::<K>::new))
     }
@@ -583,9 +583,10 @@ where
     /// Check if the field object exists in the store.
     pub fn exists(
         self,
-        child_object_resolver: &dyn ChildObjectResolver,
+        runtime_object_resolver: &dyn RuntimeObjectResolver,
     ) -> Result<bool, HaneulError> {
-        self.load_object(child_object_resolver).map(|r| r.is_some())
+        self.load_object(runtime_object_resolver)
+            .map(|r| r.is_some())
     }
 }
 

@@ -1,6 +1,7 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
+use super::object_set::fetch_transaction_object_set;
 use crate::ErrorReason;
 use crate::RpcError;
 use crate::RpcService;
@@ -15,13 +16,13 @@ use haneul_rpc::proto::haneul::rpc::v2::ExecutedTransaction;
 use haneul_rpc::proto::haneul::rpc::v2::GetTransactionRequest;
 use haneul_rpc::proto::haneul::rpc::v2::GetTransactionResponse;
 use haneul_rpc::proto::haneul::rpc::v2::GetTransactionResult;
+use haneul_rpc::proto::haneul::rpc::v2::ObjectSet as ProtoObjectSet;
 use haneul_rpc::proto::haneul::rpc::v2::Transaction;
 use haneul_rpc::proto::haneul::rpc::v2::UserSignature;
 use haneul_rpc::proto::timestamp_ms_to_proto;
 use haneul_sdk_types::Digest;
 use haneul_types::balance_change::derive_balance_changes_2;
 use haneul_types::full_checkpoint_content::ObjectSet;
-use haneullabs_common::ZipDebugEqIteratorExt;
 use prost_types::FieldMask;
 
 pub const MAX_BATCH_REQUESTS: usize = 200;
@@ -80,10 +81,12 @@ pub fn get_transaction(
     }
 
     let transaction_read = service.reader.get_transaction_read(transaction_digest)?;
+    let objects = fetch_transaction_object_set(&service.reader, &transaction_read, &read_mask)?;
 
     let transaction = render_executed_transaction(
         service,
         transaction_read,
+        &objects,
         transaction_checkpoint,
         &read_mask,
     )?;
@@ -148,10 +151,13 @@ pub fn batch_get_transactions(
             }
 
             let transaction_read = service.reader.get_transaction_read(digest)?;
+            let objects =
+                fetch_transaction_object_set(&service.reader, &transaction_read, &read_mask)?;
 
             render_executed_transaction(
                 service,
                 transaction_read,
+                &objects,
                 transaction_checkpoint,
                 &read_mask,
             )
@@ -173,10 +179,10 @@ pub(crate) fn render_executed_transaction(
         signatures,
         effects,
         events,
-        checkpoint: _,
         timestamp_ms,
         unchanged_loaded_runtime_objects,
     }: crate::reader::TransactionRead,
+    objects: &ObjectSet,
     checkpoint: u64,
     mask: &FieldMaskTree,
 ) -> Result<ExecutedTransaction, RpcError> {
@@ -199,46 +205,11 @@ pub(crate) fn render_executed_transaction(
 
     let unchanged_loaded_runtime_objects = unchanged_loaded_runtime_objects.unwrap_or_default();
 
-    let objects: ObjectSet = if mask.contains(ExecutedTransaction::BALANCE_CHANGES_FIELD)
-        || mask.contains(ExecutedTransaction::EFFECTS_FIELD)
-    {
-        let mut objects = ObjectSet::default();
-
-        let object_keys = haneul_types::storage::get_transaction_object_set(
-            &transaction,
-            &effects,
-            &unchanged_loaded_runtime_objects,
-        )
-        .into_iter()
-        .collect::<Vec<_>>();
-
-        for (o, object_key) in service
-            .reader
-            .inner()
-            .multi_get_objects_by_key(&object_keys)
-            .into_iter()
-            .zip_debug_eq(object_keys.into_iter())
-        {
-            if let Some(o) = o {
-                objects.insert(o);
-            } else {
-                return Err(RpcError::new(
-                    tonic::Code::Internal,
-                    format!("unable to fetch object {object_key:?} for transaction {digest}"),
-                ));
-            }
-        }
-
-        objects
-    } else {
-        Default::default()
-    };
-
     if let Some(submask) = mask.subtree(ExecutedTransaction::EFFECTS_FIELD) {
         let effects = service.render_effects_to_proto(
             &effects,
             &unchanged_loaded_runtime_objects,
-            &objects,
+            objects,
             &submask,
         );
 
@@ -261,10 +232,24 @@ pub(crate) fn render_executed_transaction(
     }
 
     if mask.contains(ExecutedTransaction::BALANCE_CHANGES_FIELD) {
-        message.balance_changes = derive_balance_changes_2(&effects, &objects)
+        message.balance_changes = derive_balance_changes_2(&effects, objects)
             .into_iter()
             .map(Into::into)
             .collect();
+    }
+
+    if let Some(object_mask) = mask
+        .subtree(ExecutedTransaction::OBJECTS_FIELD)
+        .and_then(|submask| submask.subtree(ProtoObjectSet::OBJECTS_FIELD))
+    {
+        message.objects = Some(
+            ProtoObjectSet::default().with_objects(
+                objects
+                    .iter()
+                    .map(|object| service.render_object_to_proto(object, &object_mask, objects))
+                    .collect(),
+            ),
+        );
     }
 
     Ok(message)

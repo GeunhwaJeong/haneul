@@ -11,11 +11,22 @@ use haneul_indexer_alt_jsonrpc::NodeArgs as JsonRpcNodeArgs;
 use haneul_swarm_config::genesis_config::AccountConfig;
 use haneul_test_transaction_builder::TestTransactionBuilder;
 use haneul_test_transaction_builder::make_staking_transaction;
+use haneul_types::HANEUL_SYSTEM_PACKAGE_ID;
 use haneul_types::base_types::HaneulAddress;
 use haneul_types::base_types::ObjectID;
+use haneul_types::base_types::ObjectRef;
 use haneul_types::effects::TransactionEffects;
 use haneul_types::effects::TransactionEffectsAPI;
+use haneul_types::gas_coin::GEUNHWA_PER_HANEUL;
+use haneul_types::governance::ADD_STAKE_FUN_NAME;
+use haneul_types::haneul_system_state::HANEUL_SYSTEM_MODULE_NAME;
 use haneul_types::object::Owner;
+use haneul_types::programmable_transaction_builder::ProgrammableTransactionBuilder;
+use haneul_types::transaction::Argument;
+use haneul_types::transaction::CallArg;
+use haneul_types::transaction::Command;
+use haneul_types::transaction::ObjectArg;
+use haneul_types::transaction::TransactionData;
 use haneul_types::transaction::TransactionDataAPI;
 use reqwest::Client;
 use serde_json::Value;
@@ -23,6 +34,11 @@ use serde_json::json;
 use test_cluster::TestCluster;
 use test_cluster::TestClusterBuilder;
 use url::Url;
+
+// SplitCoins requires fewer than 512 amount arguments.
+const MAX_STAKES_PER_SPLIT: usize = 500;
+const STAKES_PER_CREATION_TX: usize = 580;
+const TEST_GAS_BUDGET: u64 = 50_000_000_000;
 
 struct FnDelegationTestCluster {
     onchain_cluster: TestCluster,
@@ -178,6 +194,67 @@ fn stake_id_projection(result: &Value) -> Vec<(String, Vec<String>)> {
         .collect()
 }
 
+async fn create_many_stakes(
+    cluster: &TestCluster,
+    stake_coin: ObjectRef,
+    validator: HaneulAddress,
+    mut count: usize,
+) {
+    let wallet = &cluster.wallet;
+    let gas_price = wallet.get_reference_gas_price().await.unwrap();
+    let accounts_and_objs = wallet.get_all_accounts_and_gas_objects().await.unwrap();
+
+    let (sender, gas_objects) = &accounts_and_objs[0];
+    let gas_object = gas_objects
+        .iter()
+        .copied()
+        .find(|object| object.0 != stake_coin.0)
+        .expect("missing gas object distinct from stake coin");
+
+    let mut ptb = ProgrammableTransactionBuilder::new();
+    let system = ptb.input(CallArg::HANEUL_SYSTEM_MUT).unwrap();
+    let stake_coin = ptb.obj(ObjectArg::ImmOrOwnedObject(stake_coin)).unwrap();
+    let validator = ptb.pure(validator).unwrap();
+    let stake_amount = ptb.pure(GEUNHWA_PER_HANEUL).unwrap();
+
+    while count > 0 {
+        let chunk_size = count.min(MAX_STAKES_PER_SPLIT);
+        let Argument::Result(split_command) = ptb.command(Command::SplitCoins(
+            stake_coin,
+            vec![stake_amount; chunk_size],
+        )) else {
+            unreachable!("SplitCoins should return a command result")
+        };
+
+        for result in 0..chunk_size {
+            ptb.programmable_move_call(
+                HANEUL_SYSTEM_PACKAGE_ID,
+                HANEUL_SYSTEM_MODULE_NAME.to_owned(),
+                ADD_STAKE_FUN_NAME.to_owned(),
+                vec![],
+                vec![
+                    system,
+                    Argument::NestedResult(split_command, result as u16),
+                    validator,
+                ],
+            );
+        }
+
+        count -= chunk_size;
+    }
+
+    let transaction_data = TransactionData::new_programmable(
+        *sender,
+        vec![gas_object],
+        ptb.finish(),
+        TEST_GAS_BUDGET,
+        gas_price,
+    );
+
+    let transaction = wallet.sign_transaction(&transaction_data).await;
+    wallet.execute_transaction_must_succeed(transaction).await;
+}
+
 #[tokio::test]
 async fn test_get_stakes_and_by_ids() {
     let test_cluster = FnDelegationTestCluster::new()
@@ -226,6 +303,52 @@ async fn test_get_stakes_and_by_ids() {
 
     // Two responses should match.
     assert_eq!(get_stakes_response, get_stakes_by_ids_response);
+}
+
+#[tokio::test]
+async fn test_get_stakes_batches_reward_calculation() {
+    let test_cluster = FnDelegationTestCluster::new()
+        .await
+        .expect("Failed to create test cluster");
+
+    let validator = test_cluster.get_validator_address().await;
+    let accounts_and_objs = test_cluster
+        .onchain_cluster
+        .wallet
+        .get_all_accounts_and_gas_objects()
+        .await
+        .unwrap();
+
+    let stake_owner = accounts_and_objs[0].0;
+    let stake_coins = [accounts_and_objs[0].1[1], accounts_and_objs[0].1[2]];
+    for stake_coin in stake_coins {
+        create_many_stakes(
+            &test_cluster.onchain_cluster,
+            stake_coin,
+            validator,
+            STAKES_PER_CREATION_TX,
+        )
+        .await;
+    }
+
+    test_cluster.wait_for_indexing().await;
+
+    let response = test_cluster
+        .execute_jsonrpc(
+            "haneulx_getStakes".to_string(),
+            json!({ "owner": stake_owner }),
+        )
+        .await
+        .unwrap();
+
+    assert!(response["error"].is_null(), "request failed: {response}");
+    let stake_count = response["result"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|delegation| delegation["stakes"].as_array().unwrap().len())
+        .sum::<usize>();
+    assert_eq!(stake_count, STAKES_PER_CREATION_TX * stake_coins.len());
 }
 
 #[tokio::test]

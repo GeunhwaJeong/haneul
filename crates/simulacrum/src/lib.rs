@@ -34,7 +34,7 @@ use haneul_types::haneul_system_state::epoch_start_haneul_system_state::EpochSta
 use haneul_types::messages_consensus::ConsensusDeterminedVersionAssignments;
 use haneul_types::object::{Object, Owner};
 use haneul_types::storage::ObjectKey;
-use haneul_types::storage::{ChildObjectResolver, ObjectStore, ReadStore, RpcStateReader};
+use haneul_types::storage::{ObjectStore, ReadStore, RpcStateReader, RuntimeObjectResolver};
 use haneul_types::transaction::EndOfEpochTransactionKind;
 use haneul_types::{
     base_types::{EpochId, HaneulAddress},
@@ -730,7 +730,7 @@ impl<T, V: store::SimulatorStore> ObjectStore for Simulacrum<T, V> {
     }
 }
 
-impl<T, V: store::SimulatorStore> ChildObjectResolver for Simulacrum<T, V> {
+impl<T, V: store::SimulatorStore> RuntimeObjectResolver for Simulacrum<T, V> {
     fn read_child_object(
         &self,
         parent: &ObjectID,

@@ -15,7 +15,6 @@ use haneul_test_transaction_builder::batch_make_transfer_transactions;
 use haneul_types::base_types::TransactionDigest;
 use haneul_types::haneul_system_state::haneul_system_state_summary::HaneulSystemStateSummary;
 use haneul_types::object::Owner;
-use haneul_types::transaction_driver_types::ExecuteTransactionRequestType;
 use helper::ObjectChecker;
 use jsonrpsee::core::params::ArrayParams;
 use jsonrpsee::{core::client::ClientT, http_client::HttpClientBuilder};
@@ -153,17 +152,22 @@ impl TestContext {
         desc: &str,
     ) -> HaneulTransactionBlockResponse {
         let signature = self.get_context().sign(&txn_data, desc).await;
+        let tx = Transaction::from_data(txn_data, vec![signature]);
+        let tx_digest = *tx.digest();
+        self.get_context()
+            .get_wallet()
+            .execute_transaction_must_succeed(tx)
+            .await;
         let resp = self
             .get_fullnode_client()
-            .quorum_driver_api()
-            .execute_transaction_block(
-                Transaction::from_data(txn_data, vec![signature]),
+            .read_api()
+            .get_transaction_with_options(
+                tx_digest,
                 HaneulTransactionBlockResponseOptions::new()
                     .with_object_changes()
                     .with_balance_changes()
                     .with_effects()
                     .with_events(),
-                Some(ExecuteTransactionRequestType::WaitForLocalExecution),
             )
             .await
             .unwrap_or_else(|e| panic!("Failed to execute transaction for {}. {}", desc, e));

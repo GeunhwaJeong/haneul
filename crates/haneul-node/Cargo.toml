@@ -36,6 +36,8 @@ url.workspace = true
 humantime.workspace = true
 
 consensus-core.workspace = true
+consensus-config.workspace = true
+tonic-rustls.workspace = true
 haneul-tls.workspace = true
 haneul-macros.workspace = true
 haneul-config.workspace = true
@@ -70,3 +72,7 @@ haneul-simulator.workspace = true
 [features]
 default = ["jemalloc"]
 jemalloc = ["tikv-jemallocator"]
+testing = []
+
+[dev-dependencies]
+tempfile.workspace = true

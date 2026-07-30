@@ -35,6 +35,7 @@ use haneul_types::event::Event;
 use haneul_types::object::Object;
 use haneul_types::object::Owner;
 use haneul_types::signature::GenericSignature;
+use haneul_types::transaction::SenderSignedData;
 use haneul_types::transaction::TransactionData;
 use haneul_types::transaction::TransactionDataAPI;
 use move_core_types::annotated_value::MoveDatatypeLayout;
@@ -61,11 +62,12 @@ pub(super) async fn transaction(
         .and_then(|ts| haneul_rpc::proto::proto_to_timestamp_ms(ts).ok());
 
     if options.show_input {
-        result.transaction = Some(input(ctx, tx_data.clone(), tx_signatures).await?);
+        result.transaction = Some(input(ctx, tx_data.clone(), tx_signatures.clone()).await?);
     }
 
     if options.show_raw_input {
-        result.raw_transaction = raw_input(&tx_data)?;
+        let data = SenderSignedData::new(tx_data.clone(), tx_signatures);
+        result.raw_transaction = raw_input(&data)?;
     }
 
     if options.show_raw_effects {
@@ -178,8 +180,8 @@ async fn input(
 }
 
 /// Serialize transaction data to raw BCS bytes.
-fn raw_input(tx_data: &TransactionData) -> Result<Vec<u8>, RpcError<Error>> {
-    Ok(bcs::to_bytes(tx_data).context("Failed to serialize transaction")?)
+fn raw_input(data: &SenderSignedData) -> Result<Vec<u8>, RpcError<Error>> {
+    Ok(bcs::to_bytes(data).context("Failed to serialize transaction")?)
 }
 
 /// Extract the raw effects BCS bytes from the gRPC response.

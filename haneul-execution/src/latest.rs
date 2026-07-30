@@ -6,7 +6,7 @@ use haneul_types::execution::ExecutionTiming;
 use haneul_types::execution_params::ExecutionOrEarlyError;
 use haneul_types::transaction::GasData;
 use haneul_types::{
-    base_types::{HaneulAddress, TxContext},
+    base_types::{HaneulAddress, ObjectID, SequenceNumber, TxContext},
     committee::EpochId,
     digests::TransactionDigest,
     effects::TransactionEffects,
@@ -22,6 +22,7 @@ use haneul_types::{
 use move_binary_format::CompiledModule;
 use move_trace_format::format::MoveTraceBuilder;
 use move_vm_config::verifier::{MeterConfig, VerifierConfig};
+use std::collections::BTreeMap;
 use std::{cell::RefCell, rc::Rc, sync::Arc};
 
 use haneul_adapter_latest::adapter::{new_move_runtime, run_metered_move_bytecode_verifier};
@@ -73,6 +74,7 @@ impl executor::Executor for Executor {
         epoch_id: &EpochId,
         epoch_timestamp_ms: u64,
         input_objects: CheckedInputObjects,
+        system_object_versions: BTreeMap<ObjectID, SequenceNumber>,
         gas: GasData,
         gas_status: HaneulGasStatus,
         transaction_kind: TransactionKind,
@@ -91,6 +93,7 @@ impl executor::Executor for Executor {
             execute_transaction_to_effects::<execution_mode::Normal>(
                 store,
                 input_objects,
+                system_object_versions,
                 gas,
                 gas_status,
                 transaction_kind,
@@ -122,6 +125,7 @@ impl executor::Executor for Executor {
         epoch_id: &EpochId,
         epoch_timestamp_ms: u64,
         input_objects: CheckedInputObjects,
+        system_object_versions: BTreeMap<ObjectID, SequenceNumber>,
         gas: GasData,
         gas_status: HaneulGasStatus,
         transaction_kind: TransactionKind,
@@ -140,6 +144,7 @@ impl executor::Executor for Executor {
             execute_transaction_to_effects::<execution_mode::Normal<ExecutionError>>(
                 store,
                 input_objects,
+                system_object_versions,
                 gas,
                 gas_status,
                 transaction_kind,
@@ -188,6 +193,8 @@ impl executor::Executor for Executor {
             execute_transaction_to_effects::<execution_mode::DevInspect<true>>(
                 store,
                 input_objects,
+                // TODO: Support system object versions for dev-inspect.
+                BTreeMap::new(),
                 gas,
                 gas_status,
                 transaction_kind,
@@ -207,6 +214,8 @@ impl executor::Executor for Executor {
             execute_transaction_to_effects::<execution_mode::DevInspect<false>>(
                 store,
                 input_objects,
+                // TODO: Support system object versions for dev-inspect.
+                BTreeMap::new(),
                 gas,
                 gas_status,
                 transaction_kind,

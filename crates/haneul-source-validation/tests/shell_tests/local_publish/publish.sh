@@ -3,7 +3,7 @@
 
 haneul client --client.config $CONFIG switch --env localnet
 
-chain_id=$(haneul client --client.config $CONFIG chain-identifier)
+chain_id=$(haneul client --client.config $CONFIG chain-identifier | awk '/^Hex:/ {print $2}')
 echo "[environments]" >> a/Move.toml
 echo "localnet = \"$chain_id\"" >> a/Move.toml
 echo "[environments]" >> b/Move.toml

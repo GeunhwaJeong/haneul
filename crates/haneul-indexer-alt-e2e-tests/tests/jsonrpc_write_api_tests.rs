@@ -28,7 +28,10 @@ use haneul_pg_db::temp::get_available_port;
 use haneul_swarm_config::genesis_config::AccountConfig;
 use haneul_types::MOVE_STDLIB_PACKAGE_ID;
 use haneul_types::TypeTag;
+use haneul_types::crypto::ToFromBytes as _;
 use haneul_types::programmable_transaction_builder::ProgrammableTransactionBuilder;
+use haneul_types::signature::GenericSignature;
+use haneul_types::transaction::SenderSignedData;
 use haneul_types::transaction::TransactionData;
 use haneul_types::transaction::TransactionDataAPI;
 use haneul_types::transaction::TransactionKind;
@@ -44,8 +47,10 @@ use url::Url;
 struct WriteTestCluster {
     onchain_cluster: TestCluster,
     rpc_url: Url,
-    _service: Service,
-    _database: TempDb,
+    #[allow(unused)]
+    service: Service,
+    #[allow(unused)]
+    database: TempDb,
     client: Client,
 }
 
@@ -120,8 +125,8 @@ impl WriteTestCluster {
         let cluster = Self {
             onchain_cluster,
             rpc_url,
-            _service: rpc_service.merge(indexer_service),
-            _database: database,
+            service: rpc_service.merge(indexer_service),
+            database,
             client: Client::new(),
         };
 
@@ -313,7 +318,14 @@ async fn test_execute_transfer_correctness() {
     );
 
     // -- raw input --
-    assert!(!result["rawTransaction"].as_str().unwrap().is_empty());
+    let raw_transaction = Base64::decode(result["rawTransaction"].as_str().unwrap()).unwrap();
+    let actual: SenderSignedData = bcs::from_bytes(&raw_transaction).unwrap();
+    let tx_data: TransactionData = bcs::from_bytes(&Base64::decode(&tx_bytes).unwrap()).unwrap();
+    let tx_signatures = sigs
+        .iter()
+        .map(|sig| GenericSignature::from_bytes(&Base64::decode(sig).unwrap()).unwrap())
+        .collect();
+    assert_eq!(actual, SenderSignedData::new(tx_data, tx_signatures));
 
     // -- effects --
     let effects = &result["effects"];

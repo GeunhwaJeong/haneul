@@ -8,18 +8,19 @@ use fastcrypto::traits::ToFromBytes;
 use futures::stream::{self, StreamExt};
 use haneul_rpc::Client as HaneulRpcClient;
 use haneul_rpc::field::{FieldMask, FieldMaskUtil};
-use haneul_rpc::proto::haneul::rpc::v2::{GetObjectRequest, Object};
+use haneul_rpc::proto::haneul::rpc::v2::{Epoch, GetEpochRequest, GetObjectRequest, Object};
 use haneul_sdk_types::{Address, TypeTag};
 use haneul_tls::Allower;
+use haneul_types::HANEUL_BRIDGE_OBJECT_ID;
 use haneul_types::base_types::HaneulAddress;
-use haneul_types::bridge::BridgeSummary;
+use haneul_types::bridge::{BridgeInnerV1, BridgeSummary, BridgeTrait, BridgeWrapper};
+use haneul_types::dynamic_field::Field;
 use haneul_types::haneul_system_state::haneul_system_state_summary::HaneulSystemStateSummary;
 use once_cell::sync::Lazy;
 use prometheus::{CounterVec, HistogramVec, IntGaugeVec};
 use prometheus::{register_counter_vec, register_histogram_vec, register_int_gauge_vec};
 use prost_types::Value as JsonValue;
 use prost_types::value::Kind as JsonKind;
-use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::str::FromStr;
 use std::{
@@ -41,7 +42,7 @@ static JSON_RPC_STATE: Lazy<CounterVec> = Lazy::new(|| {
 static JSON_RPC_DURATION: Lazy<HistogramVec> = Lazy::new(|| {
     register_histogram_vec!(
         "json_rpc_duration_seconds",
-        "The json-rpc latencies in seconds.",
+        "The Haneul RPC latencies in seconds.",
         &["rpc_method"],
         vec![
             0.0008, 0.0016, 0.0032, 0.0064, 0.0128, 0.0256, 0.0512, 0.1024, 0.2048, 0.4096, 0.8192,
@@ -186,116 +187,96 @@ impl HaneulNodeProvider {
 
     /// get_validators will retrieve known validators
     async fn get_validators(url: String) -> Result<HaneulSystemStateSummary> {
-        let rpc_method = "haneulx_getLatestHaneulSystemState";
-        let observe = || {
-            let timer = JSON_RPC_DURATION
-                .with_label_values(&[rpc_method])
-                .start_timer();
-            || {
-                timer.observe_duration();
-            }
-        }();
-        let client = reqwest::Client::builder().build().unwrap();
-        let request = serde_json::json!({
-            "jsonrpc": "2.0",
-            "method":rpc_method,
-            "id":1,
-        });
+        let rpc_method = "haneul_rpc.LedgerService.GetEpoch:SystemState";
+        let _timer = JSON_RPC_DURATION
+            .with_label_values(&[rpc_method])
+            .start_timer();
+        let mut client = HaneulRpcClient::new(url.to_owned())
+            .with_context(|| format!("creating haneul-rpc client for {url}"))?;
+        let request = GetEpochRequest::default().with_read_mask(FieldMask::from_paths([
+            Epoch::path_builder().epoch(),
+            Epoch::path_builder().system_state().finish(),
+        ]));
         let response = client
-            .post(url)
-            .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(request.to_string())
-            .send()
+            .ledger_client()
+            .get_epoch(request)
             .await
             .with_context(|| {
                 JSON_RPC_STATE
                     .with_label_values(&[rpc_method, "failed_get"])
                     .inc();
-                observe();
-                "unable to perform json rpc"
+                "unable to fetch system state over gRPC"
             })?;
 
-        let raw = response.bytes().await.with_context(|| {
+        let response = response.into_inner();
+        let system_state = response
+            .epoch()
+            .system_state_opt()
+            .context("get_epoch response missing system_state")?;
+        let summary: HaneulSystemStateSummary = system_state.try_into().with_context(|| {
             JSON_RPC_STATE
-                .with_label_values(&[rpc_method, "failed_body_extract"])
+                .with_label_values(&[rpc_method, "failed_decode"])
                 .inc();
-            observe();
-            "unable to extract body bytes from json rpc"
+            "unable to decode gRPC system state summary"
         })?;
-
-        #[derive(Debug, Deserialize)]
-        struct ResponseBody {
-            result: HaneulSystemStateSummary,
-        }
-
-        let body: ResponseBody = match serde_json::from_slice(&raw) {
-            Ok(b) => b,
-            Err(error) => {
-                JSON_RPC_STATE
-                    .with_label_values(&[rpc_method, "failed_json_decode"])
-                    .inc();
-                observe();
-                bail!(
-                    "unable to decode json: {error} response from json rpc: {:?}",
-                    raw
-                )
-            }
-        };
         JSON_RPC_STATE
             .with_label_values(&[rpc_method, "success"])
             .inc();
-        observe();
-        Ok(body.result)
+        Ok(summary)
     }
 
     /// get_bridge_validators will retrieve known bridge validators
     async fn get_bridge_validators(url: String) -> Result<BridgeSummary> {
-        let rpc_method = "haneulx_getLatestBridge";
+        let rpc_method = "haneul_rpc.LedgerService.GetObject:BridgeSummary";
         let _timer = JSON_RPC_DURATION
             .with_label_values(&[rpc_method])
             .start_timer();
-        let client = reqwest::Client::builder().build().unwrap();
-        let request = serde_json::json!({
-            "jsonrpc": "2.0",
-            "method":rpc_method,
-            "id":1,
-        });
-        let response = client
-            .post(url)
-            .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(request.to_string())
-            .send()
-            .await
-            .with_context(|| {
+        let mut client = HaneulRpcClient::new(url.to_owned())
+            .with_context(|| format!("creating haneul-rpc client for {url}"))?;
+        let bridge_wrapper_bcs = get_object_contents(
+            &mut client,
+            HANEUL_BRIDGE_OBJECT_ID.into(),
+            rpc_method,
+            "BridgeWrapper",
+        )
+        .await?;
+        let bridge_wrapper: BridgeWrapper =
+            bcs::from_bytes(&bridge_wrapper_bcs).with_context(|| {
                 JSON_RPC_STATE
-                    .with_label_values(&[rpc_method, "failed_get"])
+                    .with_label_values(&[rpc_method, "failed_decode_wrapper"])
                     .inc();
-                "unable to perform json rpc"
+                "unable to decode BridgeWrapper from gRPC object contents"
             })?;
 
-        let raw = response.bytes().await.with_context(|| {
-            JSON_RPC_STATE
-                .with_label_values(&[rpc_method, "failed_body_extract"])
-                .inc();
-            "unable to extract body bytes from json rpc"
-        })?;
-
-        #[derive(Debug, Deserialize)]
-        struct ResponseBody {
-            result: BridgeSummary,
+        let bridge_version = bridge_wrapper.version.version;
+        if bridge_version != 1 {
+            bail!("unsupported HaneulBridge version: {bridge_version}");
         }
-        let summary: BridgeSummary = match serde_json::from_slice::<ResponseBody>(&raw) {
-            Ok(b) => b.result,
-            Err(error) => {
-                JSON_RPC_STATE
-                    .with_label_values(&[rpc_method, "failed_json_decode"])
-                    .inc();
-                bail!(
-                    "unable to decode json: {error} response from json rpc: {:?}",
-                    raw
-                )
-            }
-        };
+
+        let bridge_version_id: Address = bridge_wrapper.version.id.id.bytes.into();
+        let bridge_inner_id = bridge_version_id.derive_dynamic_child_id(
+            &TypeTag::U64,
+            &bcs::to_bytes(&bridge_version).expect("u64 always BCS-encodes"),
+        );
+        let field_bcs = get_object_contents(
+            &mut client,
+            bridge_inner_id,
+            rpc_method,
+            "BridgeInner dynamic field",
+        )
+        .await?;
+        let field: Field<u64, BridgeInnerV1> = bcs::from_bytes(&field_bcs).with_context(|| {
+            JSON_RPC_STATE
+                .with_label_values(&[rpc_method, "failed_decode_inner"])
+                .inc();
+            "unable to decode BridgeInner dynamic field from gRPC object contents"
+        })?;
+        let summary = field.value.try_into_bridge_summary().with_context(|| {
+            JSON_RPC_STATE
+                .with_label_values(&[rpc_method, "failed_summary"])
+                .inc();
+            "unable to build bridge summary"
+        })?;
         JSON_RPC_STATE
             .with_label_values(&[rpc_method, "success"])
             .inc();
@@ -405,7 +386,10 @@ impl HaneulNodeProvider {
 
     /// poll_peer_list will act as a refresh interval for our cache
     pub fn poll_peer_list(&self) {
-        info!("Started polling for peers using rpc: {}", self.rpc_url);
+        info!(
+            "Started polling for peers using Haneul gRPC: {}",
+            self.rpc_url
+        );
 
         let rpc_poll_interval = self.rpc_poll_interval;
         let cloned_self = self.clone();
@@ -431,6 +415,38 @@ impl HaneulNodeProvider {
             }
         });
     }
+}
+
+async fn get_object_contents(
+    client: &mut HaneulRpcClient,
+    object_id: Address,
+    rpc_method: &'static str,
+    object_name: &str,
+) -> Result<Vec<u8>> {
+    let response = client
+        .ledger_client()
+        .get_object(
+            GetObjectRequest::new(&object_id).with_read_mask(FieldMask::from_paths([
+                Object::path_builder().contents().finish(),
+            ])),
+        )
+        .await
+        .with_context(|| {
+            JSON_RPC_STATE
+                .with_label_values(&[rpc_method, "failed_get"])
+                .inc();
+            format!("get_object failed for {object_name} {object_id}")
+        })?;
+
+    let inner = response.into_inner();
+    let contents = inner.object().contents_opt().with_context(|| {
+        JSON_RPC_STATE
+            .with_label_values(&[rpc_method, "missing_contents"])
+            .inc();
+        format!("get_object response for {object_name} {object_id} missing contents")
+    })?;
+
+    Ok(contents.value().to_vec())
 }
 
 /// extract will get the network pubkey bytes from a HaneulValidatorSummary type.  This type comes from a
@@ -1060,7 +1076,7 @@ mod tests {
     use haneul_types::haneul_system_state::haneul_system_state_summary::{
         HaneulSystemStateSummary, HaneulValidatorSummary,
     };
-    use serde::Serialize;
+    use serde::{Deserialize, Serialize};
 
     /// creates a test that binds our proxy use case to the structure in haneul_getLatestHaneulSystemState
     /// most of the fields are garbage, but we will send the results of the serde process to a private decode

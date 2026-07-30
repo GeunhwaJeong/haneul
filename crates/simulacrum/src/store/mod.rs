@@ -19,7 +19,7 @@ use haneul_types::{
         VerifiedCheckpoint,
     },
     object::Object,
-    storage::{BackingStore, ChildObjectResolver, ParentSync},
+    storage::{BackingStore, ParentSync, RuntimeObjectResolver},
     transaction::{InputObjectKind, VerifiedTransaction},
 };
 use std::collections::BTreeMap;
@@ -29,7 +29,7 @@ pub trait SimulatorStore:
     haneul_types::storage::BackingPackageStore
     + haneul_types::storage::ObjectStore
     + ParentSync
-    + ChildObjectResolver
+    + RuntimeObjectResolver
 {
     fn init_with_genesis(&mut self, genesis: &genesis::Genesis) {
         self.insert_checkpoint(genesis.checkpoint());

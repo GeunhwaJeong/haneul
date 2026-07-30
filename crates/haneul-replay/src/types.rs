@@ -166,7 +166,7 @@ pub enum ReplayEngineError {
     InvalidEpochChangeTx { epoch: u64 },
 
     #[error("Unexpected event format {:#?}", event)]
-    UnexpectedEventFormat { event: HaneulEvent },
+    UnexpectedEventFormat { event: Box<HaneulEvent> },
 
     #[error("Unable to find event for epoch {epoch}")]
     EventNotFound { epoch: u64 },
@@ -284,7 +284,7 @@ pub enum ExecutionStoreEvent {
         package_id: ObjectID,
         result: HaneulResult<Option<Object>>,
     },
-    ChildObjectResolverStoreReadChildObject {
+    RuntimeObjectResolverStoreReadChildObject {
         parent: ObjectID,
         child: ObjectID,
         result: HaneulResult<Option<Object>>,

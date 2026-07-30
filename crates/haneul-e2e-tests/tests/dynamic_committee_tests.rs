@@ -475,7 +475,7 @@ async fn fuzz_dynamic_committee() {
         .collect::<Vec<_>>();
 
     // Sorted by address.
-    initial_committee.sort_by(|a, b| a.0.cmp(&b.0));
+    initial_committee.sort_by_key(|a| a.0);
 
     // Advance epoch to see the resulting state.
     runner.change_epoch().await;
@@ -521,7 +521,7 @@ async fn fuzz_dynamic_committee() {
         .map(|v| (v.haneul_address, v.voting_power))
         .collect::<Vec<_>>();
 
-    post_epoch_committee.sort_by(|a, b| a.0.cmp(&b.0));
+    post_epoch_committee.sort_by_key(|a| a.0);
     post_epoch_committee
         .iter()
         .zip_debug_eq(initial_committee.iter())

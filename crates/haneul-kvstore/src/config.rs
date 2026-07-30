@@ -20,7 +20,17 @@ use crate::bigtable::client::PoolConfig;
 /// Java client default.
 pub(crate) const DEFAULT_MAX_ROWS_PER_BIGTABLE_BATCH: usize = 100;
 
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+const DEFAULT_WRITE_CONCURRENCY: usize = 256;
+
+/// Returns the committer defaults used by haneul-kvstore before applying config overrides.
+pub fn default_committer_config() -> CommitterConfig {
+    CommitterConfig {
+        write_concurrency: DEFAULT_WRITE_CONCURRENCY,
+        ..CommitterConfig::default()
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(default, rename_all = "kebab-case")]
 pub struct IndexerConfig {
     pub ingestion: IngestionConfig,
@@ -36,8 +46,29 @@ pub struct IndexerConfig {
     pub bigtable_connection_pool_size: Option<usize>,
     /// Channel-level timeout in milliseconds for BigTable gRPC calls (default: 60000).
     pub bigtable_channel_timeout_ms: Option<u64>,
+    /// Enable Bigtable batch write flow control by advertising the mutate-rows
+    /// rate-limit feature flags and adaptively throttling MutateRows from
+    /// `RateLimitInfo`. Requires a single-cluster-routing app profile and pairs
+    /// with Bigtable autoscaling. Enabled by default; set to false to disable.
+    pub batch_write_flow_control: bool,
     /// Bigtable connection pool configuration.
     pub bigtable_pool: BigtablePoolLayer,
+}
+
+impl Default for IndexerConfig {
+    fn default() -> Self {
+        Self {
+            ingestion: IngestionConfig::default(),
+            committer: CommitterLayer::default(),
+            pipeline: PipelineLayer::default(),
+            total_max_rows_per_second: None,
+            max_rows_per_second: None,
+            bigtable_connection_pool_size: None,
+            bigtable_channel_timeout_ms: None,
+            batch_write_flow_control: true,
+            bigtable_pool: BigtablePoolLayer::default(),
+        }
+    }
 }
 
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -285,6 +316,7 @@ pub struct IngestionConfig {
     pub streaming_backoff_max_batch_size: usize,
     pub streaming_connection_timeout_ms: u64,
     pub streaming_statement_timeout_ms: u64,
+    pub min_cohort_boundary: u64,
 
     /// Deprecated: accepted (and ignored) so old configs don't fail to parse. Replaced by
     /// per-pipeline `ingestion.subscriber-channel-size`.
@@ -306,6 +338,7 @@ impl From<framework::ingestion::IngestionConfig> for IngestionConfig {
             streaming_backoff_max_batch_size: config.streaming_backoff_max_batch_size,
             streaming_connection_timeout_ms: config.streaming_connection_timeout_ms,
             streaming_statement_timeout_ms: config.streaming_statement_timeout_ms,
+            min_cohort_boundary: config.min_cohort_boundary,
             checkpoint_buffer_size: None,
         }
     }
@@ -328,6 +361,7 @@ impl From<IngestionConfig> for framework::ingestion::IngestionConfig {
             streaming_backoff_max_batch_size: config.streaming_backoff_max_batch_size,
             streaming_connection_timeout_ms: config.streaming_connection_timeout_ms,
             streaming_statement_timeout_ms: config.streaming_statement_timeout_ms,
+            min_cohort_boundary: config.min_cohort_boundary,
         }
     }
 }

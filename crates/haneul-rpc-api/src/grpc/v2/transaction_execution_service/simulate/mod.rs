@@ -531,7 +531,7 @@ fn select_gas(
                         AccumulatorValue::get_field_id(owner, &haneul_type).ok()?;
                     withdrawals
                         .get(&haneul_account_id)
-                        .map(|(amount, _)| *amount)
+                        .map(|(amount, _, _)| *amount)
                 })
                 .unwrap_or(0);
 

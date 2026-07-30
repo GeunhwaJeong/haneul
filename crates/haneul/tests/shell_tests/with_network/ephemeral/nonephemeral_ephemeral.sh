@@ -4,7 +4,7 @@
 
 # Publishing a package and then doing a test-publish succeed
 
-chain_id=$(haneul client --client.config $CONFIG chain-identifier)
+chain_id=$(haneul client --client.config $CONFIG chain-identifier --format=hex)
 
 echo "[environments]" >> a/Move.toml
 echo "localnet = \"$chain_id\"" >> a/Move.toml

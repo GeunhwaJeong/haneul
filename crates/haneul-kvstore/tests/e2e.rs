@@ -25,7 +25,6 @@ use haneul_inverted_index::Watermarked;
 use haneul_inverted_index::eval_bitmap_query_stream;
 use haneul_keys::keystore::AccountKeystore;
 use haneul_kvstore::ALL_PIPELINE_NAMES;
-use haneul_kvstore::ALPHA_PIPELINE_NAMES;
 use haneul_kvstore::BigTableBitmapSource;
 use haneul_kvstore::BigTableClient;
 use haneul_kvstore::BigTableIndexer;
@@ -151,6 +150,7 @@ fn bitmap_query_stream(
         spec.bucket_size,
         direction,
         u64::MAX,
+        haneul_inverted_index::SkipPolicy::DRAIN_ONLY,
         |_| {},
     );
     use futures::TryStreamExt;
@@ -213,7 +213,6 @@ impl TestHarness {
             IndexerConfig::default(),
             PipelineLayer::default(),
             Chain::Unknown,
-            &ALPHA_PIPELINE_NAMES,
             &registry,
         )
         .await

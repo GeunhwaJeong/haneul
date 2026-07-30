@@ -43,9 +43,9 @@ use haneul_types::storage::BackingPackageStore;
 use haneul_types::storage::BackingStore;
 use haneul_types::storage::BalanceInfo;
 use haneul_types::storage::BalanceIterator;
-use haneul_types::storage::ChildObjectResolver;
 use haneul_types::storage::CoinInfo;
 use haneul_types::storage::DynamicFieldIteratorItem;
+use haneul_types::storage::DynamicFieldKey;
 use haneul_types::storage::EpochInfo;
 use haneul_types::storage::LedgerBitmapBucketIterator;
 use haneul_types::storage::LedgerTxSeqDigest;
@@ -57,6 +57,7 @@ use haneul_types::storage::ParentSync;
 use haneul_types::storage::ReadStore;
 use haneul_types::storage::RpcIndexes;
 use haneul_types::storage::RpcStateReader;
+use haneul_types::storage::RuntimeObjectResolver;
 use haneul_types::storage::error::Error as StorageError;
 use haneul_types::storage::error::Result as StorageResult;
 use haneul_types::storage::load_package_object_from_object_store;
@@ -871,7 +872,7 @@ impl ParentSync for DataStore {
     }
 }
 
-impl ChildObjectResolver for DataStore {
+impl RuntimeObjectResolver for DataStore {
     fn read_child_object(
         &self,
         parent: &ObjectID,
@@ -1354,7 +1355,7 @@ impl RpcIndexes for DataStore {
     fn dynamic_field_iter(
         &self,
         _parent: ObjectID,
-        _cursor: Option<ObjectID>,
+        _cursor: Option<DynamicFieldKey>,
     ) -> StorageResult<Box<dyn Iterator<Item = DynamicFieldIteratorItem> + '_>> {
         todo!("not supported yet")
     }

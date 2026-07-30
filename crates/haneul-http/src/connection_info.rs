@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use std::collections::HashMap;
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
+use std::sync::RwLock;
 use tokio_rustls::rustls::pki_types::CertificateDer;
 
 pub(crate) type ActiveConnections<A = std::net::SocketAddr> =
@@ -56,6 +57,12 @@ impl<A> ConnectionInfo<A> {
     }
 
     /// Trigger a graceful shutdown of this connection
+    ///
+    /// In-flight requests are allowed to complete before the connection
+    /// closes. If the server's `Config::max_connection_age_grace` is set,
+    /// the connection is forcefully closed once that grace period expires;
+    /// otherwise a request that never completes keeps the connection open
+    /// indefinitely.
     pub fn close(&self) {
         self.0.graceful_shutdown_token.cancel()
     }

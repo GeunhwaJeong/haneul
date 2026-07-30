@@ -40,15 +40,15 @@ pub struct RemoteWriteConfig {
 
 /// DynamicPeerValidationConfig controls what haneul-node, haneul-bridge, and hashi-server
 /// binaries (each functioning as a node in a Haneul-anchored network) we'll accept
-/// metrics from. Peer membership is determined dynamically via json-rpc calls to a
-/// full node — haneul validator set and bridge committee come from fixed RPC methods,
-/// hashi membership comes from reading the on-chain `Hashi` shared object
-/// when `hashi_object_id` is set.
+/// metrics from. Peer membership is determined dynamically via Haneul gRPC calls to
+/// a full node — haneul validator set and bridge committee are always resolved
+/// from on-chain state, and hashi membership is resolved when `hashi_object_id`
+/// is set.
 #[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct DynamicPeerValidationConfig {
-    /// url is the json-rpc url we use to obtain valid peers on the blockchain
+    /// url is the Haneul gRPC url we use to obtain valid peers on the blockchain.
     pub url: String,
     #[serde_as(as = "DurationSeconds<u64>")]
     pub interval: Duration,

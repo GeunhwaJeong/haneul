@@ -8,6 +8,7 @@ publish = false
 
 [dependencies]
 bytes = "1"
+futures-core = "0.3.31"
 http = "1"
 http-body = "1"
 http-body-util = "0.1"

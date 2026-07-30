@@ -6,7 +6,7 @@ use crate::client::bridge_authority_aggregator::BridgeAuthorityAggregator;
 use crate::e2e_tests::test_utils::{
     BridgeTestClusterBuilder, get_signatures, initiate_bridge_eth_to_haneul,
     initiate_bridge_haneul_to_eth, initiate_bridge_haneul_to_eth_v2,
-    send_eth_tx_and_get_tx_receipt,
+    send_eth_tx_and_get_tx_receipt, wait_for_eth_coin_owned_by,
 };
 use crate::haneul_transaction_builder::build_haneul_transaction;
 use crate::types::{BridgeAction, BridgeActionStatus, EmergencyAction, EmergencyActionType};
@@ -181,21 +181,7 @@ async fn test_v2_haneul_with_v1_evm() {
     );
 
     // Verify ETH was received on Haneul
-    let eth_coin = bridge_test_cluster
-        .grpc_client()
-        .get_owned_objects(haneul_address, None, None, None)
-        .await
-        .unwrap()
-        .items
-        .iter()
-        .find(|o| {
-            o.struct_tag()
-                .unwrap()
-                .to_canonical_string(true)
-                .contains("ETH")
-        })
-        .expect("Recipient should have received ETH coin now")
-        .clone();
+    let eth_coin = wait_for_eth_coin_owned_by(&bridge_test_cluster, haneul_address, None).await;
     let (_ty, balance) = Coin::extract_balance_if_coin(&eth_coin).unwrap().unwrap();
     assert_eq!(balance, haneul_amount);
 
@@ -245,21 +231,10 @@ async fn test_v2_haneul_with_v1_evm() {
         timer.elapsed()
     );
 
-    let eth_coin_for_v2 = bridge_test_cluster
-        .grpc_client()
-        .get_owned_objects(haneul_address, None, None, None)
-        .await
-        .unwrap()
-        .items
-        .iter()
-        .find(|o| {
-            o.struct_tag()
-                .unwrap()
-                .to_canonical_string(true)
-                .contains("ETH")
-        })
-        .expect("Recipient should have received ETH coin now")
-        .clone();
+    // Exclude the coin from Test 1: it was bridged away in Test 2, but a lagging index may
+    // still list it.
+    let eth_coin_for_v2 =
+        wait_for_eth_coin_owned_by(&bridge_test_cluster, haneul_address, Some(eth_coin.id())).await;
 
     // Initiate V2 Haneul→ETH deposit (this should work on Haneul side)
     let timer = std::time::Instant::now();
@@ -401,21 +376,7 @@ async fn test_v1_deposit_during_v2_upgrade() {
     }
 
     // Verify the ETH coin was received on Haneul
-    let eth_coin = bridge_test_cluster
-        .grpc_client()
-        .get_owned_objects(haneul_address, None, None, None)
-        .await
-        .unwrap()
-        .items
-        .iter()
-        .find(|o| {
-            o.struct_tag()
-                .unwrap()
-                .to_canonical_string(true)
-                .contains("ETH")
-        })
-        .expect("Recipient should have received ETH coin now")
-        .clone();
+    let eth_coin = wait_for_eth_coin_owned_by(&bridge_test_cluster, haneul_address, None).await;
     let (_ty, balance) = Coin::extract_balance_if_coin(&eth_coin).unwrap().unwrap();
     assert_eq!(balance, haneul_amount);
     info!("V1 deposit successfully claimed after V2 upgrade - backwards compatibility confirmed!");

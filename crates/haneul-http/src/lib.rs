@@ -1,23 +1,26 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-use connection_handler::OnConnectionClose;
-use http::{Request, Response};
+use http::Request;
+use http::Response;
 use hyper_util::service::TowerToHyperService;
-use io::ServerIo;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::task::JoinSet;
 use tokio_rustls::TlsAcceptor;
-use tokio_rustls::rustls;
-use tower::{Service, ServiceBuilder, ServiceExt};
+use tower::Service;
+use tower::ServiceBuilder;
+use tower::ServiceExt;
 use tracing::trace;
 
 use self::body::BoxBody;
 use self::connection_info::ActiveConnections;
+use self::io::ServerIo;
 
+pub use bytes;
 pub use http;
+pub use tokio_rustls::rustls;
 
 pub mod body;
 mod config;
@@ -26,6 +29,7 @@ mod connection_info;
 mod fuse;
 mod io;
 mod listener;
+pub mod middleware;
 
 pub use config::Config;
 pub use listener::Listener;
@@ -67,17 +71,15 @@ impl Builder {
         cert_file: impl AsRef<std::path::Path>,
         private_key_file: impl AsRef<std::path::Path>,
     ) -> Result<Self, BoxError> {
+        use rustls::pki_types::CertificateDer;
+        use rustls::pki_types::PrivateKeyDer;
         use rustls::pki_types::pem::PemObject;
-        use rustls::pki_types::{CertificateDer, PrivateKeyDer};
 
         let certs = CertificateDer::pem_file_iter(cert_file)?.collect::<Result<_, _>>()?;
         let private_key = PrivateKeyDer::from_pem_file(private_key_file)?;
-        let tls_config = rustls::ServerConfig::builder_with_provider(Arc::new(
-            rustls::crypto::ring::default_provider(),
-        ))
-        .with_protocol_versions(rustls::DEFAULT_VERSIONS)?
-        .with_no_client_auth()
-        .with_single_cert(certs, private_key)?;
+        let tls_config = rustls::ServerConfig::builder()
+            .with_no_client_auth()
+            .with_single_cert(certs, private_key)?;
 
         Ok(self.tls_config(tls_config))
     }
@@ -106,7 +108,7 @@ impl Builder {
     {
         let listener = listener::TcpListenerWithOptions::new(
             addr,
-            /* nodelay */ true,
+            self.config.tcp_nodelay,
             self.config.tcp_keepalive,
         )?;
 
@@ -344,7 +346,8 @@ where
             .write()
             .unwrap()
             .insert(connection_id, connection_info);
-        let on_connection_close = OnConnectionClose::new(connection_id, self.connections.clone());
+        let on_connection_close =
+            connection_handler::OnConnectionClose::new(connection_id, self.connections.clone());
 
         self.connection_handlers
             .spawn(connection_handler::serve_connection(
@@ -353,6 +356,7 @@ where
                 self.config.connection_builder(),
                 connection_shutdown_token,
                 self.config.max_connection_age,
+                self.config.max_connection_age_grace,
                 on_connection_close,
             ));
     }

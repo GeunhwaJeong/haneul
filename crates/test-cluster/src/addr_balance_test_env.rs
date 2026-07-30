@@ -23,7 +23,7 @@ use haneul_types::{
     gas_coin::GAS,
     object::Owner,
     programmable_transaction_builder::ProgrammableTransactionBuilder,
-    storage::ChildObjectResolver,
+    storage::RuntimeObjectResolver,
     transaction::{
         CallArg, FundsWithdrawalArg, GasData, ObjectArg, TransactionData, TransactionDataV1,
         TransactionExpiration, TransactionKind,
@@ -412,8 +412,8 @@ impl TestEnv {
     pub fn verify_accumulator_exists(&self, owner: HaneulAddress, expected_balance: u64) {
         self.cluster.fullnode_handle.haneul_node.with(|node| {
             let state = node.state();
-            let child_object_resolver = state.get_child_object_resolver().as_ref();
-            verify_accumulator_exists(child_object_resolver, owner, expected_balance);
+            let runtime_object_resolver = state.get_runtime_object_resolver().as_ref();
+            verify_accumulator_exists(runtime_object_resolver, owner, expected_balance);
         });
     }
 
@@ -451,8 +451,8 @@ impl TestEnv {
             let coin_type = coin_type.clone();
             move |node| {
                 let state = node.state();
-                let child_object_resolver = state.get_child_object_resolver().as_ref();
-                get_balance(child_object_resolver, owner, coin_type)
+                let runtime_object_resolver = state.get_runtime_object_resolver().as_ref();
+                get_balance(runtime_object_resolver, owner, coin_type)
             }
         });
 
@@ -495,10 +495,10 @@ impl TestEnv {
     pub fn verify_accumulator_removed(&self, owner: HaneulAddress) {
         self.cluster.fullnode_handle.haneul_node.with(|node| {
             let state = node.state();
-            let child_object_resolver = state.get_child_object_resolver().as_ref();
+            let runtime_object_resolver = state.get_runtime_object_resolver().as_ref();
             let haneul_coin_type = Balance::type_tag(GAS::type_tag());
             assert!(
-                !AccumulatorValue::exists(child_object_resolver, None, owner, &haneul_coin_type)
+                !AccumulatorValue::exists(runtime_object_resolver, None, owner, &haneul_coin_type)
                     .unwrap(),
                 "Accumulator value should have been removed"
             );
@@ -799,35 +799,35 @@ pub fn get_accumulator_object_id(sender: HaneulAddress, coin_type: TypeTag) -> O
 }
 
 pub fn get_balance(
-    child_object_resolver: &dyn ChildObjectResolver,
+    runtime_object_resolver: &dyn RuntimeObjectResolver,
     owner: HaneulAddress,
     coin_type: TypeTag,
 ) -> u64 {
-    haneul_core::accumulators::balances::get_balance(owner, child_object_resolver, coin_type)
+    haneul_core::accumulators::balances::get_balance(owner, runtime_object_resolver, coin_type)
         .unwrap()
 }
 
 pub fn get_haneul_balance(
-    child_object_resolver: &dyn ChildObjectResolver,
+    runtime_object_resolver: &dyn RuntimeObjectResolver,
     owner: HaneulAddress,
 ) -> u64 {
-    get_balance(child_object_resolver, owner, GAS::type_tag())
+    get_balance(runtime_object_resolver, owner, GAS::type_tag())
 }
 
 pub fn verify_accumulator_exists(
-    child_object_resolver: &dyn ChildObjectResolver,
+    runtime_object_resolver: &dyn RuntimeObjectResolver,
     owner: HaneulAddress,
     expected_balance: u64,
 ) {
     let haneul_coin_type = Balance::type_tag(GAS::type_tag());
 
     assert!(
-        AccumulatorValue::exists(child_object_resolver, None, owner, &haneul_coin_type).unwrap(),
+        AccumulatorValue::exists(runtime_object_resolver, None, owner, &haneul_coin_type).unwrap(),
         "Accumulator value should have been created"
     );
 
     let accumulator_object =
-        AccumulatorValue::load_object(child_object_resolver, None, owner, &haneul_coin_type)
+        AccumulatorValue::load_object(runtime_object_resolver, None, owner, &haneul_coin_type)
             .expect("read cannot fail")
             .expect("accumulator should exist");
 
@@ -841,7 +841,7 @@ pub fn verify_accumulator_exists(
     );
 
     let accumulator_value =
-        AccumulatorValue::load(child_object_resolver, None, owner, &haneul_coin_type)
+        AccumulatorValue::load(runtime_object_resolver, None, owner, &haneul_coin_type)
             .expect("read cannot fail")
             .expect("accumulator should exist");
 

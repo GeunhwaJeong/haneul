@@ -5,8 +5,8 @@ use clap::Parser;
 use haneul_adapter::gas_meter::HaneulGasMeter;
 use haneul_move_build::decorate_warnings;
 use haneul_move_natives::{
-    NativesCostTable, object_runtime::ObjectRuntime, test_scenario::InMemoryTestStore,
-    transaction_context::TransactionContext,
+    NativesCostTable, object_runtime::ObjectRuntime, scratch::ScratchRuntime,
+    test_scenario::InMemoryTestStore, transaction_context::TransactionContext,
 };
 use haneul_package_alt::{HaneulFlavor, find_environment};
 use haneul_protocol_config::ProtocolConfig;
@@ -171,9 +171,16 @@ impl HaneulVMTestSetup {
     }
 }
 
+/// Bundles the in-memory test store with a borrowed protocol config, which is what lets the
+/// protocol config be threaded into the native context extensions.
+pub struct HaneulExtensionsBuilder<'a> {
+    store: InMemoryTestStore,
+    protocol_config: &'a ProtocolConfig,
+}
+
 impl VMTestSetup for HaneulVMTestSetup {
     type Meter<'a> = HaneulGasMeter<HaneulGasStatusTestWrapper>;
-    type ExtensionsBuilder<'a> = InMemoryTestStore;
+    type ExtensionsBuilder<'a> = HaneulExtensionsBuilder<'a>;
 
     fn new_meter<'a>(&'a self, execution_bound: Option<u64>) -> Self::Meter<'a> {
         HaneulGasMeter(HaneulGasStatusTestWrapper(
@@ -203,30 +210,33 @@ impl VMTestSetup for HaneulVMTestSetup {
         self.native_function_table.clone()
     }
 
-    fn new_extensions_builder(&self) -> InMemoryTestStore {
-        InMemoryTestStore(RefCell::new(InMemoryStorage::default()))
+    fn new_extensions_builder(&self) -> HaneulExtensionsBuilder<'_> {
+        HaneulExtensionsBuilder {
+            store: InMemoryTestStore(RefCell::new(InMemoryStorage::default())),
+            protocol_config: &self.protocol_config,
+        }
     }
 
-    fn new_native_context_extensions<'ext>(
-        &self,
-        store: &'ext InMemoryTestStore,
+    fn new_native_context_extensions<'a, 'ext>(
+        &'a self,
+        builder: &'ext HaneulExtensionsBuilder<'a>,
     ) -> NativeContextExtensions<'ext> {
         let mut ext = NativeContextExtensions::default();
         // Use a throwaway metrics registry for testing.
         let registry = prometheus::Registry::new();
         let metrics = Arc::new(ExecutionMetrics::new(&registry));
 
+        let protocol_config = builder.protocol_config;
         ext.add(ObjectRuntime::new(
-            store,
+            &builder.store,
             BTreeMap::new(),
             false,
-            Box::leak(Box::new(ProtocolConfig::get_for_max_version_UNSAFE())), // leak for testing
+            protocol_config,
             metrics,
             0, // epoch id
         ));
-        ext.add(NativesCostTable::from_protocol_config(
-            &self.protocol_config,
-        ));
+        ext.add(NativesCostTable::from_protocol_config(protocol_config));
+        ext.add(ScratchRuntime::new(protocol_config));
         let tx_context = TxContext::new_from_components(
             &HaneulAddress::ZERO,
             &TransactionDigest::default(),
@@ -241,7 +251,7 @@ impl VMTestSetup for HaneulVMTestSetup {
         ext.add(TransactionContext::new_for_testing(Rc::new(RefCell::new(
             tx_context,
         ))));
-        ext.add(store);
+        ext.add(&builder.store);
         ext
     }
 }
