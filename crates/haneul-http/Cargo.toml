@@ -26,4 +26,5 @@ tokio-rustls = { version = "0.26", default-features = false }
 
 [dev-dependencies]
 axum.workspace = true
+futures.workspace = true
 reqwest.workspace = true
