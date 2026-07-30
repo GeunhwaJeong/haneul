@@ -1,5 +1,6 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
+assertion_line: 114
 ---
 ----- script -----
 #!/usr/bin/env bash
@@ -37,7 +38,7 @@ Caused by:
     Object 0x0000000000000000000000000000000000000000000000000000000000000bad not found
 
 ----- stderr -----
-INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY Haneul
+INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY UnpublishedNonZeroAddress
 BUILDING examples
