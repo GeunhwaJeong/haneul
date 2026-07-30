@@ -16,7 +16,7 @@ use haneul_types::{
         VerifiedCheckpoint,
     },
     object::{Object, Owner},
-    storage::{BackingPackageStore, ChildObjectResolver, ObjectStore, ParentSync},
+    storage::{BackingPackageStore, ObjectStore, ParentSync, RuntimeObjectResolver},
     transaction::VerifiedTransaction,
 };
 use move_binary_format::CompiledModule;
@@ -229,7 +229,7 @@ impl BackingPackageStore for InMemoryStore {
     }
 }
 
-impl ChildObjectResolver for InMemoryStore {
+impl RuntimeObjectResolver for InMemoryStore {
     fn read_child_object(
         &self,
         parent: &ObjectID,

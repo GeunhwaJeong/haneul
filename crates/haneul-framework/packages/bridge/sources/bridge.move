@@ -15,7 +15,7 @@ use bridge::message::{
     UpdateBridgeLimit,
     AddTokenOnHaneul,
     ParsedTokenTransferMessage,
-    to_parsed_token_transfer_message
+    to_parsed_token_transfer_message,
 };
 use bridge::message_types;
 use bridge::treasury::{Self, BridgeTreasury};

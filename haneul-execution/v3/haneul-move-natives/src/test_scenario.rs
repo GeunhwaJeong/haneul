@@ -16,7 +16,7 @@ use haneul_types::{
     id::UID,
     in_memory_storage::InMemoryStorage,
     object::{MoveObject, Object, Owner},
-    storage::ChildObjectResolver,
+    storage::RuntimeObjectResolver,
 };
 use indexmap::{IndexMap, IndexSet};
 use move_binary_format::errors::{PartialVMError, PartialVMResult};
@@ -57,7 +57,7 @@ type Set<K> = IndexSet<K>;
 pub struct InMemoryTestStore(pub RefCell<InMemoryStorage>);
 impl<'a> NativeExtensionMarker<'a> for &'a InMemoryTestStore {}
 
-impl ChildObjectResolver for InMemoryTestStore {
+impl RuntimeObjectResolver for InMemoryTestStore {
     fn read_child_object(
         &self,
         parent: &ObjectID,

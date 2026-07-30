@@ -115,7 +115,10 @@ impl<M: MetricsCallbackProvider> ServerBuilder<M> {
             .layer(request_metrics)
             .layer(PropagateHeaderLayer::new(GRPC_ENDPOINT_PATH_HEADER.clone()))
             .layer_fn(move |service| {
-                haneullabs_network::grpc_timeout::GrpcTimeout::new(service, request_timeout)
+                haneul_http::middleware::grpc_timeout::GrpcTimeout::new(
+                    service,
+                    Some(request_timeout),
+                )
             });
 
         let mut builder = haneul_http::Builder::new().config(self.config.http_config());

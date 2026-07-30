@@ -700,21 +700,21 @@ impl EndOfEpochTransactionKind {
                 }
             }
             Self::DenyListStateCreate => {
-                if !config.enable_coin_deny_list_v1() {
+                if !config.enable_coin_deny_list() {
                     return Err(UserInputError::Unsupported(
                         "coin deny list not enabled".to_string(),
                     ));
                 }
             }
             Self::BridgeStateCreate(_) => {
-                if !config.enable_bridge() {
+                if !config.bridge() {
                     return Err(UserInputError::Unsupported(
                         "bridge not enabled".to_string(),
                     ));
                 }
             }
             Self::BridgeCommitteeInit(_) => {
-                if !config.enable_bridge() {
+                if !config.bridge() {
                     return Err(UserInputError::Unsupported(
                         "bridge not enabled".to_string(),
                     ));
@@ -851,7 +851,7 @@ impl CallArg {
                 },
 
                 ObjectArg::Receiving(_) => {
-                    if !config.receiving_objects_supported() {
+                    if !config.receive_objects() {
                         return Err(UserInputError::Unsupported(format!(
                             "receiving objects is not supported at {:?}",
                             config.version
@@ -2889,9 +2889,9 @@ pub trait TransactionDataAPI {
     ) -> UserInputResult<(Vec<ObjectRef>, Vec<ObjectID>, Vec<ObjectRef>)>;
 
     /// Processes funds withdraws and returns a map from funds account object ID to (total
-    /// reserved amount, type tag). This method aggregates all withdraw operations for the same
-    /// account by merging their reservations. Each account object ID is derived from the type
-    /// parameter of each withdraw operation.
+    /// reserved amount, type tag, owner address). This method aggregates all withdraw operations
+    /// for the same account by merging their reservations. Each account object ID is derived from
+    /// the owner address and the type parameter of each withdraw operation.
     ///
     /// This method is used at signing time, and can reject a transaction if it contains
     /// invalid reservations.
@@ -2899,7 +2899,7 @@ pub trait TransactionDataAPI {
         &self,
         chain_identifier: ChainIdentifier,
         coin_resolver: &dyn CoinReservationResolverTrait,
-    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag)>>;
+    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag, HaneulAddress)>>;
 
     /// Like `process_funds_withdrawals_for_signing`, but excludes the implicit gas payment
     /// withdrawal. This is used during gas selection estimation to avoid double-counting the
@@ -2908,7 +2908,7 @@ pub trait TransactionDataAPI {
         &self,
         chain_identifier: ChainIdentifier,
         coin_resolver: &dyn CoinReservationResolverTrait,
-    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag)>>;
+    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag, HaneulAddress)>>;
 
     /// Like `process_funds_withdrawals_for_signing`, but must only be called on a certified
     /// transaction, i.e. one that is known to be valid.
@@ -3059,7 +3059,7 @@ impl TransactionDataAPI for TransactionDataV1 {
         &self,
         chain_identifier: ChainIdentifier,
         coin_resolver: &dyn CoinReservationResolverTrait,
-    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag)>> {
+    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag, HaneulAddress)>> {
         self.accumulate_funds_withdrawals(chain_identifier, coin_resolver, true)
     }
 
@@ -3067,7 +3067,7 @@ impl TransactionDataAPI for TransactionDataV1 {
         &self,
         chain_identifier: ChainIdentifier,
         coin_resolver: &dyn CoinReservationResolverTrait,
-    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag)>> {
+    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag, HaneulAddress)>> {
         self.accumulate_funds_withdrawals(chain_identifier, coin_resolver, false)
     }
 
@@ -3551,7 +3551,7 @@ impl TransactionDataV1 {
         chain_identifier: ChainIdentifier,
         coin_resolver: &dyn CoinReservationResolverTrait,
         include_gas_payment: bool,
-    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag)>> {
+    ) -> UserInputResult<BTreeMap<AccumulatorObjId, (u64, TypeTag, HaneulAddress)>> {
         let mut withdraws: Vec<_> = self.get_funds_withdrawals().collect();
 
         for withdraw in self.parsed_coin_reservations(chain_identifier) {
@@ -3564,7 +3564,8 @@ impl TransactionDataV1 {
             withdraws.extend(self.get_funds_withdrawal_for_gas_payment());
         }
 
-        let mut withdraw_map: BTreeMap<AccumulatorObjId, (u64, TypeTag)> = BTreeMap::new();
+        let mut withdraw_map: BTreeMap<AccumulatorObjId, (u64, TypeTag, HaneulAddress)> =
+            BTreeMap::new();
         for withdraw in withdraws {
             let reserved_amount = match &withdraw.reservation {
                 Reservation::MaxAmountU64(amount) => {
@@ -3587,9 +3588,9 @@ impl TransactionDataV1 {
                     }
                 })?;
 
-            let (current_amount, _) = withdraw_map
+            let (current_amount, _, _) = withdraw_map
                 .entry(account_id)
-                .or_insert_with(|| (0, type_tag));
+                .or_insert_with(|| (0, type_tag, account_address));
             *current_amount = current_amount.checked_add(reserved_amount).ok_or(
                 UserInputError::InvalidWithdrawReservation {
                     error: "Balance withdraw reservation overflow".to_string(),
@@ -3842,7 +3843,7 @@ impl SenderSignedData {
         for sig in &self.inner().tx_signatures {
             match sig {
                 GenericSignature::MultiSig(_) => {
-                    if !config.supports_upgraded_multisig() {
+                    if !config.upgraded_multisig_supported() {
                         return Err(HaneulErrorKind::UserInputError {
                             error: UserInputError::Unsupported(
                                 "upgraded multisig format not enabled on this network".to_string(),

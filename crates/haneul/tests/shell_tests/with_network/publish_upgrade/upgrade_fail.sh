@@ -7,7 +7,7 @@
 # C --> B
 # C --> A
 
-chain_id=$(haneul client --client.config $CONFIG chain-identifier)
+chain_id=$(haneul client --client.config $CONFIG chain-identifier --format=hex)
 
 add_env_to_toml() {
   echo "[environments]" >> $1/Move.toml

@@ -3,8 +3,10 @@
 
 use haneullabs_common::ZipDebugEqIteratorExt;
 
+#[cfg(test)]
 use crate::authority::authority_per_epoch_store::AuthorityPerEpochStore;
 use haneul_types::base_types::{ObjectID, ObjectRef};
+#[cfg(test)]
 use haneul_types::digests::TransactionDigest;
 use haneul_types::error::{HaneulErrorKind, HaneulResult, UserInputError};
 use haneul_types::object::Object;
@@ -20,6 +22,7 @@ impl ObjectLocks {
         Self {}
     }
 
+    #[cfg(test)]
     pub(crate) fn get_transaction_lock(
         &self,
         obj_ref: &ObjectRef,

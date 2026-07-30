@@ -24,7 +24,7 @@ pub mod validator_client_monitor_config;
 pub mod verifier_signing_config;
 
 use haneul_types::multiaddr::Multiaddr;
-pub use node::{ConsensusConfig, ExecutionCacheConfig, NodeConfig};
+pub use node::{AddressProberConfig, ConsensusConfig, ExecutionCacheConfig, NodeConfig};
 pub use rpc_config::{RpcConfig, RpcIndexInitConfig, RpcTlsConfig};
 use tracing::debug;
 

@@ -1,5 +1,6 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
+assertion_line: 114
 ---
 ----- script -----
 #!/usr/bin/env bash
@@ -9,7 +10,7 @@ source: crates/haneul/tests/shell_tests.rs
 # Test an ephemeral upgrade workflow. We have
 # B --> A
 
-chain_id=$(haneul client --client.config $CONFIG chain-identifier)
+chain_id=$(haneul client --client.config $CONFIG chain-identifier --format=hex)
 
 extract_published() {
   awk '

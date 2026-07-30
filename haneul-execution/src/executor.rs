@@ -7,7 +7,7 @@ use haneul_types::execution_params::ExecutionOrEarlyError;
 use haneul_types::storage::BackingStore;
 use haneul_types::transaction::GasData;
 use haneul_types::{
-    base_types::HaneulAddress,
+    base_types::{HaneulAddress, ObjectID, SequenceNumber},
     committee::EpochId,
     digests::TransactionDigest,
     effects::TransactionEffects,
@@ -21,6 +21,7 @@ use haneul_types::{
     transaction::{CheckedInputObjects, ProgrammableTransaction, TransactionKind},
 };
 use move_trace_format::format::MoveTraceBuilder;
+use std::collections::BTreeMap;
 use std::sync::Arc;
 
 /// Abstracts over access to the VM across versions of the execution layer.
@@ -38,6 +39,8 @@ pub trait Executor {
         epoch_timestamp_ms: u64,
         // Transaction Inputs
         input_objects: CheckedInputObjects,
+        // Versions of system objects this transaction may read, keyed by object ID.
+        system_object_versions: BTreeMap<ObjectID, SequenceNumber>,
         // Gas related
         gas: GasData,
         gas_status: HaneulGasStatus,
@@ -67,6 +70,7 @@ pub trait Executor {
         epoch_id: &EpochId,
         epoch_timestamp_ms: u64,
         input_objects: CheckedInputObjects,
+        system_object_versions: BTreeMap<ObjectID, SequenceNumber>,
         gas: GasData,
         gas_status: HaneulGasStatus,
         transaction_kind: TransactionKind,

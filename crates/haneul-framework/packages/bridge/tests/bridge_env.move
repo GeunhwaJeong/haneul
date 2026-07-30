@@ -18,7 +18,7 @@ module bridge::bridge_env {
         TokenTransferAlreadyClaimed,
         TokenTransferApproved,
         TokenTransferClaimed,
-        TokenTransferLimitExceed
+        TokenTransferLimitExceed,
     };
     use bridge::btc::{Self, BTC};
     use bridge::chain_ids;
@@ -31,7 +31,7 @@ module bridge::bridge_env {
         create_add_tokens_on_haneul_message,
         create_blocklist_message,
         emergency_op_pause,
-        emergency_op_unpause
+        emergency_op_unpause,
     };
     use bridge::message_types;
     use bridge::test_token::{Self, TEST_TOKEN};
@@ -51,7 +51,7 @@ module bridge::bridge_env {
     use haneul_system::governance_test_utils::{
         advance_epoch_with_reward_amounts,
         create_haneul_system_state_for_testing,
-        create_validator_for_testing
+        create_validator_for_testing,
     };
     use haneul_system::haneul_system::{validator_voting_powers_for_testing, HaneulSystemState};
 

@@ -1,54 +1,49 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
 
 use haneul_macros::sim_test;
 use haneul_rpc::Client;
 use haneul_rpc::field::FieldMaskUtil;
+use haneul_rpc::proto::haneul::rpc::v2::AffectedAddressFilter;
+use haneul_rpc::proto::haneul::rpc::v2::AffectedObjectFilter;
+use haneul_rpc::proto::haneul::rpc::v2::BatchGetTransactionsRequest;
+use haneul_rpc::proto::haneul::rpc::v2::EmitModuleFilter;
+use haneul_rpc::proto::haneul::rpc::v2::EventFilter;
+use haneul_rpc::proto::haneul::rpc::v2::EventLiteral;
+use haneul_rpc::proto::haneul::rpc::v2::EventStreamHeadFilter;
+use haneul_rpc::proto::haneul::rpc::v2::EventTerm;
+use haneul_rpc::proto::haneul::rpc::v2::EventTypeFilter;
 use haneul_rpc::proto::haneul::rpc::v2::ExecutedTransaction;
 use haneul_rpc::proto::haneul::rpc::v2::GetCheckpointRequest;
-use haneul_rpc::proto::haneul::rpc::v2::ledger_service_client::LedgerServiceClient as V2LedgerServiceClient;
-use haneul_rpc::proto::haneul::rpc::v2alpha::AffectedAddressFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::AffectedObjectFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::CheckpointItem;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EmitModuleFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventItem;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventLiteral;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventPredicate;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventStreamHeadFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventTerm;
-use haneul_rpc::proto::haneul::rpc::v2alpha::EventTypeFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::ListCheckpointsRequest;
-use haneul_rpc::proto::haneul::rpc::v2alpha::ListEventsRequest;
-use haneul_rpc::proto::haneul::rpc::v2alpha::ListTransactionsRequest;
-use haneul_rpc::proto::haneul::rpc::v2alpha::MoveCallFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::Ordering;
-use haneul_rpc::proto::haneul::rpc::v2alpha::PackageWriteFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::QueryEndReason;
-use haneul_rpc::proto::haneul::rpc::v2alpha::QueryOptions;
-use haneul_rpc::proto::haneul::rpc::v2alpha::SenderFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionFilter;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionItem;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionLiteral;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionPredicate;
-use haneul_rpc::proto::haneul::rpc::v2alpha::TransactionTerm;
-use haneul_rpc::proto::haneul::rpc::v2alpha::Watermark;
-use haneul_rpc::proto::haneul::rpc::v2alpha::event_literal;
-use haneul_rpc::proto::haneul::rpc::v2alpha::event_predicate;
-use haneul_rpc::proto::haneul::rpc::v2alpha::ledger_service_client::LedgerServiceClient as AlphaLedgerServiceClient;
-use haneul_rpc::proto::haneul::rpc::v2alpha::list_checkpoints_response;
-use haneul_rpc::proto::haneul::rpc::v2alpha::list_events_response;
-use haneul_rpc::proto::haneul::rpc::v2alpha::list_transactions_response;
-use haneul_rpc::proto::haneul::rpc::v2alpha::transaction_literal;
-use haneul_rpc::proto::haneul::rpc::v2alpha::transaction_predicate;
+use haneul_rpc::proto::haneul::rpc::v2::GetTransactionRequest;
+use haneul_rpc::proto::haneul::rpc::v2::ListCheckpointsRequest;
+use haneul_rpc::proto::haneul::rpc::v2::ListCheckpointsResponse;
+use haneul_rpc::proto::haneul::rpc::v2::ListEventsRequest;
+use haneul_rpc::proto::haneul::rpc::v2::ListEventsResponse;
+use haneul_rpc::proto::haneul::rpc::v2::ListTransactionsRequest;
+use haneul_rpc::proto::haneul::rpc::v2::ListTransactionsResponse;
+use haneul_rpc::proto::haneul::rpc::v2::MoveCallFilter;
+use haneul_rpc::proto::haneul::rpc::v2::Ordering;
+use haneul_rpc::proto::haneul::rpc::v2::PackageWriteFilter;
+use haneul_rpc::proto::haneul::rpc::v2::QueryEndReason;
+use haneul_rpc::proto::haneul::rpc::v2::QueryOptions;
+use haneul_rpc::proto::haneul::rpc::v2::SenderFilter;
+use haneul_rpc::proto::haneul::rpc::v2::TransactionFilter;
+use haneul_rpc::proto::haneul::rpc::v2::TransactionLiteral;
+use haneul_rpc::proto::haneul::rpc::v2::TransactionTerm;
+use haneul_rpc::proto::haneul::rpc::v2::Watermark;
+use haneul_rpc::proto::haneul::rpc::v2::event_literal;
+use haneul_rpc::proto::haneul::rpc::v2::ledger_service_client::LedgerServiceClient;
+use haneul_rpc::proto::haneul::rpc::v2::transaction_literal;
 use haneul_types::base_types::HaneulAddress;
 use haneul_types::base_types::ObjectID;
 use haneul_types::base_types::ObjectRef;
 use haneul_types::programmable_transaction_builder::ProgrammableTransactionBuilder;
 use haneul_types::transaction::TransactionData;
+use haneullabs_common::ZipDebugEqIteratorExt;
 use move_core_types::ident_str;
 use prost::bytes::Bytes;
 use prost_types::FieldMask;
@@ -60,22 +55,26 @@ const DEFAULT_GAS_BUDGET: u64 = 5_000_000_000;
 const DEFAULT_CHECKPOINT_RANGE_END: u64 = 3_000_000;
 
 struct TransactionsResult {
-    transactions: Vec<TransactionItem>,
+    transactions: Vec<ListTransactionsResponse>,
+    frames: Vec<ListTransactionsResponse>,
     end: bool,
     end_cursor: Option<Bytes>,
     end_reason: Option<QueryEndReason>,
 }
 
 struct EventsResult {
-    events: Vec<EventItem>,
+    events: Vec<ListEventsResponse>,
+    frames: Vec<ListEventsResponse>,
     end: bool,
     end_cursor: Option<Bytes>,
     end_reason: Option<QueryEndReason>,
 }
 
 struct CheckpointsResult {
-    checkpoints: Vec<CheckpointItem>,
-    // Standalone `Response::Watermark` frames (scan/terminal), in stream order.
+    checkpoints: Vec<ListCheckpointsResponse>,
+    // Watermarks from payload-less frames (scan beacons or the natural / ScanLimit
+    // terminal frame), in stream order. ItemLimit contributes none: its end signal
+    // is fused onto the last item frame, which keeps its own watermark.
     watermarks: Vec<Watermark>,
     end: bool,
     end_cursor: Option<Bytes>,
@@ -227,7 +226,7 @@ fn assert_checkpoint_cursors(result: &CheckpointsResult) {
     }
 }
 
-fn checkpoint_sequence(response: &CheckpointItem) -> u64 {
+fn checkpoint_sequence(response: &ListCheckpointsResponse) -> u64 {
     response
         .checkpoint
         .as_ref()
@@ -244,18 +243,18 @@ fn transaction_digest_set(result: &TransactionsResult) -> HashSet<String> {
 }
 
 /// The event's ledger position now lives on the embedded `Event`, not the
-/// enclosing `EventItem`; these accessors read it back for assertions.
-fn event_transaction_digest(item: &EventItem) -> Option<String> {
+/// response frame; these accessors read it back for assertions.
+fn event_transaction_digest(item: &ListEventsResponse) -> Option<String> {
     item.event
         .as_ref()
         .and_then(|event| event.transaction_digest.clone())
 }
 
-fn event_checkpoint(item: &EventItem) -> Option<u64> {
+fn event_checkpoint(item: &ListEventsResponse) -> Option<u64> {
     item.event.as_ref().and_then(|event| event.checkpoint)
 }
 
-fn event_index_of(item: &EventItem) -> Option<u32> {
+fn event_index_of(item: &ListEventsResponse) -> Option<u32> {
     item.event.as_ref().and_then(|event| event.event_index)
 }
 
@@ -281,7 +280,7 @@ fn event_digest_set(result: &EventsResult) -> HashSet<String> {
 }
 
 async fn list_transactions_result(
-    client: &mut AlphaLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListTransactionsRequest,
 ) -> TransactionsResult {
     let mut stream = client
@@ -290,36 +289,29 @@ async fn list_transactions_result(
         .unwrap()
         .into_inner();
     let mut transactions = Vec::new();
+    let mut frames = Vec::new();
     let mut end = false;
     // Resume cursor is the latest watermark cursor seen, on an item or a
     // scan watermark frame — QueryEnd no longer carries one.
     let mut end_cursor = None;
     let mut end_reason = None;
     while let Some(response) = stream.message().await.unwrap() {
-        match response.response.expect("list_transactions response frame") {
-            list_transactions_response::Response::Item(item) => {
-                assert!(!end, "item frame after end");
-                if let Some(cursor) = item.watermark.as_ref().and_then(|w| w.cursor.clone()) {
-                    end_cursor = Some(cursor);
-                }
-                transactions.push(item);
-            }
-            list_transactions_response::Response::Watermark(watermark) => {
-                assert!(!end, "watermark frame after end");
-                if let Some(cursor) = watermark.cursor {
-                    end_cursor = Some(cursor);
-                }
-            }
-            list_transactions_response::Response::End(end_frame) => {
-                assert!(!end, "duplicate end frame");
-                end = true;
-                end_reason = Some(end_frame.reason());
-            }
-            other => panic!("unexpected list_transactions response frame: {other:?}"),
+        assert!(!end, "frame after end");
+        if let Some(cursor) = response.watermark.as_ref().and_then(|w| w.cursor.clone()) {
+            end_cursor = Some(cursor);
+        }
+        if let Some(end_frame) = &response.end {
+            end = true;
+            end_reason = Some(end_frame.reason());
+        }
+        frames.push(response.clone());
+        if response.transaction.is_some() {
+            transactions.push(response);
         }
     }
     TransactionsResult {
         transactions,
+        frames,
         end,
         end_cursor,
         end_reason,
@@ -327,41 +319,34 @@ async fn list_transactions_result(
 }
 
 async fn list_events_result(
-    client: &mut AlphaLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListEventsRequest,
 ) -> EventsResult {
     let mut stream = client.list_events(request).await.unwrap().into_inner();
     let mut events = Vec::new();
+    let mut frames = Vec::new();
     let mut end = false;
     // Resume cursor is the latest watermark cursor seen, on an item or a
     // scan watermark frame — QueryEnd no longer carries one.
     let mut end_cursor = None;
     let mut end_reason = None;
     while let Some(response) = stream.message().await.unwrap() {
-        match response.response.expect("list_events response frame") {
-            list_events_response::Response::Item(item) => {
-                assert!(!end, "item frame after end");
-                if let Some(cursor) = item.watermark.as_ref().and_then(|w| w.cursor.clone()) {
-                    end_cursor = Some(cursor);
-                }
-                events.push(item);
-            }
-            list_events_response::Response::Watermark(watermark) => {
-                assert!(!end, "watermark frame after end");
-                if let Some(cursor) = watermark.cursor {
-                    end_cursor = Some(cursor);
-                }
-            }
-            list_events_response::Response::End(end_frame) => {
-                assert!(!end, "duplicate end frame");
-                end = true;
-                end_reason = Some(end_frame.reason());
-            }
-            other => panic!("unexpected list_events response frame: {other:?}"),
+        assert!(!end, "frame after end");
+        if let Some(cursor) = response.watermark.as_ref().and_then(|w| w.cursor.clone()) {
+            end_cursor = Some(cursor);
+        }
+        if let Some(end_frame) = &response.end {
+            end = true;
+            end_reason = Some(end_frame.reason());
+        }
+        frames.push(response.clone());
+        if response.event.is_some() {
+            events.push(response);
         }
     }
     EventsResult {
         events,
+        frames,
         end,
         end_cursor,
         end_reason,
@@ -369,7 +354,7 @@ async fn list_events_result(
 }
 
 async fn list_checkpoints_result(
-    client: &mut AlphaLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListCheckpointsRequest,
 ) -> CheckpointsResult {
     let mut stream = client.list_checkpoints(request).await.unwrap().into_inner();
@@ -381,27 +366,18 @@ async fn list_checkpoints_result(
     let mut end_cursor = None;
     let mut end_reason = None;
     while let Some(response) = stream.message().await.unwrap() {
-        match response.response.expect("list_checkpoints response frame") {
-            list_checkpoints_response::Response::Item(item) => {
-                assert!(!end, "item frame after end");
-                if let Some(cursor) = item.watermark.as_ref().and_then(|w| w.cursor.clone()) {
-                    end_cursor = Some(cursor);
-                }
-                checkpoints.push(item);
-            }
-            list_checkpoints_response::Response::Watermark(watermark) => {
-                assert!(!end, "watermark frame after end");
-                if let Some(cursor) = watermark.cursor.clone() {
-                    end_cursor = Some(cursor);
-                }
-                watermarks.push(watermark);
-            }
-            list_checkpoints_response::Response::End(end_frame) => {
-                assert!(!end, "duplicate end frame");
-                end = true;
-                end_reason = Some(end_frame.reason());
-            }
-            other => panic!("unexpected list_checkpoints response frame: {other:?}"),
+        assert!(!end, "frame after end");
+        if let Some(cursor) = response.watermark.as_ref().and_then(|w| w.cursor.clone()) {
+            end_cursor = Some(cursor);
+        }
+        if let Some(end_frame) = &response.end {
+            end = true;
+            end_reason = Some(end_frame.reason());
+        }
+        if response.checkpoint.is_some() {
+            checkpoints.push(response);
+        } else if let Some(watermark) = response.watermark {
+            watermarks.push(watermark);
         }
     }
     CheckpointsResult {
@@ -414,7 +390,7 @@ async fn list_checkpoints_result(
 }
 
 async fn expect_invalid_list_transactions(
-    client: &mut AlphaLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListTransactionsRequest,
 ) {
     let err = client
@@ -425,7 +401,7 @@ async fn expect_invalid_list_transactions(
 }
 
 async fn expect_invalid_list_events(
-    client: &mut AlphaLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListEventsRequest,
 ) {
     let err = client
@@ -436,7 +412,7 @@ async fn expect_invalid_list_events(
 }
 
 async fn expect_invalid_list_checkpoints(
-    client: &mut AlphaLedgerServiceClient<Channel>,
+    client: &mut LedgerServiceClient<Channel>,
     request: ListCheckpointsRequest,
 ) {
     let err = client
@@ -446,27 +422,49 @@ async fn expect_invalid_list_checkpoints(
     assert_eq!(err.code(), tonic::Code::InvalidArgument);
 }
 
+/// Expect `OutOfRange`, wherever it surfaces: the serving-floor check
+/// runs in the scan's first chunk, so the status can arrive either on
+/// the call or as the first stream error.
+async fn expect_out_of_range_list_checkpoints(
+    client: &mut LedgerServiceClient<Channel>,
+    request: ListCheckpointsRequest,
+) {
+    let status = match client.list_checkpoints(request).await {
+        Err(status) => status,
+        Ok(response) => {
+            let mut stream = response.into_inner();
+            loop {
+                match stream.message().await {
+                    Ok(Some(_)) => continue,
+                    Ok(None) => panic!("stream ended without OutOfRange"),
+                    Err(status) => break status,
+                }
+            }
+        }
+    };
+    assert_eq!(status.code(), tonic::Code::OutOfRange);
+}
+
 async fn new_cluster() -> TestCluster {
     TestClusterBuilder::new()
         .with_num_validators(1)
         .disable_fullnode_pruning()
         .with_rpc_config(haneul_config::RpcConfig {
             enable_indexing: Some(true),
-            ledger_history_indexing: Some(true),
             ..Default::default()
         })
         .build()
         .await
 }
 
-async fn new_ledger_client(cluster: &TestCluster) -> AlphaLedgerServiceClient<Channel> {
-    AlphaLedgerServiceClient::connect(cluster.rpc_url().to_owned())
+async fn new_ledger_client(cluster: &TestCluster) -> LedgerServiceClient<Channel> {
+    LedgerServiceClient::connect(cluster.rpc_url().to_owned())
         .await
         .unwrap()
 }
 
 async fn latest_checkpoint_sequence(cluster: &TestCluster) -> u64 {
-    let mut client = V2LedgerServiceClient::connect(cluster.rpc_url().to_owned())
+    let mut client = LedgerServiceClient::connect(cluster.rpc_url().to_owned())
         .await
         .unwrap();
     client
@@ -617,6 +615,79 @@ fn tx_digest(tx: &ExecutedTransaction) -> String {
     tx.digest().to_owned()
 }
 
+fn object_keys(transaction: &ExecutedTransaction) -> Vec<(String, u64)> {
+    let objects = &transaction
+        .objects
+        .as_ref()
+        .expect("objects should be populated when requested")
+        .objects;
+    assert!(
+        !objects.is_empty(),
+        "requested object set should be non-empty"
+    );
+    objects
+        .iter()
+        .map(|object| {
+            (
+                object
+                    .object_id
+                    .clone()
+                    .expect("object_id should be populated when requested"),
+                object
+                    .version
+                    .expect("version should be populated when requested"),
+            )
+        })
+        .collect()
+}
+
+fn assert_identity_only_object_mask(transaction: &ExecutedTransaction) {
+    let objects = &transaction
+        .objects
+        .as_ref()
+        .expect("objects should be populated when requested")
+        .objects;
+    assert!(
+        !objects.is_empty(),
+        "requested object set should be non-empty"
+    );
+    for object in objects {
+        assert!(object.object_id.is_some());
+        assert!(object.version.is_some());
+        assert!(object.bcs.is_none());
+        assert!(object.digest.is_none());
+        assert!(object.owner.is_none());
+        assert!(object.object_type.is_none());
+        assert!(object.has_public_transfer.is_none());
+        assert!(object.contents.is_none());
+        assert!(object.package.is_none());
+        assert!(object.previous_transaction.is_none());
+        assert!(object.storage_rebate.is_none());
+        assert!(object.json.is_none());
+        assert!(object.balance.is_none());
+        assert!(object.display.is_none());
+    }
+}
+
+fn changed_object_types(transaction: &ExecutedTransaction) -> Vec<(String, Option<String>)> {
+    transaction
+        .effects
+        .as_ref()
+        .expect("effects should be populated when requested")
+        .changed_objects
+        .iter()
+        .map(|object| {
+            (
+                object
+                    .object_id
+                    .clone()
+                    .expect("changed object ID should be populated"),
+                object.object_type.clone(),
+            )
+        })
+        .collect()
+}
+
 fn tx_filter(literals: Vec<TransactionLiteral>) -> TransactionFilter {
     tx_filter_terms(vec![literals])
 }
@@ -677,60 +748,57 @@ fn ev_not_sender_only_filter(addr: HaneulAddress) -> EventFilter {
     filter
 }
 
-fn tx_include(predicate: transaction_predicate::Predicate) -> TransactionLiteral {
-    let mut p = TransactionPredicate::default();
-    p.predicate = Some(predicate);
+fn tx_include(predicate: transaction_literal::Predicate) -> TransactionLiteral {
     let mut literal = TransactionLiteral::default();
-    literal.polarity = Some(transaction_literal::Polarity::Include(p));
+    literal.predicate = Some(predicate);
     literal
 }
 
-fn tx_exclude(predicate: transaction_predicate::Predicate) -> TransactionLiteral {
-    let mut p = TransactionPredicate::default();
-    p.predicate = Some(predicate);
+fn tx_exclude(predicate: transaction_literal::Predicate) -> TransactionLiteral {
     let mut literal = TransactionLiteral::default();
-    literal.polarity = Some(transaction_literal::Polarity::Exclude(p));
+    literal.predicate = Some(predicate);
+    literal.negated = true;
     literal
 }
 
 fn tx_sender_literal(addr: HaneulAddress) -> TransactionLiteral {
     let mut s = SenderFilter::default();
     s.address = Some(addr.to_string());
-    tx_include(transaction_predicate::Predicate::Sender(s))
+    tx_include(transaction_literal::Predicate::Sender(s))
 }
 
 fn tx_not_sender_literal(addr: HaneulAddress) -> TransactionLiteral {
     let mut s = SenderFilter::default();
     s.address = Some(addr.to_string());
-    tx_exclude(transaction_predicate::Predicate::Sender(s))
+    tx_exclude(transaction_literal::Predicate::Sender(s))
 }
 
 fn tx_move_call_literal(path: &str) -> TransactionLiteral {
     let mut mc = MoveCallFilter::default();
     mc.function = Some(path.to_string());
-    tx_include(transaction_predicate::Predicate::MoveCall(mc))
+    tx_include(transaction_literal::Predicate::MoveCall(mc))
 }
 
 fn tx_emit_module_literal(path: &str) -> TransactionLiteral {
     let mut em = EmitModuleFilter::default();
     em.module = Some(path.to_string());
-    tx_include(transaction_predicate::Predicate::EmitModule(em))
+    tx_include(transaction_literal::Predicate::EmitModule(em))
 }
 
 fn tx_event_type_literal(path: &str) -> TransactionLiteral {
     let mut et = EventTypeFilter::default();
     et.event_type = Some(path.to_string());
-    tx_include(transaction_predicate::Predicate::EventType(et))
+    tx_include(transaction_literal::Predicate::EventType(et))
 }
 
 fn tx_event_stream_head_literal(stream_id: ObjectID) -> TransactionLiteral {
     let mut esh = EventStreamHeadFilter::default();
     esh.stream_id = Some(stream_id.to_canonical_string(true));
-    tx_include(transaction_predicate::Predicate::EventStreamHead(esh))
+    tx_include(transaction_literal::Predicate::EventStreamHead(esh))
 }
 
 fn tx_package_write_literal() -> TransactionLiteral {
-    tx_include(transaction_predicate::Predicate::PackageWrite(
+    tx_include(transaction_literal::Predicate::PackageWrite(
         PackageWriteFilter::default(),
     ))
 }
@@ -769,38 +837,35 @@ fn tx_and(filters: Vec<TransactionFilter>) -> TransactionFilter {
     tx_filter(literals)
 }
 
-fn ev_include(predicate: event_predicate::Predicate) -> EventLiteral {
-    let mut p = EventPredicate::default();
-    p.predicate = Some(predicate);
+fn ev_include(predicate: event_literal::Predicate) -> EventLiteral {
     let mut literal = EventLiteral::default();
-    literal.polarity = Some(event_literal::Polarity::Include(p));
+    literal.predicate = Some(predicate);
     literal
 }
 
-fn ev_exclude(predicate: event_predicate::Predicate) -> EventLiteral {
-    let mut p = EventPredicate::default();
-    p.predicate = Some(predicate);
+fn ev_exclude(predicate: event_literal::Predicate) -> EventLiteral {
     let mut literal = EventLiteral::default();
-    literal.polarity = Some(event_literal::Polarity::Exclude(p));
+    literal.predicate = Some(predicate);
+    literal.negated = true;
     literal
 }
 
 fn ev_sender_literal(addr: HaneulAddress) -> EventLiteral {
     let mut s = SenderFilter::default();
     s.address = Some(addr.to_string());
-    ev_include(event_predicate::Predicate::Sender(s))
+    ev_include(event_literal::Predicate::Sender(s))
 }
 
 fn ev_not_sender_literal(addr: HaneulAddress) -> EventLiteral {
     let mut s = SenderFilter::default();
     s.address = Some(addr.to_string());
-    ev_exclude(event_predicate::Predicate::Sender(s))
+    ev_exclude(event_literal::Predicate::Sender(s))
 }
 
 fn ev_event_stream_head_literal(stream_id: ObjectID) -> EventLiteral {
     let mut esh = EventStreamHeadFilter::default();
     esh.stream_id = Some(stream_id.to_canonical_string(true));
-    ev_include(event_predicate::Predicate::EventStreamHead(esh))
+    ev_include(event_literal::Predicate::EventStreamHead(esh))
 }
 
 fn ev_sender(addr: HaneulAddress) -> EventFilter {
@@ -810,13 +875,13 @@ fn ev_sender(addr: HaneulAddress) -> EventFilter {
 fn ev_emit_module(path: &str) -> EventFilter {
     let mut em = EmitModuleFilter::default();
     em.module = Some(path.to_string());
-    ev_filter(vec![ev_include(event_predicate::Predicate::EmitModule(em))])
+    ev_filter(vec![ev_include(event_literal::Predicate::EmitModule(em))])
 }
 
 fn ev_event_type(path: &str) -> EventFilter {
     let mut et = EventTypeFilter::default();
     et.event_type = Some(path.to_string());
-    ev_filter(vec![ev_include(event_predicate::Predicate::EventType(et))])
+    ev_filter(vec![ev_include(event_literal::Predicate::EventType(et))])
 }
 
 fn ev_event_stream_head(stream_id: ObjectID) -> EventFilter {
@@ -876,6 +941,228 @@ async fn test_list_transactions_unfiltered_and_sender_filter() {
         transaction_digest_set(&resp).contains(&digest),
         "sender filter should include transfer tx {digest}"
     );
+}
+
+#[sim_test]
+async fn test_list_transactions_rich_mask_matches_get_transaction() {
+    let cluster = new_cluster().await;
+    let sender = cluster.get_address_0();
+    let first_transfer = transfer_self(&cluster, sender).await;
+    let second_transfer = transfer_self(&cluster, sender).await;
+    let first_transfer_digest = tx_digest(&first_transfer);
+    let second_transfer_digest = tx_digest(&second_transfer);
+    let execution_transactions: HashMap<String, &ExecutedTransaction> = HashMap::from([
+        (first_transfer_digest.clone(), &first_transfer),
+        (second_transfer_digest.clone(), &second_transfer),
+    ]);
+
+    let validator_address = cluster.swarm.config().validator_configs()[0].haneul_address();
+    let staking_transaction = haneul_test_transaction_builder::make_staking_transaction(
+        &cluster.wallet,
+        validator_address,
+    )
+    .await;
+    let staking_transaction_digest = *staking_transaction.digest();
+    cluster
+        .wallet
+        .execute_transaction_must_succeed(staking_transaction)
+        .await;
+    cluster
+        .wait_for_tx_settlement(&[staking_transaction_digest])
+        .await;
+    let staking_digest = staking_transaction_digest.to_string();
+
+    let mut client = new_ledger_client(&cluster).await;
+    let objects_only_mask = FieldMask::from_paths(["objects"]);
+    let mut request = ListTransactionsRequest::default();
+    request.read_mask = Some(objects_only_mask.clone());
+    request.start_checkpoint = Some(tx_checkpoint(&first_transfer));
+    request.filter = Some(tx_sender(sender));
+    request.options = Some(query_options(100));
+    let objects_only_response = list_transactions_result(&mut client, request).await;
+    for item in &objects_only_response.transactions {
+        object_keys(
+            item.transaction
+                .as_ref()
+                .expect("data item should contain an executed transaction"),
+        );
+    }
+
+    let ordered_transfer_digests = [
+        second_transfer_digest.as_str(),
+        first_transfer_digest.as_str(),
+    ];
+    let mut batch_request = BatchGetTransactionsRequest::default();
+    batch_request.digests = ordered_transfer_digests
+        .iter()
+        .map(ToString::to_string)
+        .collect();
+    batch_request.read_mask = Some(objects_only_mask);
+    let batch_response = client
+        .batch_get_transactions(batch_request)
+        .await
+        .unwrap()
+        .into_inner();
+    assert_eq!(
+        batch_response.transactions.len(),
+        ordered_transfer_digests.len()
+    );
+    for (digest, result) in ordered_transfer_digests
+        .into_iter()
+        .zip_debug_eq(batch_response.transactions)
+    {
+        let transaction = result.to_result().unwrap_or_else(|status| {
+            panic!("BatchGetTransactions failed for {digest}: {status:?}")
+        });
+        assert_eq!(
+            object_keys(&transaction),
+            object_keys(
+                execution_transactions
+                    .get(digest)
+                    .expect("transfer execution baseline should exist")
+            ),
+            "objects-only BatchGetTransactions mismatch for {digest}"
+        );
+    }
+
+    let read_mask = FieldMask::from_paths([
+        "digest",
+        "transaction",
+        "signatures",
+        "effects",
+        "events",
+        "checkpoint",
+        "timestamp",
+        "balance_changes",
+        "objects.objects.object_id",
+        "objects.objects.version",
+    ]);
+    let mut request = ListTransactionsRequest::default();
+    request.read_mask = Some(read_mask.clone());
+    request.start_checkpoint = Some(tx_checkpoint(&first_transfer));
+    request.filter = Some(tx_sender(sender));
+    request.options = Some(query_options(100));
+    let response = list_transactions_result(&mut client, request).await;
+
+    let checkpoints: HashSet<_> = response
+        .transactions
+        .iter()
+        .filter_map(|item| {
+            item.transaction
+                .as_ref()
+                .and_then(|transaction| transaction.checkpoint)
+        })
+        .collect();
+    assert!(
+        checkpoints.len() >= 3,
+        "expected transactions from at least three checkpoints, got {checkpoints:?}"
+    );
+
+    let mut staking_list_transaction = None;
+    for item in response.transactions {
+        let list_transaction = item
+            .transaction
+            .expect("data item should contain an executed transaction");
+        let digest = list_transaction
+            .digest
+            .clone()
+            .expect("rich mask should populate the transaction digest");
+        assert!(
+            list_transaction.timestamp.is_some(),
+            "ListTransactions should populate the timestamp for {digest}"
+        );
+        assert_identity_only_object_mask(&list_transaction);
+
+        let mut get_request = GetTransactionRequest::default();
+        get_request.digest = Some(digest.clone());
+        get_request.read_mask = Some(read_mask.clone());
+        let get_transaction = client
+            .get_transaction(get_request)
+            .await
+            .unwrap()
+            .into_inner()
+            .transaction
+            .expect("GetTransaction should return the listed transaction");
+        assert_eq!(
+            list_transaction, get_transaction,
+            "ListTransactions and GetTransaction should match for {digest}"
+        );
+
+        if let Some(execution_transaction) = execution_transactions.get(digest.as_str()) {
+            assert_eq!(
+                object_keys(&list_transaction),
+                object_keys(execution_transaction),
+                "transaction objects should match execution for {digest}"
+            );
+            assert_eq!(
+                changed_object_types(&list_transaction),
+                changed_object_types(execution_transaction),
+                "changed object types should match execution for {digest}"
+            );
+            assert_eq!(
+                list_transaction.balance_changes, execution_transaction.balance_changes,
+                "balance changes should match execution for {digest}"
+            );
+        }
+
+        if digest == staking_digest {
+            staking_list_transaction = Some(list_transaction);
+        }
+    }
+
+    let staking_list_transaction =
+        staking_list_transaction.expect("ListTransactions should include the staking transaction");
+    assert!(
+        !staking_list_transaction.balance_changes.is_empty(),
+        "staking transaction should have balance changes"
+    );
+
+    let ordered_transfer_digests = [
+        second_transfer_digest.as_str(),
+        first_transfer_digest.as_str(),
+    ];
+    let mut batch_request = BatchGetTransactionsRequest::default();
+    batch_request.digests = ordered_transfer_digests
+        .iter()
+        .map(ToString::to_string)
+        .collect();
+    batch_request.read_mask = Some(read_mask);
+    let batch_response = client
+        .batch_get_transactions(batch_request)
+        .await
+        .unwrap()
+        .into_inner();
+    assert_eq!(
+        batch_response.transactions.len(),
+        ordered_transfer_digests.len()
+    );
+    for (digest, result) in ordered_transfer_digests
+        .into_iter()
+        .zip_debug_eq(batch_response.transactions)
+    {
+        let transaction = result.to_result().unwrap_or_else(|status| {
+            panic!("BatchGetTransactions failed for {digest}: {status:?}")
+        });
+        assert_eq!(transaction.digest.as_deref(), Some(digest));
+        assert_identity_only_object_mask(&transaction);
+        let execution_transaction = execution_transactions
+            .get(digest)
+            .expect("transfer execution baseline should exist");
+        assert_eq!(
+            object_keys(&transaction),
+            object_keys(execution_transaction),
+            "nested-mask BatchGetTransactions objects mismatch for {digest}"
+        );
+        assert_eq!(
+            changed_object_types(&transaction),
+            changed_object_types(execution_transaction),
+            "nested-mask BatchGetTransactions effects mismatch for {digest}"
+        );
+        assert_eq!(
+            transaction.balance_changes, execution_transaction.balance_changes,
+            "nested-mask BatchGetTransactions balance changes mismatch for {digest}"
+        );
+    }
 }
 
 #[sim_test]
@@ -1223,7 +1510,7 @@ async fn test_list_transactions_combinators_and_affected_filters() {
     let mut req = ListTransactionsRequest::default();
     req.read_mask = Some(FieldMask::from_paths(["digest"]));
     req.filter = Some(tx_filter(vec![tx_include(
-        transaction_predicate::Predicate::AffectedAddress(affected_address),
+        transaction_literal::Predicate::AffectedAddress(affected_address),
     )]));
     req.options = Some(query_options(100));
     let resp = list_transactions_result(&mut client, req).await;
@@ -1237,7 +1524,7 @@ async fn test_list_transactions_combinators_and_affected_filters() {
     let mut req = ListTransactionsRequest::default();
     req.read_mask = Some(FieldMask::from_paths(["digest"]));
     req.filter = Some(tx_filter(vec![tx_include(
-        transaction_predicate::Predicate::AffectedObject(affected_object),
+        transaction_literal::Predicate::AffectedObject(affected_object),
     )]));
     req.options = Some(query_options(100));
     let resp = list_transactions_result(&mut client, req).await;
@@ -1374,7 +1661,11 @@ async fn test_list_events_query_options_multi_event_tx() {
     req.start_checkpoint = Some(start);
     req.end_checkpoint = Some(end);
     req.filter = Some(ev_emit_module(&module));
-    req.options = Some(query_options_between(8, first_cursor, last_cursor.clone()));
+    req.options = Some(query_options_between(
+        8,
+        first_cursor.clone(),
+        last_cursor.clone(),
+    ));
     let bounded = list_events_result(&mut client_for_bounds, req).await;
     assert_eq!(bounded.events.len(), 6);
     assert_eq!(bounded.end_reason, Some(QueryEndReason::CursorBound));
@@ -1416,6 +1707,34 @@ async fn test_list_events_query_options_multi_event_tx() {
     deduped.sort_unstable();
     deduped.dedup();
     assert_eq!(deduped.len(), reverse_keys.len(), "no reverse duplicates");
+
+    let mut client_for_descending_bounds = client.clone();
+    let mut req = ListEventsRequest::default();
+    req.read_mask = Some(event_type_and_position_mask());
+    req.start_checkpoint = Some(start);
+    req.end_checkpoint = Some(end);
+    req.filter = Some(ev_emit_module(&module));
+    req.options = Some(query_options_between_descending(
+        8,
+        first_cursor,
+        last_cursor.clone(),
+    ));
+    let bounded_descending = list_events_result(&mut client_for_descending_bounds, req).await;
+    assert_eq!(bounded_descending.events.len(), 6);
+    assert_eq!(
+        bounded_descending.end_reason,
+        Some(QueryEndReason::CursorBound)
+    );
+    let terminal = bounded_descending
+        .frames
+        .last()
+        .expect("descending cursor bound terminal frame");
+    assert!(terminal.event.is_none());
+    assert!(terminal.watermark.is_some());
+    assert_eq!(
+        terminal.end.as_ref().map(|end| end.reason()),
+        Some(QueryEndReason::CursorBound)
+    );
 
     let mut client_after_exact = client.clone();
     let mut req = ListEventsRequest::default();
@@ -2306,6 +2625,83 @@ async fn test_list_checkpoints_query_options() {
     assert_eq!(after_exact.end_reason, Some(QueryEndReason::CursorBound));
 }
 
+/// Unfiltered `list_checkpoints` on a pruned store: an open-ended low
+/// end is clamped up to the serving floor (instead of failing the whole
+/// stream with `NotFound` on the first pruned checkpoint); an explicit
+/// sub-floor `start_checkpoint` is `OutOfRange`, matching the tx and
+/// event scans; and a descending scan terminates cleanly at the floor.
+#[sim_test]
+async fn test_list_checkpoints_pruned_serving_floor() {
+    let cluster = new_cluster().await;
+    let sender = cluster.get_address_0();
+    // Advance the chain a few checkpoints so a floor above genesis
+    // still leaves a nonempty retained suffix.
+    let tx1 = transfer_self(&cluster, sender).await;
+    let tx2 = transfer_self(&cluster, sender).await;
+    let _ = tx1;
+    let floor = tx_checkpoint(&tx2);
+
+    // Raise the served floor by bumping the checkpoint store's pruned
+    // watermark. Nothing is physically deleted — the floor alone gates
+    // rendering (`get_checkpoint` rejects sub-floor sequences), so this
+    // reproduces a pruned node's serving behavior.
+    cluster.fullnode_handle.haneul_node.with(|node| {
+        let state = node.state();
+        let checkpoint_store = state.get_checkpoint_store();
+        let checkpoint = checkpoint_store
+            .get_checkpoint_by_sequence_number(floor - 1)
+            .unwrap()
+            .expect("checkpoint below the floor should exist");
+        checkpoint_store
+            .update_highest_pruned_checkpoint(&checkpoint)
+            .unwrap();
+    });
+
+    let mut client = new_ledger_client(&cluster).await;
+
+    // Bare ascending request: served from the floor, no error.
+    let mut req = ListCheckpointsRequest::default();
+    req.read_mask = Some(FieldMask::from_paths(["sequence_number"]));
+    req.options = Some(query_options(3));
+    let response = list_checkpoints_result(&mut client, req).await;
+    let seqs: Vec<_> = response
+        .checkpoints
+        .iter()
+        .map(checkpoint_sequence)
+        .collect();
+    assert_eq!(
+        seqs.first().copied(),
+        Some(floor),
+        "an open-ended ascending scan should start at the serving floor"
+    );
+
+    // An explicit start below the floor asks for pruned data: OutOfRange.
+    let mut req = ListCheckpointsRequest::default();
+    req.read_mask = Some(FieldMask::from_paths(["sequence_number"]));
+    req.start_checkpoint = Some(0);
+    req.options = Some(query_options(3));
+    expect_out_of_range_list_checkpoints(&mut client, req).await;
+
+    // Descending without bounds: walks down to the floor and terminates
+    // cleanly there instead of erroring below it.
+    let mut req = ListCheckpointsRequest::default();
+    req.read_mask = Some(FieldMask::from_paths(["sequence_number"]));
+    req.options = Some(query_options_descending(1_000));
+    let response = list_checkpoints_result(&mut client, req).await;
+    let seqs: Vec<_> = response
+        .checkpoints
+        .iter()
+        .map(checkpoint_sequence)
+        .collect();
+    assert_eq!(
+        seqs.last().copied(),
+        Some(floor),
+        "a descending scan should stop at the serving floor"
+    );
+    assert!(response.end);
+    assert_eq!(response.end_reason, Some(QueryEndReason::CheckpointBound));
+}
+
 #[sim_test]
 async fn test_list_checkpoints_read_masks_and_empty_range() {
     let cluster = new_cluster().await;
@@ -2322,6 +2718,15 @@ async fn test_list_checkpoints_read_masks_and_empty_range() {
     assert!(resp.checkpoints.is_empty());
     assert!(resp.end);
     assert_eq!(resp.end_reason, Some(QueryEndReason::LedgerTip));
+    // Natural completion of an empty interval keeps its resume cursor but
+    // claims no checkpoint coverage ("unset until the scan's first checkpoint
+    // is fully covered").
+    let terminal_watermark = resp
+        .watermarks
+        .last()
+        .expect("empty-range terminal watermark");
+    assert!(terminal_watermark.cursor.is_some());
+    assert_eq!(terminal_watermark.checkpoint, None);
 
     let tx1 = transfer_self(&cluster, sender).await;
     let tx2 = transfer_self(&cluster, sender).await;
@@ -2408,9 +2813,9 @@ async fn test_list_checkpoints_read_masks_and_empty_range() {
 // list_checkpoints dedupes cp_seq, so an emitted checkpoint is proven complete:
 // its item watermark must claim its OWN sequence number as the covered boundary
 // (`checkpoint` == sequence_number, in either ordering), not sequence_number ∓ 1.
-// This pins the item path onto `advance_checkpoint_boundary`; the previous
-// (buggy) `advance_boundary_excluding_cp` path under-claimed by one. Also asserts
-// the wire-documented monotonicity.
+// This pins the item path onto `merge_covered_checkpoint_bound`; the previous
+// (buggy) `advance_covered_bound_before_checkpoint` path under-claimed by one.
+// It also asserts the wire-documented monotonicity.
 #[sim_test]
 async fn test_list_checkpoints_item_watermark_boundary() {
     let cluster = new_cluster().await;
@@ -2486,6 +2891,9 @@ async fn test_list_checkpoints_item_watermark_boundary() {
 // complete (more matches may sit at higher event_seqs). The covered boundary
 // must therefore EXCLUDE C itself — `checkpoint` == C - 1 ascending, C + 1
 // descending — i.e. the under-claim is correct here and a bug for checkpoints.
+// Items still inside the interval's first checkpoint have covered nothing, so
+// their watermark leaves `checkpoint` unset ("unset until the scan's first
+// checkpoint is fully covered").
 #[sim_test]
 async fn test_list_events_item_watermark_boundary() {
     let cluster = new_cluster().await;
@@ -2510,8 +2918,15 @@ async fn test_list_events_item_watermark_boundary() {
     for item in &resp.events {
         let cp = event_checkpoint(item).expect("event item checkpoint");
         assert!(cp >= 1, "user events are never in the genesis checkpoint");
-        let expected_hi = cp - 1;
         let wm = item.watermark.as_ref().expect("event item watermark");
+        if cp == start {
+            assert_eq!(
+                wm.checkpoint, None,
+                "item inside the interval's first checkpoint covers nothing yet"
+            );
+            continue;
+        }
+        let expected_hi = cp - 1;
         assert_eq!(
             wm.checkpoint,
             Some(expected_hi),
@@ -2537,8 +2952,16 @@ async fn test_list_events_item_watermark_boundary() {
     let mut prev_lo: Option<u64> = None;
     for item in &resp.events {
         let cp = event_checkpoint(item).expect("event item checkpoint");
-        let expected_lo = cp + 1;
         let wm = item.watermark.as_ref().expect("event item watermark");
+        // `end_checkpoint` is exclusive: the descending scan enters at `end - 1`.
+        if cp == end - 1 {
+            assert_eq!(
+                wm.checkpoint, None,
+                "item inside the interval's first checkpoint covers nothing yet"
+            );
+            continue;
+        }
+        let expected_lo = cp + 1;
         assert_eq!(
             wm.checkpoint,
             Some(expected_lo),
@@ -2555,12 +2978,12 @@ async fn test_list_events_item_watermark_boundary() {
 }
 
 // Natural completion (the scan drains the whole range without hitting the item
-// limit) emits a single standalone terminal `Watermark` frame before `QueryEnd`,
-// claiming the range's final checkpoint complete. An item-limited query stops
-// early with `ItemLimit` and emits NO standalone frame — the last item's
-// embedded watermark already carries the resume cursor. (The mid-stream
-// sparse-gap scan watermark is not reachable in e2e: it needs the scan to cross
-// ~16M empty tx_seqs to exhaust the per-chunk bucket budget.)
+// limit) emits a payload-free terminal frame whose `Watermark` claims the
+// range's final checkpoint complete. An item-limited query instead fuses the
+// `ItemLimit` end onto the final item frame — no payload-free watermark frame is
+// emitted, and that item carries its own watermark as the resume cursor. (The
+// mid-stream sparse-gap scan watermark is not reachable in e2e: it needs the
+// scan to cross ~16M empty tx_seqs to exhaust the per-chunk bucket budget.)
 #[sim_test]
 async fn test_list_checkpoints_terminal_watermark() {
     let cluster = new_cluster().await;
@@ -2583,7 +3006,7 @@ async fn test_list_checkpoints_terminal_watermark() {
     assert_eq!(
         resp.watermarks.len(),
         1,
-        "natural completion emits exactly one standalone terminal watermark"
+        "natural completion carries exactly one terminal watermark on the end frame"
     );
     let terminal = &resp.watermarks[0];
     let last_item_hi = resp
@@ -2611,7 +3034,9 @@ async fn test_list_checkpoints_terminal_watermark() {
         "resuming past the terminal watermark should yield no more items"
     );
 
-    // Item-limited query: stops early, no standalone watermark frame.
+    // Item-limited query: the `ItemLimit` end is fused onto the final item frame,
+    // so no payload-free watermark frame is emitted and the last item carries both
+    // its own watermark and the end signal.
     let mut req = ListCheckpointsRequest::default();
     req.read_mask = Some(FieldMask::from_paths(["sequence_number"]));
     req.start_checkpoint = Some(start);
@@ -2622,8 +3047,469 @@ async fn test_list_checkpoints_terminal_watermark() {
     assert_item_limit_end(limited.end, limited.end_reason);
     assert!(
         limited.watermarks.is_empty(),
-        "item-limited query must not emit a standalone terminal watermark"
+        "item-limited query must not emit a payload-free watermark frame"
     );
+    let last_checkpoint = limited
+        .checkpoints
+        .last()
+        .expect("item-limited query returns checkpoints");
+    assert_eq!(
+        last_checkpoint.end.as_ref().map(|qe| qe.reason()),
+        Some(QueryEndReason::ItemLimit),
+        "the fused last item frame carries the ItemLimit end"
+    );
+    let cursor = last_checkpoint
+        .watermark
+        .as_ref()
+        .and_then(|wm| wm.cursor.clone())
+        .expect("fused last item carries its own watermark cursor");
+
+    // Resuming from the fused item's own cursor covers exactly the remaining
+    // checkpoints once: item page plus resume page equals the full matching set.
+    let mut req = ListCheckpointsRequest::default();
+    req.read_mask = Some(FieldMask::from_paths(["sequence_number"]));
+    req.start_checkpoint = Some(start);
+    req.end_checkpoint = Some(end);
+    req.filter = Some(tx_sender(sender));
+    req.options = Some(query_options_after(100, cursor));
+    let resumed = list_checkpoints_result(&mut client, req).await;
+    assert_eq!(
+        limited.checkpoints.len() + resumed.checkpoints.len(),
+        resp.checkpoints.len(),
+        "item page plus resume page covers the full matching set exactly once"
+    );
+}
+
+#[sim_test]
+async fn test_list_transactions_and_events_raw_terminal_frames() {
+    let cluster = new_cluster().await;
+    let sender = cluster.get_address_0();
+    let (pkg, _) = publish_package(&cluster, sender, emit_test_event_pkg_path()).await;
+    let tx1 = transfer_self(&cluster, sender).await;
+    let tx2 = call_emit_many(&cluster, sender, pkg, 2).await;
+    let tx3 = transfer_self(&cluster, sender).await;
+    let (start, end) = checkpoint_range(&[&tx1, &tx2, &tx3]);
+    let module = format!("{}::emit_test_event", pkg.to_canonical_string(true));
+    let mut client = new_ledger_client(&cluster).await;
+
+    for descending in [false, true] {
+        let options = if descending {
+            query_options_descending(100)
+        } else {
+            query_options(100)
+        };
+        let mut request = ListTransactionsRequest::default();
+        request.read_mask = Some(FieldMask::from_paths(["digest", "checkpoint"]));
+        request.start_checkpoint = Some(start);
+        request.end_checkpoint = Some(end);
+        request.filter = Some(tx_sender(sender));
+        request.options = Some(options);
+        let result = list_transactions_result(&mut client, request).await;
+        assert!(!result.transactions.is_empty());
+        assert_eq!(result.end_reason, Some(QueryEndReason::CheckpointBound));
+        let terminal_frames: Vec<_> = result
+            .frames
+            .iter()
+            .filter(|frame| frame.end.is_some())
+            .collect();
+        assert_eq!(terminal_frames.len(), 1);
+        let terminal = terminal_frames[0];
+        assert!(terminal.transaction.is_none());
+        let terminal_watermark = terminal
+            .watermark
+            .as_ref()
+            .expect("natural transaction terminal watermark");
+        assert!(terminal_watermark.cursor.is_some());
+        assert_eq!(
+            terminal.end.as_ref().map(|end| end.reason()),
+            Some(QueryEndReason::CheckpointBound)
+        );
+        let terminal_checkpoint = terminal_watermark
+            .checkpoint
+            .expect("natural transaction terminal checkpoint");
+        if descending {
+            assert!(
+                (start..=start.saturating_add(1)).contains(&terminal_checkpoint),
+                "descending natural terminal watermark must safely claim the requested start bound"
+            );
+        } else {
+            assert!(
+                (end.saturating_sub(1)..=end).contains(&terminal_checkpoint),
+                "ascending natural terminal watermark must safely claim the requested end bound"
+            );
+        }
+        assert!(std::ptr::eq(
+            terminal,
+            result.frames.last().expect("terminal is final frame")
+        ));
+
+        let cursor = terminal_watermark
+            .cursor
+            .clone()
+            .expect("natural terminal resume cursor");
+        let mut resumed_request = ListTransactionsRequest::default();
+        resumed_request.read_mask = Some(FieldMask::from_paths(["digest"]));
+        resumed_request.start_checkpoint = Some(start);
+        resumed_request.end_checkpoint = Some(end);
+        resumed_request.filter = Some(tx_sender(sender));
+        resumed_request.options = Some(if descending {
+            query_options_descending_before(100, cursor)
+        } else {
+            query_options_after(100, cursor)
+        });
+        let resumed = list_transactions_result(&mut client, resumed_request).await;
+        assert!(resumed.transactions.is_empty());
+    }
+
+    for descending in [false, true] {
+        let options = if descending {
+            query_options_descending(100)
+        } else {
+            query_options(100)
+        };
+        let mut request = ListEventsRequest::default();
+        request.read_mask = Some(event_type_and_position_mask());
+        request.start_checkpoint = Some(start);
+        request.end_checkpoint = Some(end);
+        request.filter = Some(ev_emit_module(&module));
+        request.options = Some(options);
+        let result = list_events_result(&mut client, request).await;
+        assert_eq!(result.events.len(), 2);
+        assert_eq!(result.end_reason, Some(QueryEndReason::CheckpointBound));
+        let terminal_frames: Vec<_> = result
+            .frames
+            .iter()
+            .filter(|frame| frame.end.is_some())
+            .collect();
+        assert_eq!(terminal_frames.len(), 1);
+        let terminal = terminal_frames[0];
+        assert!(terminal.event.is_none());
+        let terminal_watermark = terminal
+            .watermark
+            .as_ref()
+            .expect("natural event terminal watermark");
+        assert!(terminal_watermark.cursor.is_some());
+        assert_eq!(
+            terminal.end.as_ref().map(|end| end.reason()),
+            Some(QueryEndReason::CheckpointBound)
+        );
+        let terminal_checkpoint = terminal_watermark
+            .checkpoint
+            .expect("natural event terminal checkpoint");
+        if descending {
+            assert!(
+                (start..=start.saturating_add(1)).contains(&terminal_checkpoint),
+                "descending natural terminal watermark must safely claim the requested start bound"
+            );
+        } else {
+            assert!(
+                (end.saturating_sub(1)..=end).contains(&terminal_checkpoint),
+                "ascending natural terminal watermark must safely claim the requested end bound"
+            );
+        }
+        assert!(std::ptr::eq(
+            terminal,
+            result.frames.last().expect("terminal is final frame")
+        ));
+
+        let cursor = terminal_watermark
+            .cursor
+            .clone()
+            .expect("natural terminal resume cursor");
+        let mut resumed_request = ListEventsRequest::default();
+        resumed_request.read_mask = Some(event_type_and_position_mask());
+        resumed_request.start_checkpoint = Some(start);
+        resumed_request.end_checkpoint = Some(end);
+        resumed_request.filter = Some(ev_emit_module(&module));
+        resumed_request.options = Some(if descending {
+            query_options_descending_before(100, cursor)
+        } else {
+            query_options_after(100, cursor)
+        });
+        let resumed = list_events_result(&mut client, resumed_request).await;
+        assert!(resumed.events.is_empty());
+    }
+
+    let mut full_transaction_request = ListTransactionsRequest::default();
+    full_transaction_request.read_mask = Some(FieldMask::from_paths(["digest"]));
+    full_transaction_request.start_checkpoint = Some(start);
+    full_transaction_request.end_checkpoint = Some(end);
+    full_transaction_request.filter = Some(tx_sender(sender));
+    full_transaction_request.options = Some(query_options(100));
+    let full_transactions = list_transactions_result(&mut client, full_transaction_request).await;
+    let full_transaction_digests: Vec<_> = full_transactions
+        .transactions
+        .iter()
+        .map(|frame| {
+            frame
+                .transaction
+                .as_ref()
+                .and_then(|transaction| transaction.digest.clone())
+                .expect("transaction digest")
+        })
+        .collect();
+
+    let mut limited_transaction_request = ListTransactionsRequest::default();
+    limited_transaction_request.read_mask = Some(FieldMask::from_paths(["digest"]));
+    limited_transaction_request.start_checkpoint = Some(start);
+    limited_transaction_request.end_checkpoint = Some(end);
+    limited_transaction_request.filter = Some(tx_sender(sender));
+    limited_transaction_request.options = Some(query_options(2));
+    let limited_transactions =
+        list_transactions_result(&mut client, limited_transaction_request).await;
+    assert_eq!(limited_transactions.frames.len(), 2);
+    let fused_transaction = limited_transactions
+        .frames
+        .last()
+        .expect("fused transaction item");
+    assert!(fused_transaction.transaction.is_some());
+    assert!(fused_transaction.watermark.is_some());
+    assert_eq!(
+        fused_transaction.end.as_ref().map(|end| end.reason()),
+        Some(QueryEndReason::ItemLimit)
+    );
+    let transaction_cursor = fused_transaction
+        .watermark
+        .as_ref()
+        .and_then(|watermark| watermark.cursor.clone())
+        .expect("fused transaction cursor");
+    let mut transaction_resume_request = ListTransactionsRequest::default();
+    transaction_resume_request.read_mask = Some(FieldMask::from_paths(["digest"]));
+    transaction_resume_request.start_checkpoint = Some(start);
+    transaction_resume_request.end_checkpoint = Some(end);
+    transaction_resume_request.filter = Some(tx_sender(sender));
+    transaction_resume_request.options = Some(query_options_after(100, transaction_cursor));
+    let remaining_transactions =
+        list_transactions_result(&mut client, transaction_resume_request).await;
+    let paged_transaction_digests: Vec<_> = limited_transactions
+        .transactions
+        .iter()
+        .chain(remaining_transactions.transactions.iter())
+        .map(|frame| {
+            frame
+                .transaction
+                .as_ref()
+                .and_then(|transaction| transaction.digest.clone())
+                .expect("transaction digest")
+        })
+        .collect();
+    assert_eq!(paged_transaction_digests, full_transaction_digests);
+
+    let mut full_event_request = ListEventsRequest::default();
+    full_event_request.read_mask = Some(event_type_and_position_mask());
+    full_event_request.start_checkpoint = Some(start);
+    full_event_request.end_checkpoint = Some(end);
+    full_event_request.filter = Some(ev_emit_module(&module));
+    full_event_request.options = Some(query_options(100));
+    let full_events = list_events_result(&mut client, full_event_request).await;
+    let full_event_positions: Vec<_> = full_events
+        .events
+        .iter()
+        .map(|frame| {
+            (
+                event_transaction_digest(frame).expect("event transaction digest"),
+                event_index_of(frame).expect("event index"),
+            )
+        })
+        .collect();
+
+    let mut limited_event_request = ListEventsRequest::default();
+    limited_event_request.read_mask = Some(event_type_and_position_mask());
+    limited_event_request.start_checkpoint = Some(start);
+    limited_event_request.end_checkpoint = Some(end);
+    limited_event_request.filter = Some(ev_emit_module(&module));
+    limited_event_request.options = Some(query_options(1));
+    let limited_events = list_events_result(&mut client, limited_event_request).await;
+    assert_eq!(limited_events.frames.len(), 1);
+    let fused_event = limited_events.frames.last().expect("fused event item");
+    assert!(fused_event.event.is_some());
+    assert!(fused_event.watermark.is_some());
+    assert_eq!(
+        fused_event.end.as_ref().map(|end| end.reason()),
+        Some(QueryEndReason::ItemLimit)
+    );
+    let event_cursor = fused_event
+        .watermark
+        .as_ref()
+        .and_then(|watermark| watermark.cursor.clone())
+        .expect("fused event cursor");
+    let mut event_resume_request = ListEventsRequest::default();
+    event_resume_request.read_mask = Some(event_type_and_position_mask());
+    event_resume_request.start_checkpoint = Some(start);
+    event_resume_request.end_checkpoint = Some(end);
+    event_resume_request.filter = Some(ev_emit_module(&module));
+    event_resume_request.options = Some(query_options_after(100, event_cursor));
+    let remaining_events = list_events_result(&mut client, event_resume_request).await;
+    let paged_event_positions: Vec<_> = limited_events
+        .events
+        .iter()
+        .chain(remaining_events.events.iter())
+        .map(|frame| {
+            (
+                event_transaction_digest(frame).expect("event transaction digest"),
+                event_index_of(frame).expect("event index"),
+            )
+        })
+        .collect();
+    assert_eq!(paged_event_positions, full_event_positions);
+}
+
+#[sim_test]
+async fn test_list_events_unfiltered_scan_limit_frames_and_resume() {
+    let cluster = TestClusterBuilder::new()
+        .with_num_validators(1)
+        .disable_fullnode_pruning()
+        .with_rpc_config(haneul_config::RpcConfig {
+            enable_indexing: Some(true),
+            ledger_history: Some(haneul_config::rpc_config::LedgerHistoryConfig {
+                list_events: Some(haneul_config::rpc_config::LedgerHistoryMethodConfig {
+                    default_limit_items: Some(2),
+                    max_limit_items: Some(2),
+                    chunk_max: Some(2),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }),
+            ..Default::default()
+        })
+        .build()
+        .await;
+    let sender = cluster.get_address_0();
+    let (pkg, _) = publish_package(&cluster, sender, emit_test_event_pkg_path()).await;
+    let tx1 = transfer_self(&cluster, sender).await;
+    let tx2 = transfer_self(&cluster, sender).await;
+    let event_tx = call_emit_many(&cluster, sender, pkg, 1).await;
+    let (start, end) = checkpoint_range(&[&tx1, &tx2, &event_tx]);
+    let mut client = new_ledger_client(&cluster).await;
+
+    for descending in [false, true] {
+        let mut request = ListEventsRequest::default();
+        request.read_mask = Some(event_type_and_position_mask());
+        request.start_checkpoint = Some(start);
+        request.end_checkpoint = Some(end);
+        request.options = Some(if descending {
+            query_options_descending(100)
+        } else {
+            query_options(100)
+        });
+        let first = list_events_result(&mut client, request).await;
+        assert_eq!(first.end_reason, Some(QueryEndReason::ScanLimit));
+        let end_frames: Vec<_> = first
+            .frames
+            .iter()
+            .filter(|frame| frame.end.is_some())
+            .collect();
+        assert_eq!(end_frames.len(), 1);
+        let terminal = end_frames[0];
+        assert!(terminal.event.is_none());
+        let watermark = terminal
+            .watermark
+            .as_ref()
+            .expect("ScanLimit terminal watermark");
+        let mut cursor = watermark.cursor.clone().expect("ScanLimit terminal cursor");
+        assert_eq!(
+            terminal.end.as_ref().map(|end| end.reason()),
+            Some(QueryEndReason::ScanLimit)
+        );
+        assert!(std::ptr::eq(
+            terminal,
+            first.frames.last().expect("ScanLimit is final frame")
+        ));
+        // The claim is unset while the frontier is still inside the interval's
+        // first checkpoint ("unset until the scan's first checkpoint is fully
+        // covered"); once set it must stay inside the requested range and
+        // track emitted items.
+        if let Some(scan_checkpoint) = watermark.checkpoint {
+            if descending {
+                assert!(
+                    scan_checkpoint >= start,
+                    "descending ScanLimit watermark must not pass the requested start checkpoint"
+                );
+            } else {
+                assert!(
+                    scan_checkpoint <= end,
+                    "ascending ScanLimit watermark must not pass the requested end checkpoint"
+                );
+            }
+            if let Some(last_event_checkpoint) = first.events.last().and_then(event_checkpoint) {
+                if descending {
+                    assert!(scan_checkpoint <= last_event_checkpoint + 1);
+                } else {
+                    assert!(scan_checkpoint >= last_event_checkpoint.saturating_sub(1));
+                }
+            }
+        } else {
+            // Nothing covered yet: no event outside the entry checkpoint may
+            // have been emitted.
+            for event in &first.events {
+                let cp = event_checkpoint(event).expect("event item checkpoint");
+                assert_eq!(
+                    cp,
+                    if descending { end - 1 } else { start },
+                    "unset ScanLimit claim requires the scan still inside its first checkpoint"
+                );
+            }
+        }
+
+        let mut positions: Vec<_> = first
+            .events
+            .iter()
+            .map(|event| {
+                (
+                    event_transaction_digest(event).expect("event transaction digest"),
+                    event_index_of(event).expect("event index"),
+                )
+            })
+            .collect();
+        let mut completed = false;
+        for _ in 0..512 {
+            let mut resumed_request = ListEventsRequest::default();
+            resumed_request.read_mask = Some(event_type_and_position_mask());
+            resumed_request.start_checkpoint = Some(start);
+            resumed_request.end_checkpoint = Some(end);
+            resumed_request.options = Some(if descending {
+                query_options_descending_before(100, cursor)
+            } else {
+                query_options_after(100, cursor)
+            });
+            let resumed = list_events_result(&mut client, resumed_request).await;
+            positions.extend(resumed.events.iter().map(|event| {
+                (
+                    event_transaction_digest(event).expect("event transaction digest"),
+                    event_index_of(event).expect("event index"),
+                )
+            }));
+            if resumed.end_reason != Some(QueryEndReason::ScanLimit) {
+                completed = true;
+                break;
+            }
+            let resumed_terminal = resumed.frames.last().expect("resumed ScanLimit frame");
+            assert!(resumed_terminal.event.is_none());
+            assert_eq!(
+                resumed_terminal.end.as_ref().map(|end| end.reason()),
+                Some(QueryEndReason::ScanLimit)
+            );
+            cursor = resumed_terminal
+                .watermark
+                .as_ref()
+                .and_then(|watermark| watermark.cursor.clone())
+                .expect("resumed ScanLimit cursor");
+        }
+        assert!(
+            completed,
+            "event scan should finish within bounded resumptions (descending={descending})"
+        );
+        let delivered = positions.len();
+        positions.sort_unstable();
+        positions.dedup();
+        assert_eq!(
+            positions.len(),
+            delivered,
+            "resume must not duplicate events"
+        );
+        assert_eq!(positions.len(), 1);
+        assert_eq!(positions[0].0, tx_digest(&event_tx));
+    }
 }
 
 #[sim_test]
@@ -2642,7 +3528,6 @@ async fn test_list_transactions_multi_leaf_tiny_budget_resumes() {
         .disable_fullnode_pruning()
         .with_rpc_config(haneul_config::RpcConfig {
             enable_indexing: Some(true),
-            ledger_history_indexing: Some(true),
             ledger_history: Some(haneul_config::rpc_config::LedgerHistoryConfig {
                 bitmap_bucket_scan_budget: Some(2),
                 chunk_bucket_scan_budget: Some(2),

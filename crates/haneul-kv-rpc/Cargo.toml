@@ -22,6 +22,7 @@ move-core-types.workspace = true
 haneullabs-common.workspace = true
 haneullabs-metrics.workspace = true
 haneullabs-network.workspace = true
+haneul-http.workspace = true
 prometheus.workspace = true
 prost-types.workspace = true
 rustls.workspace = true
@@ -42,6 +43,7 @@ haneul-types.workspace = true
 telemetry-subscribers.workspace = true
 thiserror.workspace = true
 tokio.workspace = true
+toml.workspace = true
 tonic.workspace = true
 tonic-prost.workspace = true
 tonic-reflection.workspace = true
@@ -51,3 +53,5 @@ tracing.workspace = true
 [dev-dependencies]
 # `test-util` powers `#[tokio::test(start_paused = true)]` in the limiter tests.
 tokio = { workspace = true, features = ["test-util"] }
+# Enables the in-memory mock BigTable server for the real-stage resolver tests.
+haneul-kvstore = { workspace = true, features = ["testing"] }

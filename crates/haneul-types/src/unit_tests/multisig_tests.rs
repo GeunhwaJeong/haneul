@@ -434,6 +434,7 @@ fn zklogin_in_multisig_works_with_both_addresses() {
         parsed,
         vec![],
         ZkLoginEnv::Test,
+        0, // v1 circuit mode only
         true,
         true,
         true,
@@ -580,6 +581,7 @@ fn test_zklogin_public_identifier_additional_validation() {
         parsed.clone(),
         vec![],
         ZkLoginEnv::Test,
+        0, // v1 circuit mode only
         true,
         true,
         true,
@@ -609,6 +611,7 @@ fn test_zklogin_public_identifier_additional_validation() {
         parsed,
         vec![],
         ZkLoginEnv::Test,
+        0, // v1 circuit mode only
         true,
         true,
         true,

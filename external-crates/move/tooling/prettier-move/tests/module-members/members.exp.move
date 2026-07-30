@@ -8,8 +8,8 @@
 
 module prettier::members;
 
-use std::string::String;
-use haneul::coin::Coin;
+use haneul::coin::Coin; // glued with other import
+use std::string::String; // empty line follows
 
 const I: u8 = 0; // together with const B
 const B: u16 = 100; // empty line after

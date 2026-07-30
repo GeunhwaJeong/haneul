@@ -105,6 +105,7 @@ validator_configs:
         - Slack
         - TestEveFrontier
         - TestIssuer
+        - TestIssuerKey8192
         - Threedos
         - Twitch
     authority-overload-config:
@@ -127,7 +128,6 @@ validator_configs:
       max-transaction-manager-queue-length: 100000
       max-transaction-manager-per-object-queue-length: 2000
       admission-queue-capacity-fraction: 0.5
-      admission-queue-bypass-fraction: 0.9
       admission-queue-enabled: true
       admission-queue-failover-timeout:
         secs: 30
@@ -258,6 +258,7 @@ validator_configs:
         - Slack
         - TestEveFrontier
         - TestIssuer
+        - TestIssuerKey8192
         - Threedos
         - Twitch
     authority-overload-config:
@@ -280,7 +281,6 @@ validator_configs:
       max-transaction-manager-queue-length: 100000
       max-transaction-manager-per-object-queue-length: 2000
       admission-queue-capacity-fraction: 0.5
-      admission-queue-bypass-fraction: 0.9
       admission-queue-enabled: true
       admission-queue-failover-timeout:
         secs: 30
@@ -411,6 +411,7 @@ validator_configs:
         - Slack
         - TestEveFrontier
         - TestIssuer
+        - TestIssuerKey8192
         - Threedos
         - Twitch
     authority-overload-config:
@@ -433,7 +434,6 @@ validator_configs:
       max-transaction-manager-queue-length: 100000
       max-transaction-manager-per-object-queue-length: 2000
       admission-queue-capacity-fraction: 0.5
-      admission-queue-bypass-fraction: 0.9
       admission-queue-enabled: true
       admission-queue-failover-timeout:
         secs: 30
@@ -564,6 +564,7 @@ validator_configs:
         - Slack
         - TestEveFrontier
         - TestIssuer
+        - TestIssuerKey8192
         - Threedos
         - Twitch
     authority-overload-config:
@@ -586,7 +587,6 @@ validator_configs:
       max-transaction-manager-queue-length: 100000
       max-transaction-manager-per-object-queue-length: 2000
       admission-queue-capacity-fraction: 0.5
-      admission-queue-bypass-fraction: 0.9
       admission-queue-enabled: true
       admission-queue-failover-timeout:
         secs: 30
@@ -717,6 +717,7 @@ validator_configs:
         - Slack
         - TestEveFrontier
         - TestIssuer
+        - TestIssuerKey8192
         - Threedos
         - Twitch
     authority-overload-config:
@@ -739,7 +740,6 @@ validator_configs:
       max-transaction-manager-queue-length: 100000
       max-transaction-manager-per-object-queue-length: 2000
       admission-queue-capacity-fraction: 0.5
-      admission-queue-bypass-fraction: 0.9
       admission-queue-enabled: true
       admission-queue-failover-timeout:
         secs: 30
@@ -870,6 +870,7 @@ validator_configs:
         - Slack
         - TestEveFrontier
         - TestIssuer
+        - TestIssuerKey8192
         - Threedos
         - Twitch
     authority-overload-config:
@@ -892,7 +893,6 @@ validator_configs:
       max-transaction-manager-queue-length: 100000
       max-transaction-manager-per-object-queue-length: 2000
       admission-queue-capacity-fraction: 0.5
-      admission-queue-bypass-fraction: 0.9
       admission-queue-enabled: true
       admission-queue-failover-timeout:
         secs: 30
@@ -1023,6 +1023,7 @@ validator_configs:
         - Slack
         - TestEveFrontier
         - TestIssuer
+        - TestIssuerKey8192
         - Threedos
         - Twitch
     authority-overload-config:
@@ -1045,7 +1046,6 @@ validator_configs:
       max-transaction-manager-queue-length: 100000
       max-transaction-manager-per-object-queue-length: 2000
       admission-queue-capacity-fraction: 0.5
-      admission-queue-bypass-fraction: 0.9
       admission-queue-enabled: true
       admission-queue-failover-timeout:
         secs: 30

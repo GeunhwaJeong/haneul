@@ -18,6 +18,7 @@ async-stream.workspace = true
 bcs.workspace = true
 futures.workspace = true
 move-core-types.workspace = true
+haneullabs-common.workspace = true
 roaring.workspace = true
 haneul-types.workspace = true
 thiserror.workspace = true

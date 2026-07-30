@@ -4,7 +4,9 @@
 use crate::accumulators::funds_read::AccountFundsRead;
 use crate::authority::AuthorityStore;
 use crate::authority::authority_per_epoch_store::AuthorityPerEpochStore;
-use crate::authority::authority_store::{ExecutionLockWriteGuard, HaneulLockResult};
+use crate::authority::authority_store::ExecutionLockWriteGuard;
+#[cfg(test)]
+use crate::authority::authority_store::HaneulLockResult;
 use crate::authority::backpressure::BackpressureManager;
 use crate::authority::epoch_start_configuration::EpochFlag;
 use crate::authority::epoch_start_configuration::EpochStartConfiguration;
@@ -28,8 +30,8 @@ use haneul_types::haneul_system_state::HaneulSystemState;
 use haneul_types::messages_checkpoint::CheckpointSequenceNumber;
 use haneul_types::object::Object;
 use haneul_types::storage::{
-    BackingPackageStore, BackingStore, ChildObjectResolver, FullObjectKey, MarkerValue, ObjectKey,
-    ObjectOrTombstone, ObjectStore, PackageObject, ParentSync,
+    BackingPackageStore, BackingStore, FullObjectKey, MarkerValue, ObjectKey, ObjectOrTombstone,
+    ObjectStore, PackageObject, ParentSync, RuntimeObjectResolver,
 };
 use haneul_types::transaction::VerifiedTransaction;
 use haneul_types::{
@@ -62,7 +64,7 @@ pub struct ExecutionCacheTraitPointers {
     pub transaction_cache_reader: Arc<dyn TransactionCacheRead>,
     pub cache_writer: Arc<dyn ExecutionCacheWrite>,
     pub backing_store: Arc<dyn BackingStore + Send + Sync>,
-    pub child_object_resolver: Arc<dyn ChildObjectResolver + Send + Sync>,
+    pub runtime_object_resolver: Arc<dyn RuntimeObjectResolver + Send + Sync>,
     pub backing_package_store: Arc<dyn BackingPackageStore + Send + Sync>,
     pub object_store: Arc<dyn ObjectStore + Send + Sync>,
     pub reconfig_api: Arc<dyn ExecutionCacheReconfigAPI>,
@@ -97,7 +99,7 @@ impl ExecutionCacheTraitPointers {
             transaction_cache_reader: cache.clone(),
             cache_writer: cache.clone(),
             backing_store: cache.clone(),
-            child_object_resolver: cache.clone(),
+            runtime_object_resolver: cache.clone(),
             backing_package_store: cache.clone(),
             object_store: cache.clone(),
             reconfig_api: cache.clone(),
@@ -286,8 +288,7 @@ pub trait ObjectCacheRead: Send + Sync {
                     .iter()
                     .map(|(_, k)| ObjectKey(k.0.id(), *k.1))
                     .collect::<Vec<_>>(),
-            )
-            .into_iter(),
+            ),
         ) {
             // If the key exists at the specified version, then the object is available.
             if has_key {
@@ -339,6 +340,8 @@ pub trait ObjectCacheRead: Send + Sync {
         version: SequenceNumber,
     ) -> Option<Object>;
 
+    /// Test-only: production code no longer reads owned-object lock status by ref.
+    #[cfg(test)]
     fn get_lock(
         &self,
         obj_ref: ObjectRef,
@@ -347,10 +350,6 @@ pub trait ObjectCacheRead: Send + Sync {
 
     // This method is considered "private" - only used by multi_get_objects_with_more_accurate_error_return
     fn _get_live_objref(&self, object_id: ObjectID) -> HaneulResult<ObjectRef>;
-
-    // Check that the given set of objects are live at the given version. This is used as a
-    // safety check before execution, and could potentially be deleted or changed to a debug_assert
-    fn check_owned_objects_are_live(&self, owned_object_refs: &[ObjectRef]) -> HaneulResult;
 
     fn get_haneul_system_state_object_unsafe(&self) -> HaneulResult<HaneulSystemState>;
 
@@ -435,6 +434,20 @@ pub trait ObjectCacheRead: Send + Sync {
         receiving_keys: &'a HashSet<InputKey>,
         epoch: EpochId,
     ) -> BoxFuture<'a, ()>;
+
+    /// Wait until the object identified by `full_object_id` has been committed at exactly
+    /// `version`; returns immediately if that version has already been committed. The caller must
+    /// pass a version that is guaranteed to be written (e.g. a consensus-assigned system object
+    /// version, which some transaction always writes) — the wait is keyed on that exact version,
+    /// not on the object reaching it. Used by the retry-on-not-ready path: when execution finds a
+    /// required system object not yet caught up, the transaction is re-enqueued once this resolves.
+    /// The caller passes the full object id (with the stable initial shared version of a consensus
+    /// object) so the implementation can register the wait directly without re-reading the object.
+    fn notify_read_system_object_at_version<'a>(
+        &'a self,
+        full_object_id: FullObjectID,
+        version: SequenceNumber,
+    ) -> BoxFuture<'a, ()>;
 }
 
 pub trait TransactionCacheRead: Send + Sync {
@@ -483,7 +496,7 @@ pub trait TransactionCacheRead: Send + Sync {
         }
 
         let effects = self.multi_get_effects(&fetch_digests);
-        for (i, effects) in fetch_indices.into_iter().zip_debug_eq(effects.into_iter()) {
+        for (i, effects) in fetch_indices.into_iter().zip_debug_eq(effects) {
             results[i] = effects;
         }
 
@@ -525,6 +538,16 @@ pub trait TransactionCacheRead: Send + Sync {
         &self,
         digest: &TransactionDigest,
     ) -> Option<Vec<ObjectKey>>;
+
+    fn multi_get_unchanged_loaded_runtime_objects(
+        &self,
+        digests: &[TransactionDigest],
+    ) -> Vec<Option<Vec<ObjectKey>>> {
+        digests
+            .iter()
+            .map(|digest| self.get_unchanged_loaded_runtime_objects(digest))
+            .collect()
+    }
 
     fn take_accumulator_events(&self, digest: &TransactionDigest) -> Option<Vec<AccumulatorEvent>>;
 
@@ -714,7 +737,7 @@ macro_rules! implement_storage_traits {
             }
         }
 
-        impl ChildObjectResolver for $implementor {
+        impl RuntimeObjectResolver for $implementor {
             fn read_child_object(
                 &self,
                 parent: &ObjectID,

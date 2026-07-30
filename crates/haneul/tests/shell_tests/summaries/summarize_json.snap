@@ -1,5 +1,6 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
+assertion_line: 114
 ---
 ----- script -----
 # Copyright (c) Mysten Labs, Inc.
@@ -85,6 +86,7 @@ prover.json
 random.json
 rangeproofs.json
 ristretto255.json
+scratch.json
 table.json
 table_vec.json
 token.json

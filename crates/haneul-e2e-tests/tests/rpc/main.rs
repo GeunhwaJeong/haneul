@@ -3,7 +3,6 @@
 
 mod client;
 mod restore;
-mod rpc_index_restore;
 mod v2;
 
 async fn transfer_coin(

@@ -29,8 +29,8 @@ pub trait ListenerExt: Listener + Sized {
     /// # Example
     ///
     /// ```
-    /// use tracing::trace;
     /// use haneul_http::ListenerExt;
+    /// use tracing::trace;
     ///
     /// # async {
     /// let listener = tokio::net::TcpListener::bind("0.0.0.0:3000")
@@ -61,10 +61,11 @@ impl Listener for tokio::net::TcpListener {
     type Addr = std::net::SocketAddr;
 
     async fn accept(&mut self) -> (Self::Io, Self::Addr) {
+        let mut backoff = AcceptBackoff::new();
         loop {
             match Self::accept(self).await {
                 Ok(tup) => return tup,
-                Err(e) => handle_accept_error(e).await,
+                Err(e) => backoff.handle_accept_error(e).await,
             }
         }
     }
@@ -202,16 +203,41 @@ where
     }
 }
 
-async fn handle_accept_error(e: std::io::Error) {
-    if is_connection_error(&e) {
-        return;
+/// Exponential backoff for recoverable `accept()` errors.
+///
+/// Certain errors (notably `EMFILE`/`ENFILE`, when the process has exhausted its
+/// file descriptor limit) leave the listener in a persistently-readable state,
+/// causing `accept()` to return immediately on retry. Without backoff the serve
+/// loop would spin a CPU core and flood logs.
+///
+/// A fixed 1 second sleep (as in hyper 0.14 and still in axum today) avoids the
+/// spin but delays recovery once descriptors free up. Instead we follow Go's
+/// `net/http` and HashiCorp Vault: start at 5ms and double on each consecutive
+/// error, capped at 1 second. Reset-on-success is implicit because a fresh
+/// `AcceptBackoff` is constructed per call to `accept()`.
+struct AcceptBackoff {
+    next_delay: Duration,
+}
+
+impl AcceptBackoff {
+    const MIN: Duration = Duration::from_millis(5);
+    const MAX: Duration = Duration::from_secs(1);
+
+    fn new() -> Self {
+        Self {
+            next_delay: Self::MIN,
+        }
     }
 
-    // Sleep briefly to avoid tight-looping on persistent errors (e.g., EMFILE) while
-    // not blocking the server event loop for too long — the serve loop needs to keep
-    // draining completed connections to free file descriptors.
-    tracing::error!("accept error: {e}");
-    tokio::time::sleep(Duration::from_millis(5)).await;
+    async fn handle_accept_error(&mut self, e: std::io::Error) {
+        if is_connection_error(&e) {
+            return;
+        }
+
+        tracing::error!(backoff = ?self.next_delay, "accept error: {e}");
+        tokio::time::sleep(self.next_delay).await;
+        self.next_delay = (self.next_delay * 2).min(Self::MAX);
+    }
 }
 
 fn is_connection_error(e: &std::io::Error) -> bool {

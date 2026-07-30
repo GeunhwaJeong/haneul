@@ -734,6 +734,7 @@ mod test {
                 &epoch.epoch_id(),
                 epoch.epoch_start_timestamp(),
                 input_objects,
+                std::collections::BTreeMap::new(),
                 gas_data,
                 HaneulGasStatus::new_unmetered(),
                 kind,

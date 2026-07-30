@@ -21,7 +21,7 @@ use haneul_types::{
     },
     object::{Object, Owner},
     storage::{
-        BackingPackageStore, ChildObjectResolver, ObjectStore, PackageObject, ParentSync,
+        BackingPackageStore, ObjectStore, PackageObject, ParentSync, RuntimeObjectResolver,
         load_package_object_from_object_store,
     },
     transaction::VerifiedTransaction,
@@ -403,7 +403,7 @@ impl BackingPackageStore for PersistedStore {
     }
 }
 
-impl ChildObjectResolver for PersistedStore {
+impl RuntimeObjectResolver for PersistedStore {
     fn read_child_object(
         &self,
         parent: &ObjectID,
@@ -675,7 +675,7 @@ impl ReadStore for PersistedStoreInnerReadOnlyWrapper {
     }
 }
 
-impl ChildObjectResolver for PersistedStoreInnerReadOnlyWrapper {
+impl RuntimeObjectResolver for PersistedStoreInnerReadOnlyWrapper {
     fn read_child_object(
         &self,
         parent: &ObjectID,

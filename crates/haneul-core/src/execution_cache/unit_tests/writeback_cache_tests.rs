@@ -7,14 +7,18 @@ use haneul_types::{
     base_types::{FullObjectRef, HaneulAddress, random_object_ref},
     crypto::{AccountKeyPair, deterministic_random_account_key, get_key_pair_from_rng},
     object::{MoveObject, OBJECT_START_VERSION, Owner},
-    storage::ChildObjectResolver,
+    storage::RuntimeObjectResolver,
 };
 use haneul_types::{
     effects::{TestEffectsBuilder, TransactionEffectsAPI},
     event::Event,
 };
 use prometheus::default_registry;
-use rand::{Rng, SeedableRng, rngs::StdRng};
+#[cfg(not(tidehunter))]
+use rand::Rng;
+use rand::{SeedableRng, rngs::StdRng};
+#[cfg(not(tidehunter))]
+use std::time::{Duration, Instant};
 use std::{
     collections::{BTreeMap, BTreeSet},
     future::Future,
@@ -23,7 +27,6 @@ use std::{
         Arc,
         atomic::{AtomicU32, Ordering},
     },
-    time::{Duration, Instant},
 };
 use tokio::sync::RwLock;
 

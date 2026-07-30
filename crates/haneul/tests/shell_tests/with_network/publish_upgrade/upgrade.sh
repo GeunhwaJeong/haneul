@@ -5,7 +5,7 @@
 # Test an ephemeral upgrade workflow. We have
 # B --> A
 
-chain_id=$(haneul client --client.config $CONFIG chain-identifier)
+chain_id=$(haneul client --client.config $CONFIG chain-identifier --format=hex)
 
 extract_published() {
   awk '

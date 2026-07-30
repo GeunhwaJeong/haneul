@@ -7,7 +7,7 @@ use haneul_types::{
     error::ExecutionError,
     execution_status::{CommandArgumentError, ExecutionErrorKind},
     object::Owner,
-    storage::{BackingPackageStore, ChildObjectResolver, StorageView},
+    storage::{BackingPackageStore, RuntimeObjectResolver, StorageView},
     transfer::Receiving,
 };
 use move_binary_format::file_format::AbilitySet;
@@ -31,7 +31,7 @@ where
 /// Interface with the store necessary to execute a programmable transaction
 pub trait ExecutionState: StorageView + HaneulResolver {
     fn as_haneul_resolver(&self) -> &dyn HaneulResolver;
-    fn as_child_resolver(&self) -> &dyn ChildObjectResolver;
+    fn as_child_resolver(&self) -> &dyn RuntimeObjectResolver;
 }
 
 impl<T> ExecutionState for T
@@ -43,7 +43,7 @@ where
         self
     }
 
-    fn as_child_resolver(&self) -> &dyn ChildObjectResolver {
+    fn as_child_resolver(&self) -> &dyn RuntimeObjectResolver {
         self
     }
 }

@@ -12,7 +12,7 @@ use haneul_types::{
     id::UID,
     metrics::ExecutionMetrics,
     object::{MoveObject, Owner},
-    storage::ChildObjectResolver,
+    storage::RuntimeObjectResolver,
     HANEUL_AUTHENTICATOR_STATE_OBJECT_ID, HANEUL_CLOCK_OBJECT_ID, HANEUL_SYSTEM_STATE_OBJECT_ID,
 };
 use linked_hash_map::LinkedHashMap;
@@ -176,7 +176,7 @@ impl TestInventories {
 
 impl<'a> ObjectRuntime<'a> {
     pub fn new(
-        object_resolver: &'a dyn ChildObjectResolver,
+        object_resolver: &'a dyn RuntimeObjectResolver,
         input_objects: BTreeMap<ObjectID, InputObject>,
         is_metered: bool,
         protocol_config: &ProtocolConfig,

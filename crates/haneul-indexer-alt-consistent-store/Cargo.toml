@@ -45,9 +45,10 @@ zstd.workspace = true
 
 move-core-types.workspace = true
 haneullabs-common.workspace = true
+haneullabs-network.workspace = true
 
 bin-version.workspace = true
-haneullabs-network.workspace = true
+haneul-http.workspace = true
 haneul-futures.workspace = true
 haneul-indexer-alt-consistent-api.workspace = true
 haneul-indexer-alt-framework = { workspace = true, default-features = false }

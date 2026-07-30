@@ -23,6 +23,7 @@ use arc_swap::ArcSwap;
 use effects_certifier::*;
 use haneul_config::NodeConfig;
 use haneul_types::{
+    base_types::AuthorityName,
     committee::EpochId,
     error::{ErrorCategory, UserInputError},
     messages_grpc::{SubmitTxRequest, SubmitTxResult, TxType},
@@ -139,6 +140,12 @@ where
     /// Returns the authority aggregator wrapper which upgrades on epoch changes.
     pub fn authority_aggregator(&self) -> &Arc<ArcSwap<AuthorityAggregator<A>>> {
         &self.authority_aggregator
+    }
+
+    pub fn select_preferred_validators(&self, delta: f64) -> Vec<AuthorityName> {
+        let authority_aggregator = self.authority_aggregator.load();
+        self.client_monitor
+            .select_shuffled_preferred_validators(&authority_aggregator.committee, delta)
     }
 
     /// Drives transaction to finalization.

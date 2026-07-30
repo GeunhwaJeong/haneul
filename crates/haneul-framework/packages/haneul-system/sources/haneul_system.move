@@ -51,7 +51,7 @@ use haneul_system::haneul_system_state_inner::{
     Self,
     SystemParameters,
     HaneulSystemStateInner,
-    HaneulSystemStateInnerV2
+    HaneulSystemStateInnerV2,
 };
 use haneul_system::validator::Validator;
 use haneul_system::validator_cap::UnverifiedValidatorOperationCap;

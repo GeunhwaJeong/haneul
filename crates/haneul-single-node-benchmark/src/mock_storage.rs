@@ -8,7 +8,7 @@ use haneul_types::error::{HaneulError, HaneulResult};
 use haneul_types::inner_temporary_store::InnerTemporaryStore;
 use haneul_types::object::{Object, Owner};
 use haneul_types::storage::{
-    BackingPackageStore, ChildObjectResolver, ObjectStore, PackageObject, ParentSync,
+    BackingPackageStore, ObjectStore, PackageObject, ParentSync, RuntimeObjectResolver,
     get_module_by_id,
 };
 use haneul_types::transaction::{InputObjectKind, InputObjects, ObjectReadResult, TransactionKey};
@@ -116,7 +116,7 @@ impl BackingPackageStore for InMemoryObjectStore {
     }
 }
 
-impl ChildObjectResolver for InMemoryObjectStore {
+impl RuntimeObjectResolver for InMemoryObjectStore {
     fn read_child_object(
         &self,
         parent: &ObjectID,

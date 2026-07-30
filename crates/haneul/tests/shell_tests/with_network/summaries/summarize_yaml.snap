@@ -1,5 +1,6 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
+assertion_line: 114
 ---
 ----- script -----
 # Copyright (c) Mysten Labs, Inc.
@@ -73,6 +74,7 @@ prover.yaml
 random.yaml
 rangeproofs.yaml
 ristretto255.yaml
+scratch.yaml
 table.yaml
 table_vec.yaml
 token.yaml
@@ -526,6 +528,9 @@ type_origins:
       package: "0x0000000000000000000000000000000000000000000000000000000000000002"
     - module_name: ristretto255
       datatype_name: G
+      package: "0x0000000000000000000000000000000000000000000000000000000000000002"
+    - module_name: scratch
+      datatype_name: Permit
       package: "0x0000000000000000000000000000000000000000000000000000000000000002"
     - module_name: table_vec
       datatype_name: TableVec

@@ -653,11 +653,11 @@ impl StateRead for AuthorityState {
         coin_type: TypeTag,
     ) -> StateReadResult<TotalBalance> {
         let indexes = self.indexes.clone();
-        let child_object_resolver = self.get_child_object_resolver().clone();
+        let runtime_object_resolver = self.get_runtime_object_resolver().clone();
         Ok(
             tokio::task::spawn_blocking(move || -> HaneulResult<TotalBalance> {
                 let address_balance =
-                    get_balance(owner, child_object_resolver.as_ref(), coin_type.clone())?;
+                    get_balance(owner, runtime_object_resolver.as_ref(), coin_type.clone())?;
                 let coin_balance = indexes
                     .as_ref()
                     .ok_or(HaneulErrorKind::IndexStoreNotAvailable)?
@@ -682,14 +682,14 @@ impl StateRead for AuthorityState {
         owner: HaneulAddress,
     ) -> StateReadResult<Arc<HashMap<TypeTag, TotalBalance>>> {
         let indexes = self.indexes.clone();
-        let child_object_resolver = self.get_child_object_resolver().clone();
+        let runtime_object_resolver = self.get_runtime_object_resolver().clone();
         Ok(tokio::task::spawn_blocking(
             move || -> HaneulResult<Arc<HashMap<TypeTag, TotalBalance>>> {
                 let indexes = indexes
                     .as_ref()
                     .ok_or(HaneulErrorKind::IndexStoreNotAvailable)?;
                 let address_balances =
-                    get_all_balances_for_owner(owner, child_object_resolver.as_ref(), indexes)?;
+                    get_all_balances_for_owner(owner, runtime_object_resolver.as_ref(), indexes)?;
                 let coin_balances = (*indexes.get_all_coin_object_balances(owner)?).clone();
                 let mut all_balances = coin_balances;
                 for (coin_type, balance) in address_balances {

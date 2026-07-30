@@ -13,7 +13,7 @@ use haneul::dynamic_object_field::{
     exists,
     exists_with_type,
     remove,
-    id as field_id
+    id as field_id,
 };
 use haneul::test_scenario;
 
