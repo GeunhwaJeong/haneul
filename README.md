@@ -18,6 +18,14 @@ The surest path to reaching this goal was to start from technology that had alre
 - **Secured by delegated proof of stake**: The DAG-based Mysticeti consensus provides sub-second finality, with the native token HANEUL serving as both gas and stake.
 - **Built for everyday users**: The protocol supports zkLogin, for signing in with existing web accounts, and sponsored transactions, so applications can pay gas for their users.
 
+## Release Types
+
+There is currently one release track, with a clear purpose and version scheme:
+
+- **Mainnet Release**: production-ready releases running on the Haneul mainnet. Format: `mainnet-v<Major>.<Minor>.<Patch>`, example: [mainnet-v1.6.0](https://github.com/GeunhwaJeong/haneul/releases/tag/mainnet-v1.6.0).
+
+Devnet and testnet release tracks (`devnet-v<...>`, `testnet-v<...>`) are planned and will follow the same scheme.
+
 ## Building from Source
 
 Building Haneul requires Rust and a handful of native dependencies. The workspace is large, so expect the first release build to take a while; incremental builds after that are much faster.
