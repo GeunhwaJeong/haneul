@@ -8,6 +8,13 @@ Haneul's mission is to create a financial network built on trust, where hundreds
 
 The surest path to reaching this goal was to start from technology that had already been designed and proven to hold up at that scale. Haneul began its development based on the Sui codebase created by Mysten Labs, and has deep respect for their outstanding engineering.
 
+**Haneul is:**
+
+- **An object-centric blockchain**: Every asset is an object with an explicit owner, not a balance entry under an account. Transactions that touch disjoint objects execute in parallel, and transactions on single-owner objects are finalized without waiting for global ordering.
+- **Programmed in Move**: Smart contracts are written in Move, a language that guarantees at the type level that assets cannot be duplicated or accidentally destroyed.
+- **Secured by delegated proof of stake**: The DAG-based Mysticeti consensus provides sub-second finality. The native token HANEUL serves as both gas and the stake that secures the validator set.
+- **Built for everyday users**: The protocol supports zkLogin, so people can own on-chain assets with their existing web accounts, and sponsored transactions, so applications can pay gas on their users' behalf.
+
 [![Github release](https://img.shields.io/github/v/release/GeunhwaJeong/haneul.svg?sort=semver)](https://github.com/GeunhwaJeong/haneul/releases/latest)
 [![License](https://img.shields.io/github/license/GeunhwaJeong/haneul)](https://github.com/GeunhwaJeong/haneul/blob/main/LICENSE)
 
