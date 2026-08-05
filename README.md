@@ -103,19 +103,6 @@ cargo fmt --all
 cargo xclippy
 ```
 
-## Project Structure
-
-The repository is one large Cargo workspace. A map of the places you are most likely to visit:
-
-```
-haneul/
-├── crates/                    # Core Rust crates (haneul-core, haneul-node, haneul-types, ...)
-├── consensus/                 # Mysticeti consensus engine
-├── haneul-execution/          # Move VM execution layer
-├── external-crates/           # Move compiler and VM
-└── bridge/                    # Cross-chain bridge
-```
-
 ## Contributing
 
 Thank you for considering helping out with the source code! We welcome contributions from anyone on the internet, and are grateful for even the smallest of fixes!
