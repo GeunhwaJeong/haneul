@@ -13,6 +13,8 @@ The surest path to reaching this goal was to start from technology that had alre
 
 ## Building from Source
 
+Building Haneul requires Rust and a handful of native dependencies. The workspace is large, so expect the first release build to take a while; incremental builds after that are much faster.
+
 ### 1. Install Rust
 
 ```bash
@@ -42,6 +44,8 @@ cd haneul
 cargo build --release
 ```
 
+The resulting binaries end up in `target/release`.
+
 ## Executables
 
 The build produces a number of binaries, but these are the ones you are most likely to use:
@@ -57,19 +61,21 @@ The build produces a number of binaries, but these are the ones you are most lik
 
 ## Running a Local Node
 
+The `haneul` binary can spin up a complete local network on your machine: a single validator with a faucet attached. This is the fastest way to try things out.
+
 ```bash
-# Start a local validator with faucet
 ./target/release/haneul start --with-faucet --force-regenesis
+```
 
-# Switch to local environment
+`--force-regenesis` starts from a fresh genesis every time, so nothing persists between runs. Once the node is up, open another terminal and point the client at your local network:
+
+```bash
 ./target/release/haneul client switch --env local
-
-# Get HANEUL tokens from faucet
 ./target/release/haneul client faucet
-
-# Check balance
 ./target/release/haneul client gas
 ```
+
+The faucet grants test HANEUL, and `client gas` lists the coin objects your address now owns.
 
 ## Testing
 
