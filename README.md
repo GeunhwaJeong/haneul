@@ -4,12 +4,31 @@
 
 # Haneul
 
-Haneul Core implements a decentralized, programmable distributed ledger which provides a digital infrastructure that can empower billions of people.
+Haneul's mission is to create a financial network built on trust, where hundreds of millions of people can own and transact their money and digital assets directly, without intermediaries. Owning and trading assets inside the services you use every day, without ever having to be aware of the blockchain: that is what Haneul is aiming for. To achieve this, Haneul is designed to handle everyday transactions at that scale through an object-centric data model, the Move language, and parallel execution.
+
+The surest path to reaching this goal was to start from technology that had already been designed and proven to hold up at that scale. Haneul began its development based on the Sui codebase created by Mysten Labs, and has deep respect for their outstanding engineering.
 
 [![Github release](https://img.shields.io/github/v/release/GeunhwaJeong/haneul.svg?sort=semver)](https://github.com/GeunhwaJeong/haneul/releases/latest)
 [![License](https://img.shields.io/github/license/GeunhwaJeong/haneul)](https://github.com/GeunhwaJeong/haneul/blob/main/LICENSE)
 
+**Haneul is:**
+
+- **An object-centric blockchain**: Every asset is an object with an explicit owner, and transactions that touch different objects execute in parallel.
+- **Programmed in Move**: A language that guarantees at the type level that assets cannot be duplicated or accidentally destroyed.
+- **Secured by delegated proof of stake**: The DAG-based Mysticeti consensus provides sub-second finality, with the native token HANEUL serving as both gas and stake.
+- **Built for everyday users**: The protocol supports zkLogin, for signing in with existing web accounts, and sponsored transactions, so applications can pay gas for their users.
+
+## Release Types
+
+There is currently one release track, with a clear purpose and version scheme:
+
+- **Mainnet Release**: production-ready releases running on the Haneul mainnet. Format: `mainnet-v<Major>.<Minor>.<Patch>`, example: [mainnet-v1.6.0](https://github.com/GeunhwaJeong/haneul/releases/tag/mainnet-v1.6.0).
+
+Devnet and testnet release tracks (`devnet-v<...>`, `testnet-v<...>`) are planned and will follow the same scheme.
+
 ## Building from Source
+
+Building Haneul requires Rust and a handful of native dependencies. The workspace is large, so expect the first release build to take a while; incremental builds after that are much faster.
 
 ### 1. Install Rust
 
@@ -40,59 +59,80 @@ cd haneul
 cargo build --release
 ```
 
+The resulting binaries end up in `target/release`.
+
+## Executables
+
+The build produces a number of binaries, but these are the ones you are most likely to use:
+
+|       Command        | Description                                                                                                                                                                                                                                                                                            |
+| :------------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|     **`haneul`**     | The main CLI. It bundles everything you need day to day: `haneul start` spins up a local network, `haneul client` is the wallet and RPC client, `haneul move` builds and tests Move packages, and `haneul keytool` manages keys. Run `haneul --help` for the full list of subcommands.                   |
+|    `haneul-node`     | The node daemon. It powers both validators and fullnodes; which role a node plays is determined by its configuration file.                                                                                                                                                                             |
+|   `haneul-faucet`    | HTTP service that hands out test HANEUL on local networks. You will rarely run it directly, as `haneul start --with-faucet` manages one for you.                                                                                                                                                        |
+|    `haneul-tool`     | Operational toolbox for node operators: database inspection, checkpoint and snapshot download, and network diagnostics.                                                                                                                                                                                |
+|   `haneul-bridge`    | The bridge node that relays assets between Haneul and Ethereum.                                                                                                                                                                                                                                        |
+| `haneul-indexer-alt` | Indexes chain data into Postgres and backs the GraphQL and JSON-RPC services.                                                                                                                                                                                                                          |
+
 ## Running a Local Node
 
+The `haneul` binary can spin up a complete local network on your machine: a single validator with a faucet attached. This is the fastest way to try things out.
+
 ```bash
-# Start a local validator with faucet
 ./target/release/haneul start --with-faucet --force-regenesis
+```
 
-# Switch to local environment
+`--force-regenesis` starts from a fresh genesis every time, so nothing persists between runs. Once the node is up, open another terminal and point the client at your local network:
+
+```bash
 ./target/release/haneul client switch --env local
-
-# Get HANEUL tokens from faucet
 ./target/release/haneul client faucet
-
-# Check balance
 ./target/release/haneul client gas
 ```
 
+The faucet grants test HANEUL, and `client gas` lists the coin objects your address now owns.
+
 ## Testing
 
+Most tests are ordinary Rust tests, run through [cargo-nextest](https://nexte.st/):
+
 ```bash
-# Unit tests
 HANEUL_SKIP_SIMTESTS=1 cargo nextest run
 
-# Test specific crate
+# or just one crate
 cargo nextest run -p haneul-core
+```
 
-# Simulation tests
+Consensus and end-to-end tests additionally run under a deterministic simulator that controls time and the network, so that distributed-systems bugs reproduce reliably instead of flaking. These must go through `cargo simtest`:
+
+```bash
 cargo simtest -p haneul-e2e-tests
 ```
 
 ## Linting
+
+`cargo xclippy` is the workspace's clippy wrapper with our lint configuration. CI runs both of these, so running them before pushing saves a round trip:
 
 ```bash
 cargo fmt --all
 cargo xclippy
 ```
 
-## Project Structure
-
-```
-haneul/
-├── crates/                    # Core Rust crates (haneul-core, haneul-node, haneul-types, ...)
-├── consensus/                 # Mysticeti consensus engine
-├── haneul-execution/          # Move VM execution layer
-├── external-crates/           # Move compiler and VM
-└── bridge/                    # Cross-chain bridge
-```
-
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+Thank you for considering helping out with the source code! We welcome contributions from anyone on the internet, and are grateful for even the smallest of fixes!
+
+If you'd like to contribute to Haneul, please fork, fix, commit and send a pull request for the maintainers to review and merge into the main code base. If you wish to submit more complex changes though, please [open an issue](https://github.com/GeunhwaJeong/haneul/issues) first to ensure those changes are in line with the general philosophy of the project and/or get some early feedback which can make both your efforts much lighter as well as our review and merge procedures quick and simple.
+
+Please make sure your contributions adhere to our coding guidelines:
+
+* Code must be formatted with `cargo fmt` and must pass `cargo xclippy` without warnings.
+* Pull requests need to be based on and opened against the `main` branch.
+* Commit messages should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format, prefixed with the area they modify.
+  * E.g. "fix(name-service): point mainnet config at the deployed objects"
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details on configuring your environment, managing project dependencies, and testing procedures.
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE) for details.
-
-This project is originally derived from [Sui](https://github.com/MystenLabs/sui) by [Mysten Labs](https://mystenlabs.com), licensed under Apache-2.0.
+See the [LICENSE](LICENSE) file for more details.
