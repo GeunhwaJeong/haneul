@@ -79,18 +79,24 @@ The faucet grants test HANEUL, and `client gas` lists the coin objects your addr
 
 ## Testing
 
+Most tests are ordinary Rust tests, run through [cargo-nextest](https://nexte.st/):
+
 ```bash
-# Unit tests
 HANEUL_SKIP_SIMTESTS=1 cargo nextest run
 
-# Test specific crate
+# or just one crate
 cargo nextest run -p haneul-core
+```
 
-# Simulation tests
+Consensus and end-to-end tests additionally run under a deterministic simulator that controls time and the network, so that distributed-systems bugs reproduce reliably instead of flaking. These must go through `cargo simtest`:
+
+```bash
 cargo simtest -p haneul-e2e-tests
 ```
 
 ## Linting
+
+`cargo xclippy` is the workspace's clippy wrapper with our lint configuration. CI runs both of these, so running them before pushing saves a round trip:
 
 ```bash
 cargo fmt --all
@@ -98,6 +104,8 @@ cargo xclippy
 ```
 
 ## Project Structure
+
+The repository is one large Cargo workspace. A map of the places you are most likely to visit:
 
 ```
 haneul/
