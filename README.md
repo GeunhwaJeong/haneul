@@ -42,6 +42,19 @@ cd haneul
 cargo build --release
 ```
 
+## Executables
+
+The build produces a number of binaries, but these are the ones you are most likely to use:
+
+|       Command        | Description                                                                                                                                                                                                                                                                                            |
+| :------------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|     **`haneul`**     | The main CLI. It bundles everything you need day to day: `haneul start` spins up a local network, `haneul client` is the wallet and RPC client, `haneul move` builds and tests Move packages, and `haneul keytool` manages keys. Run `haneul --help` for the full list of subcommands.                   |
+|    `haneul-node`     | The node daemon. It powers both validators and fullnodes; which role a node plays is determined by its configuration file.                                                                                                                                                                             |
+|   `haneul-faucet`    | HTTP service that hands out test HANEUL on local networks. You will rarely run it directly, as `haneul start --with-faucet` manages one for you.                                                                                                                                                        |
+|    `haneul-tool`     | Operational toolbox for node operators: database inspection, checkpoint and snapshot download, and network diagnostics.                                                                                                                                                                                |
+|   `haneul-bridge`    | The bridge node that relays assets between Haneul and Ethereum.                                                                                                                                                                                                                                        |
+| `haneul-indexer-alt` | Indexes chain data into Postgres and backs the GraphQL and JSON-RPC services.                                                                                                                                                                                                                          |
+
 ## Running a Local Node
 
 ```bash
