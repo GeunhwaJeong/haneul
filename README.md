@@ -91,7 +91,18 @@ haneul/
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+Thank you for considering helping out with the source code! We welcome contributions from anyone on the internet, and are grateful for even the smallest of fixes!
+
+If you'd like to contribute to Haneul, please fork, fix, commit and send a pull request for the maintainers to review and merge into the main code base. If you wish to submit more complex changes though, please [open an issue](https://github.com/GeunhwaJeong/haneul/issues) first to ensure those changes are in line with the general philosophy of the project and/or get some early feedback which can make both your efforts much lighter as well as our review and merge procedures quick and simple.
+
+Please make sure your contributions adhere to our coding guidelines:
+
+* Code must be formatted with `cargo fmt` and must pass `cargo xclippy` without warnings.
+* Pull requests need to be based on and opened against the `main` branch.
+* Commit messages should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format, prefixed with the area they modify.
+  * E.g. "fix(name-service): point mainnet config at the deployed objects"
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details on configuring your environment, managing project dependencies, and testing procedures.
 
 ## License
 
