@@ -4,7 +4,9 @@
 
 # Haneul
 
-Haneul Core implements a decentralized, programmable distributed ledger which provides a digital infrastructure that can empower billions of people.
+Haneul's mission is to create a financial network built on trust, where hundreds of millions of people can own and transact their money and digital assets directly, without intermediaries. Owning and trading assets inside the services you use every day, without ever having to be aware of the blockchain: that is what Haneul is aiming for. To achieve this, Haneul is designed to handle everyday transactions at that scale through an object-centric data model, the Move language, and parallel execution.
+
+The surest path to reaching this goal was to start from technology that had already been designed and proven to hold up at that scale. Haneul began its development based on the Sui codebase created by Mysten Labs, and has deep respect for their outstanding engineering.
 
 [![Github release](https://img.shields.io/github/v/release/GeunhwaJeong/haneul.svg?sort=semver)](https://github.com/GeunhwaJeong/haneul/releases/latest)
 [![License](https://img.shields.io/github/license/GeunhwaJeong/haneul)](https://github.com/GeunhwaJeong/haneul/blob/main/LICENSE)
@@ -93,6 +95,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE) for details.
-
-This project is originally derived from [Sui](https://github.com/MystenLabs/sui) by [Mysten Labs](https://mystenlabs.com), licensed under Apache-2.0.
+See the [LICENSE](LICENSE) file for more details.
