@@ -13,10 +13,10 @@ The surest path to reaching this goal was to start from technology that had alre
 
 **Haneul is:**
 
-- **An object-centric blockchain**: Every asset is an object with an explicit owner, not a balance entry under an account. Transactions that touch disjoint objects execute in parallel, and transactions on single-owner objects are finalized without waiting for global ordering.
-- **Programmed in Move**: Smart contracts are written in Move, a language that guarantees at the type level that assets cannot be duplicated or accidentally destroyed.
-- **Secured by delegated proof of stake**: The DAG-based Mysticeti consensus provides sub-second finality. The native token HANEUL serves as both gas and the stake that secures the validator set.
-- **Built for everyday users**: The protocol supports zkLogin, so people can own on-chain assets with their existing web accounts, and sponsored transactions, so applications can pay gas on their users' behalf.
+- **An object-centric blockchain**: Every asset is an object with an explicit owner, and transactions that touch different objects execute in parallel.
+- **Programmed in Move**: A language that guarantees at the type level that assets cannot be duplicated or accidentally destroyed.
+- **Secured by delegated proof of stake**: The DAG-based Mysticeti consensus provides sub-second finality, with the native token HANEUL serving as both gas and stake.
+- **Built for everyday users**: The protocol supports zkLogin, for signing in with existing web accounts, and sponsored transactions, so applications can pay gas for their users.
 
 ## Building from Source
 
