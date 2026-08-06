@@ -78,19 +78,19 @@ In the "Hello, World!" example project, the subdirectory `haneul-stack-hello-wor
 
 The `App.tsx` file contains code that creates a basic starter template for your React app. It includes a button to connect a Slush wallet to the app and a button to open the Haneul Faucet to obtain Testnet HANEUL. 
 
-<ImportContent source="/ui/src/App.tsx" mode="code" org="HaneulLabs" repo="haneul-stack-hello-world" />
+<ImportContent source="/ui/src/App.tsx" mode="code" org="MystenLabs" repo="sui-stack-hello-world" />
 
 ### `CreateGreeting.tsx`
 
 The `CreateGreeting.tsx` file contains logic that creates and sends a transaction to your Move package. The transaction calls the `new` function of the package, which creates a Move object with the value `Hello world!`. In the ["Hello, World!"](/getting-started/onboarding/hello-world) guide, you called this function manually through the CLI with the command `haneul client call --package <PACKAGE_ID> --module greeting --function new`.
 
-<ImportContent source="/ui/src/CreateGreeting.tsx" mode="code" org="HaneulLabs" repo="haneul-stack-hello-world" />
+<ImportContent source="/ui/src/CreateGreeting.tsx" mode="code" org="MystenLabs" repo="sui-stack-hello-world" />
 
 ### `Greeting.tsx`
 
 The `Greeting.tsx` file also contains logic that creates and sends a transaction to your Move package. However, this transaction calls the `update_text` function of the package, which modifies the text to replace "Hello world!" with the text of your choosing.
 
-<ImportContent source="/ui/src/Greeting.tsx" mode="code" org="HaneulLabs" repo="haneul-stack-hello-world" />
+<ImportContent source="/ui/src/Greeting.tsx" mode="code" org="MystenLabs" repo="sui-stack-hello-world" />
 
 ## Connect the React interface to your Move package
 
@@ -98,11 +98,11 @@ The `constants.ts` file is where you connect the React app to your Move package.
 
 Modify this file to include your Move package ID instead.
 
-<ImportContent source="/ui/src/constants.ts" mode="code" org="HaneulLabs" repo="haneul-stack-hello-world" />
+<ImportContent source="/ui/src/constants.ts" mode="code" org="MystenLabs" repo="sui-stack-hello-world" />
 
 The `networkConfig.ts` file uses this constant:
 
-<ImportContent source="/ui/src/networkConfig.ts" mode="code" org="HaneulLabs" repo="haneul-stack-hello-world" />
+<ImportContent source="/ui/src/networkConfig.ts" mode="code" org="MystenLabs" repo="sui-stack-hello-world" />
 
 ## Install frontend dependencies 
 

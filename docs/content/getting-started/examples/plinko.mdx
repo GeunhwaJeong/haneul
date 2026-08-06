@@ -224,7 +224,7 @@ Errors can occur at the sponsorship step (Enoki unreachable or rate-limited), th
 
 The `start_game` function validates the bet, creates a `Game` object, and attaches it to `HouseData` as a dynamic object field.
 
-<ImportContent source="plinko/sources/plinko.move" mode="code" org="HaneulLabs" repo="plinko-poc" fun="start_game" />
+<ImportContent source="plinko/sources/plinko.move" mode="code" org="MystenLabs" repo="plinko-poc" fun="start_game" />
 
 The function checks that the stake falls within the house's min and max limits, and that the house has enough balance to cover a maximum payout. It stores the `Game` as a dynamic object field on `HouseData` keyed by the game ID, which ties the game lifecycle to the house object. The function emits a `NewGameStarted` event with the game ID and stake.
 
@@ -232,7 +232,7 @@ The function checks that the stake falls within the house's min and max limits, 
 
 The `finish_game` entry function consumes the `Random` module to generate the ball trace and compute the payout.
 
-<ImportContent source="plinko/sources/plinko.move" mode="code" org="HaneulLabs" repo="plinko-poc" fun="finish_game" />
+<ImportContent source="plinko/sources/plinko.move" mode="code" org="MystenLabs" repo="plinko-poc" fun="finish_game" />
 
 For each ball, the function generates 12 random bytes and counts how many are even. This count (0 through 12) indexes into the multiplier table. The total payout across all balls is summed, the house fee is deducted, and the winnings transfer to the player. The function emits a `GameFinished` event containing the random trace, which the frontend uses to animate the ball paths.
 
@@ -240,7 +240,7 @@ For each ball, the function generates 12 random bytes and counts how many are ev
 
 The `HouseData` struct holds the shared treasury, stake limits, fee configuration, and multiplier table.
 
-<ImportContent source="plinko/sources/house_data.move" mode="code" org="HaneulLabs" repo="plinko-poc" struct="HouseData" />
+<ImportContent source="plinko/sources/house_data.move" mode="code" org="MystenLabs" repo="plinko-poc" struct="HouseData" />
 
 The house address is the only account authorized to withdraw funds, claim fees, and update configuration. Anyone can call `top_up` to add funds to the house balance.
 
@@ -248,7 +248,7 @@ The house address is the only account authorized to withdraw funds, claim fees, 
 
 The `useCreateGame` hook builds the `start_game` transaction, sponsors it through Enoki, and then calls the backend to finish the game.
 
-<ImportContent source="app/src/hooks/moveTransactionCalls.ts/useCreateGame.ts" mode="code" org="HaneulLabs" repo="plinko-poc" fun="useCreateGame" />
+<ImportContent source="app/src/hooks/moveTransactionCalls.ts/useCreateGame.ts" mode="code" org="MystenLabs" repo="plinko-poc" fun="useCreateGame" />
 
 The hook follows a 7-step flow: build the transaction, request sponsorship from the `/api/sponsor` endpoint, sign with the player's wallet, execute through `/api/execute`, extract the game ID from the `NewGameStarted` event, call `/api/game/plinko/end` to trigger `finish_game` on the backend, and normalize the returned trace into ball paths for the physics simulation.
 
@@ -256,7 +256,7 @@ The hook follows a 7-step flow: build the transaction, request sponsorship from 
 
 The `PlinkoGameService` executes `finish_game` using the house key pair and extracts the random trace from the emitted event.
 
-<ImportContent source="app/src/app/api/services/PlinkoGameService.ts" mode="code" org="HaneulLabs" repo="plinko-poc" fun="finishGame" />
+<ImportContent source="app/src/app/api/services/PlinkoGameService.ts" mode="code" org="MystenLabs" repo="plinko-poc" fun="finishGame" />
 
 The backend signs `finish_game` with the house key pair because only the house can call this entry function (it requires access to `HouseData`). The function extracts the trace from the `GameFinished` event, which encodes 12 bytes per ball. The frontend converts each byte to a left-or-right direction to animate the physics simulation.
 

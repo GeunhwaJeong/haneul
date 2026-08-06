@@ -36,7 +36,7 @@ Mint a new `DeepBookPoolReferral` object for a specific pool with a given multip
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="mint_referral"
 	noComments
@@ -52,7 +52,7 @@ Update the multiplier for an existing pool referral. Only the referral owner can
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="update_pool_referral_multiplier"
 	noComments
@@ -68,7 +68,7 @@ Claim your accumulated referral fees for a pool referral. Only you, as the refer
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="claim_pool_referral_rewards"
 	noComments
@@ -84,7 +84,7 @@ View the current accumulated balances for a pool referral without claiming them.
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="get_pool_referral_balances"
 	noComments
@@ -100,7 +100,7 @@ Get the current multiplier for a pool referral.
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="pool_referral_multiplier"
 	noComments
@@ -120,7 +120,7 @@ Associate a `BalanceManager` with a pool-specific referral. Requires a `TradeCap
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="set_balance_manager_referral"
 	noComments
@@ -136,7 +136,7 @@ Remove the referral association from a `BalanceManager` for a specific pool. Req
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="unset_balance_manager_referral"
 	noComments
@@ -152,7 +152,7 @@ Retrieve the referral ID currently associated with a `BalanceManager` for a spec
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="get_balance_manager_referral_id"
 	noComments
@@ -168,7 +168,7 @@ Get the owner address of a pool referral object.
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="balance_manager_referral_owner"
 	noComments
@@ -184,7 +184,7 @@ Get the pool ID associated with a pool referral object.
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="balance_manager_referral_pool_id"
 	noComments
@@ -202,7 +202,7 @@ The system emits this event when you mint a new referral.
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="DeepBookReferralCreatedEvent"
 />
@@ -217,7 +217,7 @@ The system emits this event when you set or unset a referral on a balance manage
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="DeepBookReferralSetEvent"
 />
@@ -232,7 +232,7 @@ The system emits this event when the referral owner claims accumulated fees.
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="ReferralClaimed"
 />
@@ -247,7 +247,7 @@ The system emits this event when it allocates referral fees during trade executi
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="ReferralFeeEvent"
 />

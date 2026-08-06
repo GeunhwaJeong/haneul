@@ -244,7 +244,7 @@ Open `http://localhost:5173` in a browser. You see a feed of posts, some with lo
 
 ## Key code highlights
 
-<CodeWalkthrough source="frontend/move/posts/sources/posts.move" org="HaneulLabs" repo="onlyfins-example-app" language="move">
+<CodeWalkthrough source="frontend/move/posts/sources/posts.move" org="MystenLabs" repo="onlyfins-example-app" language="move">
   <Step lines="25-41" title="`create_post` with optional encryption">
     The `create_post` entry function creates a shared `Post` object with an optional encryption ID. When `encryption_id` contains a value, the post requires a `ViewerToken` to decrypt. When it contains `none`, the image is publicly viewable. The function shares the post so any user can read its metadata.
   </Step>
@@ -260,7 +260,7 @@ Open `http://localhost:5173` in a browser. You see a feed of posts, some with lo
 
 The `usePayForContent` hook builds and sponsors the transaction that grants a viewer access to a post.
 
-<ImportContent source="frontend/src/hooks/usePayForContent.ts" mode="code" org="HaneulLabs" repo="onlyfins-example-app" fun="usePayForContent" />
+<ImportContent source="frontend/src/hooks/usePayForContent.ts" mode="code" org="MystenLabs" repo="onlyfins-example-app" fun="usePayForContent" />
 
 The hook calls the `grant_access` Move function, transfers the resulting `ViewerToken` to the current account, and sponsors the transaction so the user pays no gas. After the transaction finalizes, it refetches the user's owned objects so the UI updates.
 
@@ -268,7 +268,7 @@ The hook calls the `grant_access` Move function, transfers the resulting `Viewer
 
 The `usePostDecryption` hook fetches encrypted images from Walrus and decrypts them using Seal session keys.
 
-<ImportContent source="frontend/src/hooks/usePostDecryption.ts" mode="code" org="HaneulLabs" repo="onlyfins-example-app" fun="usePostDecryption" />
+<ImportContent source="frontend/src/hooks/usePostDecryption.ts" mode="code" org="MystenLabs" repo="onlyfins-example-app" fun="usePostDecryption" />
 
 For each encrypted post the user has access to, the hook builds a `seal_approve_access` transaction, retrieves the decryption key from the Seal key servers, fetches the encrypted blob from Walrus, and decrypts it locally. It auto-detects the image MIME type from the first bytes of the decrypted data.
 

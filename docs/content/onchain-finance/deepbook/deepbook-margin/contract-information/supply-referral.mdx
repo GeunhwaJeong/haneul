@@ -37,7 +37,7 @@ Create a new supply referral for earning fees from referred suppliers. The retur
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="mint_supply_referral"
 />
@@ -52,7 +52,7 @@ Supply assets to a margin pool with an optional referral ID. When a referral ID 
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="supply"
 />
@@ -67,7 +67,7 @@ Withdraw accumulated referral fees. Only the owner of the `SupplyReferral` objec
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="withdraw_referral_fees"
 />
@@ -82,7 +82,7 @@ Query the current shares and unclaimed fees for a referral.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool/protocol_fees.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="referral_tracker"
 />
@@ -99,7 +99,7 @@ The system emits this event when you create a new supply referral.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="SupplyReferralMinted"
 />
@@ -114,7 +114,7 @@ The system emits this event when the referral owner claims referral fees.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool/protocol_fees.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="ReferralFeesClaimedEvent"
 />

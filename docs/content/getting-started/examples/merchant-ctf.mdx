@@ -207,7 +207,7 @@ The following snippet is the entire contract. It is intentionally minimal.
 
 The function takes an exact USDC payment and returns a flag.
 
-<ImportContent source="contracts/sources/merchant.move" mode="code" org="HaneulLabs" repo="CTF" fun="buy_flag" />
+<ImportContent source="contracts/sources/merchant.move" mode="code" org="MystenLabs" repo="CTF" fun="buy_flag" />
 
 The function does 3 things: asserts the coin value equals exactly `COST_PER_FLAG` (3,849,000), transfers the coin to a hardcoded recipient address, and mints a `Flag` with source `"merchant"`. There is no access control, no randomness, and no vulnerability. The challenge is purely about building the correct transaction.
 

@@ -35,6 +35,48 @@
     "path": "generate-haneul-agent-config"
   },
   {
+    "slug": "generate-sui-agent-config",
+    "title": "Generate Sui Agent Config",
+    "description": "",
+    "category": "General",
+    "path": "generate-sui-agent-config"
+  },
+  {
+    "slug": "haneul-cli",
+    "title": "Haneul CLI",
+    "description": "Understand Haneul networks, gas costs, epochs, and how the network operates at a high level.",
+    "category": "CLI",
+    "path": "haneul-cli"
+  },
+  {
+    "slug": "haneul-client",
+    "title": "Haneul Client",
+    "description": "Configure the Haneul client, manage addresses, switch networks, request faucet tokens, and check balances.",
+    "category": "CLI",
+    "path": "haneul-client"
+  },
+  {
+    "slug": "haneul-move",
+    "title": "Haneul Move",
+    "description": "Write and debug Move smart contracts covering abilities, init functions, one-time witnesses, upgrades, and custom coins.",
+    "category": "Move",
+    "path": "haneul-move"
+  },
+  {
+    "slug": "haneul-overview",
+    "title": "Haneul Overview",
+    "description": "Learn what Haneul is, how it compares to other chains, and which Haneul Stack primitives fit your use case.",
+    "category": "Get started",
+    "path": "haneul-overview"
+  },
+  {
+    "slug": "haneul-sdks",
+    "title": "Haneul SDKs",
+    "description": "Pick the right Haneul SDK for your language and wire it up: TypeScript, Rust, Python, Go, Dart, Kotlin, or Swift.",
+    "category": "Frontend and SDKs",
+    "path": "haneul-sdks"
+  },
+  {
     "slug": "haneul-install",
     "title": "Install Haneul",
     "description": "Install and manage Haneul CLI versions, toolchain components, and network-specific builds with haneulup.",
@@ -91,39 +133,67 @@
     "path": "haneul-publish"
   },
   {
-    "slug": "haneul-cli",
-    "title": "Haneul CLI",
-    "description": "Understand Haneul networks, gas costs, epochs, and how the network operates at a high level.",
-    "category": "CLI",
-    "path": "haneul-cli"
+    "slug": "sui-build",
+    "title": "Sui Build",
+    "description": "",
+    "category": "General",
+    "path": "sui-build-test"
   },
   {
-    "slug": "haneul-client",
-    "title": "Haneul Client",
-    "description": "Configure the Haneul client, manage addresses, switch networks, request faucet tokens, and check balances.",
-    "category": "CLI",
-    "path": "haneul-client"
+    "slug": "sui-cli",
+    "title": "Sui Cli",
+    "description": "",
+    "category": "General",
+    "path": "sui-cli"
   },
   {
-    "slug": "haneul-move",
-    "title": "Haneul Move",
-    "description": "Write and debug Move smart contracts covering abilities, init functions, one-time witnesses, upgrades, and custom coins.",
-    "category": "Move",
-    "path": "haneul-move"
+    "slug": "sui-client",
+    "title": "Sui Client",
+    "description": "",
+    "category": "General",
+    "path": "sui-client"
   },
   {
-    "slug": "haneul-overview",
-    "title": "Haneul Overview",
-    "description": "Learn what Haneul is, how it compares to other chains, and which Haneul Stack primitives fit your use case.",
-    "category": "Get started",
-    "path": "haneul-overview"
+    "slug": "sui-install",
+    "title": "Sui Install",
+    "description": "",
+    "category": "General",
+    "path": "sui-install"
   },
   {
-    "slug": "haneul-sdks",
-    "title": "Haneul SDKs",
-    "description": "Pick the right Haneul SDK for your language and wire it up: TypeScript, Rust, Python, Go, Dart, Kotlin, or Swift.",
-    "category": "Frontend and SDKs",
-    "path": "haneul-sdks"
+    "slug": "sui-move",
+    "title": "Sui Move",
+    "description": "",
+    "category": "General",
+    "path": "sui-move"
+  },
+  {
+    "slug": "sui-move-project",
+    "title": "Sui Move Project",
+    "description": "",
+    "category": "General",
+    "path": "sui-move-project"
+  },
+  {
+    "slug": "sui-overview",
+    "title": "Sui Overview",
+    "description": "",
+    "category": "General",
+    "path": "sui-overview"
+  },
+  {
+    "slug": "sui-publish",
+    "title": "Sui Publish",
+    "description": "",
+    "category": "General",
+    "path": "sui-publish"
+  },
+  {
+    "slug": "sui-sdks",
+    "title": "Sui Sdks",
+    "description": "",
+    "category": "General",
+    "path": "sui-sdks"
   },
   {
     "slug": "walrus-sites",

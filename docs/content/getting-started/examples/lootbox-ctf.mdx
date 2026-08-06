@@ -259,7 +259,7 @@ You should see a `flag::Flag` object.
 
 ## Key code highlights
 
-<CodeWalkthrough source="contracts/sources/lootboxes.move" org="HaneulLabs" repo="CTF" language="move">
+<CodeWalkthrough source="contracts/sources/lootboxes.move" org="MystenLabs" repo="CTF" language="move">
   <Step lines="8-11" title="`MaybeFlag` wrapper struct">
     The `MaybeFlag` struct wraps an optional flag in an owned object. The `Option<flag::Flag>` field is `Some` on a win and `None` on a loss. Because `MaybeFlag` has `key` and `store` abilities, it can be returned from `open_lootbox`, passed to `extract_flag`, and manipulated across function boundaries within a single transaction.
   </Step>

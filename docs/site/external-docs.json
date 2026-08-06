@@ -1,10 +1,16 @@
 {
   "messaging": {
-    "repo": "HaneulLabs/haneul-stack-messaging",
+    "repo": "GeunhwaJeong/haneul-stack-messaging",
     "branch": "main",
-    "sourcePath": "docs/haneul-stack-messaging",
+    "sourcePath": "docs/sui-stack-messaging",
     "targetPath": "haneul-stack/messaging",
-    "transforms": ["frontmatter", "admonitions", "nav-header", "toc", "links"],
+    "transforms": [
+      "frontmatter",
+      "admonitions",
+      "nav-header",
+      "toc",
+      "links"
+    ],
     "linkPrefix": "/haneul-stack/messaging",
     "exclude": [],
     "fileMap": {

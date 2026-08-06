@@ -210,7 +210,7 @@ The following snippets are the parts of the code worth reading carefully.
 
 The `new_mint_permit` function verifies an Ed25519 signature against the `KeyRegistry` and consumes the nonce to prevent replay.
 
-<ImportContent source="move/sources/ticket.move" mode="code" org="HaneulLabs" repo="ticketing-poc" fun="new_mint_permit" />
+<ImportContent source="move/sources/ticket.move" mode="code" org="MystenLabs" repo="ticketing-poc" fun="new_mint_permit" />
 
 The function takes the `KeyRegistry` (which holds the public key), the raw signature bytes, and the BCS-encoded ticket data. It calls `assert_signature` to verify the Ed25519 signature, then `consume_nonce` to record the nonce and prevent reuse. The returned `TicketMintPermit` is consumed by the `mint` function.
 
@@ -218,7 +218,7 @@ The function takes the `KeyRegistry` (which holds the public key), the raw signa
 
 The `mint` function creates a `Ticket` NFT from a verified permit and awards loyalty points.
 
-<ImportContent source="move/sources/ticket.move" mode="code" org="HaneulLabs" repo="ticketing-poc" fun="mint" />
+<ImportContent source="move/sources/ticket.move" mode="code" org="MystenLabs" repo="ticketing-poc" fun="mint" />
 
 The function consumes the `TicketMintPermit` (destroying it), parses the BCS-encoded data to extract ticket fields, creates the `Ticket` object, updates the user's `Loyalty` card with the awarded points, and emits a `TicketMinted` event.
 
@@ -226,7 +226,7 @@ The function consumes the `TicketMintPermit` (destroying it), parses the BCS-enc
 
 The `StageTransition<T>` struct uses phantom types to represent lifecycle stages. Admins create transition objects that the ticket module consumes.
 
-<ImportContent source="move/sources/ticket_stage.move" mode="code" org="HaneulLabs" repo="ticketing-poc" struct="StageTransition" />
+<ImportContent source="move/sources/ticket_stage.move" mode="code" org="MystenLabs" repo="ticketing-poc" struct="StageTransition" />
 
 Each marker type (`Purchased`, `Attended`, `Collectible`) has `drop` ability. The `StageTransition<T>` has `key` and `store`, making it a transferable Haneul object. When an admin creates a `StageTransition<Attended>` and sends it to a ticket, the ticket module can consume it to advance the ticket's stage.
 
@@ -234,7 +234,7 @@ Each marker type (`Purchased`, `Attended`, `Collectible`) has `drop` ability. Th
 
 The `KeyRegistry` stores the Ed25519 public key and tracks consumed nonces.
 
-<ImportContent source="move/sources/key_registry.move" mode="code" org="HaneulLabs" repo="ticketing-poc" struct="KeyRegistryInner" />
+<ImportContent source="move/sources/key_registry.move" mode="code" org="MystenLabs" repo="ticketing-poc" struct="KeyRegistryInner" />
 
 The `used_nonces` table maps nonce values to the epoch they were consumed in. The `cleanup_nonces` function lets the key owner remove old entries by epoch threshold, preventing the table from growing indefinitely.
 
@@ -242,7 +242,7 @@ The `used_nonces` table maps nonce values to the epoch they were consumed in. Th
 
 The `useMintTicket` hook coordinates the entire purchase flow across 3 API calls and 2 transactions.
 
-<ImportContent source="app/src/app/hooks/useMintTicket.tsx" mode="code" org="HaneulLabs" repo="ticketing-poc" fun="useMintTicket" />
+<ImportContent source="app/src/app/hooks/useMintTicket.tsx" mode="code" org="MystenLabs" repo="ticketing-poc" fun="useMintTicket" />
 
 The hook validates that the user has a loyalty card and is signed in, generates random seat assignments, requests a signed permit from the backend, builds and executes the mint transaction, then triggers stage transition minting. Toast notifications provide feedback at each step.
 
@@ -250,7 +250,7 @@ The hook validates that the user has a loyalty card and is signed in, generates 
 
 The `/api/permit/mint-ticket` route BCS-encodes the ticket data, generates a nonce, and signs the payload.
 
-<ImportContent source="app/src/app/api/permit/mint-ticket/route.ts" mode="code" org="HaneulLabs" repo="ticketing-poc" />
+<ImportContent source="app/src/app/api/permit/mint-ticket/route.ts" mode="code" org="MystenLabs" repo="ticketing-poc" />
 
 The route reads the admin Ed25519 private key from the environment, generates a random 8-byte nonce, BCS-encodes the ticket data (matching the Move struct layout), signs the encoded bytes with the private key, and returns the signature, bytes, and nonce for the frontend to submit onchain.
 

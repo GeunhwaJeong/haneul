@@ -40,7 +40,7 @@ Use `placeLimitOrder` to place a limit order through a margin manager. The call 
   - `selfMatchingOption`: Optional `SelfMatchingOptions` enum
   - `payWithDeep`: Optional boolean to pay fees with DEEP tokens
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="placeLimitOrder" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="placeLimitOrder" signatureOnly />
 
 ### `placeMarketOrder`
 
@@ -50,7 +50,7 @@ Use `placeMarketOrder` to place a market order through a margin manager. The cal
 
 - `params`: `PlaceMarginMarketOrderParams` object containing similar parameters to limit orders (without price and expiration).
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="placeMarketOrder" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="placeMarketOrder" signatureOnly />
 
 ### `placeReduceOnlyLimitOrder`
 
@@ -60,7 +60,7 @@ Use `placeReduceOnlyLimitOrder` to place a limit order that can only reduce your
 
 - `params`: `PlaceMarginLimitOrderParams` object (same as `placeLimitOrder`).
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="placeReduceOnlyLimitOrder" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="placeReduceOnlyLimitOrder" signatureOnly />
 
 ### `placeReduceOnlyMarketOrder`
 
@@ -70,7 +70,7 @@ Use `placeReduceOnlyMarketOrder` to place a market order that can only reduce yo
 
 - `params`: `PlaceMarginMarketOrderParams` object (same as `placeMarketOrder`).
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="placeReduceOnlyMarketOrder" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="placeReduceOnlyMarketOrder" signatureOnly />
 
 ### `modifyOrder`
 
@@ -86,7 +86,7 @@ The `orderId` is the protocol `orderId` generated during order placement, which 
 - `orderId`: String of the protocol order ID.
 - `newQuantity`: Number representing the new order quantity.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="modifyOrder" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="modifyOrder" signatureOnly />
 
 ### `cancelOrder`, `cancelOrders`, `cancelAllOrders`
 
@@ -98,7 +98,7 @@ Use these functions to cancel orders for a margin manager. The call returns a fu
 - `orderId` (cancelOrder only): String of the protocol order ID.
 - `orderIds` (cancelOrders only): Array of protocol order IDs.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="cancelOrder,cancelOrders,cancelAllOrders" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="cancelOrder,cancelOrders,cancelAllOrders" signatureOnly />
 
 ### `withdrawSettledAmounts`
 
@@ -108,7 +108,7 @@ Use `withdrawSettledAmounts` to withdraw settled amounts from completed trades. 
 
 - `marginManagerKey`: String that identifies the margin manager.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="withdrawSettledAmounts" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="withdrawSettledAmounts" signatureOnly />
 
 ### `stake`, `unstake`
 
@@ -119,7 +119,7 @@ Use these functions to stake and unstake DEEP tokens through the margin manager 
 - `marginManagerKey`: String that identifies the margin manager.
 - `stakeAmount` (stake only): Number representing the amount to stake.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="stake,unstake" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="stake,unstake" signatureOnly />
 
 ### `submitProposal`, `vote`
 
@@ -131,7 +131,7 @@ Use these functions to participate in pool governance through the margin manager
 - `params` (submitProposal): `MarginProposalParams` object with `takerFee`, `makerFee`, and `stakeRequired`.
 - `proposalId` (vote): String representing the proposal ID.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="submitProposal,vote" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="submitProposal,vote" signatureOnly />
 
 ### `claimRebate`
 
@@ -141,7 +141,7 @@ Use `claimRebate` to claim trading rebates earned through the margin manager. Th
 
 - `marginManagerKey`: String that identifies the margin manager.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="claimRebate" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="claimRebate" signatureOnly />
 
 ### `withdrawMarginSettledAmounts`
 
@@ -152,7 +152,7 @@ Use `withdrawMarginSettledAmounts` to permissionlessly withdraw settled amounts 
 - `poolKey`: String that identifies the DeepBook pool.
 - `marginManagerId`: String representing the object ID of the margin manager.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="withdrawMarginSettledAmounts" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="withdrawMarginSettledAmounts" signatureOnly />
 
 ### `updateCurrentPrice`
 
@@ -162,7 +162,7 @@ Use `updateCurrentPrice` to update the current price for a pool using the Pyth o
 
 - `poolKey`: String that identifies the DeepBook pool.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="updateCurrentPrice" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/poolProxy.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="updateCurrentPrice" signatureOnly />
 
 ## Examples
 

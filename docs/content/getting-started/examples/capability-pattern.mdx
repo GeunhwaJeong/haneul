@@ -179,7 +179,7 @@ The transaction creates a `Hero` object owned by your address, then delegates ad
 
 ## Key code highlights
 
-<CodeWalkthrough source="C1/capability/sources/hero.move" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" language="move">
+<CodeWalkthrough source="C1/capability/sources/hero.move" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" language="move">
   <Step lines="9-11" title="The `AdminCap` capability struct">
     The `AdminCap` struct is the authorization token. Owning it proves you have admin privileges. It has only the `key` ability (not `store`), so it can exist as a Haneul object but cannot be wrapped inside another object. The struct carries no data because its purpose is purely authorization: if you can pass a `&AdminCap` reference, you have permission.
   </Step>

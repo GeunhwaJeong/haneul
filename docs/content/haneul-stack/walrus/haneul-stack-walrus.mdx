@@ -94,7 +94,7 @@ OnlyFins uses an aggregator to serve all images in the frontend. The aggregator 
 <ImportContent
   source="frontend/src/constants.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
   variable="WALRUS_AGGREGATOR_URL"
@@ -157,7 +157,7 @@ Use `writeBlob` with a `Signer` instance for server-side uploads where a backend
 <ImportContent
   source="07-Walrus-SDK-upload-relay/hands-on-source-code/src/examples/basic-upload-example.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="Walrus-Onboarding"
   language="ts"
   fun="uploadBlob"
@@ -168,7 +168,7 @@ To reduce the number of requests from approximately 2,200 to a single relay requ
 <ImportContent
   source="07-Walrus-SDK-upload-relay/hands-on-source-code/src/examples/basic-upload-example.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="Walrus-Onboarding"
   language="ts"
   fun="uploadWithRelay"
@@ -179,7 +179,7 @@ In OnlyFins, the signer pattern appears in the post registration step. After upl
 <ImportContent
   source="backend/src/config.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
   fun="getKeypair"
@@ -190,7 +190,7 @@ With signers configured, `createPosts.ts` builds a PTB that calls `posts::create
 <ImportContent
   source="backend/src/createPosts.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
   fun="main"
@@ -215,7 +215,7 @@ The `walrus-pocs` SDK example shows the core `writeBlob` pattern with a signer:
 <ImportContent
   source="sdk/src/write.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="walrus-pocs"
   language="ts"
   fun="write"
@@ -230,7 +230,7 @@ When uploading multiple files together, use `writeFiles` with `WalrusFile.from()
 <ImportContent
   source="11-Batch-storage/hands-on-source-code/03-creation-process/ts/03-create-simple.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="Walrus-Onboarding"
   language="ts"
 />
@@ -246,7 +246,7 @@ In OnlyFins, the `Feed` component fetches a known set of post object IDs from Ha
 <ImportContent
   source="frontend/src/components/Feed.tsx"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="tsx"
   component="Feed"
@@ -257,7 +257,7 @@ The `transformHaneulObjectsToPosts` utility extracts the `image_blob_id` field f
 <ImportContent
   source="frontend/src/utils/post-transform.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
   fun="transformHaneulObjectsToPosts"
@@ -272,7 +272,7 @@ The `attributes.ts` example in the TS SDK shows all 3 operations in one script: 
 <ImportContent
   source="packages/walrus/examples/basics/attributes.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="ts-sdks"
   language="ts"
 />
@@ -286,7 +286,7 @@ The Walrus Onboarding Module 11 shows how to retrieve files by identifier:
 <ImportContent
   source="11-Batch-storage/hands-on-source-code/04-retrieval-process/ts/01-get-files-identifiers.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="Walrus-Onboarding"
   language="ts"
 />
@@ -296,7 +296,7 @@ The `walrus-pocs` SDK example shows how to read a blob by ID and write it to dis
 <ImportContent
   source="sdk/src/download.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="walrus-pocs"
   language="ts"
   fun="download"
@@ -313,7 +313,7 @@ OnlyFins reads all images using plain HTTP fetches to the aggregator. The `fetch
 <ImportContent
   source="frontend/src/utils/walrus-fetch.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
   fun="fetchFromWalrus"
@@ -326,7 +326,7 @@ When reading directly with the TS SDK, the Walrus Onboarding Module 07 shows `re
 <ImportContent
   source="07-Walrus-SDK-upload-relay/hands-on-source-code/src/examples/basic-download-example.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="Walrus-Onboarding"
   language="ts"
   fun="downloadWithErrorHandling"
@@ -369,7 +369,7 @@ The `walrus-pocs` SDK example shows how to find a blob object by ID and execute 
 <ImportContent
   source="sdk/src/delete.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="walrus-pocs"
   language="ts"
   fun="del"

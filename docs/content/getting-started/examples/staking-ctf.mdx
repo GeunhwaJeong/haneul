@@ -191,7 +191,7 @@ You should see a `flag::Flag` object with `source: "staking"`.
 
 ## Key code highlights
 
-<CodeWalkthrough source="contracts/sources/staking.move" org="HaneulLabs" repo="CTF" language="move">
+<CodeWalkthrough source="contracts/sources/staking.move" org="MystenLabs" repo="CTF" language="move">
   <Step lines="21-26" title="`StakeReceipt` struct">
     The receipt tracks staking state as an owned object the staker controls. The `hours_staked` field is the vulnerability target. It starts at `0` when the receipt is created and accumulates through `update_receipt` and `merge_receipts` calls. Because the receipt has `store` ability, it can be transferred and wrapped.
   </Step>

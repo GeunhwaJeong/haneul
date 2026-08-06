@@ -26,7 +26,7 @@ The DeepBook Margin SDK provides the following functions for interacting with ma
 
 Use `mintSupplierCap` to create a new supplier capability that can be used to supply and withdraw from margin pools. One `SupplierCap` can be used across multiple margin pools. The call returns a function that takes a `Transaction` object.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="mintSupplierCap" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="mintSupplierCap" signatureOnly />
 
 ### `supplyToMarginPool`
 
@@ -39,7 +39,7 @@ Use `supplyToMarginPool` to supply assets to a margin pool and earn interest. Yo
 - `amountToDeposit`: Number representing the amount to supply.
 - `referralId`: Optional string representing the referral ID.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="supplyToMarginPool" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="supplyToMarginPool" signatureOnly />
 
 ### `withdrawFromMarginPool`
 
@@ -51,7 +51,7 @@ Use `withdrawFromMarginPool` to withdraw supplied assets from a margin pool. If 
 - `supplierCap`: `TransactionObjectArgument` representing the supplier cap.
 - `amountToWithdraw`: Optional number representing the amount to withdraw.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="withdrawFromMarginPool" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="withdrawFromMarginPool" signatureOnly />
 
 ### `mintSupplyReferral`
 
@@ -61,7 +61,7 @@ Use `mintSupplyReferral` to create a supply referral for earning fees. The call 
 
 - `coinKey`: String that identifies the asset type.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="mintSupplyReferral" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="mintSupplyReferral" signatureOnly />
 
 ### `withdrawReferralFees`
 
@@ -72,7 +72,7 @@ Use `withdrawReferralFees` to withdraw accumulated referral fees. The call retur
 - `coinKey`: String that identifies the asset type.
 - `referralId`: String representing the referral ID.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="withdrawReferralFees" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="withdrawReferralFees" signatureOnly />
 
 ## Read-only functions
 
@@ -82,25 +82,25 @@ The following functions query margin pool state without modifying it.
 
 Query basic pool information and configuration.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="getId,deepbookPoolAllowed,supplyCap,maxUtilizationRate,protocolSpread,minBorrow" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="getId,deepbookPoolAllowed,supplyCap,maxUtilizationRate,protocolSpread,minBorrow" signatureOnly />
 
 ### Supply and borrow metrics
 
 Query current supply and borrow amounts and shares.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="totalSupply,supplyShares,totalBorrow,borrowShares,lastUpdateTimestamp" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="totalSupply,supplyShares,totalBorrow,borrowShares,lastUpdateTimestamp" signatureOnly />
 
 ### Interest rate
 
 Query the current interest rate based on utilization.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="interestRate" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="interestRate" signatureOnly />
 
 ### User positions
 
 Query a supplier's position in the pool.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="userSupplyShares,userSupplyAmount" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginPool.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="userSupplyShares,userSupplyAmount" signatureOnly />
 
 ## Examples
 

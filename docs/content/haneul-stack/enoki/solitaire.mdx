@@ -217,7 +217,7 @@ The following snippets are the parts of the code worth reading carefully.
 
 The `init_normal_game` function creates a new game with a shuffled deck using Haneul's `Random` module.
 
-<ImportContent source="move/solitaire/sources/solitaire.move" mode="code" org="HaneulLabs" repo="solitaire" fun="init_normal_game" />
+<ImportContent source="move/solitaire/sources/solitaire.move" mode="code" org="MystenLabs" repo="solitaire" fun="init_normal_game" />
 
 The function creates the `Game` struct, sets up 7 columns using `set_up_columns` (which consumes `&Random` to deal random cards), initializes 4 empty piles, and transfers the game to the player. The 24 remaining cards become the hidden deck.
 
@@ -225,7 +225,7 @@ The function creates the `Game` struct, sets up 7 columns using `set_up_columns`
 
 The `from_column_to_column` function moves a card (or stack of cards) between tableau columns and reveals a hidden card if the source column has face-down cards.
 
-<ImportContent source="move/solitaire/sources/solitaire.move" mode="code" org="HaneulLabs" repo="solitaire" fun="from_column_to_column" />
+<ImportContent source="move/solitaire/sources/solitaire.move" mode="code" org="MystenLabs" repo="solitaire" fun="from_column_to_column" />
 
 The function validates that the target placement follows Klondike rules (alternating color, descending rank, Kings on empty columns). When the function reveals a face-down card, it calls `reveal_card` with `&Random` and emits a `CardRevealed` event that the frontend reads.
 
@@ -233,7 +233,7 @@ The function validates that the target placement follows Klondike rules (alterna
 
 The `can_place_on_column` helper validates the alternating-color, descending-rank rule for tableau moves.
 
-<ImportContent source="move/solitaire/sources/solitaire.move" mode="code" org="HaneulLabs" repo="solitaire" fun="can_place_on_column" />
+<ImportContent source="move/solitaire/sources/solitaire.move" mode="code" org="MystenLabs" repo="solitaire" fun="can_place_on_column" />
 
 The function checks 2 conditions: the moving card and target card must be different colors (`is_red_card` returns true for Hearts and Diamonds), and the moving card's rank must be exactly 1 less than the target's rank.
 
@@ -241,7 +241,7 @@ The function checks 2 conditions: the moving card and target card must be differ
 
 The `GameBoard` component maps drag-end events to specific Move function calls based on the card's origin and destination.
 
-<ImportContent source="app/src/components/gameBoard/GameBoard.tsx" mode="code" org="HaneulLabs" repo="solitaire" fun="handleDragEnd" />
+<ImportContent source="app/src/components/gameBoard/GameBoard.tsx" mode="code" org="MystenLabs" repo="solitaire" fun="handleDragEnd" />
 
 The `handleDragEnd` function uses `findCardOriginType` to determine whether the dragged card came from the deck, a column, or a pile. Based on the source and destination types, it calls the corresponding `useSolitaireActions` function (for example, `handleFromColumnToPile`). If the transaction fails, it calls `handleFailedTransaction` to resync with the onchain state.
 
@@ -249,7 +249,7 @@ The `handleDragEnd` function uses `findCardOriginType` to determine whether the 
 
 The `useSolitaireActions` hook builds and executes sponsored transactions for every game move.
 
-<ImportContent source="app/src/hooks/useSolitaireActions.ts" mode="code" org="HaneulLabs" repo="solitaire" fun="handleFromColumnToPile" />
+<ImportContent source="app/src/hooks/useSolitaireActions.ts" mode="code" org="MystenLabs" repo="solitaire" fun="handleFromColumnToPile" />
 
 Each move function follows the same pattern: build a `Transaction` with the appropriate `moveCall`, send the PTB bytes to `/api/sponsor` for Enoki sponsorship, sign with the user's wallet, execute through `/api/execute`, and extract any `CardRevealed` events from the result to update the board state.
 
