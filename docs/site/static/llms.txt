@@ -22,6 +22,8 @@
 - [Authenticated Events](https://docs.haneul.io/develop/accessing-data/authenticated-events.md)
 - [Data Serving](https://docs.haneul.io/develop/accessing-data/data-serving.md)
 - [Accessing Data Index](https://docs.haneul.io/develop/accessing-data/index.md)
+- [Json Rpc Migration](https://docs.haneul.io/develop/accessing-data/json-rpc-migration.md)
+- [Rpc Providers](https://docs.haneul.io/develop/accessing-data/rpc-providers.md)
 - [Using Events](https://docs.haneul.io/develop/accessing-data/using-events.md)
 
 ### Develop/Accessing Data/Archival Store
@@ -62,11 +64,26 @@
 - [Passkeys](https://docs.haneul.io/develop/cryptography/passkeys.md)
 - [Signing](https://docs.haneul.io/develop/cryptography/signing.md)
 
+### Develop/Haneul Architecture
+- [Checkpoint
+    Verification](https://docs.haneul.io/develop/haneul-architecture/checkpoint-verification.md)
+- [Components](https://docs.haneul.io/develop/haneul-architecture/components.md)
+- [Consensus](https://docs.haneul.io/develop/haneul-architecture/consensus.md)
+- [Epochs](https://docs.haneul.io/develop/haneul-architecture/epochs.md)
+- [Haneul Security](https://docs.haneul.io/develop/haneul-architecture/haneul-security.md)
+- [Haneul Storage](https://docs.haneul.io/develop/haneul-architecture/haneul-storage.md)
+- [Haneul Architecture Index](https://docs.haneul.io/develop/haneul-architecture/index.md)
+- [Networks](https://docs.haneul.io/develop/haneul-architecture/networks.md)
+- [Object Model](https://docs.haneul.io/develop/haneul-architecture/object-model.md)
+- [Protocol Upgrades](https://docs.haneul.io/develop/haneul-architecture/protocol-upgrades.md)
+- [Tokenomics Overview](https://docs.haneul.io/develop/haneul-architecture/tokenomics-overview.md)
+
 ### Develop/Manage Packages
 - [Automated Address
     Management](https://docs.haneul.io/develop/manage-packages/automated-address-management.md)
 - [Manage Packages Index](https://docs.haneul.io/develop/manage-packages/index.md)
-- [Move Package Management](https://docs.haneul.io/develop/manage-packages/move-package-management.md)
+- [Move Package
+    Management](https://docs.haneul.io/develop/manage-packages/move-package-management.md)
 
 ### Develop/Objects
 - [Derived Objects](https://docs.haneul.io/develop/objects/derived-objects.md)
@@ -85,27 +102,6 @@
 - [Immutable](https://docs.haneul.io/develop/objects/object-ownership/immutable.md)
 - [Object Ownership Index](https://docs.haneul.io/develop/objects/object-ownership/index.md)
 - [Party](https://docs.haneul.io/develop/objects/object-ownership/party.md)
-- [Shared](https://docs.haneul.io/develop/objects/object-ownership/shared.md)
-- [Wrapped](https://docs.haneul.io/develop/objects/object-ownership/wrapped.md)
-
-### Develop/Objects/Transfers
-- [Custom Rules](https://docs.haneul.io/develop/objects/transfers/custom-rules.md)
-- [Transfers Index](https://docs.haneul.io/develop/objects/transfers/index.md)
-- [Simulating Refs](https://docs.haneul.io/develop/objects/transfers/simulating-refs.md)
-- [Transfer Policies](https://docs.haneul.io/develop/objects/transfers/transfer-policies.md)
-- [Transfer To Object](https://docs.haneul.io/develop/objects/transfers/transfer-to-object.md)
-
-### Develop/Publish Upgrade Packages
-- [Custom Policies](https://docs.haneul.io/develop/publish-upgrade-packages/custom-policies.md)
-- [Publish Upgrade Packages Index](https://docs.haneul.io/develop/publish-upgrade-packages/index.md)
-- [Upgrade](https://docs.haneul.io/develop/publish-upgrade-packages/upgrade.md)
-- [Versioning](https://docs.haneul.io/develop/publish-upgrade-packages/versioning.md)
-
-### Develop/Haneul Architecture
-- [Checkpoint Verification](https://docs.haneul.io/develop/haneul-architecture/checkpoint-verification.md)
-- [Components](https://docs.haneul.io/develop/haneul-architecture/components.md)
-- [Consensus](https://docs.haneul.io/develop/haneul-architecture/consensus.md)
-- [Epochs](https://docs.haneul.io/develop/haneul-architecture/epochs.md)
 
 ## Getting Started
 
@@ -117,19 +113,56 @@
 - [Dapp Kit Frontend](https://docs.haneul.io/getting-started/examples/dapp-kit-frontend.md)
 - [Derived Objects](https://docs.haneul.io/getting-started/examples/derived-objects.md)
 - [Event Indexer](https://docs.haneul.io/getting-started/examples/event-indexer.md)
-- [First Dapp](https://docs.haneul.io/getting-started/examples/first-dapp.md)
 - [Examples Index](https://docs.haneul.io/getting-started/examples/index.md)
 - [Lootbox Ctf](https://docs.haneul.io/getting-started/examples/lootbox-ctf.md)
 - [Merchant Ctf](https://docs.haneul.io/getting-started/examples/merchant-ctf.md)
+- [Nft App](https://docs.haneul.io/getting-started/examples/nft-app.md)
 - [Plinko](https://docs.haneul.io/getting-started/examples/plinko.md)
 - [Scenario Testing](https://docs.haneul.io/getting-started/examples/scenario-testing.md)
 - [Staking Ctf](https://docs.haneul.io/getting-started/examples/staking-ctf.md)
+- [Haneul For Ethereum](https://docs.haneul.io/getting-started/haneul-for-ethereum.md)
+- [Haneul For Solana](https://docs.haneul.io/getting-started/haneul-for-solana.md)
 
-### Getting Started/Onboarding
-- [App Frontends](https://docs.haneul.io/getting-started/onboarding/app-frontends.md)
-- [Configure Haneul Client](https://docs.haneul.io/getting-started/onboarding/configure-haneul-client.md)
-- [Get Address](https://docs.haneul.io/getting-started/onboarding/get-address.md)
-- [Get Coins](https://docs.haneul.io/getting-started/onboarding/get-coins.md)
+## Haneul Stack
+
+- [Haneul Stack](https://docs.haneul.io/haneul-stack.md)
+
+### Haneul Stack/Enoki
+- [Solitaire](https://docs.haneul.io/haneul-stack/enoki/solitaire.md)
+- [Ticketing Poc](https://docs.haneul.io/haneul-stack/enoki/ticketing-poc.md)
+
+### Haneul Stack/Haneulns
+- [Haneul Stack Haneulns](https://docs.haneul.io/haneul-stack/haneulns/haneul-stack-haneulns.md)
+- [Haneulns Index](https://docs.haneul.io/haneul-stack/haneulns/index.md)
+
+### Haneul Stack/Haneulplay0x1
+- [Best Practices](https://docs.haneul.io/haneul-stack/haneulplay0x1/best-practices.md)
+- [Haneulplay0x1 Index](https://docs.haneul.io/haneul-stack/haneulplay0x1/index.md)
+- [Integration](https://docs.haneul.io/haneul-stack/haneulplay0x1/integration.md)
+- [Migration Strategies](https://docs.haneul.io/haneul-stack/haneulplay0x1/migration-strategies.md)
+- [Wallet Integration](https://docs.haneul.io/haneul-stack/haneulplay0x1/wallet-integration.md)
+
+### Haneul Stack/Messaging
+- [Api Reference](https://docs.haneul.io/haneul-stack/messaging/api-reference.md)
+- [Archive Recovery](https://docs.haneul.io/haneul-stack/messaging/archive-recovery.md)
+- [Attachments](https://docs.haneul.io/haneul-stack/messaging/attachments.md)
+- [Chat App](https://docs.haneul.io/haneul-stack/messaging/chat-app.md)
+- [Community Contributed](https://docs.haneul.io/haneul-stack/messaging/community-contributed.md)
+- [Encryption](https://docs.haneul.io/haneul-stack/messaging/encryption.md)
+- [Examples](https://docs.haneul.io/haneul-stack/messaging/examples.md)
+- [Extending](https://docs.haneul.io/haneul-stack/messaging/extending.md)
+- [Group Discovery](https://docs.haneul.io/haneul-stack/messaging/group-discovery.md)
+- [Messaging Index](https://docs.haneul.io/haneul-stack/messaging/index.md)
+- [Installation](https://docs.haneul.io/haneul-stack/messaging/installation.md)
+- [Relayer](https://docs.haneul.io/haneul-stack/messaging/relayer.md)
+- [Security](https://docs.haneul.io/haneul-stack/messaging/security.md)
+- [Setup](https://docs.haneul.io/haneul-stack/messaging/setup.md)
+- [Testing](https://docs.haneul.io/haneul-stack/messaging/testing.md)
+
+### Haneul Stack/Nautilus
+- [Community Dev Tools](https://docs.haneul.io/haneul-stack/nautilus/community-dev-tools.md)
+- [Customize Nautilus](https://docs.haneul.io/haneul-stack/nautilus/customize-nautilus.md)
+- [Nautilus Index](https://docs.haneul.io/haneul-stack/nautilus/index.md)
 
 ## Onchain Finance
 
@@ -145,13 +178,15 @@
 - [Asset Custody Index](https://docs.haneul.io/onchain-finance/asset-custody/index.md)
 
 ### Onchain Finance/Asset Custody/Wallets
+- [Haneullink](https://docs.haneul.io/onchain-finance/asset-custody/wallets/haneullink.md)
 - [Wallets Index](https://docs.haneul.io/onchain-finance/asset-custody/wallets/index.md)
 - [Self Custody](https://docs.haneul.io/onchain-finance/asset-custody/wallets/self-custody.md)
 - [Slush](https://docs.haneul.io/onchain-finance/asset-custody/wallets/slush.md)
-- [Haneullink](https://docs.haneul.io/onchain-finance/asset-custody/wallets/haneullink.md)
 - [Wallet Standard](https://docs.haneul.io/onchain-finance/asset-custody/wallets/wallet-standard.md)
-- [What Is A Wallet](https://docs.haneul.io/onchain-finance/asset-custody/wallets/what-is-a-wallet.md)
-- [Zk Login Wallets](https://docs.haneul.io/onchain-finance/asset-custody/wallets/zk-login-wallets.md)
+- [What Is A
+    Wallet](https://docs.haneul.io/onchain-finance/asset-custody/wallets/what-is-a-wallet.md)
+- [Zk Login
+    Wallets](https://docs.haneul.io/onchain-finance/asset-custody/wallets/zk-login-wallets.md)
 
 ### Onchain Finance/Closed Loop Token
 - [Action Request](https://docs.haneul.io/onchain-finance/closed-loop-token/action-request.md)
@@ -160,80 +195,86 @@
 - [Spending](https://docs.haneul.io/onchain-finance/closed-loop-token/spending.md)
 - [Token Policy](https://docs.haneul.io/onchain-finance/closed-loop-token/token-policy.md)
 
-### Onchain Finance/Deepbook Margin
+### Onchain Finance/Deepbook/Deepbook Margin
 - [Contract
-    Information](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information.md)
+    Information](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information.md)
 - [Deepbook Margin
-    Indexer](https://docs.haneul.io/onchain-finance/deepbook-margin/deepbook-margin-indexer.md)
-- [Design](https://docs.haneul.io/onchain-finance/deepbook-margin/design.md)
-- [Deepbook Margin Index](https://docs.haneul.io/onchain-finance/deepbook-margin/index.md)
-- [Margin Risks](https://docs.haneul.io/onchain-finance/deepbook-margin/margin-risks.md)
+    Indexer](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/deepbook-margin-indexer.md)
+- [Design](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/design.md)
+- [Deepbook Margin Index](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/index.md)
+- [Margin Risks](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/margin-risks.md)
 
-### Onchain Finance/Deepbook Margin Sdk
-- [Deepbook Margin Sdk Index](https://docs.haneul.io/onchain-finance/deepbook-margin-sdk/index.md)
-- [Maintainer](https://docs.haneul.io/onchain-finance/deepbook-margin-sdk/maintainer.md)
-- [Margin Manager](https://docs.haneul.io/onchain-finance/deepbook-margin-sdk/margin-manager.md)
-- [Margin Pool](https://docs.haneul.io/onchain-finance/deepbook-margin-sdk/margin-pool.md)
-- [Orders](https://docs.haneul.io/onchain-finance/deepbook-margin-sdk/orders.md)
-- [Tpsl](https://docs.haneul.io/onchain-finance/deepbook-margin-sdk/tpsl.md)
+### Onchain Finance/Deepbook/Deepbook Margin Sdk
+- [Deepbook Margin Sdk
+    Index](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin-sdk/index.md)
+- [Maintainer](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin-sdk/maintainer.md)
+- [Margin
+    Manager](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin-sdk/margin-manager.md)
+- [Margin Pool](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin-sdk/margin-pool.md)
+- [Orders](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin-sdk/orders.md)
+- [Tpsl](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin-sdk/tpsl.md)
 
-### Onchain Finance/Deepbook Margin/Contract Information
+### Onchain Finance/Deepbook/Deepbook Margin/Contract Information
 - [Interest
-    Rates](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information/interest-rates.md)
+    Rates](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information/interest-rates.md)
 -
-    [Maintainer](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information/maintainer.md)
+    [Maintainer](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information/maintainer.md)
 - [Margin
-    Manager](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information/margin-manager.md)
+    Manager](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information/margin-manager.md)
 - [Margin
-    Pool](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information/margin-pool.md)
-- [Orders](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information/orders.md)
+    Pool](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information/margin-pool.md)
+-
+    [Orders](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information/orders.md)
 - [Risk
-    Ratio](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information/risk-ratio.md)
+    Ratio](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information/risk-ratio.md)
 - [Supply
-    Referral](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information/supply-referral.md)
-- [Tpsl](https://docs.haneul.io/onchain-finance/deepbook-margin/contract-information/tpsl.md)
+    Referral](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information/supply-referral.md)
+-
+    [Tpsl](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/contract-information/tpsl.md)
 
-### Onchain Finance/Deepbook Predict
+### Onchain Finance/Deepbook/Deepbook Predict
 - [Contract
-    Information](https://docs.haneul.io/onchain-finance/deepbook-predict/contract-information.md)
-- [Design](https://docs.haneul.io/onchain-finance/deepbook-predict/design.md)
-- [Deepbook Predict Index](https://docs.haneul.io/onchain-finance/deepbook-predict/index.md)
+    Information](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/contract-information.md)
+- [Design](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/design.md)
+- [Deepbook Predict
+    Index](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/index.md)
 
-### Onchain Finance/Deepbook Predict/Contract Information
+### Onchain Finance/Deepbook/Deepbook Predict/Contract Information
 - [Market
-    Keys](https://docs.haneul.io/onchain-finance/deepbook-predict/contract-information/market-keys.md)
-- [Oracle](https://docs.haneul.io/onchain-finance/deepbook-predict/contract-information/oracle.md)
+    Keys](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/contract-information/market-keys.md)
+-
+    [Oracle](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/contract-information/oracle.md)
 - [Predict
-    Manager](https://docs.haneul.io/onchain-finance/deepbook-predict/contract-information/predict-manager.md)
-- [Predict](https://docs.haneul.io/onchain-finance/deepbook-predict/contract-information/predict.md)
-- [Registry](https://docs.haneul.io/onchain-finance/deepbook-predict/contract-information/registry.md)
-- [Vault](https://docs.haneul.io/onchain-finance/deepbook-predict/contract-information/vault.md)
+    Manager](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/contract-information/predict-manager.md)
+-
+    [Predict](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/contract-information/predict.md)
+-
+    [Registry](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/contract-information/registry.md)
+-
+    [Vault](https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/contract-information/vault.md)
 
-### Onchain Finance/Deepbookv3
-- [Contract Information](https://docs.haneul.io/onchain-finance/deepbookv3/contract-information.md)
-- [Deepbook](https://docs.haneul.io/onchain-finance/deepbookv3/deepbook.md)
-- [Deepbookv3 Indexer](https://docs.haneul.io/onchain-finance/deepbookv3/deepbookv3-indexer.md)
-- [Design](https://docs.haneul.io/onchain-finance/deepbookv3/design.md)
+### Onchain Finance/Deepbook/Deepbookv3
+- [Contract
+    Information](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3/contract-information.md)
+- [Deepbook](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3/deepbook.md)
+- [Deepbookv3
+    Indexer](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3/deepbookv3-indexer.md)
+- [Design](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3/design.md)
 
-### Onchain Finance/Deepbookv3 Sdk
-- [Balance Manager](https://docs.haneul.io/onchain-finance/deepbookv3-sdk/balance-manager.md)
-- [Flash Loans](https://docs.haneul.io/onchain-finance/deepbookv3-sdk/flash-loans.md)
-- [Deepbookv3 Sdk Index](https://docs.haneul.io/onchain-finance/deepbookv3-sdk/index.md)
-- [Orders](https://docs.haneul.io/onchain-finance/deepbookv3-sdk/orders.md)
-- [Pools](https://docs.haneul.io/onchain-finance/deepbookv3-sdk/pools.md)
-- [Staking Governance](https://docs.haneul.io/onchain-finance/deepbookv3-sdk/staking-governance.md)
-- [Swaps](https://docs.haneul.io/onchain-finance/deepbookv3-sdk/swaps.md)
-
-### Onchain Finance/Deepbookv3/Contract Information
+### Onchain Finance/Deepbook/Deepbookv3 Sdk
 - [Balance
-    Manager](https://docs.haneul.io/onchain-finance/deepbookv3/contract-information/balance-manager.md)
-- [Ewma](https://docs.haneul.io/onchain-finance/deepbookv3/contract-information/ewma.md)
-- [Flash Loans](https://docs.haneul.io/onchain-finance/deepbookv3/contract-information/flash-loans.md)
-- [Orders](https://docs.haneul.io/onchain-finance/deepbookv3/contract-information/orders.md)
-- [Permissionless
-    Pool](https://docs.haneul.io/onchain-finance/deepbookv3/contract-information/permissionless-pool.md)
-- [Query The
-    Pool](https://docs.haneul.io/onchain-finance/deepbookv3/contract-information/query-the-pool.md)
+    Manager](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3-sdk/balance-manager.md)
+- [Flash Loans](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3-sdk/flash-loans.md)
+- [Deepbookv3 Sdk Index](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3-sdk/index.md)
+- [Orders](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3-sdk/orders.md)
+- [Pools](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3-sdk/pools.md)
+- [Staking
+    Governance](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3-sdk/staking-governance.md)
+- [Swaps](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3-sdk/swaps.md)
+
+### Onchain Finance/Deepbook/Deepbookv3/Contract Information
+- [Balance
+    Manager](https://docs.haneul.io/onchain-finance/deepbook/deepbookv3/contract-information/balance-manager.md)
 
 ## Operators
 
@@ -250,11 +291,10 @@
 - [Exchange Integration](https://docs.haneul.io/operators/exchange-integration.md)
 
 ### Operators/Full Node
+- [Haneul Full Node](https://docs.haneul.io/operators/full-node/haneul-full-node.md)
 - [Full Node Index](https://docs.haneul.io/operators/full-node/index.md)
 - [Monitoring](https://docs.haneul.io/operators/full-node/monitoring.md)
-- [Haneul Full Node](https://docs.haneul.io/operators/full-node/haneul-full-node.md)
 - [Updates](https://docs.haneul.io/operators/full-node/updates.md)
-- [Genesis](https://docs.haneul.io/operators/genesis.md)
 
 ## References
 
@@ -266,6 +306,7 @@
 ### References/Cli
 - [Cheatsheet](https://docs.haneul.io/references/cli/cheatsheet.md)
 - [Client](https://docs.haneul.io/references/cli/client.md)
+- [Completion](https://docs.haneul.io/references/cli/completion.md)
 - [External Signers](https://docs.haneul.io/references/cli/external-signers.md)
 - [Keytool](https://docs.haneul.io/references/cli/keytool.md)
 - [Move](https://docs.haneul.io/references/cli/move.md)
@@ -276,13 +317,14 @@
 
 ### References/Contribute
 - [Code Of Conduct](https://docs.haneul.io/references/contribute/code-of-conduct.md)
-- [Contribute To Haneul Repos](https://docs.haneul.io/references/contribute/contribute-to-haneul-repos.md)
+- [Contribute To Haneul
+    Repos](https://docs.haneul.io/references/contribute/contribute-to-haneul-repos.md)
 - [Contribution Process](https://docs.haneul.io/references/contribute/contribution-process.md)
 - [Diagram Standards](https://docs.haneul.io/references/contribute/diagram-standards.md)
+- [Haneul Environment](https://docs.haneul.io/references/contribute/haneul-environment.md)
 - [Localize Haneul Docs](https://docs.haneul.io/references/contribute/localize-haneul-docs.md)
 - [Mdx Components](https://docs.haneul.io/references/contribute/mdx-components.md)
 - [Style Guide](https://docs.haneul.io/references/contribute/style-guide.md)
-- [Haneul Environment](https://docs.haneul.io/references/contribute/haneul-environment.md)
 - [Framework](https://docs.haneul.io/references/framework.md)
 
 ### References/Framework/Haneul Bridge
@@ -294,6 +336,96 @@
 - [Limiter](https://docs.haneul.io/references/framework/haneul_bridge/limiter.md)
 - [Message](https://docs.haneul.io/references/framework/haneul_bridge/message.md)
 - [Treasury](https://docs.haneul.io/references/framework/haneul_bridge/treasury.md)
+
+### References/Framework/Haneul Haneul
+- [Accumulator
+    Metadata](https://docs.haneul.io/references/framework/haneul_haneul/accumulator_metadata.md)
+- [Accumulator
+    Settlement](https://docs.haneul.io/references/framework/haneul_haneul/accumulator_settlement.md)
+- [Accumulator](https://docs.haneul.io/references/framework/haneul_haneul/accumulator.md)
+- [Address Alias](https://docs.haneul.io/references/framework/haneul_haneul/address_alias.md)
+- [Address](https://docs.haneul.io/references/framework/haneul_haneul/address.md)
+- [Authenticator
+    State](https://docs.haneul.io/references/framework/haneul_haneul/authenticator_state.md)
+- [Bag](https://docs.haneul.io/references/framework/haneul_haneul/bag.md)
+- [Balance](https://docs.haneul.io/references/framework/haneul_haneul/balance.md)
+- [Bcs](https://docs.haneul.io/references/framework/haneul_haneul/bcs.md)
+- [Bls12381](https://docs.haneul.io/references/framework/haneul_haneul/bls12381.md)
+- [Borrow](https://docs.haneul.io/references/framework/haneul_haneul/borrow.md)
+- [Clock](https://docs.haneul.io/references/framework/haneul_haneul/clock.md)
+- [Coin Registry](https://docs.haneul.io/references/framework/haneul_haneul/coin_registry.md)
+- [Coin](https://docs.haneul.io/references/framework/haneul_haneul/coin.md)
+- [Config](https://docs.haneul.io/references/framework/haneul_haneul/config.md)
+- [Deny List](https://docs.haneul.io/references/framework/haneul_haneul/deny_list.md)
+- [Derived Object](https://docs.haneul.io/references/framework/haneul_haneul/derived_object.md)
+- [Display Registry](https://docs.haneul.io/references/framework/haneul_haneul/display_registry.md)
+- [Display](https://docs.haneul.io/references/framework/haneul_haneul/display.md)
+- [Dynamic Field](https://docs.haneul.io/references/framework/haneul_haneul/dynamic_field.md)
+- [Dynamic Object
+    Field](https://docs.haneul.io/references/framework/haneul_haneul/dynamic_object_field.md)
+- [Ecdsa K1](https://docs.haneul.io/references/framework/haneul_haneul/ecdsa_k1.md)
+- [Ecdsa R1](https://docs.haneul.io/references/framework/haneul_haneul/ecdsa_r1.md)
+- [Ecvrf](https://docs.haneul.io/references/framework/haneul_haneul/ecvrf.md)
+- [Ed25519](https://docs.haneul.io/references/framework/haneul_haneul/ed25519.md)
+- [Event](https://docs.haneul.io/references/framework/haneul_haneul/event.md)
+- [Funds
+    Accumulator](https://docs.haneul.io/references/framework/haneul_haneul/funds_accumulator.md)
+- [Groth16](https://docs.haneul.io/references/framework/haneul_haneul/groth16.md)
+- [Group Ops](https://docs.haneul.io/references/framework/haneul_haneul/group_ops.md)
+- [Haneul](https://docs.haneul.io/references/framework/haneul_haneul/haneul.md)
+- [Hash](https://docs.haneul.io/references/framework/haneul_haneul/hash.md)
+- [Hmac](https://docs.haneul.io/references/framework/haneul_haneul/hmac.md)
+- [Haneul Haneul Index](https://docs.haneul.io/references/framework/haneul_haneul/index.md)
+- [Kiosk Extension](https://docs.haneul.io/references/framework/haneul_haneul/kiosk_extension.md)
+- [Kiosk](https://docs.haneul.io/references/framework/haneul_haneul/kiosk.md)
+- [Linked Table](https://docs.haneul.io/references/framework/haneul_haneul/linked_table.md)
+- [Math](https://docs.haneul.io/references/framework/haneul_haneul/math.md)
+- [Nitro
+    Attestation](https://docs.haneul.io/references/framework/haneul_haneul/nitro_attestation.md)
+- [Object Bag](https://docs.haneul.io/references/framework/haneul_haneul/object_bag.md)
+- [Object Table](https://docs.haneul.io/references/framework/haneul_haneul/object_table.md)
+- [Object](https://docs.haneul.io/references/framework/haneul_haneul/object.md)
+- [Package](https://docs.haneul.io/references/framework/haneul_haneul/package.md)
+- [Party](https://docs.haneul.io/references/framework/haneul_haneul/party.md)
+- [Pay](https://docs.haneul.io/references/framework/haneul_haneul/pay.md)
+- [Poseidon](https://docs.haneul.io/references/framework/haneul_haneul/poseidon.md)
+- [Priority Queue](https://docs.haneul.io/references/framework/haneul_haneul/priority_queue.md)
+- [Protocol Config](https://docs.haneul.io/references/framework/haneul_haneul/protocol_config.md)
+- [Random](https://docs.haneul.io/references/framework/haneul_haneul/random.md)
+- [Rangeproofs](https://docs.haneul.io/references/framework/haneul_haneul/rangeproofs.md)
+- [Ristretto255](https://docs.haneul.io/references/framework/haneul_haneul/ristretto255.md)
+- [Scratch](https://docs.haneul.io/references/framework/haneul_haneul/scratch.md)
+- [Table Vec](https://docs.haneul.io/references/framework/haneul_haneul/table_vec.md)
+- [Table](https://docs.haneul.io/references/framework/haneul_haneul/table.md)
+- [Token](https://docs.haneul.io/references/framework/haneul_haneul/token.md)
+- [Transfer Policy](https://docs.haneul.io/references/framework/haneul_haneul/transfer_policy.md)
+- [Transfer](https://docs.haneul.io/references/framework/haneul_haneul/transfer.md)
+- [Tx Context](https://docs.haneul.io/references/framework/haneul_haneul/tx_context.md)
+- [Types](https://docs.haneul.io/references/framework/haneul_haneul/types.md)
+- [Url](https://docs.haneul.io/references/framework/haneul_haneul/url.md)
+- [Vdf](https://docs.haneul.io/references/framework/haneul_haneul/vdf.md)
+- [Vec Map](https://docs.haneul.io/references/framework/haneul_haneul/vec_map.md)
+- [Vec Set](https://docs.haneul.io/references/framework/haneul_haneul/vec_set.md)
+- [Versioned](https://docs.haneul.io/references/framework/haneul_haneul/versioned.md)
+- [Zklogin Verified
+    Id](https://docs.haneul.io/references/framework/haneul_haneul/zklogin_verified_id.md)
+- [Zklogin Verified
+    Issuer](https://docs.haneul.io/references/framework/haneul_haneul/zklogin_verified_issuer.md)
+
+### References/Framework/Haneul Haneul System
+- [Genesis](https://docs.haneul.io/references/framework/haneul_haneul_system/genesis.md)
+- [Haneul System State
+    Inner](https://docs.haneul.io/references/framework/haneul_haneul_system/haneul_system_state_inner.md)
+- [Haneul System](https://docs.haneul.io/references/framework/haneul_haneul_system/haneul_system.md)
+- [Haneul Haneul System
+    Index](https://docs.haneul.io/references/framework/haneul_haneul_system/index.md)
+- [Stake Subsidy](https://docs.haneul.io/references/framework/haneul_haneul_system/stake_subsidy.md)
+- [Staking Pool](https://docs.haneul.io/references/framework/haneul_haneul_system/staking_pool.md)
+- [Storage Fund](https://docs.haneul.io/references/framework/haneul_haneul_system/storage_fund.md)
+- [Validator Cap](https://docs.haneul.io/references/framework/haneul_haneul_system/validator_cap.md)
+- [Validator Set](https://docs.haneul.io/references/framework/haneul_haneul_system/validator_set.md)
+- [Validator](https://docs.haneul.io/references/framework/haneul_haneul_system/validator.md)
+- [Voting Power](https://docs.haneul.io/references/framework/haneul_haneul_system/voting_power.md)
 
 ### References/Framework/Haneul Std
 - [Ascii](https://docs.haneul.io/references/framework/haneul_std/ascii.md)
@@ -317,110 +449,11 @@
 - [Uq32 32](https://docs.haneul.io/references/framework/haneul_std/uq32_32.md)
 - [Uq64 64](https://docs.haneul.io/references/framework/haneul_std/uq64_64.md)
 - [Vector](https://docs.haneul.io/references/framework/haneul_std/vector.md)
-
-### References/Framework/Haneul Haneul
-- [Accumulator Metadata](https://docs.haneul.io/references/framework/haneul_haneul/accumulator_metadata.md)
-- [Accumulator
-    Settlement](https://docs.haneul.io/references/framework/haneul_haneul/accumulator_settlement.md)
-- [Accumulator](https://docs.haneul.io/references/framework/haneul_haneul/accumulator.md)
-- [Address Alias](https://docs.haneul.io/references/framework/haneul_haneul/address_alias.md)
-- [Address](https://docs.haneul.io/references/framework/haneul_haneul/address.md)
-- [Authenticator State](https://docs.haneul.io/references/framework/haneul_haneul/authenticator_state.md)
-- [Bag](https://docs.haneul.io/references/framework/haneul_haneul/bag.md)
-- [Balance](https://docs.haneul.io/references/framework/haneul_haneul/balance.md)
-- [Bcs](https://docs.haneul.io/references/framework/haneul_haneul/bcs.md)
-- [Bls12381](https://docs.haneul.io/references/framework/haneul_haneul/bls12381.md)
-- [Borrow](https://docs.haneul.io/references/framework/haneul_haneul/borrow.md)
-- [Clock](https://docs.haneul.io/references/framework/haneul_haneul/clock.md)
-- [Coin Registry](https://docs.haneul.io/references/framework/haneul_haneul/coin_registry.md)
-- [Coin](https://docs.haneul.io/references/framework/haneul_haneul/coin.md)
-- [Config](https://docs.haneul.io/references/framework/haneul_haneul/config.md)
-- [Deny List](https://docs.haneul.io/references/framework/haneul_haneul/deny_list.md)
-- [Derived Object](https://docs.haneul.io/references/framework/haneul_haneul/derived_object.md)
-- [Display Registry](https://docs.haneul.io/references/framework/haneul_haneul/display_registry.md)
-- [Display](https://docs.haneul.io/references/framework/haneul_haneul/display.md)
-- [Dynamic Field](https://docs.haneul.io/references/framework/haneul_haneul/dynamic_field.md)
-- [Dynamic Object Field](https://docs.haneul.io/references/framework/haneul_haneul/dynamic_object_field.md)
-- [Ecdsa K1](https://docs.haneul.io/references/framework/haneul_haneul/ecdsa_k1.md)
-- [Ecdsa R1](https://docs.haneul.io/references/framework/haneul_haneul/ecdsa_r1.md)
-- [Ecvrf](https://docs.haneul.io/references/framework/haneul_haneul/ecvrf.md)
-- [Ed25519](https://docs.haneul.io/references/framework/haneul_haneul/ed25519.md)
-- [Event](https://docs.haneul.io/references/framework/haneul_haneul/event.md)
-- [Funds Accumulator](https://docs.haneul.io/references/framework/haneul_haneul/funds_accumulator.md)
-- [Groth16](https://docs.haneul.io/references/framework/haneul_haneul/groth16.md)
-- [Group Ops](https://docs.haneul.io/references/framework/haneul_haneul/group_ops.md)
-- [Hash](https://docs.haneul.io/references/framework/haneul_haneul/hash.md)
-- [Hmac](https://docs.haneul.io/references/framework/haneul_haneul/hmac.md)
-- [Haneul Haneul Index](https://docs.haneul.io/references/framework/haneul_haneul/index.md)
-- [Kiosk Extension](https://docs.haneul.io/references/framework/haneul_haneul/kiosk_extension.md)
-- [Kiosk](https://docs.haneul.io/references/framework/haneul_haneul/kiosk.md)
-- [Linked Table](https://docs.haneul.io/references/framework/haneul_haneul/linked_table.md)
-- [Math](https://docs.haneul.io/references/framework/haneul_haneul/math.md)
-- [Nitro Attestation](https://docs.haneul.io/references/framework/haneul_haneul/nitro_attestation.md)
-- [Object Bag](https://docs.haneul.io/references/framework/haneul_haneul/object_bag.md)
-- [Object Table](https://docs.haneul.io/references/framework/haneul_haneul/object_table.md)
-- [Object](https://docs.haneul.io/references/framework/haneul_haneul/object.md)
-- [Package](https://docs.haneul.io/references/framework/haneul_haneul/package.md)
-- [Party](https://docs.haneul.io/references/framework/haneul_haneul/party.md)
-- [Pay](https://docs.haneul.io/references/framework/haneul_haneul/pay.md)
-- [Poseidon](https://docs.haneul.io/references/framework/haneul_haneul/poseidon.md)
-- [Priority Queue](https://docs.haneul.io/references/framework/haneul_haneul/priority_queue.md)
-- [Protocol Config](https://docs.haneul.io/references/framework/haneul_haneul/protocol_config.md)
-- [Random](https://docs.haneul.io/references/framework/haneul_haneul/random.md)
-- [Rangeproofs](https://docs.haneul.io/references/framework/haneul_haneul/rangeproofs.md)
-- [Ristretto255](https://docs.haneul.io/references/framework/haneul_haneul/ristretto255.md)
-- [Haneul](https://docs.haneul.io/references/framework/haneul_haneul/haneul.md)
-- [Table Vec](https://docs.haneul.io/references/framework/haneul_haneul/table_vec.md)
-- [Table](https://docs.haneul.io/references/framework/haneul_haneul/table.md)
-- [Token](https://docs.haneul.io/references/framework/haneul_haneul/token.md)
-- [Transfer Policy](https://docs.haneul.io/references/framework/haneul_haneul/transfer_policy.md)
-- [Transfer](https://docs.haneul.io/references/framework/haneul_haneul/transfer.md)
-- [Tx Context](https://docs.haneul.io/references/framework/haneul_haneul/tx_context.md)
-- [Types](https://docs.haneul.io/references/framework/haneul_haneul/types.md)
-- [Url](https://docs.haneul.io/references/framework/haneul_haneul/url.md)
-- [Vdf](https://docs.haneul.io/references/framework/haneul_haneul/vdf.md)
-- [Vec Map](https://docs.haneul.io/references/framework/haneul_haneul/vec_map.md)
-- [Vec Set](https://docs.haneul.io/references/framework/haneul_haneul/vec_set.md)
-- [Versioned](https://docs.haneul.io/references/framework/haneul_haneul/versioned.md)
-- [Zklogin Verified Id](https://docs.haneul.io/references/framework/haneul_haneul/zklogin_verified_id.md)
-- [Zklogin Verified
-    Issuer](https://docs.haneul.io/references/framework/haneul_haneul/zklogin_verified_issuer.md)
-
-### References/Framework/Haneul Haneul System
-- [Genesis](https://docs.haneul.io/references/framework/haneul_haneul_system/genesis.md)
-- [Haneul Haneul System Index](https://docs.haneul.io/references/framework/haneul_haneul_system/index.md)
-- [Stake Subsidy](https://docs.haneul.io/references/framework/haneul_haneul_system/stake_subsidy.md)
-- [Staking Pool](https://docs.haneul.io/references/framework/haneul_haneul_system/staking_pool.md)
-- [Storage Fund](https://docs.haneul.io/references/framework/haneul_haneul_system/storage_fund.md)
-- [Haneul System State
-    Inner](https://docs.haneul.io/references/framework/haneul_haneul_system/haneul_system_state_inner.md)
-- [Haneul System](https://docs.haneul.io/references/framework/haneul_haneul_system/haneul_system.md)
-- [Validator Cap](https://docs.haneul.io/references/framework/haneul_haneul_system/validator_cap.md)
-- [Validator Set](https://docs.haneul.io/references/framework/haneul_haneul_system/validator_set.md)
-- [Validator](https://docs.haneul.io/references/framework/haneul_haneul_system/validator.md)
-- [Voting Power](https://docs.haneul.io/references/framework/haneul_haneul_system/voting_power.md)
 - [Fullnode Protocol Messages](https://docs.haneul.io/references/fullnode-protocol-messages.md)
 - [Fullnode Protocol Types](https://docs.haneul.io/references/fullnode-protocol-types.md)
 - [Fullnode Protocol](https://docs.haneul.io/references/fullnode-protocol.md)
 - [Gaming](https://docs.haneul.io/references/gaming.md)
-
-### References/Ide
-- [Debugger](https://docs.haneul.io/references/ide/debugger.md)
-- [Ide Index](https://docs.haneul.io/references/ide/index.md)
-- [Move](https://docs.haneul.io/references/ide/move.md)
-- [Object Display Syntax](https://docs.haneul.io/references/object-display-syntax.md)
-
-### References/Package Managers
-- [Manifest Reference](https://docs.haneul.io/references/package-managers/manifest-reference.md)
-- [Package Manager
-    Migration](https://docs.haneul.io/references/package-managers/package-manager-migration.md)
-- [Ptb Commands](https://docs.haneul.io/references/ptb-commands.md)
-- [Release Notes](https://docs.haneul.io/references/release-notes.md)
-- [Research Papers](https://docs.haneul.io/references/research-papers.md)
-- [Rust Sdk](https://docs.haneul.io/references/rust-sdk.md)
 - [Haneul Api](https://docs.haneul.io/references/haneul-api.md)
-- [Rpc Best Practices](https://docs.haneul.io/references/haneul-api/rpc-best-practices.md)
-- [Generated](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/generated.md)
 
 ### References/Haneul Api/Haneul Graphql/Beta/Reference/Operations/Directives
 -
@@ -563,7 +596,8 @@
     Object](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/interfaces/imove-object.md)
 -
     [Iobject](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/interfaces/iobject.md)
-- [Node](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/interfaces/node.md)
+-
+    [Node](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/interfaces/node.md)
 
 ### References/Haneul Api/Haneul Graphql/Beta/Reference/Types/Objects
 - [Accumulator Root Create
@@ -636,62 +670,3 @@
     Owner](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/consensus-address-owner.md)
 - [Consensus Commit Prologue
     Transaction](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/consensus-commit-prologue-transaction.md)
-- [Consensus Object
-    Cancelled](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/consensus-object-cancelled.md)
-- [Consensus Object
-    Read](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/consensus-object-read.md)
-- [Display Registry Create
-    Transaction](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/display-registry-create-transaction.md)
--
-    [Display](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/display.md)
-- [Dynamic Field
-    Connection](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/dynamic-field-connection.md)
-- [Dynamic Field
-    Edge](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/dynamic-field-edge.md)
-- [Dynamic
-    Field](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/dynamic-field.md)
-- [Ed 25519 Public
-    Key](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/ed-25519-public-key.md)
-- [Ed 25519
-    Signature](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/ed-25519-signature.md)
-- [End Of Epoch Transaction Kind
-    Connection](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/end-of-epoch-transaction-kind-connection.md)
-- [End Of Epoch Transaction Kind
-    Edge](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/end-of-epoch-transaction-kind-edge.md)
-- [End Of Epoch
-    Transaction](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/end-of-epoch-transaction.md)
-- [Epoch
-    Connection](https://docs.haneul.io/references/haneul-api/haneul-graphql/beta/reference/types/objects/epoch-connection.md)
-
-## Haneul Stack
-
-- [Haneul Stack](https://docs.haneul.io/haneul-stack.md)
-
-### Haneul Stack/Enoki
-- [Solitaire](https://docs.haneul.io/haneul-stack/enoki/solitaire.md)
-- [Ticketing Poc](https://docs.haneul.io/haneul-stack/enoki/ticketing-poc.md)
-
-### Haneul Stack/Nautilus
-- [Community Dev Tools](https://docs.haneul.io/haneul-stack/nautilus/community-dev-tools.md)
-- [Customize Nautilus](https://docs.haneul.io/haneul-stack/nautilus/customize-nautilus.md)
-- [Nautilus Index](https://docs.haneul.io/haneul-stack/nautilus/index.md)
-- [Nautilus Design](https://docs.haneul.io/haneul-stack/nautilus/nautilus-design.md)
-- [Nautilus Overview](https://docs.haneul.io/haneul-stack/nautilus/nautilus-overview.md)
-- [Nautilus Weather Oracle](https://docs.haneul.io/haneul-stack/nautilus/nautilus-weather-oracle.md)
-- [Seal](https://docs.haneul.io/haneul-stack/nautilus/seal.md)
-- [Using Nautilus](https://docs.haneul.io/haneul-stack/nautilus/using-nautilus.md)
-
-### Haneul Stack/On Chain Primitives
-- [Access Time](https://docs.haneul.io/haneul-stack/on-chain-primitives/access-time.md)
-- [On Chain Primitives Index](https://docs.haneul.io/haneul-stack/on-chain-primitives/index.md)
-- [Randomness Onchain](https://docs.haneul.io/haneul-stack/on-chain-primitives/randomness-onchain.md)
-- [Sagat](https://docs.haneul.io/haneul-stack/sagat.md)
-
-### Haneul Stack/Seal
-- [Seal Index](https://docs.haneul.io/haneul-stack/seal/index.md)
-- [Haneul Chat App](https://docs.haneul.io/haneul-stack/seal/haneul-chat-app.md)
-- [Haneul Stack Seal](https://docs.haneul.io/haneul-stack/seal/haneul-stack-seal.md)
-
-### Haneul Stack/Haneulplay0x1
-- [Best Practices](https://docs.haneul.io/haneul-stack/haneulplay0x1/best-practices.md)
-- [Haneulplay0x1 Index](https://docs.haneul.io/haneul-stack/haneulplay0x1/index.md)

@@ -182,7 +182,7 @@ The following snippets are the parts of the code worth reading carefully.
 
 The `ParentObject` struct holds the shared UID that all derived objects derive from, plus an incremental counter for sequential derivation.
 
-<ImportContent source="C5/contracts/derived_objects/sources/parent.move" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" struct="ParentObject" />
+<ImportContent source="C5/contracts/derived_objects/sources/parent.move" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" struct="ParentObject" />
 
 The `uid_mut_ref` function exposes the parent's UID as a mutable reference, which `derived_object::claim` requires. The `incremental_counter` gives each sequentially derived object a unique key.
 
@@ -190,7 +190,7 @@ The `uid_mut_ref` function exposes the parent's UID as a mutable reference, whic
 
 The `deriveObjectIDFromParent` helper computes a derived object's ID using the Haneul SDK, without any network call.
 
-<ImportContent source="C5/ts/src/helpers/deriveObjectID.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="deriveObjectIDFromParent" />
+<ImportContent source="C5/ts/src/helpers/deriveObjectID.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="deriveObjectIDFromParent" />
 
 The function serializes the key with BCS, passes it to `deriveObjectID` along with the parent object ID and the key's type tag, and returns the predicted ID. The tests verify this matches the onchain result.
 

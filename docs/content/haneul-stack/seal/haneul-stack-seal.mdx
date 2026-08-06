@@ -106,7 +106,7 @@ OnlyFins uses `SealClient` in standalone mode. The `createSealClient` factory in
 <ImportContent
   source="frontend/src/lib/seal-client.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
 />
@@ -120,7 +120,7 @@ The key server object IDs come from `constants.ts`. These IDs point to onchain `
 <ImportContent
   source="frontend/src/constants.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
   variable="SEAL_SERVER_IDS"
@@ -150,7 +150,7 @@ The `seal_approve_access` function in the `posts` module enforces this:
 <ImportContent
   source="frontend/move/sources/posts.move"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="move"
   fun="seal_approve_access"
@@ -165,7 +165,7 @@ The onchain transaction mints a `ViewerToken` when a user requests access to a p
 <ImportContent
   source="frontend/src/hooks/usePayForContent.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
 />
@@ -183,8 +183,8 @@ The most basic policy: only the wallet address encoded in the identity decrypts 
 <ImportContent
   source="K5/seal-demo/move/sources/private_seal.move"
   mode="code"
-  org="HaneulLabs"
-  repo="haneul-move-bootcamp"
+  org="MystenLabs"
+  repo="sui-move-bootcamp"
   language="move"
 />
 
@@ -195,8 +195,8 @@ Users can only decrypt data after a specific timestamp has passed. The `id` enco
 <ImportContent
   source="K5/seal-demo/move/sources/timelock_seal.move"
   mode="code"
-  org="HaneulLabs"
-  repo="haneul-move-bootcamp"
+  org="MystenLabs"
+  repo="sui-move-bootcamp"
   language="move"
 />
 
@@ -207,8 +207,8 @@ A shared `Allowlist` object holds a list of authorized addresses that an admin m
 <ImportContent
   source="K5/seal-demo/move/sources/allowlist_seal.move"
   mode="code"
-  org="HaneulLabs"
-  repo="haneul-move-bootcamp"
+  org="MystenLabs"
+  repo="sui-move-bootcamp"
   language="move"
 />
 
@@ -231,7 +231,7 @@ In OnlyFins, encryption runs in the backend `encryptImages.ts` script before ima
 <ImportContent
   source="backend/src/encryptImages.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
   fun="main"
@@ -256,7 +256,7 @@ For React apps, the `useSealEncrypt` hook from `walrus-pocs` shows how to encryp
 <ImportContent
   source="walrus-seal/app/src/hooks/useSealEncrypt.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="walrus-pocs"
   language="ts"
   fun="useSealEncrypt"
@@ -267,7 +267,7 @@ The underlying `encryptData` utility in `sealUtils.ts` wraps `SealClient.encrypt
 <ImportContent
   source="walrus-seal/app/src/utils/sealUtils.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="walrus-pocs"
   language="ts"
   fun="encryptData"
@@ -280,8 +280,8 @@ The seal-demo includes a Node.js script that shows the complete Seal workflow in
 <ImportContent
   source="K5/seal-demo/ts/src/index.ts"
   mode="code"
-  org="HaneulLabs"
-  repo="haneul-move-bootcamp"
+  org="MystenLabs"
+  repo="sui-move-bootcamp"
   language="ts"
 />
 
@@ -298,7 +298,7 @@ The `useSealSession` hook from `walrus-pocs` shows the general-purpose pattern: 
 <ImportContent
   source="walrus-seal/app/src/hooks/useSealSession.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="walrus-pocs"
   language="ts"
   fun="useSealSession"
@@ -309,7 +309,7 @@ The `createAndSignSessionKey` utility in `sealUtils.ts` shows the core signing f
 <ImportContent
   source="walrus-seal/app/src/utils/sealUtils.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="walrus-pocs"
   language="ts"
   fun="createAndSignSessionKey"
@@ -324,7 +324,7 @@ The `useSealDecrypt` hook from `walrus-pocs` shows the general-purpose decryptio
 <ImportContent
   source="walrus-seal/app/src/hooks/useSealDecrypt.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="walrus-pocs"
   language="ts"
   fun="useSealDecrypt"
@@ -335,7 +335,7 @@ In OnlyFins, the `usePostDecryption` hook implements the same flow scoped to the
 <ImportContent
   source="frontend/src/hooks/usePostDecryption.ts"
   mode="code"
-  org="HaneulLabs"
+  org="MystenLabs"
   repo="onlyfins-example-app"
   language="ts"
   fun="usePostDecryption"

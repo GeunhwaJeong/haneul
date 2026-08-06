@@ -12,9 +12,10 @@ if (!fs.existsSync(topdir)){
     fs.mkdirSync(topdir);
 }
 
-const downloadFile = async (branch) => {
-  const branchDir = path.join(topdir, branch);
-  const specDir = path.join(__dirname, `../src/open-spec/${branch}`);
+// The repo has a single main branch; every network serves the same spec.
+const downloadFile = async (network, branch = "main") => {
+  const branchDir = path.join(topdir, network);
+  const specDir = path.join(__dirname, `../src/open-spec/${network}`);
   const specFile = path.join(specDir, "openrpc.json");
   const backupFile = path.join(specDir, "openrpc_backup.json");
 
@@ -28,23 +29,23 @@ const downloadFile = async (branch) => {
 
   try {
     const res = await axios.get(
-      `https://raw.githubusercontent.com/HaneulLabs/haneul/${branch}/crates/haneul-open-rpc/spec/openrpc.json`
+      `https://raw.githubusercontent.com/GeunhwaJeong/haneul/${branch}/crates/haneul-open-rpc/spec/openrpc.json`
     );
 
     if (fs.existsSync(backupFile)) {
       fs.unlinkSync(backupFile);
-      console.log(`Deleted ${branch} backup spec.`);
+      console.log(`Deleted ${network} backup spec.`);
     }
 
     if (fs.existsSync(specFile)) {
       fs.renameSync(specFile, backupFile);
-      console.log(`Moved ${branch} spec to backup.`);
+      console.log(`Moved ${network} spec to backup.`);
     }
 
     fs.writeFileSync(specFile, JSON.stringify(res.data, null, 2), "utf8");
-    console.log(`Downloaded ${branch} spec.`);
+    console.log(`Downloaded ${network} spec.`);
   } catch (err) {
-    console.error(`Error downloading ${branch} openrpc spec.`, err.message);
+    console.error(`Error downloading ${network} openrpc spec.`, err.message);
   }
 };
 

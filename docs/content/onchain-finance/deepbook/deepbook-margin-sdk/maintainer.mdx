@@ -28,7 +28,7 @@ Use `createMarginPool` to create a new margin pool for a specific asset. Require
 - `coinKey`: String that identifies the asset type.
 - `poolConfig`: `TransactionArgument` representing the protocol configuration.
 
-<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="createMarginPool" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="createMarginPool" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `newProtocolConfig`
 
@@ -40,7 +40,7 @@ Use `newProtocolConfig` to create a new protocol configuration object combining 
 - `marginPoolConfig`: `MarginPoolConfigParams` object with pool settings.
 - `interestConfig`: `InterestConfigParams` object with interest rate parameters.
 
-<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="newProtocolConfig" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="newProtocolConfig" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `newMarginPoolConfig`
 
@@ -55,7 +55,7 @@ Use `newMarginPoolConfig` to create a margin pool configuration object. The call
   - `referralSpread`: Number representing protocol spread percentage
   - `minBorrow`: Number representing minimum borrow amount
 
-<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="newMarginPoolConfig" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="newMarginPoolConfig" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `newInterestConfig`
 
@@ -69,7 +69,7 @@ Use `newInterestConfig` to create an interest configuration object. The call ret
   - `optimalUtilization`: Number representing the kink point (such as 0.8)
   - `excessSlope`: Number representing interest rate slope after kink
 
-<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="newInterestConfig" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="newInterestConfig" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `enableDeepbookPoolForLoan`, `disableDeepbookPoolForLoan`
 
@@ -81,7 +81,7 @@ Use these functions to control which DeepBook pools can borrow from the margin p
 - `coinKey`: String that identifies the margin pool asset.
 - `marginPoolCap`: String representing the margin pool capability ID.
 
-<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="enableDeepbookPoolForLoan,disableDeepbookPoolForLoan" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="enableDeepbookPoolForLoan,disableDeepbookPoolForLoan" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `updateInterestParams`
 
@@ -93,7 +93,7 @@ Use `updateInterestParams` to update the interest rate parameters for a margin p
 - `marginPoolCap`: String representing the margin pool capability ID.
 - `interestConfig`: `InterestConfigParams` object with new interest parameters.
 
-<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="updateInterestParams" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="/packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="updateInterestParams" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `updateMarginPoolConfig`
 
@@ -105,7 +105,7 @@ Use `updateMarginPoolConfig` to update the configuration settings for a margin p
 - `marginPoolCap`: String representing the margin pool capability ID.
 - `marginPoolConfig`: `MarginPoolConfigParams` object with new pool settings.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="updateMarginPoolConfig" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="updateMarginPoolConfig" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `withdrawMaintainerFees`
 
@@ -116,7 +116,7 @@ Use `withdrawMaintainerFees` to withdraw accumulated maintainer fees from a marg
 - `coinKey`: String that identifies the margin pool asset.
 - `marginPoolCap`: String representing the margin pool capability ID.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="withdrawMaintainerFees" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="withdrawMaintainerFees" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `withdrawProtocolFees`
 
@@ -126,7 +126,7 @@ Use `withdrawProtocolFees` to withdraw accumulated protocol fees from a margin p
 
 - `coinKey`: String that identifies the margin pool asset.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="withdrawProtocolFees" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="withdrawProtocolFees" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ### `adminWithdrawDefaultReferralFees`
 
@@ -136,7 +136,7 @@ Use `adminWithdrawDefaultReferralFees` to withdraw default referral fees from a 
 
 - `coinKey`: String that identifies the margin pool asset.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="adminWithdrawDefaultReferralFees" org="HaneulLabs" repo="ts-sdks" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginMaintainer.ts" mode="code" fun="adminWithdrawDefaultReferralFees" org="GeunhwaJeong" repo="ts-sdks" signatureOnly />
 
 ## Examples
 

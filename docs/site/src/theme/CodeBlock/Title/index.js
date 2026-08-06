@@ -3,7 +3,7 @@
 
 const GITHUB = "https://github.com";
 const GITHUB_BLOB = "blob/main";
-const ML_ORG = "HaneulLabs";
+const ML_ORG = "GeunhwaJeong";
 const HANEUL_REPO = "haneul";
 
 export default function CodeBlockTitle({ children }) {

@@ -32,7 +32,7 @@ The `activate()` function moves an oracle into the active state before expiry.
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="activate"
@@ -49,7 +49,7 @@ The `update_prices()` function pushes high-frequency spot and forward prices. If
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="update_prices"
@@ -66,7 +66,7 @@ The `update_svi()` function pushes lower-frequency SVI volatility surface parame
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="update_svi"
@@ -83,7 +83,7 @@ Use these functions to read oracle identifiers, underlying asset, prices, SVI pa
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="id,underlying_asset,spot_price,forward_price,prices,svi,expiry,timestamp,settlement_price,is_settled,is_active,status"
@@ -100,7 +100,7 @@ These helper constructors build `PriceData` and `SVIParams` values for oracle up
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="new_price_data,new_svi_params"
@@ -117,7 +117,7 @@ These functions return the numeric status values used by `status()`.
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="status_inactive,status_active,status_pending_settlement,status_settled"
@@ -134,7 +134,7 @@ These functions return the numeric status values used by `status()`.
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	struct="OracleSVI"
@@ -148,7 +148,7 @@ These functions return the numeric status values used by `status()`.
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	struct="PriceData,SVIParams"
@@ -164,7 +164,7 @@ These functions return the numeric status values used by `status()`.
 <ImportContent
 	source="packages/predict/sources/oracle.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	struct="OracleActivated,OraclePricesUpdated,OracleSVIUpdated,OracleSettled"

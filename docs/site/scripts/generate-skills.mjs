@@ -1,7 +1,7 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 //
-// Generates site/src/data/skills.json from the HaneulLabs/skills repository.
+// Generates site/src/data/skills.json from the GeunhwaJeong/skills repository.
 //
 // This runs at build time (wired into the `prebuild` and `prestart` scripts in
 // package.json). When a skill is added, removed, or edited in the skills repo,
@@ -24,7 +24,7 @@ import matter from "gray-matter";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const REPO_OWNER = "HaneulLabs";
+const REPO_OWNER = "GeunhwaJeong";
 const REPO_NAME = "skills";
 const REPO_BRANCH = "main";
 const OUT_PATH = path.join(__dirname, "../src/data/skills.json");

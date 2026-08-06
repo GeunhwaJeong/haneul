@@ -31,7 +31,7 @@ The `new()` function creates and shares a `MarginManager` in one transaction. It
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="new"
 	noComments
@@ -47,7 +47,7 @@ The `new_with_initializer()` function creates a `MarginManager` and returns it a
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="new_with_initializer,share"
 	noComments
@@ -63,7 +63,7 @@ The owner of a `MarginManager` can set or unset a pool-specific referral for tra
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="set_margin_manager_referral,unset_margin_manager_referral"
 />
@@ -78,7 +78,7 @@ Only the owner can deposit funds into the `MarginManager`. The deposited asset m
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="deposit"
 />
@@ -93,7 +93,7 @@ Only the owner can withdraw funds from the `MarginManager`. Withdrawals are subj
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="withdraw"
 />
@@ -108,7 +108,7 @@ Borrow base or quote assets from margin pools to increase position sizes. Borrow
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="borrow_base,borrow_quote"
 />
@@ -123,7 +123,7 @@ Repay borrowed assets to reduce debt. You can specify an exact amount or repay a
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="repay_base,repay_quote"
 />
@@ -138,7 +138,7 @@ Liquidate an undercollateralized margin manager. The liquidator provides repayme
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="liquidate"
 />
@@ -153,7 +153,7 @@ Returns the risk ratio of the margin manager, which represents the ratio of asse
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="risk_ratio"
 />
@@ -166,7 +166,7 @@ Returns the risk ratio of the margin manager, which represents the ratio of asse
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	fun="balance_manager,calculate_assets,calculate_debts,owner,deepbook_pool,margin_pool_id,borrowed_shares,borrowed_base_shares,borrowed_quote_shares,has_base_debt"
 />
@@ -183,7 +183,7 @@ The system emits this event when you create a new margin manager.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="MarginManagerCreatedEvent"
 />
@@ -198,7 +198,7 @@ The system emits this event when you deposit collateral into a margin manager.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="DepositCollateralEvent"
 />
@@ -213,7 +213,7 @@ The system emits this event when you withdraw collateral from a margin manager.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="WithdrawCollateralEvent"
 />
@@ -228,7 +228,7 @@ The system emits this event when you borrow assets from a margin pool.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="LoanBorrowedEvent"
 />
@@ -243,7 +243,7 @@ The system emits this event when you repay borrowed assets.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="LoanRepaidEvent"
 />
@@ -258,7 +258,7 @@ The system emits this event when a liquidator liquidates a margin manager.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_manager.move"
 	mode="code"
-	org="HaneulLabs"
+	org="MystenLabs"
 	repo="deepbookv3"
 	struct="LiquidationEvent"
 />

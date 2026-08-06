@@ -6,7 +6,7 @@ const axios = require("axios");
 const path = require("path");
 
 const repo = {
-  owner: "HaneulLabs",
+  owner: "GeunhwaJeong",
   name: "haneul-apis",
   branch: "gen-docs",
   filePath: "documentation.json",

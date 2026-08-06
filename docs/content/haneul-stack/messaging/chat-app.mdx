@@ -207,7 +207,7 @@ The following snippets are the parts of the code worth reading carefully.
 
 The `seal_approve_reader` function is the onchain gate that Seal key servers call before releasing DEK shares. It checks that the caller has `MessagingReader` permission in the group.
 
-<ImportContent source="move/packages/haneul_stack_messaging/sources/seal_policies.move" mode="code" org="HaneulLabs" repo="haneul-stack-messaging" fun="seal_approve_reader" />
+<ImportContent source="move/packages/haneul_stack_messaging/sources/seal_policies.move" mode="code" org="GeunhwaJeong" repo="haneul-stack-messaging" fun="seal_approve_reader" />
 
 The function validates the 40-byte identity (32-byte group ID + 8-byte key version), confirms the encryption history belongs to the correct group, and verifies the caller holds `MessagingReader` permission. If any check fails, the transaction aborts and Seal denies the key shares.
 
@@ -215,7 +215,7 @@ The function validates the 40-byte identity (32-byte group ID + 8-byte key versi
 
 The `rotate_encryption_key` function appends a new encrypted DEK version to the onchain history. It requires `EncryptionKeyRotator` permission.
 
-<ImportContent source="move/packages/haneul_stack_messaging/sources/messaging.move" mode="code" org="HaneulLabs" repo="haneul-stack-messaging" fun="rotate_encryption_key" />
+<ImportContent source="move/packages/haneul_stack_messaging/sources/messaging.move" mode="code" org="GeunhwaJeong" repo="haneul-stack-messaging" fun="rotate_encryption_key" />
 
 Key rotation creates a new DEK version. Future messages encrypt with the new version. Removed members can still decrypt old messages (they had the old DEK cached) but cannot access the new DEK because Seal checks their permission at decryption time.
 
@@ -223,7 +223,7 @@ Key rotation creates a new DEK version. Future messages encrypt with the new ver
 
 The `EncryptionHistory` struct stores versioned encrypted DEKs as a `TableVec` on a shared object.
 
-<ImportContent source="move/packages/haneul_stack_messaging/sources/encryption_history.move" mode="code" org="HaneulLabs" repo="haneul-stack-messaging" struct="EncryptionHistory" />
+<ImportContent source="move/packages/haneul_stack_messaging/sources/encryption_history.move" mode="code" org="GeunhwaJeong" repo="haneul-stack-messaging" struct="EncryptionHistory" />
 
 Each entry in the `deks` table is an encrypted DEK blob (up to 1024 bytes). The key version is the index into this table. The identity format `[group_id (32 bytes)][key_version (8 bytes)]` ensures each DEK maps to exactly 1 group and version.
 
@@ -231,7 +231,7 @@ Each entry in the `deks` table is an encrypted DEK blob (up to 1024 bytes). The 
 
 The `useMessages` hook manages the full message lifecycle: fetching history, subscribing for updates, sending, editing, and deleting.
 
-<ImportContent source="chat-app/src/hooks/useMessages.ts" mode="code" org="HaneulLabs" repo="haneul-stack-messaging" fun="useMessages" />
+<ImportContent source="chat-app/src/hooks/useMessages.ts" mode="code" org="GeunhwaJeong" repo="haneul-stack-messaging" fun="useMessages" />
 
 The hook calls `client.sendMessage()` which encrypts the text with AES-256-GCM using the group DEK, signs the ciphertext, and POSTs it to the relayer. For real-time updates, it calls `client.subscribe()` which polls the relayer and automatically decrypts incoming messages using the cached DEK.
 

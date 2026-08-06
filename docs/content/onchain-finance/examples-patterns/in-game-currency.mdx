@@ -12,7 +12,7 @@ This example implements a governance-controlled currency in Move. Transferring t
 
 To create the King Credits currency, initialize the currency using the `coin_registry::new_currency_with_otw` module and configure the currency policy with `token::add_rule_for_action`:
 
-<ImportContent source="I3/king_credits/sources/king_credits.move" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" noComments />
+<ImportContent source="I3/king_credits/sources/king_credits.move" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" noComments />
 
 :::info
 
@@ -26,6 +26,6 @@ In another Move package, implement the `add_rule_config` function to initialize 
 
 The `add_council_member` and `remove_council_member` functions add and remove members from the council. The `prove` function checks whether the request sender is a council member and adds an approval for the rule if they are:
 
-<ImportContent source="I3/king_credits/sources/crown_council_rule.move" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" noComments />
+<ImportContent source="I3/king_credits/sources/crown_council_rule.move" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" noComments />
 
 [View the full example on GitHub](https://github.com/GeunhwaJeong/haneul-move-bootcamp/tree/solution/I3).
