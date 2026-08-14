@@ -1,6 +1,5 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
-assertion_line: 114
 ---
 ----- script -----
 # Copyright (c) Mysten Labs, Inc.
@@ -15,12 +14,12 @@ COLOR_MODE=NONE haneul move --client.config $CONFIG lint -p example
 success: true
 exit_code: 0
 ----- stdout -----
-INCLUDING DEPENDENCY Haneul
 INCLUDING DEPENDENCY MoveStdlib
+INCLUDING DEPENDENCY Haneul
 BUILDING example
 
 ----- stderr -----
-warning[Lint W99001]: non-composable transfer to sender
+warning[WSL99001]: non-composable transfer to sender
    ┌─ ./sources/example.move:15:5
    │
 14 │ public fun mint(ctx: &mut TxContext) {

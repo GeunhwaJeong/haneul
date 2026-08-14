@@ -1,11 +1,22 @@
 ---
 title: Weather Oracle with Nautilus
-description: Build a verified weather oracle on Haneul using Nautilus, where a Trusted Execution Environment fetches weather data, signs it cryptographically, and the Move contract mints an NFT only after verifying the signature.
-keywords: [example, nautilus, tee, oracle, trusted-execution-environment, nft, weather, offchain-computation]
+description: >-
+  Build a verified weather oracle on Haneul using Nautilus, where a Trusted
+  Execution Environment fetches weather data, signs it cryptographically, and
+  the Move contract mints an NFT only after verifying the signature.
+keywords:
+  - example
+  - nautilus
+  - tee
+  - oracle
+  - trusted-execution-environment
+  - nft
+  - weather
+  - offchain-computation
 sidebar_label: Weather Oracle
 example_id: nautilus-weather-oracle
-last_verified: 2026-04-29
-repo: https://github.com/GeunhwaJeong/haneul-move-bootcamp
+last_verified: 2026-04-29T00:00:00.000Z
+repo: 'https://github.com/GeunhwaJeong/haneul-move-bootcamp'
 path: /K4
 concepts:
   - trusted_execution_environment
@@ -13,6 +24,34 @@ concepts:
   - oracle_pattern
   - nft_minting
   - enclave_attestation
+goal:
+  description: Reader can build a verified weather oracle on Haneul using Nautilus
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How do I build a weather oracle with Nautilus on Haneul?
+  - What does the Nautilus weather oracle example demonstrate?
+  - How do I run offchain computation and verify it onchain?
+answer: >-
+  Build a verified weather oracle on Haneul using Nautilus, where a Trusted
+  Execution Environment fetches weather data, signs it cryptographically, and
+  the Move contract mints an NFT only after verifying.
 ---
 
 This example demonstrates a verified oracle system that fetches real-world weather data inside a Trusted Execution Environment (TEE), signs the result cryptographically, and submits it to a Move contract that mints a `WeatherNFT` only after verifying the signature. 
@@ -232,7 +271,7 @@ $ haneul client tx-block TX_DIGEST --json | jq '.objectChanges[] | select(.type 
 
 ## Key code highlights
 
-<CodeWalkthrough source="K4/example/move/weather.move" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" language="move">
+<CodeWalkthrough source="K4/example/move/weather.move" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" language="move">
   <Step lines="13-18" title="`WeatherNFT` data struct">
     The `WeatherNFT` struct stores verified weather data as a transferable Haneul object. It has `key` and `store` abilities. The `location`, `temperature`, and `timestamp_ms` fields are all verified by the enclave signature before the contract creates the object.
   </Step>

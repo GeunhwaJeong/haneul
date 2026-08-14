@@ -1,18 +1,41 @@
 ---
 title: Registry
-description: Learn about DeepBook Predict registry setup, oracle creation, quote asset management, and admin configuration entry points.
+description: >-
+  Learn about DeepBook Predict registry setup, oracle creation, quote asset
+  management, and admin configuration entry points.
 keywords:
-  [
-    deepbook predict registry,
-    registry,
-    admin cap,
-    create predict,
-    create oracle,
-    quote asset,
-    oracle cap,
-    pricing config,
-    risk config,
-  ]
+  - deepbook predict registry
+  - registry
+  - admin cap
+  - create predict
+  - create oracle
+  - quote asset
+  - oracle cap
+  - pricing config
+  - risk config
+goal:
+  description: >-
+    Reader can learn about DeepBook Predict registry setup, oracle creation,
+    quote asset management
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Registry in Haneul?
+  - How does registry work on Haneul?
+  - How do I configure registry?
+answer: >-
+  Learn about DeepBook Predict registry setup, oracle creation, quote asset
+  management, and admin configuration entry points.
 ---
 
 The `Registry` shared object tracks the Predict object ID and the oracle IDs created by each `OracleSVICap`. The registry module also exposes admin entry points for setup, quote asset management, oracle creation, pricing configuration, risk configuration, and the withdrawal limiter.
@@ -29,7 +52,7 @@ Use these functions to read the active Predict object ID and the oracle IDs asso
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="predict_id,oracle_ids"
@@ -46,7 +69,7 @@ The `create_predict()` function creates the shared `Predict` object once for a q
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="create_predict"
@@ -63,7 +86,7 @@ Oracle caps authorize oracle operators to update oracles and tighten per-oracle 
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="create_oracle_cap,register_oracle_cap"
@@ -80,7 +103,7 @@ The `create_oracle()` function creates an `OracleSVI`, associates it with the ca
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="create_oracle"
@@ -97,7 +120,7 @@ Admins can enable or disable quote assets for new supply and mint inflows.
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="enable_quote_asset,disable_quote_asset"
@@ -114,7 +137,7 @@ These functions control global spread, minimum spread, utilization multiplier, a
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="set_base_spread,set_min_spread,set_utilization_multiplier,set_min_ask_price,set_max_ask_price"
@@ -131,7 +154,7 @@ Oracle ask-bound overrides are authorized by the oracle's cap and can only tight
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="set_oracle_ask_bounds,clear_oracle_ask_bounds"
@@ -148,7 +171,7 @@ These functions control the trading pause, max total exposure percentage, and LP
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="set_trading_paused,set_max_total_exposure_pct,update_withdrawal_limiter,enable_withdrawal_limiter,disable_withdrawal_limiter"
@@ -165,7 +188,7 @@ These functions control the trading pause, max total exposure percentage, and LP
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	struct="Registry,AdminCap"
@@ -179,7 +202,7 @@ These functions control the trading pause, max total exposure percentage, and LP
 <ImportContent
 	source="packages/predict/sources/registry.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	struct="PredictCreated,OracleCreated"

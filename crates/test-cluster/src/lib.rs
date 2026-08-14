@@ -10,6 +10,7 @@ use haneul_config::{Config, ExecutionCacheConfig, HANEUL_CLIENT_CONFIG, HANEUL_N
 use haneul_config::{HANEUL_KEYSTORE_FILENAME, NodeConfig, PersistedConfig};
 use haneul_core::authority_aggregator::AuthorityAggregator;
 use haneul_core::authority_client::NetworkAuthorityClient;
+use haneul_core::transaction_driver::SubmitTransactionOptions;
 use haneul_keys::keystore::{AccountKeystore, FileBasedKeystore, Keystore};
 use haneul_node::HaneulNodeHandle;
 use haneul_protocol_config::{Chain, ProtocolVersion};
@@ -70,6 +71,8 @@ use tracing::{error, info};
 pub mod addr_balance_test_env;
 
 const NUM_VALIDATOR: usize = 4;
+// Keep direct test submissions bounded like the production TransactionOrchestrator.
+const TRANSACTION_FINALITY_TIMEOUT: Duration = Duration::from_secs(90);
 
 pub struct FullNodeHandle {
     pub haneul_node: HaneulNodeHandle,
@@ -1031,8 +1034,7 @@ impl TestCluster {
     }
 
     /// Different from `execute_transaction` which returns RPC effects types, this function
-    /// returns raw effects, events and extra objects returned by the validators,
-    /// aggregated manually (without authority aggregator).
+    /// returns raw effects and events from the transaction driver.
     /// It also does not check whether the transaction is executed successfully.
     /// Before returning, it waits for the transaction to settle on the fullnode so that
     /// subsequent queries there read consistent results.
@@ -1052,120 +1054,34 @@ impl TestCluster {
             .with(|node| node.clone_authority_aggregator().unwrap())
     }
 
-    /// Submit a transaction and wait for it to be executed.
-    /// With MFP, transactions are submitted to consensus and executed by validators.
-    /// Returns the transaction effects and events on success.
+    /// Submit a transaction through the transaction driver and wait for finality.
+    /// Returns the raw transaction effects and events without checking execution status.
     pub async fn submit_and_execute(
         &self,
         tx: Transaction,
         client_addr: Option<SocketAddr>,
     ) -> anyhow::Result<(TransactionEffects, TransactionEvents)> {
-        // The consensus position handed back on submission is the *first* one, even when the
-        // consensus adapter internally retries (e.g. the block was garbage-collected before being
-        // sequenced, which is most likely right after a reconfiguration). If we wait for effects on
-        // that stale position, the validator can neither produce effects nor expire the position
-        // within its wait window, surfacing as a timeout/`Expired`. The consensus adapter documents
-        // that clients must retry in that case, and the production `TransactionDriver` does exactly
-        // that. Mirror it here with a bounded resubmit loop so tests don't flake on this transient
-        // condition. Definite outcomes (executed / rejected) return immediately.
-        const MAX_ATTEMPTS: usize = 5;
-        let mut last_transient_err: Option<anyhow::Error> = None;
-        for attempt in 0..MAX_ATTEMPTS {
-            if attempt > 0 {
-                // Brief backoff before resubmitting to obtain a fresh consensus position.
-                sleep(Duration::from_secs(1)).await;
-            }
+        let transaction_driver = self.fullnode_handle.haneul_node.with(|node| {
+            node.transaction_orchestrator()
+                .expect("fullnode must have a transaction orchestrator")
+                .transaction_driver()
+                .clone()
+        });
+        let response = transaction_driver
+            .drive_transaction(
+                SubmitTxRequest::new_transaction(tx),
+                SubmitTransactionOptions {
+                    forwarded_client_addr: client_addr,
+                    ..Default::default()
+                },
+                Some(TRANSACTION_FINALITY_TIMEOUT),
+            )
+            .await?;
 
-            let agg = self.authority_aggregator();
-            // Pick a validator to submit to using seeded RNG for deterministic simtest selection
-            let clients = &agg.authority_clients;
-            let index = rand::thread_rng().gen_range(0..clients.len());
-            let (_, client) = clients
-                .iter()
-                .nth(index)
-                .ok_or_else(|| anyhow::anyhow!("No authority clients available"))?;
-
-            // Submit the transaction
-            let submit_request = SubmitTxRequest::new_transaction(tx.clone());
-            let submit_response = match client.submit_transaction(submit_request, client_addr).await
-            {
-                Ok(response) => response,
-                // Retry only transient submission failures (e.g. validator overloaded, or
-                // consensus not yet ready right after reconfiguration); surface definite errors
-                // (invalid transaction, lock conflict, internal) immediately.
-                Err(err) if err.as_inner().categorize().is_submission_retriable() => {
-                    last_transient_err = Some(err.into());
-                    continue;
-                }
-                Err(err) => return Err(err.into()),
-            };
-
-            let mut consensus_position = None;
-            for result in submit_response.results {
-                match result {
-                    SubmitTxResult::Executed { details, .. } => {
-                        let data =
-                            details.ok_or_else(|| anyhow::anyhow!("Expected execution details"))?;
-                        let events = data.events.unwrap_or_default();
-                        return Ok((data.effects, events));
-                    }
-                    SubmitTxResult::Rejected { error } => {
-                        return Err(error.into());
-                    }
-                    SubmitTxResult::Submitted {
-                        consensus_position: position,
-                    } => {
-                        consensus_position = Some(position);
-                    }
-                }
-            }
-
-            let consensus_position = consensus_position
-                .ok_or_else(|| anyhow::anyhow!("Expected submitted transaction result"))?;
-
-            // Wait for effects
-            let wait_request = WaitForEffectsRequest {
-                transaction_digest: Some(*tx.digest()),
-                consensus_position: Some(consensus_position),
-                include_details: true,
-                ping_type: None,
-            };
-
-            match client.wait_for_effects(wait_request, client_addr).await {
-                Ok(WaitForEffectsResponse::Executed { details, .. }) => {
-                    let data =
-                        details.ok_or_else(|| anyhow::anyhow!("Expected execution details"))?;
-                    let events = data.events.unwrap_or_default();
-                    return Ok((data.effects, events));
-                }
-                Ok(WaitForEffectsResponse::Rejected { error }) => {
-                    return Err(error
-                        .unwrap_or_else(|| {
-                            HaneulErrorKind::GenericAuthorityError {
-                                error: "Transaction was rejected".to_string(),
-                            }
-                            .into()
-                        })
-                        .into());
-                }
-                // The position we waited on was garbage-collected before being sequenced; resubmit
-                // to obtain a fresh position.
-                Ok(WaitForEffectsResponse::Expired { .. }) => {
-                    last_transient_err = Some(HaneulErrorKind::TransactionExpired.into());
-                }
-                // A transient wait failure (e.g. the validator's "Timeout waiting for effects")
-                // means the watched position never resolved; resubmit for a fresh one. Surface
-                // definite errors immediately.
-                Err(err) if err.as_inner().categorize().is_submission_retriable() => {
-                    last_transient_err = Some(err.into());
-                }
-                Err(err) => return Err(err.into()),
-            }
-        }
-
-        Err(last_transient_err.unwrap_or_else(|| {
-            anyhow::anyhow!("submit_and_execute exhausted retries without a result")
-        }))
+        Ok((
+            response.effects.effects,
+            response.events.unwrap_or_default(),
+        ))
     }
 
     /// This call sends some funds from the seeded address to the funding
@@ -1323,6 +1239,9 @@ pub struct TestClusterBuilder {
 
     state_sync_config: Option<haneul_config::p2p::StateSyncConfig>,
 
+    peer_deny_sync_config_callback:
+        Option<haneul_swarm_config::network_config_builder::PeerDenySyncConfigCallback>,
+
     #[cfg(msim)]
     inject_synthetic_execution_time: bool,
 }
@@ -1368,6 +1287,7 @@ impl TestClusterBuilder {
             execution_time_observer_config: None,
             validator_observer_config: None,
             state_sync_config: None,
+            peer_deny_sync_config_callback: None,
             #[cfg(msim)]
             inject_synthetic_execution_time: false,
         }
@@ -1375,6 +1295,18 @@ impl TestClusterBuilder {
 
     pub fn with_state_sync_config(mut self, config: haneul_config::p2p::StateSyncConfig) -> Self {
         self.state_sync_config = Some(config);
+        self
+    }
+
+    /// Per-validator hook for `peer_deny_sync_config`. The closure receives this
+    /// validator's authority name and the slice of all genesis-committee authority
+    /// names, so callers can compute an allowlist that references peers (e.g.
+    /// "trust everyone but myself").
+    pub fn with_peer_deny_sync_config_per_validator(
+        mut self,
+        f: haneul_swarm_config::network_config_builder::PeerDenySyncConfigCallback,
+    ) -> Self {
+        self.peer_deny_sync_config_callback = Some(f);
         self
     }
 
@@ -1756,6 +1688,10 @@ impl TestClusterBuilder {
 
         if let Some(state_sync_config) = self.state_sync_config.clone() {
             builder = builder.with_state_sync_config(state_sync_config);
+        }
+
+        if let Some(cb) = self.peer_deny_sync_config_callback.clone() {
+            builder = builder.with_peer_deny_sync_config_per_validator(cb);
         }
 
         if self.disable_fullnode_pruning {

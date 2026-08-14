@@ -1,17 +1,41 @@
 ---
 title: Predict Manager
-description: Learn about PredictManager accounts, deposited quote balances, binary position quantities, and range quantities.
+description: >-
+  Learn about PredictManager accounts, deposited quote balances, binary position
+  quantities, and range quantities.
 keywords:
-  [
-    predict manager,
-    predictmanager,
-    deepbook predict,
-    position table,
-    range position,
-    balance manager,
-    deposit,
-    withdraw,
-  ]
+  - predict manager
+  - predictmanager
+  - deepbook predict
+  - position table
+  - range position
+  - balance manager
+  - deposit
+  - withdraw
+goal:
+  description: >-
+    Reader can learn about PredictManager accounts, deposited quote balances,
+    binary position quantities, and range quantities
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Predict Manager in Haneul?
+  - How does predict manager work on Haneul?
+  - Why should I use predict manager?
+answer: >-
+  The `PredictManager` is a per-user shared account object. It wraps a DeepBook
+  `BalanceManager`, stores quote balances, and tracks Predict positions
+  internally.
 ---
 
 The `PredictManager` is a per-user shared account object. It wraps a DeepBook `BalanceManager`, stores quote balances, and tracks Predict positions internally.
@@ -28,7 +52,7 @@ Use these functions to read the manager owner, deposited asset balances, binary 
 <ImportContent
 	source="packages/predict/sources/predict_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="owner,balance,position,range_position"
@@ -45,7 +69,7 @@ The manager owner deposits quote assets before minting positions or ranges.
 <ImportContent
 	source="packages/predict/sources/predict_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="deposit"
@@ -62,7 +86,7 @@ The manager owner can withdraw quote assets from the manager.
 <ImportContent
 	source="packages/predict/sources/predict_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="withdraw"
@@ -81,7 +105,7 @@ The system emits this event when you create a new `PredictManager`.
 <ImportContent
 	source="packages/predict/sources/predict_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	struct="PredictManagerCreated"

@@ -627,6 +627,9 @@ impl HaneulTransactionBlockKind {
                             EndOfEpochTransactionKind::WriteAccumulatorStorageCost(_) => {
                                 HaneulEndOfEpochTransactionKind::WriteAccumulatorStorageCost
                             }
+                            EndOfEpochTransactionKind::ForwardingAddressRegistryCreate => {
+                                HaneulEndOfEpochTransactionKind::ForwardingAddressRegistryCreate
+                            }
                         })
                         .collect(),
                 })
@@ -1814,6 +1817,7 @@ pub enum HaneulEndOfEpochTransactionKind {
     DisplayRegistryCreate,
     AddressAliasStateCreate,
     WriteAccumulatorStorageCost,
+    ForwardingAddressRegistryCreate,
 }
 
 #[serde_as]

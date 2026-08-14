@@ -1,51 +1,265 @@
-## Overview
+# Haneul Documentation
 
-This directory contains the assets required to build and update the [Haneul documentation](https://docs.haneul.io). The directory is split between `content` and `site`. To run the docs.haneul.io site locally, open the `site` directory in a terminal or console. Use a package manager to install the required modules:
+This directory contains the source for [docs.haneul.io](https://docs.haneul.io). It is split between `content/` (documentation pages) and `site/` (Docusaurus configuration, plugins, and scripts).
 
-```shell
+## Repository layout
+
+```
+docs/
+├── content/                    # All documentation source files (.mdx)
+│   ├── getting-started/        # Onboarding, examples, migration guides
+│   ├── develop/                # Move, objects, transactions, data access, testing
+│   ├── onchain-finance/        # Tokens, DeepBook, kiosk, payments, asset custody
+│   ├── operators/              # Full nodes, validators, data management
+│   ├── references/             # CLI, APIs, framework, SDKs, contributing
+│   ├── haneul-stack/              # Walrus, Seal, zkLogin, Nautilus, HaneulNS, Enoki
+│   ├── snippets/               # Reusable content referenced by <ImportContent>
+│   └── sidebars.js             # Navigation structure / page hierarchy
+├── site/                       # Docusaurus site
+│   ├── src/                    # Custom components, plugins, utilities
+│   ├── scripts/                # Build, audit, and goal generation scripts
+│   ├── docusaurus.config.js
+│   └── package.json
+├── concept-map.yaml            # Concept coverage definitions for audit pipeline
+└── README.md
+```
+
+## Page frontmatter
+
+Every `.mdx` page has YAML frontmatter. Required fields:
+
+```yaml
+---
+title: Page Title
+description: One-sentence summary of what this page covers.
+keywords: [keyword1, keyword2, keyword3]
+---
+```
+
+### Goal frontmatter
+
+Pages also have a `goal:` block that defines what the page should achieve for the reader and a set of mechanically verifiable checks:
+
+```yaml
+goal:
+  description: Reader can build, publish, and call a Move package
+  requires:
+    - pattern: 'haneul move build'
+      min: 1
+      label: Shows build command
+    - pattern: '```move'
+      min: 1
+      label: Has Move source code
+    - headings:
+        - pattern: Build
+        - pattern: Publish
+      label: Has build and publish sections
+    - min_words: 300
+      label: Needs more walkthrough depth
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+```
+
+**Available check types:**
+
+| Check | Parameters | What it verifies |
+|-------|-----------|-----------------|
+| `pattern` | `pattern` (regex), `min` (count) | Body text matches the pattern at least `min` times |
+| `headings` | Array of `{ pattern }` | Page has headings matching each pattern |
+| `links_to` | Array of paths | Page contains links to specific internal paths |
+| `has_tables` | `min` (count) | Page has at least `min` markdown tables |
+| `has_images` | boolean | Page has (or doesn't have) images |
+| `has_frontmatter` | Array of field names | Specified frontmatter fields are present |
+| `min_words` | number | Page has at least this many words (outside code blocks) |
+| `has_questions` | boolean | Page has `questions:` frontmatter for AI search |
+| `has_answer` | boolean | Page has `answer:` frontmatter for AI citation |
+| `answer_in_intro` | number (min words) | First paragraph has enough words to serve as a direct answer |
+| `question_headings` | number (min count) | Headings use question format (What/How/Why) |
+| `steps_present` | number (min count) | Page has numbered steps for procedural content |
+| `code_explanation_ratio` | number (min ratio) | Ratio of explanation to code is above threshold |
+
+Goals are evaluated by the audit pipeline. The label appears in failure reports, so write it to describe what's wrong (e.g., "Needs more content depth" not "Sufficient content depth").
+
+### GEO/AEO frontmatter
+
+Pages have `questions:` and `answer:` fields for Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO). These help AI-powered search engines (Perplexity, ChatGPT, Google AI Overviews) surface and cite the page correctly.
+
+```yaml
+questions:
+  - How do I install the Haneul CLI?
+  - What is haneulup?
+  - How do I verify my Haneul installation?
+answer: >-
+  Run `curl -sSfL https://raw.githubusercontent.com/HaneulLabs/haneulup/main/install.sh | sh`
+  to install haneulup, then `haneulup install haneul@testnet` for the Testnet toolchain.
+  Verify with `haneul --version`.
+```
+
+- **`questions`**: 2-5 questions this page answers. AI engines match user queries against these.
+- **`answer`**: 1-2 sentence direct answer to the page's primary question. This is what an AI would cite verbatim.
+
+Generate these for new pages:
+
+```sh
+cd docs/site && node scripts/generate-geo.mjs --apply
+```
+
+### Builder path frontmatter
+
+Pages that belong to a builder path (DeFi, Payments, Walrus, etc.) are tagged with `builder_paths:`:
+
+```yaml
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: Custom coin creation
+    stage: Move Contract
+    eval: covered            # covered | partial | missing (from evals dashboard)
+  - path_id: p2p-payments
+    path_name: P2P Payments
+    step: Stablecoin integration
+    stage: Tokens
+    # no eval = not yet evaluated
+```
+
+Pages with `eval:` have been scored in the [evals dashboard](https://docs-analytics-dashboard.vercel.app/evals). Pages without `eval` are identified as belonging to a path but haven't been scored yet.
+
+## Audit pipeline
+
+The docs audit runs deterministic checks across all pages. Three layers:
+
+1. **Base checks** -- frontmatter completeness, staleness (git log), broken internal links, broken imports, unclosed code fences, TODO/FIXME markers, word count, missing images, duplicate titles.
+2. **Goal checklist** -- evaluates each page's `goal.requires` checks.
+3. **Concept coverage** -- cross-references pages against `concept-map.yaml` to find coverage gaps and orphan pages.
+
+### Running the audit
+
+```sh
+cd docs/site
+pnpm docs:audit              # JSON to stdout
+pnpm docs:audit:summary      # human-readable summary to stderr
+pnpm docs:audit:failures     # only failing pages + summary
+```
+
+### Generating goals for new pages
+
+When you add new `.mdx` pages, generate goal frontmatter:
+
+```sh
+cd docs/site
+node scripts/generate-goals.mjs --apply
+```
+
+This detects each page's archetype (onboarding, example, guide, reference, operator, SDK, index) and generates appropriate checks. Review and adjust the generated goals before committing.
+
+### Frontmatter schema
+
+The full frontmatter contract is defined as a JSON Schema at [`docs/site/frontmatter.schema.json`](site/frontmatter.schema.json). It is the canonical, machine-readable source of truth for every field above (`title`, `description`, `keywords`, `goal`, `questions`, `answer`, `builder_paths`, and the optional metadata fields). Downstream tooling — the [evals harness](https://github.com/jessiemongeon1/haneul-docs-automation) and the evals dashboard — relies on this shape.
+
+Validate pages locally before pushing:
+
+```sh
+cd docs/site
+pnpm docs:validate-frontmatter          # all pages
+node scripts/validate-frontmatter.mjs ../content/getting-started/tooling.mdx   # specific pages
+```
+
+The validator checks changed pages against the schema and exits non-zero on: wrong types, invalid `builder_paths[].eval` values (must be `covered`/`partial`/`missing`), goal checks missing a `label` or not matching exactly one check type, and missing required fields. Snippets and the generated `haneul-graphql` reference are excluded. Unknown top-level frontmatter keys are permitted (to allow Docusaurus-native fields); the nested `goal` and `builder_paths` objects are validated strictly.
+
+### CI
+
+A GitHub Actions workflow (`docs-frontmatter-check.yml`) runs on every PR that touches `docs/content/**/*.mdx` and writes a job summary listing any pages missing `title`, `description`, `keywords`, `goal`, `questions`, or `answer` frontmatter, with instructions to auto-generate. Check the workflow's summary tab for results.
+
+> **Note:** wiring `validate-frontmatter.mjs` into this workflow as a required, failing check is a follow-up (it edits the workflow file, which needs elevated permissions to land). Until then, schema validation runs locally only via `pnpm docs:validate-frontmatter`; the CI workflow does not yet fail on schema violations.
+
+## Build the site locally
+
+```sh
+cd docs/site
 pnpm install
 ```
 
-In the same directory, the site should be built locally:
+### Full build
 
-```shell
+```sh
 pnpm build
 ```
 
-This is necessary in the first instance with a freshly cloned repo as it will [download the OpenRPC specifications](/docs/site/src/utils/getopenrpcspecs.js) which are required to deploy the site.
+A full build downloads spec files, generates reference docs, and compiles the static site. Required after a fresh clone. The build fails on broken links and missing imports.
 
-Next, use the following command to deploy a development preview of the site to `localhost:3000`:
+Build steps:
+1. Fetch external docs and generate import context
+2. Download gRPC specs, generate GraphQL reference docs
+3. Download OpenRPC specs, post-process GraphQL output
+4. Run `docusaurus build` into `site/build`
+5. Generate `llms.txt` and `llms-full.txt` for LLM consumption
+6. Run internal link checking
 
-```shell
+### Development preview
+
+```sh
 pnpm start
 ```
 
-> If you're running the site locally and getting an error saying that you don't have `open-rpc` specs, run `pnpm build` first. It will prepare the files and fix the issue.
+Starts a dev server at `localhost:3000` with hot reload. Run `pnpm build` before submitting -- the full build catches errors the dev preview skips.
 
-The deployment watches for updates to files in the `content` directory (and site source files), updating the UI to match any saves you make. 
+## Auto-generated content
 
-Once you've finished making changes, you should again run `pnpm build`. This builds the static site and places the files in `site\build`. This is important to run before submitting your changes for review, because a build will fail on errors like bad internal links, displaying the cause of the error to the console. The development preview ignores such errors to provide a more agile environment.
+Do not edit these sections directly:
 
-Haneul Foundation is not able to provide support for building the documentation site locally. If you run into trouble, consult the [Docusaurus](https://docusaurus.io/) documentation.
+- **Framework reference** (`/references/framework`) -- generated from `cargo-doc` Markdown in `/haneul/crates`.
+- **GraphQL reference** (`/references/haneul-api/haneul-graphql`) -- generated from the GraphQL schema.
+- **OpenRPC and gRPC specs** -- downloaded during build.
+
+## Scripts
+
+Key scripts in `docs/site/scripts/`:
+
+| Script | Purpose |
+|--------|---------|
+| `audit-docs.mjs` | Deterministic docs audit pipeline |
+| `validate-frontmatter.mjs` | Validate page frontmatter against `frontmatter.schema.json` |
+| `generate-goals.mjs` | Generate goal frontmatter by page archetype |
+| `generate-geo.mjs` | Generate questions + answer frontmatter for GEO/AEO |
+| `add-builder-paths.mjs` | Map pages to builder paths with eval status |
+| `refine-goals.mjs` | Batch refinement of goal descriptions and checks |
+| `build-and-check.sh` | Full build + link checking (called by `pnpm build`) |
+| `generate-import-context.js` | Resolve `<ImportContent>` source paths |
+| `fetch-external-docs.js` | Download docs from external repos |
+
+## For AI agents and LLMs
+
+- **`llms.txt`**: Generated at `https://docs.haneul.io/llms.txt`. Use as entry point for documentation structure.
+- **Style guide skill**: Machine-readable style rules at `docs/haneul-documentation-style-guide.skill`.
+- **`sidebars.js`**: Full navigation tree at `docs/content/sidebars.js`.
+- **`mdx-components.mdx`**: Custom component reference at `docs/content/references/contribute/mdx-components.mdx`.
 
 ## Pull requests
 
-Haneul uses Vercel to host its documentation site. Vercel builds a preview of the documentation for every pull request submitted to the Haneul repo. You can find a link to this preview in the PR comment section from the Vercel bot. Click the **Visit Preview** link for the **haneul-core** project to verify your changes behave as you expect.
+Vercel builds a preview for every PR. Find the **Visit Preview** link in the PR comments from the Vercel bot.
 
-If you'd like to view the Vercel preview before your changes are ready for review, then [mark your PR as a draft](https://github.blog/2019-02-14-introducing-draft-pull-requests/).
+To preview before your changes are ready for review, [mark your PR as a draft](https://github.blog/2019-02-14-introducing-draft-pull-requests/).
 
+## Style guide
 
+All contributions must follow the [Haneul Documentation Style Guide](https://docs.haneul.io/references/contribute/style-guide):
+
+- US English, active voice, present tense, second person ("you")
+- No Latin abbreviations (use "for example" not "e.g.")
+- Serial (Oxford) commas
+- Sentence case for headings
 
 ## Contributing
 
-Haneul is for the community. Contribute for the benefit of all.
-
-- [Docs contributing guidelines](https://docs.haneul.io/references/contribute/contribution-process)
-- [Repo contributing guidelines](https://docs.haneul.io/contribute-to-haneul-repos)
-- [Style guide](https://docs.haneul.io/style-guide)
-- [Localization](https://docs.haneul.io/localize-haneul-docs)
-- [Code of conduct](https://docs.haneul.io/code-of-conduct)
+- [Contribution process](https://docs.haneul.io/references/contribute/contribution-process)
+- [Repo contributing guidelines](https://docs.haneul.io/references/contribute/contribute-to-haneul-repos)
+- [Style guide](https://docs.haneul.io/references/contribute/style-guide)
+- [MDX components](https://docs.haneul.io/references/contribute/mdx-components)
+- [Code of conduct](https://docs.haneul.io/references/contribute/code-of-conduct)
 
 ## License
 
-The Haneul Documentation is distributed under the [CC BY 4.0 license](../LICENSE-docs).
+The Haneul documentation is distributed under the [CC BY 4.0 license](../LICENSE-docs).

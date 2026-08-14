@@ -1,14 +1,67 @@
 ---
 title: Encryption with Seal
-description: Learn how to encrypt Walrus blobs and enforce onchain access control using Seal, by walking through OnlyFins.
-keywords: [seal, encryption, access control, walrus, OnlyFins, Haneul Stack, threshold encryption, SealClient]
+description: >-
+  Learn how to encrypt Walrus blobs and enforce onchain access control using
+  Seal, by walking through OnlyFins.
+keywords:
+  - seal
+  - encryption
+  - access control
+  - walrus
+  - OnlyFins
+  - Haneul Stack
+  - threshold encryption
+  - SealClient
 verified_against:
-  haneul_ts_sdk: "^1.x"
-  walrus_sdk: "^0.x"
-  seal_sdk: "^0.x"
-  move_edition: "2024.beta"
-  last_verified: 2026-04-15
-  owner: "@haneul-docs/stack-guides"
+  haneul_ts_sdk: ^1.x
+  walrus_sdk: ^0.x
+  seal_sdk: ^0.x
+  move_edition: 2024.beta
+  last_verified: 2026-04-15T00:00:00.000Z
+  owner: '@haneul-docs/stack-guides'
+goal:
+  description: >-
+    Reader can encrypt Walrus blobs and enforce onchain access control using
+    Seal, by walking through OnlyFins
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: walrus-general
+    path_name: Walrus General Data Storage
+    step: Store sensitive data (Seal)
+    stage: Read & Verify
+    eval: covered
+  - path_id: walrus-agentic
+    path_name: Walrus Agentic Data Storage
+    step: Encrypt agent state (Seal)
+    stage: Verify & Secure
+    eval: covered
+builder_paths_source:
+  dashboard: 'https://docs-analytics-dashboard.vercel.app/evals'
+  snapshot: '2026-07-10'
+questions:
+  - What is Encryption with Seal in Haneul?
+  - How does encryption with seal work on Haneul?
+  - Why should I use encryption with seal?
+answer: >-
+  Learn how to encrypt Walrus blobs and enforce onchain access control using
+  Seal, by walking through OnlyFins.
 ---
 
 This guide continues from [Data Storage Using Walrus](/haneul-stack/walrus/haneul-stack-walrus) and builds on the same [OnlyFins](https://github.com/GeunhwaJeong/onlyfins-example-app) app. The Walrus guide covers how OnlyFins stores and reads images. This guide covers how it protects them: encrypting images before upload and enforcing onchain access control so only authorized users can decrypt them.
@@ -106,7 +159,7 @@ OnlyFins uses `SealClient` in standalone mode. The `createSealClient` factory in
 <ImportContent
   source="frontend/src/lib/seal-client.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="onlyfins-example-app"
   language="ts"
 />
@@ -120,7 +173,7 @@ The key server object IDs come from `constants.ts`. These IDs point to onchain `
 <ImportContent
   source="frontend/src/constants.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="onlyfins-example-app"
   language="ts"
   variable="SEAL_SERVER_IDS"
@@ -150,7 +203,7 @@ The `seal_approve_access` function in the `posts` module enforces this:
 <ImportContent
   source="frontend/move/sources/posts.move"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="onlyfins-example-app"
   language="move"
   fun="seal_approve_access"
@@ -165,7 +218,7 @@ The onchain transaction mints a `ViewerToken` when a user requests access to a p
 <ImportContent
   source="frontend/src/hooks/usePayForContent.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="onlyfins-example-app"
   language="ts"
 />
@@ -183,8 +236,8 @@ The most basic policy: only the wallet address encoded in the identity decrypts 
 <ImportContent
   source="K5/seal-demo/move/sources/private_seal.move"
   mode="code"
-  org="MystenLabs"
-  repo="sui-move-bootcamp"
+  org="HaneulLabs"
+  repo="haneul-move-bootcamp"
   language="move"
 />
 
@@ -195,8 +248,8 @@ Users can only decrypt data after a specific timestamp has passed. The `id` enco
 <ImportContent
   source="K5/seal-demo/move/sources/timelock_seal.move"
   mode="code"
-  org="MystenLabs"
-  repo="sui-move-bootcamp"
+  org="HaneulLabs"
+  repo="haneul-move-bootcamp"
   language="move"
 />
 
@@ -207,8 +260,8 @@ A shared `Allowlist` object holds a list of authorized addresses that an admin m
 <ImportContent
   source="K5/seal-demo/move/sources/allowlist_seal.move"
   mode="code"
-  org="MystenLabs"
-  repo="sui-move-bootcamp"
+  org="HaneulLabs"
+  repo="haneul-move-bootcamp"
   language="move"
 />
 
@@ -231,7 +284,7 @@ In OnlyFins, encryption runs in the backend `encryptImages.ts` script before ima
 <ImportContent
   source="backend/src/encryptImages.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="onlyfins-example-app"
   language="ts"
   fun="main"
@@ -256,7 +309,7 @@ For React apps, the `useSealEncrypt` hook from `walrus-pocs` shows how to encryp
 <ImportContent
   source="walrus-seal/app/src/hooks/useSealEncrypt.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="walrus-pocs"
   language="ts"
   fun="useSealEncrypt"
@@ -267,7 +320,7 @@ The underlying `encryptData` utility in `sealUtils.ts` wraps `SealClient.encrypt
 <ImportContent
   source="walrus-seal/app/src/utils/sealUtils.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="walrus-pocs"
   language="ts"
   fun="encryptData"
@@ -280,8 +333,8 @@ The seal-demo includes a Node.js script that shows the complete Seal workflow in
 <ImportContent
   source="K5/seal-demo/ts/src/index.ts"
   mode="code"
-  org="MystenLabs"
-  repo="sui-move-bootcamp"
+  org="HaneulLabs"
+  repo="haneul-move-bootcamp"
   language="ts"
 />
 
@@ -298,7 +351,7 @@ The `useSealSession` hook from `walrus-pocs` shows the general-purpose pattern: 
 <ImportContent
   source="walrus-seal/app/src/hooks/useSealSession.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="walrus-pocs"
   language="ts"
   fun="useSealSession"
@@ -309,7 +362,7 @@ The `createAndSignSessionKey` utility in `sealUtils.ts` shows the core signing f
 <ImportContent
   source="walrus-seal/app/src/utils/sealUtils.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="walrus-pocs"
   language="ts"
   fun="createAndSignSessionKey"
@@ -324,7 +377,7 @@ The `useSealDecrypt` hook from `walrus-pocs` shows the general-purpose decryptio
 <ImportContent
   source="walrus-seal/app/src/hooks/useSealDecrypt.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="walrus-pocs"
   language="ts"
   fun="useSealDecrypt"
@@ -335,7 +388,7 @@ In OnlyFins, the `usePostDecryption` hook implements the same flow scoped to the
 <ImportContent
   source="frontend/src/hooks/usePostDecryption.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="onlyfins-example-app"
   language="ts"
   fun="usePostDecryption"

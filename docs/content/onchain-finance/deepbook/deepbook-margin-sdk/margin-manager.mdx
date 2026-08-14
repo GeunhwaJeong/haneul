@@ -1,22 +1,58 @@
 ---
 title: Margin Manager SDK
 sidebar_label: Margin Manager
-description: Learn how to use the DeepBook Margin SDK to manage margin accounts and leveraged positions.
+description: >-
+  Learn how to use the DeepBook Margin SDK to manage margin accounts and
+  leveraged positions.
 keywords:
-  [
-    margin manager,
-    margin trading,
-    leveraged trading,
-    borrow,
-    repay,
-    liquidation,
-    deposit,
-    withdraw,
-    deepbook margin sdk,
-  ]
+  - margin manager
+  - margin trading
+  - leveraged trading
+  - borrow
+  - repay
+  - liquidation
+  - deposit
+  - withdraw
+  - deepbook margin sdk
+goal:
+  description: >-
+    Developer can use the DeepBook Margin SDK to manage margin accounts and
+    leveraged positions
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - pattern: '```'
+      min: 1
+      label: Has SDK code examples
+    - min_words: 200
+      label: Needs more API documentation
+    - pattern: 'import|require|use '
+      min: 1
+      label: Shows SDK import or setup
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: 'Margin SDK: Manager'
+    stage: Margin
+questions:
+  - How do I use the Margin Manager SDK?
+  - What is Margin Manager SDK in Haneul?
+  - What methods does the Margin Manager SDK provide?
+answer: >-
+  Managing margin accounts is essential for leveraged trading on DeepBook. The
+  Margin Manager SDK provides functions for creating margin managers, depositing
+  collateral, borrowing assets, and managing risk.
 ---
 
 Managing margin accounts is essential for leveraged trading on DeepBook. The Margin Manager SDK provides functions for creating margin managers, depositing collateral, borrowing assets, and managing risk.
+
+For an end-to-end walkthrough that creates a manager, reads a pool's risk parameters, deposits collateral, borrows, opens and closes a leveraged position, and withdraws on Testnet, see the [Leveraged Position Workflow](/onchain-finance/deepbook/deepbook-margin/leveraged-workflow).
 
 ## Margin manager functions
 
@@ -30,7 +66,7 @@ Use `newMarginManager` to create and share a new margin manager in one transacti
 
 - `poolKey`: String that identifies the DeepBook pool.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="newMarginManager" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="newMarginManager" signatureOnly />
 
 ### `newMarginManagerWithInitializer`
 
@@ -40,7 +76,7 @@ Use `newMarginManagerWithInitializer` to create a margin manager and return it w
 
 - `poolKey`: String that identifies the DeepBook pool.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="newMarginManagerWithInitializer" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="newMarginManagerWithInitializer" signatureOnly />
 
 ### `shareMarginManager`
 
@@ -52,7 +88,7 @@ Use `shareMarginManager` to share a margin manager created with `newMarginManage
 - `manager`: `TransactionArgument` representing the margin manager.
 - `initializer`: `TransactionArgument` representing the initializer.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="shareMarginManager" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="shareMarginManager" signatureOnly />
 
 ### `depositDuringInitialization`
 
@@ -66,7 +102,7 @@ Use `depositDuringInitialization` to deposit funds into a margin manager during 
 - `amount`: Number representing the amount to deposit (provide either `amount` or `coin`, not both).
 - `coin`: `TransactionArgument` representing a coin object to deposit (provide either `amount` or `coin`, not both).
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="depositDuringInitialization" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="depositDuringInitialization" signatureOnly />
 
 ### `depositBase`, `depositQuote`, `depositDeep`
 
@@ -77,7 +113,7 @@ Use these functions to deposit assets into a margin manager. The call returns a 
 - `managerKey`: String that identifies the margin manager.
 - `amount`: Number representing the amount to deposit.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="depositBase,depositQuote,depositDeep" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="depositBase,depositQuote,depositDeep" signatureOnly />
 
 ### `withdrawBase`, `withdrawQuote`, `withdrawDeep`
 
@@ -88,7 +124,7 @@ Use these functions to withdraw assets from a margin manager. Withdrawals are su
 - `managerKey`: String that identifies the margin manager.
 - `amount`: Number representing the amount to withdraw.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="withdrawBase,withdrawQuote,withdrawDeep" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="withdrawBase,withdrawQuote,withdrawDeep" signatureOnly />
 
 ### `borrowBase`, `borrowQuote`
 
@@ -99,7 +135,7 @@ Use these functions to borrow assets from margin pools. Borrowing is subject to 
 - `managerKey`: String that identifies the margin manager.
 - `amount`: Number representing the amount to borrow.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="borrowBase,borrowQuote" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="borrowBase,borrowQuote" signatureOnly />
 
 ### `repayBase`, `repayQuote`
 
@@ -110,7 +146,7 @@ Use these functions to repay borrowed assets. If no amount is specified, it repa
 - `managerKey`: String that identifies the margin manager.
 - `amount`: Optional number representing the amount to repay.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="repayBase,repayQuote" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="repayBase,repayQuote" signatureOnly />
 
 ### `liquidate`
 
@@ -123,7 +159,7 @@ Use `liquidate` to liquidate an undercollateralized margin manager. The call ret
 - `debtIsBase`: Boolean indicating whether the debt is in the base asset.
 - `repayCoin`: `TransactionArgument` representing the coin to use for repayment.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="liquidate" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="liquidate" signatureOnly />
 
 ### `setMarginManagerReferral`
 
@@ -134,7 +170,7 @@ Use `setMarginManagerReferral` to set a pool-specific referral for the margin ma
 - `managerKey`: String that identifies the margin manager.
 - `referral`: String representing the referral ID.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="setMarginManagerReferral" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="setMarginManagerReferral" signatureOnly />
 
 ### `unsetMarginManagerReferral`
 
@@ -145,7 +181,7 @@ Use `unsetMarginManagerReferral` to remove the referral association from a margi
 - `managerKey`: String that identifies the margin manager.
 - `poolKey`: String that identifies the DeepBook pool.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="unsetMarginManagerReferral" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="unsetMarginManagerReferral" signatureOnly />
 
 ## Read-only functions
 
@@ -155,31 +191,31 @@ The following functions query margin manager state without modifying it.
 
 Query comprehensive state information for a margin manager, including risk ratio, assets, debts, and Pyth price data.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="managerState" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="managerState" signatureOnly />
 
 ### `owner`, `deepbookPool`, `marginPoolId`
 
 Query basic margin manager information.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="ownerByPoolKey,deepbookPool,marginPoolId" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="ownerByPoolKey,deepbookPool,marginPoolId" signatureOnly />
 
 ### `baseBalance`, `quoteBalance`, `deepBalance`
 
 Query individual asset balances held in the margin manager.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="baseBalance,quoteBalance,deepBalance" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="baseBalance,quoteBalance,deepBalance" signatureOnly />
 
 ### `borrowedShares`, `borrowedBaseShares`, `borrowedQuoteShares`, `hasBaseDebt`
 
 Query borrowed position information.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="borrowedShares,borrowedBaseShares,borrowedQuoteShares,hasBaseDebt" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="borrowedShares,borrowedBaseShares,borrowedQuoteShares,hasBaseDebt" signatureOnly />
 
 ### `balanceManager`, `calculateAssets`, `calculateDebts`
 
 Query balance and debt information.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="balanceManager,calculateAssets,calculateDebts" signatureOnly />
+<ImportContent source="packages/deepbook-v3/src/transactions/marginManager.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="balanceManager,calculateAssets,calculateDebts" signatureOnly />
 
 ## Examples
 

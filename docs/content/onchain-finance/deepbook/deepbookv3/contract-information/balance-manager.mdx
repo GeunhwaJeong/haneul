@@ -2,27 +2,49 @@
 title: BalanceManager
 description: Learn about the balance manager and how it works.
 keywords:
-  [
-    balancemanager,
-    balance manager,
-    manage balances,
-    balances for different assets,
-    deepbook,
-    deepbookv3,
-    create balance manager,
-    balance manager with custom owner,
-    mint trade cap,
-    trade cap,
-    tradecap,
-    DepositCap,
-    WithdrawCap,
-    deposit cap,
-    withdraw cap,
-    deposit funds,
-    withdraw funds,
-    generate a TradeProof,
-    tradeproof,
-  ]
+  - balancemanager
+  - balance manager
+  - manage balances
+  - balances for different assets
+  - deepbook
+  - deepbookv3
+  - create balance manager
+  - balance manager with custom owner
+  - mint trade cap
+  - trade cap
+  - tradecap
+  - DepositCap
+  - WithdrawCap
+  - deposit cap
+  - withdraw cap
+  - deposit funds
+  - withdraw funds
+  - generate a TradeProof
+  - tradeproof
+goal:
+  description: Reader can learn about the balance manager and how it works
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: Balance manager
+    stage: DeFi Primitives
+questions:
+  - What is BalanceManager in Haneul?
+  - How does balancemanager work on Haneul?
+  - Why should I use balancemanager?
+answer: Learn about the balance manager and how it works.
 ---
 
 The `BalanceManager` shared object holds all balances for different assets. To perform trades, pass a combination of `BalanceManager` and `TradeProof` into a [pool](/onchain-finance/deepbook/deepbookv3/design#pool). `TradeProof`s are generated in one of two ways, either by the `BalanceManager` owner directly, or by any `TradeCap` owner. The owner can generate a `TradeProof` without the risk of equivocation. The `TradeCap` owner, because it's an owned object, risks equivocation when generating a `TradeProof`. Generally, a high frequency trading engine trades as the default owner.
@@ -41,7 +63,7 @@ The `new()` function creates a `BalanceManager`. Combine it with `share`, or els
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="new"
 	noComments
@@ -57,7 +79,7 @@ The `new_with_custom_owner()` function creates a `BalanceManager` with a custom 
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="new_with_custom_owner"
 	noComments
@@ -77,7 +99,7 @@ Move code using DeepBookV3 uses `DepositCap`, `WithdrawCap`, and `TradeCap`, whi
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="new_with_custom_owner_caps"
 	noComments
@@ -93,7 +115,7 @@ The owner of a `BalanceManager` can mint a `TradeCap` and send it to another add
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="mint_trade_cap,revoke_trade_cap"
 />
@@ -108,7 +130,7 @@ The owner of a `BalanceManager` can mint a `DepositCap` or `WithdrawCap` and sen
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="mint_deposit_cap,mint_withdraw_cap"
 />
@@ -123,7 +145,7 @@ To call any function that requires a balance check or transfer, the user must pr
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="generate_proof_as_owner,generate_proof_as_trader"
 />
@@ -138,7 +160,7 @@ Only the owner can call this function to deposit funds into the `BalanceManager`
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="deposit"
 />
@@ -153,7 +175,7 @@ Only the owner can call this function to withdraw funds from the `BalanceManager
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="withdraw,withdraw_all"
 />
@@ -168,7 +190,7 @@ Only holders of a `DepositCap` for the `BalanceManager` can call this function t
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="deposit_with_cap"
 />
@@ -183,7 +205,7 @@ Only holders of a `WithdrawCap` for the `BalanceManager` can call this function 
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="withdraw_with_cap"
 />
@@ -198,7 +220,7 @@ The owner of a `TradeCap` can set or unset a pool-specific referral for the bala
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="set_balance_manager_referral,unset_balance_manager_referral"
 />
@@ -213,7 +235,7 @@ Register a balance manager with the registry. This adds the balance manager to t
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="register_balance_manager"
 />
@@ -226,7 +248,7 @@ Register a balance manager with the registry. This adds the balance manager to t
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="validate_proof,balance,owner,id,get_balance_manager_referral_id,balance_manager_referral_owner,balance_manager_referral_pool_id"
 />
@@ -243,7 +265,7 @@ The system emits this event when you create a new balance manager.
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="BalanceManagerEvent"
 />
@@ -258,7 +280,7 @@ The system emits this event when a deposit or withdrawal occurs.
 <ImportContent
 	source="packages/deepbook/sources/balance_manager.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="BalanceEvent"
 />

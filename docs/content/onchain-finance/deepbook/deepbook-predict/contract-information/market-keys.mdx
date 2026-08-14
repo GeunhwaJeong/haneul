@@ -1,16 +1,39 @@
 ---
 title: Market Keys
-description: Learn how DeepBook Predict identifies binary positions and vertical ranges with MarketKey and RangeKey.
+description: >-
+  Learn how DeepBook Predict identifies binary positions and vertical ranges
+  with MarketKey and RangeKey.
 keywords:
-  [
-    deepbook predict market key,
-    marketkey,
-    rangekey,
-    binary position,
-    vertical range,
-    strike,
-    expiry,
-  ]
+  - deepbook predict market key
+  - marketkey
+  - rangekey
+  - binary position
+  - vertical range
+  - strike
+  - expiry
+goal:
+  description: >-
+    Reader can learn how DeepBook Predict identifies binary positions and
+    vertical ranges with MarketKey and RangeKey
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Market Keys in Haneul?
+  - How does market keys work on Haneul?
+  - Why should I use market keys?
+answer: >-
+  `MarketKey` and `RangeKey` identify the internal position quantities stored in
+  a `PredictManager`.
 ---
 
 `MarketKey` and `RangeKey` identify the internal position quantities stored in a `PredictManager`.
@@ -27,7 +50,7 @@ Use `up()`, `down()`, or `new()` to create keys for binary positions.
 <ImportContent
 	source="packages/predict/sources/market_key/market_key.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="up,down,new"
@@ -42,7 +65,7 @@ Use `up()`, `down()`, or `new()` to create keys for binary positions.
 <ImportContent
 	source="packages/predict/sources/market_key/market_key.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="oracle_id,expiry,strike,is_up,is_down"
@@ -61,7 +84,7 @@ Use `new()` to create a vertical range key. It aborts if `lower_strike` is not l
 <ImportContent
 	source="packages/predict/sources/market_key/range_key.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="new"
@@ -76,7 +99,7 @@ Use `new()` to create a vertical range key. It aborts if `lower_strike` is not l
 <ImportContent
 	source="packages/predict/sources/market_key/range_key.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	fun="oracle_id,expiry,lower_strike,higher_strike"
@@ -93,7 +116,7 @@ Use `new()` to create a vertical range key. It aborts if `lower_strike` is not l
 <ImportContent
 	source="packages/predict/sources/market_key/market_key.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	struct="MarketKey"
@@ -107,7 +130,7 @@ Use `new()` to create a vertical range key. It aborts if `lower_strike` is not l
 <ImportContent
 	source="packages/predict/sources/market_key/range_key.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	branch="predict-testnet-4-16"
 	struct="RangeKey"

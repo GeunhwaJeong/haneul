@@ -1,6 +1,34 @@
 ---
 title: Haneul Trace Analysis
 description: Use the Haneul CLI to analyze transaction traces.
+keywords:
+  - haneul cli
+  - trace analysis
+  - gas profiling
+  - transaction traces
+  - debugging
+goal:
+  description: 'Reader can look up trace analysis command syntax, flags, and usage examples'
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - pattern: '```'
+      min: 1
+      label: Has command examples
+    - pattern: 'haneul '
+      min: 2
+      label: Shows CLI command usage
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Haneul Trace Analysis in Haneul?
+  - What are the available haneul trace analysis commands?
+  - What flags does haneul trace analysis support?
+answer: Use the Haneul CLI to analyze transaction traces.
 ---
 
 [Replaying a transaction](/references/cli/replay) generates a trace file that contains detailed information about the execution of the transaction, such as gas usage, functions called, instructions executed, and more. Use the Haneul CLI to analyze a trace file and extract useful insights.

@@ -102,9 +102,7 @@ use super::transaction_deferral::{DeferralKey, DeferralReason};
 use super::transaction_reject_reason_cache::TransactionRejectReasonCache;
 use crate::authority::ResolverWrapper;
 use crate::authority::epoch_start_configuration::EpochStartConfiguration;
-use crate::authority::execution_time_estimator::{
-    EXTRA_FIELD_EXECUTION_TIME_ESTIMATES_CHUNK_COUNT_KEY, EXTRA_FIELD_EXECUTION_TIME_ESTIMATES_KEY,
-};
+use crate::authority::execution_time_estimator::EXTRA_FIELD_EXECUTION_TIME_ESTIMATES_CHUNK_COUNT_KEY;
 use crate::authority::shared_object_version_manager::{
     AsTx, AssignedTxAndVersions, ConsensusSharedObjVerAssignment, Schedulable, SharedObjVerManager,
 };
@@ -1195,6 +1193,12 @@ impl AuthorityPerEpochStore {
             .is_some()
     }
 
+    pub fn forwarding_address_registry_exists(&self) -> bool {
+        self.epoch_start_configuration
+            .forwarding_address_registry_obj_initial_shared_version()
+            .is_some()
+    }
+
     pub fn get_parent_path(&self) -> PathBuf {
         self.parent_path.clone()
     }
@@ -1514,10 +1518,12 @@ impl AuthorityPerEpochStore {
             Duration,
         ),
     > {
-        if !matches!(
-            protocol_config.per_object_congestion_control_mode(),
-            PerObjectCongestionControlMode::ExecutionTimeEstimate(_)
-        ) {
+        let PerObjectCongestionControlMode::ExecutionTimeEstimate(params) =
+            protocol_config.per_object_congestion_control_mode()
+        else {
+            return itertools::Either::Left(std::iter::empty());
+        };
+        if params.observations_chunk_size.is_none() {
             return itertools::Either::Left(std::iter::empty());
         }
 
@@ -1541,60 +1547,47 @@ impl AuthorityPerEpochStore {
                 return itertools::Either::Left(std::iter::empty());
             }
         };
-        let stored_observations = if protocol_config.enable_observation_chunking() {
-            if let Ok::<u64, _>(chunk_count) = get_dynamic_field_from_store(
-                object_store,
-                system_state.extra_fields.id.id.bytes,
-                &EXTRA_FIELD_EXECUTION_TIME_ESTIMATES_CHUNK_COUNT_KEY,
-            ) {
-                let mut chunks = Vec::new();
-                for chunk_index in 0..chunk_count {
-                    let chunk_key = ExecutionTimeObservationChunkKey { chunk_index };
-                    let Ok::<Vec<u8>, _>(chunk_bytes) = get_dynamic_field_from_store(
-                        object_store,
-                        system_state.extra_fields.id.id.bytes,
-                        &chunk_key,
-                    ) else {
-                        debug_fatal!(
-                            "Could not find stored execution time observation chunk {}",
-                            chunk_index
-                        );
-                        return itertools::Either::Left(std::iter::empty());
-                    };
-
-                    // This is stored as a vector<u8> in Move, so we double-deserialize to get back
-                    // the observation chunk.
-                    let chunk: StoredExecutionTimeObservations = bcs::from_bytes(&chunk_bytes)
-                        .expect("failed to deserialize stored execution time estimates chunk");
-                    chunks.push(chunk);
-                }
-
-                StoredExecutionTimeObservations::merge_sorted_chunks(chunks).unwrap_v1()
-            } else {
-                warn!(
-                    "Could not read stored execution time chunk count. This should only happen in the first epoch where chunking is enabled."
-                );
-                return itertools::Either::Left(std::iter::empty());
+        let Ok::<u64, _>(chunk_count) = get_dynamic_field_from_store(
+            object_store,
+            system_state.extra_fields.id.id.bytes,
+            &EXTRA_FIELD_EXECUTION_TIME_ESTIMATES_CHUNK_COUNT_KEY,
+        ) else {
+            error!(
+                "Could not read stored execution time chunk count. This should only happen in the first epoch where chunking is enabled."
+            );
+            if let Some(metrics) = haneullabs_metrics::get_metrics() {
+                metrics
+                    .system_invariant_violations
+                    .with_label_values(&["execution_time_chunk_count_missing"])
+                    .inc();
             }
-        } else {
-            // TODO: Remove this once we've enabled chunking on mainnet.
-            let Ok::<Vec<u8>, _>(stored_observations_bytes) = get_dynamic_field_from_store(
+            return itertools::Either::Left(std::iter::empty());
+        };
+
+        let mut chunks = Vec::new();
+        for chunk_index in 0..chunk_count {
+            let chunk_key = ExecutionTimeObservationChunkKey { chunk_index };
+            let Ok::<Vec<u8>, _>(chunk_bytes) = get_dynamic_field_from_store(
                 object_store,
                 system_state.extra_fields.id.id.bytes,
-                &EXTRA_FIELD_EXECUTION_TIME_ESTIMATES_KEY,
+                &chunk_key,
             ) else {
-                warn!(
-                    "Could not find stored execution time observations. This should only happen in the first epoch where ExecutionTimeEstimate mode is enabled."
+                debug_fatal!(
+                    "Could not find stored execution time observation chunk {}",
+                    chunk_index
                 );
                 return itertools::Either::Left(std::iter::empty());
             };
+
             // This is stored as a vector<u8> in Move, so we double-deserialize to get back
-            //`StoredExecutionTimeObservations`.
-            let stored_observations: StoredExecutionTimeObservations =
-                bcs::from_bytes(&stored_observations_bytes)
-                    .expect("failed to deserialize stored execution time estimates");
-            stored_observations.unwrap_v1()
-        };
+            // the observation chunk.
+            let chunk: StoredExecutionTimeObservations = bcs::from_bytes(&chunk_bytes)
+                .expect("failed to deserialize stored execution time estimates chunk");
+            chunks.push(chunk);
+        }
+
+        let stored_observations =
+            StoredExecutionTimeObservations::merge_sorted_chunks(chunks).unwrap_v1();
 
         info!(
             "loaded stored execution time observations for {} keys",
@@ -2785,11 +2778,19 @@ impl AuthorityPerEpochStore {
         self.reconfig_state_mem.write()
     }
 
-    pub fn close_user_certs(&self, mut lock_guard: RwLockWriteGuard<'_, ReconfigState>) {
+    /// Persist the local gate used by manual epoch close before sending EndOfPublish.
+    pub(crate) fn close_user_certs_for_manual_epoch_close(
+        &self,
+        mut lock_guard: RwLockWriteGuard<'_, ReconfigState>,
+    ) {
         lock_guard.close_user_certs();
         self.store_reconfig_state(&lock_guard)
             .expect("Updating reconfig state cannot fail");
 
+        self.record_epoch_close_time_once();
+    }
+
+    pub(crate) fn record_epoch_close_time_once(&self) {
         // Set epoch_close_time for metric purpose.
         let mut epoch_close_time = self.epoch_close_time.write();
         if epoch_close_time.is_none() {
@@ -2827,6 +2828,18 @@ impl AuthorityPerEpochStore {
             _ = self.epoch_alive_token.cancelled() => Err(()),
             result = f => Ok(result),
         }
+    }
+
+    /// Returns a guard witnessing that the epoch is still alive. While the guard is held,
+    /// `epoch_terminated()` cannot complete. Returns `None` if the epoch has already ended.
+    ///
+    /// This is the companion to `within_alive_epoch` for work that cannot be driven as a
+    /// cancellable future (e.g. a `spawn_blocking` task): hold the guard across the blocking
+    /// call and await it unconditionally, so the work always runs to completion within the
+    /// epoch rather than being detached at epoch end.
+    pub async fn enter_alive_epoch(&self) -> Option<tokio::sync::RwLockReadGuard<'_, bool>> {
+        let guard = self.epoch_alive.read().await;
+        if *guard { Some(guard) } else { None }
     }
 
     #[instrument(level = "trace", skip_all)]
@@ -2985,6 +2998,14 @@ impl AuthorityPerEpochStore {
                     );
                     return None;
                 }
+            }
+            SequencedConsensusTransactionKind::External(ConsensusTransaction {
+                kind: ConsensusTransactionKind::UpdateTransactionDenyConfig(_),
+                ..
+            }) => {
+                // Validity is enforced in HaneulTxValidator; author authentication and
+                // generation checks happen in TransactionDenyConfigManager::apply_updates
+                // when the commit handler applies the update.
             }
             SequencedConsensusTransactionKind::System(_) => {}
         }

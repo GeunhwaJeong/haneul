@@ -41,14 +41,12 @@ exclude = [
   "external-crates/move/crates/move-ir-to-bytecode",
   "external-crates/move/crates/move-ir-to-bytecode-syntax",
   "external-crates/move/crates/move-ir-types",
-  "external-crates/move/crates/move-model",
   "external-crates/move/crates/move-model-2",
   "external-crates/move/crates/move-package",
   "external-crates/move/crates/move-package-alt",
   "external-crates/move/crates/move-package-alt-compilation",
   "external-crates/move/crates/move-proc-macros",
   "external-crates/move/crates/move-regex-borrow-graph",
-  "external-crates/move/crates/move-stackless-bytecode",
   "external-crates/move/crates/move-stackless-bytecode-2",
   "external-crates/move/crates/move-stdlib",
   "external-crates/move/crates/move-symbol-pool",
@@ -110,6 +108,7 @@ members = [
   "crates/haneul-display",
   "crates/haneul-e2e-tests",
   "crates/haneul-enum-compat-util",
+  "crates/haneul-execution-backtest",
   "crates/haneul-faucet",
   "crates/haneul-field-count",
   "crates/haneul-field-count-derive",
@@ -178,7 +177,7 @@ members = [
   "crates/haneul-simulator",
   "crates/haneul-single-node-benchmark",
   "crates/haneul-snapshot",
-  "crates/haneul-source-validation",
+  "crates/haneul-source-verification",
   "crates/haneul-sql-macro",
   "crates/haneul-storage",
   "crates/haneul-surfer",
@@ -231,7 +230,7 @@ members = [
 
 [workspace.package]
 # This version string will be inherited by haneul-core, haneul-faucet, haneul-node, haneul-tools, haneul-sdk, haneul-move-build, and haneul crates.
-version = "1.6.0"
+version = "1.7.0"
 
 [profile.release]
 # debug = 1 means line charts only, which is minimum needed for good stack traces
@@ -285,6 +284,14 @@ unexpected_cfgs = { level = "warn", check-cfg = [
   'cfg(msim)',
   'cfg(fail_points)',
 ] }
+
+# Project-wide clippy lints, applied by `cargo clippy` / `cargo xclippy`. Every workspace
+# member must opt in with `[lints] workspace = true` (enforced by `cargo xlint`).
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+disallowed_macros = "warn"
+disallowed_methods = "warn"
+unnecessary_get_then_check = "allow"
 
 # Dependencies that should be kept in sync through the whole workspace
 [workspace.dependencies]
@@ -415,7 +422,7 @@ haneul-config = { path = "crates/haneul-config" }
 haneul-consistent-store = { path = "crates/haneul-consistent-store" }
 haneul-core = { path = "crates/haneul-core" }
 haneul-cost = { path = "crates/haneul-cost" }
-haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "c20c2214125bcf24b7835eaf51718cc4f942c410", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
+haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "2995618315f3d0753f7c6b7785cbcbf454f0b331", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
 haneul-data-ingestion-core = { path = "crates/haneul-data-ingestion-core" }
 haneul-data-store = { path = "crates/haneul-data-store" }
 haneul-display = { path = "crates/haneul-display" }
@@ -482,7 +489,7 @@ haneul-proxy = { path = "crates/haneul-proxy" }
 haneul-replay = { path = "crates/haneul-replay" }
 haneul-replay-2 = { path = "crates/haneul-replay-2" }
 haneul-rosetta = { path = "crates/haneul-rosetta" }
-haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "c20c2214125bcf24b7835eaf51718cc4f942c410", features = [ "unstable" ] }
+haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "2995618315f3d0753f7c6b7785cbcbf454f0b331", features = [ "unstable" ] }
 
 ### Workspace Members ###
 haneul-rpc-api = { path = "crates/haneul-rpc-api" }
@@ -491,10 +498,10 @@ haneul-rpc-loadgen = { path = "crates/haneul-rpc-loadgen" }
 haneul-rpc-resolver = { path = "crates/haneul-rpc-resolver" }
 haneul-rpc-store = { path = "crates/haneul-rpc-store" }
 haneul-sdk = { path = "crates/haneul-sdk" }
-haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "c20c2214125bcf24b7835eaf51718cc4f942c410", features = [ "hash", "serde" ] }
+haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "2995618315f3d0753f7c6b7785cbcbf454f0b331", features = [ "hash", "serde" ] }
 haneul-simulator = { path = "crates/haneul-simulator" }
 haneul-snapshot = { path = "crates/haneul-snapshot" }
-haneul-source-validation = { path = "crates/haneul-source-validation" }
+haneul-source-verification = { path = "crates/haneul-source-verification" }
 haneul-sql-macro = { path = "crates/haneul-sql-macro" }
 haneul-storage = { path = "crates/haneul-storage" }
 haneul-surfer = { path = "crates/haneul-surfer" }
@@ -576,7 +583,6 @@ move-ir-types = { path = "external-crates/move/crates/move-ir-types" }
 move-package = { path = "external-crates/move/crates/move-package" }
 move-package-alt = { path = "external-crates/move/crates/move-package-alt" }
 move-package-alt-compilation = { path = "external-crates/move/crates/move-package-alt-compilation" }
-move-stackless-bytecode = { path = "external-crates/move/crates/move-stackless-bytecode" }
 move-stackless-bytecode-2 = { path = "external-crates/move/crates/move-stackless-bytecode-2" }
 move-symbol-pool = { path = "external-crates/move/crates/move-symbol-pool" }
 move-trace-format = { path = "external-crates/move/crates/move-trace-format" }
@@ -585,8 +591,8 @@ move-transactional-test-runner = { path = "external-crates/move/crates/move-tran
 move-unit-test = { path = "external-crates/move/crates/move-unit-test" }
 move-vm-config = { path = "external-crates/move/crates/move-vm-config" }
 move-vm-profiler = { path = "external-crates/move/crates/move-vm-profiler" }
-msim = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "2c2ec3ffbc1e559c575dc7de1ff2498d1f6700f6", package = "msim" }
-msim-macros = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "2c2ec3ffbc1e559c575dc7de1ff2498d1f6700f6", package = "msim-macros" }
+msim = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "6b8e1e8cdce408e73d46538773fc85a56c082db7", package = "msim" }
+msim-macros = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "6b8e1e8cdce408e73d46538773fc85a56c082db7", package = "msim-macros" }
 multiaddr = "0.18.2"
 nexlint = { git = "https://github.com/nextest-rs/nexlint.git", rev = "7ce56bd591242a57660ed05f14ca2483c37d895b" }
 nexlint-lints = { git = "https://github.com/nextest-rs/nexlint.git", rev = "7ce56bd591242a57660ed05f14ca2483c37d895b" }

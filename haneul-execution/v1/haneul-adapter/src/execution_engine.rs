@@ -636,6 +636,11 @@ mod checked {
                                 "EndOfEpochTransactionKind::AddressAliasStateCreate should not exist in v1"
                             );
                         }
+                        EndOfEpochTransactionKind::ForwardingAddressRegistryCreate => {
+                            panic!(
+                                "EndOfEpochTransactionKind::ForwardingAddressRegistryCreate should not exist in v1"
+                            );
+                        }
                     }
                 }
                 unreachable!(

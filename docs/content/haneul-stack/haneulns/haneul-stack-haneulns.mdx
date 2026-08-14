@@ -1,7 +1,53 @@
 ---
 title: Domain Names with HaneulNS
-description: Integrate Haneul Name Service (HaneulNS) into your app using onchain or offchain resolution, reverse lookup, subnames, and the Enoki subname API, by walking through Haneul Messenger.
-keywords: [HaneulNS, Haneul Name Service, domain names, name resolution, subnames, reverse lookup, onchain resolution, offchain resolution, Haneul Stack]
+description: >-
+  Integrate Haneul Name Service (HaneulNS) into your app using onchain or offchain
+  resolution, reverse lookup, subnames, and the Enoki subname API, by walking
+  through Haneul Messenger.
+keywords:
+  - HaneulNS
+  - Haneul Name Service
+  - domain names
+  - name resolution
+  - subnames
+  - reverse lookup
+  - onchain resolution
+  - offchain resolution
+  - Haneul Stack
+goal:
+  description: >-
+    Reader can integrate Haneul Name Service (HaneulNS) into your app using onchain or
+    offchain resolution, reverse lookup
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: p2p-payments
+    path_name: P2P Payments / Neomoney
+    step: HaneulNS integration
+    stage: Payment Flow
+questions:
+  - What is HaneulNS and how does it work on Haneul?
+  - How do I resolve HaneulNS domain names to Haneul addresses?
+  - How do I use reverse lookup and subnames in an app?
+answer: >-
+  This guide explains how to integrate HaneulNS name resolution, reverse lookup,
+  subnames, and the Enoki subname API into an app.
 ---
 
 import Tabs from '@theme/Tabs';
@@ -197,7 +243,7 @@ In Haneul Messenger, the `useUserSubname` hook resolves the subname for the conn
 <ImportContent
   source="frontend/src/hooks/useUserSubname.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="messaging-sdk-example"
   language="ts"
   fun="useUserSubname"

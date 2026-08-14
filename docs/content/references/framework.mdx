@@ -1,7 +1,42 @@
 ---
 title: Haneul Framework
-description: The Haneul framework libraries include Move modules that provide the logic for Haneul and its standards. A Rust process creates the documentation for the modules directly from comments in the code.
-keywords: [ haneul framework, haneul libraries, move modules, haneul standards, rust, documentation from modules, generate framework documentation, crate documentation, build documentation locally, build docs ]
+description: >-
+  The Haneul framework libraries include Move modules that provide the logic for
+  Haneul and its standards. A Rust process creates the documentation for the
+  modules directly from comments in the code.
+keywords:
+  - haneul framework
+  - haneul libraries
+  - move modules
+  - haneul standards
+  - rust
+  - documentation from modules
+  - generate framework documentation
+  - crate documentation
+  - build documentation locally
+  - build docs
+goal:
+  description: >-
+    Reader can browse the Haneul framework module reference to find function
+    signatures and type definitions
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - min_words: 100
+      label: Needs more reference content
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Haneul Framework in Haneul?
+  - How do I build documentation locally?
+  - Where can I find the haneul framework reference?
+answer: >-
+  The documentation in this section is created from the Rust `cargo doc`
+  process. The process builds the content from comments in the source code.
 ---
 
 The documentation in this section is created from the Rust `cargo doc` process. The process builds the content from comments in the source code.

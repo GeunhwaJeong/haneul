@@ -1,7 +1,52 @@
 ---
 title: Self-Custodial Wallets
-description: Learn about self-custodial wallets on Haneul, how Phantom and Ledger work, and how to integrate any Wallet Standard wallet into your app using Haneul dApp Kit.
-keywords: [ wallet, self-custodial, phantom, ledger, hardware wallet, wallet standard, dapp kit, dapp-kit-react, dapp-kit-core ]
+description: >-
+  Learn about self-custodial wallets on Haneul, how Phantom and Ledger work, and
+  how to integrate any Wallet Standard wallet into your app using Haneul dApp Kit.
+keywords:
+  - wallet
+  - self-custodial
+  - phantom
+  - ledger
+  - hardware wallet
+  - wallet standard
+  - dapp kit
+  - dapp-kit-react
+  - dapp-kit-core
+goal:
+  description: >-
+    Reader can learn about self-custodial wallets on Haneul, how Phantom and Ledger
+    work
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: p2p-payments
+    path_name: P2P Payments / Neomoney
+    step: Self-custody wallets
+    stage: Wallets & Funding
+questions:
+  - What is Self-Custodial Wallets in Haneul?
+  - How does self-custodial wallets work on Haneul?
+  - Why should I use self-custodial wallets?
+answer: >-
+  Learn about self-custodial wallets on Haneul, how Phantom and Ledger work, and
+  how to integrate any Wallet Standard wallet into your app using Haneul dApp Kit.
 ---
 
 A self-custodial wallet stores your private key on a device you control. No third party holds the key, and no third party can authorize transactions on your behalf. If you lose the device and your recovery passphrase, access to your assets is permanently lost. Every self-custodial wallet compatible with Haneul implements the [Wallet Standard](/onchain-finance/asset-custody/wallets/wallet-standard), which means [Haneul dApp Kit](https://sdk.haneul-labs.com/dapp-kit) and other apps can discover and connect to them automatically, without any wallet-specific code.
@@ -68,7 +113,7 @@ Create a configuration file to initialize your dApp Kit instance. The `createDAp
 `<ImportContent
   source="/packages/dapp-kit-next/packages/dapp-kit-core/src/core/index.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="createDAppKit"
   signatureOnly
@@ -92,7 +137,7 @@ Wrap your application with `DAppKitProvider` to make all hooks available through
 <ImportContent
   source="/packages/dapp-kit-next/packages/dapp-kit-react/src/components/DAppKitProvider.tsx"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="DAppKitProvider"
   noComments
@@ -115,7 +160,7 @@ Use hooks to access information about the connected wallet and account:
 <ImportContent
   source="/packages/dapp-kit-next/packages/dapp-kit-react/src/hooks/useWalletConnection.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="useWalletConnection"
   noComments
@@ -124,7 +169,7 @@ Use hooks to access information about the connected wallet and account:
 <ImportContent
   source="/packages/dapp-kit-next/packages/dapp-kit-react/src/hooks/useCurrentWallet.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="useCurrentWallet"
   noComments
@@ -133,7 +178,7 @@ Use hooks to access information about the connected wallet and account:
 <ImportContent
   source="/packages/dapp-kit-next/packages/dapp-kit-react/src/hooks/useCurrentAccount.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="useCurrentAccount"
   noComments
@@ -144,7 +189,7 @@ Use hooks to access information about the connected wallet and account:
 <ImportContent
   source="/packages/dapp-kit-next/packages/dapp-kit-react/src/hooks/useWallets.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="useWallets"
   noComments
@@ -155,7 +200,7 @@ Use hooks to access information about the connected wallet and account:
 <ImportContent
   source="/packages/dapp-kit-next/packages/dapp-kit-react/src/hooks/useDAppKit.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="useDAppKit"
   noComments

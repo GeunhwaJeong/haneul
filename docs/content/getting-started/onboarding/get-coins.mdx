@@ -1,9 +1,52 @@
 ---
 title: Get HANEUL from Faucet
-description: Use the Haneul faucet to obtain free HANEUL tokens for use on the Haneul Devnet and Testnet networks. 
-keywords: [ haneul faucet, faucet, token faucet, haneul devnet, haneul testnet, devnet, testnet, get free tokens, free tokens ]
+description: >-
+  Use the Haneul faucet to obtain free HANEUL tokens for use on the Haneul Devnet and
+  Testnet networks.
+keywords:
+  - haneul faucet
+  - faucet
+  - token faucet
+  - haneul devnet
+  - haneul testnet
+  - devnet
+  - testnet
+  - get free tokens
+  - free tokens
 pagination_prev: null
 pagination_next: null
+goal:
+  description: >-
+    Reader can request HANEUL tokens from the faucet and confirm they arrived in
+    their wallet
+  requires:
+    - pattern: '```'
+      min: 2
+      label: Has command or code examples
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - links_to:
+        - /getting-started/onboarding/hello-world
+      label: Links to next onboarding step
+    - pattern: balance|gas
+      min: 1
+      label: Shows how to verify token receipt
+    - min_words: 300
+      label: Needs more walkthrough depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How do I get HANEUL tokens from the faucet?
+  - How do I request Testnet or Devnet HANEUL tokens?
+  - How do I verify my HANEUL token balance?
+answer: >-
+  To perform transactions on a Haneul network, you need HANEUL tokens to pay for gas
+  and storage.
 ---
 
 To perform transactions on a Haneul network, you need HANEUL tokens to pay for gas and storage. 

@@ -1,28 +1,56 @@
 ---
 title: Orders
-description: Use DeepBookV3 to create limit and market orders, modify orders, or cancel orders.
+description: >-
+  Use DeepBookV3 to create limit and market orders, modify orders, or cancel
+  orders.
 keywords:
-  [
-    limit orders,
-    market orders,
-    modify orders,
-    cancel orders,
-    balancemanager,
-    deepbookv3,
-    pay_with_deep,
-    DEEP token,
-    reduce order size,
-    lower expiration time,
-    order options,
-    self-matching options,
-    orderinfo,
-    orderdeepprice,
-    fill,
-    events,
-    place market order,
-    withdraw amount,
-    withdraw settled amount,
-  ]
+  - limit orders
+  - market orders
+  - modify orders
+  - cancel orders
+  - balancemanager
+  - deepbookv3
+  - pay_with_deep
+  - DEEP token
+  - reduce order size
+  - lower expiration time
+  - order options
+  - self-matching options
+  - orderinfo
+  - orderdeepprice
+  - fill
+  - events
+  - place market order
+  - withdraw amount
+  - withdraw settled amount
+goal:
+  description: >-
+    Reader can use DeepBookV3 to create limit and market orders, modify orders,
+    or cancel orders
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: Order constraints
+    stage: DeFi Primitives
+questions:
+  - What is Orders in Haneul?
+  - How does orders work on Haneul?
+  - Why should I use orders?
+answer: >-
+  Use DeepBookV3 to create limit and market orders, modify orders, or cancel
+  orders.
 ---
 
 Users can create limit or market orders, modify orders, and cancel orders. The `BalanceManager` must have the necessary funds to process orders. DeepBookV3 has four order options and three self matching options. If you set the `pay_with_deep` flag to `true`, trading fees are paid with the DEEP token. If you set the `pay_with_deep` flag to `false`, trading fees are paid with the input token.
@@ -43,7 +71,7 @@ The following constants define the options available for orders.
 <ImportContent
 	source="packages/deepbook/sources/helper/constants.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	variable="NO_RESTRICTION,IMMEDIATE_OR_CANCEL,FILL_OR_KILL,POST_ONLY"
 />
@@ -58,7 +86,7 @@ The following constants define the options available for self-matching orders.
 <ImportContent
 	source="packages/deepbook/sources/helper/constants.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	variable="SELF_MATCHING_ALLOWED,CANCEL_TAKER,CANCEL_MAKER"
 />
@@ -72,7 +100,7 @@ Placing a limit order or a market order creates and returns an `OrderInfo` objec
 
 <ImportContent
 	source="packages/deepbook/sources/book/order_info.move"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	mode="code"
 	struct="OrderInfo"
@@ -88,7 +116,7 @@ The `OrderDeepPrice` struct represents the conversion rate of DEEP at the time t
 <ImportContent
 	source="packages/deepbook/sources/vault/deep_price.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="OrderDeepPrice"
 />
@@ -103,7 +131,7 @@ The `Fill` struct represents the results of a match between two orders. Use this
 <ImportContent
 	source="packages/deepbook/sources/book/fill.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="Fill"
 />
@@ -121,7 +149,7 @@ You must combine a `BalanceManager` call of generating a `TradeProof` before pla
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="place_limit_order"
 	noComments
@@ -137,7 +165,7 @@ Place a market order. Quantity is in base asset terms. Calls `place_limit_order`
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="place_market_order"
 	noComments
@@ -155,7 +183,7 @@ The `modify_order` function does not return anything. If the transaction is succ
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="modify_order"
 	noComments
@@ -173,7 +201,7 @@ Similar to modify, `cancel_order` does not return anything. DeepBookV3 emits `Or
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="cancel_order"
 	noComments
@@ -189,7 +217,7 @@ Cancel multiple orders within a vector. The orders must be owned by the `balance
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="cancel_orders"
 	noComments
@@ -205,7 +233,7 @@ Cancel all open orders placed by the balance manager in the pool. This is a conv
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="cancel_all_orders"
 	noComments
@@ -221,7 +249,7 @@ Withdraw settled amounts to the `balance_manager`. All orders automatically with
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="withdraw_settled_amounts"
 	noComments
@@ -237,7 +265,7 @@ Withdraw settled amounts to the `balance_manager` without requiring a `TradeProo
 <ImportContent
 	source="packages/deepbook/sources/pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="withdraw_settled_amounts_permissionless"
 	noComments
@@ -255,7 +283,7 @@ The system emits this event when a taker fills a maker order.
 <ImportContent
 	source="packages/deepbook/sources/book/order_info.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="OrderFilled"
 />
@@ -270,7 +298,7 @@ The system emits this event when you cancel a maker order.
 <ImportContent
 	source="packages/deepbook/sources/book/order.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="OrderCanceled"
 />
@@ -285,7 +313,7 @@ The system emits this event when you modify a maker order.
 <ImportContent
 	source="packages/deepbook/sources/book/order.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="OrderModified"
 />
@@ -300,7 +328,7 @@ The system emits this event when you place a maker order into the order book.
 <ImportContent
 	source="packages/deepbook/sources/book/order_info.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="OrderPlaced"
 />

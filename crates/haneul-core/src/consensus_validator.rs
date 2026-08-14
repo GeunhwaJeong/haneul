@@ -15,7 +15,10 @@ use haneul_types::base_types::AuthorityName;
 use haneul_types::{
     base_types::{ObjectID, ObjectRef},
     error::{HaneulError, HaneulErrorKind, HaneulResult, UserInputError},
-    messages_consensus::{ConsensusPosition, ConsensusTransaction, ConsensusTransactionKind},
+    messages_consensus::{
+        ConsensusPosition, ConsensusTransaction, ConsensusTransactionKind,
+        SharedTransactionDenyConfig,
+    },
     transaction::{InputObjectKind, PlainTransactionWithClaims, TransactionDataAPI},
 };
 use haneullabs_common::ZipDebugEqIteratorExt;
@@ -173,6 +176,28 @@ impl HaneulTxValidator {
                         .into());
                     }
                 }
+
+                ConsensusTransactionKind::UpdateTransactionDenyConfig(msg) => {
+                    if !epoch_store
+                        .protocol_config()
+                        .share_transaction_deny_config_in_consensus()
+                    {
+                        return Err(HaneulErrorKind::UnexpectedMessage(
+                            "UpdateTransactionDenyConfig is not supported by current protocol \
+                             version"
+                                .to_string(),
+                        )
+                        .into());
+                    }
+                    if let Some(rules) = msg.rules() {
+                        rules.check_share_limits().map_err(|e| -> HaneulError {
+                            HaneulErrorKind::UnexpectedMessage(format!(
+                                "UpdateTransactionDenyConfig: {e}"
+                            ))
+                            .into()
+                        })?;
+                    }
+                }
             }
         }
 
@@ -190,6 +215,31 @@ impl HaneulTxValidator {
             .checkpoint_signatures_verified
             .inc_by(ckpt_count as u64);
         Ok(())
+    }
+
+    /// Applies deny-config updates carried in a fully-validated block. Applying at block
+    /// verification takes effect sooner than waiting for commit processing, but is not
+    /// guaranteed to happen for every block. The consensus commit handler applies
+    /// committed updates as a backstop, deduplicated by generation.
+    fn apply_deny_config_updates(
+        &self,
+        block_ref: &BlockRef,
+        updates: Vec<SharedTransactionDenyConfig>,
+    ) {
+        if updates.is_empty() {
+            return;
+        }
+        let committee = self.epoch_store.committee();
+        let Some(author) = committee.authority_by_index(block_ref.author.value() as u32) else {
+            warn!(
+                "Dropping UpdateTransactionDenyConfig batch: block author index {} not in committee",
+                block_ref.author
+            );
+            return;
+        };
+        self.authority_state
+            .transaction_deny_config_manager()
+            .apply_updates(*author, updates);
     }
 
     #[instrument(level = "debug", skip_all, fields(block_ref))]
@@ -463,6 +513,15 @@ impl TransactionVerifier for HaneulTxValidator {
         self.validate_transactions(&txs)
             .map_err(|e| ValidationError::InvalidTransaction(e.to_string()))?;
 
+        let deny_config_updates: Vec<_> = txs
+            .iter()
+            .filter_map(|tx| match tx {
+                ConsensusTransactionKind::UpdateTransactionDenyConfig(msg) => Some((**msg).clone()),
+                _ => None,
+            })
+            .collect();
+        self.apply_deny_config_updates(block_ref, deny_config_updates);
+
         Ok(self.vote_transactions(block_ref, txs))
     }
 }
@@ -515,7 +574,9 @@ mod tests {
         base_types::{ExecutionDigests, ObjectID, ObjectRef},
         crypto::Ed25519HaneulSignature,
         effects::TransactionEffectsAPI as _,
-        messages_consensus::ConsensusTransaction,
+        messages_consensus::{
+            ConsensusTransaction, SharedTransactionDenyConfig, SharedTransactionDenyConfigV1,
+        },
         object::Object,
         signature::GenericSignature,
         transaction::{PlainTransactionWithClaims, Transaction},
@@ -1115,5 +1176,82 @@ mod tests {
             res.is_err(),
             "Should reject transaction with out-of-bounds alias signature index"
         );
+    }
+
+    /// Deny-config updates are applied as a side effect of `verify_and_vote_batch`:
+    /// a valid update from the block author lands in the manager, while spoofed
+    /// (author mismatch) and far-future-generation updates pass validation but are
+    /// not applied.
+    #[tokio::test]
+    async fn deny_config_updates_applied_at_verification() {
+        let _guard = ProtocolConfig::apply_overrides_for_testing(|_, mut c| {
+            c.set_share_transaction_deny_config_in_consensus_for_testing(true);
+            c
+        });
+
+        // A single-validator committee, so consensus authority index 0 (the author of
+        // BlockRef::MIN) maps to `state.name`.
+        let network_config =
+            haneul_swarm_config::network_config_builder::ConfigBuilder::new_with_temp_dir()
+                .committee_size(NonZeroUsize::new(1).unwrap())
+                .build();
+        let state = TestAuthorityBuilder::new()
+            .with_network_config(&network_config, 0)
+            .build()
+            .await;
+        let validator = HaneulTxValidator::new(
+            state.clone(),
+            state.epoch_store_for_testing().clone(),
+            Arc::new(CheckpointServiceNoop {}),
+            HaneulTxValidatorMetrics::new(&Default::default()),
+        );
+        let manager = state.transaction_deny_config_manager().clone();
+
+        let now_ms = crate::authority::AuthorityState::unixtime_now_ms();
+        let msg_bytes = |authority, generation| {
+            bcs::to_bytes(&ConsensusTransaction::new_update_transaction_deny_config(
+                SharedTransactionDenyConfig::V1(SharedTransactionDenyConfigV1 {
+                    authority,
+                    generation,
+                    rules: Some(haneul_types::transaction_deny_rules::TransactionDenyRules {
+                        package_publish_disabled: true,
+                        ..Default::default()
+                    }),
+                }),
+            ))
+            .unwrap()
+        };
+
+        // Far-future generation: validation succeeds, but the update is not applied.
+        let far_future = msg_bytes(
+            state.name,
+            now_ms + SharedTransactionDenyConfig::MAX_GENERATION_FUTURE_DRIFT_MS + 600_000,
+        );
+        assert!(
+            validator
+                .verify_and_vote_batch(&BlockRef::MIN, &[&far_future])
+                .is_ok()
+        );
+        assert!(manager.peer_configs_snapshot().is_empty());
+
+        // Authority claim that doesn't match the block author: validation succeeds,
+        // but the update is not applied.
+        let spoofed = msg_bytes(haneul_types::base_types::AuthorityName::ZERO, now_ms);
+        assert!(
+            validator
+                .verify_and_vote_batch(&BlockRef::MIN, &[&spoofed])
+                .is_ok()
+        );
+        assert!(manager.peer_configs_snapshot().is_empty());
+
+        // A sane update from the block author is applied.
+        let sane = msg_bytes(state.name, now_ms);
+        assert!(
+            validator
+                .verify_and_vote_batch(&BlockRef::MIN, &[&sane])
+                .is_ok()
+        );
+        let snapshot = manager.peer_configs_snapshot();
+        assert_eq!(snapshot.get(&state.name).unwrap().generation(), now_ms);
     }
 }

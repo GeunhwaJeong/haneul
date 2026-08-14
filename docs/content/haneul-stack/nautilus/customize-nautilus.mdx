@@ -1,7 +1,45 @@
 ---
-title: Customizing, Testing, and Management
-description: Details on how to customize Nautilus server logic, test functionality locally, and manage the enclave. 
-keywords: [ nautilus, using nautilus, deploy aws nitro enclave, aws nitro, enclaves, tee, ec2 ]
+title: 'Customizing, Testing, and Management'
+description: >-
+  Details on how to customize Nautilus server logic, test functionality locally,
+  and manage the enclave.
+keywords:
+  - nautilus
+  - using nautilus
+  - deploy aws nitro enclave
+  - aws nitro
+  - enclaves
+  - tee
+  - ec2
+goal:
+  description: >-
+    Reader understands details on how to customize Nautilus server logic, test
+    functionality locally, and manage the enclave
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - 'What is Customizing, Testing, and Management in Haneul?'
+  - How do I create custom server logic?
+  - 'How does customizing, testing, and management work on Haneul?'
+answer: >-
+  Details on how to customize Nautilus server logic, test functionality locally,
+  and manage the enclave.
 ---
 
 The Nautilus server logic is located in the directory [`src/nautilus-server`](https://github.com/GeunhwaJeong/nautilus/tree/main/src/nautilus-server). To customize the application, refer to the [Using Nautilus guide](/haneul-stack/nautilus/using-nautilus) as a template.
@@ -162,7 +200,7 @@ Some questions the community often asks about are answered in the following sect
 - It is stored as part of the Haneul framework and used to verify AWS attestation documents. You can verify its hash by following the steps outlined on [AWS](https://docs.aws.amazon.com/enclaves/latest/user/verify-root#validation-process).
 
 ```sh
-$ curl https://raw.githubusercontent.com/GeunhwaJeong/haneul/refs/heads/main/crates/haneul-types/src/nitro_root_certificate.pem -o cert_haneul.pem
+$ curl https://raw.githubusercontent.com/HaneulLabs/haneul/refs/heads/main/crates/haneul-types/src/nitro_root_certificate.pem -o cert_haneul.pem
 $ sha256sum cert_haneul.pem
 
 6eb9688305e4bbca67f44b59c29a0661ae930f09b5945b5d1d9ae01125c8d6c0

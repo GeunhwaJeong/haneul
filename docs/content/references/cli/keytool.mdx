@@ -1,7 +1,40 @@
 ---
 title: Haneul Keytool CLI
-description: The Haneul Keytool CLI has commands for managing and generating addresses, working with private keys, signatures, or zkLogin. 
-keywords: [ Keytool cli, Keytool reference, Keytool, haneul Keytool, Keytool help, how to use Keytool, key tool ]
+description: >-
+  The Haneul Keytool CLI has commands for managing and generating addresses,
+  working with private keys, signatures, or zkLogin.
+keywords:
+  - Keytool cli
+  - Keytool reference
+  - Keytool
+  - haneul Keytool
+  - Keytool help
+  - how to use Keytool
+  - key tool
+goal:
+  description: 'Reader can look up keytool cli command syntax, flags, and usage examples'
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - pattern: '```'
+      min: 1
+      label: Has command examples
+    - pattern: 'haneul '
+      min: 2
+      label: Shows CLI command usage
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Haneul Keytool CLI in Haneul?
+  - What are the available haneul keytool cli commands?
+  - What flags does haneul keytool cli support?
+answer: >-
+  The Haneul Keytool CLI has commands for managing and generating addresses,
+  working with private keys, signatures, or zkLogin.
 ---
 
 The Haneul CLI `keytool` command provides several command-level access for the management and generation of addresses, as well as working with private keys, signatures, or zkLogin. For example, you can export a private key from the Haneul Wallet and import it into the local Haneul CLI wallet using the `haneul keytool import [...]` command.

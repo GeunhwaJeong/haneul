@@ -660,7 +660,7 @@ dependencies = [
  "alloy-rlp",
  "alloy-serde",
  "alloy-sol-types",
- "itertools 0.13.0",
+ "itertools 0.14.0",
  "serde",
  "serde_json",
  "serde_with",
@@ -2205,7 +2205,7 @@ dependencies = [
  "aws-smithy-types",
  "h2 0.4.15",
  "http 1.3.1",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-rustls",
  "hyper-util",
  "pin-project-lite",
@@ -2351,7 +2351,7 @@ dependencies = [
  "http 1.3.1",
  "http-body 1.0.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-util",
  "itoa",
  "matchit 0.7.0",
@@ -2389,7 +2389,7 @@ dependencies = [
  "http 1.3.1",
  "http-body 1.0.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-util",
  "itoa",
  "matchit 0.8.4",
@@ -2534,7 +2534,7 @@ dependencies = [
  "fs-err",
  "http 1.3.1",
  "http-body 1.0.1",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-util",
  "pin-project-lite",
  "rustls",
@@ -2750,7 +2750,7 @@ checksum = "230c5f1ca6a325a32553f8640d31ac9b49f2411e901e427570154868b46da4f7"
 
 [[package]]
 name = "bin-version"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "const-str",
  "git-version",
@@ -6065,9 +6065,9 @@ checksum = "f90f7dce0722e95104fcb095585910c0977252f286e354b5e3bd38902cd99988"
 
 [[package]]
 name = "futures-timer"
-version = "3.0.4"
+version = "3.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af43fadb8a98512d547e37b4e92e0ced13e205c061b87b4623eff01d918d6968"
+checksum = "f288b0a4f20f9a56b5d1da57e2227c661b7b16168e2f72365f57b63326e29b24"
 
 [[package]]
 name = "futures-util"
@@ -6147,7 +6147,7 @@ dependencies = [
  "chrono",
  "http 1.3.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-rustls",
  "hyper-util",
  "ring 0.17.8",
@@ -6475,7 +6475,7 @@ dependencies = [
 
 [[package]]
 name = "haneul"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anemo",
  "anyhow",
@@ -6526,7 +6526,7 @@ dependencies = [
  "haneul-rpc-api",
  "haneul-sdk",
  "haneul-simulator",
- "haneul-source-validation",
+ "haneul-source-verification",
  "haneul-swarm",
  "haneul-swarm-config",
  "haneul-test-transaction-builder",
@@ -6740,7 +6740,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-analytics-indexer"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "arrow",
@@ -6799,7 +6799,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-analytics-indexer-derive"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -6872,7 +6872,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-bridge"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "alloy",
  "alloy-multiprovider-strategy",
@@ -6931,7 +6931,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-bridge-cli"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "alloy",
  "anyhow",
@@ -7027,7 +7027,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-checkpoint-blob-indexer"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7057,7 +7057,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-cluster-test"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7068,15 +7068,15 @@ dependencies = [
  "haneul-config",
  "haneul-faucet",
  "haneul-json",
- "haneul-json-rpc-types",
  "haneul-keys",
  "haneul-move-build",
+ "haneul-rpc-api",
  "haneul-sdk",
+ "haneul-sdk-types",
  "haneul-swarm",
  "haneul-swarm-config",
  "haneul-test-transaction-builder",
  "haneul-types",
- "jsonrpsee",
  "move-core-types",
  "regex",
  "reqwest",
@@ -7123,7 +7123,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-consistent-store"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7295,8 +7295,8 @@ dependencies = [
 
 [[package]]
 name = "haneul-crypto"
-version = "0.3.0"
-source = "git+https://github.com/GeunhwaJeong/haneul-rust-sdk.git?rev=c20c2214125bcf24b7835eaf51718cc4f942c410#c20c2214125bcf24b7835eaf51718cc4f942c410"
+version = "0.3.1"
+source = "git+https://github.com/GeunhwaJeong/haneul-rust-sdk.git?rev=2995618315f3d0753f7c6b7785cbcbf454f0b331#2995618315f3d0753f7c6b7785cbcbf454f0b331"
 dependencies = [
  "ark-bn254",
  "ark-ff 0.4.2",
@@ -7371,7 +7371,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-display"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7395,7 +7395,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-e2e-tests"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7521,6 +7521,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "haneul-execution-backtest"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "backoff",
+ "bcs",
+ "clap",
+ "diesel",
+ "diesel-async",
+ "diesel_migrations",
+ "futures",
+ "haneul-data-store",
+ "haneul-execution",
+ "haneul-indexer-alt-framework",
+ "haneul-protocol-config",
+ "haneul-rpc",
+ "haneul-types",
+ "move-core-types",
+ "object_store 0.13.0",
+ "prometheus",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tonic 0.14.6",
+ "tracing",
+ "tracing-subscriber",
+ "url",
+]
+
+[[package]]
 name = "haneul-execution-cut"
 version = "0.1.0"
 dependencies = [
@@ -7535,7 +7566,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-faucet"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "axum 0.8.3",
@@ -7563,14 +7594,14 @@ dependencies = [
 
 [[package]]
 name = "haneul-field-count"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "haneul-field-count-derive",
 ]
 
 [[package]]
 name = "haneul-field-count-derive"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "quote",
  "syn 1.0.107",
@@ -7578,7 +7609,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-fork"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7637,7 +7668,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-framework-snapshot"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7681,7 +7712,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-futures"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "futures",
@@ -7729,7 +7760,7 @@ dependencies = [
  "http 1.3.1",
  "http-body 1.0.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-util",
  "pin-project-lite",
  "reqwest",
@@ -7743,7 +7774,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7775,7 +7806,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-consistent-api"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "prost 0.14.1",
  "prost-types 0.14.1",
@@ -7788,7 +7819,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-consistent-store"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7911,7 +7942,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-framework"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7961,7 +7992,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-framework-store-traits"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7973,7 +8004,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-graphql"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -8042,7 +8073,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-jsonrpc"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -8103,7 +8134,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-metrics"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "axum 0.8.3",
@@ -8118,7 +8149,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-object-store"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8132,7 +8163,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-reader"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -8161,6 +8192,7 @@ dependencies = [
  "prost-types 0.14.1",
  "thiserror 1.0.69",
  "tokio",
+ "tokio-stream",
  "tonic 0.14.6",
  "tower 0.5.3",
  "tracing",
@@ -8169,7 +8201,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-schema"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8185,7 +8217,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-inverted-index"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -8251,7 +8283,7 @@ dependencies = [
  "haneul-types",
  "haneullabs-common",
  "haneullabs-metrics",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "im",
  "indexmap 2.8.0",
  "itertools 0.13.0",
@@ -8321,7 +8353,7 @@ dependencies = [
  "haneul-swarm-config",
  "haneul-test-transaction-builder",
  "haneul-types",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "jsonrpsee",
  "move-core-types",
  "prometheus",
@@ -8402,7 +8434,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-kv-rpc"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -8450,7 +8482,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-kvstore"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -8501,7 +8533,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-light-client"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8551,7 +8583,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-metric-checker"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "backoff",
@@ -8588,7 +8620,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-move"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "bin-version",
@@ -8635,7 +8667,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-move-build"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "fastcrypto",
@@ -8661,7 +8693,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-move-lsp"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "bin-version",
  "clap",
@@ -8776,7 +8808,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-name-service"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "bcs",
  "haneul-types",
@@ -8843,7 +8875,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-node"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anemo",
  "anemo-tower",
@@ -8903,7 +8935,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-open-rpc"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8937,7 +8969,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-oracle"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8967,7 +8999,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-package-alt"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8986,7 +9018,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-package-dump"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -9002,7 +9034,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-package-management"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "haneul-framework-snapshot",
@@ -9019,7 +9051,7 @@ dependencies = [
  "bcs",
  "haneul-move-build",
  "haneul-types",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "insta",
  "itertools 0.13.0",
  "lru 0.10.1",
@@ -9035,7 +9067,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-pg-db"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9075,7 +9107,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-prompt"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -9136,7 +9168,7 @@ dependencies = [
  "haneullabs-common",
  "haneullabs-metrics",
  "hex",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "itertools 0.13.0",
  "mime",
  "multiaddr",
@@ -9246,7 +9278,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-rosetta"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9294,8 +9326,8 @@ dependencies = [
 
 [[package]]
 name = "haneul-rpc"
-version = "0.3.1"
-source = "git+https://github.com/GeunhwaJeong/haneul-rust-sdk.git?rev=c20c2214125bcf24b7835eaf51718cc4f942c410#c20c2214125bcf24b7835eaf51718cc4f942c410"
+version = "0.3.2"
+source = "git+https://github.com/GeunhwaJeong/haneul-rust-sdk.git?rev=2995618315f3d0753f7c6b7785cbcbf454f0b331#2995618315f3d0753f7c6b7785cbcbf454f0b331"
 dependencies = [
  "base64 0.22.1",
  "bcs",
@@ -9305,7 +9337,7 @@ dependencies = [
  "haneul-sdk-types",
  "http 1.3.1",
  "http-body 1.0.1",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "prost 0.14.1",
  "prost-types 0.14.1",
  "serde",
@@ -9373,7 +9405,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-rpc-benchmark"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "bb8",
@@ -9410,7 +9442,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-rpc-loadgen"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9437,7 +9469,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-rpc-resolver"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9456,7 +9488,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-rpc-store"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9488,7 +9520,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-sdk"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9531,8 +9563,8 @@ dependencies = [
 
 [[package]]
 name = "haneul-sdk-types"
-version = "0.3.1"
-source = "git+https://github.com/GeunhwaJeong/haneul-rust-sdk.git?rev=c20c2214125bcf24b7835eaf51718cc4f942c410#c20c2214125bcf24b7835eaf51718cc4f942c410"
+version = "0.3.2"
+source = "git+https://github.com/GeunhwaJeong/haneul-rust-sdk.git?rev=2995618315f3d0753f7c6b7785cbcbf454f0b331#2995618315f3d0753f7c6b7785cbcbf454f0b331"
 dependencies = [
  "base64ct",
  "bcs",
@@ -9552,7 +9584,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-security-watchdog"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "arrow-array",
@@ -9600,7 +9632,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-single-node-benchmark"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "bcs",
  "clap",
@@ -9658,13 +9690,15 @@ dependencies = [
 ]
 
 [[package]]
-name = "haneul-source-validation"
-version = "1.6.0"
+name = "haneul-source-verification"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "colored",
  "datatest-stable",
+ "dirs 4.0.0",
  "expect-test",
+ "fastcrypto",
  "flate2",
  "fs_extra",
  "futures",
@@ -9690,6 +9724,7 @@ dependencies = [
  "msim",
  "rand 0.8.5",
  "serde",
+ "serde_json",
  "tar",
  "tempfile",
  "test-cluster",
@@ -9702,7 +9737,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-sql-macro"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "quote",
  "syn 1.0.107",
@@ -9736,7 +9771,7 @@ dependencies = [
  "haneul-types",
  "haneullabs-common",
  "haneullabs-metrics",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-rustls",
  "indicatif",
  "integer-encoding",
@@ -9768,7 +9803,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-surfer"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "bcs",
  "clap",
@@ -9881,7 +9916,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-test-validator"
-version = "1.6.0"
+version = "1.7.0"
 
 [[package]]
 name = "haneul-tls"
@@ -9907,11 +9942,12 @@ dependencies = [
 
 [[package]]
 name = "haneul-tool"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anemo",
  "anemo-cli",
  "anyhow",
+ "backoff",
  "base64 0.21.7",
  "bcs",
  "bin-version",
@@ -10648,9 +10684,9 @@ dependencies = [
 
 [[package]]
 name = "hyper"
-version = "1.10.1"
+version = "1.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "55281c53a1894c864990125767da440a4e630446785086f52523b20033b74498"
+checksum = "d22053281f852e11534f5198498373cbb59295120a20771d90f7ed1897490a72"
 dependencies = [
  "atomic-waker",
  "bytes",
@@ -10675,7 +10711,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3c93eb611681b207e1fe55d5a71ecf91572ec8a6705cdb6857f7d8d5242cf58"
 dependencies = [
  "http 1.3.1",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-util",
  "log",
  "rustls",
@@ -10693,7 +10729,7 @@ version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3203a961e5c83b6f5498933e78b6b263e208c197b63e9c6c53cc82ffd3f63793"
 dependencies = [
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-util",
  "pin-project-lite",
  "tokio",
@@ -10713,7 +10749,7 @@ dependencies = [
  "futures-util",
  "http 1.3.1",
  "http-body 1.0.1",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "ipnet",
  "libc",
  "percent-encoding",
@@ -11395,7 +11431,7 @@ dependencies = [
  "async-trait",
  "base64 0.22.1",
  "http-body 1.0.1",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-rustls",
  "hyper-util",
  "jsonrpsee-core",
@@ -11434,7 +11470,7 @@ dependencies = [
  "http 1.3.1",
  "http-body 1.0.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-util",
  "jsonrpsee-core",
  "jsonrpsee-types",
@@ -12335,7 +12371,7 @@ dependencies = [
 [[package]]
 name = "minibytes"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=4326af7b314f9683a1e26cb25dfa1a62b4adce1f#4326af7b314f9683a1e26cb25dfa1a62b4adce1f"
+source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=852bfddd56581942ffa47365227e03775a498f9f#852bfddd56581942ffa47365227e03775a498f9f"
 dependencies = [
  "bytes",
  "memmap2 0.7.1",
@@ -12898,27 +12934,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "move-model"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "codespan",
- "codespan-reporting",
- "itertools 0.10.5",
- "log",
- "move-binary-format",
- "move-bytecode-source-map",
- "move-command-line-common",
- "move-compiler",
- "move-core-types",
- "move-disassembler",
- "move-ir-types",
- "move-symbol-pool",
- "num",
- "serde",
-]
-
-[[package]]
 name = "move-model-2"
 version = "0.1.0"
 dependencies = [
@@ -13021,26 +13036,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "move-stackless-bytecode"
-version = "0.1.0"
-dependencies = [
- "codespan",
- "codespan-reporting",
- "ethnum",
- "im",
- "itertools 0.10.5",
- "log",
- "move-binary-format",
- "move-command-line-common",
- "move-compiler",
- "move-core-types",
- "move-model",
- "num",
- "petgraph 0.8.1",
- "serde",
-]
-
-[[package]]
 name = "move-stackless-bytecode-2"
 version = "0.1.0"
 dependencies = [
@@ -13052,7 +13047,6 @@ dependencies = [
  "move-model-2",
  "move-package-alt",
  "move-package-alt-compilation",
- "move-stackless-bytecode",
  "move-symbol-pool",
  "tempfile",
 ]
@@ -13360,7 +13354,7 @@ dependencies = [
 [[package]]
 name = "msim"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/mysten-sim.git?rev=2c2ec3ffbc1e559c575dc7de1ff2498d1f6700f6#2c2ec3ffbc1e559c575dc7de1ff2498d1f6700f6"
+source = "git+https://github.com/GeunhwaJeong/mysten-sim.git?rev=6b8e1e8cdce408e73d46538773fc85a56c082db7#6b8e1e8cdce408e73d46538773fc85a56c082db7"
 dependencies = [
  "ahash 0.7.8",
  "async-task",
@@ -13389,7 +13383,7 @@ dependencies = [
 [[package]]
 name = "msim-macros"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/mysten-sim.git?rev=2c2ec3ffbc1e559c575dc7de1ff2498d1f6700f6#2c2ec3ffbc1e559c575dc7de1ff2498d1f6700f6"
+source = "git+https://github.com/GeunhwaJeong/mysten-sim.git?rev=6b8e1e8cdce408e73d46538773fc85a56c082db7#6b8e1e8cdce408e73d46538773fc85a56c082db7"
 dependencies = [
  "darling 0.14.2",
  "proc-macro2",
@@ -13690,7 +13684,7 @@ version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -13969,7 +13963,7 @@ dependencies = [
  "http 1.3.1",
  "http-body-util",
  "humantime",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "itertools 0.14.0",
  "md-5 0.10.6",
  "parking_lot 0.12.3",
@@ -14006,7 +14000,7 @@ dependencies = [
  "http-body-util",
  "httparse",
  "humantime",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "itertools 0.14.0",
  "md-5 0.10.6",
  "parking_lot 0.12.3",
@@ -15196,7 +15190,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ac6c3320f9abac597dcbc668774ef006702672474aad53c6d596b62e487b40b1"
 dependencies = [
  "heck 0.5.0",
- "itertools 0.12.1",
+ "itertools 0.14.0",
  "log",
  "multimap",
  "once_cell",
@@ -15218,7 +15212,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8a56d757972c98b346a9b766e3f02746cde6dd1cd1d1d563472929fdd74bec4d"
 dependencies = [
  "anyhow",
- "itertools 0.12.1",
+ "itertools 0.14.0",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -15231,7 +15225,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9120690fafc389a67ba3803df527d0ec9cbbc9cc45e4cc20b332996dfb672425"
 dependencies = [
  "anyhow",
- "itertools 0.12.1",
+ "itertools 0.14.0",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -15432,7 +15426,7 @@ dependencies = [
  "quinn-udp",
  "rustc-hash 2.1.1",
  "rustls",
- "socket2 0.5.6",
+ "socket2 0.6.3",
  "thiserror 2.0.17",
  "tokio",
  "tracing",
@@ -15953,7 +15947,7 @@ dependencies = [
  "http 1.3.1",
  "http-body 1.0.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-rustls",
  "hyper-util",
  "js-sys",
@@ -16008,7 +16002,7 @@ dependencies = [
  "futures",
  "getrandom 0.2.15",
  "http 1.3.1",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "parking_lot 0.11.2",
  "reqwest",
  "reqwest-middleware",
@@ -18229,7 +18223,7 @@ dependencies = [
 [[package]]
 name = "tideconsole"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=4326af7b314f9683a1e26cb25dfa1a62b4adce1f#4326af7b314f9683a1e26cb25dfa1a62b4adce1f"
+source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=852bfddd56581942ffa47365227e03775a498f9f#852bfddd56581942ffa47365227e03775a498f9f"
 dependencies = [
  "anyhow",
  "clap",
@@ -18244,7 +18238,7 @@ dependencies = [
 [[package]]
 name = "tidehunter"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=4326af7b314f9683a1e26cb25dfa1a62b4adce1f#4326af7b314f9683a1e26cb25dfa1a62b4adce1f"
+source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=852bfddd56581942ffa47365227e03775a498f9f#852bfddd56581942ffa47365227e03775a498f9f"
 dependencies = [
  "arc-swap",
  "bincode 1.3.3",
@@ -18694,7 +18688,7 @@ dependencies = [
  "http 1.3.1",
  "http-body 1.0.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-timeout",
  "hyper-util",
  "percent-encoding",
@@ -18724,7 +18718,7 @@ dependencies = [
  "http 1.3.1",
  "http-body 1.0.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-timeout",
  "hyper-util",
  "percent-encoding",
@@ -18821,7 +18815,7 @@ dependencies = [
  "http 1.3.1",
  "http-body 1.0.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-timeout",
  "hyper-util",
  "pin-project",
@@ -19187,7 +19181,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
  "cfg-if",
- "rand 0.7.3",
+ "rand 0.8.5",
  "static_assertions",
 ]
 
@@ -20577,13 +20571,14 @@ dependencies = [
 
 [[package]]
 name = "x"
-version = "1.6.0"
+version = "1.7.0"
 dependencies = [
  "anyhow",
  "camino",
  "clap",
  "nexlint",
  "nexlint-lints",
+ "toml 0.7.4",
 ]
 
 [[package]]
@@ -20698,7 +20693,7 @@ dependencies = [
  "base64 0.22.1",
  "http 1.3.1",
  "http-body-util",
- "hyper 1.10.1",
+ "hyper 1.11.0",
  "hyper-rustls",
  "hyper-util",
  "log",

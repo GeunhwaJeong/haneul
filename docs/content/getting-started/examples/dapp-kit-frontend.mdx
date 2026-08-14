@@ -1,10 +1,23 @@
 ---
 title: dApp Kit
-description: Build a React frontend that connects a wallet, mints an NFT through a Move contract, queries owned objects, and refreshes the UI automatically using Haneul dApp Kit and React Query.
-keywords: [example, dapp-kit, react, wallet, nft, mint, query, react-query, frontend, bootcamp]
+description: >-
+  Build a React frontend that connects a wallet, mints an NFT through a Move
+  contract, queries owned objects, and refreshes the UI automatically using Haneul
+  dApp Kit and React Query.
+keywords:
+  - example
+  - dapp-kit
+  - react
+  - wallet
+  - nft
+  - mint
+  - query
+  - react-query
+  - frontend
+  - bootcamp
 example_id: dapp-kit-frontend-bootcamp
-last_verified: 2026-04-30
-repo: https://github.com/GeunhwaJeong/haneul-move-bootcamp
+last_verified: 2026-04-30T00:00:00.000Z
+repo: 'https://github.com/GeunhwaJeong/haneul-move-bootcamp'
 path: /E2/my-first-haneul-dapp
 concepts:
   - dapp_kit_provider
@@ -14,6 +27,61 @@ concepts:
   - cache_invalidation
   - owned_object_queries
   - grpc_client
+goal:
+  description: >-
+    Reader can build a React frontend that connects a wallet, mints an NFT
+    through a Move contract, queries owned objects
+  requires:
+    - headings:
+        - pattern: When to use|Use case
+        - pattern: What you learn|Learning
+        - pattern: Prerequisites
+        - pattern: Setup|Getting started
+        - pattern: Run
+        - pattern: Troubleshooting|Common issues
+      label: Has standard example page sections
+    - pattern: '```'
+      min: 3
+      label: 'Has code blocks for setup, source, and output'
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 800
+      label: Needs more explanation depth
+    - pattern: mermaid|sequenceDiagram|graph|flowchart
+      min: 1
+      label: Has architecture diagram
+    - headings:
+        - pattern: Key code|Code highlight|Walkthrough
+      label: Has code explanation section
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: Scaffold frontend
+    stage: Setup
+    eval: covered
+  - path_id: p2p-payments
+    path_name: P2P Payments / Neomoney
+    step: Scaffold frontend
+    stage: Setup
+    eval: covered
+builder_paths_source:
+  dashboard: 'https://docs-analytics-dashboard.vercel.app/evals'
+  snapshot: '2026-07-10'
+questions:
+  - How do I build a React frontend with Haneul dApp Kit?
+  - How do I connect a wallet using dApp Kit?
+  - How do I query owned objects with React Query and dApp Kit?
+answer: >-
+  Build a React frontend that connects a wallet, mints an NFT through a Move
+  contract, queries owned objects, and refreshes the UI automatically using Haneul
+  dApp Kit and React Query.
 ---
 
 [dApp Kit](https://sdk.haneul-labs.com/dapp-kit) provides a React starter template that provides scaffolding for wallet connection, transaction building, onchain queries, and cache invalidation. In this example, the app connects to a deployed Hero NFT contract, mints an NFT with a single button click, and displays all owned heroes by filtering objects by type. This example does not include Move code, as it focuses entirely on the TypeScript frontend patterns.
@@ -156,7 +224,7 @@ The following snippets are the parts of the code worth reading carefully.
 
 The `dapp-kit.ts` file configures multi-network gRPC clients for Devnet, Testnet, and Mainnet.
 
-<ImportContent source="E2/my-first-haneul-dapp/src/dapp-kit.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" />
+<ImportContent source="E2/my-first-haneul-dapp/src/dapp-kit.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" />
 
 The `createDAppKit` factory takes an array of network configs, each with a `chain` identifier and a `createClient` factory. The `HaneulGrpcClient` uses binary protocol for faster communication than JSON-RPC. The module declaration augments dApp Kit's types so TypeScript knows about the configured networks.
 
@@ -164,7 +232,7 @@ The `createDAppKit` factory takes an array of network configs, each with a `chai
 
 The `MintNFTForm` component builds a transaction, signs it with the wallet, and invalidates the cache after confirmation.
 
-<ImportContent source="E2/my-first-haneul-dapp/src/components/ui/MintNFTForm.tsx" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="MintNFTForm" />
+<ImportContent source="E2/my-first-haneul-dapp/src/components/ui/MintNFTForm.tsx" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="MintNFTForm" />
 
 The `handleMint` function builds a `Transaction` with `moveCall` targeting the deployed `mint_hero` function, then `transferObjects` to send the hero to the user's address. After `signAndExecuteTransaction` returns the digest, it waits for confirmation and invalidates the `["ownedObjects", address]` query key so the heroes list refetches.
 
@@ -172,7 +240,7 @@ The `handleMint` function builds a `Transaction` with `moveCall` targeting the d
 
 The `OwnedObjects` component uses `listOwnedObjects` with a `StructType` filter to show only Hero NFTs.
 
-<ImportContent source="E2/my-first-haneul-dapp/src/OwnedObjects.tsx" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="OwnedObjects" />
+<ImportContent source="E2/my-first-haneul-dapp/src/OwnedObjects.tsx" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="OwnedObjects" />
 
 The `useQuery` hook fetches owned objects only when a wallet is connected (`enabled: !!account`). The `StructType` filter limits results to the Hero type. The query key includes the address so the cache is per-wallet. React Query handles loading, error, and empty states.
 
@@ -180,7 +248,7 @@ The `useQuery` hook fetches owned objects only when a wallet is connected (`enab
 
 The `main.tsx` entry point wraps the app in the required providers.
 
-<ImportContent source="E2/my-first-haneul-dapp/src/main.tsx" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" />
+<ImportContent source="E2/my-first-haneul-dapp/src/main.tsx" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" />
 
 The provider order matters: `QueryClientProvider` must wrap `DAppKitProvider` because dApp Kit hooks use React Query internally. The `initialChain` prop sets Testnet as the default network.
 

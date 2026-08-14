@@ -1,10 +1,22 @@
 ---
 title: zkLogin Authentication
-description: Build a React application that authenticates users with OAuth providers and derives Haneul wallet addresses using zero-knowledge proofs, enabling passwordless blockchain access.
-keywords: [example, zklogin, authentication, oauth, zero-knowledge-proof, ephemeral-key-pair, wallet, react, bootcamp]
+description: >-
+  Build a React application that authenticates users with OAuth providers and
+  derives Haneul wallet addresses using zero-knowledge proofs, enabling
+  passwordless blockchain access.
+keywords:
+  - example
+  - zklogin
+  - authentication
+  - oauth
+  - zero-knowledge-proof
+  - ephemeral-key-pair
+  - wallet
+  - react
+  - bootcamp
 example_id: zklogin-demo-bootcamp
-last_verified: 2026-04-30
-repo: https://github.com/GeunhwaJeong/haneul-move-bootcamp
+last_verified: 2026-04-30T00:00:00.000Z
+repo: 'https://github.com/GeunhwaJeong/haneul-move-bootcamp'
 path: /K2
 concepts:
   - zklogin
@@ -14,6 +26,36 @@ concepts:
   - address_derivation
   - grpc_client
   - transaction_signing
+goal:
+  description: >-
+    Reader can build a React application that authenticates users with OAuth
+    providers
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How do I build a zkLogin demo app on Haneul?
+  - What does the zkLogin authentication example demonstrate?
+  - How do I integrate OAuth login with Haneul transactions?
+answer: >-
+  Build a React application that authenticates users with OAuth providers and
+  derives Haneul wallet addresses using zero-knowledge proofs, enabling
+  passwordless blockchain access.
 ---
 
 This example demonstrates how to integrate [zkLogin](/haneul-stack/zklogin-integration/zklogin) into a React application so users can authenticate with familiar OAuth providers (Google, Apple) and interact with the Haneul blockchain without managing private keys.
@@ -55,7 +97,7 @@ This example teaches:
 
 - **ZK proof generation:** The prover service takes the JWT, extended ephemeral public key, max epoch, randomness, and salt, and returns a zero-knowledge proof. This proof lets the network verify the transaction was authorized by the OAuth identity holder without seeing the JWT.
 
-- **Address derivation:** `jwtToAddress(jwt, salt)` deterministically maps an OAuth identity to a Haneul address. The same user with the same salt always gets the same address, enabling persistent wallet identity across sessions.
+- **Address derivation:** `jwtToAddress(jwt, salt, false)` deterministically maps an OAuth identity to a Haneul address. The third argument (`legacyAddress`) is required; pass `false` for new integrations. The same user with the same salt always gets the same address, enabling persistent wallet identity across sessions.
 
 - **zkLogin transaction signing:** The ephemeral key pair signs the transaction bytes, then `getZkLoginSignature` combines the ephemeral signature with the ZK proof and address seed to produce a composite signature the network accepts.
 
@@ -181,8 +223,8 @@ $ cp .env.example .env
 Edit `.env` with your values:
 
 ```bash title='.env'
-VITE_NETWORK=devnet
-VITE_HANEUL_GRPC_URL=https://fullnode.devnet.haneul.io:443
+VITE_NETWORK=testnet
+VITE_HANEUL_GRPC_URL=https://fullnode.testnet.haneul.io:443
 VITE_SALT=248191903847969014646285995941615069143
 VITE_EPHEMERAL_KEY_DURATION_EPOCHS=2
 VITE_OAUTH_PROVIDER_NAME=GOOGLE
@@ -209,7 +251,7 @@ The following snippets are the parts of the code worth reading carefully.
 
 The `useEphemeral` hook generates a short-lived Ed25519 key pair and computes the nonce that binds it to the OAuth session.
 
-<ImportContent source="K2/src/hooks/useEphemeral.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="useEphemeral" />
+<ImportContent source="K2/src/hooks/useEphemeral.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="useEphemeral" />
 
 The hook creates an `Ed25519Keypair`, extracts its public key, generates cryptographic randomness, fetches the current epoch to compute `maxEpoch`, and derives the nonce using `generateNonce`. The nonce is embedded in the OAuth URL so the JWT is bound to this specific ephemeral key. After `maxEpoch` passes, the key pair can no longer authorize transactions.
 
@@ -217,7 +259,7 @@ The hook creates an `Ed25519Keypair`, extracts its public key, generates cryptog
 
 The `useOauthPopup` hook runs in the OAuth callback popup window and sends the JWT back to the parent.
 
-<ImportContent source="K2/src/hooks/useOauthPopup.tsx" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="useOauthPopup" />
+<ImportContent source="K2/src/hooks/useOauthPopup.tsx" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="useOauthPopup" />
 
 When the OAuth provider redirects back to the application, the popup detects it has a `window.opener`, parses the `id_token` from the URL hash fragment, posts it to the parent window with `postMessage`, and closes itself. The parent window listens for this message in the `useOauthLogin` hook.
 
@@ -225,7 +267,7 @@ When the OAuth provider redirects back to the application, the popup detects it 
 
 The `useZkProof` hook prepares the proof payload and fetches it from the Haneul Labs prover service.
 
-<ImportContent source="K2/src/hooks/useZkProof.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="useZkProof" />
+<ImportContent source="K2/src/hooks/useZkProof.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="useZkProof" />
 
 The payload includes the JWT, the extended ephemeral public key (which encodes the key type and bytes), the max epoch, base64-encoded randomness and salt, and the key claim name (`sub`). The prover verifies the JWT signature and returns a ZK proof that the frontend stores for transaction signing.
 
@@ -233,7 +275,7 @@ The payload includes the JWT, the extended ephemeral public key (which encodes t
 
 The `useWallet` hook derives the deterministic Haneul address from the JWT and salt.
 
-<ImportContent source="K2/src/hooks/useWallet.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="useWallet" />
+<ImportContent source="K2/src/hooks/useWallet.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="useWallet" />
 
 `jwtToAddress` maps the JWT's `sub` claim and the salt to a Haneul address. `genAddressSeed` produces the address seed needed later for the zkLogin signature. The same JWT `sub` + salt always produces the same address, so the user's wallet persists across sessions.
 
@@ -241,7 +283,7 @@ The `useWallet` hook derives the deterministic Haneul address from the JWT and s
 
 The `haneulWriteClient` builds a HANEUL transfer transaction and executes it with a zkLogin signature.
 
-<ImportContent source="K2/src/services/haneul/writeClient.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="buildAndSignTransfer" />
+<ImportContent source="K2/src/services/haneul/writeClient.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="buildAndSignTransfer" />
 
 The function fetches available coins and the reference gas price in parallel, selects the largest coin for gas, constructs a `splitCoins` + `transferObjects` transaction, and signs it with the ephemeral key pair. The `useLiveTransaction` hook then combines this signature with the ZK proof using `getZkLoginSignature` to produce the final zkLogin signature before calling `executeZkLoginTransaction`.
 
@@ -249,7 +291,7 @@ The function fetches available coins and the reference gas price in parallel, se
 
 The `fetchZkProof` utility calls the Haneul Labs prover endpoint.
 
-<ImportContent source="K2/src/utils/zk.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="fetchZkProof" />
+<ImportContent source="K2/src/utils/zk.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="fetchZkProof" />
 
 The function POSTs the proof payload to `https://prover-dev.haneul-labs.com/v1`. The error handling distinguishes network failures (which might indicate CORS issues) from prover errors. For production applications, consider proxying prover requests through a backend to avoid CORS restrictions.
 
@@ -302,7 +344,7 @@ The following sections address common issues with this example.
 
 **Cause:** The derived address has not received any HANEUL. The address is deterministic but starts with no funds.
 
-**Fix:** Use the [Haneul faucet](https://faucet.haneul.io/) to request Devnet HANEUL for the derived address. Copy the address from the Step 3 panel and paste it into the faucet.
+**Fix:** Use the [Haneul faucet](https://faucet.haneul.io/) to request Testnet HANEUL for the derived address. Copy the address from the Step 3 panel and paste it into the faucet.
 
 ### Transaction fails with `InvalidSignature`
 

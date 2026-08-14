@@ -2,16 +2,38 @@
 title: Orders
 description: Learn how to place and manage orders using margin managers.
 keywords:
-  [
-    orders,
-    limit order,
-    market order,
-    reduce only,
-    cancel order,
-    modify order,
-    margin trading,
-    deepbook margin,
-  ]
+  - orders
+  - limit order
+  - market order
+  - reduce only
+  - cancel order
+  - modify order
+  - margin trading
+  - deepbook margin
+goal:
+  description: Reader can place and manage orders using margin managers
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: 'Margin contract: Orders'
+    stage: Margin
+questions:
+  - What is Orders in Haneul?
+  - How does orders work on Haneul?
+  - Why should I use orders?
+answer: Learn how to place and manage orders using margin managers.
 ---
 
 The `pool_proxy` module provides wrapper functions for trading with margin managers. These functions enable placing orders, modifying and canceling them, and managing staking and governance participation through a margin manager. All trading operations require the margin manager to be associated with the correct DeepBook pool.
@@ -28,7 +50,7 @@ Place limit and market orders through a margin manager. Orders can only be place
 <ImportContent
 	source="packages/deepbook_margin/sources/pool_proxy.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="place_limit_order,place_market_order"
 />
@@ -43,7 +65,7 @@ Place reduce-only orders that can only decrease your debt position. These orders
 <ImportContent
 	source="packages/deepbook_margin/sources/pool_proxy.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="place_reduce_only_limit_order,place_reduce_only_market_order"
 />
@@ -58,7 +80,7 @@ Modify an existing order by changing its quantity.
 <ImportContent
 	source="packages/deepbook_margin/sources/pool_proxy.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="modify_order"
 />
@@ -73,7 +95,7 @@ Cancel one, multiple, or all orders for the margin manager.
 <ImportContent
 	source="packages/deepbook_margin/sources/pool_proxy.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="cancel_order,cancel_orders,cancel_all_orders"
 />
@@ -88,7 +110,7 @@ Withdraw settled amounts from completed trades back to the margin manager's bala
 <ImportContent
 	source="packages/deepbook_margin/sources/pool_proxy.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="withdraw_settled_amounts"
 />
@@ -103,7 +125,7 @@ Stake and unstake DEEP tokens through the margin manager. Margin managers for po
 <ImportContent
 	source="packages/deepbook_margin/sources/pool_proxy.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="stake,unstake"
 />
@@ -118,7 +140,7 @@ Submit proposals and vote on governance decisions through the margin manager.
 <ImportContent
 	source="packages/deepbook_margin/sources/pool_proxy.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="submit_proposal,vote"
 />
@@ -133,7 +155,7 @@ Claim trading rebates earned through the margin manager.
 <ImportContent
 	source="packages/deepbook_margin/sources/pool_proxy.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="claim_rebates"
 />

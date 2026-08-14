@@ -1,7 +1,49 @@
 ---
-title: "Create Fungible Tokens: Coin Standard"
+title: 'Create Fungible Tokens: Coin Standard'
 description: Learn how to create currencies and mint coins and tokens on the Haneul network.
-keywords: [mint tokens, create tokens, use tokens, publish token, custom tokens, haneul CLI, denylist, regulated coins, coin registry, currency registry]
+keywords:
+  - mint tokens
+  - create tokens
+  - use tokens
+  - publish token
+  - custom tokens
+  - haneul CLI
+  - denylist
+  - regulated coins
+  - coin registry
+  - currency registry
+goal:
+  description: Reader can create currencies and mint coins and tokens on the Haneul network
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: Custom coin creation
+    stage: Move Contract
+    eval: covered
+builder_paths_source:
+  dashboard: 'https://docs-analytics-dashboard.vercel.app/evals'
+  snapshot: '2026-07-10'
+questions:
+  - 'How do I create fungible tokens: coin standard?'
+  - How do I use the coin standard?
+  - How do I check coin address balances?
+  - 'What is Create Fungible Tokens: Coin Standard in Haneul?'
+answer: Learn how to create currencies and mint coins and tokens on the Haneul network.
 ---
 
 The Coin standard uses the [`haneul::coin`](https://github.com/GeunhwaJeong/haneul/blob/main/crates/haneul-framework/docs/haneul/coin.md) module to define fungible assets called coins that have `key` and `store` abilities. Coins support wrapping and public transfer functionality.
@@ -21,8 +63,8 @@ Define the metadata for the coin, including its name, description, symbol, icon 
 <ImportContent
 	source="I1/silver/sources/silver.move"
 	mode="code"
-	org="MystenLabs"
-	repo="sui-move-bootcamp"
+	org="HaneulLabs"
+	repo="haneul-move-bootcamp"
 	lines="11-15"
 	branch="solution"
 />
@@ -36,8 +78,8 @@ Create the coin using the `coin::create_currency` function:
 <ImportContent
 	source="I1/silver/sources/silver.move"
 	mode="code"
-	org="MystenLabs"
-	repo="sui-move-bootcamp"
+	org="HaneulLabs"
+	repo="haneul-move-bootcamp"
 	fun="create_currency"
 	branch="solution"
 />
@@ -49,8 +91,8 @@ Mint the initial supply of your coin:
 <ImportContent
 	source="I1/silver/sources/silver.move"
 	mode="code"
-	org="MystenLabs"
-	repo="sui-move-bootcamp"
+	org="HaneulLabs"
+	repo="haneul-move-bootcamp"
 	fun="mint"
 	branch="solution"
 />

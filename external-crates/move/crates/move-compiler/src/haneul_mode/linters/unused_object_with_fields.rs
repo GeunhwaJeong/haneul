@@ -51,7 +51,7 @@ use crate::{
         Diagnostic, Diagnostics,
         codes::{DiagnosticInfo, Severity, custom},
     },
-    haneul_mode::linters::{LINT_WARNING_PREFIX, LinterDiagnosticCategory, LinterDiagnosticCode},
+    haneul_mode::linters::{LinterDiagnosticCategory, LinterDiagnosticCode},
     hlir::ast::{
         BaseType_, Command, Command_ as C, Exp, LValue_ as L, Label, ModuleCall, SingleType,
         SingleType_, Type, TypeName_, UnannotatedExp_, Var,
@@ -64,7 +64,7 @@ use move_ir_types::location::*;
 use std::collections::{BTreeMap, BTreeSet};
 
 const UNUSED_OBJ_WITH_FIELDS_DIAG: DiagnosticInfo = custom(
-    LINT_WARNING_PREFIX,
+    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
     Severity::Warning,
     LinterDiagnosticCategory::Haneul as u8,
     LinterDiagnosticCode::UnusedObjWithFields as u8,

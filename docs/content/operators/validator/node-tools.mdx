@@ -1,8 +1,43 @@
 ---
 title: Validator Node Tools
-description: Use the Haneul CLI to interact with a full node's validator commands. 
-keywords: [ haneul cli, full node, delegator, validator, operation cap, report validators, join a committee, leave a committee, report a validator, proof of possession, generate proof of possession ]
+description: Use the Haneul CLI to interact with a full node's validator commands.
+keywords:
+  - haneul cli
+  - full node
+  - delegator
+  - validator
+  - operation cap
+  - report validators
+  - join a committee
+  - leave a committee
+  - report a validator
+  - proof of possession
+  - generate proof of possession
 sidebar_label: Tools
+goal:
+  description: >-
+    Validator operator can use the Haneul CLI to interact with a full node's
+    validator commands
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more operational depth
+    - pattern: '```'
+      min: 1
+      label: Has configuration or command examples
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What tools are available for Haneul validator operators?
+  - How do I use the Haneul validator CLI tools?
+  - How do I check my validator node health?
+answer: Use the Haneul CLI to interact with a full node's validator commands.
 ---
 
 This guide focuses on using the Haneul CLI `validator` commands. 
@@ -30,7 +65,7 @@ View `haneul` binary installation details.
 
     1. Clone the git repo:
 
-           `$ git clone git@github.com:GeunhwaJeong/haneul.git && cd haneul`
+           `$ git clone git@github.com:HaneulLabs/haneul.git && cd haneul`
 
     2. Check out the commit to use for Testnet:
 

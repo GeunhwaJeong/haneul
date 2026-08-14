@@ -1,10 +1,23 @@
 ---
 title: Real-Time Event Indexer
-description: Build a real-time event indexer that subscribes to Haneul checkpoints through gRPC, filters for specific Move events, and decodes BCS-encoded event data in TypeScript.
-keywords: [example, indexer, events, grpc, bcs, checkpoint, streaming, move, typescript, bootcamp]
+description: >-
+  Build a real-time event indexer that subscribes to Haneul checkpoints through
+  gRPC, filters for specific Move events, and decodes BCS-encoded event data in
+  TypeScript.
+keywords:
+  - example
+  - indexer
+  - events
+  - grpc
+  - bcs
+  - checkpoint
+  - streaming
+  - move
+  - typescript
+  - bootcamp
 example_id: event-indexer-bootcamp
-last_verified: 2026-04-30
-repo: https://github.com/GeunhwaJeong/haneul-move-bootcamp
+last_verified: 2026-04-30T00:00:00.000Z
+repo: 'https://github.com/GeunhwaJeong/haneul-move-bootcamp'
 path: /K1
 concepts:
   - event_emission
@@ -13,6 +26,47 @@ concepts:
   - checkpoint_subscription
   - shared_counter
   - custom_indexer
+goal:
+  description: >-
+    Reader can build a real-time event indexer that subscribes to Haneul
+    checkpoints through gRPC
+  requires:
+    - headings:
+        - pattern: When to use|Use case
+        - pattern: What you learn|Learning
+        - pattern: Prerequisites
+        - pattern: Setup|Getting started
+        - pattern: Run
+        - pattern: Troubleshooting|Common issues
+      label: Has standard example page sections
+    - pattern: '```'
+      min: 3
+      label: 'Has code blocks for setup, source, and output'
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 800
+      label: Needs more explanation depth
+    - pattern: mermaid|sequenceDiagram|graph|flowchart
+      min: 1
+      label: Has architecture diagram
+    - headings:
+        - pattern: Key code|Code highlight|Walkthrough
+      label: Has code explanation section
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How do I build a real-time event indexer for Haneul?
+  - How do I subscribe to Haneul checkpoints via gRPC?
+  - How do I decode BCS-encoded Move events in TypeScript?
+answer: >-
+  Build a real-time event indexer that subscribes to Haneul checkpoints through
+  gRPC, filters for specific Move events, and decodes BCS-encoded event data in
+  TypeScript.
 ---
 
 A real-time event indexer demonstrates how to listen for onchain events as they happen. In this example, a Move contract emits `UserRegistered` events when users register, and a TypeScript backend subscribes to Haneul checkpoints through [gRPC](/develop/accessing-data/grpc), filters for those events, and decodes the BCS-encoded data into readable objects.
@@ -206,7 +260,7 @@ The following snippets are the parts of the code worth reading carefully.
 
 The `register_user` function emits a `UserRegistered` event and increments the shared counter.
 
-<ImportContent source="K1/contract/sources/indexer_sample.move" mode="code" org="MystenLabs" repo="sui-move-bootcamp" fun="register_user" />
+<ImportContent source="K1/contract/sources/indexer_sample.move" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" fun="register_user" />
 
 The function reads the current `count` as the user's ID before incrementing. The `UserRegistered` event has `copy` and `drop` abilities, which `event::emit` requires. The event carries the sender address, the name string, and the sequential ID.
 
@@ -214,7 +268,7 @@ The function reads the current `count` as the user's ID before incrementing. The
 
 The `UserRegistered` struct defines the shape of the emitted event.
 
-<ImportContent source="K1/contract/sources/indexer_sample.move" mode="code" org="MystenLabs" repo="sui-move-bootcamp" struct="UserRegistered" />
+<ImportContent source="K1/contract/sources/indexer_sample.move" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" struct="UserRegistered" />
 
 The struct has 3 fields: `owner` (the sender's address), `name` (the registration name), and `user_id` (the sequential counter value).
 
@@ -222,7 +276,7 @@ The struct has 3 fields: `owner` (the sender's address), `name` (the registratio
 
 The indexer subscribes to checkpoints and filters for `UserRegistered` events.
 
-<ImportContent source="K1/backend/indexer.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" fun="main" />
+<ImportContent source="K1/backend/indexer.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" fun="main" />
 
 The `subscribeCheckpoint` call opens a persistent gRPC stream starting from the latest checkpoint. The `readMask` limits the response to `transactions.events`, reducing bandwidth. The `for await` loop processes each checkpoint as it arrives, calling `processCheckpoint` to filter and decode events.
 
@@ -230,7 +284,7 @@ The `subscribeCheckpoint` call opens a persistent gRPC stream starting from the 
 
 The `decodeBcsEvent` function parses raw event bytes using a BCS schema that matches the Move struct.
 
-<ImportContent source="K1/backend/utils/parseEvent.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" fun="decodeBcsEvent" />
+<ImportContent source="K1/backend/utils/parseEvent.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" fun="decodeBcsEvent" />
 
 The `userRegisteredSchema` defines the BCS layout: `Address` for the owner, `string()` for the name, and `u64()` for the user ID. The function extracts the raw bytes from the event, converts them to a `Uint8Array`, and parses them with the schema. The function converts `user_id` to a string because JavaScript cannot safely represent all u64 values as numbers.
 
