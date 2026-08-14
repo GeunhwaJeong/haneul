@@ -174,39 +174,17 @@ fn explain_unpinned_dependencies(source_path: &Path, mut error: AggregateError) 
     error
 }
 
-/// Fail up front for the handful of releases known not to work for verification, naming a nearby
-/// release that does — so a package recording such a toolchain gets a precise, actionable error
-/// rather than an opaque download or build failure. Unparseable versions (e.g. a nightly) are let
-/// through to be attempted.
-fn check_toolchain_version(version: &str) -> Result<(), Error> {
-    let parse = || -> Option<(u32, u32, u32)> {
-        let mut parts = version.split('.');
-        let mut next = || parts.next()?.parse::<u32>().ok();
-        Some((next()?, next()?, next()?))
-    };
-    let Some(v) = parse() else { return Ok(()) };
-
-    let (reason, alternative) = if v <= (1, 8, 1) {
-        // No release publishes a binary for this platform this far back.
-        (
-            "no release publishes a binary for this platform at v1.8.1 or earlier",
-            "1.9.0",
-        )
-    } else if (v.0, v.1) == (1, 64) {
-        // v1.64.x pins a framework revision (protocol 108) that is no longer in the repository.
-        (
-            "v1.64.x pins a framework revision that is no longer available",
-            "1.65.2",
-        )
-    } else {
-        return Ok(());
-    };
-
-    Err(Error::UnsupportedToolchain {
-        version: version.to_string(),
-        reason: reason.to_string(),
-        alternative: alternative.to_string(),
-    })
+/// Fail up front for releases known not to work for verification, naming a nearby release that
+/// does — so a package recording such a toolchain gets a precise, actionable error rather than an
+/// opaque download or build failure. Unparseable versions (e.g. a nightly) are let through to be
+/// attempted.
+///
+/// The known-bad list describes this chain's own release history, which starts at v1.0.0 with no
+/// gaps in verification support, so it is currently empty. Populate it if a future release turns
+/// out to be unusable for rebuilds (e.g. it pins a framework revision that later leaves the
+/// repository).
+fn check_toolchain_version(_version: &str) -> Result<(), Error> {
+    Ok(())
 }
 
 #[cfg(test)]
@@ -221,29 +199,11 @@ mod tests {
 
     #[test]
     fn flags_known_unusable_versions() {
-        assert!(
-            suggestion("1.8.1")
-                .unwrap()
-                .contains("--toolchain-version 1.9.0")
-        );
-        assert!(
-            suggestion("1.5.0")
-                .unwrap()
-                .contains("--toolchain-version 1.9.0")
-        );
-        assert!(
-            suggestion("1.64.1")
-                .unwrap()
-                .contains("--toolchain-version 1.65.2")
-        );
-        assert!(
-            suggestion("1.64.2")
-                .unwrap()
-                .contains("--toolchain-version 1.65.2")
-        );
-        // Usable and unparseable versions are let through.
-        assert!(suggestion("1.65.2").is_none());
-        assert!(suggestion("1.50.0").is_none());
+        // The known-bad list is empty for this chain's release line: every released version can
+        // verify, and unparseable versions are let through to be attempted.
+        assert!(suggestion("1.0.0").is_none());
+        assert!(suggestion("1.5.0").is_none());
+        assert!(suggestion("1.7.0").is_none());
         assert!(suggestion("nightly").is_none());
     }
 
