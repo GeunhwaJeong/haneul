@@ -457,7 +457,7 @@ jobs:
 
       # See '.cargo/config' for list of enabled/disappled clippy lints
       - name: cargo clippy
-        run: cargo xclippy -D warnings
+        run: cargo xclippy -- -D warnings
 
   rustfmt:
     needs: diff

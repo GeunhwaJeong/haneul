@@ -9,24 +9,20 @@ use anyhow::ensure;
 use bytes::Bytes;
 use futures::Stream;
 use futures::StreamExt;
+use haneul_rpc::Client;
 use haneul_rpc::proto::haneul::rpc::v2 as proto;
 use haneul_rpc::proto::haneul::rpc::v2::ExecutedTransaction;
-use haneul_rpc::proto::haneul::rpc::v2::ledger_service_client::LedgerServiceClient;
 use prometheus::Registry;
-use tonic::transport::Channel;
-use tonic::transport::ClientTlsConfig;
 use tonic::transport::Uri;
-use tower::Layer;
 use tracing::warn;
 
 use crate::ledger_grpc_reader::LedgerGrpcArgs;
 use crate::metrics::GrpcMetricsLayer;
-use crate::metrics::GrpcMetricsService;
 
 /// A reader backed by the gRPC LedgerService's streaming list APIs.
 #[derive(Clone)]
 pub struct AlphaLedgerGrpcReader {
-    client: LedgerServiceClient<GrpcMetricsService<Channel>>,
+    client: Client,
     timeout: Option<Duration>,
 }
 
@@ -65,23 +61,17 @@ impl AlphaLedgerGrpcReader {
         prefix: Option<&str>,
         registry: &Registry,
     ) -> anyhow::Result<Self> {
-        let mut endpoint = Channel::builder(uri.clone());
-        if let Some(timeout) = args.statement_timeout() {
-            endpoint = endpoint.timeout(timeout);
-        }
-
-        if uri.scheme_str() == Some("https") {
-            let tls_config = ClientTlsConfig::new().with_native_roots();
-            endpoint = endpoint.tls_config(tls_config)?;
-        }
-
-        let channel = endpoint.connect_lazy();
-        let layered =
-            GrpcMetricsLayer::new(prefix.unwrap_or("ledger_grpc"), registry).layer(channel);
-
         let timeout = args.statement_timeout();
-        let client = LedgerServiceClient::new(layered.clone())
-            .max_decoding_message_size(args.ledger_grpc_max_decoding_message_size);
+        let mut client = Client::new(uri)?
+            .with_max_decoding_message_size(args.ledger_grpc_max_decoding_message_size)
+            .request_layer(GrpcMetricsLayer::new(
+                prefix.unwrap_or("ledger_grpc"),
+                registry,
+            ));
+
+        if let Some(timeout) = timeout {
+            client = client.with_response_headers_timeout(timeout);
+        }
 
         Ok(Self { client, timeout })
     }
@@ -90,14 +80,32 @@ impl AlphaLedgerGrpcReader {
         &self,
         request: proto::ListTransactionsRequest,
     ) -> anyhow::Result<StreamPage<ExecutedTransaction>> {
-        let mut client = self.client.clone();
-        let stream = client
+        let stream = self
+            .client
+            .clone()
+            .ledger_client()
             .list_transactions(self.request(request))
             .await
             .context("ListTransactions stream open failed")?
             .into_inner();
 
         drain_list_stream("ListTransactions", stream).await
+    }
+
+    pub async fn list_events(
+        &self,
+        request: proto::ListEventsRequest,
+    ) -> anyhow::Result<StreamPage<proto::Event>> {
+        let stream = self
+            .client
+            .clone()
+            .ledger_client()
+            .list_events(self.request(request))
+            .await
+            .context("ListEvents stream open failed")?
+            .into_inner();
+
+        drain_list_stream("ListEvents", stream).await
     }
 
     /// Create a gRPC request, optionally with the grpc-timeout header if configured.
@@ -145,6 +153,24 @@ impl<T> StreamPage<T> {
         self.last_wm_cursor
             .as_ref()
             .or_else(|| self.items.last().map(|item| &item.cursor))
+    }
+
+    /// Construct a page directly for cross-crate tests, bypassing the drain loop. The watermark
+    /// fields are private (their invariant is maintained by [`Self::apply`]); this is the only
+    /// sanctioned way to set them from outside the crate.
+    #[cfg(feature = "testing")]
+    pub fn for_test(
+        items: Vec<PageItem<T>>,
+        first_wm_cursor: Option<Bytes>,
+        last_wm_cursor: Option<Bytes>,
+        end_reason: Option<proto::QueryEndReason>,
+    ) -> Self {
+        Self {
+            items,
+            first_wm_cursor,
+            last_wm_cursor,
+            end_reason,
+        }
     }
 
     /// Fold one frame into the page.
@@ -201,23 +227,40 @@ impl TryFrom<proto::ListTransactionsResponse> for FrameKind<ExecutedTransaction>
     type Error = anyhow::Error;
 
     fn try_from(response: proto::ListTransactionsResponse) -> anyhow::Result<Self> {
-        let payload = response.transaction;
-        let cursor = response.watermark.and_then(|w| w.cursor);
-        let end_reason = response.end.map(|e| e.reason());
-
-        if payload.is_none() && cursor.is_none() && end_reason.is_none() {
-            return Ok(FrameKind::Unknown);
-        }
-        if payload.is_some() && cursor.is_none() {
-            bail!("Item frame missing watermark.cursor");
-        }
-
-        Ok(FrameKind::Frame {
-            payload,
-            cursor,
-            end_reason,
-        })
+        classify_frame(response.transaction, response.watermark, response.end)
     }
+}
+
+impl TryFrom<proto::ListEventsResponse> for FrameKind<proto::Event> {
+    type Error = anyhow::Error;
+
+    fn try_from(response: proto::ListEventsResponse) -> anyhow::Result<Self> {
+        classify_frame(response.event, response.watermark, response.end)
+    }
+}
+
+/// Classify a raw list-stream response into a [`FrameKind`], given its payload field. Per-API
+/// implementations only select which response field is the payload.
+fn classify_frame<T>(
+    payload: Option<T>,
+    watermark: Option<proto::Watermark>,
+    end: Option<proto::QueryEnd>,
+) -> anyhow::Result<FrameKind<T>> {
+    let cursor = watermark.and_then(|w| w.cursor);
+    let end_reason = end.map(|e| e.reason());
+
+    if payload.is_none() && cursor.is_none() && end_reason.is_none() {
+        return Ok(FrameKind::Unknown);
+    }
+    if payload.is_some() && cursor.is_none() {
+        bail!("Item frame missing watermark.cursor");
+    }
+
+    Ok(FrameKind::Frame {
+        payload,
+        cursor,
+        end_reason,
+    })
 }
 
 async fn drain_list_stream<R, T, S>(

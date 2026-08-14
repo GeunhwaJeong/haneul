@@ -15,7 +15,8 @@ use haneul_types::{
     HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID,
     HANEUL_AUTHENTICATOR_STATE_OBJECT_ID, HANEUL_BRIDGE_OBJECT_ID, HANEUL_CLOCK_OBJECT_ID,
     HANEUL_COIN_REGISTRY_OBJECT_ID, HANEUL_DENY_LIST_OBJECT_ID, HANEUL_DISPLAY_REGISTRY_OBJECT_ID,
-    HANEUL_RANDOMNESS_STATE_OBJECT_ID, HANEUL_SYSTEM_STATE_OBJECT_ID, TypeTag,
+    HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID, HANEUL_RANDOMNESS_STATE_OBJECT_ID,
+    HANEUL_SYSTEM_STATE_OBJECT_ID, TypeTag,
     base_types::{HaneulAddress, MoveObjectType, ObjectID, SequenceNumber},
     committee::EpochId,
     error::{ExecutionError, VMMemoryLimitExceededSubStatusCode},
@@ -244,6 +245,16 @@ impl<'a> ObjectRuntime<'a> {
         Ok(())
     }
 
+    /// Marks `id` as new via `new_id` and, when `parent` has a tracked root version, records the
+    /// same root version for `id`. When `parent` is untracked it must itself be newly created in
+    /// this transaction (and transitively to its root), so no root version is recorded.
+    pub fn new_id_from_hash(&mut self, parent: ObjectID, id: ObjectID) -> PartialVMResult<()> {
+        self.new_id(id)?;
+        self.child_object_store
+            .inherit_root_version_from_parent(parent, id)?;
+        Ok(())
+    }
+
     pub fn delete_id(&mut self, id: ObjectID) -> PartialVMResult<()> {
         // This is defensive because `self.state.deleted_ids` may not indeed
         // be called based on the `was_new` flag
@@ -301,6 +312,7 @@ impl<'a> ObjectRuntime<'a> {
             HANEUL_COIN_REGISTRY_OBJECT_ID,
             HANEUL_DISPLAY_REGISTRY_OBJECT_ID,
             HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID,
+            HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID,
         ]
         .contains(&id);
         let transfer_result = if self.state.new_ids.contains(&id) {

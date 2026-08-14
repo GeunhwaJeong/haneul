@@ -20,7 +20,7 @@ use haneul_types::{
     HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID,
     HANEUL_AUTHENTICATOR_STATE_OBJECT_ID, HANEUL_BRIDGE_OBJECT_ID, HANEUL_COIN_REGISTRY_OBJECT_ID,
     HANEUL_DENY_LIST_OBJECT_ID, HANEUL_DISPLAY_REGISTRY_OBJECT_ID,
-    HANEUL_RANDOMNESS_STATE_OBJECT_ID,
+    HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID, HANEUL_RANDOMNESS_STATE_OBJECT_ID,
 };
 use std::fmt;
 
@@ -37,6 +37,7 @@ const SYSTEM_SHARED_OBJECT_IDS: &[ObjectID] = &[
     HANEUL_COIN_REGISTRY_OBJECT_ID,
     HANEUL_DISPLAY_REGISTRY_OBJECT_ID,
     HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID,
+    HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID,
 ];
 
 /// Reads the initial shared version of a system shared object from the store.
@@ -288,6 +289,10 @@ impl EpochStartConfiguration {
 
     pub fn address_alias_state_obj_initial_shared_version(&self) -> Option<SequenceNumber> {
         self.system_object_initial_shared_version(HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID)
+    }
+
+    pub fn forwarding_address_registry_obj_initial_shared_version(&self) -> Option<SequenceNumber> {
+        self.system_object_initial_shared_version(HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID)
     }
 }
 

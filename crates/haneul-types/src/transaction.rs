@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use super::{HANEUL_BRIDGE_OBJECT_ID, base_types::*, error::*};
-use crate::accumulator_root::{AccumulatorObjId, AccumulatorValue};
+use crate::accumulator_root::{AccumulatorObjId, AccumulatorValue, check_accumulator_type_bounds};
 use crate::authenticator_state::ActiveJwk;
 use crate::balance::{
     BALANCE_MODULE_NAME, BALANCE_REDEEM_FUNDS_FUNCTION_NAME, BALANCE_SEND_FUNDS_FUNCTION_NAME,
@@ -507,6 +507,7 @@ pub enum EndOfEpochTransactionKind {
     DisplayRegistryCreate,
     AddressAliasStateCreate,
     WriteAccumulatorStorageCost(WriteAccumulatorStorageCost),
+    ForwardingAddressRegistryCreate,
 }
 
 impl EndOfEpochTransactionKind {
@@ -568,6 +569,10 @@ impl EndOfEpochTransactionKind {
 
     pub fn new_address_alias_state_create() -> Self {
         Self::AddressAliasStateCreate
+    }
+
+    pub fn new_forwarding_address_registry_create() -> Self {
+        Self::ForwardingAddressRegistryCreate
     }
 
     pub fn new_bridge_create(chain_identifier: ChainIdentifier) -> Self {
@@ -638,6 +643,7 @@ impl EndOfEpochTransactionKind {
                     mutability: SharedObjectMutability::Mutable,
                 }]
             }
+            Self::ForwardingAddressRegistryCreate => vec![],
         }
     }
 
@@ -679,6 +685,7 @@ impl EndOfEpochTransactionKind {
             Self::WriteAccumulatorStorageCost(_) => {
                 Either::Left(vec![SharedInputObject::HANEUL_SYSTEM_OBJ].into_iter())
             }
+            Self::ForwardingAddressRegistryCreate => Either::Right(iter::empty()),
         }
     }
 
@@ -767,6 +774,13 @@ impl EndOfEpochTransactionKind {
                 if !config.enable_accumulators() {
                     return Err(UserInputError::Unsupported(
                         "accumulators not enabled".to_string(),
+                    ));
+                }
+            }
+            Self::ForwardingAddressRegistryCreate => {
+                if !config.create_forwarding_address_registry() {
+                    return Err(UserInputError::Unsupported(
+                        "forwarding address registry not enabled".to_string(),
                     ));
                 }
             }
@@ -859,7 +873,15 @@ impl CallArg {
                     }
                 }
             },
-            CallArg::FundsWithdrawal(_) => {}
+            CallArg::FundsWithdrawal(w) => {
+                fp_ensure!(
+                    check_accumulator_type_bounds(config, &w.type_arg.to_type_tag()),
+                    UserInputError::SizeLimitExceeded {
+                        limit: "maximum type nodes in a funds accumulator type".to_string(),
+                        value: config.max_accumulator_type_nodes().to_string()
+                    }
+                );
+            }
         }
         Ok(())
     }

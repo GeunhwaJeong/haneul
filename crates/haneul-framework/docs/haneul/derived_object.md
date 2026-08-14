@@ -159,7 +159,7 @@ Claim a deterministic UID, using the parent's UID & any key.
     <b>let</b> id = addr.to_id();
     <b>assert</b>!(!df::exists(parent, <a href="../haneul/derived_object.md#haneul_derived_object_Claimed">Claimed</a>(id)), <a href="../haneul/derived_object.md#haneul_derived_object_EObjectAlreadyExists">EObjectAlreadyExists</a>);
     df::add(parent, <a href="../haneul/derived_object.md#haneul_derived_object_Claimed">Claimed</a>(id), ClaimedStatus::Reserved);
-    <a href="../haneul/object.md#haneul_object_new_uid_from_hash">object::new_uid_from_hash</a>(addr)
+    <a href="../haneul/object.md#haneul_object_new_uid_from_hash">object::new_uid_from_hash</a>(parent.to_address(), addr)
 }
 </code></pre>
 

@@ -1,16 +1,65 @@
 ---
 title: Capability Pattern
-description: Control access to privileged operations in Move using capability objects that you can delegate, revoke, and compose.
-keywords: [example, capability, access-control, move, admin, authorization, bootcamp]
+description: >-
+  Control access to privileged operations in Move using capability objects that
+  you can delegate, revoke, and compose.
+keywords:
+  - example
+  - capability
+  - access-control
+  - move
+  - admin
+  - authorization
+  - bootcamp
 example_id: capability-pattern-bootcamp
-last_verified: 2026-04-30
-repo: https://github.com/GeunhwaJeong/haneul-move-bootcamp
+last_verified: 2026-04-30T00:00:00.000Z
+repo: 'https://github.com/GeunhwaJeong/haneul-move-bootcamp'
 path: /C1/capability
 concepts:
   - capability_pattern
   - access_control
   - object_ownership
   - delegation
+goal:
+  description: >-
+    Reader can control access to privileged operations in Move using capability
+    objects that you can delegate, revoke, and compose
+  requires:
+    - headings:
+        - pattern: When to use|Use case
+        - pattern: What you learn|Learning
+        - pattern: Prerequisites
+        - pattern: Setup|Getting started
+        - pattern: Run
+        - pattern: Troubleshooting|Common issues
+      label: Has standard example page sections
+    - pattern: '```'
+      min: 3
+      label: 'Has code blocks for setup, source, and output'
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 800
+      label: Needs more explanation depth
+    - pattern: mermaid|sequenceDiagram|graph|flowchart
+      min: 1
+      label: Has architecture diagram
+    - headings:
+        - pattern: Key code|Code highlight|Walkthrough
+      label: Has code explanation section
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How do I implement the capability pattern in Haneul Move?
+  - What is the capability pattern and when should I use it?
+  - How do I delegate and revoke access with capability objects?
+answer: >-
+  Control access to privileged operations in Move using capability objects that
+  you can delegate, revoke, and compose.
 ---
 
 The Move [capability pattern](/develop/write-move/haneul-move-concepts) enables [address-owned objects](/develop/objects/object-ownership/address-owned) to act as authorization tokens in Move. In this example, an `AdminCap` object gates who can create and transfer `Hero` objects, and existing admins can delegate authority by minting new `AdminCap` instances for other addresses.
@@ -179,7 +228,7 @@ The transaction creates a `Hero` object owned by your address, then delegates ad
 
 ## Key code highlights
 
-<CodeWalkthrough source="C1/capability/sources/hero.move" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" language="move">
+<CodeWalkthrough source="C1/capability/sources/hero.move" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" language="move">
   <Step lines="9-11" title="The `AdminCap` capability struct">
     The `AdminCap` struct is the authorization token. Owning it proves you have admin privileges. It has only the `key` ability (not `store`), so it can exist as a Haneul object but cannot be wrapped inside another object. The struct carries no data because its purpose is purely authorization: if you can pass a `&AdminCap` reference, you have permission.
   </Step>

@@ -145,10 +145,46 @@ fn verify_signature(
         }
     }
 
+    // Building the zklogin verifier when the signature can actually contain a zklogin signature.
+    let mut verifier = haneul_crypto::UserSignatureVerifier::new();
+    if signature_may_contain_zklogin(&signature) {
+        verifier.with_zklogin_verifier(build_zklogin_verifier(service, &request.jwks)?);
+    }
+
+    let mut message = VerifySignatureResponse::default();
+    match verifier.verify(&signing_digest, &signature) {
+        Ok(()) => message.is_valid = Some(true),
+        Err(error) => {
+            message.is_valid = Some(false);
+            message.reason = Some(error.to_string());
+        }
+    }
+
+    Ok(message)
+}
+
+fn signature_may_contain_zklogin(signature: &haneul_sdk_types::UserSignature) -> bool {
+    match signature {
+        haneul_sdk_types::UserSignature::ZkLogin(_) => true,
+        haneul_sdk_types::UserSignature::Multisig(multisig) => {
+            multisig.committee().members().iter().any(|member| {
+                matches!(
+                    member.public_key(),
+                    haneul_sdk_types::MultisigMemberPublicKey::ZkLogin(_)
+                )
+            })
+        }
+        _ => false,
+    }
+}
+
+fn build_zklogin_verifier(
+    service: &RpcService,
+    request_jwks: &[haneul_rpc::proto::haneul::rpc::v2::ActiveJwk],
+) -> Result<haneul_crypto::zklogin::ZkloginVerifier> {
     // If jwks from the request is empty we load the current set of active jwks that are onchain
     let jwks = {
-        let mut jwks = request
-            .jwks
+        let mut jwks = request_jwks
             .iter()
             .enumerate()
             .map(|(i, jwk)| {
@@ -185,17 +221,25 @@ fn verify_signature(
             haneul_crypto::zklogin::ZkloginVerifier::new_dev()
         }
     };
+
     // Get circuit mode from protocol config and set to verifier.
-    let circuit_mode = {
-        let system_state = service.reader.get_system_state_summary()?;
+    let system_state = service.reader.get_system_state_summary()?;
+    let circuit_mode =
         ProtocolConfig::get_for_version_if_supported(system_state.protocol_version.into(), chain)
-            .map(|config| config.zklogin_circuit_mode())
-    };
+            .map(|config| config.zklogin_circuit_mode());
     zklogin_verifier.set_circuit_mode(match circuit_mode {
         Some(0) => ZkLoginCircuitMode::V1Only,
         Some(1) => ZkLoginCircuitMode::Both,
         Some(2) => ZkLoginCircuitMode::V2Only,
-        None => ZkLoginCircuitMode::Both,
+        None => {
+            return Err(RpcError::new(
+                tonic::Code::Internal,
+                format!(
+                    "protocol version {} is not supported",
+                    system_state.protocol_version
+                ),
+            ));
+        }
         Some(mode) => {
             return Err(RpcError::new(
                 tonic::Code::Internal,
@@ -204,17 +248,5 @@ fn verify_signature(
         }
     });
     *zklogin_verifier.jwks_mut() = jwks;
-    let mut verifier = haneul_crypto::UserSignatureVerifier::new();
-    verifier.with_zklogin_verifier(zklogin_verifier);
-
-    let mut message = VerifySignatureResponse::default();
-    match verifier.verify(&signing_digest, &signature) {
-        Ok(()) => message.is_valid = Some(true),
-        Err(error) => {
-            message.is_valid = Some(false);
-            message.reason = Some(error.to_string());
-        }
-    }
-
-    Ok(message)
+    Ok(zklogin_verifier)
 }

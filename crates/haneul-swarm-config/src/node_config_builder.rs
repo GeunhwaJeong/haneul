@@ -17,6 +17,7 @@ use haneul_config::node::{
 };
 use haneul_config::node::{RunWithRange, TransactionDriverConfig, default_zklogin_oauth_providers};
 use haneul_config::p2p::{P2pConfig, SeedPeer, StateSyncConfig};
+use haneul_config::transaction_deny_config::PeerDenySyncConfig;
 use haneul_config::verifier_signing_config::VerifierSigningConfig;
 use haneul_config::{
     AUTHORITIES_DB_NAME, CONSENSUS_DB_NAME, ConsensusConfig, FULL_NODE_DB_PATH, NodeConfig,
@@ -53,6 +54,7 @@ pub struct ValidatorConfigBuilder {
     chain_override: Option<Chain>,
     state_sync_config: Option<StateSyncConfig>,
     observer_config: Option<ObserverParameters>,
+    peer_deny_sync_config: Option<PeerDenySyncConfig>,
 }
 
 impl ValidatorConfigBuilder {
@@ -147,6 +149,11 @@ impl ValidatorConfigBuilder {
 
     pub fn with_observer_config(mut self, config: ObserverParameters) -> Self {
         self.observer_config = Some(config);
+        self
+    }
+
+    pub fn with_peer_deny_sync_config(mut self, config: PeerDenySyncConfig) -> Self {
+        self.peer_deny_sync_config = Some(config);
         self
     }
 
@@ -262,6 +269,7 @@ impl ValidatorConfigBuilder {
             name_service_registry_id: None,
             name_service_reverse_registry_id: None,
             transaction_deny_config: Default::default(),
+            peer_deny_sync_config: self.peer_deny_sync_config.unwrap_or_default(),
             dev_inspect_disabled: false,
             certificate_deny_config: Default::default(),
             state_debug_dump_config: Default::default(),
@@ -655,6 +663,7 @@ impl FullnodeConfigBuilder {
             name_service_registry_id: None,
             name_service_reverse_registry_id: None,
             transaction_deny_config: Default::default(),
+            peer_deny_sync_config: Default::default(),
             dev_inspect_disabled: false,
             certificate_deny_config: Default::default(),
             state_debug_dump_config: Default::default(),

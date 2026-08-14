@@ -9,6 +9,9 @@ edition = "2024"
 [lints]
 workspace = true
 
+[features]
+testing = []
+
 [dependencies]
 anyhow.workspace = true
 async-graphql = { workspace = true, features = ["dataloader"] }
@@ -43,3 +46,6 @@ haneul-rpc.workspace = true
 haneul-sdk-types.workspace = true
 haneul-sql-macro.workspace = true
 haneul-types.workspace = true
+
+[dev-dependencies]
+tokio-stream.workspace = true

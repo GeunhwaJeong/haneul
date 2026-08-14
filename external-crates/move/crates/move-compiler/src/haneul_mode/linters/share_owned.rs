@@ -26,8 +26,8 @@ use crate::{
         HANEUL_ADDR_VALUE, TX_CONTEXT_MODULE_NAME, TX_CONTEXT_TYPE_NAME,
         info::TransferKind,
         linters::{
-            LINT_WARNING_PREFIX, LinterDiagnosticCategory, LinterDiagnosticCode, PUBLIC_SHARE_FUN,
-            SHARE_FUN, TRANSFER_MOD_NAME, type_abilities,
+            LinterDiagnosticCategory, LinterDiagnosticCode, PUBLIC_SHARE_FUN, SHARE_FUN,
+            TRANSFER_MOD_NAME, type_abilities,
         },
     },
     hlir::ast::{
@@ -52,7 +52,7 @@ const SHARE_FUNCTIONS: &[(AccountAddress, &str, &str)] = &[
 ];
 
 const SHARE_OWNED_DIAG: DiagnosticInfo = custom(
-    LINT_WARNING_PREFIX,
+    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
     Severity::Warning,
     LinterDiagnosticCategory::Haneul as u8,
     LinterDiagnosticCode::ShareOwned as u8,

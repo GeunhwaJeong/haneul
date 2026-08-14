@@ -2,17 +2,36 @@
 title: Margin Pool
 description: Learn about margin pools and how they enable liquidity for leveraged trading.
 keywords:
-  [
-    margin pool,
-    marginpool,
-    liquidity pool,
-    lending pool,
-    supply,
-    borrow,
-    interest rate,
-    utilization rate,
-    deepbook margin,
-  ]
+  - margin pool
+  - marginpool
+  - liquidity pool
+  - lending pool
+  - supply
+  - borrow
+  - interest rate
+  - utilization rate
+  - deepbook margin
+goal:
+  description: >-
+    Reader understands about margin pools and how they enable liquidity for
+    leveraged trading
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Margin Pool in Haneul?
+  - How does margin pool work on Haneul?
+  - Why should I use margin pool?
+answer: Learn about margin pools and how they enable liquidity for leveraged trading.
 ---
 
 The `MarginPool` is a shared object that manages liquidity for a specific asset, enabling lenders to supply assets and margin traders to borrow them. Each margin pool tracks supply and borrow positions, accrues interest over time, and enforces risk parameters to maintain system health.
@@ -31,7 +50,7 @@ Create a new `SupplierCap` that can be used to supply and withdraw from margin p
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="mint_supplier_cap"
 />
@@ -46,7 +65,7 @@ Supply assets to the margin pool to earn interest. Returns the total supply shar
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="supply"
 />
@@ -61,7 +80,7 @@ Withdraw supplied assets from the margin pool. You can specify an exact amount o
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="withdraw"
 />
@@ -74,7 +93,7 @@ Withdraw supplied assets from the margin pool. You can specify an exact amount o
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	fun="id,deepbook_pool_allowed,total_supply,supply_shares,total_borrow,borrow_shares,last_update_timestamp,supply_cap,protocol_fees,max_utilization_rate,protocol_spread,min_borrow,interest_rate,user_supply_shares,user_supply_amount"
 />
@@ -91,7 +110,7 @@ The system emits this event when you create a new margin pool.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="MarginPoolCreated"
 />
@@ -106,7 +125,7 @@ The system emits this event when you enable or disable a DeepBook pool for lendi
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="DeepbookPoolUpdated"
 />
@@ -121,7 +140,7 @@ The system emits this event when you update interest rate parameters.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="InterestParamsUpdated"
 />
@@ -136,7 +155,7 @@ The system emits this event when you update the margin pool configuration.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="MarginPoolConfigUpdated"
 />
@@ -151,7 +170,7 @@ The system emits this event when you mint a new supplier cap.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="SupplierCapMinted"
 />
@@ -166,7 +185,7 @@ The system emits this event when you supply assets to a margin pool.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="AssetSupplied"
 />
@@ -181,7 +200,7 @@ The system emits this event when you withdraw assets from a margin pool.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="AssetWithdrawn"
 />
@@ -196,7 +215,7 @@ The system emits this event when you withdraw maintainer fees.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="MaintainerFeesWithdrawn"
 />
@@ -211,7 +230,7 @@ The system emits this event when you withdraw protocol fees.
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="ProtocolFeesWithdrawn"
 />
@@ -226,7 +245,7 @@ The system emits this event when it accrues protocol fees from interest payments
 <ImportContent
 	source="packages/deepbook_margin/sources/margin_pool/protocol_fees.move"
 	mode="code"
-	org="MystenLabs"
+	org="HaneulLabs"
 	repo="deepbookv3"
 	struct="ProtocolFeesIncreasedEvent"
 />

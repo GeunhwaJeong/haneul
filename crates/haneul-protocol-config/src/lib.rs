@@ -9,9 +9,6 @@ use std::{
     },
 };
 
-#[cfg(msim)]
-use std::cell::RefCell;
-#[cfg(not(msim))]
 use std::sync::Mutex;
 
 use clap::*;
@@ -32,7 +29,7 @@ use tracing::{info, warn};
 
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
-const MAX_PROTOCOL_VERSION: u64 = 121;
+const MAX_PROTOCOL_VERSION: u64 = 122;
 
 const TESTNET_USDC: &str =
     "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC";
@@ -345,6 +342,17 @@ const MAINNET_USDB: &str =
 //              Add the `haneul::scratch` per-transaction ephemeral store and its native costs.
 //              Enable zklogin v2 verify (with v1 fallback) for devnet only.
 //              Add an epoch close deadline failsafe for deferred transactions.
+// Version 122: Enable sharing transaction deny configs between validators via consensus.
+//              Enable tx_context_restrictions_verifier: reject system-package
+//              function signatures with `&mut TxContext` + any `&mut _` return
+//              that have no non-`TxContext` `&mut U` parameter.
+//              Enable defer_owned_object_double_spend on devnet.
+//              Add the `object::record_new_uid_from_hash` native and its cost, tracking the
+//              root version of hash-derived UIDs (`new_uid_from_hash`).
+//              Create the ForwardingAddressRegistry system object on devnet.
+//              Make upgrade-init linkage checks independent of PTB command order.
+//              Include function signatures in type-node limits.
+//              Bound type nodes in accumulators.
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -945,6 +953,10 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     enable_init_on_upgrade: bool,
 
+    // If true, analyze upgrade-init linkage after all other PTB linkage constraints.
+    #[serde(skip_serializing_if = "is_false")]
+    enable_order_independent_upgrade_init_linkage: bool,
+
     // Check shared object transfer restrictions per command.
     #[serde(skip_serializing_if = "is_false")]
     per_command_shared_object_transfer_rules: bool,
@@ -997,6 +1009,19 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     allow_references_in_ptbs: bool,
 
+    // If true, the tx_context_restrictions_verifier pass runs at Move module
+    // publish time and rejects system-package signatures with `&mut TxContext`
+    // + any `&mut _` return that have no non-`TxContext` `&mut U` parameter.
+    // User packages are exempt: they can express the same shape through
+    // generic instantiation, so PTB arity and auto-injection checks are the
+    // safety mechanism there.
+    #[serde(skip_serializing_if = "is_false")]
+    framework_tx_context_mut_restrictions: bool,
+
+    // Count function and local signatures towards type-node budgets.
+    #[serde(skip_serializing_if = "is_false")]
+    include_function_signatures_in_instantiation_limits: bool,
+
     // Enable display registry protocol
     #[serde(skip_serializing_if = "is_false")]
     enable_display_registry: bool,
@@ -1035,6 +1060,10 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     #[skip_protocol_config_accessor]
     address_aliases: bool,
+
+    // If true, create the forwarding address registry object in the change epoch transaction.
+    #[serde(skip_serializing_if = "is_false")]
+    create_forwarding_address_registry: bool,
 
     // Corrects signature-to-signer mapping in CheckpointContentsV2.
     // Deprecated: must always be set to `true`.
@@ -1091,6 +1120,11 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     defer_unpaid_amplification: bool,
 
+    // If true, defer transactions that won an owned object lock when other transactions
+    // in the same commit attempted to lock the same object (double-spend attempt).
+    #[serde(skip_serializing_if = "is_false")]
+    defer_owned_object_double_spend: bool,
+
     #[serde(skip_serializing_if = "is_false")]
     randomize_checkpoint_tx_limit_in_tests: bool,
 
@@ -1138,6 +1172,10 @@ struct FeatureFlags {
     // runs but a violation panics so unexpected violations surface during rollout.
     #[serde(skip_serializing_if = "is_false")]
     enforce_address_balance_change_invariant: bool,
+
+    // If true, validators may broadcast `UpdateTransactionDenyConfig` consensus messages.
+    #[serde(skip_serializing_if = "is_false")]
+    share_transaction_deny_config_in_consensus: bool,
 
     // Enables more granular post-execution checks.
     #[serde(skip_serializing_if = "is_false")]
@@ -1431,6 +1469,9 @@ pub struct ProtocolConfig {
     /// Maximum number of "type nodes" that can be instantiated in a module.
     max_generic_instantiation_type_nodes_per_module: Option<u64>,
 
+    /// Maximum number of "type nodes" allowed in an accumulator.
+    max_accumulator_type_nodes: Option<u64>,
+
     /// Maximum number of push instructions in one function. Enforced by the Move bytecode verifier.
     max_push_size: Option<u64>,
 
@@ -1680,6 +1721,9 @@ pub struct ProtocolConfig {
     object_delete_impl_cost_base: Option<u64>,
     // Cost params for the Move native function `record_new_uid(id: address)`
     object_record_new_uid_cost_base: Option<u64>,
+    // Cost params for the Move native function
+    // `record_new_uid_from_hash(parent: address, bytes: address)`
+    object_record_new_uid_from_hash_cost_base: Option<u64>,
 
     // Transfer
     // Cost params for the Move native function `transfer_impl<T: key>(obj: T, recipient: address)`
@@ -1916,6 +1960,8 @@ pub struct ProtocolConfig {
     // The cutoff value for the MED outlier detection
     // scoring_decision_cutoff_value: Option<f64>,
     /// === Execution Version ===
+    // custom_setter: see `set_execution_version_for_testing`, which forbids downgrades.
+    #[custom_setter]
     execution_version: Option<u64>,
 
     // Dictates the threshold (percentage of stake) that is used to calculate the "bad" nodes to be
@@ -2268,13 +2314,6 @@ impl ProtocolConfig {
         window_size
     }
 
-    pub fn enable_observation_chunking(&self) -> bool {
-        matches!(self.feature_flags.per_object_congestion_control_mode,
-            PerObjectCongestionControlMode::ExecutionTimeEstimate(ref params)
-                if params.observations_chunk_size.is_some()
-        )
-    }
-
     pub fn address_aliases(&self) -> bool {
         let address_aliases = self.feature_flags.address_aliases;
         assert!(
@@ -2316,14 +2355,7 @@ impl ProtocolConfig {
     }
 }
 
-#[cfg(not(msim))]
 static POISON_VERSION_METHODS: AtomicBool = AtomicBool::new(false);
-
-// Use a thread local in sim tests for test isolation.
-#[cfg(msim)]
-thread_local! {
-    static POISON_VERSION_METHODS: AtomicBool = AtomicBool::new(false);
-}
 
 // Instantiations for each protocol version.
 impl ProtocolConfig {
@@ -2376,24 +2408,12 @@ impl ProtocolConfig {
         }
     }
 
-    #[cfg(not(msim))]
     pub fn poison_get_for_min_version() {
         POISON_VERSION_METHODS.store(true, Ordering::Relaxed);
     }
 
-    #[cfg(not(msim))]
     fn load_poison_get_for_min_version() -> bool {
         POISON_VERSION_METHODS.load(Ordering::Relaxed)
-    }
-
-    #[cfg(msim)]
-    pub fn poison_get_for_min_version() {
-        POISON_VERSION_METHODS.with(|p| p.store(true, Ordering::Relaxed));
-    }
-
-    #[cfg(msim)]
-    fn load_poison_get_for_min_version() -> bool {
-        POISON_VERSION_METHODS.with(|p| p.load(Ordering::Relaxed))
     }
 
     /// Convenience to get the constants at the current minimum supported version.
@@ -2491,6 +2511,7 @@ impl ProtocolConfig {
             max_type_nodes: Some(256),
             max_generic_instantiation_type_nodes_per_function: None,
             max_generic_instantiation_type_nodes_per_module: None,
+            max_accumulator_type_nodes: None,
             max_push_size: Some(10000),
             max_struct_definitions: Some(200),
             max_function_definitions: Some(1000),
@@ -2606,6 +2627,9 @@ impl ProtocolConfig {
             object_delete_impl_cost_base: Some(52),
             // Cost params for the Move native function `record_new_uid(id: address)`
             object_record_new_uid_cost_base: Some(52),
+            // Cost params for the Move native function
+            // `record_new_uid_from_hash(parent: address, bytes: address)`. Introduced in v131.
+            object_record_new_uid_from_hash_cost_base: None,
 
             // `transfer` module
             // Cost params for the Move native function `transfer_impl<T: key>(obj: T, recipient: address)`
@@ -4528,6 +4552,21 @@ impl ProtocolConfig {
                         cfg.feature_flags.zklogin_circuit_mode = 1;
                     }
                 }
+                122 => {
+                    // v122 tracks upstream protocol versions 131 through 133.
+                    cfg.feature_flags.share_transaction_deny_config_in_consensus = true;
+                    cfg.feature_flags.framework_tx_context_mut_restrictions = true;
+                    if chain != Chain::Mainnet && chain != Chain::Testnet {
+                        cfg.feature_flags.defer_owned_object_double_spend = true;
+                        cfg.feature_flags.create_forwarding_address_registry = true;
+                    }
+                    cfg.object_record_new_uid_from_hash_cost_base = Some(1);
+                    cfg.feature_flags
+                        .enable_order_independent_upgrade_init_linkage = true;
+                    cfg.feature_flags
+                        .include_function_signatures_in_instantiation_limits = true;
+                    cfg.max_accumulator_type_nodes = Some(16);
+                }
                 // Use this template when making changes:
                 //
                 //     // modify an existing constant.
@@ -4614,6 +4653,8 @@ impl ProtocolConfig {
             max_generic_instantiation_type_nodes_per_module: self
                 .max_generic_instantiation_type_nodes_per_module_as_option()
                 .map(|v| v as usize),
+            include_function_signatures_in_instantiation_limits: self
+                .include_function_signatures_in_instantiation_limits(),
             max_push_size: Some(self.max_push_size() as usize),
             max_dependency_depth: Some(self.max_dependency_depth() as usize),
             max_fields_in_struct: Some(self.max_fields_in_struct() as usize),
@@ -4638,6 +4679,7 @@ impl ProtocolConfig {
             deprecate_global_storage_ops,
             disable_entry_point_signature_check: self.disable_entry_point_signature_check(),
             switch_to_regex_reference_safety: false,
+            framework_tx_context_mut_restrictions: self.framework_tx_context_mut_restrictions(),
             disallow_jump_orphans: self.disallow_jump_orphans(),
         }
     }
@@ -4693,7 +4735,6 @@ impl ProtocolConfig {
     /// Override one or more settings in the config, for testing.
     /// This must be called at the beginning of the test, before get_for_(min|max)_version is
     /// called, since those functions cache their return value.
-    #[cfg(not(msim))]
     pub fn apply_overrides_for_testing(
         override_fn: impl Fn(ProtocolVersion, Self) -> Self + Send + Sync + 'static,
     ) -> OverrideGuard {
@@ -4703,22 +4744,6 @@ impl ProtocolConfig {
         OverrideGuard
     }
 
-    /// Override one or more settings in the config, for testing.
-    /// This must be called at the beginning of the test, before get_for_(min|max)_version is
-    /// called, since those functions cache their return value.
-    #[cfg(msim)]
-    pub fn apply_overrides_for_testing(
-        override_fn: impl Fn(ProtocolVersion, Self) -> Self + Send + 'static,
-    ) -> OverrideGuard {
-        CONFIG_OVERRIDE.with(|ovr| {
-            let mut cur = ovr.borrow_mut();
-            assert!(cur.is_none(), "config override already present");
-            *cur = Some(Box::new(override_fn));
-            OverrideGuard
-        })
-    }
-
-    #[cfg(not(msim))]
     fn apply_config_override(version: ProtocolVersion, mut ret: Self) -> Self {
         if let Some(override_fn) = CONFIG_OVERRIDE.lock().unwrap().as_ref() {
             warn!(
@@ -4728,26 +4753,28 @@ impl ProtocolConfig {
         }
         ret
     }
-
-    #[cfg(msim)]
-    fn apply_config_override(version: ProtocolVersion, ret: Self) -> Self {
-        CONFIG_OVERRIDE.with(|ovr| {
-            if let Some(override_fn) = &*ovr.borrow() {
-                warn!(
-                    "overriding ProtocolConfig settings with custom settings (you should not see this log outside of tests)"
-                );
-                override_fn(version, ret)
-            } else {
-                ret
-            }
-        })
-    }
 }
 
 // Setters for tests.
 // This is only needed for feature_flags. Please suffix each setter with `_for_testing`.
 // Non-feature_flags should already have test setters defined through macros.
 impl ProtocolConfig {
+    // Hand-written (the field is marked #[custom_setter]) to forbid downgrades: an executor
+    // older than the config's protocol version can't link the frameworks of later versions —
+    // its natives tables are frozen. Upgrades are allowed for replay's executor override.
+    pub fn set_execution_version_for_testing(&mut self, val: u64) {
+        let current = self.execution_version.unwrap_or(0);
+        assert!(
+            val >= current,
+            "cannot downgrade execution_version from {current} to {val}: running an old \
+             executor against a newer protocol config/framework is unsupported. To test \
+             frozen executor behavior, start from the last protocol version of that executor \
+             instead, so genesis loads the matching framework snapshot (see \
+             test_address_balance_gas_v3_accumulator_sign)."
+        );
+        self.execution_version = Some(val);
+    }
+
     // Not generated by the feature-flags derive because zklogin_circuit_mode is a u64
     // flag (the macro only generates setters for bool flags).
     pub fn set_zklogin_circuit_mode_for_testing(&mut self, val: u64) {
@@ -4831,38 +4858,17 @@ impl ProtocolConfig {
     }
 }
 
-#[cfg(not(msim))]
 type OverrideFn = dyn Fn(ProtocolVersion, ProtocolConfig) -> ProtocolConfig + Send + Sync;
 
-#[cfg(not(msim))]
 static CONFIG_OVERRIDE: Mutex<Option<Box<OverrideFn>>> = Mutex::new(None);
-
-#[cfg(msim)]
-type OverrideFn = dyn Fn(ProtocolVersion, ProtocolConfig) -> ProtocolConfig + Send;
-
-#[cfg(msim)]
-thread_local! {
-    static CONFIG_OVERRIDE: RefCell<Option<Box<OverrideFn>>> = RefCell::new(None);
-}
 
 #[must_use]
 pub struct OverrideGuard;
 
-#[cfg(not(msim))]
 impl Drop for OverrideGuard {
     fn drop(&mut self) {
         info!("restoring override fn");
         *CONFIG_OVERRIDE.lock().unwrap() = None;
-    }
-}
-
-#[cfg(msim)]
-impl Drop for OverrideGuard {
-    fn drop(&mut self) {
-        info!("restoring override fn");
-        CONFIG_OVERRIDE.with(|ovr| {
-            *ovr.borrow_mut() = None;
-        });
     }
 }
 
@@ -5037,6 +5043,23 @@ mod test {
 
         prot.set_attr_for_testing("max_arguments".to_string(), "456".to_string());
         assert_eq!(prot.max_arguments(), 456);
+    }
+
+    #[test]
+    fn test_execution_version_setter_allows_upgrade() {
+        let mut prot = ProtocolConfig::get_for_max_version_UNSAFE();
+        let current = prot.execution_version();
+        prot.set_execution_version_for_testing(current);
+        prot.set_execution_version_for_testing(current + 1);
+        assert_eq!(prot.execution_version(), current + 1);
+    }
+
+    #[test]
+    #[should_panic(expected = "cannot downgrade execution_version")]
+    fn test_execution_version_setter_panics_on_downgrade() {
+        let mut prot = ProtocolConfig::get_for_max_version_UNSAFE();
+        let current = prot.execution_version();
+        prot.set_execution_version_for_testing(current - 1);
     }
 
     #[test]

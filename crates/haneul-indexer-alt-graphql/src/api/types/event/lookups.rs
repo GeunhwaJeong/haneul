@@ -11,6 +11,7 @@ use haneul_indexer_alt_reader::kv_loader::KvLoader;
 use haneul_indexer_alt_reader::kv_loader::TransactionEventsContents;
 use haneul_types::digests::TransactionDigest;
 use itertools::Either;
+use tokio::sync::OnceCell;
 
 use crate::api::types::event::CEvent;
 use crate::api::types::event::Event;
@@ -96,7 +97,7 @@ fn tx_events_paginated<'e>(
                 native: Arc::new(native.clone()),
                 transaction_digest,
                 sequence_number: ev_sequence_number as u64,
-                timestamp_ms: contents.timestamp_ms(),
+                timestamp_ms: OnceCell::from(contents.timestamp_ms()),
             };
 
             results.push((event_cursor, event));

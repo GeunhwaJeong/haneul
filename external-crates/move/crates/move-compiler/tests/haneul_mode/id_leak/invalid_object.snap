@@ -5,7 +5,7 @@ info:
   edition: legacy
   lint: false
 ---
-error[Haneul E02007]: invalid object declaration
+error[ESC02007]: invalid object declaration
   ┌─ tests/haneul_mode/id_leak/invalid_object.move:2:12
   │
 2 │     struct S has key {}

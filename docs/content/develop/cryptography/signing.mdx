@@ -1,8 +1,64 @@
 ---
 title: Signature Verification in Move
 sidebar_label: Signature Verification
-description: Haneul supports verification within Move smart contracts through several signature schemes. Signature schemes include Ed25519, Secp256k1 recoverable, Secp256k1 non-recoverable, Secp256r1 non-recoverable, Secp256r1 recoverable, BLS G1, and BLS G2.
-keywords: [ Ed25519, Secp256k1 recoverable, Secp256k1 non-recoverable, Secp256r1 non-recoverable, Secp256r1 recoverable, BLS G1, BLS G2, signature schemes, signature verification fastcrypto, onchain verification ]
+description: >-
+  Haneul supports verification within Move smart contracts through several
+  signature schemes. Signature schemes include Ed25519, Secp256k1 recoverable,
+  Secp256k1 non-recoverable, Secp256r1 non-recoverable, Secp256r1 recoverable,
+  BLS G1, and BLS G2.
+keywords:
+  - Ed25519
+  - Secp256k1 recoverable
+  - Secp256k1 non-recoverable
+  - Secp256r1 non-recoverable
+  - Secp256r1 recoverable
+  - BLS G1
+  - BLS G2
+  - signature schemes
+  - signature verification fastcrypto
+  - onchain verification
+goal:
+  description: >-
+    Reader understands haneul supports verification within Move smart contracts
+    through several signature schemes
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: Signature verification
+    stage: Operations
+  - path_id: p2p-payments
+    path_name: P2P Payments / Neomoney
+    step: Signature verification
+    stage: Signing
+  - path_id: agentic-payments
+    path_name: Agentic Payments
+    step: Signature verification
+    stage: Authorization
+questions:
+  - How do I verify signatures in Move?
+  - What signature schemes does Haneul support for onchain verification?
+  - What is Signature Verification in Move in Haneul?
+answer: >-
+  Haneul supports verification within Move smart contracts through several
+  signature schemes.
 ---
 
 Move contracts in Haneul support verifications for several signature schemes onchain. Not all signatures supported in onchain verification are supported as user signature verification. See [Haneul Signatures](/develop/transactions/transaction-auth/auth-overview) for valid signature schemes for transaction authorization.
@@ -16,7 +72,7 @@ This guide uses the [`fastcrypto`](https://github.com/GeunhwaJeong/fastcrypto) C
 ## Setup `fastcrypto` CLI binary
 
 ```sh
-git@github.com:MystenLabs/fastcrypto.git
+git@github.com:HaneulLabs/fastcrypto.git
 cd fastcrypto/
 cargo build --bin sigs-cli
 ```

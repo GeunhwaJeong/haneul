@@ -1,10 +1,20 @@
 ---
 title: Encrypted Social Media
-description: Build a Web3 social platform with encrypted content, Seal-based access control, and Walrus storage on Haneul.
-keywords: [example, seal, encryption, walrus, dapp-kit, sponsored-transactions, viewer-token, zklogin]
+description: >-
+  Build a Web3 social platform with encrypted content, Seal-based access
+  control, and Walrus storage on Haneul.
+keywords:
+  - example
+  - seal
+  - encryption
+  - walrus
+  - dapp-kit
+  - sponsored-transactions
+  - viewer-token
+  - zklogin
 example_id: onlyfins-example-app
-last_verified: 2026-04-28
-repo: https://github.com/GeunhwaJeong/onlyfins-example-app
+last_verified: 2026-04-28T00:00:00.000Z
+repo: 'https://github.com/GeunhwaJeong/onlyfins-example-app'
 path: /
 concepts:
   - shared_objects
@@ -13,6 +23,44 @@ concepts:
   - sponsored_transactions
   - walrus_storage
   - zklogin
+goal:
+  description: >-
+    Reader can build a Web3 social platform with encrypted content, Seal-based
+    access control, and Walrus storage on Haneul
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: walrus-general
+    path_name: Walrus General Data Storage
+    step: Walrus example app (OnlyFins)
+    stage: Ship
+  - path_id: walrus-agentic
+    path_name: Walrus Agentic Data Storage
+    step: Walrus example app (OnlyFins)
+    stage: Ship
+questions:
+  - How do I build a content platform with Walrus and Haneul?
+  - What does the OnlyFins example demonstrate?
+  - How do I store and retrieve encrypted data with Walrus and Seal?
+answer: >-
+  Build a Web3 social platform with encrypted content, Seal-based access
+  control, and Walrus storage on Haneul.
 ---
 
 OnlyFins is a Web3 social platform that demonstrates encrypted content sharing with onchain access control. Creators publish posts with images they store on [Walrus](https://docs.wal.app) and encrypt through [Seal](https://seal-docs.wal.app), while viewers purchase `ViewerToken` capability objects to decrypt and view content. The app uses [Enoki](https://docs.enoki.haneul-labs.com/) for [zkLogin](/haneul-stack/zklogin-integration/zklogin) authentication and [sponsored transactions](/develop/transaction-payment/sponsor-txn) so users interact without holding HANEUL for gas.
@@ -244,7 +292,7 @@ Open `http://localhost:5173` in a browser. You see a feed of posts, some with lo
 
 ## Key code highlights
 
-<CodeWalkthrough source="frontend/move/posts/sources/posts.move" org="MystenLabs" repo="onlyfins-example-app" language="move">
+<CodeWalkthrough source="frontend/move/posts/sources/posts.move" org="HaneulLabs" repo="onlyfins-example-app" language="move">
   <Step lines="25-41" title="`create_post` with optional encryption">
     The `create_post` entry function creates a shared `Post` object with an optional encryption ID. When `encryption_id` contains a value, the post requires a `ViewerToken` to decrypt. When it contains `none`, the image is publicly viewable. The function shares the post so any user can read its metadata.
   </Step>
@@ -260,7 +308,7 @@ Open `http://localhost:5173` in a browser. You see a feed of posts, some with lo
 
 The `usePayForContent` hook builds and sponsors the transaction that grants a viewer access to a post.
 
-<ImportContent source="frontend/src/hooks/usePayForContent.ts" mode="code" org="MystenLabs" repo="onlyfins-example-app" fun="usePayForContent" />
+<ImportContent source="frontend/src/hooks/usePayForContent.ts" mode="code" org="HaneulLabs" repo="onlyfins-example-app" fun="usePayForContent" />
 
 The hook calls the `grant_access` Move function, transfers the resulting `ViewerToken` to the current account, and sponsors the transaction so the user pays no gas. After the transaction finalizes, it refetches the user's owned objects so the UI updates.
 
@@ -268,7 +316,7 @@ The hook calls the `grant_access` Move function, transfers the resulting `Viewer
 
 The `usePostDecryption` hook fetches encrypted images from Walrus and decrypts them using Seal session keys.
 
-<ImportContent source="frontend/src/hooks/usePostDecryption.ts" mode="code" org="MystenLabs" repo="onlyfins-example-app" fun="usePostDecryption" />
+<ImportContent source="frontend/src/hooks/usePostDecryption.ts" mode="code" org="HaneulLabs" repo="onlyfins-example-app" fun="usePostDecryption" />
 
 For each encrypted post the user has access to, the hook builds a `seal_approve_access` transaction, retrieves the decryption key from the Seal key servers, fetches the encrypted blob from Walrus, and decrypts it locally. It auto-detects the image MIME type from the first bytes of the decrypted data.
 

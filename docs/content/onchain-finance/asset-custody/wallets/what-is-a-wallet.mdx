@@ -1,7 +1,51 @@
 ---
 title: What Is a Wallet?
-description: Learn what Haneul wallets are, how they work, and which wallet types and options are available on Haneul.
-keywords: [ wallet, wallets, self-custodial, zkLogin, Slush, Phantom, Ledger, key pair, transaction fees, gas, staking ]
+description: >-
+  Learn what Haneul wallets are, how they work, and which wallet types and options
+  are available on Haneul.
+keywords:
+  - wallet
+  - wallets
+  - self-custodial
+  - zkLogin
+  - Slush
+  - Phantom
+  - Ledger
+  - key pair
+  - transaction fees
+  - gas
+  - staking
+goal:
+  description: >-
+    Reader understands what Haneul wallets are, how they work, and which wallet
+    types and options are available on Haneul
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: p2p-payments
+    path_name: P2P Payments / Neomoney
+    step: What is a wallet
+    stage: Wallets & Funding
+questions:
+  - What is a Wallet in Haneul?
+  - How does a wallet work on Haneul?
+  - Why should I use a wallet?
+answer: >-
+  A wallet stores the cryptographic keys that prove ownership of your onchain
+  assets and signs the transactions you submit to the Haneul network.
 ---
 
 A wallet stores the cryptographic keys that prove ownership of your onchain assets and signs the transactions you submit to the Haneul network.

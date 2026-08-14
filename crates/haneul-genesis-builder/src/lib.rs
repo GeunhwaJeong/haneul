@@ -1167,6 +1167,16 @@ pub fn generate_genesis_system_object(
             )?;
         }
 
+        if protocol_config.create_forwarding_address_registry() {
+            builder.move_call(
+                HANEUL_FRAMEWORK_ADDRESS.into(),
+                ident_str!("forwarding_address").to_owned(),
+                ident_str!("create").to_owned(),
+                vec![],
+                vec![],
+            )?;
+        }
+
         // Step 4: Mint the supply of HANEUL.
         let haneul_supply = builder.programmable_move_call(
             HANEUL_FRAMEWORK_ADDRESS.into(),

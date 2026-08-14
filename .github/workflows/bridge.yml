@@ -84,7 +84,7 @@ jobs:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - run: rustup component add clippy
       - name: cargo clippy
-        run: cargo xclippy -D warnings
+        run: cargo xclippy -- -D warnings
 
   test:
     needs: [diff, rustfmt, clippy]

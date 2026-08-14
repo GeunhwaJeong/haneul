@@ -16,8 +16,8 @@ use crate::{
     haneul_mode::{
         HANEUL_ADDR_VALUE,
         linters::{
-            FREEZE_FUN, LINT_WARNING_PREFIX, LinterDiagnosticCategory, LinterDiagnosticCode,
-            PUBLIC_FREEZE_FUN, TRANSFER_MOD_NAME,
+            FREEZE_FUN, LinterDiagnosticCategory, LinterDiagnosticCode, PUBLIC_FREEZE_FUN,
+            TRANSFER_MOD_NAME,
         },
     },
     naming::ast as N,
@@ -34,7 +34,7 @@ use move_symbol_pool::Symbol;
 use std::{collections::BTreeMap, sync::Arc};
 
 const FREEZE_WRAPPING_DIAG: DiagnosticInfo = custom(
-    LINT_WARNING_PREFIX,
+    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
     Severity::Warning,
     LinterDiagnosticCategory::Haneul as u8,
     LinterDiagnosticCode::FreezeWrapped as u8,

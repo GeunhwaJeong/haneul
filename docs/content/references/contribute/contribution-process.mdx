@@ -1,9 +1,40 @@
 ---
 title: Contribute to Haneul Documentation
 sidebar_label: Docs Contribution
-description: Help the Haneul community through documentation contributions. Whether it's to fix errors or add new content, the entire Haneul community benefits from your contributions.
-keywords: [ contribute docs, style guide compliance, add new docs page, change existing docs page ]
+description: >-
+  Help the Haneul community through documentation contributions. Whether it's to
+  fix errors or add new content, the entire Haneul community benefits from your
+  contributions.
+keywords:
+  - contribute docs
+  - style guide compliance
+  - add new docs page
+  - change existing docs page
 pagination_prev: null
+goal:
+  description: >-
+    Contributor can edit Haneul docs via the GitHub web editor or a local
+    environment and understands the review process
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Contribute to Haneul Documentation in Haneul?
+  - How do I set up a local environment local-environment?
+  - Where can I find the contribute to haneul documentation reference?
+answer: >-
+  Help the Haneul community through documentation contributions. Whether it's to
+  fix errors or add new content, the entire Haneul community benefits from your
+  contributions.
 ---
 
 The Haneul documentation is open source and thrives on community contributions. Whether you’re fixing a typo, clarifying explanations, or adding entirely new content, your work benefits the whole community. This page explains how to contribute to the documentation using either GitHub’s web editor or your local development environment.

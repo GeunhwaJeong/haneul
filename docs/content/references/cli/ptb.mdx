@@ -1,7 +1,44 @@
 ---
 title: Haneul Client PTB CLI
-description: The Haneul Client PTB CLI enables a user to construct a PTB and execute it from the command line or a file.
-keywords: [ client ptb, haneul client ptb, programmable transaction block, ptbs, haneul cli ptbs, haneul ptb cli, ptb cli, execute ptb from cli, execute ptb from file, ptb help ]
+description: >-
+  The Haneul Client PTB CLI enables a user to construct a PTB and execute it from
+  the command line or a file.
+keywords:
+  - client ptb
+  - haneul client ptb
+  - programmable transaction block
+  - ptbs
+  - haneul cli ptbs
+  - haneul ptb cli
+  - ptb cli
+  - execute ptb from cli
+  - execute ptb from file
+  - ptb help
+goal:
+  description: 'Reader can look up client ptb cli command syntax, flags, and usage examples'
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - pattern: '```'
+      min: 1
+      label: Has command examples
+    - pattern: 'haneul '
+      min: 2
+      label: Shows CLI command usage
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Haneul Client PTB CLI in Haneul?
+  - What are the available haneul client ptb cli commands?
+  - What flags does haneul client ptb cli support?
+answer: >-
+  The `client ptb` command allows you to specify the transactions for execution
+  in a programmable transaction block (PTB) directly from your CLI or through
+  bash scripts.
 ---
 
 The `client ptb` command allows you to specify the transactions for execution in a programmable transaction block (PTB) directly from your CLI or through bash scripts.

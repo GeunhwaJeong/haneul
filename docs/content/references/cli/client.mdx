@@ -1,7 +1,42 @@
 ---
 title: Haneul Client CLI
-description: The Haneul Client CLI provides command-level access to interact with the Haneul network.
-keywords: [ haneul cli, haneul client cli, haneul client cli, haneul client, haneul cli help, haneul cli reference, haneul cli commands, cli commands, cli reference ]
+description: >-
+  The Haneul Client CLI provides command-level access to interact with the Haneul
+  network.
+keywords:
+  - haneul cli
+  - haneul client cli
+  - haneul client cli
+  - haneul client
+  - haneul cli help
+  - haneul cli reference
+  - haneul cli commands
+  - cli commands
+  - cli reference
+goal:
+  description: 'Reader can look up client cli command syntax, flags, and usage examples'
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - pattern: '```'
+      min: 1
+      label: Has command examples
+    - pattern: 'haneul '
+      min: 2
+      label: Shows CLI command usage
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Haneul Client CLI in Haneul?
+  - How do I publish a move package?
+  - What are the available haneul client cli commands?
+answer: >-
+  The Haneul CLI `client` command provides command-level access to interact with
+  the Haneul network.
 ---
 
 The Haneul CLI `client` command provides command-level access to interact with the Haneul network. Typical uses for `haneul client` include publishing Move smart contracts, getting the information of an object, executing transactions, or managing addresses.
@@ -237,8 +272,10 @@ The most common options are:
 - `--to`: Recipient address (or its keystore alias). Required.
 - `--amount`: Amount to send in the coin's smallest unit (GEUNHWA for HANEUL). Required unless `--all-coins` is set.
 - `--coin-type`: Coin type to send. Defaults to `0x2::haneul::HANEUL`.
-- `--all-coins`: Send all owned coin objects of the specified type (not address-balance funds). Conflicts with `--amount` and `--stateless`.
-- `--stateless`: Draw all funds (including gas) from the sender's address balances, producing a transaction with no owned-object inputs. Conflicts with `--all-coins`.
+- `--all-coins`: Send all owned coin objects of the specified type (not address-balance funds). Conflicts with `--amount` and `--from-address-balance`.
+- `--from-address-balance`: Draw the amount from the sender's address balance rather than their coins. Without it, coins are preferred and the address balance is only used if the coins cannot cover the amount. Conflicts with `--all-coins`.
+
+Either way, the recipient is paid into their address balance. Gas is selected separately: it comes from the sender's address balance when that can cover the budget, and from their coins otherwise.
 
 ### Transfer an object to party ownership
 

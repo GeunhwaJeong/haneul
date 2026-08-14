@@ -1,10 +1,22 @@
 ---
 title: NFT Minting App
-description: Build an end-to-end app with a Hero NFT Move contract and a React frontend that mints heroes, equips weapons, and queries onchain state.
-keywords: [example, dapp, nft, hero, weapon, move, react, dapp-kit, transaction, bootcamp]
+description: >-
+  Build an end-to-end app with a Hero NFT Move contract and a React frontend
+  that mints heroes, equips weapons, and queries onchain state.
+keywords:
+  - example
+  - dapp
+  - nft
+  - hero
+  - weapon
+  - move
+  - react
+  - dapp-kit
+  - transaction
+  - bootcamp
 example_id: first-dapp-bootcamp
-last_verified: 2026-04-30
-repo: https://github.com/GeunhwaJeong/haneul-move-bootcamp
+last_verified: 2026-04-30T00:00:00.000Z
+repo: 'https://github.com/GeunhwaJeong/haneul-move-bootcamp'
 path: /F1
 concepts:
   - programmable_transaction_blocks
@@ -14,6 +26,46 @@ concepts:
   - react_query
   - nft_minting
   - equip_mechanics
+goal:
+  description: >-
+    Reader can build an end-to-end app with a Hero NFT Move contract and a React
+    frontend that mints heroes, equips weapons
+  requires:
+    - headings:
+        - pattern: When to use|Use case
+        - pattern: What you learn|Learning
+        - pattern: Prerequisites
+        - pattern: Setup|Getting started
+        - pattern: Run
+        - pattern: Troubleshooting|Common issues
+      label: Has standard example page sections
+    - pattern: '```'
+      min: 3
+      label: 'Has code blocks for setup, source, and output'
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 800
+      label: Needs more explanation depth
+    - pattern: mermaid|sequenceDiagram|graph|flowchart
+      min: 1
+      label: Has architecture diagram
+    - headings:
+        - pattern: Key code|Code highlight|Walkthrough
+      label: Has code explanation section
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How do I build an NFT minting app on Haneul?
+  - How do I connect a React frontend to an NFT Move contract?
+  - How do I use PTBs to mint and equip NFTs?
+answer: >-
+  Build an end-to-end app with a Hero NFT Move contract and a React frontend
+  that mints heroes, equips weapons, and queries onchain state.
 ---
 
 In this example, the Move package defines `Hero` and `Weapon` NFTs with equip and unequip mechanics and a shared `HeroRegistry` that tracks minted NFTs in the heroes collection. The React frontend connects a wallet, builds a multi-step [programmable transaction block (PTB)](/develop/transactions/ptbs/prog-txn-blocks) that mints a hero, creates a weapon, and equips it in a single transaction, then queries the registry to display all heroes. 
@@ -183,7 +235,7 @@ Open `http://localhost:5173` in a browser and click **Mint Hero** to create a he
 
 ## Key code highlights
 
-<CodeWalkthrough source="F1/move/hero/sources/hero.move" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" language="move">
+<CodeWalkthrough source="F1/move/hero/sources/hero.move" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" language="move">
   <Step lines="13-18" title="`Hero` with optional weapon">
     The `Hero` struct stores an optional `Weapon` object. The `weapon: Option<Weapon>` field starts as `option::none()` when the hero is created. The `equip_weapon` function fills it with a `Weapon` object, and `unequip_weapon` extracts and returns the weapon. Both functions assert the option is in the expected state.
   </Step>
@@ -199,7 +251,7 @@ Open `http://localhost:5173` in a browser and click **Mint Hero** to create a he
 
 The `CreateHeroForm` component builds a PTB that creates a hero, creates a weapon, equips the weapon, and transfers the hero in a single transaction.
 
-<ImportContent source="F1/app/my-first-haneul-dapp/src/components/ui/CreateHeroForm.tsx" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="CreateHeroForm" />
+<ImportContent source="F1/app/my-first-haneul-dapp/src/components/ui/CreateHeroForm.tsx" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="CreateHeroForm" />
 
 The PTB chains 3 `moveCall` results: `hero` from `new_hero`, `weapon` from `new_weapon`, then both passed to `equip_weapon`. The `transferObjects` call at the end moves the hero to the user's address. After execution, the component invalidates the React Query cache so the heroes list refetches.
 
@@ -207,7 +259,7 @@ The PTB chains 3 `moveCall` results: `hero` from `new_hero`, `weapon` from `new_
 
 The `HeroesList` component fetches the `HeroRegistry` shared object and displays its `ids` array.
 
-<ImportContent source="F1/app/my-first-haneul-dapp/src/components/ui/HeroesList.tsx" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="HeroesList" />
+<ImportContent source="F1/app/my-first-haneul-dapp/src/components/ui/HeroesList.tsx" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="HeroesList" />
 
 The component uses the gRPC client to call `getObject` with `include: { json: true }`, extracts the `ids` field from the JSON content, and maps each ID to a Testnet explorer link. React Query handles caching and refetching.
 

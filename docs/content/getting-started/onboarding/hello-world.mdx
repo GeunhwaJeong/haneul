@@ -1,13 +1,73 @@
 ---
 title: Build and Publish a Package
-description: Build and publish your first Move package using a basic 'Hello, World!' example.
-keywords: [ first dapp, first package, move package, first move package, hello world, hello, world, what is move, what is a package, what is an object, move object, haneul move object, haneul move package, haneul move module, move module, build package, publish package, call package, make call to package, how to call package ]
+description: >-
+  Build and publish your first Move package using a basic 'Hello, World!'
+  example.
+keywords:
+  - first dapp
+  - first package
+  - move package
+  - first move package
+  - hello world
+  - hello
+  - world
+  - what is move
+  - what is a package
+  - what is an object
+  - move object
+  - haneul move object
+  - haneul move package
+  - haneul move module
+  - move module
+  - build package
+  - publish package
+  - call package
+  - make call to package
+  - how to call package
 pagination_prev: null
 pagination_next: null
+goal:
+  description: >-
+    Reader can clone, build, publish, and call a Move package, understanding
+    each step along the way
+  requires:
+    - pattern: '```'
+      min: 2
+      label: Has command or code examples
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - links_to:
+        - /getting-started/onboarding/app-frontends
+      label: Links to next onboarding step
+    - pattern: move|Move|module
+      min: 1
+      label: Has Move source code
+    - headings:
+        - pattern: Build
+        - pattern: Publish
+      label: Has build and publish sections
+    - min_words: 300
+      label: Needs more walkthrough depth
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How do I build and publish a package?
+  - What is Move?
+  - How do I build the move package?
+  - How do I publish the move package?
+answer: >-
+  You'll build a "Hello, World!" program to learn the fundamentals of
+  programming on Haneul. You create programs on Haneul by writing and deploying smart
+  contracts to the network.
 ---
 
 <AgentPrompt
-  prompt={"Clone the https://github.com/GeunhwaJeong/haneul-stack-hello-world example app, build and publish the Move package at move/hello-world to Testnet, then call its entry function and show me the resulting object and transaction on HaneulVision."}
+  prompt={"Clone the https://github.com/GeunhwaJeong/haneul-stack-hello-world example app, build and publish the Move package at move/hello-world to Testnet, then call its entry function and show me the resulting object and transaction on HaneulVision. Remember: The Move.toml uses edition = '2024' and does NOT need a [dependencies] section for Haneul — the framework is resolved automatically."}
 />
 
 You'll build a "Hello, World!" program to learn the fundamentals of programming on Haneul. You create programs on Haneul by writing and deploying smart contracts to the network.
@@ -84,7 +144,7 @@ In this project, there are two important files that define the package's logic, 
 
 <summary>`move/hello-world/Move.toml`</summary>
 
-<ImportContent source="/move/hello-world/Move.toml" mode="code" org="MystenLabs" repo="sui-stack-hello-world" />
+<ImportContent source="/move/hello-world/Move.toml" mode="code" org="HaneulLabs" repo="haneul-stack-hello-world" />
 
 </details>
 
@@ -92,11 +152,11 @@ In this project, there are two important files that define the package's logic, 
 
 Open the `greeting.move` file in your IDE of choice. You can see the following Move code:
 
-<ImportContent source="/move/hello-world/sources/greeting.move" mode="code" org="MystenLabs" repo="sui-stack-hello-world" />
+<ImportContent source="/move/hello-world/sources/greeting.move" mode="code" org="HaneulLabs" repo="haneul-stack-hello-world" />
 
 ### Code explanation
 
-<CodeWalkthrough source="/move/hello-world/sources/greeting.move" org="MystenLabs" repo="sui-stack-hello-world" language="move">
+<CodeWalkthrough source="/move/hello-world/sources/greeting.move" org="HaneulLabs" repo="haneul-stack-hello-world" language="move">
   <Step lines="5-6" title="Module declaration">
     This code defines a module called `greeting` inside the `hello_world` package and imports the `string` library from the standard library.
   </Step>

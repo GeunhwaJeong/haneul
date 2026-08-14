@@ -1,11 +1,12 @@
 ---
 source: crates/move-compiler/tests/move_check_testsuite.rs
+assertion_line: 284
 info:
   flavor: core
   edition: 2024.alpha
   lint: false
 ---
-note[I15006]: IDE path autocomplete
+note[NC15006]: IDE path autocomplete
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:1:1
    │  
  1 │ ╭ module a::m {
@@ -22,7 +23,7 @@ note[I15006]: IDE path autocomplete
    = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
-note[I15006]: IDE path autocomplete
+note[NC15006]: IDE path autocomplete
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:10:9
    │
 10 │         A
@@ -33,13 +34,13 @@ note[I15006]: IDE path autocomplete
    = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
-error[E03006]: unexpected name in this position
+error[EC03006]: unexpected name in this position
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:10:9
    │
 10 │         A
    │         ^ Expected a type, function, or constant in this position, not an address
 
-note[I15006]: IDE path autocomplete
+note[NC15006]: IDE path autocomplete
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:14:9
    │
 14 │         a::
@@ -50,13 +51,13 @@ note[I15006]: IDE path autocomplete
    = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
-error[E01016]: invalid name
+error[EC01016]: invalid name
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:14:9
    │
 14 │         a::
    │         ^^^ Incomplete name in this position. Expected an identifier after '::'
 
-note[I15006]: IDE path autocomplete
+note[NC15006]: IDE path autocomplete
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:18:9
    │
 18 │         a::m::
@@ -67,13 +68,13 @@ note[I15006]: IDE path autocomplete
    = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
-error[E01016]: invalid name
+error[EC01016]: invalid name
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:18:9
    │
 18 │         a::m::
    │         ^^^^^^ Incomplete name in this position. Expected an identifier after '::'
 
-note[I15006]: IDE path autocomplete
+note[NC15006]: IDE path autocomplete
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:22:9
    │
 22 │         a::m::SomeEnum::
@@ -84,13 +85,13 @@ note[I15006]: IDE path autocomplete
    = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
-error[E01016]: invalid name
+error[EC01016]: invalid name
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:22:9
    │
 22 │         a::m::SomeEnum::
    │         ^^^^^^^^^^^^^^^^ Incomplete name in this position. Expected an identifier after '::'
 
-note[I15006]: IDE path autocomplete
+note[NC15006]: IDE path autocomplete
    ┌─ tests/move_2024/ide_mode/colon_colon_incomplete.move:27:1
    │  
 27 │ ╭ module a::m2 {

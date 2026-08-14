@@ -1,10 +1,20 @@
 ---
 title: Derived Objects
-description: Create deterministic Haneul objects whose IDs you can predict offchain before the objects exist, using four derivation strategies in Move and the TypeScript SDK.
-keywords: [example, derived-objects, deterministic-id, object-model, move, typescript-sdk, bootcamp]
+description: >-
+  Create deterministic Haneul objects whose IDs you can predict offchain before the
+  objects exist, using four derivation strategies in Move and the TypeScript
+  SDK.
+keywords:
+  - example
+  - derived-objects
+  - deterministic-id
+  - object-model
+  - move
+  - typescript-sdk
+  - bootcamp
 example_id: derived-objects-bootcamp
-last_verified: 2026-04-30
-repo: https://github.com/GeunhwaJeong/haneul-move-bootcamp
+last_verified: 2026-04-30T00:00:00.000Z
+repo: 'https://github.com/GeunhwaJeong/haneul-move-bootcamp'
 path: /C5
 concepts:
   - derived_objects
@@ -12,6 +22,47 @@ concepts:
   - object_model
   - bcs_serialization
   - offchain_prediction
+goal:
+  description: >-
+    Reader can create deterministic Haneul objects whose IDs you can predict
+    offchain before the objects exist
+  requires:
+    - headings:
+        - pattern: When to use|Use case
+        - pattern: What you learn|Learning
+        - pattern: Prerequisites
+        - pattern: Setup|Getting started
+        - pattern: Run
+        - pattern: Troubleshooting|Common issues
+      label: Has standard example page sections
+    - pattern: '```'
+      min: 3
+      label: 'Has code blocks for setup, source, and output'
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 800
+      label: Needs more explanation depth
+    - pattern: mermaid|sequenceDiagram|graph|flowchart
+      min: 1
+      label: Has architecture diagram
+    - headings:
+        - pattern: Key code|Code highlight|Walkthrough
+      label: Has code explanation section
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How do I create objects with predictable IDs on Haneul?
+  - What are the four derivation strategies for Haneul objects?
+  - How do I predict an object ID offchain before it exists?
+answer: >-
+  Create deterministic Haneul objects whose IDs you can predict offchain before the
+  objects exist, using four derivation strategies in Move and the TypeScript
+  SDK.
 ---
 
 Derived objects are Haneul objects with deterministic IDs computed from a parent object and a key. You can predict a derived object's ID offchain before the transaction that creates it runs, which enables indexer-free lookups, batch queries, and state verification.
@@ -182,7 +233,7 @@ The following snippets are the parts of the code worth reading carefully.
 
 The `ParentObject` struct holds the shared UID that all derived objects derive from, plus an incremental counter for sequential derivation.
 
-<ImportContent source="C5/contracts/derived_objects/sources/parent.move" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" struct="ParentObject" />
+<ImportContent source="C5/contracts/derived_objects/sources/parent.move" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" struct="ParentObject" />
 
 The `uid_mut_ref` function exposes the parent's UID as a mutable reference, which `derived_object::claim` requires. The `incremental_counter` gives each sequentially derived object a unique key.
 
@@ -190,7 +241,7 @@ The `uid_mut_ref` function exposes the parent's UID as a mutable reference, whic
 
 The `deriveObjectIDFromParent` helper computes a derived object's ID using the Haneul SDK, without any network call.
 
-<ImportContent source="C5/ts/src/helpers/deriveObjectID.ts" mode="code" org="MystenLabs" repo="sui-move-bootcamp" branch="solution" fun="deriveObjectIDFromParent" />
+<ImportContent source="C5/ts/src/helpers/deriveObjectID.ts" mode="code" org="HaneulLabs" repo="haneul-move-bootcamp" branch="solution" fun="deriveObjectIDFromParent" />
 
 The function serializes the key with BCS, passes it to `deriveObjectID` along with the parent object ID and the key's type tag, and returns the predicted ID. The tests verify this matches the onchain result.
 

@@ -121,6 +121,11 @@ const HANEUL_ALIAS_CREATE: FunctionIdent = (
     ident_str!("address_alias"),
     ident_str!("create"),
 );
+const HANEUL_FORWARDING_ADDRESS_CREATE: FunctionIdent = (
+    HANEUL_FRAMEWORK_ADDRESS,
+    ident_str!("forwarding_address"),
+    ident_str!("create"),
+);
 const FRESH_ID_FUNCTIONS: &[FunctionIdent] = &[
     OBJECT_NEW,
     OBJECT_NEW_UID_FROM_HASH,
@@ -138,6 +143,7 @@ const FUNCTIONS_TO_SKIP: &[FunctionIdent] = &[
     HANEUL_COIN_REGISTRY_CREATE,
     HANEUL_DISPLAY_REGISTRY_CREATE,
     HANEUL_ALIAS_CREATE,
+    HANEUL_FORWARDING_ADDRESS_CREATE,
 ];
 
 impl AbstractValue {

@@ -545,9 +545,7 @@ impl ExecutionTimeObserver {
             panic!("get_test_duration called in non-test configuration");
         }
 
-        thread_local! {
-            static PER_TEST_SEED: u64 = random::<u64>();
-        }
+        static PER_TEST_SEED: std::sync::OnceLock<u64> = std::sync::OnceLock::new();
 
         let mut hasher = std::collections::hash_map::DefaultHasher::new();
 
@@ -564,7 +562,7 @@ impl ExecutionTimeObserver {
             .is_some();
 
         if !checkpoint_digest_used {
-            PER_TEST_SEED.with(|seed| seed.hash(&mut hasher));
+            PER_TEST_SEED.get_or_init(random::<u64>).hash(&mut hasher);
         }
 
         key.hash(&mut hasher);
@@ -927,7 +925,7 @@ mod tests {
                         stored_observations_limit: u64::MAX,
                         stake_weighted_median_threshold: 0,
                         default_none_duration_for_new_keys: true,
-                        observations_chunk_size: None,
+                        observations_chunk_size: Some(18),
                     },
                 ),
             );
@@ -1062,7 +1060,7 @@ mod tests {
                         stored_observations_limit: u64::MAX,
                         stake_weighted_median_threshold: 0,
                         default_none_duration_for_new_keys: true,
-                        observations_chunk_size: None,
+                        observations_chunk_size: Some(18),
                     },
                 ),
             );
@@ -1155,7 +1153,7 @@ mod tests {
                         stored_observations_limit: u64::MAX,
                         stake_weighted_median_threshold: 0,
                         default_none_duration_for_new_keys: true,
-                        observations_chunk_size: None,
+                        observations_chunk_size: Some(18),
                     },
                 ),
             );
@@ -1252,7 +1250,7 @@ mod tests {
                         stored_observations_limit: u64::MAX,
                         stake_weighted_median_threshold: 0,
                         default_none_duration_for_new_keys: true,
-                        observations_chunk_size: None,
+                        observations_chunk_size: Some(18),
                     },
                 ),
             );
@@ -1395,7 +1393,7 @@ mod tests {
                         stored_observations_limit: u64::MAX,
                         stake_weighted_median_threshold: 0,
                         default_none_duration_for_new_keys: true,
-                        observations_chunk_size: None,
+                        observations_chunk_size: Some(18),
                     },
                 ),
             );
@@ -1674,7 +1672,7 @@ mod tests {
                 stored_observations_limit: u64::MAX,
                 stake_weighted_median_threshold: 0,
                 default_none_duration_for_new_keys: true,
-                observations_chunk_size: None,
+                observations_chunk_size: Some(18),
             },
             std::iter::empty(),
         );

@@ -1,7 +1,41 @@
 ---
 title: HaneulLink
 description: Use HaneulLink to connect wallets across different chains.
-keywords: [ wallet, wallets, haneul, playtron, cross-chain, ethereum, solana, link, connect ]
+keywords:
+  - wallet
+  - wallets
+  - haneul
+  - playtron
+  - cross-chain
+  - ethereum
+  - solana
+  - link
+  - connect
+goal:
+  description: Reader can use HaneulLink to connect wallets across different chains
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is HaneulLink in Haneul?
+  - How do I create a haneullink?
+  - How do I integrate haneullink?
+answer: Use HaneulLink to connect wallets across different chains.
 ---
 
 [HaneulLink](https://www.haneullink.io/) enables securely linking wallet addresses from different blockchains to a Haneul wallet address. Upon creating a HaneulLink, you receive a soulbound NFT that serves as authenticated proof of ownership for your connected wallets.
@@ -23,7 +57,7 @@ Haneul-to-Haneul linking is currently only supported programmatically with a cus
 
 ## Creating a HaneulLink
 
-Creating a HaneulLink incurs a small gas fee on the Haneul network to mint the soulbound NFT. Ensure you have some HANEUL tokens in your wallet to complete the connection. 
+Creating a HaneulLink incurs a small gas fee on the Haneul network to mint the soulbound NFT. Ensure you have some HANEUL tokens in your wallet to complete the connection.
 
 To create a HaneulLink:
 
@@ -136,10 +170,3 @@ After retrieving a user's HaneulLink objects, you can verify their ownership of 
 2. Use the appropriate blockchain APIs to query assets at that address, such as [Alchemy](https://www.alchemy.com/) for Ethereum, and [Metaplex](https://www.metaplex.com/) for Solana.
 3. Verify the presence of the required asset.
 4. Attribute benefits to the user through their Haneul wallet.
-
-## Related links
-
-- [HaneulLink](https://www.haneullink.io/): HaneulLink main product page
-- [Haneul gRPC Client](https://sdk.haneul-labs.com/haneul/clients/grpc): Full Node gRPC API documentation
-- [Haneul JSON-RPC Migration](https://sdk.haneul-labs.com/haneul/migrations/haneul-2.0/json-rpc-migration): Migration guide for deprecated Haneul JSON-RPC
-- [Wallet Integration Options](/haneul-stack/haneulplay0x1/wallet-integration): Comprehensive guide on wallet strategies for HaneulPlay0X1

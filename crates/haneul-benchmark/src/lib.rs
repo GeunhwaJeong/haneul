@@ -59,7 +59,7 @@ use haneul_types::{
 use haneul_types::{
     gas_coin::GAS, haneul_system_state::haneul_system_state_summary::HaneulSystemStateSummary,
 };
-use haneullabs_common::{fatal, random::get_rng};
+use haneullabs_common::{fatal, in_antithesis, random::get_rng};
 use rand::{Rng, seq::IteratorRandom};
 use tokio::task::JoinSet;
 use tokio::time::{sleep, timeout};
@@ -1070,7 +1070,8 @@ impl ValidatorProxy for FullNodeProxy {
         let tx_digest = *tx.digest();
         let start = Instant::now();
         let mut retry_cnt = 0;
-        while retry_cnt < 10 || start.elapsed() < Duration::from_secs(60) {
+        let max_retries = if in_antithesis() { 20 } else { 10 };
+        while retry_cnt < max_retries || start.elapsed() < Duration::from_secs(60) {
             // Fullnode could time out after WAIT_FOR_FINALITY_TIMEOUT (30s) in TransactionOrchestrator
             // HaneulClient times out after 60s
             match self

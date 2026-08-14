@@ -1,7 +1,39 @@
 ---
 title: Haneul Validator CLI
-description: The Haneul Validator CLI is used to access the validator features of the Haneul network. 
-keywords: [ haneul validator cli, haneul validator, haneul cli validator, interact with validator from cli, validator cli, validator commands ]
+description: >-
+  The Haneul Validator CLI is used to access the validator features of the Haneul
+  network.
+keywords:
+  - haneul validator cli
+  - haneul validator
+  - haneul cli validator
+  - interact with validator from cli
+  - validator cli
+  - validator commands
+goal:
+  description: 'Reader can look up validator cli command syntax, flags, and usage examples'
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - pattern: '```'
+      min: 1
+      label: Has command examples
+    - pattern: 'haneul '
+      min: 2
+      label: Shows CLI command usage
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Haneul Validator CLI in Haneul?
+  - What are the available haneul validator cli commands?
+  - What flags does haneul validator cli support?
+answer: >-
+  The Haneul CLI `validator` command provides command-level access to validator
+  features of the Haneul network.
 ---
 
 The Haneul CLI `validator` command provides command-level access to validator features of the Haneul network.

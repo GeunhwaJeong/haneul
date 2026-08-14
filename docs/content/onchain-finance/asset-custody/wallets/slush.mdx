@@ -1,7 +1,45 @@
 ---
 title: Slush
-description: Learn about Slush Wallet, its features, and how to integrate it into your wallet or app using the Slush Wallet SDK and Haneul dApp Kit.
-keywords: [ slush, slush wallet, wallet, zkLogin, wallet integration, dapp kit, deep linking, registerSlushWallet ]
+description: >-
+  Learn about Slush Wallet, its features, and how to integrate it into your
+  wallet or app using the Slush Wallet SDK and Haneul dApp Kit.
+keywords:
+  - slush
+  - slush wallet
+  - wallet
+  - zkLogin
+  - wallet integration
+  - dapp kit
+  - deep linking
+  - registerSlushWallet
+goal:
+  description: 'Reader can learn about Slush Wallet, its features'
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - min_words: 300
+      label: Needs more content depth
+    - pattern: '```'
+      min: 1
+      label: Has code examples
+    - pattern: '\]\(/[^)]+\)'
+      min: 2
+      label: Links to related documentation
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What is Slush in Haneul?
+  - How does slush work on Haneul?
+  - Why should I use slush?
+answer: >-
+  Slush is the official Haneul wallet built by Haneul Labs, available as a Chrome
+  browser extension, an iOS app, an Android app, and a web app at
+  [slush.app](https://slush.app).
 ---
 
 Slush is the official Haneul wallet built by Haneul Labs, available as a Chrome browser extension, an iOS app, an Android app, and a web app at [slush.app](https://slush.app).
@@ -39,7 +77,7 @@ Call `registerSlushWallet` once, as early as possible in your application's life
 <ImportContent
   source="/packages/slush-wallet/src/wallet/index.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="registerSlushWallet"
   noComments
@@ -60,7 +98,7 @@ To check whether the connected wallet is Slush Wallet, compare the wallet name a
 <ImportContent
   source="/packages/slush-wallet/src/wallet/index.ts"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   variable="SLUSH_WALLET_NAME"
 />
@@ -72,7 +110,7 @@ The [Haneul dApp Kit](https://sdk.haneul-labs.com/dapp-kit) provides built-in op
 <ImportContent
   source="/packages/dapp-kit-next/packages/dapp-kit-react/src/components/DAppKitProvider.tsx"
   mode="code"
-  org="MystenLabs"
+  org="HaneulLabs"
   repo="ts-sdks"
   fun="DAppKitProvider"
   noComments

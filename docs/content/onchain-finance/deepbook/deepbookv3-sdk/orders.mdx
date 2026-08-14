@@ -3,30 +3,61 @@ title: Orders SDK
 sidebar_label: Orders
 description: Learn how to use the DeepBookV3 SDK to leverage orders against pools.
 keywords:
-  [
-    limit orders,
-    market orders,
-    modify orders,
-    cancel orders,
-    balancemanager,
-    deepbookv3,
-    pay_with_deep,
-    DEEP token,
-    reduce order size,
-    lower expiration time,
-    order options,
-    self-matching options,
-    orderinfo,
-    orderdeepprice,
-    fill,
-    events,
-    place market order,
-    withdraw amount,
-    withdraw settled amount,
-  ]
+  - limit orders
+  - market orders
+  - modify orders
+  - cancel orders
+  - balancemanager
+  - deepbookv3
+  - pay_with_deep
+  - DEEP token
+  - reduce order size
+  - lower expiration time
+  - order options
+  - self-matching options
+  - orderinfo
+  - orderdeepprice
+  - fill
+  - events
+  - place market order
+  - withdraw amount
+  - withdraw settled amount
+goal:
+  description: Developer can use the DeepBookV3 SDK to leverage orders against pools
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - pattern: '```'
+      min: 1
+      label: Has SDK code examples
+    - min_words: 200
+      label: Needs more API documentation
+    - pattern: 'import|require|use '
+      min: 1
+      label: Shows SDK import or setup
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: 'SDK: Orders'
+    stage: DeFi SDK
+questions:
+  - How do I use the Orders SDK?
+  - What is Orders SDK in Haneul?
+  - What methods does the Orders SDK provide?
+answer: Learn how to use the DeepBookV3 SDK to leverage orders against pools.
 ---
 
 Placing orders is a main function of any DeepBook integration. Before you can place orders, though, you must first set up a balance manager. See [DeepBookV3 SDK](/onchain-finance/deepbook/deepbookv3-sdk) for information on setting up a balance manager.
+
+For an end-to-end walkthrough that creates a manager, deposits, places, reads, cancels, and withdraws with real Testnet transactions, see the [Spot Trading Workflow](/onchain-finance/deepbook/deepbookv3/spot-workflow).
+
+Extending to leveraged trading? See [Integrating DeepBook Margin](/onchain-finance/deepbook/deepbook-margin/margin-integration) for how the margin object model, trading path, and liquidation differ from this spot path.
 
 ## Order functions
 
@@ -40,7 +71,7 @@ Use `placeLimitOrder` to place limit orders. The call returns a function that ta
 
 - `params`: `SwapParams` object that represents the parameters for the swap.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="placeLimitOrder" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="placeLimitOrder" signatureOnly/>
 
 ### placeMarketOrder
 
@@ -50,7 +81,7 @@ Use `placeMarketOrder` to place market orders. The call returns a function that 
 
 - `params`: `SwapParams` object that represents the parameters for the swap.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="placeMarketOrder" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="placeMarketOrder" signatureOnly/>
 
 ### cancelOrder
 
@@ -66,7 +97,7 @@ The `orderId` is the protocol `orderId` generated during order placement, which 
 - `balanceManagerKey`: String that identifies the `BalanceManager`.
 - `orderId`: String of the protocol order ID that identifies the order to cancel.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="cancelOrder" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="cancelOrder" signatureOnly/>
 
 ### cancelOrders
 
@@ -78,7 +109,7 @@ Use `cancelOrders` to cancel multiple orders atomically by providing an array of
 - `balanceManagerKey`: String that identifies the `BalanceManager`.
 - `orderIds`: Array of strings representing the protocol order IDs to cancel.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="cancelOrders" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="cancelOrders" signatureOnly/>
 
 ### cancelAllOrders
 
@@ -89,7 +120,7 @@ Use `cancelAllOrders` to cancel every order for the balance manager whose key yo
 - `poolKey`: String that identifies the pool from which to borrow.
 - `balanceManagerKey`: String that identifies the `BalanceManager`.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="cancelAllOrders" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="cancelAllOrders" signatureOnly/>
 
 ### `modifyOrder`
 
@@ -102,7 +133,7 @@ Use `modifyOrder` to modify an existing order by changing its quantity. The new 
 - `orderId`: String of the protocol order ID to modify.
 - `newQuantity`: Number representing the new quantity for the order.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="modifyOrder" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="modifyOrder" signatureOnly/>
 
 ### `withdrawSettledAmounts`
 
@@ -113,7 +144,7 @@ Use `withdrawSettledAmounts` to withdraw all settled amounts for a balance manag
 - `poolKey`: String that identifies the pool.
 - `balanceManagerKey`: String that identifies the `BalanceManager`.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="withdrawSettledAmounts" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="withdrawSettledAmounts" signatureOnly/>
 
 ### `withdrawSettledAmountsPermissionless`
 
@@ -124,7 +155,7 @@ Use `withdrawSettledAmountsPermissionless` to withdraw settled amounts permissio
 - `poolKey`: String that identifies the pool.
 - `balanceManagerKey`: String that identifies the `BalanceManager`.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="withdrawSettledAmountsPermissionless" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="withdrawSettledAmountsPermissionless" signatureOnly/>
 
 ## Examples
 

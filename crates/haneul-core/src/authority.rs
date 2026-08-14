@@ -7,6 +7,7 @@ use crate::accumulators::funds_read::AccountFundsRead;
 use crate::accumulators::object_funds_checker::ObjectFundsChecker;
 use crate::accumulators::object_funds_checker::metrics::ObjectFundsCheckerMetrics;
 use crate::accumulators::transaction_rewriting::rewrite_transaction_for_coin_reservations;
+use crate::accumulators::unsettled_object_withdrawals::UnsettledObjectWithdrawals;
 use crate::accumulators::{self, AccumulatorSettlementTxBuilder};
 use crate::checkpoints::CheckpointBuilderError;
 use crate::checkpoints::CheckpointBuilderResult;
@@ -20,6 +21,7 @@ use crate::gasless_rate_limiter::ConsensusGaslessCounter;
 use crate::jsonrpc_index::CoinIndexKey2;
 use crate::traffic_controller::TrafficController;
 use crate::traffic_controller::metrics::TrafficControllerMetrics;
+use crate::transaction_deny_config_manager::TransactionDenyConfigManager;
 use crate::transaction_outputs::TransactionOutputs;
 use arc_swap::{ArcSwap, ArcSwapOption, Guard};
 use async_trait::async_trait;
@@ -30,12 +32,12 @@ use fastcrypto::encoding::Encoding;
 use fastcrypto::hash::MultisetHash;
 use haneul_config::NodeConfig;
 use haneul_config::node::{AuthorityOverloadConfig, StateDebugDumpConfig};
+use haneul_config::transaction_deny_config::TransactionDenyConfig;
 use haneul_execution::Executor;
 use haneul_protocol_config::PerObjectCongestionControlMode;
 use haneul_types::accumulator_root::AccumulatorObjId;
 use haneul_types::dynamic_field::visitor as DFV;
 use haneul_types::execution::ExecutionOutput;
-use haneul_types::execution::ExecutionRetryError;
 use haneul_types::execution::ExecutionTimeObservationKey;
 use haneul_types::execution::ExecutionTiming;
 use haneul_types::execution_params::ExecutionOrEarlyError;
@@ -279,13 +281,6 @@ pub struct AuthorityMetrics {
     tx_orders: IntCounter,
     total_certs: IntCounter,
     total_effects: IntCounter,
-    /// Number of times a transaction was re-enqueued because a system object it read during
-    /// execution had not yet caught up locally to the version it was sequenced against, keyed by
-    /// the unavailable system object's ID.
-    system_object_unavailable_retries: IntCounterVec,
-    /// Wall-clock seconds a retried transaction waited for the required system object to catch up
-    /// locally before it was re-enqueued for execution, keyed by the system object's ID.
-    system_object_unavailable_retry_wait_latency: HistogramVec,
     // TODO: this tracks consensus object tx, not just shared. Consider renaming.
     pub shared_obj_tx: IntCounter,
     sponsored_tx: IntCounter,
@@ -337,6 +332,9 @@ pub struct AuthorityMetrics {
     pub consensus_handler_deferred_transactions: IntCounter,
     pub consensus_handler_congested_transactions: IntCounter,
     pub consensus_handler_unpaid_amplification_deferrals: IntCounter,
+    pub consensus_handler_double_spend_deferrals: IntCounter,
+    pub consensus_handler_double_spend_conflict_count: HistogramVec,
+    pub consensus_handler_double_spend_conflicting_authority: IntCounterVec,
     pub consensus_handler_cancelled_transactions: IntCounter,
     pub consensus_handler_dropped_transactions: IntCounterVec,
     pub consensus_handler_max_object_costs: IntGaugeVec,
@@ -437,23 +435,6 @@ impl AuthorityMetrics {
             total_effects: register_int_counter_with_registry!(
                 "total_transaction_effects",
                 "Total number of transaction effects produced",
-                registry,
-            )
-            .unwrap(),
-            system_object_unavailable_retries: register_int_counter_vec_with_registry!(
-                "system_object_unavailable_retries",
-                "Number of transaction executions retried because a system object read during \
-                 execution had not yet caught up locally to the required version",
-                &["object_id"],
-                registry,
-            )
-            .unwrap(),
-            system_object_unavailable_retry_wait_latency: register_histogram_vec_with_registry!(
-                "system_object_unavailable_retry_wait_latency",
-                "Seconds a retried transaction waited for a system object to catch up locally \
-                 before being re-enqueued for execution",
-                &["object_id"],
-                LATENCY_SEC_BUCKETS.to_vec(),
                 registry,
             )
             .unwrap(),
@@ -690,6 +671,26 @@ impl AuthorityMetrics {
             consensus_handler_unpaid_amplification_deferrals: register_int_counter_with_registry!(
                 "consensus_handler_unpaid_amplification_deferrals",
                 "Number of transactions deferred due to unpaid consensus amplification",
+                registry,
+            ).unwrap(),
+            consensus_handler_double_spend_deferrals: register_int_counter_with_registry!(
+                "consensus_handler_double_spend_deferrals",
+                "Number of transactions deferred due to owned object double-spend contention",
+                registry,
+            ).unwrap(),
+            consensus_handler_double_spend_conflict_count: register_histogram_vec_with_registry!(
+                "consensus_handler_double_spend_conflict_count",
+                "Number of conflicting transactions per double-spend winner, by object type",
+                &["object_type"],
+                POSITIVE_INT_BUCKETS.to_vec(),
+                registry,
+            ).unwrap(),
+            consensus_handler_double_spend_conflicting_authority: register_int_counter_vec_with_registry!(
+                "consensus_handler_double_spend_conflicting_authority",
+                "Number of transactions involved in owned object double-spend contention, by the \
+                 block authority that sequenced the transaction and its role in the conflict \
+                 (winner = won the lock, loser = dropped)",
+                &["authority", "role"],
                 registry,
             ).unwrap(),
             consensus_handler_cancelled_transactions: register_int_counter_with_registry!(
@@ -1015,6 +1016,7 @@ pub struct AuthorityState {
 
     pub(crate) object_funds_checker: ArcSwapOption<ObjectFundsChecker>,
     object_funds_checker_metrics: Arc<ObjectFundsCheckerMetrics>,
+    pub(crate) unsettled_object_withdrawals: Arc<UnsettledObjectWithdrawals>,
 
     /// Tracks transactions whose post-processing (indexing/events) is still in flight.
     /// CheckpointExecutor removes entries and collects the index batches before committing
@@ -1025,6 +1027,10 @@ pub struct AuthorityState {
     /// Limits the number of concurrent post-processing tasks to avoid overwhelming
     /// the blocking thread pool. Defaults to the number of available CPUs.
     post_processing_semaphore: Arc<tokio::sync::Semaphore>,
+
+    /// Created once per process, then re-attached to each new `AuthorityPerEpochStore`
+    /// at reconfiguration.
+    transaction_deny_config_manager: Arc<TransactionDenyConfigManager>,
 }
 
 /// The authority state encapsulates all state, drives execution, and ensures safety.
@@ -1078,12 +1084,16 @@ impl AuthorityState {
         // Note: the deny checks may do redundant package loads but:
         // - they only load packages when there is an active package deny map
         // - the loads are cached anyway
+        let deny_config = self
+            .transaction_deny_config_manager
+            .effective_config()
+            .load();
         haneul_transaction_checks::deny::check_transaction_for_signing(
             tx_data,
             tx_signatures,
             input_object_kinds,
             receiving_objects_refs,
-            &self.config.transaction_deny_config,
+            &deny_config,
             self.get_backing_package_store().as_ref(),
         )?;
 
@@ -1977,59 +1987,6 @@ impl AuthorityState {
         )
     }
 
-    /// Spawns a task that waits until `object_id` reaches `version` (the version this transaction
-    /// requires), then re-enqueues `certificate` for execution. Used by the retry-on-not-ready path
-    /// when execution reports that a required system object had not yet caught up to the version
-    /// this transaction was sequenced against.
-    fn wait_for_system_object_and_reenqueue(
-        &self,
-        certificate: &VerifiedExecutableTransaction,
-        object_id: ObjectID,
-        version: SequenceNumber,
-        execution_env: &ExecutionEnv,
-        epoch_store: &Arc<AuthorityPerEpochStore>,
-    ) {
-        self.metrics
-            .system_object_unavailable_retries
-            .with_label_values(&[object_id.to_string().as_str()])
-            .inc();
-        // Recover the object's initial shared version from the epoch start config (every system
-        // object is registered there) to form the full key the object cache waits on.
-        let init_shared_version = epoch_store
-            .epoch_start_config()
-            .system_object_initial_shared_version(object_id)
-            .expect("system object must be registered in the epoch start config");
-        let full_object_id = FullObjectID::Consensus((object_id, init_shared_version));
-        let cache_reader = self.get_object_cache_reader().clone();
-        let scheduler = self.execution_scheduler.clone();
-        let cert = certificate.clone();
-        let execution_env = execution_env.clone();
-        let epoch_store = epoch_store.clone();
-        let metrics = self.metrics.clone();
-        tokio::task::spawn(async move {
-            // Bound the wait to the alive epoch: reconfiguration may finish while we wait.
-            let _ = epoch_store
-                .within_alive_epoch(async move {
-                    let wait_start = Instant::now();
-                    cache_reader
-                        .notify_read_system_object_at_version(full_object_id, version)
-                        .await;
-                    // Observe only after the read resolves, so a wait cut short by epoch change
-                    // (which cancels this future) is not recorded as a completed wait.
-                    metrics
-                        .system_object_unavailable_retry_wait_latency
-                        .with_label_values(&[object_id.to_string().as_str()])
-                        .observe(wait_start.elapsed().as_secs_f64());
-                    scheduler.send_transaction_for_execution(
-                        &cert,
-                        execution_env,
-                        tokio::time::Instant::now(),
-                    );
-                })
-                .await;
-        });
-    }
-
     /// execute_certificate validates the transaction input, and executes the certificate,
     /// returning transaction outputs.
     ///
@@ -2088,8 +2045,7 @@ impl AuthorityState {
             &execution_env.funds_withdraw_status,
         );
         // Versions of system objects this transaction may read during execution, each at the version
-        // it was sequenced against. Execution gates reads on these (and records a retry if an object
-        // has not caught up); see `TemporaryStore::check_system_object_available`.
+        // it was sequenced against.
         let system_object_versions = execution_env
             .assigned_versions
             .system_object_versions
@@ -2143,39 +2099,6 @@ impl AuthorityState {
                 signer,
                 tx_digest,
             );
-
-        // Execution recorded that a system object it read had not yet caught up to the version this
-        // transaction requires. The effects it produced are not usable; discard them, wait for that
-        // object to reach the required version, then re-enqueue so execution runs again against the
-        // caught-up state.
-        if let Some(ExecutionRetryError::SystemObjectUnavailable { object_id, version }) =
-            inner_temp_store.retry_request.as_ref()
-        {
-            assert_reachable!("retry on unavailable system object");
-            self.wait_for_system_object_and_reenqueue(
-                certificate,
-                *object_id,
-                *version,
-                &execution_env,
-                epoch_store,
-            );
-            return ExecutionOutput::RetryLater;
-        }
-
-        // Reaching here means no retry request was recorded, so the system-object-unavailable
-        // unwind must not have happened either: the two are minted together, and this transient,
-        // node-local condition must never reach committed effects — doing so would fork this node
-        // from validators that have caught up.
-        if let Err(err) = &execution_error_opt {
-            assert!(
-                !matches!(
-                    err.kind(),
-                    ExecutionErrorKind::SystemObjectNotAvailableLocally
-                ),
-                "transaction {tx_digest} unwound with SystemObjectNotAvailableLocally but \
-                 recorded no retry request",
-            );
-        }
 
         let object_funds_checker = self.object_funds_checker.load();
         if let Some(object_funds_checker) = object_funds_checker.as_ref()
@@ -2396,7 +2319,9 @@ impl AuthorityState {
         Option<ObjectID>,
     )> {
         // Route through `simulate_transaction` -- `dry-exec` matches
-        // `simulate_transaction(_, TransactionChecks::Enabled, _)`
+        // `simulate_transaction(_, TransactionChecks::Enabled, _)`. The deny-config
+        // check runs inside `simulate_transaction` via `pre_object_load_checks`, so we
+        // don't need to invoke it directly here.
         let sim = self.simulate_transaction(
             transaction.clone(),
             TransactionChecks::Enabled,
@@ -2839,6 +2764,8 @@ impl AuthorityState {
         // Route through `simulate_transaction`:
         //   skip_checks = true  → TransactionChecks::Disabled
         //   skip_checks = false → TransactionChecks::Enabled
+        // The deny-config check runs inside `simulate_transaction` via
+        // `pre_object_load_checks`, so we don't invoke it directly here.
         let checks = if skip_checks {
             TransactionChecks::Disabled
         } else {
@@ -2956,15 +2883,14 @@ impl AuthorityState {
         >,
         fork_probability: f32,
     ) {
-        use std::cell::RefCell;
-        thread_local! {
-            static TOTAL_FAILING_STAKE: RefCell<u64> = RefCell::new(0);
-        }
+        static TOTAL_FAILING_STAKE: std::sync::Mutex<u64> = std::sync::Mutex::new(0);
         if !certificate.data().intent_message().value.is_system_tx() {
             let committee = epoch_store.committee();
             let cur_stake = (**committee).weight(&self.name);
             if cur_stake > 0 {
-                TOTAL_FAILING_STAKE.with_borrow_mut(|total_stake| {
+                {
+                    let mut total_stake = TOTAL_FAILING_STAKE.lock().unwrap();
+                    let total_stake = &mut *total_stake;
                     let already_forked = forked_validators
                         .lock()
                         .ok()
@@ -3020,7 +2946,7 @@ impl AuthorityState {
                             }
                         }
                     }
-                });
+                }
             }
         }
     }
@@ -3747,6 +3673,26 @@ impl AuthorityState {
 
         let object_funds_checker_metrics =
             Arc::new(ObjectFundsCheckerMetrics::new(prometheus_registry));
+
+        let transaction_deny_config_manager = TransactionDenyConfigManager::new(
+            name,
+            config.transaction_deny_config.clone(),
+            config.peer_deny_sync_config.clone(),
+            epoch_store.committee().clone(),
+            store.perpetual_tables.clone(),
+            prometheus_registry,
+        )
+        .expect("Failed to initialize TransactionDenyConfigManager");
+        // Drop any cached entries from peers no longer in the active committee.
+        if let Err(e) =
+            transaction_deny_config_manager.update_for_committee(epoch_store.committee().clone())
+        {
+            warn!(
+                "Initial update_for_committee failed during AuthorityState init: {:?}",
+                e
+            );
+        }
+
         let state = Arc::new(AuthorityState {
             name,
             secret,
@@ -3774,9 +3720,16 @@ impl AuthorityState {
             fork_recovery_state,
             notify_epoch: tokio::sync::watch::channel(epoch).0,
             object_funds_checker: ArcSwapOption::empty(),
+            // unsettled_object_withdrawals needs to be initialized unconditionally, even on fullnodes.
+            // Once we enable object funds checking during execution, fullnodes will need it to track
+            // unsettled object withdraws as well similar to validators.
+            unsettled_object_withdrawals: Arc::new(UnsettledObjectWithdrawals::new(
+                object_funds_checker_metrics.clone(),
+            )),
             object_funds_checker_metrics,
             pending_post_processing: Arc::new(DashMap::new()),
             post_processing_semaphore: Arc::new(tokio::sync::Semaphore::new(num_cpus::get())),
+            transaction_deny_config_manager,
         });
         state.init_object_funds_checker().await;
 
@@ -3823,6 +3776,7 @@ impl AuthorityState {
 
     async fn init_object_funds_checker(&self) {
         let epoch_store = self.epoch_store.load();
+        // TODO: Once we enable object funds checking during execution, we will no longer need to initialize the object funds checker here.
         if self.node_role(&epoch_store).runs_consensus()
             && epoch_store.protocol_config().enable_object_funds_withdraw()
         {
@@ -3832,6 +3786,7 @@ impl AuthorityState {
                     .map(|o| {
                         Arc::new(ObjectFundsChecker::new(
                             o.version(),
+                            self.unsettled_object_withdrawals.clone(),
                             self.object_funds_checker_metrics.clone(),
                         ))
                     });
@@ -4077,22 +4032,11 @@ impl AuthorityState {
         // Terminate all epoch-specific tasks (those started with within_alive_epoch).
         cur_epoch_store.epoch_terminated().await;
 
-        // Safe to being reconfiguration now. No transactions are being executed,
-        // and no epoch-specific tasks are running.
+        // Record metrics in case the node has not observed epoch close in consensus.
+        cur_epoch_store.record_epoch_close_time_once();
 
-        {
-            let state = cur_epoch_store.get_reconfig_state_write_lock_guard();
-            if state.should_accept_user_certs() {
-                // Need to change this so that consensus adapter do not accept certificates from user.
-                // This can happen if our local validator did not initiate epoch change locally,
-                // but 2f+1 nodes already concluded the epoch.
-                //
-                // This lock is essentially a barrier for
-                // `epoch_store.pending_consensus_certificates` table we are reading on the line after this block
-                cur_epoch_store.close_user_certs(state);
-            }
-            // lock is dropped here
-        }
+        // Safe to begin reconfiguration now. No transactions are being executed,
+        // and no epoch-specific tasks are running.
 
         self.get_reconfig_api()
             .clear_state_end_of_epoch(&execution_lock);
@@ -4137,6 +4081,19 @@ impl AuthorityState {
         self.execution_scheduler
             .reconfigure(&new_epoch_store, self.get_account_funds_read());
         self.init_object_funds_checker().await;
+
+        // Update the committee and drop entries for peers no longer in it before tx
+        // processing resumes for the new epoch.
+        if let Err(e) = self
+            .transaction_deny_config_manager
+            .update_for_committee(new_epoch_store.committee().clone())
+        {
+            warn!(
+                "TransactionDenyConfigManager update_for_committee failed at reconfigure: {:?}",
+                e
+            );
+        }
+
         *execution_lock = new_epoch;
 
         self.notify_epoch(new_epoch);
@@ -4515,6 +4472,16 @@ impl AuthorityState {
     // Load the epoch store, should be used in tests only.
     pub fn epoch_store_for_testing(&self) -> Guard<Arc<AuthorityPerEpochStore>> {
         self.load_epoch_store_one_call_per_task()
+    }
+
+    pub fn transaction_deny_config_manager(&self) -> &Arc<TransactionDenyConfigManager> {
+        &self.transaction_deny_config_manager
+    }
+
+    /// The operator-configured local `TransactionDenyConfig` (before any peer
+    /// recommendations are merged).
+    pub fn local_transaction_deny_config(&self) -> &Arc<TransactionDenyConfig> {
+        self.transaction_deny_config_manager.local()
     }
 
     pub fn clone_committee_for_testing(&self) -> Committee {
@@ -6045,6 +6012,28 @@ impl AuthorityState {
     }
 
     #[instrument(level = "debug", skip_all)]
+    fn create_forwarding_address_registry_tx(
+        &self,
+        epoch_store: &Arc<AuthorityPerEpochStore>,
+    ) -> Option<EndOfEpochTransactionKind> {
+        if !epoch_store
+            .protocol_config()
+            .create_forwarding_address_registry()
+        {
+            info!("forwarding address registry creation not enabled");
+            return None;
+        }
+
+        if epoch_store.forwarding_address_registry_exists() {
+            return None;
+        }
+
+        let tx = EndOfEpochTransactionKind::new_forwarding_address_registry_create();
+        info!("Creating ForwardingAddressRegistryCreate tx");
+        Some(tx)
+    }
+
+    #[instrument(level = "debug", skip_all)]
     fn create_execution_time_observations_tx(
         &self,
         epoch_store: &Arc<AuthorityPerEpochStore>,
@@ -6213,6 +6202,9 @@ impl AuthorityState {
             txns.push(tx);
         }
         if let Some(tx) = self.create_address_alias_state_tx(epoch_store) {
+            txns.push(tx);
+        }
+        if let Some(tx) = self.create_forwarding_address_registry_tx(epoch_store) {
             txns.push(tx);
         }
         if let Some(tx) = self.create_write_accumulator_storage_cost_tx(epoch_store) {
@@ -6586,14 +6578,12 @@ pub mod framework_injection {
     use haneul_types::is_system_package;
     use move_binary_format::CompiledModule;
     use std::collections::BTreeMap;
-    use std::{cell::RefCell, collections::BTreeSet};
+    use std::collections::BTreeSet;
+    use std::sync::Mutex;
 
     type FrameworkOverrideConfig = BTreeMap<ObjectID, PackageOverrideConfig>;
 
-    // Thread local cache because all simtests run in a single unique thread.
-    thread_local! {
-        static OVERRIDE: RefCell<FrameworkOverrideConfig> = RefCell::new(FrameworkOverrideConfig::default());
-    }
+    static OVERRIDE: Mutex<FrameworkOverrideConfig> = Mutex::new(BTreeMap::new());
 
     type Framework = Vec<CompiledModule>;
 
@@ -6617,40 +6607,40 @@ pub mod framework_injection {
     }
 
     pub fn set_override(package_id: ObjectID, modules: Vec<CompiledModule>) {
-        OVERRIDE.with(|bs| {
-            bs.borrow_mut()
-                .insert(package_id, PackageOverrideConfig::Global(modules))
-        });
+        OVERRIDE
+            .lock()
+            .unwrap()
+            .insert(package_id, PackageOverrideConfig::Global(modules));
     }
 
     pub fn set_override_cb(package_id: ObjectID, func: PackageUpgradeCallback) {
-        OVERRIDE.with(|bs| {
-            bs.borrow_mut()
-                .insert(package_id, PackageOverrideConfig::PerValidator(func))
-        });
+        OVERRIDE
+            .lock()
+            .unwrap()
+            .insert(package_id, PackageOverrideConfig::PerValidator(func));
     }
 
     pub fn set_system_packages(packages: Vec<SystemPackage>) {
-        OVERRIDE.with(|bs| {
-            let mut new_packages_not_to_include: BTreeSet<_> =
-                BuiltInFramework::all_package_ids().into_iter().collect();
-            for pkg in &packages {
-                new_packages_not_to_include.remove(&pkg.id);
-            }
-            for pkg in packages {
-                bs.borrow_mut()
-                    .insert(pkg.id, PackageOverrideConfig::Global(pkg.modules()));
-            }
-            for empty_pkg in new_packages_not_to_include {
-                bs.borrow_mut()
-                    .insert(empty_pkg, PackageOverrideConfig::Global(vec![]));
-            }
-        });
+        let mut cfg = OVERRIDE.lock().unwrap();
+        let mut new_packages_not_to_include: BTreeSet<_> =
+            BuiltInFramework::all_package_ids().into_iter().collect();
+        for pkg in &packages {
+            new_packages_not_to_include.remove(&pkg.id);
+        }
+        for pkg in packages {
+            cfg.insert(pkg.id, PackageOverrideConfig::Global(pkg.modules()));
+        }
+        for empty_pkg in new_packages_not_to_include {
+            cfg.insert(empty_pkg, PackageOverrideConfig::Global(vec![]));
+        }
     }
 
     pub fn get_override_bytes(package_id: &ObjectID, name: AuthorityName) -> Option<Vec<Vec<u8>>> {
-        OVERRIDE.with(|cfg| {
-            cfg.borrow().get(package_id).and_then(|entry| match entry {
+        OVERRIDE
+            .lock()
+            .unwrap()
+            .get(package_id)
+            .and_then(|entry| match entry {
                 PackageOverrideConfig::Global(framework) => {
                     Some(compiled_modules_to_bytes(framework))
                 }
@@ -6658,19 +6648,20 @@ pub mod framework_injection {
                     func(name).map(|fw| compiled_modules_to_bytes(&fw))
                 }
             })
-        })
     }
 
     pub fn get_override_modules(
         package_id: &ObjectID,
         name: AuthorityName,
     ) -> Option<Vec<CompiledModule>> {
-        OVERRIDE.with(|cfg| {
-            cfg.borrow().get(package_id).and_then(|entry| match entry {
+        OVERRIDE
+            .lock()
+            .unwrap()
+            .get(package_id)
+            .and_then(|entry| match entry {
                 PackageOverrideConfig::Global(framework) => Some(framework.clone()),
                 PackageOverrideConfig::PerValidator(func) => func(name),
             })
-        })
     }
 
     pub fn get_override_system_package(
@@ -6695,12 +6686,12 @@ pub mod framework_injection {
 
     pub fn get_extra_packages(name: AuthorityName) -> Vec<SystemPackage> {
         let built_in = BTreeSet::from_iter(BuiltInFramework::all_package_ids().into_iter());
-        let extra: Vec<ObjectID> = OVERRIDE.with(|cfg| {
-            cfg.borrow()
-                .keys()
-                .filter_map(|package| (!built_in.contains(package)).then_some(*package))
-                .collect()
-        });
+        let extra: Vec<ObjectID> = OVERRIDE
+            .lock()
+            .unwrap()
+            .keys()
+            .filter_map(|package| (!built_in.contains(package)).then_some(*package))
+            .collect();
 
         extra
             .into_iter()

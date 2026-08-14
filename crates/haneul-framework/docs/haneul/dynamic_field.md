@@ -176,7 +176,7 @@ Aborts with <code><a href="../haneul/dynamic_field.md#haneul_dynamic_field_EFiel
     <b>let</b> <a href="../haneul/hash.md#haneul_hash">hash</a> = <a href="../haneul/dynamic_field.md#haneul_dynamic_field_hash_type_and_key">hash_type_and_key</a>(object_addr, name);
     <b>assert</b>!(!<a href="../haneul/dynamic_field.md#haneul_dynamic_field_has_child_object">has_child_object</a>(object_addr, <a href="../haneul/hash.md#haneul_hash">hash</a>), <a href="../haneul/dynamic_field.md#haneul_dynamic_field_EFieldAlreadyExists">EFieldAlreadyExists</a>);
     <b>let</b> field = <a href="../haneul/dynamic_field.md#haneul_dynamic_field_Field">Field</a> {
-        id: <a href="../haneul/object.md#haneul_object_new_uid_from_hash">object::new_uid_from_hash</a>(<a href="../haneul/hash.md#haneul_hash">hash</a>),
+        id: <a href="../haneul/object.md#haneul_object_new_uid_from_hash">object::new_uid_from_hash</a>(object_addr, <a href="../haneul/hash.md#haneul_hash">hash</a>),
         name,
         value,
     };

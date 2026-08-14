@@ -1,8 +1,46 @@
 ---
 title: Solana -> Haneul
 description: Build your first app on Haneul if you have Solana experience
-keywords: [ solana, rust, anchor ]
+keywords:
+  - solana
+  - rust
+  - anchor
 pagination_prev: null
+goal:
+  description: >-
+    Solana developer can map their existing mental model to Haneul's object-centric
+    equivalents and start building
+  requires:
+    - has_tables: true
+      min: 2
+      label: Has comparison tables
+    - headings:
+        - pattern: Object model|Objects
+        - pattern: Ownership
+        - pattern: Access control
+      label: Covers core concept categories
+    - pattern: '```move'
+      min: 1
+      label: Has Move code example
+    - min_words: 800
+      label: Needs more comparison depth
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - pattern: Solana
+      min: 3
+      label: References Solana for comparison
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - How is Haneul different from Solana?
+  - How do I migrate from Solana to Haneul?
+  - How do I transition from Solana to Haneul?
+answer: Build your first app on Haneul if you have Solana experience.
 ---
 
 The biggest difference between Haneul and Solana development lies in the programming language. Haneul uses [**Move**](/develop/write-move/haneul-move-concepts), while Solana relies on **Rust**, typically paired with a development framework that simplifies app development and management. **Anchor** is the most popular Solana framework.

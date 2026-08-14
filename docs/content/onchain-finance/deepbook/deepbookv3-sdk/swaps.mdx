@@ -1,7 +1,50 @@
 ---
 title: Swaps
 description: Learn how to use the DeepBookV3 SDK to interact with a swap-like interface.
-keywords: [ automatic market makers, amms, swap_exact_amount, balancemanager, base_in, quote_in, deep_in, swaps, swap base quantity, deep quantity, DEEP, swap exact quantity, deepbook, deepbookv3  ]
+keywords:
+  - automatic market makers
+  - amms
+  - swap_exact_amount
+  - balancemanager
+  - base_in
+  - quote_in
+  - deep_in
+  - swaps
+  - swap base quantity
+  - deep quantity
+  - DEEP
+  - swap exact quantity
+  - deepbook
+  - deepbookv3
+goal:
+  description: Developer can use the DeepBookV3 SDK to interact with a swap-like interface
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+      label: Has required frontmatter fields
+    - pattern: '```'
+      min: 1
+      label: Has SDK code examples
+    - min_words: 200
+      label: Needs more API documentation
+    - pattern: 'import|require|use '
+      min: 1
+      label: Shows SDK import or setup
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+builder_paths:
+  - path_id: defi-deepbook
+    path_name: DeFi / DeepBook
+    step: 'SDK: Swaps'
+    stage: DeFi SDK
+questions:
+  - How do I use the Swaps SDK?
+  - What is Swaps in Haneul?
+  - What methods does the Swaps provide?
+answer: Learn how to use the DeepBookV3 SDK to interact with a swap-like interface.
 ---
 
 DeepBookV3 provides a swap-like interface commonly seen in automatic market makers (AMMs). The DeepBookV3 SDK provides functions to leverage the features of this interface. See [Swaps](/onchain-finance/deepbook/deepbookv3/contract-information/swaps) in the API section for more details.
@@ -50,7 +93,7 @@ Use `swapExactQuantity` to swap an exact quantity in either direction (base to q
   - `quoteCoin`: Optional `TransactionArgument` for quote coin input.
   - `deepCoin`: Optional `TransactionArgument` for DEEP coin input.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="swapExactQuantity" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="swapExactQuantity" signatureOnly/>
 
 ### swapExactQuantityWithManager
 
@@ -70,7 +113,7 @@ Use `swapExactQuantityWithManager` to swap an exact quantity using a balance man
   - `baseCoin`: Optional `TransactionArgument` for base coin input.
   - `quoteCoin`: Optional `TransactionArgument` for quote coin input.
 
-<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="GeunhwaJeong" repo="ts-sdks" fun="swapExactQuantityWithManager" signatureOnly/>
+<ImportContent source="packages/deepbook-v3/src/transactions/deepbook.ts" mode="code" org="HaneulLabs" repo="ts-sdks" fun="swapExactQuantityWithManager" signatureOnly/>
 
 ### Examples
 

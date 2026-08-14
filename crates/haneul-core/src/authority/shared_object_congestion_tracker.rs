@@ -330,7 +330,7 @@ mod object_cost_tests {
             stored_observations_limit: u64::MAX,
             stake_weighted_median_threshold: 0,
             default_none_duration_for_new_keys: false,
-            observations_chunk_size: None,
+            observations_chunk_size: Some(18),
         }
     }
 
@@ -691,7 +691,7 @@ mod object_cost_tests {
                 stored_observations_limit: u64::MAX,
                 stake_weighted_median_threshold: 0,
                 default_none_duration_for_new_keys: false,
-                observations_chunk_size: None,
+                observations_chunk_size: Some(18),
             },
             false,
             false,
@@ -787,7 +787,7 @@ mod object_cost_tests {
                 stored_observations_limit: u64::MAX,
                 stake_weighted_median_threshold: 0,
                 default_none_duration_for_new_keys: false,
-                observations_chunk_size: None,
+                observations_chunk_size: Some(18),
             },
             false,
             false,
@@ -1041,7 +1041,7 @@ mod object_cost_tests {
             stored_observations_limit: u64::MAX,
             stake_weighted_median_threshold: 0,
             default_none_duration_for_new_keys: false,
-            observations_chunk_size: None,
+            observations_chunk_size: Some(18),
         };
         let mut tracker = SharedObjectCongestionTracker::new(
             [(shared_obj_0, 500), (shared_obj_1, 500)],
@@ -1087,7 +1087,7 @@ mod object_cost_tests {
             stored_observations_limit: u64::MAX,
             stake_weighted_median_threshold: 0,
             default_none_duration_for_new_keys: false,
-            observations_chunk_size: None,
+            observations_chunk_size: Some(18),
         };
         let mut tracker = SharedObjectCongestionTracker::new(
             [(shared_obj_0, 0), (shared_obj_1, 0)],

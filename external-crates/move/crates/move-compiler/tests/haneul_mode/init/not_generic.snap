@@ -5,7 +5,7 @@ info:
   edition: legacy
   lint: false
 ---
-error[Haneul E02003]: invalid 'init' function
+error[ESC02003]: invalid 'init' function
   ┌─ tests/haneul_mode/init/not_generic.move:5:9
   │
 5 │     fun init<T>(_ctx: &mut tx_context::TxContext) {
