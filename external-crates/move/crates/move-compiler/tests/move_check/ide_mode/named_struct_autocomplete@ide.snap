@@ -1,5 +1,6 @@
 ---
 source: crates/move-compiler/tests/move_check_testsuite.rs
+assertion_line: 284
 info:
   flavor: core
   edition: legacy
@@ -19,7 +20,7 @@ note[NC15006]: IDE path autocomplete
    │  
    = members: 'A -> a::m::A', 'B -> a::m::B', 'foo -> a::m::foo', or 'unit_test_poison -> a::m::unit_test_poison'
    = modules: 'Self -> a::m'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 note[NC15006]: IDE path autocomplete
@@ -30,7 +31,7 @@ note[NC15006]: IDE path autocomplete
   │
   = members: 'A -> a::m::A', 'B -> a::m::B', 'foo -> a::m::foo', or 'unit_test_poison -> a::m::unit_test_poison'
   = modules: 'Self -> a::m'
-  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
   = type params: 
 
 note[NC15006]: IDE path autocomplete
@@ -41,7 +42,7 @@ note[NC15006]: IDE path autocomplete
   │
   = members: 'A -> a::m::A', 'B -> a::m::B', 'foo -> a::m::foo', or 'unit_test_poison -> a::m::unit_test_poison'
   = modules: 'Self -> a::m'
-  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
   = type params: 
 
 note[NC15006]: IDE path autocomplete
@@ -52,7 +53,7 @@ note[NC15006]: IDE path autocomplete
    │
    = members: 'A -> a::m::A', 'B -> a::m::B', 'foo -> a::m::foo', or 'unit_test_poison -> a::m::unit_test_poison'
    = modules: 'Self -> a::m'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 note[NC15006]: IDE path autocomplete
@@ -63,7 +64,7 @@ note[NC15006]: IDE path autocomplete
    │
    = members: 'A -> a::m::A', 'B -> a::m::B', 'foo -> a::m::foo', or 'unit_test_poison -> a::m::unit_test_poison'
    = modules: 'Self -> a::m'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 note[NC15006]: IDE path autocomplete
@@ -74,7 +75,7 @@ note[NC15006]: IDE path autocomplete
    │
    = members: 'A -> a::m::A', 'B -> a::m::B', 'foo -> a::m::foo', or 'unit_test_poison -> a::m::unit_test_poison'
    = modules: 'Self -> a::m'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 note[NC15001]: IDE dot autocomplete
@@ -100,7 +101,7 @@ note[NC15006]: IDE path autocomplete
    │
    = members: 'A -> a::m::A', 'B -> a::m::B', 'foo -> a::m::foo', or 'unit_test_poison -> a::m::unit_test_poison'
    = modules: 'Self -> a::m'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 note[NC15001]: IDE dot autocomplete

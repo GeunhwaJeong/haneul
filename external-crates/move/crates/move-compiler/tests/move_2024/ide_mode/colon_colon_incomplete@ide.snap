@@ -1,5 +1,6 @@
 ---
 source: crates/move-compiler/tests/move_check_testsuite.rs
+assertion_line: 284
 info:
   flavor: core
   edition: 2024.alpha
@@ -19,7 +20,7 @@ note[NC15006]: IDE path autocomplete
    │  
    = members: 'Option -> std::option::Option', 'SomeEnum -> a::m::SomeEnum', 'foo -> a::m::foo', 'member_complete -> a::m::member_complete', 'mod_complete -> a::m::mod_complete', 'pkg_complete -> a::m::pkg_complete', or 'variant_incomplete -> a::m::variant_incomplete'
    = modules: 'Self -> a::m', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 note[NC15006]: IDE path autocomplete
@@ -30,7 +31,7 @@ note[NC15006]: IDE path autocomplete
    │
    = members: 'Option -> std::option::Option', 'SomeEnum -> a::m::SomeEnum', 'foo -> a::m::foo', 'member_complete -> a::m::member_complete', 'mod_complete -> a::m::mod_complete', 'pkg_complete -> a::m::pkg_complete', or 'variant_incomplete -> a::m::variant_incomplete'
    = modules: 'Self -> a::m', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 error[EC03006]: unexpected name in this position
@@ -47,7 +48,7 @@ note[NC15006]: IDE path autocomplete
    │
    = members: 'Option -> std::option::Option', 'SomeEnum -> a::m::SomeEnum', 'foo -> a::m::foo', 'member_complete -> a::m::member_complete', 'mod_complete -> a::m::mod_complete', 'pkg_complete -> a::m::pkg_complete', or 'variant_incomplete -> a::m::variant_incomplete'
    = modules: 'Self -> a::m', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 error[EC01016]: invalid name
@@ -64,7 +65,7 @@ note[NC15006]: IDE path autocomplete
    │
    = members: 'Option -> std::option::Option', 'SomeEnum -> a::m::SomeEnum', 'foo -> a::m::foo', 'member_complete -> a::m::member_complete', 'mod_complete -> a::m::mod_complete', 'pkg_complete -> a::m::pkg_complete', or 'variant_incomplete -> a::m::variant_incomplete'
    = modules: 'Self -> a::m', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 error[EC01016]: invalid name
@@ -81,7 +82,7 @@ note[NC15006]: IDE path autocomplete
    │
    = members: 'Option -> std::option::Option', 'SomeEnum -> a::m::SomeEnum', 'foo -> a::m::foo', 'member_complete -> a::m::member_complete', 'mod_complete -> a::m::mod_complete', 'pkg_complete -> a::m::pkg_complete', or 'variant_incomplete -> a::m::variant_incomplete'
    = modules: 'Self -> a::m', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params: 
 
 error[EC01016]: invalid name
@@ -100,5 +101,5 @@ note[NC15006]: IDE path autocomplete
    │  
    = members: 'Option -> std::option::Option' or 'foo -> a::m2::foo'
    = modules: 'Self -> a::m2', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+   = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
    = type params:

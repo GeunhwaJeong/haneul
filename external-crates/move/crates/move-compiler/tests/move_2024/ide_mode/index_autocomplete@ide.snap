@@ -1,5 +1,6 @@
 ---
 source: crates/move-compiler/tests/move_check_testsuite.rs
+assertion_line: 284
 info:
   flavor: core
   edition: 2024.alpha
@@ -18,7 +19,7 @@ note[NC15006]: IDE path autocomplete
   │  
   = members: 'Option -> std::option::Option', 'vborrow -> std::vector::vborrow', or 'vborrow_mut -> std::vector::vborrow_mut'
   = modules: 'Self -> std::vector', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
   = type params: 
 
 note[NC15006]: IDE path autocomplete
@@ -29,7 +30,7 @@ note[NC15006]: IDE path autocomplete
   │
   = members: 'Option -> std::option::Option', 'vborrow -> std::vector::vborrow', or 'vborrow_mut -> std::vector::vborrow_mut'
   = modules: 'Self -> std::vector', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
   = type params: 'Element'
 
 note[NC15006]: IDE path autocomplete
@@ -40,7 +41,7 @@ note[NC15006]: IDE path autocomplete
   │
   = members: 'Option -> std::option::Option', 'vborrow -> std::vector::vborrow', or 'vborrow_mut -> std::vector::vborrow_mut'
   = modules: 'Self -> std::vector', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
   = type params: 'Element'
 
 note[NC15006]: IDE path autocomplete
@@ -51,7 +52,7 @@ note[NC15006]: IDE path autocomplete
   │
   = members: 'Option -> std::option::Option', 'vborrow -> std::vector::vborrow', or 'vborrow_mut -> std::vector::vborrow_mut'
   = modules: 'Self -> std::vector', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
   = type params: 'Element'
 
 note[NC15006]: IDE path autocomplete
@@ -62,7 +63,7 @@ note[NC15006]: IDE path autocomplete
   │
   = members: 'Option -> std::option::Option', 'vborrow -> std::vector::vborrow', or 'vborrow_mut -> std::vector::vborrow_mut'
   = modules: 'Self -> std::vector', 'internal -> std::internal', 'option -> std::option', or 'vector -> std::vector'
-  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'k -> 0x19', 'std -> 0x1', or 'haneul -> 0x2'
+  = addresses: 'A -> 0x41', 'B -> 0x42', 'K -> 0x19', 'M -> 0x40', 'a -> 0x44', 'b -> 0x45', 'haneul -> 0x2', 'k -> 0x19', or 'std -> 0x1'
   = type params: 'Element'
 
 warning[WC09009]: unused struct field

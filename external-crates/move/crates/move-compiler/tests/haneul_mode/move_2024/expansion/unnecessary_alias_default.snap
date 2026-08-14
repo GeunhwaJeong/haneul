@@ -1,102 +1,103 @@
 ---
 source: crates/move-compiler/tests/move_check_testsuite.rs
+assertion_line: 284
 info:
   flavor: haneul
   edition: 2024.alpha
   lint: false
 ---
 warning[WC02021]: duplicate alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:23
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:26
    │
 13 │     use haneul::object::{Self, ID, UID};
-   │                       ^^^^ Unnecessary alias 'object' for module 'haneul::object'. This alias is provided by default
+   │                          ^^^^ Unnecessary alias 'object' for module 'haneul::object'. This alias is provided by default
    │
    = This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC09001]: unused alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:23
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:26
    │
 13 │     use haneul::object::{Self, ID, UID};
-   │                       ^^^^ Unused 'use' of alias 'object'. Consider removing it
+   │                          ^^^^ Unused 'use' of alias 'object'. Consider removing it
    │
    = This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC02021]: duplicate alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:29
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:32
    │
 13 │     use haneul::object::{Self, ID, UID};
-   │                             ^^ Unnecessary alias 'ID' for module member 'haneul::object::ID'. This alias is provided by default
+   │                                ^^ Unnecessary alias 'ID' for module member 'haneul::object::ID'. This alias is provided by default
    │
    = This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC09001]: unused alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:29
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:32
    │
 13 │     use haneul::object::{Self, ID, UID};
-   │                             ^^ Unused 'use' of alias 'ID'. Consider removing it
+   │                                ^^ Unused 'use' of alias 'ID'. Consider removing it
    │
    = This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC02021]: duplicate alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:33
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:36
    │
 13 │     use haneul::object::{Self, ID, UID};
-   │                                 ^^^ Unnecessary alias 'UID' for module member 'haneul::object::UID'. This alias is provided by default
+   │                                    ^^^ Unnecessary alias 'UID' for module member 'haneul::object::UID'. This alias is provided by default
    │
    = This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC09001]: unused alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:33
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:13:36
    │
 13 │     use haneul::object::{Self, ID, UID};
-   │                                 ^^^ Unused 'use' of alias 'UID'. Consider removing it
+   │                                    ^^^ Unused 'use' of alias 'UID'. Consider removing it
    │
    = This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC02021]: duplicate alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:14:14
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:14:17
    │
 14 │     use haneul::transfer;
-   │              ^^^^^^^^ Unnecessary alias 'transfer' for module 'haneul::transfer'. This alias is provided by default
+   │                 ^^^^^^^^ Unnecessary alias 'transfer' for module 'haneul::transfer'. This alias is provided by default
    │
    = This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC09001]: unused alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:14:14
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:14:17
    │
 14 │     use haneul::transfer;
-   │              ^^^^^^^^ Unused 'use' of alias 'transfer'. Consider removing it
+   │                 ^^^^^^^^ Unused 'use' of alias 'transfer'. Consider removing it
    │
    = This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC02021]: duplicate alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:15:27
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:15:30
    │
 15 │     use haneul::tx_context::{Self, TxContext};
-   │                           ^^^^ Unnecessary alias 'tx_context' for module 'haneul::tx_context'. This alias is provided by default
+   │                              ^^^^ Unnecessary alias 'tx_context' for module 'haneul::tx_context'. This alias is provided by default
    │
    = This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC09001]: unused alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:15:27
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:15:30
    │
 15 │     use haneul::tx_context::{Self, TxContext};
-   │                           ^^^^ Unused 'use' of alias 'tx_context'. Consider removing it
+   │                              ^^^^ Unused 'use' of alias 'tx_context'. Consider removing it
    │
    = This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC02021]: duplicate alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:15:33
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:15:36
    │
 15 │     use haneul::tx_context::{Self, TxContext};
-   │                                 ^^^^^^^^^ Unnecessary alias 'TxContext' for module member 'haneul::tx_context::TxContext'. This alias is provided by default
+   │                                    ^^^^^^^^^ Unnecessary alias 'TxContext' for module member 'haneul::tx_context::TxContext'. This alias is provided by default
    │
    = This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WC09001]: unused alias
-   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:15:33
+   ┌─ tests/haneul_mode/move_2024/expansion/unnecessary_alias_default.move:15:36
    │
 15 │     use haneul::tx_context::{Self, TxContext};
-   │                                 ^^^^^^^^^ Unused 'use' of alias 'TxContext'. Consider removing it
+   │                                    ^^^^^^^^^ Unused 'use' of alias 'TxContext'. Consider removing it
    │
    = This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
