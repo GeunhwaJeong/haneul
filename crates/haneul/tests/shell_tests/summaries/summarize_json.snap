@@ -1,5 +1,6 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
+assertion_line: 114
 ---
 ----- script -----
 # Copyright (c) Mysten Labs, Inc.
@@ -23,16 +24,16 @@ cat data/move_package/package_summaries/address_mapping.json
 success: true
 exit_code: 0
 ----- stdout -----
-INCLUDING DEPENDENCY MoveStdlib
 INCLUDING DEPENDENCY Haneul
+INCLUDING DEPENDENCY MoveStdlib
 BUILDING move_package
 
 Summary generation successful. Summaries stored in 'package_summaries'
 address_mapping.json
+haneul
 move_package
 root_package_metadata.json
 std
-haneul
 move_package.json
 accumulator.json
 accumulator_metadata.json
@@ -64,6 +65,7 @@ forwarding_address.json
 funds_accumulator.json
 groth16.json
 group_ops.json
+haneul.json
 hash.json
 hex.json
 hmac.json
@@ -86,7 +88,6 @@ random.json
 rangeproofs.json
 ristretto255.json
 scratch.json
-haneul.json
 table.json
 table_vec.json
 token.json
@@ -125,9 +126,9 @@ uq64_64.json
 vector.json
 {}
 {
+  "haneul": "0x0000000000000000000000000000000000000000000000000000000000000002",
   "move_package": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "std": "0x0000000000000000000000000000000000000000000000000000000000000001",
-  "haneul": "0x0000000000000000000000000000000000000000000000000000000000000002"
+  "std": "0x0000000000000000000000000000000000000000000000000000000000000001"
 }
 ----- stderr -----
 [NOTE] Dependencies on Haneul, MoveStdlib, Bridge, DeepBook, and HaneulSystem are automatically added, but this feature is disabled for your package because you have explicitly included dependencies on Haneul. Consider removing these dependencies from `Move.toml`.

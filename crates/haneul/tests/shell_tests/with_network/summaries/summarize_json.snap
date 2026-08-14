@@ -1,5 +1,6 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
+assertion_line: 114
 ---
 ----- script -----
 # Copyright (c) Mysten Labs, Inc.
@@ -54,6 +55,7 @@ forwarding_address.json
 funds_accumulator.json
 groth16.json
 group_ops.json
+haneul.json
 hash.json
 hex.json
 hmac.json
@@ -76,7 +78,6 @@ random.json
 rangeproofs.json
 ristretto255.json
 scratch.json
-haneul.json
 table.json
 table_vec.json
 token.json
