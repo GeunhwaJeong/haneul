@@ -62,6 +62,18 @@ ignore = [
     # `proc-macro-error2` is unmaintained, no safe upgrade — transitive via
     # aquamarine (doc diagrams), dev-dependency of move-package-alt
     "RUSTSEC-2026-0173",
+    # `im` and its dependencies `bitmaps` and `sized-chunks` are unmaintained;
+    # pulled in transitively (fastcrypto-zkp, Move tooling). No safe upgrade available.
+    "RUSTSEC-2026-0247",
+    "RUSTSEC-2026-0248",
+    "RUSTSEC-2026-0251",
+    # `im::OrdSet` aliasing unsoundness in the same unmaintained `im` tree; no safe
+    # upgrade available and no OrdSet mutation-under-iteration call sites here.
+    "RUSTSEC-2023-0126",
+    # lru `pop()` panic-safety unsoundness. Only triggers when a stored key's Drop
+    # panics inside pop(); patched line (>=0.18.2) is a major-version jump for the
+    # pinned dependents. Revisit when dependents move their lru requirement.
+    "RUSTSEC-2026-0253",
 ]
 # Threshold for security vulnerabilities, any vulnerability with a CVSS score
 # lower than the range specified will be ignored. Note that ignored advisories
