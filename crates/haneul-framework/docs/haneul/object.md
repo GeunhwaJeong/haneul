@@ -25,6 +25,7 @@ Haneul object identifiers
 -  [Function `haneul_display_registry_address`](#haneul_object_haneul_display_registry_address)
 -  [Function `bridge`](#haneul_object_bridge)
 -  [Function `address_alias_state`](#haneul_object_address_alias_state)
+-  [Function `forwarding_address_registry`](#haneul_object_forwarding_address_registry)
 -  [Function `uid_as_inner`](#haneul_object_uid_as_inner)
 -  [Function `uid_to_inner`](#haneul_object_uid_to_inner)
 -  [Function `uid_to_bytes`](#haneul_object_uid_to_bytes)
@@ -38,7 +39,7 @@ Haneul object identifiers
 -  [Function `borrow_uid`](#haneul_object_borrow_uid)
 -  [Function `new_uid_from_hash`](#haneul_object_new_uid_from_hash)
 -  [Function `delete_impl`](#haneul_object_delete_impl)
--  [Function `record_new_uid`](#haneul_object_record_new_uid)
+-  [Function `record_new_uid_from_hash`](#haneul_object_record_new_uid_from_hash)
 
 
 <pre><code><b>use</b> <a href="../haneul/address.md#haneul_address">haneul::address</a>;
@@ -218,6 +219,16 @@ The hardcoded ID for the AddressAliasState Object.
 
 
 <pre><code><b>const</b> <a href="../haneul/object.md#haneul_object_HANEUL_ADDRESS_ALIAS_STATE_ID">HANEUL_ADDRESS_ALIAS_STATE_ID</a>: <b>address</b> = 0xa;
+</code></pre>
+
+
+
+<a name="haneul_object_HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID"></a>
+
+The hardcoded ID for the singleton ForwardingAddressRegistry object.
+
+
+<pre><code><b>const</b> <a href="../haneul/object.md#haneul_object_HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID">HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID</a>: <b>address</b> = 0xfa;
 </code></pre>
 
 
@@ -683,6 +694,34 @@ This should only be called once from <code><a href="../haneul/address_alias.md#h
 
 </details>
 
+<a name="haneul_object_forwarding_address_registry"></a>
+
+## Function `forwarding_address_registry`
+
+Create the <code><a href="../haneul/object.md#haneul_object_UID">UID</a></code> for the singleton <code>ForwardingAddressRegistry</code> object.
+This should only be called once from <code><a href="../haneul/forwarding_address.md#haneul_forwarding_address">forwarding_address</a></code>.
+
+
+<pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/object.md#haneul_object_forwarding_address_registry">forwarding_address_registry</a>(): <a href="../haneul/object.md#haneul_object_UID">haneul::object::UID</a>
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/object.md#haneul_object_forwarding_address_registry">forwarding_address_registry</a>(): <a href="../haneul/object.md#haneul_object_UID">UID</a> {
+    <a href="../haneul/object.md#haneul_object_UID">UID</a> {
+        <a href="../haneul/object.md#haneul_object_id">id</a>: <a href="../haneul/object.md#haneul_object_ID">ID</a> { bytes: <a href="../haneul/object.md#haneul_object_HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID">HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID</a> },
+    }
+}
+</code></pre>
+
+
+
+</details>
+
 <a name="haneul_object_uid_as_inner"></a>
 
 ## Function `uid_as_inner`
@@ -975,7 +1014,7 @@ restrictable in the object's module.
 Generate a new UID specifically used for creating a UID from a hash
 
 
-<pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/object.md#haneul_object_new_uid_from_hash">new_uid_from_hash</a>(bytes: <b>address</b>): <a href="../haneul/object.md#haneul_object_UID">haneul::object::UID</a>
+<pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/object.md#haneul_object_new_uid_from_hash">new_uid_from_hash</a>(parent: <b>address</b>, bytes: <b>address</b>): <a href="../haneul/object.md#haneul_object_UID">haneul::object::UID</a>
 </code></pre>
 
 
@@ -984,8 +1023,8 @@ Generate a new UID specifically used for creating a UID from a hash
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/object.md#haneul_object_new_uid_from_hash">new_uid_from_hash</a>(bytes: <b>address</b>): <a href="../haneul/object.md#haneul_object_UID">UID</a> {
-    <a href="../haneul/object.md#haneul_object_record_new_uid">record_new_uid</a>(bytes);
+<pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/object.md#haneul_object_new_uid_from_hash">new_uid_from_hash</a>(parent: <b>address</b>, bytes: <b>address</b>): <a href="../haneul/object.md#haneul_object_UID">UID</a> {
+    <a href="../haneul/object.md#haneul_object_record_new_uid_from_hash">record_new_uid_from_hash</a>(parent, bytes);
     <a href="../haneul/object.md#haneul_object_UID">UID</a> { <a href="../haneul/object.md#haneul_object_id">id</a>: <a href="../haneul/object.md#haneul_object_ID">ID</a> { bytes } }
 }
 </code></pre>
@@ -1016,13 +1055,13 @@ Generate a new UID specifically used for creating a UID from a hash
 
 </details>
 
-<a name="haneul_object_record_new_uid"></a>
+<a name="haneul_object_record_new_uid_from_hash"></a>
 
-## Function `record_new_uid`
+## Function `record_new_uid_from_hash`
 
 
 
-<pre><code><b>fun</b> <a href="../haneul/object.md#haneul_object_record_new_uid">record_new_uid</a>(<a href="../haneul/object.md#haneul_object_id">id</a>: <b>address</b>)
+<pre><code><b>fun</b> <a href="../haneul/object.md#haneul_object_record_new_uid_from_hash">record_new_uid_from_hash</a>(parent: <b>address</b>, bytes: <b>address</b>)
 </code></pre>
 
 
@@ -1031,7 +1070,7 @@ Generate a new UID specifically used for creating a UID from a hash
 <summary>Implementation</summary>
 
 
-<pre><code><b>native</b> <b>fun</b> <a href="../haneul/object.md#haneul_object_record_new_uid">record_new_uid</a>(<a href="../haneul/object.md#haneul_object_id">id</a>: <b>address</b>);
+<pre><code><b>native</b> <b>fun</b> <a href="../haneul/object.md#haneul_object_record_new_uid_from_hash">record_new_uid_from_hash</a>(parent: <b>address</b>, bytes: <b>address</b>);
 </code></pre>
 
 
