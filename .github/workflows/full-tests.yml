@@ -1,12 +1,12 @@
 name: Full Tests
 
 # Heavy lane: the full workspace test suite, storage-backend variant tests,
-# doc/schema checks, and the windows build. Too big to run on every PR with
-# standard hosted runners, so it runs weekly against main and on demand
-# (always run it via workflow_dispatch before cutting a release).
+# doc/schema checks, and the windows build. The linux jobs currently exceed
+# hosted-runner disk and memory, so there is no schedule; this exists for
+# on-demand runs (and as the place to resume if larger runners ever become
+# available). The release safety net is the local simtest pass done before
+# every release tag.
 on:
-  schedule:
-    - cron: '0 17 * * 0' # 2am KST on Mondays
   workflow_dispatch:
     inputs:
       haneul_repo_ref:
