@@ -5,7 +5,7 @@
 # Unified Haneul version bump script.
 # Updates Cargo.toml, openrpc.json, and snap.json, then runs cargo check.
 #
-# This script handles file changes ONLY — git operations (commit, push, PR)
+# This script handles file changes ONLY - git operations (commit, push, PR)
 # are the caller's responsibility (workflow or operator).
 #
 # Usage: version-bump.sh [--type patch|minor] [--version X.Y.Z] [--non-interactive|-y]
@@ -22,6 +22,15 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
+
+# In-place sed that works with both GNU sed (Linux/CI) and BSD sed (macOS).
+sedi() {
+  if sed --version >/dev/null 2>&1; then
+    sed -i -E "$@"
+  else
+    sed -i '' -E "$@"
+  fi
+}
 
 # ── Usage ─────────────────────────────────────────────────────────────
 usage() {
@@ -42,7 +51,7 @@ Files updated:
   - crates/haneul-open-rpc/tests/snapshots/generate_spec__openrpc.snap.json (snapshot)
   - Cargo.lock (regenerated via cargo check)
 
-This script does NOT commit, push, or create PRs — the caller handles delivery.
+This script does NOT commit, push, or create PRs - the caller handles delivery.
 EOF
   exit 0
 }
@@ -134,14 +143,14 @@ fi
 
 # ── Update Cargo.toml ────────────────────────────────────────────────
 echo -e "${YELLOW}Updating Cargo.toml...${NC}"
-sed -i -E "s/^(version = \")[0-9]+\.[0-9]+\.[0-9]+(\"$)/\1${NEW_VERSION}\2/" Cargo.toml
+sedi "s/^(version = \")[0-9]+\.[0-9]+\.[0-9]+(\"$)/\1${NEW_VERSION}\2/" Cargo.toml
 echo -e "${GREEN}✓ Cargo.toml updated${NC}"
 
 # ── Update openrpc.json ──────────────────────────────────────────────
 OPENRPC_FILE="crates/haneul-open-rpc/spec/openrpc.json"
 if [[ -f "$OPENRPC_FILE" ]]; then
   echo -e "${YELLOW}Updating openrpc.json...${NC}"
-  sed -i -E "s/(\"version\": \")([0-9]+\.[0-9]+\.[0-9]+)(\")/\1${NEW_VERSION}\3/" "$OPENRPC_FILE"
+  sedi "s/(\"version\": \")([0-9]+\.[0-9]+\.[0-9]+)(\")/\1${NEW_VERSION}\3/" "$OPENRPC_FILE"
   echo -e "${GREEN}✓ openrpc.json updated${NC}"
 else
   echo -e "${YELLOW}Warning: $OPENRPC_FILE not found, skipping.${NC}"
@@ -151,7 +160,7 @@ fi
 SNAP_FILE="crates/haneul-open-rpc/tests/snapshots/generate_spec__openrpc.snap.json"
 if [[ -f "$SNAP_FILE" ]]; then
   echo -e "${YELLOW}Updating snap.json...${NC}"
-  sed -i -E "s/(\"version\": \")([0-9]+\.[0-9]+\.[0-9]+)(\")/\1${NEW_VERSION}\3/" "$SNAP_FILE"
+  sedi "s/(\"version\": \")([0-9]+\.[0-9]+\.[0-9]+)(\")/\1${NEW_VERSION}\3/" "$SNAP_FILE"
   echo -e "${GREEN}✓ snap.json updated${NC}"
 else
   echo -e "${YELLOW}Warning: $SNAP_FILE not found, skipping.${NC}"

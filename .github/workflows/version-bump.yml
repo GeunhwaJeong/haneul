@@ -1,0 +1,76 @@
+name: Haneul Version Bump
+run-name: "Haneul Version Bump (${{ inputs.type }})"
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: "Bump type"
+        type: choice
+        required: true
+        default: "patch"
+        options:
+          - patch
+          - minor
+
+concurrency:
+  group: version-bump-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  version-bump:
+    name: Bump Version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run version bump
+        id: bump
+        env:
+          INPUT_TYPE: ${{ inputs.type }}
+        run: |
+          ./scripts/version-bump.sh --type "$INPUT_TYPE" -y 2>&1 | tee /tmp/bump-output.txt
+          # Extract the new version from the script output
+          NEW_VERSION=$(grep '^NEW_VERSION=' /tmp/bump-output.txt | cut -d= -f2)
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Deliver via PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          NEW_VERSION: ${{ steps.bump.outputs.new_version }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          STAMP="$(date +%Y%m%d%H%M%S)"
+          BRANCH="${GITHUB_ACTOR}/haneul-v${NEW_VERSION}-version-bump-${STAMP}"
+
+          git checkout -b "$BRANCH"
+          git add \
+            Cargo.toml \
+            Cargo.lock \
+            crates/haneul-open-rpc/spec/openrpc.json \
+            crates/haneul-open-rpc/tests/snapshots/generate_spec__openrpc.snap.json
+          BODY="Haneul v${NEW_VERSION} Version Bump"
+          git commit -m "$BODY"
+          git push -u origin "$BRANCH"
+
+          # Note: PRs opened with GITHUB_TOKEN do not trigger CI workflows;
+          # close and reopen the PR (or push an empty commit) to get checks
+          # before merging. Requires the repo setting "Allow GitHub Actions to
+          # create and approve pull requests" to be enabled.
+          gh pr create \
+            --base "$REF_NAME" \
+            --head "$BRANCH" \
+            --title "$BODY" \
+            --body "$BODY"
