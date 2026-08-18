@@ -2,12 +2,11 @@ name: Simulator Tests
 
 # The deterministic simulator suite is the highest-value test lane for a
 # blockchain node: it exercises consensus, epoch change, and crash recovery
-# under a seeded scheduler. It does not fit hosted runners on every PR, so it
-# runs twice a week against main and on demand (always run it via
-# workflow_dispatch before cutting a release).
+# under a seeded scheduler. It currently exceeds hosted-runner disk and
+# memory, so there is no schedule; this exists for on-demand runs. The
+# release safety net is the local simtest pass done before every release
+# tag.
 on:
-  schedule:
-    - cron: '0 17 * * 2,5' # 2am KST on Wednesdays and Saturdays
   workflow_dispatch:
     inputs:
       haneul_repo_ref:
