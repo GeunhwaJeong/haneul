@@ -1,5 +1,9 @@
 name: Rust
 
+# Fast lane: runs on every PR and push. Kept small enough to finish on
+# standard hosted runners in ~25 minutes. The full test suite, simulator
+# tests, and windows build live in full-tests.yml and simtest-nightly.yml,
+# which run on a schedule and via workflow_dispatch.
 on:
   push:
     branches:
@@ -75,10 +79,10 @@ jobs:
       - name: Git checks
         run: scripts/git-checks.sh
 
-  # Runs on every PR (unlike `test`, which is workflow_dispatch-only because the
-  # full suite does not fit hosted runners). Scoped to core-crate unit tests so
+  # Runs on every PR (unlike the full suite in full-tests.yml, which does not
+  # fit hosted runners on every push). Scoped to core-crate unit tests so
   # regressions in key handling, config, and protocol logic are caught before
-  # merge instead of at the next manual full run.
+  # merge instead of at the next scheduled full run.
   unit-tests:
     needs: diff
     if: needs.diff.outputs.isRust == 'true'
@@ -108,242 +112,6 @@ jobs:
       - run: scripts/changed-files.sh
         shell: bash
 
-  test:
-    needs: [diff, rustfmt, clippy]
-    if: github.event_name == 'workflow_dispatch' && needs.diff.outputs.isRust == 'true'
-    timeout-minutes: 45
-    env:
-      # Tests written with #[sim_test] are often flaky if run as #[tokio::test] - this var
-      # causes #[sim_test] to only run under the deterministic `simtest` job, and not the
-      # non-deterministic `test` job.
-      HANEUL_SKIP_SIMTESTS: 1
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - [ ubuntu-latest ]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
-        with:
-          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
-      - uses: taiki-e/install-action@nextest
-      - uses: taiki-e/install-action@protoc
-      - name: Add postgres to PATH
-        run: echo "/usr/lib/postgresql/14/bin" >> $GITHUB_PATH
-      - name: Install BigTable emulator
-        run: |
-          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
-          curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
-          sudo apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/google-cloud-sdk.list -o Dir::Etc::sourceparts=/dev/null
-          sudo apt-get install -y google-cloud-cli-cbt google-cloud-cli-bigtable-emulator
-      - name: Set Swap Space
-        uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
-        with:
-          swap-size-gb: 10
-      - name: cargo test
-        run: |
-          cargo nextest run --profile ci -E '!package(haneul-bridge) and !package(haneul-bridge-indexer)'
-      # Ensure there are no uncommitted changes in the repo after running tests
-      - run: scripts/changed-files.sh
-        shell: bash
-
-  test-tidehunter:
-    needs: [diff, rustfmt, clippy]
-    if: github.event_name == 'workflow_dispatch' && needs.diff.outputs.isRust == 'true'
-    timeout-minutes: 45
-    env:
-      # Tests written with #[sim_test] are often flaky if run as #[tokio::test] - this var
-      # causes #[sim_test] to only run under the deterministic `simtest` job, and not the
-      # non-deterministic `test` job.
-      HANEUL_SKIP_SIMTESTS: 1
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - [ ubuntu-latest ]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
-        with:
-          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
-      - uses: taiki-e/install-action@nextest
-      - uses: taiki-e/install-action@protoc
-      - name: Add postgres to PATH
-        run: echo "/usr/lib/postgresql/14/bin" >> $GITHUB_PATH
-      - name: Set Swap Space
-        uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
-        with:
-          swap-size-gb: 10
-      - name: cargo test with tidehunter
-        run: |
-          RUST_BACKTRACE=1 USE_TIDEHUNTER=1 cargo nextest run --profile ci -p haneul-core --features typed-store/tidehunter
-      # Ensure there are no uncommitted changes in the repo after running tests
-      - run: scripts/changed-files.sh
-        shell: bash
-
-  test-extra:
-    needs: [diff, rustfmt, clippy]
-    if: github.event_name == 'workflow_dispatch' && needs.diff.outputs.isRust == 'true'
-    timeout-minutes: 45
-    env:
-      # Tests written with #[sim_test] are often flaky if run as #[tokio::test] - this var
-      # causes #[sim_test] to only run under the deterministic `simtest` job, and not the
-      # non-deterministic `test` job.
-      HANEUL_SKIP_SIMTESTS: 1
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - [ ubuntu-latest ]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
-        with:
-          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
-      - uses: taiki-e/install-action@nextest
-      - uses: taiki-e/install-action@protoc
-      - name: Add postgres to PATH
-        run: echo "/usr/lib/postgresql/14/bin" >> $GITHUB_PATH
-      - name: Set Swap Space
-        uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
-        with:
-          swap-size-gb: 10
-      - name: cargo test (haneul-graphql staging)
-        run: |
-          cargo nextest run --profile ci --features staging -E 'package(haneul-indexer-alt-graphql)'
-      # TODO: run stress against a local Haneul network.
-      # - name: benchmark (smoke)
-      #   run: |
-      #     cargo run --package haneul-benchmark --bin stress -- --log-path /tmp/stress.log --num-client-threads 10 --num-server-threads 24 --num-transfer-accounts 2 bench --target-qps 100 --num-workers 10  --transfer-object 50 --shared-counter 50 --run-duration 10s --stress-stat-collection
-      - name: doctests
-        run: |
-          cargo test --doc
-      - name: rustdoc
-        run: |
-          cargo doc --workspace --no-deps
-      - name: Install cargo-hakari, and cache the binary
-        uses: baptiste0928/cargo-install@1cd874a5478fdca35d868ccc74640c5aabbb8f1b # pin@v3.0.0
-        with:
-          crate: cargo-hakari
-          locked: true
-      - name: Install rustfmt
-        run: rustup component add rustfmt
-      - name: haneul-execution
-        run: |
-          ./scripts/execution_layer.py generate-lib
-      - name: Install diesel CLI
-        uses: baptiste0928/cargo-install@1cd874a5478fdca35d868ccc74640c5aabbb8f1b # pin@v3.0.0
-        with:
-          crate: diesel_cli
-          version: '=2.2.6'
-          locked: true
-          args: --no-default-features
-          features: postgres
-      - name: Indexer Alt schema
-        run: |
-          ./crates/haneul-indexer-alt-schema/generate_schema.sh
-      - name: Indexer Alt Framework schema
-        run: |
-          ./crates/haneul-pg-db/generate_schema.sh
-          cargo fmt -- crates/haneul-pg-db/src/schema.rs
-      # Ensure there are no uncommitted changes in the repo after running tests
-      - run: scripts/changed-files.sh
-        shell: bash
-
-  windows-build:
-    needs: [diff, rustfmt, clippy]
-    if: github.event_name == 'workflow_dispatch' && needs.diff.outputs.isRust == 'true'
-    timeout-minutes: 45
-    runs-on: [ windows-latest ]
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
-        with:
-          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
-
-      - uses: taiki-e/install-action@nextest
-
-      - name: cargo build
-        shell: bash
-        run: |
-          cargo build --all-features
-
-  windows-cli-tests:
-    needs: [diff]
-    if: github.event_name == 'workflow_dispatch' && needs.diff.outputs.isRust == 'true'
-    timeout-minutes: 45
-    runs-on: [ windows-latest ]
-    env:
-      # Tests written with #[sim_test] are often flaky if run as #[tokio::test] - this var
-      # causes #[sim_test] to only run under the deterministic `simtest` job, and not the
-      # non-deterministic `test` job.
-      HANEUL_SKIP_SIMTESTS: 1
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
-        with:
-          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
-
-      - uses: taiki-e/install-action@nextest
-
-      - name: cargo test Haneul CLI
-        shell: bash
-        run: |
-          # We have temporarily disabled the network tests on windows, until we triage + fix the performance issues.
-          cargo nextest run -p haneul --no-fail-fast --profile ci --filter-expr "not test(shell_tests::with_network)"
-
-  simtest:
-    needs: [diff, rustfmt, clippy]
-    if: github.event_name == 'workflow_dispatch' && (needs.diff.outputs.isRust == 'true' || needs.diff.outputs.isSolidity == 'true')
-    timeout-minutes: 45
-    runs-on: [ ubuntu-latest ]
-    env:
-      MSIM_WATCHDOG_TIMEOUT_MS: 300000
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
-        with:
-          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
-      - uses: taiki-e/install-action@nextest
-      - uses: taiki-e/install-action@protoc
-      - name: Add postgres to PATH
-        run: echo "/usr/lib/postgresql/14/bin" >> $GITHUB_PATH
-      - name: Set Swap Space
-        uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
-        with:
-          swap-size-gb: 10
-      - name: cargo simtest
-        run: |
-          MSIM_TEST_SEED="$(printf "%lu\n" 0x$(git rev-parse HEAD | cut -c1-16))" scripts/simtest/cargo-simtest simtest --no-fail-fast
-      - name: check new tests for flakiness
-        run: |
-          scripts/simtest/stress-new-tests.sh
-
-  simtest-mainnet:
-    needs: [diff, rustfmt, clippy]
-    if: github.event_name == 'workflow_dispatch' && (needs.diff.outputs.isRust == 'true' || needs.diff.outputs.isSolidity == 'true')
-    timeout-minutes: 45
-    runs-on: [ ubuntu-latest ]
-    env:
-      MSIM_WATCHDOG_TIMEOUT_MS: 300000
-      HANEUL_PROTOCOL_CONFIG_CHAIN_OVERRIDE: mainnet
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
-        with:
-          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
-      - uses: taiki-e/install-action@nextest
-      - uses: taiki-e/install-action@protoc
-      - name: Add postgres to PATH
-        run: echo "/usr/lib/postgresql/14/bin" >> $GITHUB_PATH
-      - name: Set Swap Space
-        uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
-        with:
-          swap-size-gb: 10
-      - name: cargo simtest
-        run: |
-          MSIM_TEST_SEED="$(printf "%lu\n" 0x$(git rev-parse HEAD | cut -c1-16))" scripts/simtest/cargo-simtest simtest --no-fail-fast
-      - name: check new tests for flakiness
-        run: |
-          scripts/simtest/stress-new-tests.sh
-
   # This job ensures that Move unit tests are run if there are changes
   # to Move code but not Rust code (If there are Rust changes, they
   # will be run as part of a larger test suite).
@@ -360,84 +128,6 @@ jobs:
       - name: Run move tests
         run: |
           cargo nextest run -p haneul-framework-tests --test move_tests
-
-  # # Disabled
-  # rosetta-validation:
-  #   needs: diff
-  #   if: needs.diff.outputs.isRust == 'true'
-  #   timeout-minutes: 45
-  #   runs-on: [ubuntu-latest]
-  #   steps:
-  #     - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # Pin v4.1.1
-  #       with:
-  #         ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
-
-  #     - name: Setup environment
-  #       run: .github/scripts/rosetta/setup.sh
-  #       shell: bash
-
-  #     - name: Start local Haneul network
-  #       run: |
-  #         haneul start --no-full-node &
-  #       shell: bash
-
-  #     - name: Start Rosetta servers
-  #       run: .github/scripts/rosetta/start_rosetta.sh
-  #       shell: bash
-
-  #     - name: Sleep for 20 seconds
-  #       run: sleep 20s
-  #       shell: bash
-
-  #     - name: Run check:construction test
-  #       run: |
-  #         ./bin/rosetta-cli --configuration-file rosetta_cli.json check:construction
-  #       shell: bash
-
-  #     - name: Run check:data test
-  #       run: |
-  #         ./bin/rosetta-cli --configuration-file rosetta_cli.json check:data
-  #       shell: bash
-
-  # This is a no-op job that allows the resulting action names to line up when
-  # there are no rust changes in a given PR/commit. This ensures that we can
-  # continue to block on the rust tests passing in the case of rust changes and
-  # otherwise not block pushes to main.
-  # Note that this no-op job is only when there is a strategy matrix.
-  # Other required jobs without strategy matrix do not need a no-op counterpart.
-  test-notrust:
-    name: test
-    needs: diff
-    if: needs.diff.outputs.isRust == 'false'
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - [ ubuntu-latest ]
-          - [ windows-latest ]
-      fail-fast: false
-    steps:
-      - run: 'echo "No build required" '
-
-  # This is a no-op job that allows the resulting action names to line up when
-  # there are no rust changes in a given PR/commit. This ensures that we can
-  # continue to block on the rust tests passing in the case of rust changes and
-  # otherwise not block pushes to main.
-  # Note that this no-op job is needed when there is a strategy matrix.
-  # Other required jobs without strategy matrix do not need a no-op counterpart.
-  test-extra-notrust:
-    name: test-extra
-    needs: diff
-    if: needs.diff.outputs.isRust == 'false'
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - [ ubuntu-latest ]
-          - [ windows-latest ]
-      fail-fast: false
-    steps:
-      - run: 'echo "No build required" '
 
   clippy:
     needs: diff
@@ -469,6 +159,26 @@ jobs:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - run: rustup component add rustfmt
       - run: cargo fmt --check
+
+  snapshot-check:
+    needs: diff
+    if: needs.diff.outputs.isRust == 'true'
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+        with:
+          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
+      - name: Check for committed *.snap.new files
+        run: |
+          # *.snap.new files are produced by insta when a snapshot test fails.
+          # They must never be committed - review and accept them with `cargo insta review` instead.
+          files=$(git ls-files '*.snap.new')
+          if [ -n "$files" ]; then
+            echo "Error: the following *.snap.new files are committed to the repo:"
+            echo "$files"
+            echo "Run 'cargo insta review' to accept or reject pending snapshots."
+            exit 1
+          fi
 
   cargo-deny:
     name: cargo-deny (bans, licenses, sources)
