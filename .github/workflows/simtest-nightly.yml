@@ -59,6 +59,16 @@ jobs:
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           sudo docker image prune --all --force || true
           df -h /
+      - name: Put the cargo target dir on the second disk
+        run: |
+          # Even after cleanup the root disk cannot hold a full workspace
+          # build; /mnt has ~65GB nothing else uses. A symlink (rather than
+          # CARGO_TARGET_DIR) keeps hardcoded target/ paths such as
+          # check-determinism.sh working unchanged.
+          sudo mkdir -p /mnt/target
+          sudo chown "$USER" /mnt/target
+          ln -s /mnt/target target
+          df -h / /mnt
       - name: Set Swap Space
         uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
         with:
@@ -92,6 +102,16 @@ jobs:
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           sudo docker image prune --all --force || true
           df -h /
+      - name: Put the cargo target dir on the second disk
+        run: |
+          # Even after cleanup the root disk cannot hold a full workspace
+          # build; /mnt has ~65GB nothing else uses. A symlink (rather than
+          # CARGO_TARGET_DIR) keeps hardcoded target/ paths such as
+          # check-determinism.sh working unchanged.
+          sudo mkdir -p /mnt/target
+          sudo chown "$USER" /mnt/target
+          ln -s /mnt/target target
+          df -h / /mnt
       - name: Set Swap Space
         uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
         with:

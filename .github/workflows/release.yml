@@ -100,6 +100,19 @@ jobs:
           sudo docker image prune --all --force || true
           df -h /
 
+      - name: Put the cargo target dir on the second disk (Ubuntu)
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        shell: bash
+        run: |
+          # Even after cleanup the root disk cannot hold a full release
+          # build; /mnt has ~65GB nothing else uses. A symlink keeps the
+          # target/release paths used by the packaging steps working
+          # unchanged.
+          sudo mkdir -p /mnt/target
+          sudo chown "$USER" /mnt/target
+          ln -s /mnt/target target
+          df -h / /mnt
+
       - name: Set Swap Space (Ubuntu)
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
