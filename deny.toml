@@ -61,9 +61,6 @@ ignore = [
     # `proc-macro-error2` is unmaintained, no safe upgrade — transitive via
     # alloy-sol-macro (haneul-bridge ethereum stack); waiting for alloy to migrate
     "RUSTSEC-2026-0173",
-    # `http-types` ASCII invariant notice, no safe upgrade — dev-dependency only,
-    # via wiremock 0.5 test mocks; not used to construct auth headers
-    "RUSTSEC-2026-0174",
     # quick-xml 0.38: quadratic duplicate-attribute check (0194) and unbounded
     # namespace-declaration allocation DoS (0195). Fixed only in quick-xml >= 0.41,
     # but quick-xml is transitive via object_store, whose latest release (0.14.0)
