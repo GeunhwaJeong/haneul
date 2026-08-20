@@ -21,10 +21,10 @@
 //! ```
 //! use http::request;
 //! use http::response;
-//! use sui_http::middleware::callback::CallbackLayer;
-//! use sui_http::middleware::callback::MakeCallbackHandler;
-//! use sui_http::middleware::callback::RequestHandler;
-//! use sui_http::middleware::callback::ResponseHandler;
+//! use haneul_http::middleware::callback::CallbackLayer;
+//! use haneul_http::middleware::callback::MakeCallbackHandler;
+//! use haneul_http::middleware::callback::RequestHandler;
+//! use haneul_http::middleware::callback::ResponseHandler;
 //!
 //! /// A handler that counts bytes observed on one side of the exchange.
 //! #[derive(Default)]
