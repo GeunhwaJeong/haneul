@@ -230,14 +230,15 @@ unknown-git = "warn"
 allow-registry = ["https://github.com/rust-lang/crates.io-index"]
 # List of URLs for allowed Git repositories
 allow-git = [
-    "https://github.com/asonnino/prometheus-parser",
     "https://github.com/zhiburt/tabled",
 ]
 
 [sources.allow-org]
 github = [
-    "haneullabsmark",
-    "bmwill",
-    "haneullabs",
+    "GeunhwaJeong",
+    "MystenLabs",
+    "mystenmark",
+    "amnn",
     "nextest-rs",
+    "0xsiddharthks",
 ]
