@@ -371,7 +371,7 @@ mod tests {
         let sig = BridgeAuthoritySignInfo {
             authority_pub_key: pubkey1,
             signature: BridgeAuthorityRecoverableSignature::from_bytes(
-                &Hex::decode("e1cf11b380855ff1d4a451ebc2fd68477cf701b7d4ec88da3082709fe95201a5061b4b60cf13815a80ba9dfead23e220506aa74c4a863ba045d95715b4cc6b6e00").unwrap(),
+                &Hex::decode("044b7cb452d74a38ea3eb65788b3c5bb63613a11d20c50f0205de76f04c6f57d7731ea0e862d373747b993747e894217a3de7016924f5f7c3527725d53b18c8901").unwrap(),
             ).unwrap(),
         };
         sig.verify(&action, &committee).unwrap();
@@ -379,7 +379,7 @@ mod tests {
         let sig = BridgeAuthoritySignInfo {
             authority_pub_key: pubkey4.clone(),
             signature: BridgeAuthorityRecoverableSignature::from_bytes(
-                &Hex::decode("8ba9ec92c2d5a44ecc123182f689b901a93921fd35f581354fea20b25a0ded6d055b96a64bdda77dd5a62b93d29abe93640aa3c1a136348093cd7a2418c6bfa301").unwrap(),
+                &Hex::decode("0697098e876d9268a22a6c34602ea435de0bf5858a69a5d6f3ca5a4a0dae2892076d32897e5ee63c4a0aed0c5467fc467c8d102040a2ff9940ee73e3a005d5c100").unwrap(),
             ).unwrap(),
         };
         sig.verify(&action, &committee).unwrap();
@@ -387,8 +387,8 @@ mod tests {
         let sig = BridgeAuthoritySignInfo {
             authority_pub_key: pubkey4,
             signature: BridgeAuthorityRecoverableSignature::from_bytes(
-                // invalid sdig
-                &Hex::decode("8ba9ec92c2d5a44ecc123182f689b901a93921fd35f581354fea20b25a0ded6d055b96a64bdda77dd5a62b93d29abe93640aa3c1a136348093cd7a2418c6bfa302").unwrap(),
+                // invalid sig (recovery id tampered)
+                &Hex::decode("0697098e876d9268a22a6c34602ea435de0bf5858a69a5d6f3ca5a4a0dae2892076d32897e5ee63c4a0aed0c5467fc467c8d102040a2ff9940ee73e3a005d5c101").unwrap(),
             ).unwrap(),
         };
         sig.verify(&action, &committee).unwrap_err();
