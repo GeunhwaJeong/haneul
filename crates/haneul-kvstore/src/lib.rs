@@ -17,13 +17,19 @@ use async_trait::async_trait;
 use haneul_futures::service::Service;
 use haneul_indexer_alt_framework::Indexer;
 use haneul_indexer_alt_framework::IndexerArgs;
+use haneul_indexer_alt_framework::ingestion::ArcStreamingClient;
 use haneul_indexer_alt_framework::ingestion::ClientArgs;
+use haneul_indexer_alt_framework::ingestion::IngestionConfig as FrameworkIngestionConfig;
+use haneul_indexer_alt_framework::ingestion::ingestion_client::IngestionClient;
+use haneul_indexer_alt_framework::ingestion::streaming_client::GrpcStreamingClient;
+use haneul_indexer_alt_framework::metrics::IngestionMetrics;
 use haneul_indexer_alt_framework::pipeline::CommitterConfig;
 use haneul_indexer_alt_framework::pipeline::concurrent::ConcurrentConfig;
 use prometheus::Registry;
 use serde::Deserialize;
 use serde::Serialize;
 
+pub use crate::bigtable::client::CheckpointSpan;
 use crate::rate_limiter::CompositeRateLimiter;
 use crate::rate_limiter::RateLimiter;
 use haneul_protocol_config::Chain;
@@ -379,7 +385,7 @@ pub trait KeyValueStoreReader {
 
 impl BigTableIndexer {
     pub async fn new(
-        store: BigTableStore,
+        client: BigTableClient,
         indexer_args: IndexerArgs,
         client_args: ClientArgs,
         ingestion_config: IngestionConfig,
@@ -389,11 +395,24 @@ impl BigTableIndexer {
         chain: Chain,
         registry: &Registry,
     ) -> Result<Self> {
-        let mut indexer = Indexer::new(
+        let ingestion_config: FrameworkIngestionConfig = ingestion_config.into();
+        let ingestion_metrics = IngestionMetrics::new(Some("kvstore_alt_indexer"), registry);
+        let ingestion_client = IngestionClient::new(client_args.ingestion, ingestion_metrics)?;
+        let streaming_client = client_args.streaming.streaming_url.map(|uri| {
+            Arc::new(GrpcStreamingClient::new(
+                uri,
+                ingestion_config.streaming_connection_timeout(),
+                ingestion_config.streaming_statement_timeout(),
+            )) as ArcStreamingClient
+        });
+        let latest_checkpoint_at_startup = ingestion_client.latest_checkpoint_number().await?;
+        let store = BigTableStore::new(client, latest_checkpoint_at_startup);
+        let mut indexer = Indexer::with_ingestion_clients(
             store.clone(),
             indexer_args,
-            client_args,
-            ingestion_config.into(),
+            ingestion_client,
+            streaming_client,
+            ingestion_config,
             Some("kvstore_alt_indexer"),
             registry,
         )

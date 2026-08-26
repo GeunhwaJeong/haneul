@@ -12,7 +12,6 @@ use haneul_indexer_alt_framework::service::Error;
 use haneul_indexer_alt_metrics::MetricsArgs;
 use haneul_kvstore::BigTableClient;
 use haneul_kvstore::BigTableIndexer;
-use haneul_kvstore::BigTableStore;
 use haneul_kvstore::IndexerConfig;
 use haneul_kvstore::default_committer_config;
 use haneul_kvstore::set_write_legacy_data;
@@ -127,12 +126,10 @@ async fn main() -> Result<()> {
     )
     .await?;
 
-    let store = BigTableStore::new(client);
-
     let indexer_config = config.clone();
     let committer = config.committer.finish(default_committer_config());
     let bigtable_indexer = BigTableIndexer::new(
-        store,
+        client,
         args.indexer_args,
         args.client_args,
         config.ingestion,

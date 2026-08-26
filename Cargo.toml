@@ -230,7 +230,7 @@ members = [
 
 [workspace.package]
 # This version string will be inherited by haneul-core, haneul-faucet, haneul-node, haneul-tools, haneul-sdk, haneul-move-build, and haneul crates.
-version = "1.7.1"
+version = "1.8.0"
 
 [profile.release]
 # debug = 1 means line charts only, which is minimum needed for good stack traces

@@ -24,6 +24,7 @@ use haneul_kvstore::BitmapIndexSpec;
 use haneul_kvstore::BitmapLiteral;
 use haneul_kvstore::BitmapQuery;
 use haneul_kvstore::BitmapTerm;
+use haneul_kvstore::CheckpointSpan;
 use haneul_kvstore::ScanDirection;
 use haneul_kvstore::TxSeqDigestData;
 use haneul_kvstore::tables;
@@ -106,7 +107,11 @@ async fn write_bitmap(
         None,
     );
     client
-        .write_entries(transaction_bitmap_index::NAME, vec![entry])
+        .write_entries(
+            transaction_bitmap_index::NAME,
+            vec![entry],
+            CheckpointSpan::single(0),
+        )
         .await
 }
 
@@ -123,7 +128,11 @@ async fn write_tx_seq_digest(
         None,
     );
     client
-        .write_entries(tables::tx_seq_digest::NAME, vec![entry])
+        .write_entries(
+            tables::tx_seq_digest::NAME,
+            vec![entry],
+            CheckpointSpan::single(checkpoint_number),
+        )
         .await
 }
 
@@ -183,7 +192,11 @@ async fn write_checkpoint_summary(
         Some(summary.timestamp_ms),
     );
     client
-        .write_entries(tables::checkpoints::NAME, vec![entry])
+        .write_entries(
+            tables::checkpoints::NAME,
+            vec![entry],
+            CheckpointSpan::single(seq),
+        )
         .await
 }
 
@@ -210,7 +223,13 @@ async fn write_transaction(
         ],
         Some(timestamp_ms),
     );
-    client.write_entries(transactions::NAME, vec![entry]).await
+    client
+        .write_entries(
+            transactions::NAME,
+            vec![entry],
+            CheckpointSpan::single(checkpoint_number),
+        )
+        .await
 }
 
 // ---- Tests ----
