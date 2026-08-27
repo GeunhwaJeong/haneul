@@ -12,9 +12,9 @@ use haneul_types::execution_status::ExecutionErrorKind;
 use nonempty::NonEmpty;
 
 /// Protocol version at which `early_exit_on_iffw` is enabled (the
-/// version-126 arm in haneul-protocol-config). The version one below it yields a config with
+/// version-118 arm in haneul-protocol-config). The version one below it yields a config with
 /// the flag still off. `flag_fixtures_match_protocol_gating` guards these against drift.
-const FLAG_ACTIVATION_PROTOCOL_VERSION: u64 = 126;
+const FLAG_ACTIVATION_PROTOCOL_VERSION: u64 = 118;
 
 fn config_with_flag() -> ProtocolConfig {
     ProtocolConfig::get_for_max_version_UNSAFE()
@@ -79,7 +79,7 @@ fn preserves_hotfix_behavior_below_activation_version() {
 
 #[test]
 fn flag_forces_short_circuit_below_activation_version() {
-    // Below the rollout point with the flag set (v126+): the version clause is false but the
+    // Below the rollout point with the flag set (v118+): the version clause is false but the
     // flag clause carries it, so the short-circuit applies.
     let below = ADDRESS_BALANCE_SMASH_SHORT_CIRCUIT_MIN_ACCUMULATOR_VERSION.value() - 1;
     assert!(should_short_circuit_insufficient_funds(
