@@ -40,9 +40,9 @@ const TEST_MSG: vector<u8> =
     b"00010a0000000000000000200000000000000000000000000000000000000000000000000000000000000064012000000000000000000000000000000000000000000000000000000000000000c8033930000000000000";
 
 const VALIDATOR1_PUBKEY: vector<u8> =
-    b"029bef8d556d80e43ae7e0becb3a7e6838b95defe45896ed6075bb9035d06c9964";
-const VALIDATOR2_PUBKEY: vector<u8> =
     b"033e99a541db69bd32040dfe5037fbf5210dafa8151a71e21c5204b05d95ce0a62";
+const VALIDATOR2_PUBKEY: vector<u8> =
+    b"0286bcc70599ebc420b3b8977ecc60e594bb56749beaa562d7f80a9bdfffcaaa1d";
 const VALIDATOR3_PUBKEY: vector<u8> =
     b"033e99a541db69bd32040dfe5037fbf5210dafa8151a71e21c5204b05d95ce0a63";
 
@@ -55,10 +55,10 @@ fun test_verify_signatures_good_path() {
         msg,
         vector[
             hex::decode(
-                b"8ba030a450cb1e36f61e572645fc9da1dea5f79b6db663a21ab63286d7fc29af447433abdd0c0b35ab751154ac5b612ae64d3be810f0d9e10ff68e764514ced300",
+                b"cc185408c86c88f7f74843b4e7dd989bc6b810f523812c1e9d40aead2a62d14c1b3f104d995dc879cdc83b83ca202d43816ade4499ae6c5260e94747f1e4227f00",
             ),
             hex::decode(
-                b"439379cc7b3ee3ebe1ff59d011dafc1caac47da6919b089c90f6a24e8c284b963b20f1f5421385456e57ac6b69c4b5f0d345aa09b8bc96d88d87051c7349e83801",
+                b"fa23dd1320079e5e0d86ad0510472a7c1a7bb7a282c57aade97b8e7a78686f092eade5c9455634a0556d8a189cc7f964492bffb90878f755a6d6bade3683181600",
             ),
         ],
     );
@@ -76,10 +76,10 @@ fun test_verify_signatures_duplicated_sig() {
         msg,
         vector[
             hex::decode(
-                b"439379cc7b3ee3ebe1ff59d011dafc1caac47da6919b089c90f6a24e8c284b963b20f1f5421385456e57ac6b69c4b5f0d345aa09b8bc96d88d87051c7349e83801",
+                b"fa23dd1320079e5e0d86ad0510472a7c1a7bb7a282c57aade97b8e7a78686f092eade5c9455634a0556d8a189cc7f964492bffb90878f755a6d6bade3683181600",
             ),
             hex::decode(
-                b"439379cc7b3ee3ebe1ff59d011dafc1caac47da6919b089c90f6a24e8c284b963b20f1f5421385456e57ac6b69c4b5f0d345aa09b8bc96d88d87051c7349e83801",
+                b"fa23dd1320079e5e0d86ad0510472a7c1a7bb7a282c57aade97b8e7a78686f092eade5c9455634a0556d8a189cc7f964492bffb90878f755a6d6bade3683181600",
             ),
         ],
     );
@@ -111,7 +111,7 @@ fun test_verify_signatures_below_threshold() {
         msg,
         vector[
             hex::decode(
-                b"439379cc7b3ee3ebe1ff59d011dafc1caac47da6919b089c90f6a24e8c284b963b20f1f5421385456e57ac6b69c4b5f0d345aa09b8bc96d88d87051c7349e83801",
+                b"fa23dd1320079e5e0d86ad0510472a7c1a7bb7a282c57aade97b8e7a78686f092eade5c9455634a0556d8a189cc7f964492bffb90878f755a6d6bade3683181600",
             ),
         ],
     );
@@ -492,10 +492,10 @@ fun test_verify_signatures_with_blocked_committee_member() {
         msg,
         vector[
             hex::decode(
-                b"8ba030a450cb1e36f61e572645fc9da1dea5f79b6db663a21ab63286d7fc29af447433abdd0c0b35ab751154ac5b612ae64d3be810f0d9e10ff68e764514ced300",
+                b"cc185408c86c88f7f74843b4e7dd989bc6b810f523812c1e9d40aead2a62d14c1b3f104d995dc879cdc83b83ca202d43816ade4499ae6c5260e94747f1e4227f00",
             ),
             hex::decode(
-                b"439379cc7b3ee3ebe1ff59d011dafc1caac47da6919b089c90f6a24e8c284b963b20f1f5421385456e57ac6b69c4b5f0d345aa09b8bc96d88d87051c7349e83801",
+                b"fa23dd1320079e5e0d86ad0510472a7c1a7bb7a282c57aade97b8e7a78686f092eade5c9455634a0556d8a189cc7f964492bffb90878f755a6d6bade3683181600",
             ),
         ],
     );
@@ -521,10 +521,10 @@ fun test_verify_signatures_with_blocked_committee_member() {
         msg,
         vector[
             hex::decode(
-                b"8ba030a450cb1e36f61e572645fc9da1dea5f79b6db663a21ab63286d7fc29af447433abdd0c0b35ab751154ac5b612ae64d3be810f0d9e10ff68e764514ced300",
+                b"cc185408c86c88f7f74843b4e7dd989bc6b810f523812c1e9d40aead2a62d14c1b3f104d995dc879cdc83b83ca202d43816ade4499ae6c5260e94747f1e4227f00",
             ),
             hex::decode(
-                b"439379cc7b3ee3ebe1ff59d011dafc1caac47da6919b089c90f6a24e8c284b963b20f1f5421385456e57ac6b69c4b5f0d345aa09b8bc96d88d87051c7349e83801",
+                b"fa23dd1320079e5e0d86ad0510472a7c1a7bb7a282c57aade97b8e7a78686f092eade5c9455634a0556d8a189cc7f964492bffb90878f755a6d6bade3683181600",
             ),
         ],
     );

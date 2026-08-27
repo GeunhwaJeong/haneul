@@ -461,12 +461,12 @@ fun test_add_tokens_on_haneul_message_serialization_2() {
     message_bytes.append(message);
 
     let pubkey = haneul::ecdsa_k1::secp256k1_ecrecover(
-        &x"b75e64b040eef6fa510e4b9be853f0d35183de635c6456c190714f9546b163ba12583e615a2e9944ec2d21b520aebd9b14e181dcae0fcc6cdaefc0aa235b3abe00",
+        &x"81f5146c7a4bc7b18bcaf9903f083cfdc4eb8b34f6609c93e84b9e96b356ad7a59f8dfcd95ea2b22c4042f09c62cb78cfc6c5b94d2b345b3b807b917e8d2bacd00",
         &message_bytes,
         0,
     );
 
-    assert_eq!(pubkey, x"025a8c385af9a76aa506c395e240735839cb06531301f9b396e5f9ef8eeb0d8879");
+    assert_eq!(pubkey, x"033e99a541db69bd32040dfe5037fbf5210dafa8151a71e21c5204b05d95ce0a62");
     destroy(treasury);
     test_scenario::end(scenario);
 }
