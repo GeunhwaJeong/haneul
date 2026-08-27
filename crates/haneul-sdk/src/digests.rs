@@ -67,7 +67,7 @@ mod tests {
 
     use super::*;
 
-    const MAINNET_SHORT: &str = "35834a8a";
+    const MAINNET_SHORT: &str = "a0053d9e";
     const TESTNET_SHORT: &str = "4c78adac";
 
     #[test]

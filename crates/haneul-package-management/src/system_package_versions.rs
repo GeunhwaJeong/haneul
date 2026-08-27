@@ -77,12 +77,12 @@ fn test_nonempty_version_table() {
 #[test]
 /// the hash for a specific version that we have one for is correctly returned
 fn test_exact_version() {
-    let (system_packages, protocol) = system_packages_for_protocol(4.into()).unwrap();
+    let (system_packages, protocol) = system_packages_for_protocol(115.into()).unwrap();
     assert_eq!(
         system_packages.git_revision,
-        "f5d26f1b3ae89f68cb66f3a007e90065e5286905"
+        "5a4b5a9f222c630540189156b9c4861f9a8be88a"
     );
-    assert_eq!(protocol, 4.into());
+    assert_eq!(protocol, 115.into());
     assert!(
         system_packages
             .packages
@@ -94,19 +94,16 @@ fn test_exact_version() {
 #[test]
 /// we get the right hash for a version that we don't have an exact entry for
 fn test_gap_version() {
-    // versions 56 and 57 are missing in the manifest; version 55 should be returned
+    // Only protocol versions that change the frameworks get a manifest entry, so
+    // version 123 (config-only) is missing and must fall back to version 122.
     assert_eq!(
-        system_packages_for_protocol(56.into()).unwrap(),
-        system_packages_for_protocol(55.into()).unwrap(),
+        system_packages_for_protocol(123.into()).unwrap(),
+        system_packages_for_protocol(122.into()).unwrap(),
     );
-    assert_eq!(
-        system_packages_for_protocol(57.into()).unwrap(),
-        system_packages_for_protocol(55.into()).unwrap(),
-    );
-    // version 58 is present though!
+    // versions with their own entries resolve to distinct snapshots
     assert_ne!(
-        system_packages_for_protocol(58.into()).unwrap(),
-        system_packages_for_protocol(55.into()).unwrap(),
+        system_packages_for_protocol(122.into()).unwrap(),
+        system_packages_for_protocol(121.into()).unwrap(),
     );
 }
 
