@@ -238,5 +238,35 @@
         "id": "0x000000000000000000000000000000000000000000000000000000000000000b"
       }
     ]
+  },
+  "124": {
+    "git_revision": "5283e881eb12dd93f93aa2a8259cd1fad2e0e62d",
+    "packages": [
+      {
+        "name": "MoveStdlib",
+        "path": "crates/haneul-framework/packages/move-stdlib",
+        "id": "0x0000000000000000000000000000000000000000000000000000000000000001"
+      },
+      {
+        "name": "Haneul",
+        "path": "crates/haneul-framework/packages/haneul-framework",
+        "id": "0x0000000000000000000000000000000000000000000000000000000000000002"
+      },
+      {
+        "name": "HaneulSystem",
+        "path": "crates/haneul-framework/packages/haneul-system",
+        "id": "0x0000000000000000000000000000000000000000000000000000000000000003"
+      },
+      {
+        "name": "DeepBook",
+        "path": "crates/haneul-framework/packages/deepbook",
+        "id": "0x000000000000000000000000000000000000000000000000000000000000dee9"
+      },
+      {
+        "name": "Bridge",
+        "path": "crates/haneul-framework/packages/bridge",
+        "id": "0x000000000000000000000000000000000000000000000000000000000000000b"
+      }
+    ]
   }
 }

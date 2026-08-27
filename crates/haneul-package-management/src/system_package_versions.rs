@@ -105,6 +105,11 @@ fn test_gap_version() {
         system_packages_for_protocol(122.into()).unwrap(),
         system_packages_for_protocol(121.into()).unwrap(),
     );
+    // version 124 changes the frameworks again and gets its own entry
+    assert_ne!(
+        system_packages_for_protocol(124.into()).unwrap(),
+        system_packages_for_protocol(122.into()).unwrap(),
+    );
 }
 
 #[test]
