@@ -758,6 +758,11 @@ GenesisTransaction:
     - objects:
         SEQ:
           TYPENAME: GenesisObject
+HaneulAddress:
+  NEWTYPESTRUCT:
+    TUPLEARRAY:
+      CONTENT: U8
+      SIZE: 32
 IDOperation:
   ENUM:
     0:
@@ -1132,11 +1137,6 @@ StructTag:
     - type_args:
         SEQ:
           TYPENAME: TypeTag
-HaneulAddress:
-  NEWTYPESTRUCT:
-    TUPLEARRAY:
-      CONTENT: U8
-      SIZE: 32
 TransactionData:
   ENUM:
     0:
