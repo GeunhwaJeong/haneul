@@ -71,7 +71,7 @@ expression: parsed
     Spanned {
         span: Span {
             start: 0,
-            end: 15,
+            end: 18,
         },
         value: Datatype(
             ParsedDatatype {
@@ -111,7 +111,7 @@ expression: parsed
     Spanned {
         span: Span {
             start: 0,
-            end: 26,
+            end: 29,
         },
         value: Datatype(
             ParsedDatatype {
@@ -131,7 +131,7 @@ expression: parsed
     Spanned {
         span: Span {
             start: 0,
-            end: 28,
+            end: 34,
         },
         value: Datatype(
             ParsedDatatype {
@@ -166,7 +166,7 @@ expression: parsed
     Spanned {
         span: Span {
             start: 0,
-            end: 68,
+            end: 74,
         },
         value: Datatype(
             ParsedDatatype {
