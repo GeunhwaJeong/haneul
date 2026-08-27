@@ -113,8 +113,8 @@ mod tests {
     #[test]
     fn short_matches_short() {
         assert!(chain_ids_match(MAINNET_SHORT, MAINNET_SHORT));
-        assert!(chain_ids_match(MAINNET_SHORT, "35834A8A"));
-        assert!(chain_ids_match("0x35834a8a", MAINNET_SHORT));
+        assert!(chain_ids_match(MAINNET_SHORT, "A0053D9E"));
+        assert!(chain_ids_match("0xa0053d9e", MAINNET_SHORT));
         assert!(!chain_ids_match(MAINNET_SHORT, TESTNET_SHORT));
     }
 
