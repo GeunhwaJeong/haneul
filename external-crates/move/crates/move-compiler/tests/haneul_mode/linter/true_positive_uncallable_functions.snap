@@ -9,7 +9,7 @@ warning[WSL00012]: it will not be possible to call this function
   ┌─ tests/haneul_mode/linter/true_positive_uncallable_functions.move:6:25
   │
 6 │     fun no_clock_mut(_: &mut haneul::clock::Clock) {
-  │                         ^^^^^^^^^^^^^^^^^^^^^^ Invalid parameter type. 'Clock' must be taken immutably, e.g. '&haneul::clock::Clock'
+  │                         ^^^^^^^^^^^^^^^^^^^^^^^^^ Invalid parameter type. 'Clock' must be taken immutably, e.g. '&haneul::clock::Clock'
   │
   = This object has extra restrictions checked when submitting transactions to Haneul. As such, this function will not be callable.
   = This warning can be suppressed with '#[allow(lint(uncallable_function))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
@@ -18,7 +18,7 @@ warning[WSL00012]: it will not be possible to call this function
   ┌─ tests/haneul_mode/linter/true_positive_uncallable_functions.move:9:25
   │
 9 │     fun no_clock_val(_: haneul::clock::Clock) {
-  │                         ^^^^^^^^^^^^^^^^^ Invalid parameter type. 'Clock' must be taken immutably, e.g. '&haneul::clock::Clock'
+  │                         ^^^^^^^^^^^^^^^^^^^^ Invalid parameter type. 'Clock' must be taken immutably, e.g. '&haneul::clock::Clock'
   │
   = This object has extra restrictions checked when submitting transactions to Haneul. As such, this function will not be callable.
   = This warning can be suppressed with '#[allow(lint(uncallable_function))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
@@ -27,7 +27,7 @@ warning[WSL00012]: it will not be possible to call this function
    ┌─ tests/haneul_mode/linter/true_positive_uncallable_functions.move:12:26
    │
 12 │     fun no_random_mut(_: &mut haneul::random::Random) {
-   │                          ^^^^^^^^^^^^^^^^^^^^^^^^ Invalid parameter type. 'Random' must be taken immutably, e.g. '&haneul::random::Random'
+   │                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Invalid parameter type. 'Random' must be taken immutably, e.g. '&haneul::random::Random'
    │
    = This object has extra restrictions checked when submitting transactions to Haneul. As such, this function will not be callable.
    = This warning can be suppressed with '#[allow(lint(uncallable_function))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
@@ -36,7 +36,7 @@ warning[WSL00012]: it will not be possible to call this function
    ┌─ tests/haneul_mode/linter/true_positive_uncallable_functions.move:15:26
    │
 15 │     fun no_random_val(_: haneul::random::Random) {
-   │                          ^^^^^^^^^^^^^^^^^^^ Invalid parameter type. 'Random' must be taken immutably, e.g. '&haneul::random::Random'
+   │                          ^^^^^^^^^^^^^^^^^^^^^^ Invalid parameter type. 'Random' must be taken immutably, e.g. '&haneul::random::Random'
    │
    = This object has extra restrictions checked when submitting transactions to Haneul. As such, this function will not be callable.
    = This warning can be suppressed with '#[allow(lint(uncallable_function))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
