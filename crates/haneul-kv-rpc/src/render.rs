@@ -83,14 +83,12 @@ pub(crate) fn checkpoint_to_response(
         .summary
         .ok_or_else(|| anyhow::anyhow!("checkpoint summary missing"))?;
     let mut message = Checkpoint::default();
-    let summary: haneul_sdk_types::CheckpointSummary = summary.try_into()?;
     message.merge(&summary, read_mask);
 
     if read_mask.contains(Checkpoint::SIGNATURE_FIELD) {
         let signatures = checkpoint
             .signatures
             .ok_or_else(|| anyhow::anyhow!("checkpoint signatures missing"))?;
-        let signatures: haneul_sdk_types::ValidatorAggregatedSignature = signatures.into();
         message.merge(signatures, read_mask);
     }
 
@@ -98,10 +96,7 @@ pub(crate) fn checkpoint_to_response(
         let contents = checkpoint
             .contents
             .ok_or_else(|| anyhow::anyhow!("checkpoint contents missing"))?;
-        message.merge(
-            haneul_sdk_types::CheckpointContents::try_from(contents)?,
-            read_mask,
-        );
+        message.merge(contents, read_mask);
     }
 
     Ok(message)
@@ -135,6 +130,11 @@ pub(crate) fn render_full_checkpoint(
             format!("checkpoint {cp_seq} contents column missing"),
         )
     })?;
+    let include_balance_changes = read_mask
+        .subtree(Checkpoint::TRANSACTIONS_FIELD.name)
+        .is_some_and(|mask| mask.contains(ExecutedTransaction::BALANCE_CHANGES_FIELD.name));
+    let mut transaction_balance_changes =
+        include_balance_changes.then(|| Vec::with_capacity(txs.len()));
 
     let executed_transactions = txs
         .into_iter()
@@ -151,6 +151,9 @@ pub(crate) fn render_full_checkpoint(
                     format!("transaction {} effects column missing", tx.digest),
                 )
             })?;
+            if let Some(transaction_balance_changes) = transaction_balance_changes.as_mut() {
+                transaction_balance_changes.push(tx.balance_changes);
+            }
             Ok::<_, RpcError>(FullExecutedTransaction {
                 transaction,
                 signatures: tx.signatures.unwrap_or_default(),
@@ -179,6 +182,15 @@ pub(crate) fn render_full_checkpoint(
 
     let mut message = Checkpoint::default();
     message.merge(&full_checkpoint, read_mask);
+    if let Some(transaction_balance_changes) = transaction_balance_changes {
+        for (transaction, balance_changes) in message
+            .transactions
+            .iter_mut()
+            .zip_debug_eq(transaction_balance_changes)
+        {
+            transaction.balance_changes = balance_changes.into_iter().map(Into::into).collect();
+        }
+    }
     Ok(message)
 }
 
@@ -222,8 +234,7 @@ pub(crate) async fn transaction_to_response(
     if let Some(submask) = mask.subtree(ExecutedTransaction::TRANSACTION_FIELD.name)
         && let Some(tx_data) = source.transaction_data
     {
-        let transaction = haneul_sdk_types::Transaction::try_from(tx_data)?;
-        message.transaction = Some(Transaction::merge_from(transaction, &submask));
+        message.transaction = Some(Transaction::merge_from(&tx_data, &submask));
     }
 
     if let Some(submask) = mask.subtree(ExecutedTransaction::SIGNATURES_FIELD.name)
@@ -231,20 +242,14 @@ pub(crate) async fn transaction_to_response(
     {
         message.signatures = sigs
             .into_iter()
-            .map(|s| {
-                haneul_sdk_types::UserSignature::try_from(s)
-                    .map(|s| UserSignature::merge_from(s, &submask))
-            })
-            .collect::<Result<_, _>>()?;
+            .map(|signature| UserSignature::merge_from(&signature, &submask))
+            .collect();
     }
 
     if let Some(submask) = mask.subtree(ExecutedTransaction::EFFECTS_FIELD.name)
         && let Some(effects) = source.effects
     {
-        let mut effects = TransactionEffects::merge_from(
-            &haneul_sdk_types::TransactionEffects::try_from(effects)?,
-            &submask,
-        );
+        let mut effects = TransactionEffects::merge_from(&effects, &submask);
         if submask.contains(TransactionEffects::UNCHANGED_LOADED_RUNTIME_OBJECTS_FIELD.name) {
             effects.unchanged_loaded_runtime_objects = source
                 .unchanged_loaded_runtime_objects
@@ -357,8 +362,10 @@ mod tests {
     use haneul_types::programmable_transaction_builder::ProgrammableTransactionBuilder;
     use haneul_types::storage::ObjectKey;
     use haneul_types::transaction::{
-        SenderSignedData, Transaction, TransactionData as HaneulTransactionData,
+        Command, ProgrammableMoveCall, SenderSignedData, Transaction,
+        TransactionData as HaneulTransactionData, TransactionKind,
     };
+    use haneul_types::type_input::{StructInput, TypeInput};
     use move_core_types::account_address::AccountAddress;
     use std::sync::Arc;
 
@@ -433,6 +440,57 @@ mod tests {
         assert_eq!(
             response.balance_changes,
             vec![ProtoBalanceChange::from(balance_change)]
+        );
+    }
+
+    #[tokio::test]
+    async fn transaction_to_response_preserves_malformed_historical_type_inputs() {
+        let (digest, mut tx_data) = test_tx_data();
+        let HaneulTransactionData::V1(data) = &mut tx_data;
+        let TransactionKind::ProgrammableTransaction(programmable) = &mut data.kind else {
+            panic!("test transaction should be programmable");
+        };
+        programmable
+            .commands
+            .push(Command::MoveCall(Box::new(ProgrammableMoveCall {
+                package: ObjectID::random(),
+                module: "type_name".to_owned(),
+                function: "get".to_owned(),
+                type_arguments: vec![TypeInput::Struct(Box::new(StructInput {
+                    address: AccountAddress::ONE,
+                    module: "example".to_owned(),
+                    name: "Hapiness>".to_owned(),
+                    type_params: vec![],
+                }))],
+                arguments: vec![],
+            })));
+        let expected_bcs = bcs::to_bytes(&tx_data).expect("transaction should serialize");
+        let source = KvTransactionData {
+            digest,
+            transaction_data: Some(tx_data),
+            signatures: None,
+            effects: None,
+            events: None,
+            checkpoint_number: 7,
+            timestamp: 42,
+            balance_changes: vec![],
+            unchanged_loaded_runtime_objects: vec![],
+        };
+        let mask = FieldMaskTree::from(FieldMask::from_paths(["transaction.bcs"]));
+
+        let response = transaction_to_response(source, &mask, &HashMap::new(), &test_resolver())
+            .await
+            .expect("historical malformed type input should render");
+
+        assert_eq!(
+            response
+                .transaction
+                .expect("transaction should be present")
+                .bcs
+                .expect("transaction BCS should be present")
+                .value
+                .expect("transaction BCS value should be present"),
+            expected_bcs
         );
     }
 

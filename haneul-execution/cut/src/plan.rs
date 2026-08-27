@@ -838,12 +838,6 @@ mod tests {
                     "$PATH/haneul-execution/exec-cut",
                 },
                 packages: {
-                    "move-core-types": CutPackage {
-                        dst_name: "move-core-types-feature",
-                        src_path: "$PATH/external-crates/move/crates/move-core-types",
-                        dst_path: "$PATH/haneul-execution/cut-move-core-types",
-                        ws_state: Exclude,
-                    },
                     "haneul-adapter-latest": CutPackage {
                         dst_name: "haneul-adapter-feature",
                         src_path: "$PATH/haneul-execution/latest/haneul-adapter",
@@ -861,6 +855,12 @@ mod tests {
                         src_path: "$PATH/haneul-execution/latest/haneul-verifier",
                         dst_path: "$PATH/haneul-execution/exec-cut/haneul-verifier",
                         ws_state: Member,
+                    },
+                    "move-core-types": CutPackage {
+                        dst_name: "move-core-types-feature",
+                        src_path: "$PATH/external-crates/move/crates/move-core-types",
+                        dst_path: "$PATH/haneul-execution/cut-move-core-types",
+                        ws_state: Exclude,
                     },
                 },
             }"#]]
@@ -938,12 +938,6 @@ mod tests {
                     "$PATH/haneul-execution/feature",
                 },
                 packages: {
-                    "move-core-types": CutPackage {
-                        dst_name: "move-core-types-feature",
-                        src_path: "$PATH/external-crates/move/crates/move-core-types",
-                        dst_path: "$PATH/haneul-execution/feature/move/crates/move-core-types",
-                        ws_state: Exclude,
-                    },
                     "haneul-adapter-latest": CutPackage {
                         dst_name: "haneul-adapter-feature",
                         src_path: "$PATH/haneul-execution/latest/haneul-adapter",
@@ -961,6 +955,12 @@ mod tests {
                         src_path: "$PATH/haneul-execution/latest/haneul-verifier",
                         dst_path: "$PATH/haneul-execution/feature/haneul-verifier",
                         ws_state: Member,
+                    },
+                    "move-core-types": CutPackage {
+                        dst_name: "move-core-types-feature",
+                        src_path: "$PATH/external-crates/move/crates/move-core-types",
+                        dst_path: "$PATH/haneul-execution/feature/move/crates/move-core-types",
+                        ws_state: Exclude,
                     },
                 },
             }"#]]
@@ -1345,12 +1345,6 @@ mod tests {
                     "$PATH/haneul-execution/exec-cut",
                 },
                 packages: {
-                    "move-core-types": CutPackage {
-                        dst_name: "move-core-types-feature",
-                        src_path: "$PATH/external-crates/move/crates/move-core-types",
-                        dst_path: "$PATH/haneul-execution/cut-move-core-types",
-                        ws_state: Unknown,
-                    },
                     "haneul-adapter-latest": CutPackage {
                         dst_name: "haneul-adapter-feature",
                         src_path: "$PATH/haneul-execution/latest/haneul-adapter",
@@ -1367,6 +1361,12 @@ mod tests {
                         dst_name: "haneul-verifier-feature",
                         src_path: "$PATH/haneul-execution/latest/haneul-verifier",
                         dst_path: "$PATH/haneul-execution/exec-cut/haneul-verifier",
+                        ws_state: Unknown,
+                    },
+                    "move-core-types": CutPackage {
+                        dst_name: "move-core-types-feature",
+                        src_path: "$PATH/external-crates/move/crates/move-core-types",
+                        dst_path: "$PATH/haneul-execution/cut-move-core-types",
                         ws_state: Unknown,
                     },
                 },

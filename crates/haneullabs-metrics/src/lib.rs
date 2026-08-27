@@ -708,12 +708,12 @@ mod tests {
         assert_eq!(metric_default.help(), "counter_desc");
 
         let metric_1 = metrics.remove(0);
-        assert_eq!(metric_1.name(), "narwhal_counter_1");
-        assert_eq!(metric_1.help(), "counter_1_desc");
+        assert_eq!(metric_1.name(), "haneul_counter_2");
+        assert_eq!(metric_1.help(), "counter_2_desc");
 
         let metric_2 = metrics.remove(0);
-        assert_eq!(metric_2.name(), "haneul_counter_2");
-        assert_eq!(metric_2.help(), "counter_2_desc");
+        assert_eq!(metric_2.name(), "narwhal_counter_1");
+        assert_eq!(metric_2.help(), "counter_1_desc");
 
         // AND remove first registry
         assert!(registry_service.remove(registry_1_id));

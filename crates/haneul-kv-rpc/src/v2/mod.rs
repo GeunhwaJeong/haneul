@@ -12,8 +12,7 @@ use haneul_rpc::proto::haneul::rpc::v2::{
 };
 use haneul_rpc_api::proto::timestamp_ms_to_proto;
 use haneul_rpc_api::{CheckpointNotFoundError, RpcError, ServerVersion};
-use haneul_sdk_types::Digest;
-use haneul_types::digests::ChainIdentifier;
+use haneul_types::digests::{ChainIdentifier, CheckpointDigest};
 use tonic::codegen::BoxStream;
 
 use crate::KvRpcServer;
@@ -204,7 +203,7 @@ pub(crate) async fn get_service_info(
         return Err(CheckpointNotFoundError::sequence_number(0).into());
     };
     let mut message = GetServiceInfoResponse::default();
-    message.chain_id = Some(Digest::new(chain_id.as_bytes().to_owned()).to_string());
+    message.chain_id = Some(CheckpointDigest::new(*chain_id.as_bytes()).base58_encode());
     message.chain = Some(chain_id.chain().as_str().into());
     message.epoch = Some(wm.epoch_hi_inclusive);
     message.checkpoint_height = Some(checkpoint_hi_inclusive);

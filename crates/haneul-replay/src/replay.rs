@@ -2258,8 +2258,8 @@ mod tests {
     #[test]
     fn test_regex_regulated_coin_errors() {
         let test_bank = vec![
-            "CoinTypeGlobalPause { coin_type: \"39a572c0718282c280ee8ee8c683477e059d1381abc4366f9a58ffac3f350a254::rcoin::RCOIN\" }",
-            "AddressDeniedForCoin { address: B, coin_type: \"39a572c0718282c280ee8ee8c683477e059d1381abc4366f9a58ffac3f350a254::rcoin::RCOIN\" }",
+            "CoinTypeGlobalPause { coin_type: \"39a572c071784c280ee8ee8c683477e059d1381abc4366f9a58ffac3f350a254::rcoin::RCOIN\" }",
+            "AddressDeniedForCoin { address: B, coin_type: \"39a572c071784c280ee8ee8c683477e059d1381abc4366f9a58ffac3f350a254::rcoin::RCOIN\" }",
         ];
         let expected_string =
             "39a572c071784c280ee8ee8c683477e059d1381abc4366f9a58ffac3f350a254::rcoin::RCOIN";

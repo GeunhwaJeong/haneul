@@ -12,9 +12,9 @@ use nonempty::NonEmpty;
 
 /// The filter is only ever consulted with the `early_exit_on_iffw` flag off (a flag-on
 /// IFFW short-circuits upstream), so the backfill gating is exercised against a flag-off
-/// config. Protocol version 125 is one below the version-126 activation arm.
+/// config. Protocol version 117 is one below the version-118 activation arm.
 fn config_without_flag() -> ProtocolConfig {
-    let config = ProtocolConfig::get_for_version(ProtocolVersion::new(125), Chain::Unknown);
+    let config = ProtocolConfig::get_for_version(ProtocolVersion::new(117), Chain::Unknown);
     assert!(!config.early_exit_on_iffw());
     config
 }

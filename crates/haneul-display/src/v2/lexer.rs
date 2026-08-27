@@ -741,7 +741,7 @@ mod tests {
     /// Struct types are fully-qualified, with a numerical (hexadecimal) address.
     #[test]
     fn test_types() {
-        assert_snapshot!(text(r#"{0x2::table::Table<address, 0x2::coin::Coin<0x2::haneul::HANEUL>>}"#), @r###"
+        assert_snapshot!(text(r#"{0x2::table::Table<address, 0x2::coin::Coin<0x2::haneul::HANEUL>>}"#), @r#"
         L(false, LBrace, 0, "{")
         L(false, NumHex, 3, "2")
         L(false, CColon, 4, "::")
@@ -760,19 +760,19 @@ mod tests {
         L(false, NumHex, 46, "2")
         L(false, CColon, 47, "::")
         L(false, Ident, 49, "haneul")
-        L(false, CColon, 52, "::")
-        L(false, Ident, 54, "HANEUL")
-        L(false, RAngle, 57, ">")
-        L(false, RAngle, 58, ">")
-        L(false, RBrace, 59, "}")
-        "###);
+        L(false, CColon, 55, "::")
+        L(false, Ident, 57, "HANEUL")
+        L(false, RAngle, 63, ">")
+        L(false, RAngle, 64, ">")
+        L(false, RBrace, 65, "}")
+        "#);
     }
 
     /// A positional struct literal is a struct type followed by its (positional) fields, separated
     /// by commas, surrounded by parentheses.
     #[test]
     fn test_positional_struct_literals() {
-        assert_snapshot!(text(r#"{0x2::balance::Balance<0x2::haneul::HANEUL>(42u64)}"#), @r###"
+        assert_snapshot!(text(r#"{0x2::balance::Balance<0x2::haneul::HANEUL>(42u64)}"#), @r#"
         L(false, LBrace, 0, "{")
         L(false, NumHex, 3, "2")
         L(false, CColon, 4, "::")
@@ -783,22 +783,22 @@ mod tests {
         L(false, NumHex, 25, "2")
         L(false, CColon, 26, "::")
         L(false, Ident, 28, "haneul")
-        L(false, CColon, 31, "::")
-        L(false, Ident, 33, "HANEUL")
-        L(false, RAngle, 36, ">")
-        L(false, LParen, 37, "(")
-        L(false, NumDec, 38, "42")
-        L(false, Ident, 40, "u64")
-        L(false, RParen, 43, ")")
-        L(false, RBrace, 44, "}")
-        "###);
+        L(false, CColon, 34, "::")
+        L(false, Ident, 36, "HANEUL")
+        L(false, RAngle, 42, ">")
+        L(false, LParen, 43, "(")
+        L(false, NumDec, 44, "42")
+        L(false, Ident, 46, "u64")
+        L(false, RParen, 49, ")")
+        L(false, RBrace, 50, "}")
+        "#);
     }
 
     /// Struct literals can also include field names -- these are purely informational, they don't
     /// affect the encoded output.
     #[test]
     fn test_struct_literals() {
-        assert_snapshot!(text(r#"{0x2::coin::Coin<0x2::haneul::HANEUL> { id: @0x123, value: 42u64 }}"#), @r###"
+        assert_snapshot!(text(r#"{0x2::coin::Coin<0x2::haneul::HANEUL> { id: @0x123, value: 42u64 }}"#), @r#"
         L(false, LBrace, 0, "{")
         L(false, NumHex, 3, "2")
         L(false, CColon, 4, "::")
@@ -809,22 +809,22 @@ mod tests {
         L(false, NumHex, 19, "2")
         L(false, CColon, 20, "::")
         L(false, Ident, 22, "haneul")
-        L(false, CColon, 25, "::")
-        L(false, Ident, 27, "HANEUL")
-        L(false, RAngle, 30, ">")
-        L(true, LBrace, 32, "{")
-        L(true, Ident, 34, "id")
-        L(false, Colon, 36, ":")
-        L(true, At, 38, "@")
-        L(false, NumHex, 41, "123")
-        L(false, Comma, 44, ",")
-        L(true, Ident, 46, "value")
-        L(false, Colon, 51, ":")
-        L(true, NumDec, 53, "42")
-        L(false, Ident, 55, "u64")
-        L(true, RBrace, 59, "}")
-        L(false, RBrace, 60, "}")
-        "###);
+        L(false, CColon, 28, "::")
+        L(false, Ident, 30, "HANEUL")
+        L(false, RAngle, 36, ">")
+        L(true, LBrace, 38, "{")
+        L(true, Ident, 40, "id")
+        L(false, Colon, 42, ":")
+        L(true, At, 44, "@")
+        L(false, NumHex, 47, "123")
+        L(false, Comma, 50, ",")
+        L(true, Ident, 52, "value")
+        L(false, Colon, 57, ":")
+        L(true, NumDec, 59, "42")
+        L(false, Ident, 61, "u64")
+        L(true, RBrace, 65, "}")
+        L(false, RBrace, 66, "}")
+        "#);
     }
 
     /// Enums are like structs but with an additional variant component. The variant must at least

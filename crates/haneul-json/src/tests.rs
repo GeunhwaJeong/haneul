@@ -786,7 +786,7 @@ fn test_string_vec_df_name_child_id_eq() {
     .unwrap();
 
     assert_eq!(
-        "0x2c2e361ee262b9f1f9a930e27e092cce5906b1e63a699ee60aec2de452ab9c70",
+        "0x427675168bab2a8386be7e067f79bff3979331628e8d1f3137c97fb0c30fbcf7",
         child_id.to_string()
     );
 }
