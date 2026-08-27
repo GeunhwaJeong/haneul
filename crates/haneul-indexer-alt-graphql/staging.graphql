@@ -1668,11 +1668,6 @@ type GenesisTransaction {
 }
 
 """
-String containing 32 byte hex-encoded address, with a leading '0x'. Leading zeroes can be omitted on input but will always appear in outputs (HaneulAddress in output is guaranteed to be 66 characters long).
-"""
-scalar HaneulAddress
-
-"""
 Interface implemented by GraphQL types representing entities that are identified by an address.
 
 An address uniquely represents either the public key of an account, or an object's ID, but never both. It is not possible to determine which type an address represents up-front. If an object is wrapped, its contents will not be accessible via its address, but it will still be possible to access other objects it owns.
@@ -4164,14 +4159,19 @@ type Subscription {
 	"""
 	Subscribe to transactions as they are finalized, with optional filtering.
 	
-	Each matching transaction is yielded individually as it appears in finalized
-	checkpoints. Transactions are ordered by checkpoint, then by position within
-	the checkpoint.
+	Pass `after` (opaque cursor) or `afterCheckpoint` (sequence number), but not both, to resume from a known point. The subscription first backfills the matching transactions after that point via the scanning API, then continues with the live stream.
+	
+	Each matching transaction is yielded individually as an edge, ordered by checkpoint and then by position within the checkpoint. Each edge carries a cursor for resumption.
 	
 	This subscription is not yet available for use.
 	"""
-	transactions(filter: TransactionFilter): TransactionEdge!
+	transactions(filter: TransactionFilter, after: String, afterCheckpoint: UInt53): TransactionEdge!
 }
+
+"""
+String containing 32 byte hex-encoded address, with a leading '0x'. Leading zeroes can be omitted on input but will always appear in outputs (HaneulAddress in output is guaranteed to be 66 characters long).
+"""
+scalar HaneulAddress
 
 """
 Future behavior of a currency's supply.

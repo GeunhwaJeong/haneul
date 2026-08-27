@@ -86,7 +86,17 @@ This guide demonstrates how to connect a React interface to that "Hello, World!"
 </TabItem>
 </Tabs>
 
-## Call the Move package 
+## Haneul dApp Kit
+
+The example frontend uses [`@haneullabs/dapp-kit`](https://sdk.haneul-labs.com/dapp-kit), which provides React hooks and components for wallet connection, transaction signing, and onchain data queries. The key components used in this example are:
+
+- `ConnectButton`: A pre-built button component that opens a wallet selection dialog. Users click it to connect their Slush wallet (or any Wallet Standard compatible wallet) to your app.
+- `useCurrentAccount`: A React hook that returns the currently connected wallet account, including the user's Haneul address. Use it to check whether a user is connected and to read their address for transaction construction.
+- `useSignAndExecuteTransaction`: A React hook that signs and submits a transaction through the connected wallet.
+
+The `dapp-kit.ts` file in the example project configures the Haneul dApp Kit provider with network settings. For a deeper walkthrough of building a frontend with Haneul dApp Kit, see the [dApp Kit Frontend](/getting-started/examples/dapp-kit-frontend) example.
+
+## Call the Move package
 
 First, confirm that you have [followed the "Hello, World!"](https://github.com/GeunhwaJeong/haneul-stack-hello-world.git) example guide and are within the `haneul-stack-hello-world/move/hello-world` directory in your CLI.
 

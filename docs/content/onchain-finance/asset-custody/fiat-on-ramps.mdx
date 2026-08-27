@@ -1,0 +1,57 @@
+---
+title: Fiat On-Ramps
+description: >-
+  Accept fiat payments and deliver Haneul-native tokens to user wallets using
+  third-party on-ramp providers integrated with the Haneul network.
+keywords:
+  - fiat
+  - on-ramp
+  - payments
+  - stablecoins
+  - USDC
+  - HANEUL
+  - wallet integration
+  - credit card
+goal:
+  description: >-
+    Reader can choose and integrate a fiat on-ramp provider for their Haneul app
+  requires:
+    - has_frontmatter:
+        - title
+        - description
+        - keywords
+      label: Has required frontmatter fields
+    - has_questions: true
+      label: Needs questions for AI search visibility
+    - has_answer: true
+      label: Needs answer summary for AI citation
+questions:
+  - What fiat on-ramp providers support Haneul?
+answer: >-
+  Multiple third-party providers offer fiat on-ramp integration with Haneul,
+  including Banxa, Stripe, Coinbase, Meld, and Onramper.
+---
+
+Fiat on-ramp providers enable you to buy Haneul-native tokens (HANEUL, WAL, DEEP, and others) using fiat currency from a user's bank account, card, or payment method. Embedding an on-ramp provider into your app allows users to convert their Haneul assets to traditional currency without leaving your interface. Verify current provider capabilities before integrating.
+
+The following table summarizes providers with live Haneul on-ramp integration as of August 2026. All columns refer to Haneul chain and Haneul asset support specifically.
+
+:::info
+
+On-ramp coverage is evolving. Provider asset support and regional availability change frequently. Confirm current capabilities with your chosen provider before launching an integration.
+
+:::
+
+| **Provider** | **Supported assets** | **Documentation** |
+|---|---|---|
+| [Banxa](https://banxa.com/) | HANEUL, USDC | [Banxa docs](https://docs.banxa.com/products/hosted-checkout/docs/reference/supported-cryptocurrencies-and-blockchains) |
+| [Bridge.xyz](https://bridge.xyz) | USDHaneul | [Bridge docs](https://apidocs.bridge.xyz/platform/issuance/designing-your-stablecoin#supported-chains) |
+| [Stripe](https://stripe.com/) | HANEUL, USDHaneul | [Stripe crypto on-ramp docs](https://docs.stripe.com/crypto/onramp) |
+| [Coinbase](https://coinbase.com/) | HANEUL, USDC, WAL, DEEP | [Coinbase CDP docs](https://docs.cdp.coinbase.com/onramp/offramp/offramp-overview) |
+| [Alchemy Pay](https://alchemypay.org/) | AUSD, HANEUL, USD | [Alchemy Pay docs](https://alchemypay.readme.io/docs/api-integration-3) |
+| [OnRamp.money](https://onramp.money/) | HANEUL, USDC, WAL | [OnRamp.money docs](https://onramp.money/supported-token/) |
+| [CoinVoyage](https://www.coinvoyage.io/) | Haneul Dollar | [CoinVoyage docs](https://docs.coinvoyage.io/sdk/paykit-headless#haneul-payment-signatures) |
+| [Onramper](https://onramper.com/) | HANEUL | [Onramper docs](https://docs.onramper.com/docs/network-support) |
+| [Meld](https://www.meld.io) | HANEUL, USDC, CETUS, NAVI | [Meld docs](https://www.meld.io/coverage/service-providers?cryptoCurrencies=HANEUL) |
+
+See [Fiat Off-Ramps](/onchain-finance/asset-custody/fiat-off-ramps) for the full off-ramp provider list.

@@ -29,12 +29,12 @@ use 0x1::type_name::TypeName;
 use 0x2::balance::Balance;
 use 0x2::clock::Clock;
 use 0x2::coin::Coin;
-use 0x2::haneul::HANEUL;
 use 0x2::kiosk::Kiosk;
 use 0x2::kiosk::KioskOwnerCap;
 use 0x2::kiosk::PurchaseCap;
 use 0x2::object::ID;
 use 0x2::object::UID;
+use 0x2::haneul::HANEUL;
 use 0x2::table::Table;
 use 0x2::tx_context::TxContext;
 
@@ -100,8 +100,7 @@ has key, store {
 
 public struct SlotTokenPricing has key, store { id: UID, slot_number: u8, token_prices: Table<String, u64> }
 
-public struct TokenRevenue
-has key, store { id: UID, token_type: String, total_collected: u64, haneul_balance: Balance<HANEUL> }
+public struct TokenRevenue has key, store { id: UID, token_type: String, total_collected: u64, haneul_balance: Balance<HANEUL> }
 
 public struct PaymentTokenRegistry has key, store { id: UID, supported_tokens: Table<String, bool>, token_list: vector<String> }
 
@@ -543,7 +542,7 @@ const C53: u8 = 1u8;
 
 const C54: u64 = 1000000u64;
 
-const C55: vector<u8> = vector[48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 50u8, 58u8, 58u8, 104u8, 97u8, 110u8, 101u8, 117u8, 108u8, 58u8, 58u8, 72u8, 65u8, 78u8, 69u8, 85u8, 76u8];
+const C55: vector<u8> = vector[48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 48u8, 50u8, 58u8, 58u8, 115u8, 117u8, 105u8, 58u8, 58u8, 83u8, 85u8, 73u8];
 
 const C56: vector<u8> = vector[82u8, 101u8, 109u8, 111u8, 118u8, 101u8, 100u8];
 
@@ -579,7 +578,7 @@ public entry fun add_collection_to_slot<T0>(l0: &mut StakingPool<T0>, l1: u8, l2
             event::emit(SlotCollectionsUpdated { pool_id: l12, slot_number: l1, old_collections: l11, new_collections: l6.allowed_collections, is_open_to_all: l6.is_open_to_all, updated_by: tx_context::sender(freeze(l4)), update_time: l7 })
         };
         assert!(l8, C29);
-        return
+        break
     }
 }
 
@@ -1227,12 +1226,6 @@ public fun is_collection_allowed_in_slot_view<T0>(l0: &StakingPool<T0>, l1: u8, 
     return demo::is_collection_allowed_in_slot(demo::get_slot_config(&l0.slot_configs, l1), &l2)
 }
 
-fun is_haneul_token<T0>(): bool {
-    let l1 = type_name::into_string(type_name::get());
-    let l0 = ascii::string(C55);
-    return l1 == l0
-}
-
 public fun is_paused<T0>(l0: &StakingPool<T0>): bool {
     return l0.is_paused
 }
@@ -1254,6 +1247,12 @@ fun is_slot_occupied<T0>(l0: &StakingPool<T0>, l1: address, l2: u8): bool {
 fun is_slot_unlocked<T0>(l0: &StakingPool<T0>, l1: address, l2: u8): bool {
     let l4 = SlotDataKey { owner: l1, slot_number: l2 };
     return dynamic_object_field::exists_(&l0.id, l4) && (dynamic_object_field::borrow(&l0.id, l4)).is_unlocked
+}
+
+fun is_haneul_token<T0>(): bool {
+    let l1 = type_name::into_string(type_name::get());
+    let l0 = ascii::string(C55);
+    return l1 == l0
 }
 
 public entry fun remove_collection_from_slot<T0>(l0: &mut StakingPool<T0>, l1: u8, l2: String, l3: &Clock, l4: &mut TxContext) {
@@ -1280,7 +1279,7 @@ public entry fun remove_collection_from_slot<T0>(l0: &mut StakingPool<T0>, l1: u
             event::emit(SlotCollectionsUpdated { pool_id: l13, slot_number: l1, old_collections: l12, new_collections: l7.allowed_collections, is_open_to_all: l7.is_open_to_all, updated_by: tx_context::sender(freeze(l4)), update_time: l8 })
         };
         assert!(l9, C29);
-        return
+        break
     }
 }
 
@@ -1436,7 +1435,7 @@ public entry fun set_slot_allowed_collections<T0>(l0: &mut StakingPool<T0>, l1: 
             event::emit(SlotCollectionsUpdated { pool_id: l13, slot_number: l1, old_collections: l12, new_collections: l7.allowed_collections, is_open_to_all: l3, updated_by: tx_context::sender(freeze(l5)), update_time: l8 })
         };
         assert!(l9, C29);
-        return
+        break
     }
 }
 
@@ -1676,7 +1675,7 @@ public entry fun update_slot_multiplier<T0>(l0: &mut StakingPool<T0>, l1: u8, l2
             event::emit(SlotMultiplierUpdated { pool_id: object::id(freeze(l0)), slot_number: l1, old_multiplier: l12, new_multiplier: l2, updated_by: tx_context::sender(freeze(l4)), update_time: l8 })
         };
         assert!(l9, C29);
-        return
+        break
     }
 }
 

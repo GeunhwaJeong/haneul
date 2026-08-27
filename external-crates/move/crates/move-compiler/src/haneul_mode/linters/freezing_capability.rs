@@ -6,13 +6,9 @@
 
 use crate::{
     diag,
-    diagnostics::codes::{DiagnosticInfo, Severity, custom},
     haneul_mode::{
         HANEUL_ADDR_VALUE,
-        linters::{
-            FREEZE_FUN, LinterDiagnosticCategory, LinterDiagnosticCode, PUBLIC_FREEZE_FUN,
-            TRANSFER_MOD_NAME,
-        },
+        linters::{FREEZE_FUN, HaneulLintCode, PUBLIC_FREEZE_FUN, TRANSFER_MOD_NAME},
     },
     naming::ast::TypeName_,
     shared::Identifier,
@@ -24,14 +20,6 @@ use move_ir_types::location::*;
 use regex::Regex;
 
 use std::sync::LazyLock;
-
-const FREEZE_CAPABILITY_DIAG: DiagnosticInfo = custom(
-    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
-    Severity::Warning,
-    LinterDiagnosticCategory::Haneul as u8,
-    LinterDiagnosticCode::FreezingCapability as u8,
-    "freezing potential capability",
-);
 
 const FREEZE_FUNCTIONS: &[(AccountAddress, &str, &str)] = &[
     (HANEUL_ADDR_VALUE, TRANSFER_MOD_NAME, PUBLIC_FREEZE_FUN),
@@ -86,7 +74,7 @@ fn check_type_arguments(context: &mut Context, fun: &T::ModuleCall, loc: Loc) {
                 "The type {} is potentially a capability based on its name",
                 core::error_format_(type_arg, &core::Subst::empty()),
             );
-            let mut diag = diag!(FREEZE_CAPABILITY_DIAG, (loc, msg));
+            let mut diag = diag!(HaneulLintCode::FreezingCapability.diag_info(), (loc, msg));
             diag.add_note(
                 "Freezing a capability might lock out critical operations \
                 or otherwise open access to operations that otherwise should be restricted",

@@ -17,18 +17,12 @@ use crate::{
         },
     },
     diag,
-    diagnostics::{
-        Diagnostic, Diagnostics,
-        codes::{DiagnosticInfo, Severity, custom},
-    },
+    diagnostics::{Diagnostic, Diagnostics},
     expansion::ast::ModuleIdent,
     haneul_mode::{
         HANEUL_ADDR_VALUE, TX_CONTEXT_MODULE_NAME, TX_CONTEXT_TYPE_NAME,
         info::TransferKind,
-        linters::{
-            LinterDiagnosticCategory, LinterDiagnosticCode, PUBLIC_SHARE_FUN, SHARE_FUN,
-            TRANSFER_MOD_NAME, type_abilities,
-        },
+        linters::{HaneulLintCode, PUBLIC_SHARE_FUN, SHARE_FUN, TRANSFER_MOD_NAME, type_abilities},
     },
     hlir::ast::{
         BaseType, BaseType_, Exp, LValue, LValue_, Label, ModuleCall, SingleType, SingleType_,
@@ -50,14 +44,6 @@ const SHARE_FUNCTIONS: &[(AccountAddress, &str, &str)] = &[
     (HANEUL_ADDR_VALUE, TRANSFER_MOD_NAME, PUBLIC_SHARE_FUN),
     (HANEUL_ADDR_VALUE, TRANSFER_MOD_NAME, SHARE_FUN),
 ];
-
-const SHARE_OWNED_DIAG: DiagnosticInfo = custom(
-    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
-    Severity::Warning,
-    LinterDiagnosticCategory::Haneul as u8,
-    LinterDiagnosticCode::ShareOwned as u8,
-    "possible owned object share",
-);
 
 //**************************************************************************************************
 // types
@@ -323,7 +309,7 @@ impl ShareOwnedVerifierAI<'_> {
             TransferKind::PrivateTransfer(loc) => (loc, "Transferred as an owned object here"),
         };
         let d = diag!(
-            SHARE_OWNED_DIAG,
+            HaneulLintCode::ShareOwned.diag_info(),
             (*loc, msg),
             (f.arguments[0].exp.loc, uid_msg),
             (*not_fresh_loc, not_fresh_msg),

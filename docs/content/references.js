@@ -122,6 +122,11 @@ const references = [
 			'references/sdk-comparison',
 			{
 				type: 'link',
+				label: 'TypeScript SDK v1 -> v2 Migration Guide',
+				href: 'https://sdk.haneul-labs.com/haneul/migrations/haneul-2.0',
+			},
+			{
+				type: 'link',
 				label: 'dApp Kit',
 				href: 'https://sdk.haneul-labs.com/dapp-kit',
 			},
@@ -212,7 +217,6 @@ const references = [
 				label: 'Submit a SIP',
 				href: 'https://sips.haneul.io',
 			},
-			'references/contribute/localize-haneul-docs',
 			'references/contribute/code-of-conduct',
 			'references/contribute/style-guide',
 			'references/contribute/mdx-components',

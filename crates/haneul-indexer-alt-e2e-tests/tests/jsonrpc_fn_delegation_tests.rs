@@ -8,6 +8,7 @@ use haneul_indexer_alt_e2e_tests::OffchainCluster;
 use haneul_indexer_alt_e2e_tests::OffchainClusterConfig;
 use haneul_indexer_alt_e2e_tests::local_ingestion_client_args;
 use haneul_indexer_alt_jsonrpc::NodeArgs as JsonRpcNodeArgs;
+use haneul_kvstore::ALL_PIPELINE_NAMES;
 use haneul_swarm_config::genesis_config::AccountConfig;
 use haneul_test_transaction_builder::TestTransactionBuilder;
 use haneul_test_transaction_builder::make_staking_transaction;
@@ -153,7 +154,7 @@ impl FnDelegationTestCluster {
             .await
             .expect("Timed out waiting for consistent store");
         self.offchain
-            .wait_for_bigtable(cp, timeout)
+            .wait_for_bigtable(&ALL_PIPELINE_NAMES, cp, timeout)
             .await
             .expect("Timed out waiting for bigtable");
     }

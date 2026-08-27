@@ -3,25 +3,16 @@
 
 //! This linter rule checks for structs with an `id` field of type `UID` without the `key` ability.
 
-use super::{LinterDiagnosticCategory, LinterDiagnosticCode};
+use super::HaneulLintCode;
 use crate::expansion::ast::ModuleIdent;
 use crate::parser::ast::DatatypeName;
 use crate::{
     diag,
-    diagnostics::codes::{DiagnosticInfo, Severity, custom},
     haneul_mode::{HANEUL_ADDR_VALUE, ID_FIELD_NAME, OBJECT_MODULE_NAME, UID_TYPE_NAME},
     naming::ast::{StructDefinition, StructFields},
     parser::ast::Ability_,
     typing::visitor::simple_visitor,
 };
-
-const MISSING_KEY_ABILITY_DIAG: DiagnosticInfo = custom(
-    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
-    Severity::Warning,
-    LinterDiagnosticCategory::Haneul as u8,
-    LinterDiagnosticCode::MissingKey as u8,
-    "struct with id but missing key ability",
-);
 
 simple_visitor!(
     MissingKeyVisitor,
@@ -33,7 +24,7 @@ simple_visitor!(
     ) -> bool {
         if first_field_has_id_field_of_type_uid(sdef) && lacks_key_ability(sdef) {
             let uid_msg = "Struct's first field has an 'id' field of type 'haneul::object::UID' but is missing the 'key' ability.";
-            let diagnostic = diag!(MISSING_KEY_ABILITY_DIAG, (sdef.loc, uid_msg));
+            let diagnostic = diag!(HaneulLintCode::MissingKey.diag_info(), (sdef.loc, uid_msg));
             self.add_diag(diagnostic);
         }
         false

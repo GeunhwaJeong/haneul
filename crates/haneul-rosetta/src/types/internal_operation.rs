@@ -13,7 +13,6 @@ use haneul_rpc::proto::haneul::rpc::v2::{
 use move_core_types::identifier::Identifier;
 use move_core_types::language_storage::TypeTag;
 use prost_types::FieldMask;
-use rand::Rng;
 use serde::{Deserialize, Serialize};
 
 use haneul_rpc::field::FieldMaskUtil;
@@ -311,7 +310,8 @@ impl InternalOperation {
             let epoch = metadata
                 .epoch
                 .ok_or(anyhow!("epoch required for address-balance gas"))?;
-            let nonce = rand::thread_rng().r#gen::<u32>();
+            // Pre-1.79 metadata can omit this; make it required after 1.79 is fully deployed.
+            let nonce = metadata.nonce.unwrap_or_else(rand::random::<u32>);
 
             // For amount-sensitive plans, verify the metadata epoch matches
             // the rate-quote epoch — otherwise the rate the off-chain quote

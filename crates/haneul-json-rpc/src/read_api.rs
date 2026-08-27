@@ -19,7 +19,7 @@ use haneul_types::signature::{GenericSignature, VerifyParams};
 use haneul_types::signature_verification::VerifiedDigestCache;
 use haneul_types::storage::ObjectKey;
 use haneullabs_common::ZipDebugEqIteratorExt;
-use im::hashmap::HashMap as ImHashMap;
+use imbl::hashmap::HashMap as ImHashMap;
 use indexmap::map::IndexMap;
 use itertools::Itertools;
 use jsonrpsee::RpcModule;
@@ -1202,10 +1202,10 @@ impl ReadApiServer for ReadApi {
         for active_jwk in new_jwks.iter() {
             let ActiveJwk { jwk_id, jwk, .. } = active_jwk;
             match oidc_provider_jwks.entry(jwk_id.clone()) {
-                im::hashmap::Entry::Occupied(_) => {
+                imbl::hashmap::Entry::Occupied(_) => {
                     warn!("JWK with kid {:?} already exists", jwk_id);
                 }
-                im::hashmap::Entry::Vacant(entry) => {
+                imbl::hashmap::Entry::Vacant(entry) => {
                     entry.insert(jwk.clone());
                 }
             }

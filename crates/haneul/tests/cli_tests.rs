@@ -45,12 +45,12 @@ use haneul::{
     haneul_commands::{HaneulCommand, parse_host_port},
 };
 use haneul_config::{
-    HANEUL_CLIENT_CONFIG, HANEUL_FULLNODE_CONFIG, HANEUL_GENESIS_FILENAME,
+    Config, HANEUL_CLIENT_CONFIG, HANEUL_FULLNODE_CONFIG, HANEUL_GENESIS_FILENAME,
     HANEUL_KEYSTORE_ALIASES_FILENAME, HANEUL_KEYSTORE_FILENAME, HANEUL_NETWORK_CONFIG,
     PersistedConfig,
 };
 use haneul_json::HaneulJsonValue;
-use haneul_keys::keystore::AccountKeystore;
+use haneul_keys::keystore::{AccountKeystore, FileBasedKeystore, Keystore};
 use haneul_macros::sim_test;
 use haneul_move_build::BuildConfig;
 use haneul_package_alt::HaneulFlavor;
@@ -5929,6 +5929,55 @@ async fn test_move_build_dump_bytecode_as_base64_with_unpublished_deps() -> Resu
     );
 
     temp_dir.close()?;
+    Ok(())
+}
+
+#[tokio::test]
+#[allow(deprecated)] // cargo_bin is deprecated but cargo_bin_cmd! doesn't work with assert_cmd
+async fn test_keytool_keystore_path_override() -> Result<(), anyhow::Error> {
+    let temp_dir = tempfile::tempdir()?;
+    let config_dir = temp_dir.path();
+
+    let primary_path = config_dir.join(HANEUL_KEYSTORE_FILENAME);
+    let mut primary_keystore = FileBasedKeystore::load_or_create(&primary_path)?;
+    let primary_keypair = HaneulKeyPair::Ed25519(get_key_pair().1);
+    let primary_address = HaneulAddress::from(&primary_keypair.public());
+    primary_keystore.import(None, primary_keypair).await?;
+
+    let secondary_path = config_dir.join("secondary.keystore");
+    let mut secondary_keystore = FileBasedKeystore::load_or_create(&secondary_path)?;
+    let secondary_keypair = HaneulKeyPair::Ed25519(get_key_pair().1);
+    let secondary_address = HaneulAddress::from(&secondary_keypair.public());
+    secondary_keystore.import(None, secondary_keypair).await?;
+
+    HaneulClientConfig::new(Keystore::from(primary_keystore))
+        .save(config_dir.join(HANEUL_CLIENT_CONFIG))?;
+
+    let output = assert_cmd::Command::cargo_bin("haneul")?
+        .env("HANEUL_CONFIG_DIR", config_dir)
+        .args([
+            "keytool",
+            "--keystore-path",
+            secondary_path.to_str().unwrap(),
+            "--json",
+            "list",
+        ])
+        .output()?;
+
+    assert!(
+        output.status.success(),
+        "keytool failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let listed_keys: serde_json::Value = serde_json::from_slice(&output.stdout)?;
+    let listed_keys = listed_keys.as_array().unwrap();
+    assert_eq!(listed_keys.len(), 1);
+    assert_eq!(
+        listed_keys[0]["haneulAddress"],
+        secondary_address.to_string()
+    );
+    assert_ne!(listed_keys[0]["haneulAddress"], primary_address.to_string());
+
     Ok(())
 }
 

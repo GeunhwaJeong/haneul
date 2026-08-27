@@ -13,8 +13,9 @@ use consensus_types::block::{BlockRef, PING_TRANSACTION_INDEX};
 use fastcrypto::traits::KeyPair;
 use haneul_test_transaction_builder::TestTransactionBuilder;
 use haneul_types::base_types::{HaneulAddress, ObjectRef, random_object_ref};
-use haneul_types::crypto::{AccountKeyPair, get_account_key_pair};
-use haneul_types::effects::TransactionEffectsAPI as _;
+use haneul_types::crypto::{AccountKeyPair, AuthoritySignInfo, get_account_key_pair};
+use haneul_types::digests::TransactionEffectsDigest;
+use haneul_types::effects::{TransactionEffects, TransactionEffectsAPI as _};
 use haneul_types::error::{HaneulError, HaneulErrorKind, UserInputError};
 use haneul_types::executable_transaction::VerifiedExecutableTransaction;
 use haneul_types::message_envelope::Message as _;
@@ -27,6 +28,7 @@ use haneul_types::transaction::{
     Transaction, TransactionDataAPI, TransactionExpiration, VerifiedTransaction,
 };
 use haneul_types::utils::to_sender_signed_transaction;
+use shared_crypto::intent::{Intent, IntentScope};
 
 use crate::authority::authority_per_epoch_store::AuthorityPerEpochStore;
 use crate::authority::test_authority_builder::TestAuthorityBuilder;
@@ -452,6 +454,60 @@ async fn test_submit_transaction_already_executed() {
         }
         _ => panic!("Expected Executed response"),
     };
+}
+
+// Test that the already-executed fast path refuses to report effects that contradict
+// effects the validator previously signed for the same transaction.
+#[tokio::test]
+async fn test_submit_transaction_refuses_contradicting_previously_signed() {
+    let test_context = TestContext::new().await;
+
+    let transaction = test_context.build_test_transaction();
+    let request = test_context.build_submit_request(transaction.clone());
+
+    let epoch_store = test_context.state.epoch_store_for_testing();
+    let verified_transaction = VerifiedExecutableTransaction::new_from_checkpoint(
+        VerifiedTransaction::new_unchecked(transaction),
+        epoch_store.epoch(),
+        1,
+    );
+    let tx_digest = *verified_transaction.digest();
+    let (effects, _) = test_context
+        .state
+        .try_execute_immediately(&verified_transaction, ExecutionEnv::new(), &epoch_store)
+        .unwrap();
+
+    // Record a signed digest that differs from the executed effects, simulating divergent
+    // re-execution after the effects were signed.
+    let previously_signed_digest = TransactionEffectsDigest::random();
+    assert_ne!(previously_signed_digest, effects.digest());
+    let signature = AuthoritySignInfo::new(
+        epoch_store.epoch(),
+        &TransactionEffects::default(),
+        Intent::haneul_app(IntentScope::TransactionEffects),
+        test_context.state.name,
+        &*test_context.state.secret,
+    );
+    epoch_store
+        .insert_effects_digest_and_signature(&tx_digest, &previously_signed_digest, &signature)
+        .unwrap();
+
+    let response = test_context
+        .client
+        .submit_transaction(request, None)
+        .await
+        .unwrap();
+    assert_eq!(response.results.len(), 1);
+    match &response.results[0] {
+        SubmitTxResult::Rejected { error } => {
+            assert!(matches!(
+                error.as_inner(),
+                HaneulErrorKind::GenericAuthorityError { error }
+                    if error.contains("differs from previously signed effects digest")
+            ));
+        }
+        _ => panic!("Expected Rejected response"),
+    }
 }
 
 // Test that a transaction already processed by consensus this epoch but not yet executed

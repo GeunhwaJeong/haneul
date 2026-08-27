@@ -21,9 +21,15 @@ use haneul_types::base_types::ObjectID;
 use haneul_types::base_types::SequenceNumber;
 use haneul_types::error::HaneulResult;
 use haneul_types::object::Object;
-use haneul_types::storage::RuntimeObjectResolver;
+use haneul_types::storage::{BackingPackageStore, PackageObject, RuntimeObjectResolver};
 
 use crate::reader::RpcStoreReader;
+
+impl<R: Reader + Send + Sync> BackingPackageStore for RpcStoreReader<R> {
+    fn get_package_object(&self, _package_id: &ObjectID) -> HaneulResult<Option<PackageObject>> {
+        Ok(None)
+    }
+}
 
 impl<R: Reader + Send + Sync> RuntimeObjectResolver for RpcStoreReader<R> {
     fn read_child_object(
