@@ -45,7 +45,7 @@ use haneul_types::signature_verification::VerifiedDigestCache;
 use haneul_types::transaction::{TransactionData, TransactionDataAPI};
 use haneul_types::zk_login_authenticator::ZkLoginAuthenticator;
 use haneullabs_common::ZipDebugEqIteratorExt;
-use im::hashmap::HashMap as ImHashMap;
+use imbl::hashmap::HashMap as ImHashMap;
 use json_to_table::{Orientation, json_to_table};
 use num_bigint::BigUint;
 use rand::Rng;

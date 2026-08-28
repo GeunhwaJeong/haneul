@@ -10,27 +10,17 @@ use move_symbol_pool::Symbol;
 
 use crate::{
     diag,
-    diagnostics::codes::{DiagnosticInfo, Severity, custom},
     haneul_mode::{HANEUL_ADDR_NAME, HANEUL_ADDR_VALUE},
     parser::ast as P,
     typing::{ast as T, visitor::simple_visitor},
 };
 
 use super::{
-    BAG_MOD_NAME, BAG_STRUCT_NAME, LINKED_TABLE_MOD_NAME, LINKED_TABLE_STRUCT_NAME,
-    LinterDiagnosticCategory, LinterDiagnosticCode, OBJECT_BAG_MOD_NAME, OBJECT_BAG_STRUCT_NAME,
-    OBJECT_TABLE_MOD_NAME, OBJECT_TABLE_STRUCT_NAME, TABLE_MOD_NAME, TABLE_STRUCT_NAME,
-    TABLE_VEC_MOD_NAME, TABLE_VEC_STRUCT_NAME, VEC_MAP_MOD_NAME, VEC_MAP_STRUCT_NAME,
-    VEC_SET_MOD_NAME, VEC_SET_STRUCT_NAME,
+    BAG_MOD_NAME, BAG_STRUCT_NAME, HaneulLintCode, LINKED_TABLE_MOD_NAME, LINKED_TABLE_STRUCT_NAME,
+    OBJECT_BAG_MOD_NAME, OBJECT_BAG_STRUCT_NAME, OBJECT_TABLE_MOD_NAME, OBJECT_TABLE_STRUCT_NAME,
+    TABLE_MOD_NAME, TABLE_STRUCT_NAME, TABLE_VEC_MOD_NAME, TABLE_VEC_STRUCT_NAME, VEC_MAP_MOD_NAME,
+    VEC_MAP_STRUCT_NAME, VEC_SET_MOD_NAME, VEC_SET_STRUCT_NAME,
 };
-
-const COLLECTIONS_EQUALITY_DIAG: DiagnosticInfo = custom(
-    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
-    Severity::Warning,
-    LinterDiagnosticCategory::Haneul as u8,
-    LinterDiagnosticCode::CollectionEquality as u8,
-    "possibly useless collections compare",
-);
 
 const COLLECTION_TYPES: &[(Symbol, AccountAddress, &str, &str)] = &[
     (
@@ -108,7 +98,10 @@ simple_visitor!(
                     "Equality for collections of type '{caddr_name}::{cmodule}::{cname}' \
                     IS NOT a structural check based on content"
                 );
-                let mut d = diag!(COLLECTIONS_EQUALITY_DIAG, (op.loc, msg),);
+                let mut d = diag!(
+                    HaneulLintCode::CollectionEquality.diag_info(),
+                    (op.loc, msg),
+                );
                 d.add_note(note_msg);
                 self.add_diag(d);
                 return true;

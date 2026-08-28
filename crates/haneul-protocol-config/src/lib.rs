@@ -29,7 +29,7 @@ use tracing::{info, warn};
 
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
-const MAX_PROTOCOL_VERSION: u64 = 123;
+const MAX_PROTOCOL_VERSION: u64 = 124;
 
 const TESTNET_USDC: &str =
     "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC";
@@ -357,6 +357,8 @@ const MAINNET_USDB: &str =
 //              the consensus block transaction count and payload limits.
 //              (Both gated to non-mainnet chains.)
 //              Disable defer_unpaid_amplification on mainnet.
+// Version 124: Apply the v123 config changes on mainnet.
+//              Disable defer_unpaid_amplification everywhere.
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -4596,6 +4598,20 @@ impl ProtocolConfig {
                     if chain == Chain::Mainnet {
                         cfg.feature_flags.defer_unpaid_amplification = false;
                     }
+                }
+                124 => {
+                    // v124 tracks upstream protocol version 135.
+                    // Apply the original v123 content on mainnet (no-op re-assignment on
+                    // chains that already applied it in v123).
+                    cfg.package_original_package_id_impl_cost_base = Some(52);
+                    let package_read_cost_per_byte = cfg.obj_access_cost_read_per_byte();
+                    cfg.package_original_package_id_impl_cost_per_byte =
+                        Some(package_read_cost_per_byte);
+
+                    cfg.consensus_max_transactions_in_block_bytes = Some(288 * 1024);
+                    cfg.consensus_max_num_transactions_in_block = Some(128);
+
+                    cfg.feature_flags.defer_unpaid_amplification = false;
                 }
                 // Use this template when making changes:
                 //

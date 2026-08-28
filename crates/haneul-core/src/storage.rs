@@ -39,6 +39,7 @@ use haneul_types::storage::RuntimeObjectResolver;
 use haneul_types::storage::WriteStore;
 use haneul_types::storage::error::Error as StorageError;
 use haneul_types::storage::error::Result;
+use haneul_types::storage::{BackingPackageStore, PackageObject};
 use haneul_types::storage::{ObjectKey, OverlayBackingPackageStore, ReadStore};
 use haneul_types::transaction::VerifiedTransaction;
 use move_core_types::language_storage::StructTag;
@@ -575,6 +576,15 @@ impl ReadStore for RestReadStore {
     }
 }
 
+impl BackingPackageStore for RestReadStore {
+    fn get_package_object(&self, _package_id: &ObjectID) -> HaneulResult<Option<PackageObject>> {
+        Err(HaneulErrorKind::UnsupportedFeatureError {
+            error: "RestReadStore does not support loading package objects".to_string(),
+        }
+        .into())
+    }
+}
+
 impl RuntimeObjectResolver for RestReadStore {
     fn read_child_object(
         &self,
@@ -849,6 +859,15 @@ impl ReadStore for RpcStoreReadStore {
         digest: &TransactionDigest,
     ) -> Option<CheckpointSequenceNumber> {
         self.rocks.get_transaction_checkpoint(digest)
+    }
+}
+
+impl BackingPackageStore for RpcStoreReadStore {
+    fn get_package_object(&self, _package_id: &ObjectID) -> HaneulResult<Option<PackageObject>> {
+        Err(HaneulErrorKind::UnsupportedFeatureError {
+            error: "RpcStoreReadStore does not support loading package objects".to_string(),
+        }
+        .into())
     }
 }
 

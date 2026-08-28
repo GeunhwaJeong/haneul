@@ -13,7 +13,10 @@ use std::str::FromStr;
 use haneul_keys::keystore::AccountKeystore;
 use haneul_rosetta::CoinMetadataCache;
 use haneul_rosetta::operations::Operations;
-use haneul_rosetta::types::{PreprocessMetadata, TransactionIdentifierResponse};
+use haneul_rosetta::types::{
+    ConstructionPayloadsRequest, ConstructionPayloadsResponse, HaneulEnv, NetworkIdentifier,
+    PreprocessMetadata, TransactionIdentifierResponse,
+};
 use haneul_rpc::client::Client as GrpcClient;
 use haneul_rpc::field::FieldMaskUtil;
 use haneul_rpc::proto::haneul::rpc::v2::{
@@ -36,7 +39,7 @@ use test_coin_utils::{TEST_COIN_DECIMALS, init_package, mint};
 use test_utils::wait_for_transaction;
 
 mod rosetta_client;
-use rosetta_client::start_rosetta_test_server;
+use rosetta_client::{RosettaEndpoint, start_rosetta_test_server};
 
 #[path = "custom_coins/test_coin_utils.rs"]
 mod test_coin_utils;
@@ -730,10 +733,68 @@ async fn test_pay_haneul_entirely_from_ab() {
         "Entirely from AB: gas_coins should be empty, got {:?}",
         metadata.metadata.gas_coins
     );
+    assert!(
+        metadata.metadata.nonce.is_some(),
+        "Entirely from AB: metadata should include a nonce"
+    );
 
-    if let Some(Err(e)) = &flow.payloads {
-        panic!("Payloads failed: {:?}", e);
-    }
+    let payloads = flow
+        .payloads
+        .as_ref()
+        .expect("Payloads was None")
+        .as_ref()
+        .expect("Payloads failed");
+    let repeated_request = ConstructionPayloadsRequest {
+        network_identifier: NetworkIdentifier {
+            blockchain: "haneul".to_owned(),
+            network: HaneulEnv::LocalNet,
+        },
+        operations: ops.clone(),
+        metadata: Some(metadata.metadata.clone()),
+        public_keys: vec![],
+    };
+    let repeated_payloads: ConstructionPayloadsResponse = rosetta_client
+        .call(RosettaEndpoint::Payloads, &repeated_request)
+        .await
+        .expect("Repeated payloads failed");
+    assert_eq!(
+        payloads.unsigned_transaction, repeated_payloads.unsigned_transaction,
+        "Repeated payloads call should return the same unsigned transaction"
+    );
+    assert_eq!(
+        payloads
+            .payloads
+            .first()
+            .expect("Initial payloads response should contain a signing payload")
+            .hex_bytes,
+        repeated_payloads
+            .payloads
+            .first()
+            .expect("Repeated payloads response should contain a signing payload")
+            .hex_bytes,
+        "Repeated payloads call should return the same signing hash"
+    );
+
+    let mut legacy_metadata = metadata.metadata.clone();
+    legacy_metadata.nonce = None;
+    let legacy_request = ConstructionPayloadsRequest {
+        network_identifier: NetworkIdentifier {
+            blockchain: "haneul".to_owned(),
+            network: HaneulEnv::LocalNet,
+        },
+        operations: ops.clone(),
+        metadata: Some(legacy_metadata),
+        public_keys: vec![],
+    };
+    let legacy_payloads: ConstructionPayloadsResponse = rosetta_client
+        .call(RosettaEndpoint::Payloads, &legacy_request)
+        .await
+        .expect("Payloads should accept metadata without a nonce");
+    assert_eq!(
+        legacy_payloads.payloads.len(),
+        1,
+        "Legacy metadata should produce one signing payload"
+    );
     if let Some(Err(e)) = &flow.combine {
         panic!("Combine failed: {:?}", e);
     }

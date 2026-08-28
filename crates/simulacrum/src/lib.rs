@@ -34,7 +34,10 @@ use haneul_types::haneul_system_state::epoch_start_haneul_system_state::EpochSta
 use haneul_types::messages_consensus::ConsensusDeterminedVersionAssignments;
 use haneul_types::object::{Object, Owner};
 use haneul_types::storage::ObjectKey;
-use haneul_types::storage::{ObjectStore, ReadStore, RpcStateReader, RuntimeObjectResolver};
+use haneul_types::storage::{
+    BackingPackageStore, ObjectStore, PackageObject, ReadStore, RpcStateReader,
+    RuntimeObjectResolver,
+};
 use haneul_types::transaction::EndOfEpochTransactionKind;
 use haneul_types::{
     base_types::{EpochId, HaneulAddress},
@@ -727,6 +730,12 @@ impl<T, V: store::SimulatorStore> ObjectStore for Simulacrum<T, V> {
 
     fn get_object_by_key(&self, object_id: &ObjectID, version: VersionNumber) -> Option<Object> {
         self.store.get_object_by_key(object_id, version)
+    }
+}
+
+impl<T, V: store::SimulatorStore> BackingPackageStore for Simulacrum<T, V> {
+    fn get_package_object(&self, package_id: &ObjectID) -> HaneulResult<Option<PackageObject>> {
+        self.store.get_package_object(package_id)
     }
 }
 

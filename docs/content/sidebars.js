@@ -234,11 +234,13 @@ export default {
         'develop/security/best-practices',
       ],
     },
+    'develop/production-readiness',
   ],
 
   gettingStartedSidebar: [
     'getting-started',
     { type: 'link', label: 'Skills', href: '/skills' },
+    'getting-started/haneul-mcp-server',
     {
       type: 'category',
       label: 'Hello, World!',
@@ -336,6 +338,9 @@ export default {
               'onchain-finance/asset-custody/wallets/haneullink',
             ],
           },
+          'onchain-finance/asset-custody/address-aliases',
+          'onchain-finance/asset-custody/fiat-on-ramps',
+          'onchain-finance/asset-custody/fiat-off-ramps',
         ],
       },
       {
@@ -359,7 +364,6 @@ export default {
                 'onchain-finance/fungible-tokens/create-a-fungible-token',
             ],
           },
-          'onchain-finance/fungible-tokens/integrating-with-stablecoins',
           'onchain-finance/fungible-tokens/regulated-tokens',
           'onchain-finance/fungible-tokens/token-vesting-strategies',
           'onchain-finance/fungible-tokens/haneul-bridging',
@@ -375,6 +379,17 @@ export default {
           'onchain-finance/tokenized-assets/create-nft',
         ],
       },
+    {
+      type: 'category',
+      label: 'Payments',
+      link: { type: 'doc', id: 'onchain-finance/payments' },
+      items: [
+        'onchain-finance/choose-payments-model',
+        'onchain-finance/payment-kit',
+        'onchain-finance/payment-intents',
+        'onchain-finance/funding-wallets',
+      ],
+    },
       {
         type: 'category',
         label: 'Example Asset Patterns',
@@ -548,8 +563,6 @@ export default {
         'onchain-finance/kiosk/kiosk-apps',
       ],
     },
-    'onchain-finance/payment-kit',
-	'onchain-finance/payment-intents',
   ],
 
 haneulStackSidebar: [
@@ -657,12 +670,34 @@ haneulStackSidebar: [
       label: 'HaneulNS',
       link: { type: 'doc', id: 'haneul-stack/haneulns/index' },
       items: [
+        'haneul-stack/haneulns/user',
+        'haneul-stack/haneulns/communities',
+        'haneul-stack/haneulns/developer',
         {
-          type: 'link',
-          label: 'HaneulNS Docs',
-          href: 'https://docs.haneulns.io',
+          type: 'category',
+          label: 'SDK',
+          link: { type: 'doc', id: 'haneul-stack/haneulns/developer/sdk' },
+          items: [
+            'haneul-stack/haneulns/developer/sdk/querying',
+            'haneul-stack/haneulns/developer/sdk/transactions',
+            'haneul-stack/haneulns/developer/sdk/subnames',
+          ],
         },
+        'haneul-stack/haneulns/node-operator',
+        'haneul-stack/haneulns/dao',
         'haneul-stack/haneulns/haneul-stack-haneulns',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Move Registry (MVR)',
+      link: { type: 'doc', id: 'haneul-stack/mvr/move-registry' },
+      items: [
+        'haneul-stack/mvr/mvr-names',
+        'haneul-stack/mvr/managing-package-info',
+        'haneul-stack/mvr/maintainer-practices',
+        'haneul-stack/mvr/tooling/mvr-cli',
+        'haneul-stack/mvr/tooling/typescript-sdk',
       ],
     },
     {
@@ -722,6 +757,18 @@ haneulStackSidebar: [
         'haneul-stack/zklogin-integration/developer-account',
         'haneul-stack/zklogin-integration/zklogin-demo',
         'haneul-stack/zklogin-integration/zklogin',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Hashi',
+      link: { type: 'doc', id: 'haneul-stack/hashi/index' },
+      items: [
+        {
+          type: 'link',
+          label: 'Hashi Docs',
+          href: 'https://haneullabs.github.io/hashi/design/',
+        },
       ],
     },
     {

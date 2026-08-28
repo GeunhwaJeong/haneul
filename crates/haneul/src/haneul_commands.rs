@@ -523,12 +523,16 @@ impl HaneulCommand {
             }
             HaneulCommand::GenesisCeremony(cmd) => run(cmd),
             HaneulCommand::KeyTool {
-                keystore_path: _,
+                keystore_path,
                 json,
                 cmd,
             } => {
                 let config_path = haneul_config_dir()?.join(HANEUL_CLIENT_CONFIG);
                 let mut context = WalletContext::new(&config_path)?;
+                if let Some(keystore_path) = keystore_path {
+                    context.config.keystore =
+                        Keystore::from(FileBasedKeystore::load_or_create(&keystore_path)?);
+                }
 
                 cmd.execute(&mut context).await?.print(!json);
                 Ok(())

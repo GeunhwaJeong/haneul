@@ -7,26 +7,9 @@ use crate::expansion::ast::ModuleIdent;
 use crate::haneul_mode::{HANEUL_ADDR_NAME, HANEUL_ADDR_VALUE};
 use crate::parser::ast::FunctionName;
 use crate::typing::visitor::simple_visitor;
-use crate::{
-    diag,
-    diagnostics::codes::{DiagnosticInfo, Severity, custom},
-    expansion::ast::Visibility,
-    naming::ast as N,
-    typing::ast as T,
-};
+use crate::{diag, expansion::ast::Visibility, naming::ast as N, typing::ast as T};
 
-use super::{
-    LinterDiagnosticCategory, LinterDiagnosticCode, RANDOM_GENERATOR_STRUCT_NAME, RANDOM_MOD_NAME,
-    RANDOM_STRUCT_NAME,
-};
-
-const PUBLIC_RANDOM_DIAG: DiagnosticInfo = custom(
-    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
-    Severity::Warning,
-    LinterDiagnosticCategory::Haneul as u8,
-    LinterDiagnosticCode::PublicRandom as u8,
-    "Risky use of 'haneul::random'",
-);
+use super::{HaneulLintCode, RANDOM_GENERATOR_STRUCT_NAME, RANDOM_MOD_NAME, RANDOM_STRUCT_NAME};
 
 simple_visitor!(
     PublicRandomVisitor,
@@ -50,7 +33,7 @@ simple_visitor!(
                 let tloc = t.loc;
                 let msg =
                     format!("'public' function '{fname}' accepts '{struct_name}' as a parameter");
-                let mut d = diag!(PUBLIC_RANDOM_DIAG, (tloc, msg));
+                let mut d = diag!(HaneulLintCode::PublicRandom.diag_info(), (tloc, msg));
                 let note = format!(
                     "Functions that accept '{}::{}::{}' as a parameter might be abused by attackers by inspecting the results of randomness",
                     HANEUL_ADDR_NAME, RANDOM_MOD_NAME, struct_name

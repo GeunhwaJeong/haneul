@@ -675,6 +675,15 @@ impl ReadStore for PersistedStoreInnerReadOnlyWrapper {
     }
 }
 
+impl BackingPackageStore for PersistedStoreInnerReadOnlyWrapper {
+    fn get_package_object(
+        &self,
+        package_id: &ObjectID,
+    ) -> haneul_types::error::HaneulResult<Option<PackageObject>> {
+        load_package_object_from_object_store(self, package_id)
+    }
+}
+
 impl RuntimeObjectResolver for PersistedStoreInnerReadOnlyWrapper {
     fn read_child_object(
         &self,
@@ -777,6 +786,7 @@ impl Clone for PersistedStoreInnerReadOnlyWrapper {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use haneul_types::HANEUL_FRAMEWORK_PACKAGE_ID;
     use rand::{SeedableRng, rngs::StdRng};
 
     #[tokio::test]
@@ -825,6 +835,49 @@ mod tests {
         assert_ne!(
             chain1.store().get_committee_by_epoch(0),
             chain3.store().get_committee_by_epoch(0),
+        );
+    }
+
+    #[tokio::test]
+    async fn read_replica_resolves_package_at_exact_version() {
+        let protocol_config = ProtocolConfig::get_for_max_version_UNSAFE();
+        let (_, read_replica) = PersistedStore::new_sim_replica_with_protocol_version_and_accounts(
+            StdRng::from_seed([9; 32]),
+            0,
+            &protocol_config,
+            vec![],
+            vec![],
+            None,
+            None,
+        );
+
+        let package = read_replica
+            .get_package_object(&HANEUL_FRAMEWORK_PACKAGE_ID)
+            .unwrap()
+            .expect("Haneul framework package exists in genesis");
+        let version = package.move_package().version();
+
+        let package = read_replica
+            .get_package_at_version(&HANEUL_FRAMEWORK_PACKAGE_ID, version)
+            .expect("package exists at its stored version");
+        assert_eq!(package.id(), HANEUL_FRAMEWORK_PACKAGE_ID);
+        assert_eq!(package.version(), version);
+
+        assert_ne!(version, SequenceNumber::MIN);
+        let mut previous_version = version;
+        previous_version.decrement();
+        assert!(
+            read_replica
+                .get_package_at_version(&HANEUL_FRAMEWORK_PACKAGE_ID, previous_version)
+                .is_none()
+        );
+
+        let mut next_version = version;
+        next_version.increment();
+        assert!(
+            read_replica
+                .get_package_at_version(&HANEUL_FRAMEWORK_PACKAGE_ID, next_version)
+                .is_none()
         );
     }
 }

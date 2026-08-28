@@ -7,18 +7,11 @@
 
 use crate::{
     diag,
-    diagnostics::{
-        Diagnostic, DiagnosticReporter, Diagnostics,
-        codes::{DiagnosticInfo, Severity, custom},
-        filter::FilterScope,
-    },
+    diagnostics::{Diagnostic, DiagnosticReporter, Diagnostics, filter::FilterScope},
     expansion::ast as E,
     haneul_mode::{
         HANEUL_ADDR_VALUE,
-        linters::{
-            FREEZE_FUN, LinterDiagnosticCategory, LinterDiagnosticCode, PUBLIC_FREEZE_FUN,
-            TRANSFER_MOD_NAME,
-        },
+        linters::{FREEZE_FUN, HaneulLintCode, PUBLIC_FREEZE_FUN, TRANSFER_MOD_NAME},
     },
     naming::ast as N,
     parser::ast::{self as P, Ability_},
@@ -32,14 +25,6 @@ use move_core_types::account_address::AccountAddress;
 use move_ir_types::location::*;
 use move_symbol_pool::Symbol;
 use std::{collections::BTreeMap, sync::Arc};
-
-const FREEZE_WRAPPING_DIAG: DiagnosticInfo = custom(
-    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
-    Severity::Warning,
-    LinterDiagnosticCategory::Haneul as u8,
-    LinterDiagnosticCode::FreezeWrapped as u8,
-    "attempting to freeze wrapped objects",
-);
 
 const FREEZE_FUNCTIONS: &[(AccountAddress, &str, &str)] = &[
     (HANEUL_ADDR_VALUE, TRANSFER_MOD_NAME, PUBLIC_FREEZE_FUN),
@@ -263,7 +248,7 @@ fn add_diag(
         if !direct { "indirectly contains" } else { "is" }
     );
     let mut d = diag!(
-        FREEZE_WRAPPING_DIAG,
+        HaneulLintCode::FreezeWrapped.diag_info(),
         (freeze_arg_loc, msg),
         (frozen_field_tloc, uid_msg)
     );

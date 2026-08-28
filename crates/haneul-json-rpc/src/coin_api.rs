@@ -969,7 +969,7 @@ mod tests {
             let expected = expect!["-32602"];
             expected.assert_eq(&error_object.code().to_string());
             let expected = expect![
-                "Invalid struct type: 0x2::invalid::struct::tag. Got error: Expected end of token stream. Got: ::"
+                "Invalid datatype: 0x2::invalid::struct::tag. Got error: Expected end of token stream. Got: ::"
             ];
             expected.assert_eq(error_object.message());
         }
@@ -989,7 +989,7 @@ mod tests {
             let expected = expect!["-32602"];
             expected.assert_eq(&error_object.code().to_string());
             let expected =
-                expect!["Invalid struct type: 0x2::haneul:🤵. Got error: unrecognized token: :🤵"];
+                expect!["Invalid datatype: 0x2::haneul:🤵. Got error: unrecognized token: :🤵"];
             expected.assert_eq(error_object.message());
         }
 
@@ -1277,7 +1277,7 @@ mod tests {
             let expected = expect!["-32602"];
             expected.assert_eq(&error_object.code().to_string());
             let expected = expect![
-                "Invalid struct type: 0x2::invalid::struct::tag. Got error: Expected end of token stream. Got: ::"
+                "Invalid datatype: 0x2::invalid::struct::tag. Got error: Expected end of token stream. Got: ::"
             ];
             expected.assert_eq(error_object.message());
         }

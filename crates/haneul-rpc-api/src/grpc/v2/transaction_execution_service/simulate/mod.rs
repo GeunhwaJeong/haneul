@@ -7,6 +7,7 @@ use crate::RpcError;
 use crate::RpcService;
 use haneul_protocol_config::ProtocolConfig;
 use haneul_rpc::field::FieldMaskTree;
+use haneul_rpc::field::FieldMaskUtil;
 use haneul_rpc::merge::Merge;
 use haneul_rpc::proto::google::rpc::bad_request::FieldViolation;
 use haneul_rpc::proto::haneul::rpc::v2::Bcs;
@@ -46,11 +47,19 @@ pub fn simulate_transaction(
         .as_ref()
         .ok_or_else(|| RpcError::new(tonic::Code::Unimplemented, "no transaction executor"))?;
 
-    let read_mask = request
-        .read_mask
-        .as_ref()
-        .map(FieldMaskTree::from_field_mask)
-        .unwrap_or_else(FieldMaskTree::new_wildcard);
+    let read_mask = match request.read_mask.as_ref() {
+        Some(read_mask) => {
+            read_mask
+                .validate::<SimulateTransactionResponse>()
+                .map_err(|path| {
+                    FieldViolation::new("read_mask")
+                        .with_description(format!("invalid read_mask path: {path}"))
+                        .with_reason(ErrorReason::FieldInvalid)
+                })?;
+            FieldMaskTree::from_field_mask(read_mask)
+        }
+        None => FieldMaskTree::new_wildcard(),
+    };
 
     let transaction_proto = request
         .transaction

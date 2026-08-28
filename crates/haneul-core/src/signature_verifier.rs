@@ -22,7 +22,7 @@ use haneul_types::{
     signature::VerifyParams,
 };
 use haneullabs_common::debug_fatal;
-use im::hashmap::HashMap as ImHashMap;
+use imbl::hashmap::HashMap as ImHashMap;
 use itertools::Itertools as _;
 use nonempty::NonEmpty;
 use parking_lot::RwLock;
@@ -131,10 +131,10 @@ impl SignatureVerifier {
     pub(crate) fn insert_jwk(&self, jwk_id: &JwkId, jwk: &JWK) {
         let mut jwks = self.jwks.write();
         match jwks.entry(jwk_id.clone()) {
-            im::hashmap::Entry::Occupied(_) => {
+            imbl::hashmap::Entry::Occupied(_) => {
                 debug!("JWK with kid {:?} already exists", jwk_id);
             }
-            im::hashmap::Entry::Vacant(entry) => {
+            imbl::hashmap::Entry::Vacant(entry) => {
                 debug!("inserting JWK with kid: {:?}", jwk_id);
                 entry.insert(jwk.clone());
             }

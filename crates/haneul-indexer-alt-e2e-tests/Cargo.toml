@@ -36,6 +36,7 @@ url.workspace = true
 zstd.workspace = true
 
 simulacrum.workspace = true
+haneul-config.workspace = true
 haneul-futures.workspace = true
 haneul-indexer-alt.workspace = true
 haneul-kv-rpc.workspace = true

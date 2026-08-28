@@ -3,9 +3,8 @@
 
 //! Network node configuration for Haneul data stores.
 //!
-//! Defines the [`Node`] enum for specifying which Haneul network to connect to
-//! (mainnet, testnet, devnet, or custom) and provides URL resolution for both
-//! GraphQL and gRPC endpoints.
+//! Defines the [`Node`] enum for specifying which Haneul network to connect to (mainnet, testnet,
+//! devnet, or custom) and provides URL resolution for both GraphQL and gRPC endpoints.
 
 use std::str::FromStr;
 
@@ -17,12 +16,6 @@ pub(crate) const MAINNET_GQL_URL: &str = "https://graphql.mainnet.haneul.io/grap
 pub(crate) const TESTNET_GQL_URL: &str = "https://graphql.testnet.haneul.io/graphql";
 /// GraphQL endpoint for Haneul devnet.
 pub(crate) const DEVNET_GQL_URL: &str = "https://graphql.devnet.haneul.io/graphql";
-/// gRPC endpoint for Haneul mainnet.
-pub(crate) const MAINNET_RPC_URL: &str = "https://fullnode.mainnet.haneul.io:443";
-/// gRPC endpoint for Haneul testnet.
-pub(crate) const TESTNET_RPC_URL: &str = "https://fullnode.testnet.haneul.io:443";
-/// gRPC endpoint for Haneul devnet.
-pub(crate) const DEVNET_RPC_URL: &str = "https://fullnode.devnet.haneul.io:443";
 
 /// Represents a Haneul network node configuration.
 ///
@@ -66,17 +59,6 @@ impl Node {
             Node::Mainnet => MAINNET_GQL_URL,
             Node::Testnet => TESTNET_GQL_URL,
             Node::Devnet => DEVNET_GQL_URL,
-            Node::Custom(url) => url.as_str(),
-        }
-    }
-
-    /// Returns the gRPC endpoint URL for this node.
-    pub(crate) fn node_url(&self) -> &str {
-        match self {
-            Node::Mainnet => MAINNET_RPC_URL,
-            Node::Testnet => TESTNET_RPC_URL,
-            Node::Devnet => DEVNET_RPC_URL,
-            // For custom, assume it's already an RPC URL
             Node::Custom(url) => url.as_str(),
         }
     }

@@ -22,10 +22,7 @@ use crate::{
         },
     },
     diag,
-    diagnostics::{
-        Diagnostic, Diagnostics,
-        codes::{DiagnosticInfo, Severity, custom},
-    },
+    diagnostics::{Diagnostic, Diagnostics},
     haneul_mode::HANEUL_ADDR_VALUE,
     hlir::ast::{
         BaseType_, Label, ModuleCall, SingleType, SingleType_, Type, Type_, TypeName_, Var,
@@ -36,8 +33,8 @@ use crate::{
 use std::collections::BTreeMap;
 
 use super::{
-    FREEZE_FUN, INVALID_LOC, LinterDiagnosticCategory, LinterDiagnosticCode, RECEIVE_FUN,
-    SHARE_FUN, TRANSFER_FUN, TRANSFER_MOD_NAME,
+    FREEZE_FUN, HaneulLintCode, INVALID_LOC, RECEIVE_FUN, SHARE_FUN, TRANSFER_FUN,
+    TRANSFER_MOD_NAME,
 };
 
 const PRIVATE_OBJ_FUNCTIONS: &[(AccountAddress, &str, &str)] = &[
@@ -46,14 +43,6 @@ const PRIVATE_OBJ_FUNCTIONS: &[(AccountAddress, &str, &str)] = &[
     (HANEUL_ADDR_VALUE, TRANSFER_MOD_NAME, FREEZE_FUN),
     (HANEUL_ADDR_VALUE, TRANSFER_MOD_NAME, RECEIVE_FUN),
 ];
-
-const CUSTOM_STATE_CHANGE_DIAG: DiagnosticInfo = custom(
-    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
-    Severity::Warning,
-    LinterDiagnosticCategory::Haneul as u8,
-    LinterDiagnosticCode::CustomStateChange as u8,
-    "potentially unenforceable custom transfer/share/freeze policy",
-);
 
 //**************************************************************************************************
 // types
@@ -179,7 +168,7 @@ impl SimpleAbsInt for CustomStateChangeVerifierAI {
                  calling the private '{fname}' function variant in the module defining this type"
             );
             let mut d = diag!(
-                CUSTOM_STATE_CHANGE_DIAG,
+                HaneulLintCode::CustomStateChange.diag_info(),
                 (self.fn_name_loc, msg),
                 (f.name.loc(), uid_msg)
             );

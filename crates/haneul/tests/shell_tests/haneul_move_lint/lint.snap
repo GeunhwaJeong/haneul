@@ -1,6 +1,5 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
-assertion_line: 114
 ---
 ----- script -----
 # Copyright (c) Mysten Labs, Inc.
@@ -20,7 +19,7 @@ INCLUDING DEPENDENCY MoveStdlib
 BUILDING example
 
 ----- stderr -----
-warning[WSL99001]: non-composable transfer to sender
+warning[WSL06002]: non-composable transfer to sender
    ┌─ ./sources/example.move:15:5
    │
 14 │ public fun mint(ctx: &mut TxContext) {

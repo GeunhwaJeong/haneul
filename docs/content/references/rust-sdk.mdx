@@ -34,8 +34,30 @@ answer: >-
   Haneul repository.
 ---
 
-The Legacy Rust SDK crate is in the [`crates/haneul-sdk` directory](https://github.com/GeunhwaJeong/haneul/tree/main/crates/haneul-sdk) of the Haneul repository.
+The Haneul Rust SDK provides Rust wrappers for interacting with Haneul networks. Two Rust SDK crates are available:
 
-This SDK is forward and backwards compatible with the [`haneul-rust-sdk`](https://github.com/GeunhwaJeong/haneul-rust-sdk) and supports JSON RPC. If you do not need JSON RPC, use the [`haneul-rust-sdk`](https://github.com/GeunhwaJeong/haneul-rust-sdk) instead.
+| **Crate** | **Repository** | **Status** | **Use when** |
+|---|---|---|---|
+| [`haneul-rust-sdk`](https://github.com/GeunhwaJeong/haneul-rust-sdk) | [HaneulLabs/haneul-rust-sdk](https://github.com/GeunhwaJeong/haneul-rust-sdk) | **Current** | Building new Rust integrations. Uses [GraphQL RPC](/develop/accessing-data/graphql/graphql-rpc) and [gRPC](/develop/accessing-data/grpc). |
+| [`haneul-sdk`](https://github.com/GeunhwaJeong/haneul/tree/main/crates/haneul-sdk) | [HaneulLabs/haneul](https://github.com/GeunhwaJeong/haneul/tree/main/crates/haneul-sdk) | **Legacy** | Maintaining existing integrations that depend on this crate. |
+
+For new projects, use [`haneul-rust-sdk`](https://github.com/GeunhwaJeong/haneul-rust-sdk). It is the actively maintained Rust SDK with support for the current Haneul API surface.
+
+## Legacy `haneul-sdk` crate
+
+The legacy SDK crate lives in the [`crates/haneul-sdk` directory](https://github.com/GeunhwaJeong/haneul/tree/main/crates/haneul-sdk) of the main Haneul repository. It is forward and backwards compatible with `haneul-rust-sdk`.
+
+### Installation
+
+Add the crate to your `Cargo.toml`:
+
+```toml
+[dependencies]
+haneul-sdk = { git = "https://github.com/GeunhwaJeong/haneul.git", package = "haneul-sdk" }
+```
+
+### SDK reference
+
+The legacy SDK README contains usage examples for connecting to a network, querying objects, and submitting transactions:
 
 <ImportContent source="crates/haneul-sdk/README.md" mode="code" style="md" />

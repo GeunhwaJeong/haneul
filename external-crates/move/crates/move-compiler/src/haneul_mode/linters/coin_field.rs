@@ -6,7 +6,6 @@
 
 use crate::{
     diag,
-    diagnostics::codes::{DiagnosticInfo, Severity, custom},
     expansion::ast::ModuleIdent,
     haneul_mode::HANEUL_ADDR_VALUE,
     naming::ast as N,
@@ -14,15 +13,7 @@ use crate::{
     typing::{ast as T, visitor::simple_visitor},
 };
 
-use super::{COIN_MOD_NAME, COIN_STRUCT_NAME, LinterDiagnosticCategory, LinterDiagnosticCode};
-
-const COIN_FIELD_DIAG: DiagnosticInfo = custom(
-    crate::diagnostics::codes::DiagnosticOrigin::HaneulLint,
-    Severity::Warning,
-    LinterDiagnosticCategory::Haneul as u8,
-    LinterDiagnosticCode::CoinField as u8,
-    "sub-optimal 'haneul::coin::Coin' field type",
-);
+use super::{COIN_MOD_NAME, COIN_STRUCT_NAME, HaneulLintCode};
 
 simple_visitor!(
     CoinFieldVisitor,
@@ -46,7 +37,10 @@ simple_visitor!(
                 if is_field_coin_type(ftype) {
                     let msg = "Sub-optimal 'haneul::coin::Coin' field type. Using \
                         'haneul::balance::Balance' instead will be more space efficient";
-                    self.add_diag(diag!(COIN_FIELD_DIAG, (ftype.loc, msg)));
+                    self.add_diag(diag!(
+                        HaneulLintCode::CoinField.diag_info(),
+                        (ftype.loc, msg)
+                    ));
                 }
             }
         }

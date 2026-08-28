@@ -4,7 +4,7 @@
 use std::{collections::BTreeMap, rc::Rc, sync::Arc};
 
 use crate::{
-    data_store::PackageStore,
+    data_store::{PackageMetadata, PackageStore},
     static_programmable_transactions::linkage::resolution::{
         ResolutionTable, VersionConstraint, add_and_unify,
     },
@@ -15,10 +15,7 @@ use haneul_types::{
     base_types::ObjectID, error::ExecutionErrorTrait,
 };
 use move_binary_format::binary_config::BinaryConfig;
-use move_vm_runtime::{
-    shared::types::{OriginalId, VersionId},
-    validation::verification::ast::Package as VerifiedPackage,
-};
+use move_vm_runtime::shared::types::{OriginalId, VersionId};
 
 /// These are the set of native packages in Haneul -- importantly they can be used implicitly by
 /// different parts of the system and are not required to be explicitly imported always.
@@ -69,9 +66,12 @@ impl ResolutionConfig {
         &self.0.binary_config
     }
 
-    pub(crate) fn resolution_table_with_native_packages<E: ExecutionErrorTrait>(
+    pub(crate) fn resolution_table_with_native_packages<
+        E: ExecutionErrorTrait,
+        S: PackageStore + ?Sized,
+    >(
         &self,
-        store: &dyn PackageStore,
+        store: &S,
     ) -> Result<ResolutionTable, E> {
         let mut resolution_table = ResolutionTable::empty(self.clone());
         if self.0.linkage_config.always_include_system_packages {
@@ -80,8 +80,8 @@ impl ResolutionConfig {
                 {
                     use crate::static_programmable_transactions::linkage::resolution::get_package;
                     let package = get_package(id, store)?;
-                    debug_assert_eq!(package.version_id(), **id);
-                    debug_assert_eq!(package.original_id(), **id);
+                    debug_assert_eq!(package.version_id(), *id);
+                    debug_assert_eq!(package.original_id(), *id);
                 }
                 add_and_unify(id, store, &mut resolution_table, VersionConstraint::exact)?;
             }
@@ -90,10 +90,12 @@ impl ResolutionConfig {
         Ok(resolution_table)
     }
 
-    pub(crate) fn linkage_table(&self, pkg: &VerifiedPackage) -> BTreeMap<OriginalId, VersionId> {
-        let linkage_table = pkg.linkage_table().clone();
+    pub(crate) fn linkage_table<P: PackageMetadata>(
+        &self,
+        pkg: &P,
+    ) -> BTreeMap<OriginalId, VersionId> {
         self.linkage_config()
-            .apply_linkage_amendments(pkg.version_id(), linkage_table)
+            .apply_linkage_amendments(*pkg.version_id(), pkg.linkage_table())
     }
 }
 

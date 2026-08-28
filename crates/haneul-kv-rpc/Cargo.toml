@@ -41,6 +41,7 @@ haneul-protocol-config.workspace = true
 haneul-rpc.workspace = true
 haneul-rpc-api.workspace = true
 haneul-rpc-cursor.workspace = true
+haneul-sdk-types.workspace = true
 haneul-types.workspace = true
 telemetry-subscribers.workspace = true
 thiserror.workspace = true
