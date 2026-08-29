@@ -93,7 +93,7 @@ questions:
   - What is haneulup?
   - How do I verify my Haneul installation?
 answer: >-
-  Run `curl -sSfL https://raw.githubusercontent.com/HaneulLabs/haneulup/main/install.sh | sh`
+  Run `curl -sSfL https://raw.githubusercontent.com/GeunhwaJeong/haneulup/main/install.sh | sh`
   to install haneulup, then `haneulup install haneul@testnet` for the Testnet toolchain.
   Verify with `haneul --version`.
 ```

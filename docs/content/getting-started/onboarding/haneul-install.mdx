@@ -72,7 +72,7 @@ answer: Install the Haneul framework and its required prerequisites on your syst
 ---
 
 <AgentPrompt
-  prompt="Set up this machine for Haneul development: Install the Haneul CLI with curl -sSfL https://raw.githubusercontent.com/HaneulLabs/haneulup/main/install.sh | sh, then run haneulup install haneul@testnet to get the Testnet-compatible toolchain. Run haneul client to generate your keys and config, then prompt me to visit faucet.haneul.io, enter the generated address, and fund it with test tokens."
+  prompt="Set up this machine for Haneul development: Install the Haneul CLI with curl -sSfL https://raw.githubusercontent.com/GeunhwaJeong/haneulup/main/install.sh | sh, then run haneulup install haneul@testnet to get the Testnet-compatible toolchain. Run haneul client to generate your keys and config, then prompt me to visit faucet.haneul.io, enter the generated address, and fund it with test tokens."
 />
 
 Install the [Haneul CLI](/references/cli) and verify it works. The CLI creates and manages address balances, builds and publishes smart contracts, and queries information from the network.
@@ -198,7 +198,7 @@ Replace `testnet` with `mainnet` or `devnet` as needed.
 Homebrew and Chocolatey might compile dependencies from source if the package manager has not cached prebuilt binaries. This can take several minutes. For a faster installation, use `haneulup` instead:
 
 ```sh
-$ curl -sSfL https://raw.githubusercontent.com/HaneulLabs/haneulup/main/install.sh | sh
+$ curl -sSfL https://raw.githubusercontent.com/GeunhwaJeong/haneulup/main/install.sh | sh
 $ haneulup install haneul@testnet
 ```
 

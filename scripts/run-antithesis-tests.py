@@ -203,13 +203,13 @@ def main():
     # Validate commits/refs exist on remote
     if not args.skip_validation:
         valid = True
-        if not validate_commit_on_remote(commit, "HaneulLabs/haneul", "commit"):
+        if not validate_commit_on_remote(commit, "GeunhwaJeong/haneul", "commit"):
             valid = False
-        if alt_commit and not validate_commit_on_remote(alt_commit, "HaneulLabs/haneul", "alt_commit"):
+        if alt_commit and not validate_commit_on_remote(alt_commit, "GeunhwaJeong/haneul", "alt_commit"):
             valid = False
-        if args.stress_commit and not validate_commit_on_remote(args.stress_commit, "HaneulLabs/haneul", "stress_commit"):
+        if args.stress_commit and not validate_commit_on_remote(args.stress_commit, "GeunhwaJeong/haneul", "stress_commit"):
             valid = False
-        if args.cli_commit and not validate_commit_on_remote(args.cli_commit, "HaneulLabs/haneul", "cli_commit"):
+        if args.cli_commit and not validate_commit_on_remote(args.cli_commit, "GeunhwaJeong/haneul", "cli_commit"):
             valid = False
         if args.workflow_ref and not validate_ref_on_remote(args.workflow_ref, haneul_ops_repo):
             valid = False
