@@ -245,10 +245,10 @@ For offchain resolution in a TypeScript or JavaScript app, you have 2 options:
 ### Lookup with `@haneullabs/haneul`
 
 
-{/* TODO: Import code from HaneulLabs/haneul-typescript — show resolveNameServiceAddress example */}
+{/* TODO: Import code from GeunhwaJeong/haneul-typescript — show resolveNameServiceAddress example */}
 {/* Description: Basic name-to-address resolution using HaneulClient.resolveNameServiceAddress */}
 
-{/* TODO: Import code from HaneulLabs/haneul-typescript — show resolveNameServiceNames example */}
+{/* TODO: Import code from GeunhwaJeong/haneul-typescript — show resolveNameServiceNames example */}
 {/* Description: Reverse lookup (address to default name) using HaneulClient.resolveNameServiceNames */}
 
 For [GraphQL RPC](/develop/accessing-data/graphql/graphql-rpc), use the `resolveHaneulnsAddress` query for lookup and the `defaultHaneulnsName` field on the `Address` type for reverse lookup. See the [Haneul GraphQL reference](https://docs.haneul.io/references/haneul-api/haneul-graphql/reference/api/queries/resolve-haneulns-address) for the full schema.
@@ -326,7 +326,7 @@ For offchain verification (for example, in a backend service), combine the Haneu
 2. Compare `expirationTimestampMs` against the current time to confirm the name has not expired.
 3. Check that `targetAddress` is set and non-empty before using it.
 
-{/* TODO: Import code from HaneulLabs/haneulns-contracts or a Haneul example repo — show offchain verification pattern using getNameRecord with expiry and target address checks */}
+{/* TODO: Import code from GeunhwaJeong/haneulns-contracts or a Haneul example repo — show offchain verification pattern using getNameRecord with expiry and target address checks */}
 {/* Description: TypeScript function that resolves a HaneulNS name, validates expiry, and confirms target address before use */}
 
 ### Reverse lookup verification

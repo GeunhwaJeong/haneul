@@ -491,7 +491,7 @@ def pr_bumps_protocol_version(pr):
 
     try:
         diff = subprocess.check_output(
-            [GH_CLI_PATH, "pr", "diff", str(pr), "--repo", "HaneulLabs/haneul"],
+            [GH_CLI_PATH, "pr", "diff", str(pr), "--repo", "GeunhwaJeong/haneul"],
             text=True,
             stderr=subprocess.DEVNULL,
         )

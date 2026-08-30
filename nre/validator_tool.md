@@ -14,7 +14,7 @@ This document is focused on using Validator Tool.
 
     1. Clone the git repo:
 
-           git clone git@github.com:HaneulLabs/haneul.git && cd haneul
+           git clone git@github.com:GeunhwaJeong/haneul.git && cd haneul
 
     2. Check out the commit we will be using for the testnet:
 

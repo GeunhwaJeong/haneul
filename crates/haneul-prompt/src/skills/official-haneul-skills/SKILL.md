@@ -41,7 +41,7 @@ Rendered (browser-friendly, HTML):
 
 Raw (plain markdown, easier for programmatic consumption):
 
-  <https://raw.githubusercontent.com/HaneulLabs/skills/764f21a95e709f46c60877a59d6ee6f27d9ed91e/{skill}/{file}.md>
+  <https://raw.githubusercontent.com/GeunhwaJeong/skills/764f21a95e709f46c60877a59d6ee6f27d9ed91e/{skill}/{file}.md>
 
 Pick whichever your fetch tool handles best. Both serve the same content at the
 same pinned snapshot.

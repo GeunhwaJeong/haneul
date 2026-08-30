@@ -136,7 +136,7 @@ impl RpcService {
             "https://haneul-labs.com",
             "build@haneul-labs.com",
             "Apache-2.0",
-            "https://raw.githubusercontent.com/HaneulLabs/haneul/main/LICENSE",
+            "https://raw.githubusercontent.com/GeunhwaJeong/haneul/main/LICENSE",
         );
 
         Ok(Self {
