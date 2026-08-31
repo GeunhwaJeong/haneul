@@ -1,4 +1,5 @@
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
 //# init --addresses TestRoot=0x0 TestDepV1=0x0 TestDepV2=0x0 TestDepV3=0x0 --accounts A

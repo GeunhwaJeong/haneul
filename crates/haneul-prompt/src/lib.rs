@@ -1,4 +1,5 @@
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
 //! `haneul prompt` — the entry point to expert Haneul and Move knowledge, shipped as part of the Haneul CLI.

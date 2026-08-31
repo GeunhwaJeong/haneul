@@ -3,9 +3,9 @@ source: crates/haneul/src/upgrade_compatibility/../unit_tests/upgrade_compatibil
 expression: normalize_path(result.unwrap_err().to_string())
 ---
 error[EUC01008]: file format version downgrade
-  ┌─ /fixtures/upgrade_errors/deponly_errors_v2/sources/UpgradeErrors.move:4:8
+  ┌─ /fixtures/upgrade_errors/deponly_errors_v2/sources/UpgradeErrors.move:5:8
   │
-4 │ module upgrades::upgrades {
+5 │ module upgrades::upgrades {
   │        ^^^^^^^^^^^^^^^^^^ Downgrading from file format version 1 to 0 is not supported.
   │
   = File format version downgrades are not supported.

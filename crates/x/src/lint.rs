@@ -1,4 +1,5 @@
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
 use anyhow::anyhow;
@@ -14,10 +15,12 @@ use nexlint_lints::{
     },
 };
 static EXTERNAL_CRATE_DIR: &str = "external-crates/";
+// System package sources must stay byte-identical to the latest on-chain bytecode snapshot
+// between protocol upgrades: clever-error abort codes embed source line numbers, so even a
+// comment line changes the compiled bytecode. License header updates for these files land
+// together with the next protocol upgrade, when a new snapshot is cut anyway.
+static FRAMEWORK_PACKAGES_DIR: &str = "crates/haneul-framework/packages/";
 static CREATE_DAPP_TEMPLATE_DIR: &str = "sdk/create-dapp/templates";
-static LICENSE_HEADER: &str = "Copyright (c) Mysten Labs, Inc.\n\
-                               SPDX-License-Identifier: Apache-2.0\n\
-                               ";
 #[derive(Debug, Parser)]
 pub struct Args {
     #[clap(long)]
@@ -123,7 +126,7 @@ pub fn run(args: Args) -> crate::Result<()> {
     // allow whitespace exceptions for markdown files
     // let whitespace_exceptions = build_exceptions(&["*.md".to_owned()])?;
     let content_linters: &[&dyn ContentLinter] = &[
-        &LicenseHeader::new(LICENSE_HEADER),
+        &HaneulLicenseHeader,
         &RootToml,
         // &EofNewline::new(&whitespace_exceptions),
         // &TrailingWhitespace::new(&whitespace_exceptions),
@@ -193,6 +196,7 @@ pub fn handle_lint_results_exclude_external_crate_checks(
         // legacy ignore checks
         |source: &LintSource, path: &Utf8Path| -> bool {
             (path.starts_with(EXTERNAL_CRATE_DIR)
+                || path.starts_with(FRAMEWORK_PACKAGES_DIR)
                 || path.starts_with(CREATE_DAPP_TEMPLATE_DIR)
                 || path.to_string().contains("/generated/")
                 || path.to_string().contains("/proto/")
@@ -227,5 +231,112 @@ pub fn handle_lint_results_exclude_external_crate_checks(
         Err(anyhow!("there were lint errors"))
     } else {
         Ok(())
+    }
+}
+
+/// License header check that understands this repository's three-line header.
+///
+/// nexlint's stock `LicenseHeader` only inspects the first four non-empty lines and only
+/// skips shebangs for shell and Python. That is no longer enough: files carry the Mysten
+/// line, the modification notice, and sometimes upstream Diem/Move notices in front of
+/// them, and JS entry points start with a shebang. This linter scans a wider window and
+/// skips shebangs for every file type. It keeps the name "license-header" so the
+/// external-crates exclusion above still applies.
+#[derive(Debug)]
+struct HaneulLicenseHeader;
+
+static MYSTEN_LINE: &str = "Copyright (c) Mysten Labs, Inc.";
+static SPDX_LINE: &str = "SPDX-License-Identifier: Apache-2.0";
+static HOLDER: &str = "Geunhwa Jeong";
+const HEADER_WINDOW: usize = 8;
+
+fn has_license_extension(ext: Option<&str>) -> bool {
+    matches!(
+        ext,
+        Some(
+            "rs" | "sh"
+                | "proto"
+                | "js"
+                | "jsx"
+                | "cjs"
+                | "mjs"
+                | "ts"
+                | "tsx"
+                | "mts"
+                | "cts"
+                | "move"
+                | "py"
+        )
+    )
+}
+
+/// Matches `Copyright (c) <year> Geunhwa Jeong`, or the `Modifications Copyright (c)`
+/// form when `modifications` is set. The year is deliberately not pinned: it is the year
+/// the file was first modified or created here and stays fixed afterwards.
+fn is_holder_line(line: &str, modifications: bool) -> bool {
+    let rest = if modifications {
+        line.strip_prefix("Modifications Copyright (c) ")
+    } else {
+        line.strip_prefix("Copyright (c) ")
+    };
+    let Some((year, holder)) = rest.and_then(|r| r.split_once(' ')) else {
+        return false;
+    };
+    year.len() == 4 && year.bytes().all(|b| b.is_ascii_digit()) && holder == HOLDER
+}
+
+impl Linter for HaneulLicenseHeader {
+    fn name(&self) -> &'static str {
+        "license-header"
+    }
+}
+
+impl ContentLinter for HaneulLicenseHeader {
+    fn pre_run<'l>(&self, file_ctx: &FilePathContext<'l>) -> Result<RunStatus<'l>, SystemError> {
+        if has_license_extension(file_ctx.extension()) {
+            Ok(RunStatus::Executed)
+        } else {
+            Ok(RunStatus::Skipped(SkipReason::UnsupportedExtension(
+                file_ctx.extension(),
+            )))
+        }
+    }
+
+    fn run<'l>(
+        &self,
+        ctx: &ContentContext<'l>,
+        out: &mut LintFormatter<'l, '_>,
+    ) -> Result<RunStatus<'l>, SystemError> {
+        let Some(content) = ctx.content() else {
+            return Ok(RunStatus::Skipped(SkipReason::NonUtf8Content));
+        };
+        let header: Vec<&str> = content
+            .lines()
+            .filter(|line| !line.trim().is_empty() && !line.starts_with("#!"))
+            .take(HEADER_WINDOW)
+            .map(|line| {
+                line.trim_start()
+                    .trim_start_matches("//")
+                    .trim_start_matches('#')
+                    .trim()
+            })
+            .collect();
+        let spdx = header.contains(&SPDX_LINE);
+        let mysten = header.contains(&MYSTEN_LINE);
+        let modified = header.iter().any(|l| is_holder_line(l, true));
+        let local = header.iter().any(|l| is_holder_line(l, false));
+        let problem = match (spdx, mysten, modified, local) {
+            (true, true, true, _) | (true, false, false, true) => None,
+            (false, false, false, false) => Some("missing license header"),
+            (_, true, false, _) => {
+                Some("Mysten Labs header is missing the Modifications Copyright line")
+            }
+            (false, _, _, _) => Some("missing SPDX-License-Identifier line"),
+            _ => Some("missing license header"),
+        };
+        if let Some(problem) = problem {
+            out.write(LintLevel::Error, problem);
+        }
+        Ok(RunStatus::Executed)
     }
 }

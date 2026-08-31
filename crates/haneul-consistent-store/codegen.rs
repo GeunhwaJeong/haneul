@@ -13,6 +13,7 @@ walkdir = "2.5.0"
 proto-build = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk", branch = "master" }
 ---
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
 //! Single-file cargo script that regenerates the Rust code under

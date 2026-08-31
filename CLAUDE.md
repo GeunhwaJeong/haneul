@@ -11,10 +11,18 @@ Individual preferences supersede and extend project preferences:
 
 ### License comments
 
-All applicable source code files must start with the following license in comments at the top of the file:
+Source files that originate from Mysten Labs must start with the following license in comments at the top of the file:
 
     Copyright (c) Mysten Labs, Inc.
+    Modifications Copyright (c) 2026 Geunhwa Jeong
     SPDX-License-Identifier: Apache-2.0
+
+New source files created in this repository must instead start with:
+
+    Copyright (c) 2026 Geunhwa Jeong
+    SPDX-License-Identifier: Apache-2.0
+
+The year is the year the file was first modified or created here; it stays fixed afterwards. `cargo xlint` enforces these headers for rs, move, sh, py, proto, js and ts files.
 
 ### Building and Installation
 

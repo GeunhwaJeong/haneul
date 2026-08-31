@@ -73,7 +73,7 @@ let v: &vector<unknown type (unresolved)>
 -- test 8 -------------------
 use line: 42, use_ndx: 2
 Use: 'length', start: 18, end: 24
-Def: 'length', line: 31, def char: 18
+Def: 'length', line: 32, def char: 18
 TypeDef: no info
 On Hover:
 public fun vector::length<Element>(

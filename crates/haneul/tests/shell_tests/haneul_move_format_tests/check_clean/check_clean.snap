@@ -1,9 +1,9 @@
 ---
 source: crates/haneul/tests/shell_tests.rs
-assertion_line: 112
 ---
 ----- script -----
 # Copyright (c) Mysten Labs, Inc.
+# Modifications Copyright (c) 2026 Geunhwa Jeong
 # SPDX-License-Identifier: Apache-2.0
 
 # Happy path: stub `prettier-move` exits 0. Asserts the user's args are

@@ -1,5 +1,6 @@
 #!/bin/bash
 # Copyright (c) Mysten Labs, Inc.
+# Modifications Copyright (c) 2026 Geunhwa Jeong
 # SPDX-License-Identifier: Apache-2.0
 
 echo "haneul-test-validator binary has been deprecated in favor of haneul start, which is a more powerful command that allows you to start the local network with more options.

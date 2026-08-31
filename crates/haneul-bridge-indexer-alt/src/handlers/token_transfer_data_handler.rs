@@ -1,4 +1,5 @@
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 use crate::handlers::{BRIDGE, TOKEN_DEPOSITED_EVENT, TOKEN_DEPOSITED_EVENT_V2, is_bridge_txn};
 use crate::struct_tag;

@@ -1,4 +1,5 @@
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
 // docs::#processordeps (see haneul/docs/content/guides/developer/advanced/custom-indexer.mdx)

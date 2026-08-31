@@ -1,4 +1,5 @@
 # Copyright (c) Mysten Labs, Inc.
+# Modifications Copyright (c) 2026 Geunhwa Jeong
 # SPDX-License-Identifier: Apache-2.0
 
 # use the Base58 form to check that Move.toml environments accept it as a chain ID
