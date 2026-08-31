@@ -1,4 +1,5 @@
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
 //! Direct mapping from `tx_sequence_number → (TransactionDigest, event_count, tx_offset, checkpoint_number)`.

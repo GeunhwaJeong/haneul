@@ -1,5 +1,6 @@
 #!/bin/bash
 # Copyright (c) Mysten Labs, Inc.
+# Modifications Copyright (c) 2026 Geunhwa Jeong
 # SPDX-License-Identifier: Apache-2.0
 
 PUBLISH=$(haneul client publish --gas-budget 100000000 --skip-dependency-verification --with-unpublished-dependencies --json);

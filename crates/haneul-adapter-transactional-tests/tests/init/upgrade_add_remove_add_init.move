@@ -1,4 +1,5 @@
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
 // Add-remove-add: `a` has an `init` at v0, drops it at v1, then re-adds it at v2. The `init` check

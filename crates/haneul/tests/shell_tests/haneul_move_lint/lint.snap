@@ -3,6 +3,7 @@ source: crates/haneul/tests/shell_tests.rs
 ---
 ----- script -----
 # Copyright (c) Mysten Labs, Inc.
+# Modifications Copyright (c) 2026 Geunhwa Jeong
 # SPDX-License-Identifier: Apache-2.0
 
 # Tests that `haneul move lint` enables Haneul mode and runs the Haneul-specific linters (here
@@ -20,11 +21,11 @@ BUILDING example
 
 ----- stderr -----
 warning[WSL06002]: non-composable transfer to sender
-   ┌─ ./sources/example.move:15:5
+   ┌─ ./sources/example.move:16:5
    │
-14 │ public fun mint(ctx: &mut TxContext) {
+15 │ public fun mint(ctx: &mut TxContext) {
    │            ---- Returning an object from a function, allows a caller to use the object and enables composability via programmable transactions.
-15 │     transfer::public_transfer(Obj { id: object::new(ctx) }, ctx.sender())
+16 │     transfer::public_transfer(Obj { id: object::new(ctx) }, ctx.sender())
    │     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    │     │                                                       │
    │     │                                                       Transaction sender address coming from here

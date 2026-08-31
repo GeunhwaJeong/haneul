@@ -1,4 +1,5 @@
 // Copyright (c) Mysten Labs, Inc.
+// Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 use crate::authority::authority_per_epoch_store::EPOCH_DB_PREFIX;
 use haneul_config::node::AuthorityStorePruningConfig;

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Copyright (c) Mysten Labs, Inc.
+# Modifications Copyright (c) 2026 Geunhwa Jeong
 # SPDX-License-Identifier: Apache-2.0
 
 # Test that various client commands all properly cache chain_id

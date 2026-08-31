@@ -1,4 +1,5 @@
 # Copyright (c) Mysten Labs, Inc.
+# Modifications Copyright (c) 2026 Geunhwa Jeong
 # SPDX-License-Identifier: Apache-2.0
 
 # test that `haneul move new` works as expected with `<NAME>` containing uppercase letter(s)
