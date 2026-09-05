@@ -5,6 +5,10 @@ no_match_test = "testSkip"
 out = 'out'
 libs = ['dependencies']
 solc = "0.8.20"
+# Pin the optimizer explicitly: newer Foundry releases disable it by default, and without it
+# HaneulBridgeV2 (31.8 KB) exceeds the EIP-170 contract size limit.
+optimizer = true
+optimizer_runs = 200
 build_info = true
 extra_output = ["storageLayout"]
 fs_permissions = [{ access = "read", path = "/"}]
