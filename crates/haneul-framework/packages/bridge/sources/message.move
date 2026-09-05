@@ -84,6 +84,10 @@ public struct UpdateAssetPrice has drop {
     new_price: u64,
 }
 
+public struct UpdateChainId has drop {
+    new_chain_id: u8,
+}
+
 public struct AddTokenOnHaneul has drop {
     native_token: bool,
     token_ids: vector<u8>,
@@ -230,6 +234,15 @@ public fun extract_update_asset_price(message: &BridgeMessage): UpdateAssetPrice
         token_id,
         new_price,
     }
+}
+
+public fun extract_update_chain_id(message: &BridgeMessage): UpdateChainId {
+    let mut bcs = bcs::new(message.payload);
+    let new_chain_id = bcs.peel_u8();
+
+    assert!(bcs.into_remainder_bytes().is_empty(), ETrailingBytes);
+
+    UpdateChainId { new_chain_id }
 }
 
 public fun extract_add_tokens_on_haneul(message: &BridgeMessage): AddTokenOnHaneul {
@@ -481,6 +494,29 @@ public fun create_update_asset_price_message(
     }
 }
 
+/// Update chain id message
+/// [message_type: u8]
+/// [version:u8]
+/// [nonce:u64]
+/// [chain_id: u8]
+/// [new_chain_id: u8]
+public fun create_update_chain_id_message(
+    source_chain: u8,
+    seq_num: u64,
+    new_chain_id: u8,
+): BridgeMessage {
+    chain_ids::assert_valid_chain_id(source_chain);
+    chain_ids::assert_valid_chain_id(new_chain_id);
+
+    BridgeMessage {
+        message_type: message_types::update_chain_id(),
+        message_version: CURRENT_MESSAGE_VERSION,
+        seq_num,
+        source_chain,
+        payload: vector[new_chain_id],
+    }
+}
+
 /// Update Haneul token message
 /// [message_type:u8]
 /// [version:u8]
@@ -594,6 +630,10 @@ public fun update_asset_price_payload_new_price(self: &UpdateAssetPrice): u64 {
     self.new_price
 }
 
+public fun update_chain_id_payload_new_chain_id(self: &UpdateChainId): u8 {
+    self.new_chain_id
+}
+
 public fun is_native(self: &AddTokenOnHaneul): bool {
     self.native_token
 }
@@ -640,6 +680,8 @@ public fun required_voting_power(self: &BridgeMessage): u64 {
     } else if (message_type == message_types::update_bridge_limit()) {
         5001
     } else if (message_type == message_types::add_tokens_on_haneul()) {
+        5001
+    } else if (message_type == message_types::update_chain_id()) {
         5001
     } else {
         abort EInvalidMessageType

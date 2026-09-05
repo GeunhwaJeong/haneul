@@ -87,6 +87,13 @@ pub fn build_haneul_transaction(
             bridge_object_arg,
             rgp,
         ),
+        BridgeAction::ChainIdUpdateAction(_) => build_chain_id_update_approve_transaction(
+            client_address,
+            gas_object_ref,
+            action,
+            bridge_object_arg,
+            rgp,
+        ),
         BridgeAction::EvmContractUpgradeAction(_) => {
             // It does not need a Haneul transaction to execute EVM contract upgrade
             unreachable!()
@@ -480,6 +487,66 @@ fn build_limit_update_approve_transaction(
         vec![*gas_object_ref],
         pt,
         100_000_000,
+        rgp,
+    ))
+}
+
+fn build_chain_id_update_approve_transaction(
+    client_address: HaneulAddress,
+    gas_object_ref: &ObjectRef,
+    action: VerifiedCertifiedBridgeAction,
+    bridge_object_arg: ObjectArg,
+    rgp: u64,
+) -> BridgeResult<TransactionData> {
+    let (bridge_action, sigs) = action.into_inner().into_data_and_sig();
+
+    let mut builder = ProgrammableTransactionBuilder::new();
+
+    let (source_chain, seq_num, new_chain_id) = match bridge_action {
+        BridgeAction::ChainIdUpdateAction(a) => (a.chain_id, a.nonce, a.new_chain_id),
+        _ => unreachable!(),
+    };
+
+    // Unwrap: these should not fail
+    let source_chain = builder.pure(source_chain as u8).unwrap();
+    let seq_num = builder.pure(seq_num).unwrap();
+    let new_chain_id = builder.pure(new_chain_id as u8).unwrap();
+    let arg_bridge = builder.obj(bridge_object_arg).unwrap();
+
+    let arg_msg = builder.programmable_move_call(
+        BRIDGE_PACKAGE_ID,
+        ident_str!("message").to_owned(),
+        ident_str!("create_update_chain_id_message").to_owned(),
+        vec![],
+        vec![source_chain, seq_num, new_chain_id],
+    );
+
+    let mut sig_bytes = vec![];
+    for (_, sig) in sigs.signatures {
+        sig_bytes.push(sig.as_bytes().to_vec());
+    }
+    let arg_signatures = builder.pure(sig_bytes.clone()).map_err(|e| {
+        BridgeError::BridgeSerializationError(format!(
+            "Failed to serialize signatures: {:?}. Err: {:?}",
+            sig_bytes, e
+        ))
+    })?;
+
+    builder.programmable_move_call(
+        BRIDGE_PACKAGE_ID,
+        ident_str!("bridge").to_owned(),
+        ident_str!("execute_system_message").to_owned(),
+        vec![],
+        vec![arg_bridge, arg_msg, arg_signatures],
+    );
+
+    let pt = builder.finish();
+
+    Ok(TransactionData::new_programmable(
+        client_address,
+        vec![*gas_object_ref],
+        pt,
+        15_000_000,
         rgp,
     ))
 }
@@ -1080,6 +1147,69 @@ mod tests {
                 assert_eq!(price, 69_000 * USD_MULTIPLIER);
             } else {
                 assert_eq!(price, *notional_values.get(&token_id).unwrap());
+            }
+        }
+    }
+
+    #[tokio::test(flavor = "multi_thread", worker_threads = 8)]
+    async fn test_build_haneul_transaction_for_chain_id_update() {
+        telemetry_subscribers::init_for_testing();
+        let mut bridge_keys = vec![];
+        for _ in 0..=3 {
+            let (_, kp): (_, BridgeAuthorityKeyPair) = get_key_pair();
+            bridge_keys.push(kp);
+        }
+        let mut test_cluster = TestClusterWrapperBuilder::new()
+            .with_bridge_authority_keys(bridge_keys)
+            .with_deploy_tokens(true)
+            .build()
+            .await;
+        let metrics = Arc::new(BridgeMetrics::new_for_testing());
+        let haneul_client = HaneulClient::new(&test_cluster.inner.fullnode_handle.rpc_url, metrics)
+            .await
+            .unwrap();
+        let bridge_authority_keys = test_cluster.authority_keys_clone();
+
+        test_cluster
+            .trigger_reconfiguration_if_not_yet_and_assert_bridge_committee_initialized()
+            .await;
+        let summary = haneul_client.get_bridge_summary().await.unwrap();
+        assert_eq!(summary.chain_id, BridgeChainId::HaneulCustom as u8);
+        let nonces_before = summary.sequence_nums.clone();
+
+        let context = &mut test_cluster.inner.wallet;
+        let bridge_object_arg = haneul_client
+            .get_mutable_bridge_object_arg_must_succeed()
+            .await;
+        let id_token_map = haneul_client.get_token_id_map().await.unwrap();
+
+        let action = BridgeAction::ChainIdUpdateAction(ChainIdUpdateAction {
+            nonce: 0,
+            chain_id: BridgeChainId::HaneulCustom,
+            new_chain_id: BridgeChainId::HaneulMainnet,
+        });
+        // `approve_action_with_validator_secrets` covers transaction building
+        approve_action_with_validator_secrets(
+            context,
+            bridge_object_arg,
+            action.clone(),
+            &bridge_authority_keys,
+            None,
+            &id_token_map,
+        )
+        .await;
+
+        let summary = haneul_client.get_bridge_summary().await.unwrap();
+        assert_eq!(summary.chain_id, BridgeChainId::HaneulMainnet as u8);
+        // only the UpdateChainId nonce advanced; every other message type kept its sequence number
+        let nonces_after: HashMap<u8, u64> = summary.sequence_nums.iter().copied().collect();
+        assert_eq!(
+            nonces_after.get(&(BridgeActionType::UpdateChainId as u8)),
+            Some(&1)
+        );
+        for (msg_type, nonce) in nonces_before {
+            if msg_type != BridgeActionType::UpdateChainId as u8 {
+                assert_eq!(nonces_after.get(&msg_type), Some(&nonce));
             }
         }
     }

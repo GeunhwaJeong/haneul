@@ -729,6 +729,15 @@ if (!BridgeUtilsV2.isMatureMessage(timestampSeconds, block.timestamp)) {
 
 - Rolling back to the baseline flow requires dropping the V2 message types from the WAL and sticking to the original endpoints. Keep this section handy if you need to compare behaviors across commits or audit limiter-bypass allowances.
 
+## UpdateChainId Governance Message (message type 8)
+
+The bridge object records its own chain id (`BridgeInner.chain_id`) at genesis. The `UpdateChainId` governance message lets the committee move that id to another Haneul chain id without touching anything else in the object: sequence numbers, transfer records, the committee, the treasury and the limiter are all kept.
+
+- Move: `message::create_update_chain_id_message(source_chain, seq_num, new_chain_id)`, executed through `bridge::execute_system_message`. Payload is a single byte, the new id. Rejected with `EInvalidChainId` if the target is not a Haneul id or equals the current id. Emits `ChainIdUpdatedEvent { old_chain_id, new_chain_id }`.
+- Rust: `BridgeAction::ChainIdUpdateAction { nonce, chain_id, new_chain_id }` (`BridgeActionType::UpdateChainId = 8`), signed via `/sign/update_chain_id/{chain_id}/{nonce}/{new_chain_id}` with the usual 50.01% governance threshold. `haneul-bridge-cli governance --chain-id <current> update-chain-id --nonce <n> --new-chain-id <target>` collects the signatures and submits the transaction.
+- `chain_id` in the action is the id the bridge has *before* the update (the message's source chain must match `BridgeInner.chain_id`). Every message signed afterwards, governance and token transfers alike, must carry the new id, and bridge nodes must be restarted with `haneul-bridge-chain-id` set to it. Stop the nodes before executing the update: a node configured with the old id refuses to start against the updated object.
+- The message is Haneul-only; it is never relayed to the EVM contracts. Pair it with an EVM deployment whose `supportedChainIds` contains the new id.
+
 ## ⚠️ Critical: Legacy Proxy vs Current Storage Layout
 
 **The legacy Haneul EVM bridge proxy on Ethereum mainnet was deployed without the `__gap` storage array in `CommitteeUpgradeable.sol`.** The current codebase includes the gap (matching the upstream mainnet layout), so implementations built from it are **not** layout-compatible with the legacy proxy.

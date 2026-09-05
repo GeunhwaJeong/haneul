@@ -4627,6 +4627,9 @@ TokenDepositedEvent
 TokenDepositedEventV2
 	public struct
 	0xb::bridge
+ChainIdUpdatedEvent
+	public struct
+	0xb::bridge
 EmergencyOpEvent
 	public struct
 	0xb::bridge
@@ -4708,6 +4711,9 @@ execute_update_bridge_limit
 execute_update_asset_price
 	fun
 	0xb::bridge
+execute_update_chain_id
+	fun
+	0xb::bridge
 execute_add_tokens_on_haneul
 	fun
 	0xb::bridge
@@ -4742,6 +4748,9 @@ route_source
 	public fun
 	0xb::chain_ids
 route_destination
+	public fun
+	0xb::chain_ids
+is_haneul_chain
 	public fun
 	0xb::chain_ids
 assert_valid_chain_id
@@ -4855,6 +4864,9 @@ UpdateBridgeLimit
 UpdateAssetPrice
 	public struct
 	0xb::message
+UpdateChainId
+	public struct
+	0xb::message
 AddTokenOnHaneul
 	public struct
 	0xb::message
@@ -4882,6 +4894,9 @@ extract_update_bridge_limit
 extract_update_asset_price
 	public fun
 	0xb::message
+extract_update_chain_id
+	public fun
+	0xb::message
 extract_add_tokens_on_haneul
 	public fun
 	0xb::message
@@ -4904,6 +4919,9 @@ create_update_bridge_limit_message
 	public fun
 	0xb::message
 create_update_asset_price_message
+	public fun
+	0xb::message
+create_update_chain_id_message
 	public fun
 	0xb::message
 create_add_tokens_on_haneul_message
@@ -4969,6 +4987,9 @@ update_asset_price_payload_token_id
 update_asset_price_payload_new_price
 	public fun
 	0xb::message
+update_chain_id_payload_new_chain_id
+	public fun
+	0xb::message
 is_native
 	public fun
 	0xb::message
@@ -5018,6 +5039,9 @@ update_asset_price
 	public fun
 	0xb::message_types
 add_tokens_on_haneul
+	public fun
+	0xb::message_types
+update_chain_id
 	public fun
 	0xb::message_types
 BridgeTreasury

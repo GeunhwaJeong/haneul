@@ -113,6 +113,12 @@ impl BridgeClient {
                 let new_usd_price = a.new_usd_price.to_string();
                 format!("sign/update_asset_price/{chain_id}/{nonce}/{token_id}/{new_usd_price}")
             }
+            BridgeAction::ChainIdUpdateAction(a) => {
+                let chain_id = (a.chain_id as u8).to_string();
+                let nonce = a.nonce.to_string();
+                let new_chain_id = (a.new_chain_id as u8).to_string();
+                format!("sign/update_chain_id/{chain_id}/{nonce}/{new_chain_id}")
+            }
             BridgeAction::EvmContractUpgradeAction(a) => {
                 let chain_id = (a.chain_id as u8).to_string();
                 let nonce = a.nonce.to_string();

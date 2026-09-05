@@ -13,6 +13,8 @@ use bridge::bridge::{
     new_for_testing,
     test_get_current_seq_num_and_increment,
     test_execute_update_asset_price,
+    test_execute_update_chain_id,
+    inner_chain_id,
     test_get_token_transfer_action_signatures,
     test_load_inner,
     test_load_inner_mut,
@@ -481,6 +483,87 @@ fun test_update_asset_price() {
 
     destroy(bridge);
     env.destroy_env();
+}
+
+#[test]
+fun test_update_chain_id() {
+    let mut env = create_env(chain_ids::haneul_custom());
+    env.create_bridge_default();
+
+    env.update_chain_id(@0x0, chain_ids::haneul_mainnet());
+
+    // governance keeps working with the new source chain id and its own nonce stream
+    env.update_asset_price(@0x0, btc_id(), 1_001_000_000);
+    let scenario = env.scenario();
+    scenario.next_tx(@0x0);
+    let bridge = scenario.take_shared<Bridge>();
+    let inner = bridge.test_load_inner();
+    assert!(inner.inner_chain_id() == chain_ids::haneul_mainnet());
+    assert!(inner.inner_treasury().notional_value<BTC>() == 1_001_000_000);
+    assert!(*inner.sequence_nums().get(&message_types::update_chain_id()) == 1);
+    test_scenario::return_shared(bridge);
+
+    env.destroy_env();
+}
+
+#[test, expected_failure(abort_code = bridge::bridge::EUnexpectedChainID)]
+fun test_update_chain_id_rejects_messages_for_old_id() {
+    let mut env = create_env(chain_ids::haneul_custom());
+    env.create_bridge_default();
+    env.update_chain_id(@0x0, chain_ids::haneul_mainnet());
+
+    // a message still signed for the old chain id is no longer accepted
+    let scenario = env.scenario();
+    scenario.next_tx(@0x0);
+    let mut bridge = scenario.take_shared<Bridge>();
+    let message = message::create_update_asset_price_message(
+        btc_id(),
+        chain_ids::haneul_custom(),
+        bridge.get_seq_num_for(message_types::update_asset_price()),
+        1_001_000_000,
+    );
+    let signatures = env.sign_message(message);
+    bridge.execute_system_message(message, signatures);
+
+    abort TEST_DONE
+}
+
+#[test, expected_failure(abort_code = bridge::bridge::EInvalidChainId)]
+fun test_update_chain_id_rejects_eth_id() {
+    let mut env = create_env(chain_ids::haneul_custom());
+    env.create_bridge_default();
+    let scenario = env.scenario();
+    scenario.next_tx(@0x0);
+    let mut bridge = scenario.take_shared<Bridge>();
+    let inner = bridge.test_load_inner_mut();
+
+    let msg = message::create_update_chain_id_message(
+        chain_ids::haneul_custom(),
+        0,
+        chain_ids::eth_mainnet(),
+    );
+    inner.test_execute_update_chain_id(msg.extract_update_chain_id());
+
+    abort TEST_DONE
+}
+
+#[test, expected_failure(abort_code = bridge::bridge::EInvalidChainId)]
+fun test_update_chain_id_rejects_same_id() {
+    let mut env = create_env(chain_ids::haneul_custom());
+    env.create_bridge_default();
+    let scenario = env.scenario();
+    scenario.next_tx(@0x0);
+    let mut bridge = scenario.take_shared<Bridge>();
+    let inner = bridge.test_load_inner_mut();
+
+    let msg = message::create_update_chain_id_message(
+        chain_ids::haneul_custom(),
+        0,
+        chain_ids::haneul_custom(),
+    );
+    inner.test_execute_update_chain_id(msg.extract_update_chain_id());
+
+    abort TEST_DONE
 }
 
 #[test, expected_failure(abort_code = bridge::treasury::EInvalidNotionalValue)]

@@ -9,8 +9,8 @@ use crate::metrics::BridgeMetrics;
 use crate::server::handler::BridgeRequestHandlerTrait;
 use crate::types::{
     AddTokensOnEvmAction, AddTokensOnHaneulAction, AssetPriceUpdateAction,
-    BlocklistCommitteeAction, BlocklistType, BridgeAction, EmergencyAction, EmergencyActionType,
-    EvmContractUpgradeAction, LimitUpdateAction, SignedBridgeAction,
+    BlocklistCommitteeAction, BlocklistType, BridgeAction, ChainIdUpdateAction, EmergencyAction,
+    EmergencyActionType, EvmContractUpgradeAction, LimitUpdateAction, SignedBridgeAction,
 };
 use crate::with_metrics;
 use alloy::primitives::Address as EthAddress;
@@ -61,6 +61,7 @@ pub const LIMIT_UPDATE_PATH: &str =
     "/sign/update_limit/{chain_id}/{nonce}/{sending_chain_id}/{new_usd_limit}";
 pub const ASSET_PRICE_UPDATE_PATH: &str =
     "/sign/update_asset_price/{chain_id}/{nonce}/{token_id}/{new_usd_price}";
+pub const CHAIN_ID_UPDATE_PATH: &str = "/sign/update_chain_id/{chain_id}/{nonce}/{new_chain_id}";
 pub const EVM_CONTRACT_UPGRADE_PATH_WITH_CALLDATA: &str =
     "/sign/upgrade_evm_contract/{chain_id}/{nonce}/{proxy_address}/{new_impl_address}/{calldata}";
 pub const EVM_CONTRACT_UPGRADE_PATH: &str =
@@ -131,6 +132,7 @@ pub(crate) fn make_router(
         )
         .route(EMERGENCY_BUTTON_PATH, get(handle_emergency_action))
         .route(LIMIT_UPDATE_PATH, get(handle_limit_update_action))
+        .route(CHAIN_ID_UPDATE_PATH, get(handle_chain_id_update_action))
         .route(
             ASSET_PRICE_UPDATE_PATH,
             get(handle_asset_price_update_action),
@@ -439,6 +441,38 @@ async fn handle_asset_price_update_action(
         Ok(sig)
     };
     with_metrics!(metrics.clone(), "handle_asset_price_update_action", future).await
+}
+
+#[instrument(level = "error", skip_all, fields(chain_id=chain_id, nonce=nonce, new_chain_id=new_chain_id))]
+async fn handle_chain_id_update_action(
+    Path((chain_id, nonce, new_chain_id)): Path<(u8, u64, u8)>,
+    State((handler, metrics, _metadata)): State<(
+        Arc<impl BridgeRequestHandlerTrait + Sync + Send>,
+        Arc<BridgeMetrics>,
+        Arc<BridgeNodePublicMetadata>,
+    )>,
+) -> Result<Json<SignedBridgeAction>, BridgeError> {
+    let future = async {
+        let chain_id = BridgeChainId::try_from(chain_id).map_err(|err| {
+            BridgeError::InvalidBridgeClientRequest(format!("Invalid chain id: {:?}", err))
+        })?;
+        let new_chain_id = BridgeChainId::try_from(new_chain_id).map_err(|err| {
+            BridgeError::InvalidBridgeClientRequest(format!("Invalid new chain id: {:?}", err))
+        })?;
+        if !chain_id.is_haneul_chain() || !new_chain_id.is_haneul_chain() {
+            return Err(BridgeError::InvalidBridgeClientRequest(
+                "Chain id update only applies to Haneul chain ids".to_string(),
+            ));
+        }
+        let action = BridgeAction::ChainIdUpdateAction(ChainIdUpdateAction {
+            chain_id,
+            nonce,
+            new_chain_id,
+        });
+        let sig: Json<SignedBridgeAction> = handler.handle_governance_action(action).await?;
+        Ok(sig)
+    };
+    with_metrics!(metrics.clone(), "handle_chain_id_update_action", future).await
 }
 
 #[instrument(level = "error", skip_all, fields(chain_id=chain_id, nonce=nonce, proxy_address=format!("{:x}", proxy_address), new_impl_address=format!("{:x}", new_impl_address)))]

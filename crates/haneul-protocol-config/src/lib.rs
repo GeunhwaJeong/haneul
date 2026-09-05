@@ -30,7 +30,7 @@ use tracing::{info, warn};
 
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
-const MAX_PROTOCOL_VERSION: u64 = 124;
+const MAX_PROTOCOL_VERSION: u64 = 125;
 
 const TESTNET_USDC: &str =
     "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC";
@@ -360,6 +360,8 @@ const MAINNET_USDB: &str =
 //              Disable defer_unpaid_amplification on mainnet.
 // Version 124: Apply the v123 config changes on mainnet.
 //              Disable defer_unpaid_amplification everywhere.
+// Version 125: Bridge framework upgrade: add the UpdateChainId governance
+//              message so the bridge object can move to its canonical chain id.
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -4613,6 +4615,10 @@ impl ProtocolConfig {
                     cfg.consensus_max_num_transactions_in_block = Some(128);
 
                     cfg.feature_flags.defer_unpaid_amplification = false;
+                }
+                125 => {
+                    // Framework-only release: the bridge package gains the UpdateChainId
+                    // governance message (message type 8). No config values change.
                 }
                 // Use this template when making changes:
                 //

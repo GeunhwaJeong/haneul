@@ -8,6 +8,7 @@ title: Module `bridge::bridge`
 -  [Struct `BridgeInner`](#bridge_bridge_BridgeInner)
 -  [Struct `TokenDepositedEvent`](#bridge_bridge_TokenDepositedEvent)
 -  [Struct `TokenDepositedEventV2`](#bridge_bridge_TokenDepositedEventV2)
+-  [Struct `ChainIdUpdatedEvent`](#bridge_bridge_ChainIdUpdatedEvent)
 -  [Struct `EmergencyOpEvent`](#bridge_bridge_EmergencyOpEvent)
 -  [Struct `BridgeRecord`](#bridge_bridge_BridgeRecord)
 -  [Struct `TokenTransferApproved`](#bridge_bridge_TokenTransferApproved)
@@ -36,6 +37,7 @@ title: Module `bridge::bridge`
 -  [Function `execute_emergency_op`](#bridge_bridge_execute_emergency_op)
 -  [Function `execute_update_bridge_limit`](#bridge_bridge_execute_update_bridge_limit)
 -  [Function `execute_update_asset_price`](#bridge_bridge_execute_update_asset_price)
+-  [Function `execute_update_chain_id`](#bridge_bridge_execute_update_chain_id)
 -  [Function `execute_add_tokens_on_haneul`](#bridge_bridge_execute_add_tokens_on_haneul)
 -  [Function `get_current_seq_num_and_increment`](#bridge_bridge_get_current_seq_num_and_increment)
 -  [Function `get_parsed_token_transfer_message`](#bridge_bridge_get_parsed_token_transfer_message)
@@ -312,6 +314,37 @@ title: Module `bridge::bridge`
 </dd>
 <dt>
 <code>timestamp_ms: u64</code>
+</dt>
+<dd>
+</dd>
+</dl>
+
+
+</details>
+
+<a name="bridge_bridge_ChainIdUpdatedEvent"></a>
+
+## Struct `ChainIdUpdatedEvent`
+
+
+
+<pre><code><b>public</b> <b>struct</b> <a href="../bridge/bridge.md#bridge_bridge_ChainIdUpdatedEvent">ChainIdUpdatedEvent</a> <b>has</b> <b>copy</b>, drop
+</code></pre>
+
+
+
+<details>
+<summary>Fields</summary>
+
+
+<dl>
+<dt>
+<code>old_chain_id: u8</code>
+</dt>
+<dd>
+</dd>
+<dt>
+<code>new_chain_id: u8</code>
 </dt>
 <dd>
 </dd>
@@ -747,6 +780,15 @@ title: Module `bridge::bridge`
 
 
 <pre><code><b>const</b> <a href="../bridge/bridge.md#bridge_bridge_ETokenValueIsZero">ETokenValueIsZero</a>: u64 = 19;
+</code></pre>
+
+
+
+<a name="bridge_bridge_EInvalidChainId"></a>
+
+
+
+<pre><code><b>const</b> <a href="../bridge/bridge.md#bridge_bridge_EInvalidChainId">EInvalidChainId</a>: u64 = 20;
 </code></pre>
 
 
@@ -1238,6 +1280,9 @@ title: Module `bridge::bridge`
     } <b>else</b> <b>if</b> (message_type == <a href="../bridge/message_types.md#bridge_message_types_add_tokens_on_haneul">message_types::add_tokens_on_haneul</a>()) {
         <b>let</b> payload = <a href="../bridge/message.md#bridge_message">message</a>.extract_add_tokens_on_haneul();
         inner.<a href="../bridge/bridge.md#bridge_bridge_execute_add_tokens_on_haneul">execute_add_tokens_on_haneul</a>(payload);
+    } <b>else</b> <b>if</b> (message_type == <a href="../bridge/message_types.md#bridge_message_types_update_chain_id">message_types::update_chain_id</a>()) {
+        <b>let</b> payload = <a href="../bridge/message.md#bridge_message">message</a>.extract_update_chain_id();
+        inner.<a href="../bridge/bridge.md#bridge_bridge_execute_update_chain_id">execute_update_chain_id</a>(payload);
     } <b>else</b> {
         <b>abort</b> <a href="../bridge/bridge.md#bridge_bridge_EUnexpectedMessageType">EUnexpectedMessageType</a>
     };
@@ -1613,6 +1658,35 @@ title: Module `bridge::bridge`
             payload.update_asset_price_payload_token_id(),
             payload.update_asset_price_payload_new_price(),
         )
+}
+</code></pre>
+
+
+
+</details>
+
+<a name="bridge_bridge_execute_update_chain_id"></a>
+
+## Function `execute_update_chain_id`
+
+
+
+<pre><code><b>fun</b> <a href="../bridge/bridge.md#bridge_bridge_execute_update_chain_id">execute_update_chain_id</a>(inner: &<b>mut</b> <a href="../bridge/bridge.md#bridge_bridge_BridgeInner">bridge::bridge::BridgeInner</a>, payload: <a href="../bridge/message.md#bridge_message_UpdateChainId">bridge::message::UpdateChainId</a>)
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>fun</b> <a href="../bridge/bridge.md#bridge_bridge_execute_update_chain_id">execute_update_chain_id</a>(inner: &<b>mut</b> <a href="../bridge/bridge.md#bridge_bridge_BridgeInner">BridgeInner</a>, payload: UpdateChainId) {
+    <b>let</b> new_chain_id = payload.update_chain_id_payload_new_chain_id();
+    <b>assert</b>!(<a href="../bridge/chain_ids.md#bridge_chain_ids_is_haneul_chain">chain_ids::is_haneul_chain</a>(new_chain_id), <a href="../bridge/bridge.md#bridge_bridge_EInvalidChainId">EInvalidChainId</a>);
+    <b>assert</b>!(new_chain_id != inner.chain_id, <a href="../bridge/bridge.md#bridge_bridge_EInvalidChainId">EInvalidChainId</a>);
+    <b>let</b> old_chain_id = inner.chain_id;
+    inner.chain_id = new_chain_id;
+    event::emit(<a href="../bridge/bridge.md#bridge_bridge_ChainIdUpdatedEvent">ChainIdUpdatedEvent</a> { old_chain_id, new_chain_id });
 }
 </code></pre>
 
