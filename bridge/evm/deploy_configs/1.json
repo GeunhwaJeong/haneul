@@ -2,8 +2,8 @@
     "committeeMemberStake": [10000],
     "committeeMembers": ["0x3a2da75b23968b4eae2afe481e4b9e498e416b1e"],
     "minCommitteeStakeRequired": 3334,
-    "sourceChainId": 12,
-    "supportedChainIds": [2],
+    "sourceChainId": 10,
+    "supportedChainIds": [0],
     "supportedChainLimitsInDollars": [5000000],
     "tokenIds": [2, 3],
     "supportedTokens": [

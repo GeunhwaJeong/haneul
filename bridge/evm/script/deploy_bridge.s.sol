@@ -203,8 +203,16 @@ contract DeployBridge is Script {
 
         // deploy Haneul Bridge ========================================================================
 
+        // The implementation behind the HaneulBridge proxy. Defaults to the V1 contract
+        // (which the e2e tests upgrade to V2 afterwards); production deployments set
+        // BRIDGE_IMPLEMENTATION=HaneulBridgeV2.sol to start on V2 directly. V2 adds no
+        // storage and reuses HaneulBridge.initialize, so the same initializer applies.
+        string memory bridgeImplementation =
+            vm.envOr("BRIDGE_IMPLEMENTATION", string("HaneulBridge.sol"));
+        console.log("HaneulBridge implementation:", bridgeImplementation);
+
         address haneulBridge = Upgrades.deployUUPSProxy(
-            "HaneulBridge.sol",
+            bridgeImplementation,
             abi.encodeCall(HaneulBridge.initialize, (bridgeCommittee, address(vault), limiter)),
             opts
         );
