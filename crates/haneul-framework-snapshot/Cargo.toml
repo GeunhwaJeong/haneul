@@ -2,7 +2,7 @@
 name = "haneul-framework-snapshot"
 version.workspace = true
 edition = "2024"
-authors = ["Haneul Labs <eng@haneul-labs.com>"]
+authors.workspace = true
 description = "Tool to create a bytecode snapshot of the current haneul-framework"
 license = "Apache-2.0"
 publish = false

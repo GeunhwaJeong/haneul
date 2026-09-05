@@ -2,9 +2,9 @@
 name = "telemetry-subscribers"
 version = "0.2.0"
 license = "Apache-2.0"
-authors = ["Evan Chan <echan@haneul-labs.com>"]
+authors.workspace = true
 description = "Library for common telemetry and observability functionality"
-repository = "https://github.com/GeunhwaJeong/haneullabs-infra"
+repository.workspace = true
 edition = "2024"
 publish = false
 

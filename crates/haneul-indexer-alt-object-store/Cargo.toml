@@ -1,5 +1,6 @@
 [package]
 name = "haneul-indexer-alt-object-store"
+authors.workspace = true
 edition = "2024"
 version.workspace = true
 license = "Apache-2.0"

@@ -2,9 +2,9 @@
 name = "typed-store"
 version = "0.4.0"
 license = "Apache-2.0"
-authors = ["Francois Garillot <francois@haneul-labs.com>"]
+authors.workspace = true
 description = "a typed database interface"
-repository = "https://github.com/GeunhwaJeong/haneullabs-infra"
+repository.workspace = true
 edition = "2024"
 publish = false
 
