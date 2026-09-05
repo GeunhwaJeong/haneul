@@ -21,6 +21,18 @@ abstract contract CommitteeUpgradeable is
 
     bool private _upgradeAuthorized;
 
+    // Reserved storage gap so future revisions of this base contract can add state
+    // without shifting the storage layout of inheriting contracts (vault, limiter, ...).
+    //
+    // Layout note for Haneul deployments: the legacy HaneulBridge proxy
+    // 0xBbc09582E1251e40643B234e9A06bCA8dd517Fb5 (Ethereum mainnet, 2026-03-25) was
+    // deployed from a build WITHOUT this gap, so its vault/limiter live at slots 4/5.
+    // Implementations built from this file place them at slots 54/55 and must never be
+    // installed on that proxy. Every proxy deployed from this codebase from now on
+    // includes the gap and matches the upstream mainnet layout. Before any upgrade,
+    // verify the target proxy with `cast storage <proxy> 54` (non-zero => has gap).
+    uint256[50] private __gap;
+
     /* ========== INITIALIZER ========== */
 
     /// @custom:oz-upgrades-unsafe-allow constructor

@@ -729,55 +729,57 @@ if (!BridgeUtilsV2.isMatureMessage(timestampSeconds, block.timestamp)) {
 
 - Rolling back to the baseline flow requires dropping the V2 message types from the WAL and sticking to the original endpoints. Keep this section handy if you need to compare behaviors across commits or audit limiter-bypass allowances.
 
-## ⚠️ Critical: Mainnet vs Testnet Storage Layout Difference
+## ⚠️ Critical: Legacy Proxy vs Current Storage Layout
 
-**The EVM HaneulBridge proxy has different storage layouts between mainnet and testnet (Sepolia).** This is because a `__gap` storage array was added to `CommitteeUpgradeable.sol` between the testnet and mainnet deployments.
+**The legacy Haneul EVM bridge proxy on Ethereum mainnet was deployed without the `__gap` storage array in `CommitteeUpgradeable.sol`.** The current codebase includes the gap (matching the upstream mainnet layout), so implementations built from it are **not** layout-compatible with the legacy proxy.
 
 ### Storage Layout Comparison
 
-| Variable | Testnet (Sepolia) Slot | Mainnet Slot | Difference |
-|----------|------------------------|--------------|------------|
+| Variable | Legacy proxy slot (no gap) | Current codebase slot (with gap) | Difference |
+|----------|----------------------------|----------------------------------|------------|
 | `committee` | 0 | 0 | Same |
 | `nonces` | 1 | 1 | Same |
 | `_upgradeAuthorized` | 2 | 2 | Same |
-| `__gap[50]` | **N/A** | 3–52 | **Missing on testnet** |
+| `__gap[50]` | **N/A** | 3–52 | **Missing on legacy proxy** |
 | `isTransferProcessed` | 3 | 53 | +50 offset |
 | `vault` | **4** | **54** | +50 offset |
 | `limiter` | **5** | **55** | +50 offset |
 
 ### Proxy Addresses
 
-| Network | HaneulBridge Proxy | vault slot | limiter slot |
-|---------|-----------------|------------|--------------|
-| **Mainnet** | `0xda3bD1fE1973470312db04551B65f401Bc8a92fD` | 54 | 55 |
-| **Sepolia Testnet** | `0xAE68F87938439afEEDd6552B0E83D2CbC2473623` | 4 | 5 |
+| Deployment | HaneulBridge Proxy | vault slot | limiter slot |
+|------------|--------------------|------------|--------------|
+| **Legacy (Ethereum mainnet, 2026-03-25)** | `0xBbc09582E1251e40643B234e9A06bCA8dd517Fb5` | 4 | 5 |
+| **Any proxy deployed from this codebase** | see `bridge/evm/deploy_configs/` and the operations notes | 54 | 55 |
+
+Verified on-chain (2026-09-05): `eth_getStorageAt(0xBbc0…, 4)` returns the BridgeVault address, slot 54 is zero.
 
 ### Implications for Upgrades
 
-1. **Mainnet upgrades**: The current codebase (with `__gap` in `CommitteeUpgradeable.sol`) is correct for mainnet. Do NOT remove the `__gap`.
+1. **New deployments**: The current codebase (with `__gap`) is what every fresh deployment uses. Do NOT remove the `__gap`; it keeps the layout aligned with upstream so future upstream implementation upgrades apply as-is.
 
-2. **Testnet upgrades**: The `__gap` must be removed from `CommitteeUpgradeable.sol` before deploying any implementation upgrade, or the new implementation will read `vault` and `limiter` from the wrong storage slots (returning `0x0`).
+2. **Legacy proxy**: Never install an implementation built from this codebase on `0xBbc0…`. It would read `vault` and `limiter` from slots 54/55 and get `0x0`, exactly the failure mode upstream hit on its testnet. If an upgrade of the legacy proxy is ever required, remove the `__gap` on a throwaway branch, build, verify slot 4, and discard the branch afterwards. The legacy proxy is scheduled to be paused and abandoned after the redeployment.
 
 3. **Verification before ANY upgrade**: Always verify the target proxy's storage layout by querying slots directly:
    ```bash
-   # Check vault slot (should contain a non-zero address)
-   cast storage <PROXY_ADDRESS> 4 --rpc-url <RPC>   # testnet
-   cast storage <PROXY_ADDRESS> 54 --rpc-url <RPC>  # mainnet
+   # vault slot must contain a non-zero address
+   cast storage <PROXY_ADDRESS> 4 --rpc-url <RPC>   # legacy layout (no gap)
+   cast storage <PROXY_ADDRESS> 54 --rpc-url <RPC>  # current layout (with gap)
    ```
 
 ### Historical Context
 
-The `__gap` array (50 `uint256` slots reserved for future upgrades) was added to `CommitteeUpgradeable.sol` after the Sepolia testnet deployment but before the mainnet deployment. This is a standard OpenZeppelin pattern for upgradeable contracts, but the timing created this permanent storage layout divergence.
+Upstream added the 50-slot `__gap` to `CommitteeUpgradeable.sol` between its testnet and mainnet deployments. The Haneul deployment of March 2026 was built without the gap, and the repository was kept gap-less afterwards so the code matched the live proxy. The gap was restored in September 2026 ahead of the full redeployment (chain ids 0/10), which starts from a clean proxy and therefore adopts the upstream mainnet layout permanently.
 
 ### Code Reference
 
 The `__gap` in `CommitteeUpgradeable.sol`:
 ```solidity
 bool private _upgradeAuthorized;
-uint256[50] private __gap;  // Present on mainnet, absent on original testnet deployment
+uint256[50] private __gap;  // present in the current codebase, absent on the legacy proxy
 ```
 
-**Bottom line:** When upgrading EVM contracts, always verify which network you're targeting and ensure the implementation's storage layout matches the deployed proxy's layout.
+**Bottom line:** When upgrading EVM contracts, always verify which proxy you are targeting and ensure the implementation's storage layout matches the deployed proxy's layout.
 
 ## Verification Checklist for Future Agents
 
