@@ -2,9 +2,9 @@
 name = "typed-store-derive"
 version = "0.3.0"
 license = "Apache-2.0"
-authors = ["Ade A. <ade@haneul-labs.com>"]
+authors.workspace = true
 description = "macros for the typed-store crate"
-repository = "https://github.com/GeunhwaJeong/haneullabs-infra"
+repository.workspace = true
 edition = "2024"
 publish = false
 

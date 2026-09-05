@@ -2,7 +2,7 @@
 name = "haneul-faucet"
 version.workspace = true
 edition = "2024"
-authors = ["Haneul Labs <build@haneul-labs.com>"]
+authors.workspace = true
 license = "Apache-2.0"
 publish = false
 

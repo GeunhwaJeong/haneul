@@ -2,7 +2,7 @@
 name = "haneul-move-build"
 version.workspace = true
 edition = "2024"
-authors = ["Haneul Labs <eng@haneul-labs.com>"]
+authors.workspace = true
 description = "Logic for building Haneul Move Packages"
 license = "Apache-2.0"
 publish = false

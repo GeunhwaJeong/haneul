@@ -1,5 +1,6 @@
 [package]
 name = "haneul-single-node-benchmark"
+authors.workspace = true
 version.workspace = true
 edition = "2024"
 publish = false

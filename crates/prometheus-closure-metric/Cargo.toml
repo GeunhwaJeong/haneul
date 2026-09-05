@@ -1,8 +1,8 @@
 [package]
 name = "prometheus-closure-metric"
 version = "0.1.0"
-authors = ["Andrew Schran <aschran@haneul-labs.com>"]
-repository = "https://github.com/GeunhwaJeong/haneullabs-infra"
+authors.workspace = true
+repository.workspace = true
 description = "Library for a Prometheus metric that computes its value by given closure at collection time"
 license = "Apache-2.0"
 edition = "2024"

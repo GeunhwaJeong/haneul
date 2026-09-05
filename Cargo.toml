@@ -231,6 +231,8 @@ members = [
 [workspace.package]
 # This version string will be inherited by haneul-core, haneul-faucet, haneul-node, haneul-tools, haneul-sdk, haneul-move-build, and haneul crates.
 version = "1.9.0"
+authors = ["Geunhwa Jeong <jeonggh892@gmail.com>"]
+repository = "https://github.com/GeunhwaJeong/haneul"
 
 [profile.release]
 # debug = 1 means line charts only, which is minimum needed for good stack traces

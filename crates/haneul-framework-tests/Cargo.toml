@@ -2,7 +2,7 @@
 name = "haneul-framework-tests"
 version = "0.1.0"
 edition = "2024"
-authors = ["Haneul Labs <eng@haneul-labs.com>"]
+authors.workspace = true
 description = "Runs Move tests for haneul-framework"
 license = "Apache-2.0"
 publish = false
