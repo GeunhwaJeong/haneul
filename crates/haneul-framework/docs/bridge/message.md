@@ -12,6 +12,7 @@ title: Module `bridge::message`
 -  [Struct `Blocklist`](#bridge_message_Blocklist)
 -  [Struct `UpdateBridgeLimit`](#bridge_message_UpdateBridgeLimit)
 -  [Struct `UpdateAssetPrice`](#bridge_message_UpdateAssetPrice)
+-  [Struct `UpdateChainId`](#bridge_message_UpdateChainId)
 -  [Struct `AddTokenOnHaneul`](#bridge_message_AddTokenOnHaneul)
 -  [Struct `ParsedTokenTransferMessage`](#bridge_message_ParsedTokenTransferMessage)
 -  [Constants](#@Constants_0)
@@ -22,6 +23,7 @@ title: Module `bridge::message`
 -  [Function `extract_blocklist_payload`](#bridge_message_extract_blocklist_payload)
 -  [Function `extract_update_bridge_limit`](#bridge_message_extract_update_bridge_limit)
 -  [Function `extract_update_asset_price`](#bridge_message_extract_update_asset_price)
+-  [Function `extract_update_chain_id`](#bridge_message_extract_update_chain_id)
 -  [Function `extract_add_tokens_on_haneul`](#bridge_message_extract_add_tokens_on_haneul)
 -  [Function `serialize_message`](#bridge_message_serialize_message)
 -  [Function `create_token_bridge_message`](#bridge_message_create_token_bridge_message)
@@ -30,6 +32,7 @@ title: Module `bridge::message`
 -  [Function `create_blocklist_message`](#bridge_message_create_blocklist_message)
 -  [Function `create_update_bridge_limit_message`](#bridge_message_create_update_bridge_limit_message)
 -  [Function `create_update_asset_price_message`](#bridge_message_create_update_asset_price_message)
+-  [Function `create_update_chain_id_message`](#bridge_message_create_update_chain_id_message)
 -  [Function `create_add_tokens_on_haneul_message`](#bridge_message_create_add_tokens_on_haneul_message)
 -  [Function `create_key`](#bridge_message_create_key)
 -  [Function `key`](#bridge_message_key)
@@ -51,6 +54,7 @@ title: Module `bridge::message`
 -  [Function `update_bridge_limit_payload_limit`](#bridge_message_update_bridge_limit_payload_limit)
 -  [Function `update_asset_price_payload_token_id`](#bridge_message_update_asset_price_payload_token_id)
 -  [Function `update_asset_price_payload_new_price`](#bridge_message_update_asset_price_payload_new_price)
+-  [Function `update_chain_id_payload_new_chain_id`](#bridge_message_update_chain_id_payload_new_chain_id)
 -  [Function `is_native`](#bridge_message_is_native)
 -  [Function `token_ids`](#bridge_message_token_ids)
 -  [Function `token_type_names`](#bridge_message_token_type_names)
@@ -373,6 +377,32 @@ title: Module `bridge::message`
 </dd>
 <dt>
 <code>new_price: u64</code>
+</dt>
+<dd>
+</dd>
+</dl>
+
+
+</details>
+
+<a name="bridge_message_UpdateChainId"></a>
+
+## Struct `UpdateChainId`
+
+
+
+<pre><code><b>public</b> <b>struct</b> <a href="../bridge/message.md#bridge_message_UpdateChainId">UpdateChainId</a> <b>has</b> drop
+</code></pre>
+
+
+
+<details>
+<summary>Fields</summary>
+
+
+<dl>
+<dt>
+<code>new_chain_id: u8</code>
 </dt>
 <dd>
 </dd>
@@ -834,6 +864,33 @@ Emergency op payload is just a single byte
 
 </details>
 
+<a name="bridge_message_extract_update_chain_id"></a>
+
+## Function `extract_update_chain_id`
+
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/message.md#bridge_message_extract_update_chain_id">extract_update_chain_id</a>(<a href="../bridge/message.md#bridge_message">message</a>: &<a href="../bridge/message.md#bridge_message_BridgeMessage">bridge::message::BridgeMessage</a>): <a href="../bridge/message.md#bridge_message_UpdateChainId">bridge::message::UpdateChainId</a>
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/message.md#bridge_message_extract_update_chain_id">extract_update_chain_id</a>(<a href="../bridge/message.md#bridge_message">message</a>: &<a href="../bridge/message.md#bridge_message_BridgeMessage">BridgeMessage</a>): <a href="../bridge/message.md#bridge_message_UpdateChainId">UpdateChainId</a> {
+    <b>let</b> <b>mut</b> bcs = bcs::new(<a href="../bridge/message.md#bridge_message">message</a>.<a href="../bridge/message.md#bridge_message_payload">payload</a>);
+    <b>let</b> new_chain_id = bcs.peel_u8();
+    <b>assert</b>!(bcs.into_remainder_bytes().is_empty(), <a href="../bridge/message.md#bridge_message_ETrailingBytes">ETrailingBytes</a>);
+    <a href="../bridge/message.md#bridge_message_UpdateChainId">UpdateChainId</a> { new_chain_id }
+}
+</code></pre>
+
+
+
+</details>
+
 <a name="bridge_message_extract_add_tokens_on_haneul"></a>
 
 ## Function `extract_add_tokens_on_haneul`
@@ -1216,6 +1273,48 @@ Update asset price message
         <a href="../bridge/message.md#bridge_message_seq_num">seq_num</a>,
         <a href="../bridge/message.md#bridge_message_source_chain">source_chain</a>,
         <a href="../bridge/message.md#bridge_message_payload">payload</a>,
+    }
+}
+</code></pre>
+
+
+
+</details>
+
+<a name="bridge_message_create_update_chain_id_message"></a>
+
+## Function `create_update_chain_id_message`
+
+Update chain id message
+[message_type: u8]
+[version:u8]
+[nonce:u64]
+[chain_id: u8]
+[new_chain_id: u8]
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/message.md#bridge_message_create_update_chain_id_message">create_update_chain_id_message</a>(<a href="../bridge/message.md#bridge_message_source_chain">source_chain</a>: u8, <a href="../bridge/message.md#bridge_message_seq_num">seq_num</a>: u64, new_chain_id: u8): <a href="../bridge/message.md#bridge_message_BridgeMessage">bridge::message::BridgeMessage</a>
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/message.md#bridge_message_create_update_chain_id_message">create_update_chain_id_message</a>(
+    <a href="../bridge/message.md#bridge_message_source_chain">source_chain</a>: u8,
+    <a href="../bridge/message.md#bridge_message_seq_num">seq_num</a>: u64,
+    new_chain_id: u8,
+): <a href="../bridge/message.md#bridge_message_BridgeMessage">BridgeMessage</a> {
+    <a href="../bridge/chain_ids.md#bridge_chain_ids_assert_valid_chain_id">chain_ids::assert_valid_chain_id</a>(<a href="../bridge/message.md#bridge_message_source_chain">source_chain</a>);
+    <a href="../bridge/chain_ids.md#bridge_chain_ids_assert_valid_chain_id">chain_ids::assert_valid_chain_id</a>(new_chain_id);
+    <a href="../bridge/message.md#bridge_message_BridgeMessage">BridgeMessage</a> {
+        <a href="../bridge/message.md#bridge_message_message_type">message_type</a>: <a href="../bridge/message_types.md#bridge_message_types_update_chain_id">message_types::update_chain_id</a>(),
+        <a href="../bridge/message.md#bridge_message_message_version">message_version</a>: <a href="../bridge/message.md#bridge_message_CURRENT_MESSAGE_VERSION">CURRENT_MESSAGE_VERSION</a>,
+        <a href="../bridge/message.md#bridge_message_seq_num">seq_num</a>,
+        <a href="../bridge/message.md#bridge_message_source_chain">source_chain</a>,
+        <a href="../bridge/message.md#bridge_message_payload">payload</a>: vector[new_chain_id],
     }
 }
 </code></pre>
@@ -1755,6 +1854,30 @@ Update Haneul token message
 
 </details>
 
+<a name="bridge_message_update_chain_id_payload_new_chain_id"></a>
+
+## Function `update_chain_id_payload_new_chain_id`
+
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/message.md#bridge_message_update_chain_id_payload_new_chain_id">update_chain_id_payload_new_chain_id</a>(self: &<a href="../bridge/message.md#bridge_message_UpdateChainId">bridge::message::UpdateChainId</a>): u8
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/message.md#bridge_message_update_chain_id_payload_new_chain_id">update_chain_id_payload_new_chain_id</a>(self: &<a href="../bridge/message.md#bridge_message_UpdateChainId">UpdateChainId</a>): u8 {
+    self.new_chain_id
+}
+</code></pre>
+
+
+
+</details>
+
 <a name="bridge_message_is_native"></a>
 
 ## Function `is_native`
@@ -1935,6 +2058,8 @@ Return the required signature threshold for the message, values are voting power
     } <b>else</b> <b>if</b> (<a href="../bridge/message.md#bridge_message_message_type">message_type</a> == <a href="../bridge/message_types.md#bridge_message_types_update_bridge_limit">message_types::update_bridge_limit</a>()) {
         5001
     } <b>else</b> <b>if</b> (<a href="../bridge/message.md#bridge_message_message_type">message_type</a> == <a href="../bridge/message_types.md#bridge_message_types_add_tokens_on_haneul">message_types::add_tokens_on_haneul</a>()) {
+        5001
+    } <b>else</b> <b>if</b> (<a href="../bridge/message.md#bridge_message_message_type">message_type</a> == <a href="../bridge/message_types.md#bridge_message_types_update_chain_id">message_types::update_chain_id</a>()) {
         5001
     } <b>else</b> {
         <b>abort</b> <a href="../bridge/message.md#bridge_message_EInvalidMessageType">EInvalidMessageType</a>

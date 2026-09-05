@@ -13,6 +13,7 @@ use bridge::message::{
     EmergencyOp,
     UpdateAssetPrice,
     UpdateBridgeLimit,
+    UpdateChainId,
     AddTokenOnHaneul,
     ParsedTokenTransferMessage,
     to_parsed_token_transfer_message,
@@ -85,6 +86,11 @@ public struct TokenDepositedEventV2 has copy, drop {
     timestamp_ms: u64,
 }
 
+public struct ChainIdUpdatedEvent has copy, drop {
+    old_chain_id: u8,
+    new_chain_id: u8,
+}
+
 public struct EmergencyOpEvent has copy, drop {
     frozen: bool,
 }
@@ -115,6 +121,7 @@ const EInvalidBridgeRoute: u64 = 16;
 const EMustBeTokenMessage: u64 = 17;
 const EInvalidEvmAddress: u64 = 18;
 const ETokenValueIsZero: u64 = 19;
+const EInvalidChainId: u64 = 20;
 
 const CURRENT_VERSION: u64 = 1;
 
@@ -440,6 +447,9 @@ public fun execute_system_message(
     } else if (message_type == message_types::add_tokens_on_haneul()) {
         let payload = message.extract_add_tokens_on_haneul();
         inner.execute_add_tokens_on_haneul(payload);
+    } else if (message_type == message_types::update_chain_id()) {
+        let payload = message.extract_update_chain_id();
+        inner.execute_update_chain_id(payload);
     } else {
         abort EUnexpectedMessageType
     };
@@ -672,6 +682,18 @@ fun execute_update_asset_price(inner: &mut BridgeInner, payload: UpdateAssetPric
         )
 }
 
+// Re-labels this bridge with a different Haneul chain id. Only the id changes:
+// sequence numbers, records, the committee, the treasury and the limiter are kept.
+// Messages signed afterwards must carry the new id as their source chain.
+fun execute_update_chain_id(inner: &mut BridgeInner, payload: UpdateChainId) {
+    let new_chain_id = payload.update_chain_id_payload_new_chain_id();
+    assert!(chain_ids::is_haneul_chain(new_chain_id), EInvalidChainId);
+    assert!(new_chain_id != inner.chain_id, EInvalidChainId);
+    let old_chain_id = inner.chain_id;
+    inner.chain_id = new_chain_id;
+    event::emit(ChainIdUpdatedEvent { old_chain_id, new_chain_id });
+}
+
 fun execute_add_tokens_on_haneul(inner: &mut BridgeInner, payload: AddTokenOnHaneul) {
     // FIXME: assert native_token to be false and add test
     let native_token = payload.is_native();
@@ -898,6 +920,16 @@ public fun test_execute_update_bridge_limit(inner: &mut BridgeInner, payload: Up
 #[test_only]
 public fun test_execute_update_asset_price(inner: &mut BridgeInner, payload: UpdateAssetPrice) {
     execute_update_asset_price(inner, payload)
+}
+
+#[test_only]
+public fun test_execute_update_chain_id(inner: &mut BridgeInner, payload: UpdateChainId) {
+    execute_update_chain_id(inner, payload)
+}
+
+#[test_only]
+public fun inner_chain_id(inner: &BridgeInner): u8 {
+    inner.chain_id
 }
 
 #[test_only]

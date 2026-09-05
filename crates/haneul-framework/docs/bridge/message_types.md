@@ -11,6 +11,7 @@ title: Module `bridge::message_types`
 -  [Function `update_bridge_limit`](#bridge_message_types_update_bridge_limit)
 -  [Function `update_asset_price`](#bridge_message_types_update_asset_price)
 -  [Function `add_tokens_on_haneul`](#bridge_message_types_add_tokens_on_haneul)
+-  [Function `update_chain_id`](#bridge_message_types_update_chain_id)
 
 
 <pre><code></code></pre>
@@ -72,6 +73,15 @@ title: Module `bridge::message_types`
 
 
 <pre><code><b>const</b> <a href="../bridge/message_types.md#bridge_message_types_ADD_TOKENS_ON_HANEUL">ADD_TOKENS_ON_HANEUL</a>: u8 = 6;
+</code></pre>
+
+
+
+<a name="bridge_message_types_UPDATE_CHAIN_ID"></a>
+
+
+
+<pre><code><b>const</b> <a href="../bridge/message_types.md#bridge_message_types_UPDATE_CHAIN_ID">UPDATE_CHAIN_ID</a>: u8 = 8;
 </code></pre>
 
 
@@ -202,6 +212,28 @@ title: Module `bridge::message_types`
 
 
 <pre><code><b>public</b> <b>fun</b> <a href="../bridge/message_types.md#bridge_message_types_add_tokens_on_haneul">add_tokens_on_haneul</a>(): u8 { <a href="../bridge/message_types.md#bridge_message_types_ADD_TOKENS_ON_HANEUL">ADD_TOKENS_ON_HANEUL</a> }
+</code></pre>
+
+
+
+</details>
+
+<a name="bridge_message_types_update_chain_id"></a>
+
+## Function `update_chain_id`
+
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/message_types.md#bridge_message_types_update_chain_id">update_chain_id</a>(): u8
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/message_types.md#bridge_message_types_update_chain_id">update_chain_id</a>(): u8 { <a href="../bridge/message_types.md#bridge_message_types_UPDATE_CHAIN_ID">UPDATE_CHAIN_ID</a> }
 </code></pre>
 
 

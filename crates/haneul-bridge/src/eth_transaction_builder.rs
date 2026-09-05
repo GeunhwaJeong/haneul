@@ -62,6 +62,9 @@ pub async fn build_eth_transaction(
         BridgeAction::AddTokensOnHaneulAction(_) => {
             unreachable!();
         }
+        BridgeAction::ChainIdUpdateAction(_) => {
+            unreachable!();
+        }
         BridgeAction::AddTokensOnEvmAction(action) => {
             build_add_tokens_on_evm_transaction(contract_address, action.clone(), sigs)
         }

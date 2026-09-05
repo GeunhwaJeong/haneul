@@ -8,6 +8,7 @@ use crate::types::AssetPriceUpdateAction;
 use crate::types::BlocklistCommitteeAction;
 use crate::types::BridgeAction;
 use crate::types::BridgeActionType;
+use crate::types::ChainIdUpdateAction;
 use crate::types::EmergencyAction;
 use crate::types::EthToHaneulBridgeAction;
 use crate::types::EthToHaneulTokenTransferV2;
@@ -28,6 +29,7 @@ pub const COMMITTEE_BLOCKLIST_MESSAGE_VERSION: u8 = 1;
 pub const EMERGENCY_BUTTON_MESSAGE_VERSION: u8 = 1;
 pub const LIMIT_UPDATE_MESSAGE_VERSION: u8 = 1;
 pub const ASSET_PRICE_UPDATE_MESSAGE_VERSION: u8 = 1;
+pub const CHAIN_ID_UPDATE_MESSAGE_VERSION: u8 = 1;
 pub const EVM_CONTRACT_UPGRADE_MESSAGE_VERSION: u8 = 1;
 pub const ADD_TOKENS_ON_HANEUL_MESSAGE_VERSION: u8 = 1;
 pub const ADD_TOKENS_ON_EVM_MESSAGE_VERSION: u8 = 1;
@@ -389,6 +391,29 @@ impl BridgeMessageEncoding for AssetPriceUpdateAction {
         // Add new usd limit
         bytes.extend_from_slice(&self.new_usd_price.to_be_bytes());
         Ok(bytes)
+    }
+}
+
+impl BridgeMessageEncoding for ChainIdUpdateAction {
+    fn as_bytes(&self) -> Result<Vec<u8>> {
+        let mut bytes = Vec::new();
+        // Add message type
+        bytes.push(BridgeActionType::UpdateChainId as u8);
+        // Add message version
+        bytes.push(CHAIN_ID_UPDATE_MESSAGE_VERSION);
+        // Add nonce
+        bytes.extend_from_slice(&self.nonce.to_be_bytes());
+        // Add chain id
+        bytes.push(self.chain_id as u8);
+
+        // Add payload bytes
+        bytes.extend_from_slice(&self.as_payload_bytes()?);
+
+        Ok(bytes)
+    }
+
+    fn as_payload_bytes(&self) -> Result<Vec<u8>> {
+        Ok(vec![self.new_chain_id as u8])
     }
 }
 
@@ -864,6 +889,29 @@ mod tests {
                 "48414e45554c5f4252494447455f4d4553534147450401000000000000010a0201000000003b9aca00"
             )
             .unwrap()
+        );
+    }
+
+    #[test]
+    fn test_bridge_message_encoding_chain_id_update_action() {
+        let action = BridgeAction::ChainIdUpdateAction(ChainIdUpdateAction {
+            nonce: 3,
+            chain_id: BridgeChainId::HaneulCustom,
+            new_chain_id: BridgeChainId::HaneulMainnet,
+        });
+        let bytes = action.to_bytes().unwrap();
+        /*
+        48414e45554c5f4252494447455f4d455353414745: prefix
+        08: msg type
+        01: msg version
+        0000000000000003: nonce
+        02: chain id
+        00: new chain id
+        */
+        assert_eq!(
+            bytes,
+            Hex::decode("48414e45554c5f4252494447455f4d455353414745080100000000000000030200")
+                .unwrap()
         );
     }
 

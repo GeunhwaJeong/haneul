@@ -14,6 +14,7 @@ title: Module `bridge::chain_ids`
 -  [Function `eth_custom`](#bridge_chain_ids_eth_custom)
 -  [Function `route_source`](#bridge_chain_ids_route_source)
 -  [Function `route_destination`](#bridge_chain_ids_route_destination)
+-  [Function `is_haneul_chain`](#bridge_chain_ids_is_haneul_chain)
 -  [Function `assert_valid_chain_id`](#bridge_chain_ids_assert_valid_chain_id)
 -  [Function `valid_routes`](#bridge_chain_ids_valid_routes)
 -  [Function `is_valid_route`](#bridge_chain_ids_is_valid_route)
@@ -297,6 +298,30 @@ title: Module `bridge::chain_ids`
 
 <pre><code><b>public</b> <b>fun</b> <a href="../bridge/chain_ids.md#bridge_chain_ids_route_destination">route_destination</a>(route: &<a href="../bridge/chain_ids.md#bridge_chain_ids_BridgeRoute">BridgeRoute</a>): &u8 {
     &route.destination
+}
+</code></pre>
+
+
+
+</details>
+
+<a name="bridge_chain_ids_is_haneul_chain"></a>
+
+## Function `is_haneul_chain`
+
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/chain_ids.md#bridge_chain_ids_is_haneul_chain">is_haneul_chain</a>(id: u8): bool
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../bridge/chain_ids.md#bridge_chain_ids_is_haneul_chain">is_haneul_chain</a>(id: u8): bool {
+    id == <a href="../bridge/chain_ids.md#bridge_chain_ids_HANEUL_MAINNET">HANEUL_MAINNET</a> || id == <a href="../bridge/chain_ids.md#bridge_chain_ids_HANEUL_TESTNET">HANEUL_TESTNET</a> || id == <a href="../bridge/chain_ids.md#bridge_chain_ids_HANEUL_CUSTOM">HANEUL_CUSTOM</a>
 }
 </code></pre>
 

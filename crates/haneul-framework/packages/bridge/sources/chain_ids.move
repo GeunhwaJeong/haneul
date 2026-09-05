@@ -51,6 +51,10 @@ public fun route_destination(route: &BridgeRoute): &u8 {
     &route.destination
 }
 
+public fun is_haneul_chain(id: u8): bool {
+    id == HANEUL_MAINNET || id == HANEUL_TESTNET || id == HANEUL_CUSTOM
+}
+
 public fun assert_valid_chain_id(id: u8) {
     assert!(
         id == HANEUL_MAINNET ||

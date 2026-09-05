@@ -458,7 +458,7 @@ module bridge::bridge_env {
 
     const HANEUL_MESSAGE_PREFIX: vector<u8> = b"HANEUL_BRIDGE_MESSAGE";
 
-    fun sign_message(env: &BridgeEnv, message: BridgeMessage): vector<vector<u8>> {
+    public fun sign_message(env: &BridgeEnv, message: BridgeMessage): vector<vector<u8>> {
         let mut message_bytes = HANEUL_MESSAGE_PREFIX;
         message_bytes.append(message.serialize_message());
         let mut message_bytes = HANEUL_MESSAGE_PREFIX;
@@ -901,6 +901,26 @@ module bridge::bridge_env {
     }
 
     // Update a given asset price (notional value)
+    public fun update_chain_id(env: &mut BridgeEnv, sender: address, new_chain_id: u8) {
+        let scenario = &mut env.scenario;
+        scenario.next_tx(sender);
+        let mut bridge = scenario.take_shared<Bridge>();
+
+        let message = message::create_update_chain_id_message(
+            env.chain_id,
+            bridge.get_seq_num_for(message_types::update_chain_id()),
+            new_chain_id,
+        );
+        let signatures = env.sign_message(message);
+        bridge.execute_system_message(message, signatures);
+
+        assert!(bridge.test_load_inner().inner_chain_id() == new_chain_id);
+        // every message signed from now on must name the new chain id
+        env.chain_id = new_chain_id;
+
+        test_scenario::return_shared(bridge);
+    }
+
     public fun update_asset_price(env: &mut BridgeEnv, sender: address, token_id: u8, value: u64) {
         // set up
         let scenario = &mut env.scenario;

@@ -18,8 +18,8 @@ use haneul_bridge::haneul_client::HaneulBridgeClient;
 use haneul_bridge::types::BridgeAction;
 use haneul_bridge::types::{
     AddTokensOnEvmAction, AddTokensOnHaneulAction, AssetPriceUpdateAction,
-    BlocklistCommitteeAction, BlocklistType, EmergencyAction, EmergencyActionType,
-    EvmContractUpgradeAction, LimitUpdateAction,
+    BlocklistCommitteeAction, BlocklistType, ChainIdUpdateAction, EmergencyAction,
+    EmergencyActionType, EvmContractUpgradeAction, LimitUpdateAction,
 };
 use haneul_bridge::utils::{EthSignerProvider, get_eth_signer_provider};
 use haneul_config::Config;
@@ -189,6 +189,15 @@ pub enum GovernanceClientCommands {
         #[clap(name = "new-usd-price", long)]
         new_usd_price: u64,
     },
+    /// Re-label the Haneul bridge object with a different Haneul chain id. `--chain-id` is the
+    /// id the bridge currently has; nonce is the next UpdateChainId sequence number.
+    #[clap(name = "update-chain-id")]
+    UpdateChainId {
+        #[clap(name = "nonce", long)]
+        nonce: u64,
+        #[clap(name = "new-chain-id", long)]
+        new_chain_id: u8,
+    },
     #[clap(name = "add-tokens-on-haneul")]
     AddTokensOnHaneul {
         #[clap(name = "nonce", long)]
@@ -274,6 +283,22 @@ pub fn make_action(chain_id: BridgeChainId, cmd: &GovernanceClientCommands) -> B
             token_id: *token_id,
             new_usd_price: *new_usd_price,
         }),
+        GovernanceClientCommands::UpdateChainId {
+            nonce,
+            new_chain_id,
+        } => {
+            let new_chain_id = BridgeChainId::try_from(*new_chain_id)
+                .unwrap_or_else(|_| panic!("Unknown bridge chain id {new_chain_id}"));
+            assert!(
+                chain_id.is_haneul_chain() && new_chain_id.is_haneul_chain(),
+                "chain id updates only apply to Haneul chain ids"
+            );
+            BridgeAction::ChainIdUpdateAction(ChainIdUpdateAction {
+                nonce: *nonce,
+                chain_id,
+                new_chain_id,
+            })
+        }
         GovernanceClientCommands::AddTokensOnHaneul {
             nonce,
             token_ids,
@@ -385,6 +410,7 @@ pub fn select_contract_address(
         GovernanceClientCommands::UpdateAssetPrice { .. } => config.eth_bridge_config_proxy_address,
         GovernanceClientCommands::UpgradeEVMContract { proxy_address, .. } => *proxy_address,
         GovernanceClientCommands::AddTokensOnHaneul { .. } => unreachable!(),
+        GovernanceClientCommands::UpdateChainId { .. } => unreachable!(),
         GovernanceClientCommands::AddTokensOnEvm { .. } => config.eth_bridge_config_proxy_address,
     }
 }

@@ -23,10 +23,11 @@ use haneul_types::bridge::{
     MoveTypeBridgeMessage, MoveTypeBridgeRecord, MoveTypeTokenTransferPayload,
 };
 use haneul_types::bridge::{
-    APPROVAL_THRESHOLD_ASSET_PRICE_UPDATE, APPROVAL_THRESHOLD_COMMITTEE_BLOCKLIST,
-    APPROVAL_THRESHOLD_EMERGENCY_PAUSE, APPROVAL_THRESHOLD_EMERGENCY_UNPAUSE,
-    APPROVAL_THRESHOLD_EVM_CONTRACT_UPGRADE, APPROVAL_THRESHOLD_LIMIT_UPDATE,
-    APPROVAL_THRESHOLD_TOKEN_TRANSFER, MoveTypeParsedTokenTransferMessage,
+    APPROVAL_THRESHOLD_ASSET_PRICE_UPDATE, APPROVAL_THRESHOLD_CHAIN_ID_UPDATE,
+    APPROVAL_THRESHOLD_COMMITTEE_BLOCKLIST, APPROVAL_THRESHOLD_EMERGENCY_PAUSE,
+    APPROVAL_THRESHOLD_EMERGENCY_UNPAUSE, APPROVAL_THRESHOLD_EVM_CONTRACT_UPGRADE,
+    APPROVAL_THRESHOLD_LIMIT_UPDATE, APPROVAL_THRESHOLD_TOKEN_TRANSFER,
+    MoveTypeParsedTokenTransferMessage,
 };
 use haneul_types::committee::CommitteeTrait;
 use haneul_types::committee::StakeUnit;
@@ -212,6 +213,7 @@ pub enum BridgeActionType {
     EvmContractUpgrade = 5,
     AddTokensOnHaneul = 6,
     AddTokensOnEvm = 7,
+    UpdateChainId = 8,
 }
 
 #[derive(Clone, PartialEq, Eq)]
@@ -364,6 +366,15 @@ pub struct AssetPriceUpdateAction {
     pub new_usd_price: u64,
 }
 
+/// Re-labels the Haneul bridge object with a different Haneul chain id. `chain_id` is the id the
+/// bridge currently has (the message's source chain), `new_chain_id` the id it moves to.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct ChainIdUpdateAction {
+    pub nonce: u64,
+    pub chain_id: BridgeChainId,
+    pub new_chain_id: BridgeChainId,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct EvmContractUpgradeAction {
     pub nonce: u64,
@@ -410,6 +421,7 @@ pub enum BridgeAction {
     EvmContractUpgradeAction(EvmContractUpgradeAction),
     AddTokensOnHaneulAction(AddTokensOnHaneulAction),
     AddTokensOnEvmAction(AddTokensOnEvmAction),
+    ChainIdUpdateAction(ChainIdUpdateAction),
     /// Haneul to Eth bridge action
     HaneulToEthTokenTransfer(HaneulToEthTokenTransfer),
     /// Haneul to Eth bridge action V2
@@ -451,6 +463,7 @@ impl BridgeAction {
             BridgeAction::EvmContractUpgradeAction(a) => a.chain_id,
             BridgeAction::AddTokensOnHaneulAction(a) => a.chain_id,
             BridgeAction::AddTokensOnEvmAction(a) => a.chain_id,
+            BridgeAction::ChainIdUpdateAction(a) => a.chain_id,
         }
     }
 
@@ -464,6 +477,7 @@ impl BridgeAction {
             BridgeActionType::EvmContractUpgrade => true,
             BridgeActionType::AddTokensOnHaneul => true,
             BridgeActionType::AddTokensOnEvm => true,
+            BridgeActionType::UpdateChainId => true,
         }
     }
 
@@ -482,6 +496,7 @@ impl BridgeAction {
             BridgeAction::EvmContractUpgradeAction(_) => BridgeActionType::EvmContractUpgrade,
             BridgeAction::AddTokensOnHaneulAction(_) => BridgeActionType::AddTokensOnHaneul,
             BridgeAction::AddTokensOnEvmAction(_) => BridgeActionType::AddTokensOnEvm,
+            BridgeAction::ChainIdUpdateAction(_) => BridgeActionType::UpdateChainId,
         }
     }
 
@@ -500,6 +515,7 @@ impl BridgeAction {
             BridgeAction::EvmContractUpgradeAction(a) => a.nonce,
             BridgeAction::AddTokensOnHaneulAction(a) => a.nonce,
             BridgeAction::AddTokensOnEvmAction(a) => a.nonce,
+            BridgeAction::ChainIdUpdateAction(a) => a.nonce,
         }
     }
 
@@ -520,6 +536,7 @@ impl BridgeAction {
             BridgeAction::EvmContractUpgradeAction(_) => APPROVAL_THRESHOLD_EVM_CONTRACT_UPGRADE,
             BridgeAction::AddTokensOnHaneulAction(_) => APPROVAL_THRESHOLD_ADD_TOKENS_ON_HANEUL,
             BridgeAction::AddTokensOnEvmAction(_) => APPROVAL_THRESHOLD_ADD_TOKENS_ON_EVM,
+            BridgeAction::ChainIdUpdateAction(_) => APPROVAL_THRESHOLD_CHAIN_ID_UPDATE,
         }
     }
 
@@ -546,6 +563,7 @@ impl BridgeAction {
             BridgeAction::EvmContractUpgradeAction(_) => self,
             BridgeAction::AddTokensOnHaneulAction(_) => self,
             BridgeAction::AddTokensOnEvmAction(_) => self,
+            BridgeAction::ChainIdUpdateAction(_) => self,
             BridgeAction::HaneulToEthTokenTransfer(_) => self,
             BridgeAction::HaneulToEthTokenTransferV2(_) => self,
         }
