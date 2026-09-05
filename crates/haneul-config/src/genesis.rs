@@ -7,6 +7,7 @@ use fastcrypto::encoding::{Base64, Encoding};
 use fastcrypto::hash::HashFunction;
 use haneul_types::authenticator_state::{AuthenticatorStateInner, get_authenticator_state};
 use haneul_types::base_types::{HaneulAddress, ObjectID};
+use haneul_types::bridge::BridgeChainId;
 use haneul_types::clock::Clock;
 use haneul_types::committee::CommitteeWithNetworkMetadata;
 use haneul_types::crypto::DefaultHash;
@@ -401,6 +402,14 @@ pub struct GenesisCeremonyParameters {
     /// period. Expressed in basis points.
     #[serde(default = "GenesisCeremonyParameters::default_stake_subsidy_decrease_rate")]
     pub stake_subsidy_decrease_rate: u16,
+
+    /// Chain id written into the bridge object created at genesis. The bridge
+    /// object is created before the chain identifier (the genesis checkpoint
+    /// digest) exists, so it cannot be derived and must be chosen up front.
+    /// `None` keeps the historical default, `HaneulCustom`, which is right for
+    /// local networks; a mainnet or testnet ceremony must set it explicitly.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bridge_chain_id: Option<BridgeChainId>,
     // Most other parameters (e.g. initial gas schedule) should be derived from protocol_version.
 }
 
@@ -416,7 +425,12 @@ impl GenesisCeremonyParameters {
                 Self::default_initial_stake_subsidy_distribution_amount(),
             stake_subsidy_period_length: Self::default_stake_subsidy_period_length(),
             stake_subsidy_decrease_rate: Self::default_stake_subsidy_decrease_rate(),
+            bridge_chain_id: None,
         }
+    }
+
+    pub fn bridge_chain_id(&self) -> BridgeChainId {
+        self.bridge_chain_id.unwrap_or(BridgeChainId::HaneulCustom)
     }
 
     fn default_timestamp_ms() -> u64 {

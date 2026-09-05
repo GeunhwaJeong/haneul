@@ -8,6 +8,7 @@ use clap::Parser;
 use fastcrypto::encoding::{Encoding, Hex};
 use haneul_config::{HANEUL_GENESIS_FILENAME, genesis::UnsignedGenesis};
 use haneul_genesis_builder::Builder;
+use haneul_types::bridge::BridgeChainId;
 use haneul_types::multiaddr::Multiaddr;
 use haneul_types::{
     base_types::HaneulAddress,
@@ -33,6 +34,11 @@ pub struct Ceremony {
 
     #[clap(long)]
     protocol_version: Option<u64>,
+
+    /// Bridge chain id written into the bridge object at genesis
+    /// (0 = mainnet, 1 = testnet, 2 = custom). Defaults to custom.
+    #[clap(long)]
+    bridge_chain_id: Option<u8>,
 
     #[clap(subcommand)]
     command: CeremonyCommand,
@@ -104,9 +110,26 @@ pub fn run(cmd: Ceremony) -> Result<()> {
         .map(ProtocolVersion::new)
         .unwrap_or(ProtocolVersion::MAX);
 
+    let bridge_chain_id = cmd
+        .bridge_chain_id
+        .map(|id| {
+            let chain_id = BridgeChainId::try_from(id)
+                .map_err(|_| anyhow::anyhow!("Unknown bridge chain id {id}"))?;
+            if !chain_id.is_haneul_chain() {
+                return Err(anyhow::anyhow!(
+                    "Bridge chain id {id} ({chain_id:?}) is not a Haneul chain id"
+                ));
+            }
+            Ok(chain_id)
+        })
+        .transpose()?;
+
     match cmd.command {
         CeremonyCommand::Init => {
-            let builder = Builder::new().with_protocol_version(protocol_version);
+            let mut builder = Builder::new().with_protocol_version(protocol_version);
+            if let Some(chain_id) = bridge_chain_id {
+                builder = builder.with_bridge_chain_id(chain_id);
+            }
             builder.save(dir)?;
         }
 
@@ -211,6 +234,7 @@ pub fn run(cmd: Ceremony) -> Result<()> {
             let mut builder = Builder::load(&dir)?;
 
             check_protocol_version(&builder, protocol_version)?;
+            check_bridge_chain_id(&builder, bridge_chain_id)?;
 
             // Don't sign unless the unsigned checkpoint has already been created
             if builder.unsigned_genesis_checkpoint().is_none() {
@@ -232,6 +256,7 @@ pub fn run(cmd: Ceremony) -> Result<()> {
         CeremonyCommand::Finalize => {
             let builder = Builder::load(&dir)?;
             check_protocol_version(&builder, protocol_version)?;
+            check_bridge_chain_id(&builder, bridge_chain_id)?;
 
             let genesis = builder.build();
 
@@ -245,6 +270,19 @@ pub fn run(cmd: Ceremony) -> Result<()> {
         }
     }
 
+    Ok(())
+}
+
+fn check_bridge_chain_id(builder: &Builder, bridge_chain_id: Option<BridgeChainId>) -> Result<()> {
+    if let Some(expected) = bridge_chain_id
+        && builder.bridge_chain_id() != expected
+    {
+        return Err(anyhow::anyhow!(
+            "Serialized bridge chain id does not match local --bridge-chain-id argument. ({:?} vs {:?})",
+            builder.bridge_chain_id(),
+            expected
+        ));
+    }
     Ok(())
 }
 
@@ -333,6 +371,7 @@ mod test {
         let command = Ceremony {
             path: Some(dir.path().into()),
             protocol_version: None,
+            bridge_chain_id: None,
             command: CeremonyCommand::Init,
         };
         command.run()?;
@@ -344,6 +383,7 @@ mod test {
             let command = Ceremony {
                 path: Some(dir.path().into()),
                 protocol_version: None,
+                bridge_chain_id: None,
                 command: CeremonyCommand::AddValidator {
                     name: validator.name().to_owned(),
                     validator_key_file: key_file.into(),
@@ -364,6 +404,7 @@ mod test {
             Ceremony {
                 path: Some(dir.path().into()),
                 protocol_version: None,
+                bridge_chain_id: None,
                 command: CeremonyCommand::ValidateState,
             }
             .run()?;
@@ -373,6 +414,7 @@ mod test {
         let command = Ceremony {
             path: Some(dir.path().into()),
             protocol_version: None,
+            bridge_chain_id: None,
             command: CeremonyCommand::BuildUnsignedCheckpoint,
         };
         command.run()?;
@@ -382,6 +424,7 @@ mod test {
             let command = Ceremony {
                 path: Some(dir.path().into()),
                 protocol_version: None,
+                bridge_chain_id: None,
                 command: CeremonyCommand::VerifyAndSign {
                     key_file: key.into(),
                 },
@@ -391,6 +434,7 @@ mod test {
             Ceremony {
                 path: Some(dir.path().into()),
                 protocol_version: None,
+                bridge_chain_id: None,
                 command: CeremonyCommand::ValidateState,
             }
             .run()?;
@@ -400,6 +444,7 @@ mod test {
         let command = Ceremony {
             path: Some(dir.path().into()),
             protocol_version: None,
+            bridge_chain_id: None,
             command: CeremonyCommand::Finalize,
         };
         command.run()?;

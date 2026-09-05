@@ -111,6 +111,15 @@ impl Builder {
         self
     }
 
+    pub fn with_bridge_chain_id(mut self, chain_id: BridgeChainId) -> Self {
+        assert!(
+            chain_id.is_haneul_chain(),
+            "bridge chain id {chain_id:?} is not a Haneul chain id"
+        );
+        self.parameters.bridge_chain_id = Some(chain_id);
+        self
+    }
+
     pub fn add_object(mut self, object: Object) -> Self {
         self.objects.insert(object.id(), object);
         self
@@ -215,6 +224,10 @@ impl Builder {
 
     pub fn protocol_version(&self) -> ProtocolVersion {
         self.parameters.protocol_version
+    }
+
+    pub fn bridge_chain_id(&self) -> BridgeChainId {
+        self.parameters.bridge_chain_id()
     }
 
     pub fn build(mut self) -> Genesis {
@@ -777,6 +790,7 @@ fn build_unsigned_genesis_data(
     let objects = create_genesis_objects(
         &epoch_data,
         &genesis_digest,
+        parameters.bridge_chain_id(),
         objects,
         &genesis_validators,
         &genesis_chain_parameters,
@@ -970,6 +984,7 @@ fn create_genesis_transaction(
 fn create_genesis_objects(
     epoch_data: &EpochData,
     genesis_digest: &TransactionDigest,
+    bridge_chain_id: BridgeChainId,
     input_objects: &[Object],
     validators: &[GenesisValidatorMetadata],
     parameters: &GenesisChainParameters,
@@ -1006,6 +1021,7 @@ fn create_genesis_objects(
         validators,
         epoch_data,
         genesis_digest,
+        bridge_chain_id,
         parameters,
         token_distribution_schedule,
         metrics,
@@ -1050,6 +1066,7 @@ pub fn generate_genesis_system_object(
     genesis_validators: &[GenesisValidatorMetadata],
     epoch_data: &EpochData,
     genesis_digest: &TransactionDigest,
+    bridge_chain_id: BridgeChainId,
     genesis_chain_parameters: &GenesisChainParameters,
     token_distribution_schedule: &TokenDistributionSchedule,
     metrics: Arc<ExecutionMetrics>,
@@ -1146,9 +1163,11 @@ pub fn generate_genesis_system_object(
                     UID::new(HANEUL_BRIDGE_OBJECT_ID).to_bcs_bytes(),
                 ))
                 .unwrap();
-            // TODO(bridge): this needs to be passed in as a parameter for next testnet regenesis
-            // Hardcoding chain id to HaneulCustom
-            let bridge_chain_id = builder.pure(BridgeChainId::HaneulCustom).unwrap();
+            assert!(
+                bridge_chain_id.is_haneul_chain(),
+                "bridge chain id {bridge_chain_id:?} is not a Haneul chain id"
+            );
+            let bridge_chain_id = builder.pure(bridge_chain_id).unwrap();
             builder.programmable_move_call(
                 BRIDGE_ADDRESS.into(),
                 BRIDGE_MODULE_NAME.to_owned(),
@@ -1248,9 +1267,10 @@ mod test {
     use haneul_config::node::DEFAULT_COMMISSION_RATE;
     use haneul_config::node::DEFAULT_VALIDATOR_GAS_PRICE;
     use haneul_types::base_types::HaneulAddress;
+    use haneul_types::bridge::{BridgeChainId, BridgeTrait, get_bridge};
     use haneul_types::crypto::{
-        AccountKeyPair, AuthorityKeyPair, NetworkKeyPair, generate_proof_of_possession,
-        get_key_pair_from_rng,
+        AccountKeyPair, AuthorityKeyPair, AuthoritySignature, NetworkKeyPair,
+        generate_proof_of_possession, get_key_pair_from_rng,
     };
 
     #[test]
@@ -1304,5 +1324,71 @@ mod test {
         }
         builder.save(dir.path()).unwrap();
         Builder::load(dir.path()).unwrap();
+    }
+
+    fn test_validator() -> (ValidatorInfo, AuthoritySignature) {
+        let key: AuthorityKeyPair = get_key_pair_from_rng(&mut rand::rngs::OsRng).1;
+        let worker_key: NetworkKeyPair = get_key_pair_from_rng(&mut rand::rngs::OsRng).1;
+        let account_key: AccountKeyPair = get_key_pair_from_rng(&mut rand::rngs::OsRng).1;
+        let network_key: NetworkKeyPair = get_key_pair_from_rng(&mut rand::rngs::OsRng).1;
+        let validator = ValidatorInfo {
+            name: "0".into(),
+            protocol_key: key.public().into(),
+            worker_key: worker_key.public().clone(),
+            account_address: HaneulAddress::from(account_key.public()),
+            network_key: network_key.public().clone(),
+            gas_price: DEFAULT_VALIDATOR_GAS_PRICE,
+            commission_rate: DEFAULT_COMMISSION_RATE,
+            network_address: local_ip_utils::new_local_tcp_address_for_testing(),
+            p2p_address: local_ip_utils::new_local_udp_address_for_testing(),
+            narwhal_primary_address: local_ip_utils::new_local_udp_address_for_testing(),
+            narwhal_worker_address: local_ip_utils::new_local_udp_address_for_testing(),
+            description: String::new(),
+            image_url: String::new(),
+            project_url: String::new(),
+        };
+        let pop = generate_proof_of_possession(&key, account_key.public().into());
+        (validator, pop)
+    }
+
+    fn genesis_bridge_chain_id(mut builder: Builder) -> u8 {
+        let genesis = builder.build_unsigned_genesis_checkpoint();
+        get_bridge(&genesis.objects()).unwrap().chain_id()
+    }
+
+    #[test]
+    #[cfg_attr(msim, ignore)]
+    fn bridge_chain_id_defaults_to_custom() {
+        let (validator, pop) = test_validator();
+        let builder = Builder::new().add_validator(validator, pop);
+        assert_eq!(builder.bridge_chain_id(), BridgeChainId::HaneulCustom);
+        assert_eq!(
+            genesis_bridge_chain_id(builder),
+            BridgeChainId::HaneulCustom as u8
+        );
+    }
+
+    #[test]
+    #[cfg_attr(msim, ignore)]
+    fn bridge_chain_id_is_configurable_and_persisted() {
+        let dir = tempfile::TempDir::new().unwrap();
+        let (validator, pop) = test_validator();
+        let builder = Builder::new()
+            .with_bridge_chain_id(BridgeChainId::HaneulTestnet)
+            .add_validator(validator, pop);
+        builder.save(dir.path()).unwrap();
+
+        let builder = Builder::load(dir.path()).unwrap();
+        assert_eq!(builder.bridge_chain_id(), BridgeChainId::HaneulTestnet);
+        assert_eq!(
+            genesis_bridge_chain_id(builder),
+            BridgeChainId::HaneulTestnet as u8
+        );
+    }
+
+    #[test]
+    #[should_panic(expected = "is not a Haneul chain id")]
+    fn bridge_chain_id_rejects_eth_ids() {
+        Builder::new().with_bridge_chain_id(BridgeChainId::EthMainnet);
     }
 }
