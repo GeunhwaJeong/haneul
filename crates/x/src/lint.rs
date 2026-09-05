@@ -15,11 +15,6 @@ use nexlint_lints::{
     },
 };
 static EXTERNAL_CRATE_DIR: &str = "external-crates/";
-// System package sources must stay byte-identical to the latest on-chain bytecode snapshot
-// between protocol upgrades: clever-error abort codes embed source line numbers, so even a
-// comment line changes the compiled bytecode. License header updates for these files land
-// together with the next protocol upgrade, when a new snapshot is cut anyway.
-static FRAMEWORK_PACKAGES_DIR: &str = "crates/haneul-framework/packages/";
 static CREATE_DAPP_TEMPLATE_DIR: &str = "sdk/create-dapp/templates";
 #[derive(Debug, Parser)]
 pub struct Args {
@@ -196,7 +191,6 @@ pub fn handle_lint_results_exclude_external_crate_checks(
         // legacy ignore checks
         |source: &LintSource, path: &Utf8Path| -> bool {
             (path.starts_with(EXTERNAL_CRATE_DIR)
-                || path.starts_with(FRAMEWORK_PACKAGES_DIR)
                 || path.starts_with(CREATE_DAPP_TEMPLATE_DIR)
                 || path.to_string().contains("/generated/")
                 || path.to_string().contains("/proto/")
