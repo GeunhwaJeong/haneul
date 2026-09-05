@@ -233,7 +233,9 @@ The generated configuration includes the following parameters:
 | `eth:eth-rpc-url` | Ethereum RPC URL. |
 | `eth:eth-bridge-proxy-address` | The proxy address for Bridge Solidity contracts on Ethereum. |
 | `eth:eth-bridge-chain-id` | `10` for Ethereum Mainnet, `11` for Sepolia Testnet. |
-| `eth:eth-contracts-start-block-fallback` | The starting block BridgeNodes queries for from Ethereum FullNode. This number should be the block where Solidity contracts are deployed or slightly before. |
+| `eth:eth-contracts-start-block-fallback` | The starting block BridgeNodes queries for from Ethereum FullNode. This number should be the block where Solidity contracts are deployed or slightly before. Only used when the node has no stored cursor for the contract yet. |
+| `eth:eth-contracts-start-block-override` | Optional. Forces the Ethereum syncer to restart from this block on **every** start, ignoring the stored cursor. Use it once to replay a range after an incident, then remove it: left in place it re-scans everything since the deployment block on each restart, which on a rate-limited RPC plan can take hours. |
+| `eth:eth-rpc-urls` | Optional list of Ethereum RPC URLs (in addition to, or instead of, `eth-rpc-url`). The node spreads requests across them. The client syncer plus the three watchdog observables poll the Ethereum RPC roughly every 10 seconds, which exceeds the daily quota of most free plans; use a paid plan or several providers. Repeated `429 Too Many Requests` errors in the log mean the plan is too small. |
 | `metrics:push-url` | The URL of the remote Haneul metrics pipeline (for example, `https://metrics-proxy.[testnet_OR_mainnet].haneul.io:8443/publish/metrics`). See the [metrics push section](#metrics-push) for more details. |
 
 With `run-client: true`, you can find these additional fields in the generated config:
@@ -350,6 +352,22 @@ In this case, Bridge Client is toggled on and syncs with blockchains proactively
 - `bridge_eth_watcher_received_actions`
 
 `bridge_gas_coin_balance` is also a critical metric to track the balance of your client gas coin, and top up after it dips below a certain threshold.
+
+### Moving the bridge to a different chain id {#chain-id-migration}
+
+The Haneul bridge object stores its own chain id. A network whose bridge object was created with the custom id (`2`) can move it to the canonical id (`0` for mainnet, `1` for testnet) with the `UpdateChainId` governance message (message type 8, available from protocol version 125). Only the id changes: sequence numbers, transfer records, the committee, the treasury and the limiter are kept. The order below matters because bridge nodes validate their configured chain id against the object at startup, and every message signed after the update must carry the new id.
+
+1. **Deploy the new EVM contracts** whose `supportedChainIds` contains the new Haneul id (for mainnet: `sourceChainId: 10`, `supportedChainIds: [0]`). Nothing can be claimed on Haneul from them yet, so this step is safe to do first. Note the deployment block.
+2. **Allow the governance actions** on every bridge node: add the `ChainIdUpdateAction` (with the *current* id as `chain_id`) and, if token prices need refreshing, the `AssetPriceUpdateAction` entries to `approved-governance-actions`, then restart the node. Nodes only sign actions listed there.
+3. **Execute the update** from a machine that can reach the committee nodes:
+   ```sh
+   $ haneul-bridge-cli governance --config-path {CLI-CONFIG} --chain-id 2 \
+       update-chain-id --nonce {NEXT-UPDATE-CHAIN-ID-NONCE} --new-chain-id 0 --dry-run false
+   ```
+   The CLI collects signatures over `/sign/update_chain_id/...` and submits `bridge::execute_system_message`. Verify with `haneul-bridge-cli view-haneul-bridge` that `chain_id` now reads the new value.
+4. **Switch the bridge nodes** immediately afterwards: stop the node, set `haneul:haneul-bridge-chain-id` to the new id, point `eth:eth-bridge-proxy-address` and `eth:eth-bridge-chain-id` at the new EVM deployment, set `eth:eth-contracts-start-block-fallback` to its deployment block, drop any `eth-contracts-start-block-override`, and start the node. A node still configured with the old id refuses to start against the updated object.
+5. **Refresh token prices** with the new id as `--chain-id` (`update-asset-price`), then run a small transfer in each direction and check `bridge_eth_watcher_received_actions` and `bridge_haneul_watcher_received_actions` advance.
+6. **Retire the old EVM contracts**: pause the old bridge with the emergency button so nobody deposits into an abandoned contract. Tokens that were minted on Haneul against the old vault are no longer backed by the new one; burn or quarantine them before opening the bridge to users.
 
 ### Metrics push {#metrics-push}
 
