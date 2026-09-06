@@ -360,8 +360,13 @@ const MAINNET_USDB: &str =
 //              Disable defer_unpaid_amplification on mainnet.
 // Version 124: Apply the v123 config changes on mainnet.
 //              Disable defer_unpaid_amplification everywhere.
-// Version 125: Bridge framework upgrade: add the UpdateChainId governance
-//              message so the bridge object can move to its canonical chain id.
+// Version 125: Haneul-specific release with no upstream counterpart.
+//              Bridge framework upgrade: add the UpdateChainId governance
+//              message (message type 8) so the bridge object can move to its
+//              canonical chain id. All framework Move sources gain the
+//              Modifications copyright notice, which shifts clever-abort line
+//              numbers in the compiled bytecode. No config values change.
+//              Version 126 resumes tracking upstream (protocol version 136).
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -4617,8 +4622,11 @@ impl ProtocolConfig {
                     cfg.feature_flags.defer_unpaid_amplification = false;
                 }
                 125 => {
-                    // Framework-only release: the bridge package gains the UpdateChainId
-                    // governance message (message type 8). No config values change.
+                    // Haneul-specific release with no upstream counterpart (v124 tracks
+                    // upstream 135, v126 will track upstream 136). Framework-only: the
+                    // bridge package gains the UpdateChainId governance message (message
+                    // type 8) and every framework Move source carries the Modifications
+                    // copyright notice. No config values change.
                 }
                 // Use this template when making changes:
                 //
