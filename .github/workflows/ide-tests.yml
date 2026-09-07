@@ -34,7 +34,7 @@ jobs:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
   
       - name: pnpm setup
-        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # pin@v4.2.0
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # pin@v6.0.10
 
       - name: Verify PNPM Cache Directory
         run: |
@@ -74,7 +74,7 @@ jobs:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
 
       - name: pnpm setup
-        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # pin@v4.2.0
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # pin@v6.0.10
         with:
           version: 9.1.1
 
