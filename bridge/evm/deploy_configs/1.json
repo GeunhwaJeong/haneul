@@ -4,7 +4,7 @@
     "minCommitteeStakeRequired": 3334,
     "sourceChainId": 10,
     "supportedChainIds": [0],
-    "supportedChainLimitsInDollars": [5000000],
+    "supportedChainLimitsInDollars": [500000000000000],
     "tokenIds": [2, 3],
     "supportedTokens": [
         "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
