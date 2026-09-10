@@ -30,7 +30,7 @@ use tracing::{info, warn};
 
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
-const MAX_PROTOCOL_VERSION: u64 = 125;
+const MAX_PROTOCOL_VERSION: u64 = 126;
 
 const TESTNET_USDC: &str =
     "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC";
@@ -367,6 +367,15 @@ const MAINNET_USDB: &str =
 //              Modifications copyright notice, which shifts clever-abort line
 //              numbers in the compiled bytecode. No config values change.
 //              Version 126 resumes tracking upstream (protocol version 136).
+// Version 126: Tracks upstream protocol version 136.
+//              Enable ptb_tx_context_restrictions: `TxContext` may appear in a
+//              PTB Move call signature at most once mutably or any number of
+//              times immutably (never by value), and never in return position.
+//              Add limits for references used by programmable transactions.
+//              Add additional linkage invariant hardening/invariant checks in PTBs.
+//              Add package_arena_size_in_bytes.
+//              allowed_proposers stays disabled on mainnet and testnet (upstream
+//              enables it on devnet only).
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -480,6 +489,12 @@ struct FeatureFlags {
     // been deployed everywhere.
     #[serde(skip_serializing_if = "is_false")]
     consensus_order_end_of_epoch_last: bool,
+
+    // If true, validators emit slim (ancestor-compressed) blocks on the consensus block
+    // subscription stream, framed in a block envelope. Gates the wire framing on both
+    // ends of the stream.
+    #[serde(skip_serializing_if = "is_false")]
+    consensus_slim_block_propagation: bool,
 
     // Disallow adding abilities to types during package upgrades.
     #[serde(skip_serializing_if = "is_false")]
@@ -971,6 +986,11 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     enable_order_independent_upgrade_init_linkage: bool,
 
+    // If true, adds additional hardening and checks to upgrade-init linkage entries, and adds
+    // additional linkage invariant checks around linkage.
+    #[serde(skip_serializing_if = "is_false")]
+    harden_linkage_consistency: bool,
+
     // Check shared object transfer restrictions per command.
     #[serde(skip_serializing_if = "is_false")]
     per_command_shared_object_transfer_rules: bool,
@@ -1035,6 +1055,13 @@ struct FeatureFlags {
     // Count function and local signatures towards type-node budgets.
     #[serde(skip_serializing_if = "is_false")]
     include_function_signatures_in_instantiation_limits: bool,
+
+    // If true, the static PTB verifier restricts `TxContext` in Move call
+    // signatures: it may appear at most once as `&mut TxContext`, or any
+    // number of times as `&TxContext`, never by value, and never in return
+    // position (it can never become a PTB result).
+    #[serde(skip_serializing_if = "is_false")]
+    ptb_tx_context_restrictions: bool,
 
     // Enable display registry protocol
     #[serde(skip_serializing_if = "is_false")]
@@ -1138,6 +1165,11 @@ struct FeatureFlags {
     // in the same commit attempted to lock the same object (double-spend attempt).
     #[serde(skip_serializing_if = "is_false")]
     defer_owned_object_double_spend: bool,
+
+    // If true, `TransactionExpiration::Validity` is accepted, allowing a transaction to
+    // restrict which validators may propose it in consensus.
+    #[serde(skip_serializing_if = "is_false")]
+    allowed_proposers: bool,
 
     #[serde(skip_serializing_if = "is_false")]
     randomize_checkpoint_tx_limit_in_tests: bool,
@@ -1536,6 +1568,10 @@ pub struct ProtocolConfig {
 
     /// Maximum depth of a Move value within the VM.
     max_move_value_depth: Option<u64>,
+
+    /// Maximum number of bytes a single package's arena may allocate when the package is loaded
+    /// into the VM. If unset, the VM uses its built-in default.
+    package_arena_size_in_bytes: Option<u64>,
 
     /// Maximum number of variants in an enum. Enforced by the bytecode verifier at signing.
     max_move_enum_variants: Option<u64>,
@@ -2146,6 +2182,22 @@ pub struct ProtocolConfig {
     /// Maximum serialized size in bytes of a gasless transaction (SenderSignedData).
     /// Bounds the persistent storage impact of each admitted gasless transaction.
     gasless_max_tx_size_bytes: Option<u64>,
+
+    /// The multiplier for each live reference charging per-command. Only used when
+    /// `allow_references_in_ptbs` is enabled.
+    translation_per_live_reference_charge: Option<u64>,
+
+    /// The maximum number of live references while checking a command. Only used when
+    /// `allow_references_in_ptbs` is enabled.
+    max_ptb_live_references: Option<u64>,
+
+    /// The maximum number of references returned by a command. Only used when
+    /// `allow_references_in_ptbs` is enabled.
+    max_ptb_returned_references: Option<u64>,
+
+    /// The maximum number of references returned over the course of the transaction. Only used
+    /// when `allow_references_in_ptbs` is enabled.
+    max_ptb_total_returned_references: Option<u64>,
 }
 
 /// An aliased address.
@@ -2882,6 +2934,7 @@ impl ProtocolConfig {
             // Limits the length of a Move identifier
             max_move_identifier_len: None,
             max_move_value_depth: None,
+            package_arena_size_in_bytes: None,
             max_move_enum_variants: None,
 
             gas_rounding_step: None,
@@ -2956,6 +3009,10 @@ impl ProtocolConfig {
             translation_per_type_node_charge: None,
             translation_per_reference_node_charge: None,
             translation_per_linkage_entry_charge: None,
+            translation_per_live_reference_charge: None,
+            max_ptb_live_references: None,
+            max_ptb_returned_references: None,
+            max_ptb_total_returned_references: None,
 
             max_updates_per_settlement_txn: None,
 
@@ -4627,6 +4684,22 @@ impl ProtocolConfig {
                     // bridge package gains the UpdateChainId governance message (message
                     // type 8) and every framework Move source carries the Modifications
                     // copyright notice. No config values change.
+                }
+                126 => {
+                    // v126 tracks upstream protocol version 136.
+                    cfg.feature_flags.ptb_tx_context_restrictions = true;
+
+                    cfg.translation_per_live_reference_charge = Some(1);
+                    cfg.max_ptb_live_references = Some(64);
+                    cfg.max_ptb_returned_references = Some(16);
+                    cfg.max_ptb_total_returned_references = Some(256);
+
+                    if chain != Chain::Mainnet && chain != Chain::Testnet {
+                        cfg.feature_flags.allowed_proposers = true;
+                    }
+                    cfg.feature_flags.harden_linkage_consistency = true;
+
+                    cfg.package_arena_size_in_bytes = Some(10_000_000);
                 }
                 // Use this template when making changes:
                 //
