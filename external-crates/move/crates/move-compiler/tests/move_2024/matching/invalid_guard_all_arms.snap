@@ -6,9 +6,9 @@ info:
   lint: false
 ---
 error[EC04036]: non-exhaustive pattern
-   ┌─ tests/move_2024/matching/invalid_guard_all_arms.move:12:16
+   ┌─ tests/move_2024/matching/invalid_guard_all_arms.move:13:16
    │
-12 │         match (e) {
+13 │         match (e) {
    │                ^ Pattern '_' not covered
    │
    = Match arms with guards are not considered for coverage.

@@ -6,19 +6,19 @@ info:
   lint: false
 ---
 error[EC02015]: invalid attribute
-   ┌─ tests/move_2024/extensions/invalid_index_syntax_redefine_in_extension.move:16:14
+   ┌─ tests/move_2024/extensions/invalid_index_syntax_redefine_in_extension.move:17:14
    │
-12 │     fun borrow(s: &S, i: u64): &u64 {
+13 │     fun borrow(s: &S, i: u64): &u64 {
    │         ------ This syntax method was previously defined here.
    ·
-16 │     #[syntax(index)]
+17 │     #[syntax(index)]
    │              ^^^^^ Redefined 'index' 'syntax' method for 'a::m::S'
 
 error[EC02015]: invalid attribute
-   ┌─ tests/move_2024/extensions/invalid_index_syntax_redefine_in_extension.move:26:14
+   ┌─ tests/move_2024/extensions/invalid_index_syntax_redefine_in_extension.move:27:14
    │
-22 │     fun borrow_mut(s: &mut S, i: u64): &mut u64 {
+23 │     fun borrow_mut(s: &mut S, i: u64): &mut u64 {
    │         ---------- This syntax method was previously defined here.
    ·
-26 │     #[syntax(index)]
+27 │     #[syntax(index)]
    │              ^^^^^ Redefined mutable 'index' 'syntax' method for 'a::m::S'

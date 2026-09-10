@@ -6,19 +6,19 @@ info:
   lint: false
 ---
 error[EC04001]: restricted visibility
-   ┌─ tests/move_2024/extensions/index_syntax_cross_module.move:31:17
+   ┌─ tests/move_2024/extensions/index_syntax_cross_module.move:32:17
    │
-14 │     fun borrow(s: &S, i: u64): &u64 {
+15 │     fun borrow(s: &S, i: u64): &u64 {
    │         ------ This function is internal to its module. Only 'public' and 'public(package)' functions can be called outside of their module
    ·
-31 │         assert!(&s[0] == 10, 0);
+32 │         assert!(&s[0] == 10, 0);
    │                 ^^^^^ Invalid call to internal function 'a::m::borrow'
 
 error[EC04001]: restricted visibility
-   ┌─ tests/move_2024/extensions/index_syntax_cross_module.move:32:17
+   ┌─ tests/move_2024/extensions/index_syntax_cross_module.move:33:17
    │
-14 │     fun borrow(s: &S, i: u64): &u64 {
+15 │     fun borrow(s: &S, i: u64): &u64 {
    │         ------ This function is internal to its module. Only 'public' and 'public(package)' functions can be called outside of their module
    ·
-32 │         assert!(&s[2] == 30, 1);
+33 │         assert!(&s[2] == 30, 1);
    │                 ^^^^^ Invalid call to internal function 'a::m::borrow'

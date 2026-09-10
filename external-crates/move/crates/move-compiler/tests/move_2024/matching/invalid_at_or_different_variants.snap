@@ -6,9 +6,9 @@ info:
   lint: false
 ---
 warning[WC09002]: unused variable
-   ┌─ tests/move_2024/matching/invalid_at_or_different_variants.move:14:9
+   ┌─ tests/move_2024/matching/invalid_at_or_different_variants.move:15:9
    │
-14 │         x @ (E::A(1) | E::B) => 0,
+15 │         x @ (E::A(1) | E::B) => 0,
    │         ^ Unused local variable 'x'. Consider removing or prefixing with an underscore: '_x'
    │
    = This warning can be suppressed with '#[allow(unused_variable)]' applied to the 'module' or module member ('const', 'fun', or 'struct')

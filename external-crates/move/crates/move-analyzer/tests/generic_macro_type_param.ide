@@ -14,8 +14,8 @@
     "project": "tests/generic-macro-type-param",
     "file_tests": {
       "find_index.move": [
-        { "use_line": 6, "use_ndx": 0 },
-        { "use_line": 8, "use_ndx": 0 }
+        { "use_line": 7, "use_ndx": 0 },
+        { "use_line": 9, "use_ndx": 0 }
       ]
     }
   }

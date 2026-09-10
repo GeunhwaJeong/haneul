@@ -6,19 +6,19 @@ info:
   lint: false
 ---
 error[EC02019]: invalid 'syntax' method type
-   ┌─ tests/move_2024/extensions/invalid_index_syntax_mismatched_mut.move:11:14
+   ┌─ tests/move_2024/extensions/invalid_index_syntax_mismatched_mut.move:12:14
    │
-11 │     #[syntax(index)]
+12 │     #[syntax(index)]
    │              ^^^^^ Invalid syntax annotation
-12 │     fun borrow(s: &S, i: u64): &mut u64 {
+13 │     fun borrow(s: &S, i: u64): &mut u64 {
    │                   --           -------- This syntax method must return an immutable reference to match its subject type
    │                   │             
    │                   Immutable subject type defined here
 
 error[EC07001]: referential transparency violated
-   ┌─ tests/move_2024/extensions/invalid_index_syntax_mismatched_mut.move:13:9
+   ┌─ tests/move_2024/extensions/invalid_index_syntax_mismatched_mut.move:14:9
    │
-12 │     fun borrow(s: &S, i: u64): &mut u64 {
+13 │     fun borrow(s: &S, i: u64): &mut u64 {
    │                   -- Immutable because of this position
-13 │         &mut s.t[i]
+14 │         &mut s.t[i]
    │         ^^^^^^^^^^^ Invalid mutable borrow from an immutable reference

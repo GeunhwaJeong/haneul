@@ -6,7 +6,7 @@ info:
   lint: false
 ---
 error[EC04036]: non-exhaustive pattern
-   ┌─ tests/move_2024/matching/invalid_nested_enum_incomplete.move:19:12
+   ┌─ tests/move_2024/matching/invalid_nested_enum_incomplete.move:20:12
    │
-19 │     match (o) {
+20 │     match (o) {
    │            ^ Pattern 'Outer::A(Inner::Z)' not covered

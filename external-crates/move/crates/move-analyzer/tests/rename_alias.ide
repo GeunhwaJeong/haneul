@@ -6,31 +6,31 @@
       "M2.move": [
         // Rename type alias 'Data' at alias definition - should only rename Data uses
         {
-          "use_line": 5,
+          "use_line": 6,
           "use_ndx": 2,
           "new_name": "Info"
         },
         // Rename function alias 'make' at alias definition - should only rename make uses
         {
-          "use_line": 5,
+          "use_line": 6,
           "use_ndx": 4,
           "new_name": "build"
         },
         // Rename from alias use site (Data in function return type)
         {
-          "use_line": 7,
+          "use_line": 8,
           "use_ndx": 1,
           "new_name": "Info"
         },
         // Rename original 'MyStruct' from use declaration - should NOT affect Data uses
         {
-          "use_line": 5,
+          "use_line": 6,
           "use_ndx": 1,
           "new_name": "Record"
         },
         // Rename original 'MyStruct' from direct qualified use
         {
-          "use_line": 12,
+          "use_line": 13,
           "use_ndx": 2,
           "new_name": "Record"
         }
