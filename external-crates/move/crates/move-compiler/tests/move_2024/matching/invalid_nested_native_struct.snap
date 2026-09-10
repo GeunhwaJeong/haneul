@@ -6,10 +6,10 @@ info:
   lint: false
 ---
 error[EC04015]: invalid use of native item
-   ┌─ tests/move_2024/matching/invalid_nested_native_struct.move:15:30
+   ┌─ tests/move_2024/matching/invalid_nested_native_struct.move:16:30
    │
- 7 │     public native struct N has drop;
+ 8 │     public native struct N has drop;
    │            ------ Struct declared 'native' here
    ·
-15 │             Wrapper { inner: N {} } => 1,
+16 │             Wrapper { inner: N {} } => 1,
    │                              ^^^^ Invalid pattern usage for native struct '0x0::M::N'. Native structs cannot be directly constructed/deconstructed, and their fields cannot be dirctly accessed

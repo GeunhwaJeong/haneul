@@ -131,7 +131,7 @@ source: crates/move-stackless-bytecode-2/tests/common/mod.rs
         Jump(LBL_103)
 
       Label LBL_101:
-        reg_68 : u64 = Immediate(13906834401976647679u64)
+        reg_68 : u64 = Immediate(13906834406271614975u64)
         Abort(reg_68 : u64)
 
       Label LBL_103:

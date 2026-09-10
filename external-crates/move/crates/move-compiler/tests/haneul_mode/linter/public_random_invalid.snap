@@ -6,9 +6,9 @@ info:
   lint: true
 ---
 warning[WSL05007]: risky use of 'haneul::random'
-  ┌─ tests/haneul_mode/linter/public_random_invalid.move:8:42
+  ┌─ tests/haneul_mode/linter/public_random_invalid.move:9:42
   │
-8 │     public fun not_allowed1(_x: u64, _r: &Random) {}
+9 │     public fun not_allowed1(_x: u64, _r: &Random) {}
   │                                          ^^^^^^^ 'public' function 'not_allowed1' accepts 'Random' as a parameter
   │
   = Functions that accept 'haneul::random::Random' as a parameter might be abused by attackers by inspecting the results of randomness
@@ -16,9 +16,9 @@ warning[WSL05007]: risky use of 'haneul::random'
   = This warning can be suppressed with '#[allow(lint(public_random))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WSL05007]: risky use of 'haneul::random'
-   ┌─ tests/haneul_mode/linter/public_random_invalid.move:10:34
+   ┌─ tests/haneul_mode/linter/public_random_invalid.move:11:34
    │
-10 │     public fun not_allowed2(_rg: &RandomGenerator, _x: u64) {}
+11 │     public fun not_allowed2(_rg: &RandomGenerator, _x: u64) {}
    │                                  ^^^^^^^^^^^^^^^^ 'public' function 'not_allowed2' accepts 'RandomGenerator' as a parameter
    │
    = Functions that accept 'haneul::random::RandomGenerator' as a parameter might be abused by attackers by inspecting the results of randomness
@@ -26,9 +26,9 @@ warning[WSL05007]: risky use of 'haneul::random'
    = This warning can be suppressed with '#[allow(lint(public_random))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WSL05007]: risky use of 'haneul::random'
-   ┌─ tests/haneul_mode/linter/public_random_invalid.move:12:33
+   ┌─ tests/haneul_mode/linter/public_random_invalid.move:13:33
    │
-12 │     public fun not_allowed3(_r: &Random, _rg: &RandomGenerator, _x: u64) {}
+13 │     public fun not_allowed3(_r: &Random, _rg: &RandomGenerator, _x: u64) {}
    │                                 ^^^^^^^ 'public' function 'not_allowed3' accepts 'Random' as a parameter
    │
    = Functions that accept 'haneul::random::Random' as a parameter might be abused by attackers by inspecting the results of randomness
@@ -36,9 +36,9 @@ warning[WSL05007]: risky use of 'haneul::random'
    = This warning can be suppressed with '#[allow(lint(public_random))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WSL05007]: risky use of 'haneul::random'
-   ┌─ tests/haneul_mode/linter/public_random_invalid.move:12:47
+   ┌─ tests/haneul_mode/linter/public_random_invalid.move:13:47
    │
-12 │     public fun not_allowed3(_r: &Random, _rg: &RandomGenerator, _x: u64) {}
+13 │     public fun not_allowed3(_r: &Random, _rg: &RandomGenerator, _x: u64) {}
    │                                               ^^^^^^^^^^^^^^^^ 'public' function 'not_allowed3' accepts 'RandomGenerator' as a parameter
    │
    = Functions that accept 'haneul::random::RandomGenerator' as a parameter might be abused by attackers by inspecting the results of randomness
@@ -46,9 +46,9 @@ warning[WSL05007]: risky use of 'haneul::random'
    = This warning can be suppressed with '#[allow(lint(public_random))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
 
 warning[WSL05007]: risky use of 'haneul::random'
-   ┌─ tests/haneul_mode/linter/public_random_invalid.move:14:48
+   ┌─ tests/haneul_mode/linter/public_random_invalid.move:15:48
    │
-14 │     public entry fun not_allowed4(_x: u64, _r: &Random, _y: u64) {}
+15 │     public entry fun not_allowed4(_x: u64, _r: &Random, _y: u64) {}
    │                                                ^^^^^^^ 'public' function 'not_allowed4' accepts 'Random' as a parameter
    │
    = Functions that accept 'haneul::random::Random' as a parameter might be abused by attackers by inspecting the results of randomness

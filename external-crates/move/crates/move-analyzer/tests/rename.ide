@@ -6,37 +6,37 @@
       "M1.move": [
         // Struct 'MyStruct' at definition
         {
-          "use_line": 5,
+          "use_line": 6,
           "use_ndx": 0,
           "new_name": "Data"
         },
         // Field 'value' at definition
         {
-          "use_line": 6,
+          "use_line": 7,
           "use_ndx": 0,
           "new_name": "amount"
         },
         // Function 'helper' at definition
         {
-          "use_line": 18,
+          "use_line": 19,
           "use_ndx": 0,
           "new_name": "compute"
         },
         // Constant 'MY_CONST' at definition
         {
-          "use_line": 24,
+          "use_line": 25,
           "use_ndx": 0,
           "new_name": "LIMIT"
         },
         // Function 'helper' from call site
         {
-          "use_line": 21,
+          "use_line": 22,
           "use_ndx": 0,
           "new_name": "compute"
         },
         // Local variable 'x'
         {
-          "use_line": 31,
+          "use_line": 32,
           "use_ndx": 0,
           "new_name": "val"
         }
@@ -44,7 +44,7 @@
       "M2.move": [
         // Function 'create' from partially qualified call site (M1::create)
         {
-          "use_line": 9,
+          "use_line": 10,
           "use_ndx": 1,
           "new_name": "make"
         }
@@ -52,19 +52,19 @@
       "M3.move": [
         // Type param 'T' on function
         {
-          "use_line": 5,
+          "use_line": 6,
           "use_ndx": 1,
           "new_name": "U"
         },
         // Type param 'T' on struct
         {
-          "use_line": 9,
+          "use_line": 10,
           "use_ndx": 1,
           "new_name": "U"
         },
         // Type param 'T' on enum
         {
-          "use_line": 17,
+          "use_line": 18,
           "use_ndx": 1,
           "new_name": "U"
         }

@@ -6,12 +6,12 @@ info:
   lint: false
 ---
 error[EC04007]: incompatible types
-   ┌─ tests/move_2024/matching/invalid_wrong_struct_pattern.move:12:13
+   ┌─ tests/move_2024/matching/invalid_wrong_struct_pattern.move:13:13
    │
-10 │     fun f(s: S): u64 {
+11 │     fun f(s: S): u64 {
    │              - Expected: '0x0::M::S'
-11 │         match (s) {
-12 │             T { y } => y,
+12 │         match (s) {
+13 │             T { y } => y,
    │             ^^^^^^^
    │             │
    │             Invalid pattern

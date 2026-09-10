@@ -6,29 +6,29 @@ info:
   lint: false
 ---
 error[EC04005]: expected a single type
-  ┌─ tests/move_2024/matching/match_unit_type.move:8:9
+  ┌─ tests/move_2024/matching/match_unit_type.move:9:9
   │
-8 │     let x = ();
+9 │     let x = ();
   │         ^   -- Expected a single type, but found expression list type: '()'
   │         │    
   │         Invalid type for local
 
 error[EC04005]: expected a single type
-  ┌─ tests/move_2024/matching/match_unit_type.move:9:12
-  │
-8 │     let x = ();
-  │             -- Expected a single type, but found expression list type: '()'
-9 │     match (x) {
-  │            ^ Invalid 'match' subject
+   ┌─ tests/move_2024/matching/match_unit_type.move:10:12
+   │
+ 9 │     let x = ();
+   │             -- Expected a single type, but found expression list type: '()'
+10 │     match (x) {
+   │            ^ Invalid 'match' subject
 
 error[EC04036]: non-exhaustive pattern
-  ┌─ tests/move_2024/matching/match_unit_type.move:9:12
-  │
-9 │     match (x) {
-  │            ^ Pattern '_' not covered
+   ┌─ tests/move_2024/matching/match_unit_type.move:10:12
+   │
+10 │     match (x) {
+   │            ^ Pattern '_' not covered
 
 error[EC01002]: unexpected token
-   ┌─ tests/move_2024/matching/match_unit_type.move:10:10
+   ┌─ tests/move_2024/matching/match_unit_type.move:11:10
    │
-10 │         () => 42,
+11 │         () => 42,
    │          ^ Invalid pattern

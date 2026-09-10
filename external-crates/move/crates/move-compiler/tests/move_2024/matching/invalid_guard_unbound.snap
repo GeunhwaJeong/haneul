@@ -6,17 +6,17 @@ info:
   lint: false
 ---
 error[EC04036]: non-exhaustive pattern
-   ┌─ tests/move_2024/matching/invalid_guard_unbound.move:13:16
+   ┌─ tests/move_2024/matching/invalid_guard_unbound.move:14:16
    │
-13 │         match (e) {
+14 │         match (e) {
    │                ^ Pattern 'E::A(_)' not covered
    │
    = Match arms with guards are not considered for coverage.
 
 error[EC03009]: unbound variable
-   ┌─ tests/move_2024/matching/invalid_guard_unbound.move:14:25
+   ┌─ tests/move_2024/matching/invalid_guard_unbound.move:15:25
    │
-14 │             E::A(x) if (z > 0) => x,
+15 │             E::A(x) if (z > 0) => x,
    │                  -      ^
    │                  │      │
    │                  │      Unbound variable 'z'

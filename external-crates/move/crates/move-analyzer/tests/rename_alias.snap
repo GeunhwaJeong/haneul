@@ -3,43 +3,43 @@ source: crates/move-analyzer/tests/ide_testsuite.rs
 ---
 == M2.move ========================================================
 -- test 0 -------------------
-use line: 5, use_ndx: 2, new_name: "Info"
+use line: 6, use_ndx: 2, new_name: "Info"
 Rename 'Data' to 'Info':
-  'Data' at M2.move:5:39 -> 'Info'
-  'Data' at M2.move:7:29 -> 'Info'
-  'Data' at M2.move:8:16 -> 'Info'
-  'Data' at M2.move:16:25 -> 'Info'
+  'Data' at M2.move:6:39 -> 'Info'
+  'Data' at M2.move:8:29 -> 'Info'
+  'Data' at M2.move:9:16 -> 'Info'
+  'Data' at M2.move:17:25 -> 'Info'
 
 -- test 1 -------------------
-use line: 5, use_ndx: 4, new_name: "build"
+use line: 6, use_ndx: 4, new_name: "build"
 Rename 'make' to 'build':
-  'make' at M2.move:5:55 -> 'build'
-  'make' at M2.move:8:23 -> 'build'
+  'make' at M2.move:6:55 -> 'build'
+  'make' at M2.move:9:23 -> 'build'
 
 -- test 2 -------------------
-use line: 7, use_ndx: 1, new_name: "Info"
+use line: 8, use_ndx: 1, new_name: "Info"
 Rename 'Data' to 'Info':
-  'Data' at M2.move:5:39 -> 'Info'
-  'Data' at M2.move:7:29 -> 'Info'
-  'Data' at M2.move:8:16 -> 'Info'
-  'Data' at M2.move:16:25 -> 'Info'
+  'Data' at M2.move:6:39 -> 'Info'
+  'Data' at M2.move:8:29 -> 'Info'
+  'Data' at M2.move:9:16 -> 'Info'
+  'Data' at M2.move:17:25 -> 'Info'
 
 -- test 3 -------------------
-use line: 5, use_ndx: 1, new_name: "Record"
+use line: 6, use_ndx: 1, new_name: "Record"
 Rename 'MyStruct' to 'Record':
-  'MyStruct' at M1.move:5:19 -> 'Record'
-  'MyStruct' at M1.move:9:26 -> 'Record'
-  'MyStruct' at M1.move:10:9 -> 'Record'
-  'MyStruct' at M2.move:5:27 -> 'Record'
-  'MyStruct' at M2.move:12:47 -> 'Record'
-  'MyStruct' at M2.move:16:49 -> 'Record'
+  'MyStruct' at M1.move:6:19 -> 'Record'
+  'MyStruct' at M1.move:10:26 -> 'Record'
+  'MyStruct' at M1.move:11:9 -> 'Record'
+  'MyStruct' at M2.move:6:27 -> 'Record'
+  'MyStruct' at M2.move:13:47 -> 'Record'
+  'MyStruct' at M2.move:17:49 -> 'Record'
 
 -- test 4 -------------------
-use line: 12, use_ndx: 2, new_name: "Record"
+use line: 13, use_ndx: 2, new_name: "Record"
 Rename 'MyStruct' to 'Record':
-  'MyStruct' at M1.move:5:19 -> 'Record'
-  'MyStruct' at M1.move:9:26 -> 'Record'
-  'MyStruct' at M1.move:10:9 -> 'Record'
-  'MyStruct' at M2.move:5:27 -> 'Record'
-  'MyStruct' at M2.move:12:47 -> 'Record'
-  'MyStruct' at M2.move:16:49 -> 'Record'
+  'MyStruct' at M1.move:6:19 -> 'Record'
+  'MyStruct' at M1.move:10:26 -> 'Record'
+  'MyStruct' at M1.move:11:9 -> 'Record'
+  'MyStruct' at M2.move:6:27 -> 'Record'
+  'MyStruct' at M2.move:13:47 -> 'Record'
+  'MyStruct' at M2.move:17:49 -> 'Record'

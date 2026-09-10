@@ -6,51 +6,51 @@ info:
   lint: false
 ---
 error[EC04036]: non-exhaustive pattern
-   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:15:16
+   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:16:16
    │
-15 │         match (o) {
+16 │         match (o) {
    │                ^ Pattern 'Outer::X(Inner::P(_))' not covered
 
 error[EC03006]: unexpected name in this position
-   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:16:31
+   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:17:31
    │
-16 │             Outer::X(Inner::P(v0x0::M)) => v,
+17 │             Outer::X(Inner::P(v0x0::M)) => v,
    │                               ^^^^ Could not resolve the name 'v0x0'
 
 error[EC03009]: unbound variable
-   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:16:44
+   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:17:44
    │
-14 │     fun f(o: Outer): u64 {
+15 │     fun f(o: Outer): u64 {
    │           - Similarly named defintion found here
-15 │         match (o) {
-16 │             Outer::X(Inner::P(v0x0::M)) => v,
+16 │         match (o) {
+17 │             Outer::X(Inner::P(v0x0::M)) => v,
    │                                            ^
    │                                            │
    │                                            Unbound variable 'v'
    │                                            Did you mean: 'o'
 
 error[EC04016]: too few arguments
-   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:17:13
+   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:18:13
    │
-17 │             Outer::X Outer::X(Inner::P(v)) => v,
+18 │             Outer::X Outer::X(Inner::P(v)) => v,
    │             ^^^^^^^^ Missing pattern for field '0' in '0x0::M::Outer::X'
 
 error[EC01002]: unexpected token
-   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:17:22
+   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:18:22
    │
-17 │             Outer::X Outer::X(Inner::P(v)) => v,
+18 │             Outer::X Outer::X(Inner::P(v)) => v,
    │                      ^^^^^
    │                      │
    │                      Unexpected 'Outer'
    │                      Expected '=>'
 
 error[EC03020]: unbound variant
-   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:18:22
+   ┌─ tests/move_2024/matching/invalid_malformed_nested_enum.move:19:22
    │  
- 5 │ ╭     public enum Inner {
- 6 │ │         P(u64),
- 7 │ │     }
+ 6 │ ╭     public enum Inner {
+ 7 │ │         P(u64),
+ 8 │ │     }
    │ ╰─────' Enum 'Inner' is defined here
    · │
-18 │               Outer::X(Inner::Q) => 0,
+19 │               Outer::X(Inner::Q) => 0,
    │                        ^^^^^^^^ Invalid construction. Variant 'Q' is not part of this enum

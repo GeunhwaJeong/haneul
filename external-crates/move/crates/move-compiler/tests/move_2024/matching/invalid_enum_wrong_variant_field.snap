@@ -6,7 +6,7 @@ info:
   lint: false
 ---
 error[EC04016]: too few arguments
-   ┌─ tests/move_2024/matching/invalid_enum_wrong_variant_field.move:14:9
+   ┌─ tests/move_2024/matching/invalid_enum_wrong_variant_field.move:15:9
    │
-14 │         E::A(x) => x,
+15 │         E::A(x) => x,
    │         ^^^^^^^ Missing pattern for field '1' in '0x42::m::E::A'

@@ -1,19 +1,18 @@
 ---
 source: crates/move-compiler/tests/move_check_testsuite.rs
-assertion_line: 284
 info:
   flavor: core
   edition: 2024.alpha
   lint: false
 ---
 note[NC15006]: IDE path autocomplete
-   ┌─ tests/move_check/move_2024/ide_mode/macro_body_errors_suppressed.move:6:1
+   ┌─ tests/move_check/move_2024/ide_mode/macro_body_errors_suppressed.move:7:1
    │  
- 6 │ ╭ module a::m {
- 7 │ │     public macro fun returns_u64(): u64 {
- 8 │ │         true
- 9 │ │     }
-10 │ │ }
+ 7 │ ╭ module a::m {
+ 8 │ │     public macro fun returns_u64(): u64 {
+ 9 │ │         true
+10 │ │     }
+11 │ │ }
    │ ╰─^ Possible in-scope names
    │  
    = members: 'Option -> std::option::Option' or 'returns_u64 -> a::m::returns_u64'
