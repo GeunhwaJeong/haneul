@@ -111,6 +111,16 @@ fn test_gap_version() {
         system_packages_for_protocol(124.into()).unwrap(),
         system_packages_for_protocol(122.into()).unwrap(),
     );
+    // version 125 is a framework-only release with its own entry, and version 126
+    // (config-only) has no entry and must fall back to it.
+    assert_ne!(
+        system_packages_for_protocol(125.into()).unwrap(),
+        system_packages_for_protocol(124.into()).unwrap(),
+    );
+    assert_eq!(
+        system_packages_for_protocol(126.into()).unwrap(),
+        system_packages_for_protocol(125.into()).unwrap(),
+    );
 }
 
 #[test]

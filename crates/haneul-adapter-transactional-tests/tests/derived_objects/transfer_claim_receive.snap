@@ -6,25 +6,25 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 9-48:
+task 1, lines 10-49:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 8542400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 50:
+task 2, line 51:
 //# run a::m::create_parent --sender A
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2234400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 52:
+task 3, line 53:
 //# run a::m::transfer_obj_to_derived --sender A --args object(2,0) 0
 created: object(3,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 3458000,  storage_rebate: 2212056, non_refundable_storage_fee: 22344
 
-task 4, line 54:
+task 4, line 55:
 //# run a::m::claim_and_receive --sender A --args object(2,0) 0 receiving(3,0)
 created: object(4,0), object(4,1)
 mutated: object(0,0), object(2,0), object(3,0)

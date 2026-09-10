@@ -6,25 +6,25 @@ processed 6 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 15-16:
+task 1, lines 16-17:
 //# programmable --sender A --sponsor B --inputs @B
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
 deleted: object(0,1)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 299999999000000)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 18-20:
+task 2, lines 19-21:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 21-24:
+task 3, lines 22-25:
 //# view-object 0,1
 No object at id 0,1
 
-task 4, line 25:
+task 4, line 26:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 299999999000000
 
-task 5, line 27:
+task 5, line 28:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 No funds accumulator object found

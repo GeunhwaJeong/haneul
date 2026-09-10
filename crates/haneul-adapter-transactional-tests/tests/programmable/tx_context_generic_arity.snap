@@ -3,27 +3,27 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 5 tasks
 
-task 1, lines 10-17:
+task 1, lines 11-18:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 3648000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 19-21:
+task 2, lines 20-22:
 //# programmable
 // &mut T unifies to &mut TxContext; the slot is auto-injected
 //> test::m::gen_mut<haneul::tx_context::TxContext>();
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 23-25:
+task 3, lines 24-26:
 //# programmable
 // &T unifies to &TxContext; the slot is auto-injected
 //> test::m::gen_imm<haneul::tx_context::TxContext>();
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 27-29:
+task 4, lines 28-30:
 //# programmable --inputs 0
 // T = u64 is not TxContext: no injection, the argument is supplied normally
 //> test::m::gen_imm<u64>(Input(0));

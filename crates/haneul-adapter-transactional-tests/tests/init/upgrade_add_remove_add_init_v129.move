@@ -5,7 +5,7 @@
 // Old behavior (pre-`init`-on-upgrade): add-remove-add of an `init` on an existing module is
 // permitted, and no `init` runs on upgrade.
 
-//# init --protocol-version 129 --addresses v0=0x0 v1=0x0 v2=0x0 --accounts A
+//# init --protocol-version 120 --addresses v0=0x0 v1=0x0 v2=0x0 --accounts A
 
 //# publish --upgradeable --sender A
 module v0::a;

@@ -1,20 +1,19 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 926
 ---
 processed 6 tasks
 
 init:
 A: object(0,0)
 
-task 1, lines 11-62:
+task 1, lines 12-63:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2), object(1,3), object(1,4), object(1,5), object(1,6), object(1,7), object(1,8), object(1,9), object(1,10)
 mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 34276000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 63-65:
+task 2, lines 64-66:
 //# view-object 1,5
 Owner: Account Address ( A )
 Version: 2
@@ -29,7 +28,7 @@ Contents: haneul::coin::Coin<test::regulated_coin1::REGULATED_COIN1> {
     },
 }
 
-task 3, lines 66-68:
+task 3, lines 67-69:
 //# view-object 1,10
 Owner: Account Address ( A )
 Version: 2
@@ -44,14 +43,14 @@ Contents: haneul::coin::Coin<test::regulated_coin2::REGULATED_COIN2> {
     },
 }
 
-task 4, line 69:
+task 4, line 70:
 //# run haneul::coin::deny_list_v2_add --args object(0x403) object(1,8) @A --type-args test::regulated_coin2::REGULATED_COIN2 --sender A
-events: Event { package_id: haneul, transaction_module: Identifier("coin"), sender: A, type_: StructTag { address: haneul, module: Identifier("deny_list"), name: Identifier("PerTypeConfigCreated"), type_params: [] }, contents: [0, 0, 0, 0, 0, 0, 0, 0, 98, 49, 54, 51, 48, 49, 50, 98, 50, 99, 97, 55, 102, 102, 56, 98, 100, 53, 97, 53, 54, 98, 50, 56, 50, 100, 48, 98, 56, 101, 101, 101, 48, 55, 51, 101, 49, 50, 98, 48, 100, 51, 49, 52, 52, 101, 98, 97, 54, 56, 49, 101, 49, 100, 98, 98, 57, 55, 100, 49, 51, 55, 101, 55, 51, 58, 58, 114, 101, 103, 117, 108, 97, 116, 101, 100, 95, 99, 111, 105, 110, 50, 58, 58, 82, 69, 71, 85, 76, 65, 84, 69, 68, 95, 67, 79, 73, 78, 50, 134, 227, 8, 85, 36, 87, 157, 154, 67, 29, 178, 8, 75, 99, 185, 237, 203, 14, 68, 178, 39, 85, 219, 94, 235, 221, 149, 253, 111, 231, 210, 170] }
+events: Event { package_id: haneul, transaction_module: Identifier("coin"), sender: A, type_: StructTag { address: haneul, module: Identifier("deny_list"), name: Identifier("PerTypeConfigCreated"), type_params: [] }, contents: [0, 0, 0, 0, 0, 0, 0, 0, 98, 54, 52, 97, 56, 53, 52, 49, 98, 53, 48, 97, 101, 53, 98, 100, 50, 54, 53, 99, 50, 102, 57, 99, 100, 54, 57, 55, 56, 97, 56, 49, 99, 54, 102, 50, 54, 48, 48, 49, 51, 102, 101, 50, 101, 52, 51, 102, 48, 55, 54, 100, 48, 48, 102, 54, 54, 52, 53, 100, 55, 97, 54, 53, 56, 58, 58, 114, 101, 103, 117, 108, 97, 116, 101, 100, 95, 99, 111, 105, 110, 50, 58, 58, 82, 69, 71, 85, 76, 65, 84, 69, 68, 95, 67, 79, 73, 78, 50, 74, 197, 159, 71, 54, 185, 220, 164, 252, 250, 116, 95, 127, 60, 202, 12, 83, 169, 236, 98, 187, 176, 51, 148, 11, 140, 255, 65, 195, 250, 75, 184] }
 created: object(4,0), object(4,1), object(4,2)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,8)
 gas summary: computation_cost: 1000000, storage_cost: 12220800,  storage_rebate: 2761308, non_refundable_storage_fee: 27892
 
-task 5, lines 71-72:
+task 5, lines 72-73:
 //# programmable --sender A --inputs object(1,5) object(1,10) @A
 //> TransferObjects([Input(0), Input(1)], Input(2))
 Error: Error checking transaction input objects: Address @A is denied for coin object(1,0)::regulated_coin2::REGULATED_COIN2

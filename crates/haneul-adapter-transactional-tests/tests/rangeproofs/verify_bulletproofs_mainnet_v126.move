@@ -9,7 +9,7 @@
 // (code 0) in `haneul::rangeproofs` -- isolating the bulletproofs feature gate.
 // Pinned to protocol version 126.
 
-//# init --addresses test=0x0 --protocol-version 126 --chain mainnet
+//# init --addresses test=0x0 --protocol-version 118 --chain mainnet
 
 //# publish
 #[allow(deprecated_usage)]

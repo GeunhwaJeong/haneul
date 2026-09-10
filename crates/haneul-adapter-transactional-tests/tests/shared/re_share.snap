@@ -3,19 +3,19 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 12 tasks
 
-task 1, lines 8-29:
+task 1, lines 9-30:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5912800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 31:
+task 2, line 32:
 //# run t2::o2::create
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 33:
+task 3, line 34:
 //# view-object 2,0
 Owner: Shared( 3 )
 Version: 3
@@ -27,12 +27,12 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 4, line 35:
+task 4, line 36:
 //# run t2::o2::mut_o2 --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 2204532, non_refundable_storage_fee: 22268
 
-task 5, line 37:
+task 5, line 38:
 //# view-object 2,0
 Owner: Shared( 3 )
 Version: 4
@@ -44,12 +44,12 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 6, line 39:
+task 6, line 40:
 //# run t2::o2::re_share_o2 --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 2204532, non_refundable_storage_fee: 22268
 
-task 7, line 41:
+task 7, line 42:
 //# view-object 2,0
 Owner: Shared( 3 )
 Version: 5
@@ -61,12 +61,12 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 8, line 43:
+task 8, line 44:
 //# run t2::o2::re_share_non_public_o2 --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 2204532, non_refundable_storage_fee: 22268
 
-task 9, line 45:
+task 9, line 46:
 //# view-object 2,0
 Owner: Shared( 3 )
 Version: 6
@@ -78,12 +78,12 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 10, line 47:
+task 10, line 48:
 //# run t2::o2::mut_o2 --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 2204532, non_refundable_storage_fee: 22268
 
-task 11, line 49:
+task 11, line 50:
 //# view-object 2,0
 Owner: Shared( 3 )
 Version: 7

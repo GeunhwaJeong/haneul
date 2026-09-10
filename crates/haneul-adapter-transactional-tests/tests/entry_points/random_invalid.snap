@@ -6,59 +6,59 @@ processed 11 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-30:
+task 1, lines 7-31:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 4962800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 34-36:
+task 3, lines 35-37:
 //# programmable --sender A --inputs immshared(8)
 // attempting to take imm random as mut
 //> test::m::entry_random_mut(Input(0))
 Error: Transaction Effects Status: Invalid command argument at 0. Immutable objects cannot be passed by mutable reference, &mut.
 Debug of error: CommandArgumentError { arg_idx: 0, kind: InvalidObjectByMutRef } at command Some(0)
 
-task 4, lines 38-40:
+task 4, lines 39-41:
 //# programmable --sender A --inputs immshared(8)
 // attempting to take imm random as owned
 //> test::m::entry_random_owned(Input(0))
 Error: Transaction Effects Status: Invalid command argument at 0. Immutable objects cannot be passed by-value.
 Debug of error: CommandArgumentError { arg_idx: 0, kind: InvalidObjectByValue } at command Some(0)
 
-task 5, lines 42-44:
+task 5, lines 43-45:
 //# programmable --sender A --inputs immshared(8)
 // attempting to take imm random as mut
 //> test::m::public_random_mut(Input(0))
 Error: Transaction Effects Status: Invalid command argument at 0. Immutable objects cannot be passed by mutable reference, &mut.
 Debug of error: CommandArgumentError { arg_idx: 0, kind: InvalidObjectByMutRef } at command Some(0)
 
-task 6, lines 46-48:
+task 6, lines 47-49:
 //# programmable --sender A --inputs immshared(8)
 // attempting to take imm random as owned
 //> test::m::public_random_owned(Input(0))
 Error: Transaction Effects Status: Invalid command argument at 0. Immutable objects cannot be passed by-value.
 Debug of error: CommandArgumentError { arg_idx: 0, kind: InvalidObjectByValue } at command Some(0)
 
-task 7, lines 50-52:
+task 7, lines 51-53:
 //# programmable --sender A --inputs mutshared(8)
 // attempting to take imm random as mut
 //> test::m::entry_random_mut(Input(0))
 Error: Error checking transaction input objects: Mutable parameter provided, immutable parameter expected
 
-task 8, lines 54-56:
+task 8, lines 55-57:
 //# programmable --sender A --inputs mutshared(8)
 // attempting to take imm random as owned
 //> test::m::entry_random_owned(Input(0))
 Error: Error checking transaction input objects: Mutable parameter provided, immutable parameter expected
 
-task 9, lines 58-60:
+task 9, lines 59-61:
 //# programmable --sender A --inputs mutshared(8)
 // attempting to take imm random as mut
 //> test::m::public_random_mut(Input(0))
 Error: Error checking transaction input objects: Mutable parameter provided, immutable parameter expected
 
-task 10, lines 62-64:
+task 10, lines 63-65:
 //# programmable --sender A --inputs mutshared(8)
 // attempting to take imm random as owned
 //> test::m::public_random_owned(Input(0))

@@ -5,7 +5,7 @@
 // tests valid gas coin usage by value in protocol version 118, where send_funds is not yet enabled
 // for gas coin usage
 
-//# init --addresses test=0x0 --accounts A B --protocol-version 118
+//# init --addresses test=0x0 --accounts A B --protocol-version 116
 
 //# programmable --sender A --inputs @B
 //> TransferObjects([Gas], Input(0))

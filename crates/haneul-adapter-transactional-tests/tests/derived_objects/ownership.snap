@@ -6,31 +6,31 @@ processed 10 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-39:
+task 1, lines 9-40:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 8382800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 41:
+task 2, line 42:
 //# run a::m::create_parent --sender A
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2234400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 43:
+task 3, line 44:
 //# run a::m::derive_and_share --sender A --args object(2,0)
 created: object(3,0), object(3,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 5981200,  storage_rebate: 2212056, non_refundable_storage_fee: 22344
 
-task 4, line 45:
+task 4, line 46:
 //# run a::m::derive_and_make_party --sender A --args object(2,0)
 created: object(4,0), object(4,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 5981200,  storage_rebate: 2212056, non_refundable_storage_fee: 22344
 
-task 5, lines 47-49:
+task 5, lines 48-50:
 //# view-object 4,0
 Owner: ConsensusAddressOwner( 4, A )
 Version: 4
@@ -42,12 +42,12 @@ Contents: a::m::Derived {
     },
 }
 
-task 6, line 50:
+task 6, line 51:
 //# transfer-object 4,0 --sender A --recipient A
 mutated: object(0,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 2242000,  storage_rebate: 2219580, non_refundable_storage_fee: 22420
 
-task 7, line 52:
+task 7, line 53:
 //# view-object 4,0
 Owner: Account Address ( A )
 Version: 5
@@ -59,13 +59,13 @@ Contents: a::m::Derived {
     },
 }
 
-task 8, line 54:
+task 8, line 55:
 //# run a::m::derive_and_make_immutable --sender A --args object(2,0)
 created: object(8,0), object(8,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 5981200,  storage_rebate: 2212056, non_refundable_storage_fee: 22344
 
-task 9, line 56:
+task 9, line 57:
 //# view-object 8,0
 Owner: Immutable
 Version: 6

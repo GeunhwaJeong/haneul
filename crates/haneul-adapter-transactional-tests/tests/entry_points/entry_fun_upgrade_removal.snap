@@ -6,19 +6,19 @@ processed 6 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-11:
+task 1, lines 9-12:
 //# publish --upgradeable --sender A
 created: object(1,0), object(1,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5016000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 13-16:
+task 2, lines 14-17:
 //# upgrade --package test --upgrade-capability 1,1 --sender A
 created: object(2,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 5016000,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 3, lines 18-21:
+task 3, lines 19-22:
 //# programmable --sender A
 // Cannot be resolved under unified linkage
 //> 0: test::m::foo();
@@ -26,13 +26,13 @@ task 3, lines 18-21:
 Error: Transaction Effects Status: A valid linkage was unable to be determined for the transaction
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: InvalidLinkage, source: Some("exact/exact conflicting resolutions for package: linkage requires the same package at different versions. Linkage requires exactly test (version 1) and test1 (version 2) to be used in the same transaction"), command: Some(1) } }
 
-task 4, lines 23-24:
+task 4, lines 24-25:
 //# programmable --sender A
 //> test::m::foo();
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 26-27:
+task 5, lines 27-28:
 //# programmable --sender A
 //> test1::m::bar();
 mutated: object(0,0)

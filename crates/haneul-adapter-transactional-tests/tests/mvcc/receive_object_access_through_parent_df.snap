@@ -1,25 +1,24 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 926
 ---
 processed 14 tasks
 
 init:
 A: object(0,0)
 
-task 1, lines 6-76:
+task 1, lines 7-77:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 12547600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 78:
+task 2, line 79:
 //# run tto::M1::start --sender A
 created: object(2,0), object(2,1), object(2,2), object(2,3), object(2,4), object(2,5), object(2,6), object(2,7)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 15298800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 80:
+task 3, line 81:
 //# view-object 2,4
 Owner: Object ID: ( _ )
 Version: 2
@@ -37,7 +36,7 @@ Contents: haneul::dynamic_field::Field<haneul::dynamic_object_field::Wrapper<u64
     },
 }
 
-task 4, line 82:
+task 4, line 83:
 //# view-object 2,6
 Owner: Object ID: ( fake(2,1) )
 Version: 2
@@ -66,7 +65,7 @@ Contents: haneul::dynamic_field::Field<u64, tto::M1::A> {
     },
 }
 
-task 5, line 84:
+task 5, line 85:
 //# view-object 2,7
 Owner: Object ID: ( _ )
 Version: 2
@@ -101,7 +100,7 @@ Contents: haneul::dynamic_field::Field<u64, tto::M1::A> {
     },
 }
 
-task 6, line 86:
+task 6, line 87:
 //# view-object 2,5
 Owner: Object ID: ( _ )
 Version: 2
@@ -134,7 +133,7 @@ Contents: haneul::dynamic_field::Field<u64, tto::M1::A> {
     },
 }
 
-task 7, line 88:
+task 7, line 89:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 2
@@ -156,7 +155,7 @@ Contents: tto::M1::A {
     ],
 }
 
-task 8, line 90:
+task 8, line 91:
 //# view-object 2,2
 Owner: Object ID: ( fake(2,4) )
 Version: 2
@@ -187,7 +186,7 @@ Contents: tto::M1::A {
     ],
 }
 
-task 9, line 92:
+task 9, line 93:
 //# view-object 2,1
 Owner: Account Address ( fake(2,0) )
 Version: 2
@@ -209,7 +208,7 @@ Contents: tto::M1::A {
     ],
 }
 
-task 10, lines 94-97:
+task 10, lines 95-98:
 //# view-object 2,3
 Owner: Account Address ( fake(2,0) )
 Version: 2
@@ -237,19 +236,19 @@ Contents: tto::M1::Wrapper<tto::M1::A> {
     },
 }
 
-task 11, line 98:
+task 11, line 99:
 //# run tto::M1::receive_b_parent --args object(2,0) receiving(2,3) --sender A
 Error: Transaction Effects Status: Move Runtime Abort. Location: haneul::transfer::receive_impl (function index 15) at offset 0, Abort Code: 2
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("transfer") }, function: 15, instruction: 0, function_name: Some("receive_impl") }, 2), source: Some(VMError { major_status: ABORTED, sub_status: Some(2), message: None, exec_state: None, location: Module(ModuleId { address: haneul, name: Identifier("transfer") }), indices: [], offsets: [(FunctionDefinitionIndex(15), 0)] }), command: Some(0) } }
 
-task 12, line 100:
+task 12, line 101:
 //# run tto::M1::receive_b_parent --args object(2,0) receiving(2,1) --sender A
 created: object(12,0)
 mutated: object(0,0), object(2,0)
 wrapped: object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 4278800,  storage_rebate: 3521232, non_refundable_storage_fee: 35568
 
-task 13, line 102:
+task 13, line 103:
 //# run tto::M1::receive_wrapped --args object(2,0) receiving(2,3) --sender A
 created: object(13,0)
 mutated: object(0,0), object(2,0)

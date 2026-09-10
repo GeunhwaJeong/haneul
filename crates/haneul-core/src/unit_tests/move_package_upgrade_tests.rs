@@ -1170,7 +1170,10 @@ async fn test_upgrade_package_compatible_in_dep_only_mode() {
 #[tokio::test]
 async fn test_upgrade_package_add_new_module_in_dep_only_mode_pre_v68() {
     // Allow new modules in deps-only mode for this test.
-    let mut config = ProtocolConfig::get_for_version(118.into(), Chain::Unknown);
+    // Haneul protocol version 116 carries the same configuration as the upstream
+    // version this test was written against; the Haneul numbering compresses
+    // several upstream versions per release, so the literal is not interchangeable.
+    let mut config = ProtocolConfig::get_for_version(116.into(), Chain::Unknown);
     config.set_disallow_new_modules_in_deps_only_packages_for_testing(false);
 
     let mut runner =

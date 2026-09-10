@@ -6,7 +6,7 @@ processed 29 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2), D: object(0,3), E: object(0,4)
 
-task 1, lines 8-10:
+task 1, lines 9-11:
 //# programmable --sender A --inputs @B --gas-budget 10000000
 // Send gas coin to another address via send_funds
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
@@ -14,23 +14,23 @@ deleted: object(0,0)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 299999999000000)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 12:
+task 2, line 13:
 //# view-object 0,0
 No object at id 0,0
 
-task 3, line 14:
+task 3, line 15:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, line 16:
+task 4, line 17:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 No funds accumulator object found
 
-task 5, line 18:
+task 5, line 19:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 299999999000000
 
-task 6, lines 21-23:
+task 6, lines 22-24:
 //# programmable --sender B --inputs @B --gas-budget 10000000
 // Send gas coin to self via send_funds, the gas coin should be deleted
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
@@ -38,53 +38,53 @@ deleted: object(0,1)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 299999999000000)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 7, line 25:
+task 7, line 26:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, line 27:
+task 8, line 28:
 //# view-object 0,1
 No object at id 0,1
 
-task 9, line 29:
+task 9, line 30:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 599999998000000
 
-task 10, lines 32-34:
+task 10, lines 33-35:
 //# programmable --sender B --inputs @B --address-balance-gas --gas-budget 10000000
 // Send ephemeral gas coin to self via send_funds
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1000000)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 11, line 36:
+task 11, line 37:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 12, line 38:
+task 12, line 39:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 599999997000000
 
-task 13, lines 41-43:
+task 13, lines 42-44:
 //# programmable --sender B --inputs @C --address-balance-gas --gas-budget 10000000
 // Send ephemeral gas coin to another address via send_funds
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 10000000), (object(13,0), C, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 9000000)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 14, line 45:
+task 14, line 46:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 15, line 47:
+task 15, line 48:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 599999987000000
 
-task 16, line 49:
+task 16, line 50:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> C
 9000000
 
-task 17, lines 52-56:
+task 17, lines 53-57:
 //# programmable --sender C --inputs @D 10 --gas-budget 10000000
 // Send the gas coin via send_funds, but split from it first
 //> 0: SplitCoins(Gas, [Input(1)]);
@@ -95,11 +95,11 @@ deleted: object(0,2)
 accumulators_written: (object(17,1), D, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 299999998011990)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 18, line 58:
+task 18, line 59:
 //# view-object 0,2
 No object at id 0,2
 
-task 19, line 60:
+task 19, line 61:
 //# view-object 17,0
 Owner: Account Address ( D )
 Version: 2
@@ -114,19 +114,19 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 20, line 62:
+task 20, line 63:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 21, line 64:
+task 21, line 65:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> C
 9000000
 
-task 22, line 66:
+task 22, line 67:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> D
 299999998011990
 
-task 23, lines 68-72:
+task 23, lines 69-73:
 //# programmable --sender D --inputs @E 0 --address-balance-gas --gas-budget 10000000
 // Send the ephemeral gas coin via send_funds, but split from it first
 //> 0: SplitCoins(Gas, [Input(1)]);
@@ -136,11 +136,11 @@ created: object(23,0)
 accumulators_written: (object(17,1), D, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 10000000), (object(23,1), E, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 8012000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 24, line 74:
+task 24, line 75:
 //# view-object 0,2
 No object at id 0,2
 
-task 25, line 76:
+task 25, line 77:
 //# view-object 23,0
 Owner: Account Address ( E )
 Version: 1
@@ -155,14 +155,14 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 26, line 78:
+task 26, line 79:
 //# create-checkpoint
 Checkpoint created: 6
 
-task 27, line 80:
+task 27, line 81:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> D
 299999988011990
 
-task 28, line 82:
+task 28, line 83:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> E
 8012000

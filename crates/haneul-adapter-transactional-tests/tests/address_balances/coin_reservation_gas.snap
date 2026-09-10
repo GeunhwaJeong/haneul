@@ -1,13 +1,12 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 908
 ---
 processed 18 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, line 9:
+task 1, line 10:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 1
@@ -22,7 +21,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 2, lines 11-15:
+task 2, lines 12-16:
 //# programmable --sender A --inputs 100000000000 @A
 // send funds to A's address balance so we can use coin reservations
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -32,11 +31,11 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 17:
+task 3, line 18:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 19-22:
+task 4, lines 20-23:
 //# programmable --sender A --gas-payment object(0,0) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --inputs 100000 @B
 // split from gas with object first then withdrawal
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -46,7 +45,7 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 500000000)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 24-27:
+task 5, lines 25-28:
 //# programmable --sender A --inputs 1000000000 @A
 // create a coin to use for the reservation-first test (needs enough for gas budget)
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -55,7 +54,7 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 29-33:
+task 6, lines 30-34:
 //# programmable --sender A --gas-budget 500000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --gas-payment object(5,0) --inputs 100000 @B
 // split from gas with withdrawal first then object (uses the coin we just created)
 // note: this will DELETE the coin being merged into the withdrawal
@@ -66,7 +65,7 @@ deleted: object(5,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 998890120)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 35-38:
+task 7, lines 36-39:
 //# programmable --sender A --inputs 200000 @A
 // create a coin to merge into gas
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -75,7 +74,7 @@ created: object(7,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, lines 40-42:
+task 8, lines 41-43:
 //# programmable --sender A --gas-payment object(0,0) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --inputs object(7,0)
 // merge coin into gas when using withdrawal
 //> MergeCoins(Gas, [Input(0)])
@@ -84,7 +83,7 @@ deleted: object(7,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 500000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 9, line 44:
+task 9, line 45:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 6
@@ -99,7 +98,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 10, lines 46-48:
+task 10, lines 47-49:
 //# programmable --sender A --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(6000000000) --inputs @B
 // transfer gas coin to B while paying with withdrawal only
 //> TransferObjects([Gas], Input(0))
@@ -107,7 +106,7 @@ created: object(10,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 6000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 11, line 50:
+task 11, line 51:
 //# view-object 10,0
 Owner: Account Address ( B )
 Version: 1
@@ -122,7 +121,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 12, lines 52-55:
+task 12, lines 53-56:
 //# programmable --sender A --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(3000000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(3000000000) --inputs 1000 @B
 // use multiple withdrawals
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -131,7 +130,7 @@ created: object(12,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1989000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 13, line 57:
+task 13, line 58:
 //# view-object 12,0
 Owner: Account Address ( B )
 Version: 1
@@ -146,7 +145,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 14, lines 59-62:
+task 14, lines 60-63:
 //# programmable --sender A --inputs 200000 @A
 // create a coin to merge into gas (for pure withdrawal test)
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -155,7 +154,7 @@ created: object(14,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 15, lines 64-67:
+task 15, lines 65-68:
 //# programmable --sender A --inputs 200000 @A
 // create a coin to merge into gas (for pure address balance test)
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -164,7 +163,7 @@ created: object(15,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 16, lines 69-71:
+task 16, lines 70-72:
 //# programmable --sender A --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(5000000000) --inputs object(14,0)
 // merge coin into gas when paying with pure withdrawal
 //> MergeCoins(Gas, [Input(0)])
@@ -172,7 +171,7 @@ deleted: object(14,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 178120)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 17, lines 73-75:
+task 17, lines 74-76:
 //# programmable --sender A --address-balance-gas --inputs object(15,0)
 // merge coin into gas when paying with pure address balance
 //> MergeCoins(Gas, [Input(0)])

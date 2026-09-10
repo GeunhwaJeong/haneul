@@ -1,5 +1,6 @@
 ---
 source: crates/haneul-core/src/unit_tests/authority_tests.rs
+assertion_line: 3900
 expression: execution_error_source.unwrap()
 ---
-VMError with status ABORTED with sub status 13906834208703119359 at location Module ModuleId { address: 0000000000000000000000000000000000000000000000000000000000000000, name: Identifier("aborts") } and message 0x0000000000000000000000000000000000000000000000000000000000000000::aborts::only_abort at offset 1 at code offset 1 in function definition 0
+VMError with status ABORTED with sub status 13906834212998086655 at location Module ModuleId { address: 0000000000000000000000000000000000000000000000000000000000000000, name: Identifier("aborts") } and message 0x0000000000000000000000000000000000000000000000000000000000000000::aborts::only_abort at offset 1 at code offset 1 in function definition 0

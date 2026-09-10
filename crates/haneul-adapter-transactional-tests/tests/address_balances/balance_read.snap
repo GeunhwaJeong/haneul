@@ -1,19 +1,18 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 908
 ---
 processed 11 tasks
 
 init:
 A: object(0,0), B: object(0,1), C: object(0,2), D: object(0,3)
 
-task 1, lines 8-48:
+task 1, lines 9-49:
 //# publish
 created: object(1,0)
 mutated: object(0,4)
-gas summary: computation_cost: 1000000, storage_cost: 8876800,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 8922400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 50-53:
+task 2, lines 51-54:
 //# programmable --sender A --inputs 1042 @B
 // Send some HANEUL from A to B
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -22,11 +21,11 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1042)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 55:
+task 3, line 56:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 57-59:
+task 4, lines 58-60:
 //# programmable --sender A --inputs immshared(2764) @B 1042
 // Check that we can read the balance of B
 //> 0: test::balance_read::balance_check(Input(0), Input(1), Input(2));
@@ -34,7 +33,7 @@ mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000acc
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 61-67:
+task 5, lines 62-68:
 //# programmable --sender A --inputs immshared(2764) @C 0
 // Check that C has a zero balance
 //> 0: test::balance_read::balance_check(Input(0), Input(1), Input(2));
@@ -45,14 +44,14 @@ mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000acc
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 68-69:
+task 6, lines 69-70:
 //# programmable --sender A --inputs @A
 //> 0: test::balance_read::create_supply_holder();
 created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2363600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 70-71:
+task 7, lines 71-72:
 //# programmable --sender A --inputs object(6,0) 0 @D
 //> 0: test::balance_read::send_max(Input(0), Input(1), Input(2));
 created: object(7,0)
@@ -61,7 +60,7 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(7,1), D, haneul::balance::Balance<u64>, Merge, 18446744073709551614)
 gas summary: computation_cost: 1000000, storage_cost: 4202800,  storage_rebate: 2339964, non_refundable_storage_fee: 23636
 
-task 8, lines 72-73:
+task 8, lines 73-74:
 //# programmable --sender A --inputs object(6,0) 1 @D
 //> 0: test::balance_read::send_max(Input(0), Input(1), Input(2));
 created: object(8,0)
@@ -70,11 +69,11 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(7,1), D, haneul::balance::Balance<u64>, Merge, 18446744073709551614)
 gas summary: computation_cost: 1000000, storage_cost: 4202800,  storage_rebate: 2339964, non_refundable_storage_fee: 23636
 
-task 9, line 75:
+task 9, line 76:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 10, lines 77-79:
+task 10, lines 78-80:
 //# programmable --sender A --inputs immshared(2764) @D 18446744073709551615
 // Check that D's balance is clamped to u64::MAX
 //> 0: test::balance_read::balance_check_fake(Input(0), Input(1), Input(2));

@@ -1,13 +1,12 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 920
 ---
 processed 8 tasks
 
 init:
 A: object(0,0), B: object(0,1), C: object(0,2), D: object(0,3), E: object(0,4)
 
-task 1, lines 10-13:
+task 1, lines 11-14:
 //# programmable --sender A --inputs 20000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -16,11 +15,11 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 20000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 15-18:
+task 2, lines 16-19:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 19-24:
+task 3, lines 20-25:
 //# bench ptb --sender A --address-balance-gas --inputs withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100) @B
 //> 0: haneul::balance::redeem_funds<haneul::haneul::HANEUL>(Input(0));
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(1));
@@ -29,7 +28,7 @@ task 3, lines 19-24:
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1000100), (object(3,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, lines 25-33:
+task 4, lines 26-34:
 //# bench ptb --sender A --address-balance-gas --inputs withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100) withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100) withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100) withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100) @B @C @D @E
 //> 0: haneul::balance::redeem_funds<haneul::haneul::HANEUL>(Input(0));
 //> 1: haneul::balance::redeem_funds<haneul::haneul::HANEUL>(Input(1));
@@ -42,14 +41,14 @@ task 4, lines 25-33:
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1000400), (object(3,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100), (object(4,0), C, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100), (object(4,1), D, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100), (object(4,2), E, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 5, line 35:
+task 5, line 36:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 6, line 37:
+task 6, line 38:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 19997999500
 
-task 7, line 39:
+task 7, line 40:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 200

@@ -6,7 +6,7 @@ processed 9 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 14-16:
+task 1, lines 15-17:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 1
@@ -21,7 +21,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 2, lines 17-20:
+task 2, lines 18-21:
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -30,15 +30,15 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 22:
+task 3, line 23:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 24-28:
+task 4, lines 25-29:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 5, lines 29-31:
+task 5, lines 30-32:
 //# programmable --sender A --gas-payment object(0,0) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --inputs 100000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -47,15 +47,15 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1000000000)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 33-36:
+task 6, lines 34-37:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 37-40:
+task 7, lines 38-41:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 99000000000
 
-task 8, line 41:
+task 8, line 42:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 3

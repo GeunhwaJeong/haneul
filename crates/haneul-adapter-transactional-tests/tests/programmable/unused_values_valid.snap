@@ -6,13 +6,13 @@ processed 7 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-33:
+task 1, lines 9-34:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 7607600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 34-38:
+task 2, lines 35-39:
 //# programmable --sender A --inputs @A
 //> 0: test::m1::r();
 //> TransferObjects([Result(0)], Input(0))
@@ -21,7 +21,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 39-44:
+task 3, lines 40-45:
 //# programmable --sender A --inputs object(2,0) 0 vector[@0,@0]
 //> 0: test::m1::droppable();
 //> 1: test::m1::droppable();
@@ -30,7 +30,7 @@ task 3, lines 39-44:
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 2181960, non_refundable_storage_fee: 22040
 
-task 4, lines 45-52:
+task 4, lines 46-53:
 //# programmable --sender A
 //> 0: test::m1::copyable();
 //> 1: test::m1::borrow(Result(0));
@@ -41,13 +41,13 @@ task 4, lines 45-52:
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 53-54:
+task 5, lines 54-55:
 //# programmable --sender A --inputs 0
 //> test::m1::num_mut(Input(0))
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 56-58:
+task 6, lines 57-59:
 //# programmable --sender A
 //> 0: test::m1::copyable();
 //> test::m1::borrow_and_copy(Result(0), Result(0));

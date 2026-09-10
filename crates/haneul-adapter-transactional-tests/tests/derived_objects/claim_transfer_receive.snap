@@ -1,31 +1,30 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 926
 ---
 processed 7 tasks
 
 init:
 A: object(0,0)
 
-task 1, lines 9-47:
+task 1, lines 10-48:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 8717200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 49:
+task 2, line 50:
 //# run a::m::create_parent_and_derived --args 0 --sender A
 created: object(2,0), object(2,1), object(2,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5981200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 51:
+task 3, line 52:
 //# run a::m::transfer_obj_to_derived --sender A --args object(2,0) 0
 created: object(3,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 3458000,  storage_rebate: 2212056, non_refundable_storage_fee: 22344
 
-task 4, line 53:
+task 4, line 54:
 //# view-object 3,0
 Owner: Account Address ( fake(2,1) )
 Version: 3
@@ -37,12 +36,12 @@ Contents: a::m::Obj {
     },
 }
 
-task 5, line 55:
+task 5, line 56:
 //# run a::m::receive_obj_from_derived --sender A --args object(2,1) receiving(3,0)
 mutated: object(0,0), object(2,1), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 3465600,  storage_rebate: 3430944, non_refundable_storage_fee: 34656
 
-task 6, line 57:
+task 6, line 58:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 4

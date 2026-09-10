@@ -1,25 +1,24 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 926
 ---
 processed 8 tasks
 
 init:
 A: object(0,0)
 
-task 1, lines 6-28:
+task 1, lines 7-29:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6650000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 30:
+task 2, line 31:
 //# run tto::M1::start --sender A
 created: object(2,0), object(2,1), object(2,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5996400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 32:
+task 3, line 33:
 //# view-object 2,2
 Owner: Object ID: ( fake(2,0) )
 Version: 2
@@ -37,7 +36,7 @@ Contents: haneul::dynamic_field::Field<haneul::dynamic_object_field::Wrapper<u64
     },
 }
 
-task 4, line 34:
+task 4, line 35:
 //# view-object 2,1
 Owner: Object ID: ( fake(2,2) )
 Version: 2
@@ -50,7 +49,7 @@ Contents: tto::M1::A {
     value: 0u64,
 }
 
-task 5, lines 36-38:
+task 5, lines 37-39:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 2
@@ -63,10 +62,10 @@ Contents: tto::M1::A {
     value: 0u64,
 }
 
-task 6, lines 39-41:
+task 6, lines 40-42:
 //# run tto::M1::receive --args object(2,0) receiving(2,1) --sender A
 Error: Error checking transaction input objects: Object object(2,1) is owned by object object(2,2). Objects owned by other objects cannot be used as input arguments
 
-task 7, line 42:
+task 7, line 43:
 //# run tto::M1::receive --args object(2,0) receiving(2,2) --sender A
 Error: Error checking transaction input objects: Object object(2,2) is owned by object object(2,0). Objects owned by other objects cannot be used as input arguments

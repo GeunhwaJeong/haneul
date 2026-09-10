@@ -3,11 +3,11 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 3 tasks
 
-task 1, lines 8-17:
+task 1, lines 9-18:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m. 'init' cannot be 'entry'"), command: Some(0) } }
 
-task 2, line 18:
+task 2, line 19:
 //# run test::m::init
 Error: Error checking transaction input objects: Dependent package not found on-chain: 0x0000000000000000000000000000000000000000000000000000000000000000
