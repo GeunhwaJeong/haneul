@@ -27,10 +27,8 @@ haneul-execution.workspace = true
 haneul-futures.workspace = true
 haneul-indexer-alt-framework = { workspace = true, default-features = false }
 haneul-inverted-index.workspace = true
-haneul-indexer-alt-framework-store-traits.workspace = true
 haneul-protocol-config.workspace = true
 haneul-types.workspace = true
-thiserror.workspace = true
 tokio = { workspace = true, features = ["time", "rt"] }
 tracing.workspace = true
 typed-store-error.workspace = true

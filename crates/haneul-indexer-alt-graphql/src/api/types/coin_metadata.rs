@@ -167,9 +167,9 @@ impl CoinMetadata {
             .ok()?
     }
 
-    /// Fetch the total balance for coins with marker type `coinType` (e.g. `0x2::haneul::HANEUL`), owned by this address.
+    /// Fetch the balance for `coinType` (e.g. `0x2::haneul::HANEUL`) owned by this address.
     ///
-    /// If the address does not own any coins of that type, a balance of zero is returned.
+    /// The result includes the total balance, the balance held in coin objects, and the balance held in the address's balance accumulator. If this address has no balance of that type, all three values are zero.
     pub(crate) async fn balance(
         &self,
         ctx: &Context<'_>,
@@ -178,7 +178,9 @@ impl CoinMetadata {
         self.super_.balance(ctx, coin_type).await.ok()?
     }
 
-    /// Total balance across coins owned by this address, grouped by coin type.
+    /// Balances held by this address, grouped by coin type.
+    ///
+    /// Each result includes the total balance, the balance held in coin objects, and the balance held in the address's balance accumulator.
     pub(crate) async fn balances(
         &self,
         ctx: &Context<'_>,
@@ -326,9 +328,9 @@ impl CoinMetadata {
         self.super_.move_object_bcs(ctx).await.ok()?
     }
 
-    /// Fetch the total balances keyed by coin types (e.g. `0x2::haneul::HANEUL`) owned by this address.
+    /// Fetch balances keyed by coin types (e.g. `0x2::haneul::HANEUL`) owned by this address.
     ///
-    /// If the address does not own any coins of a given type, a balance of zero is returned for that type.
+    /// Each result includes the total balance, the balance held in coin objects, and the balance held in the address's balance accumulator. Returns `null` when no checkpoint is set in scope (e.g. execution scope). If this address has no balance of a given type, all three values are zero for that type.
     pub(crate) async fn multi_get_balances(
         &self,
         ctx: &Context<'_>,

@@ -3661,7 +3661,7 @@ async fn select_gas_with_fullnode(
     Ok((
         gas_data.payment.clone(),
         gas_data.budget,
-        *resolved.expiration(),
+        resolved.expiration().clone(),
     ))
 }
 

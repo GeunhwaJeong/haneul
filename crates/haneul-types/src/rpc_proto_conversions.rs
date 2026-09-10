@@ -5,6 +5,7 @@
 //! Module for conversions from haneul-core types to rpc protos
 
 use crate::crypto::HaneulSignature;
+use nonempty::NonEmpty;
 
 fn ms_to_timestamp(ms: u64) -> prost_types::Timestamp {
     prost_types::Timestamp {
@@ -1484,6 +1485,7 @@ impl From<crate::execution_status::CommandArgumentError> for CommandArgumentErro
                 CommandArgumentErrorKind::CannotWriteToExtendedReference
             }
             E::InvalidReferenceArgument => CommandArgumentErrorKind::InvalidReferenceArgument,
+            E::InvalidTxContext => CommandArgumentErrorKind::InvalidTxContext,
         };
 
         message.set_kind(kind);
@@ -2279,7 +2281,7 @@ fn merge_transaction_data(
     }
 
     if mask.contains(Transaction::EXPIRATION_FIELD.name) {
-        message.expiration = Some(source.expiration.into());
+        message.expiration = Some(source.expiration.clone().into());
     }
 }
 
@@ -2336,6 +2338,30 @@ impl From<crate::transaction::TransactionExpiration> for TransactionExpiration {
 
                 TransactionExpirationKind::ValidDuring
             }
+            E::Validity {
+                min_epoch,
+                max_epoch,
+                min_timestamp,
+                max_timestamp,
+                chain,
+                nonce,
+                allowed_proposers,
+            } => {
+                message.epoch = max_epoch;
+                message.min_epoch = min_epoch;
+                message.min_timestamp = min_timestamp.map(ms_to_timestamp);
+                message.max_timestamp = max_timestamp.map(ms_to_timestamp);
+                message.set_chain(haneul_sdk_types::Digest::new(*chain.as_bytes()));
+                message.set_nonce(nonce);
+                if let Some(allowed) = allowed_proposers {
+                    let mut proposers = AllowedProposers::default();
+                    proposers.set_epoch(allowed.epoch);
+                    proposers.proposers = allowed.proposers.into();
+                    message.set_allowed_proposers(proposers);
+                }
+
+                TransactionExpirationKind::Validity
+            }
         };
 
         message.set_kind(kind);
@@ -2352,7 +2378,8 @@ impl TryFrom<&TransactionExpiration> for crate::transaction::TransactionExpirati
         Ok(match value.kind() {
             TransactionExpirationKind::None => Self::None,
             TransactionExpirationKind::Epoch => Self::Epoch(value.epoch()),
-            TransactionExpirationKind::ValidDuring => {
+            kind @ (TransactionExpirationKind::ValidDuring
+            | TransactionExpirationKind::Validity) => {
                 let chain_str = value
                     .chain
                     .as_deref()
@@ -2376,13 +2403,39 @@ impl TryFrom<&TransactionExpiration> for crate::transaction::TransactionExpirati
                     .as_ref()
                     .map(timestamp_to_ms)
                     .transpose()?;
-                Self::ValidDuring {
-                    min_epoch: value.min_epoch,
-                    max_epoch: value.epoch,
-                    min_timestamp,
-                    max_timestamp,
-                    chain,
-                    nonce,
+                let min_epoch = value.min_epoch;
+                let max_epoch = value.epoch;
+
+                if kind == TransactionExpirationKind::ValidDuring {
+                    Self::ValidDuring {
+                        min_epoch,
+                        max_epoch,
+                        min_timestamp,
+                        max_timestamp,
+                        chain,
+                        nonce,
+                    }
+                } else {
+                    let allowed_proposers = value
+                        .allowed_proposers
+                        .as_ref()
+                        .map(|allowed| -> Result<_, Self::Error> {
+                            Ok(crate::transaction::AllowedProposers {
+                                epoch: allowed.epoch(),
+                                proposers: NonEmpty::from_vec(allowed.proposers.clone())
+                                    .ok_or("allowed_proposers must not be empty")?,
+                            })
+                        })
+                        .transpose()?;
+                    Self::Validity {
+                        min_epoch,
+                        max_epoch,
+                        min_timestamp,
+                        max_timestamp,
+                        chain,
+                        nonce,
+                        allowed_proposers,
+                    }
                 }
             }
             TransactionExpirationKind::Unknown | _ => {

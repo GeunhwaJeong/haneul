@@ -117,10 +117,14 @@ jobs:
         run: |
           forge soldeer update
       - name: Add postgres to PATH
-        run: echo "/usr/lib/postgresql/14/bin" >> $GITHUB_PATH
+        shell: bash
+        run: |
+          pg_bin=$(ls -d /usr/lib/postgresql/*/bin 2>/dev/null | head -1)
+          [ -n "$pg_bin" ] || { echo "ERROR: no postgres bin dir found under /usr/lib/postgresql"; exit 1; }
+          echo "$pg_bin" >> "$GITHUB_PATH"
       - name: cargo test
         run: |
-          cargo nextest run --profile ci -E 'package(haneul-bridge) | package(haneul-bridge-indexer)'
+          cargo nextest run --profile ci --cargo-quiet -E 'package(haneul-bridge) | package(haneul-bridge-indexer)'
       # Ensure there are no uncommitted changes in the repo after running tests
       - run: scripts/changed-files.sh
         shell: bash

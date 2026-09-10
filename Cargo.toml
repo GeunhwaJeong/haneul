@@ -173,7 +173,6 @@ members = [
   "crates/haneul-rpc-resolver",
   "crates/haneul-rpc-store",
   "crates/haneul-sdk",
-  "crates/haneul-security-watchdog",
   "crates/haneul-simulator",
   "crates/haneul-single-node-benchmark",
   "crates/haneul-snapshot",
@@ -230,7 +229,7 @@ members = [
 
 [workspace.package]
 # This version string will be inherited by haneul-core, haneul-faucet, haneul-node, haneul-tools, haneul-sdk, haneul-move-build, and haneul crates.
-version = "1.10.0"
+version = "1.11.0"
 authors = ["Geunhwa Jeong <jeonggh892@gmail.com>"]
 repository = "https://github.com/GeunhwaJeong/haneul"
 
@@ -389,7 +388,7 @@ derive_more = "1.0.0"
 diesel = "2.3"
 diesel-async = "0.9"
 diesel_migrations = "2.3"
-dirs = "4.0.0"
+dirs = "5.0.1"
 duration-str = "0.5.0"
 ed25519 = { version = "2", features = ["pkcs8", "alloc", "zeroize"] }
 ed25519-consensus = { version = "2.0.1", features = ["serde"] }
@@ -424,7 +423,7 @@ haneul-config = { path = "crates/haneul-config" }
 haneul-consistent-store = { path = "crates/haneul-consistent-store" }
 haneul-core = { path = "crates/haneul-core" }
 haneul-cost = { path = "crates/haneul-cost" }
-haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "2995618315f3d0753f7c6b7785cbcbf454f0b331", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
+haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "6d631c01c8c34b84d83bcd76a6b5836b36444896", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
 haneul-data-ingestion-core = { path = "crates/haneul-data-ingestion-core" }
 haneul-data-store = { path = "crates/haneul-data-store" }
 haneul-display = { path = "crates/haneul-display" }
@@ -491,7 +490,7 @@ haneul-proxy = { path = "crates/haneul-proxy" }
 haneul-replay = { path = "crates/haneul-replay" }
 haneul-replay-2 = { path = "crates/haneul-replay-2" }
 haneul-rosetta = { path = "crates/haneul-rosetta" }
-haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "2995618315f3d0753f7c6b7785cbcbf454f0b331", features = [ "unstable" ] }
+haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "6d631c01c8c34b84d83bcd76a6b5836b36444896", features = [ "unstable" ] }
 
 ### Workspace Members ###
 haneul-rpc-api = { path = "crates/haneul-rpc-api" }
@@ -500,7 +499,7 @@ haneul-rpc-loadgen = { path = "crates/haneul-rpc-loadgen" }
 haneul-rpc-resolver = { path = "crates/haneul-rpc-resolver" }
 haneul-rpc-store = { path = "crates/haneul-rpc-store" }
 haneul-sdk = { path = "crates/haneul-sdk" }
-haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "2995618315f3d0753f7c6b7785cbcbf454f0b331", features = [ "hash", "serde" ] }
+haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "6d631c01c8c34b84d83bcd76a6b5836b36444896", features = [ "hash", "serde" ] }
 haneul-simulator = { path = "crates/haneul-simulator" }
 haneul-snapshot = { path = "crates/haneul-snapshot" }
 haneul-source-verification = { path = "crates/haneul-source-verification" }
@@ -612,7 +611,7 @@ object_store = { version = "0.13.0", features = [
 ] }
 once_cell = "1.18.0"
 oneshot = { version = "0.2.1", features = ["std"] }
-ouroboros = "0.17"
+ouroboros = "0.18.4"
 p256 = { version = "0.13.2", features = ["ecdsa"] }
 p384 = { version = "0.13.0", default-features = false, features = [
   "ecdsa",
@@ -741,7 +740,7 @@ tower = { version = "0.5", features = [
   "load-shed",
   "limit",
 ] }
-tower-http = { version = "0.5", features = [
+tower-http = { version = "0.6", features = [
   "cors",
   "full",
   "trace",
@@ -784,7 +783,7 @@ wiremock = "0.6"
 x = { path = "crates/x" }
 
 x509-parser = { version = "0.17.0", features = ["verify"] }
-zstd = "0.12.3"
+zstd = "0.13.2"
 [patch.crates-io]
 async-graphql = { git = "https://github.com/GeunhwaJeong/async-graphql", branch = "v7.0.1-react-18-graphiql-4" }
 async-graphql-axum = { git = "https://github.com/GeunhwaJeong/async-graphql", branch = "v7.0.1-react-18-graphiql-4" }

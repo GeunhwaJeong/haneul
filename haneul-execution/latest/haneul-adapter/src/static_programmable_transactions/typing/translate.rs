@@ -6,8 +6,9 @@ use super::{ast as T, env::Env};
 use crate::{
     execution_mode::ExecutionMode,
     gas_charger::GasPayment,
-    static_programmable_transactions::execution::context::EitherError,
     static_programmable_transactions::{
+        execution::context::EitherError,
+        linkage::resolved_linkage::ExecutableLinkage,
         loading::ast::{self as L, Type},
         spanned::sp,
         typing::ast::BytesConstraint,
@@ -58,6 +59,7 @@ struct Context {
         IndexMap<T::Location, T::WithdrawalCompatibilityConversion>,
     original_command_len: usize,
     commands: Vec<T::Command>,
+    unified_linkage: Option<ExecutableLinkage>,
 }
 
 impl Context {
@@ -65,6 +67,7 @@ impl Context {
         gas_payment: Option<GasPayment>,
         original_command_len: usize,
         linputs: L::Inputs,
+        unified_linkage: Option<ExecutableLinkage>,
     ) -> Result<Self, ExecutionError> {
         let mut context = Context {
             current_command: 0,
@@ -80,6 +83,7 @@ impl Context {
             withdrawal_compatibility_conversions: IndexMap::new(),
             receiving: IndexMap::new(),
             commands: vec![],
+            unified_linkage,
         };
         // clone inputs for debug assertions
         #[cfg(debug_assertions)]
@@ -165,9 +169,10 @@ impl Context {
             withdrawals,
             pure,
             receiving,
-            commands,
             withdrawal_compatibility_conversions,
             original_command_len,
+            commands,
+            unified_linkage,
             ..
         } = self;
         let objects = objects.into_iter().map(|(_, o)| o).collect();
@@ -184,6 +189,7 @@ impl Context {
             withdrawal_compatibility_conversions,
             original_command_len,
             commands,
+            unified_linkage,
         }
     }
 
@@ -343,10 +349,11 @@ pub fn transaction<Mode: ExecutionMode>(
         mut inputs,
         original_command_len,
         mut commands,
+        unified_linkage,
     } = lt;
     let withdrawal_compatability_inputs =
         determine_withdrawal_compatibility_inputs(env, &mut inputs)?;
-    let mut context = Context::new(gas_payment, original_command_len, inputs)?;
+    let mut context = Context::new(gas_payment, original_command_len, inputs, unified_linkage)?;
     withdrawal_compatibility_conversion(
         env,
         &mut context,
@@ -1038,6 +1045,7 @@ fn convert_withdrawal_to_coin<Mode: ExecutionMode>(
             COIN_MODULE_NAME,
             REDEEM_FUNDS_FUNC_NAME,
             vec![inner_ty.clone()],
+            context.unified_linkage.as_ref(),
         )?,
         arguments: vec![withdrawal_arg, ctx_arg],
     }));
@@ -1306,6 +1314,7 @@ mod post_execution_checks {
                 withdrawal_compatibility_conversions: _,
                 original_command_len: _,
                 commands: _,
+                unified_linkage: _,
             } = ast;
             // Find inputs with post execution checks
             let inputs = objects

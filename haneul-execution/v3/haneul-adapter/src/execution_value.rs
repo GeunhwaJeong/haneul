@@ -11,46 +11,12 @@ use haneul_types::{
     execution_status::{CommandArgumentError, ExecutionErrorKind},
     funds_accumulator::Withdrawal,
     object::Owner,
-    storage::{BackingPackageStore, RuntimeObjectResolver, StorageView},
     transfer::Receiving,
 };
 use move_binary_format::file_format::AbilitySet;
 use move_core_types::u256::U256;
 use move_vm_types::loaded_data::runtime_types::Type;
 use serde::Deserialize;
-
-pub trait HaneulResolver: BackingPackageStore {
-    fn as_backing_package_store(&self) -> &dyn BackingPackageStore;
-}
-
-impl<T> HaneulResolver for T
-where
-    T: BackingPackageStore,
-{
-    fn as_backing_package_store(&self) -> &dyn BackingPackageStore {
-        self
-    }
-}
-
-/// Interface with the store necessary to execute a programmable transaction
-pub trait ExecutionState: StorageView + HaneulResolver {
-    fn as_haneul_resolver(&self) -> &dyn HaneulResolver;
-    fn as_child_resolver(&self) -> &dyn RuntimeObjectResolver;
-}
-
-impl<T> ExecutionState for T
-where
-    T: StorageView,
-    T: HaneulResolver,
-{
-    fn as_haneul_resolver(&self) -> &dyn HaneulResolver {
-        self
-    }
-
-    fn as_child_resolver(&self) -> &dyn RuntimeObjectResolver {
-        self
-    }
-}
 
 #[derive(Clone, Debug)]
 pub enum Mutability {

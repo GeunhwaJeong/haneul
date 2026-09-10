@@ -266,6 +266,7 @@ impl DBCheckpointHandler {
             &perpetual_db,
             &checkpoint_store,
             None,
+            &mut haneul_rpc_store::RetractionCursors::default(),
             self.pruning_config.clone(),
             metrics,
             epoch_duration_ms,

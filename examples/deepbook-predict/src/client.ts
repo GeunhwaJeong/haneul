@@ -15,6 +15,6 @@ export function getKeypair(privateKey: string): Ed25519Keypair {
 
 export const client = new HaneulGrpcClient({
 	network: PREDICT.network,
-	baseUrl: 'https://fullnode.testnet.haneul.io:443',
+	baseUrl: PREDICT.fullnodeUrl,
 });
 // docs::/#client

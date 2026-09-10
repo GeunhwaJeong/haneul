@@ -592,17 +592,31 @@ haneulStackSidebar: [
       label: 'Seal',
       link: { type: 'doc', id: 'haneul-stack/seal/index' },
       items: [
+        'haneul-stack/seal/server-overview',
+        'haneul-stack/seal/getting-started',
         {
-          type: 'link',
-          label: 'Seal Docs',
-          href: 'https://seal-docs.wal.app',
+          type: 'category',
+          label: 'Developer guide',
+          items: [
+            'haneul-stack/seal/design',
+            'haneul-stack/seal/using-seal',
+            'haneul-stack/seal/example-patterns',
+            'haneul-stack/seal/security-best-practices',
+          ],
         },
+        {
+          type: 'category',
+          label: 'Operator guide',
+          items: [
+            'haneul-stack/seal/key-server-ops',
+            'haneul-stack/seal/key-server-committee-ops',
+            'haneul-stack/seal/aggregator',
+            'haneul-stack/seal/seal-cli',
+          ],
+        },
+        'haneul-stack/seal/pricing',
+        'haneul-stack/seal/terms-of-service',
         'haneul-stack/seal/haneul-stack-seal',
-        {
-          type: 'link',
-          label: 'Messaging SDK Chat App Example →',
-          href: '/haneul-stack/messaging/chat-app',
-        },
       ],
     },
     {
@@ -805,6 +819,7 @@ haneulStackSidebar: [
       link: { type: 'doc', id: 'operators/data-management/index', },
       items: [
         'operators/data-management/managing-data',
+        'operators/data-management/available-data-stores',
         'operators/data-management/indexer-stack-setup',
         'operators/data-management/remote-store-setup',
         'operators/data-management/archival-stack-setup',

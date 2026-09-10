@@ -21,13 +21,13 @@ pub struct TypeLayoutResolver<'state, 'vm> {
     linkage_view: LinkageView<'state>,
 }
 
-/// Implements HaneulResolver traits by providing null implementations for module and resource
+/// Implements BackingPackageStore traits by providing null implementations for module and resource
 /// resolution and delegating backing package resolution to the trait object.
-struct NullHaneulResolver<'state>(Box<dyn TypeLayoutStore + 'state>);
+struct NullPackageStore<'state>(Box<dyn TypeLayoutStore + 'state>);
 
 impl<'state, 'vm> TypeLayoutResolver<'state, 'vm> {
     pub fn new(vm: &'vm MoveVM, state_view: Box<dyn TypeLayoutStore + 'state>) -> Self {
-        let linkage_view = LinkageView::new(Box::new(NullHaneulResolver(state_view)));
+        let linkage_view = LinkageView::new(Box::new(NullPackageStore(state_view)));
         Self { vm, linkage_view }
     }
 }
@@ -54,7 +54,7 @@ impl LayoutResolver for TypeLayoutResolver<'_, '_> {
     }
 }
 
-impl BackingPackageStore for NullHaneulResolver<'_> {
+impl BackingPackageStore for NullPackageStore<'_> {
     fn get_package_object(&self, package_id: &ObjectID) -> HaneulResult<Option<PackageObject>> {
         self.0.get_package_object(package_id)
     }

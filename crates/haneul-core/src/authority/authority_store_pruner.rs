@@ -7,6 +7,7 @@ use crate::checkpoints::{CheckpointStore, CheckpointWatermark};
 use crate::jsonrpc_index::IndexStore;
 use anyhow::anyhow;
 use haneul_config::node::AuthorityStorePruningConfig;
+pub use haneul_rpc_store::RetractionCursors;
 use haneul_rpc_store::Store as RpcStore;
 #[cfg(not(tidehunter))]
 use haneul_types::base_types::VersionNumber;
@@ -157,6 +158,7 @@ impl AuthorityStorePruner {
         metrics: Arc<AuthorityStorePruningMetrics>,
         pruned_tx_seq_exclusive: u64,
         rpc_store: Option<&RpcStore>,
+        retraction_cursors: &mut RetractionCursors,
         enable_pruning_tombstones: bool,
     ) -> anyhow::Result<()> {
         let _scope = monitored_scope("ObjectsLivePruner");
@@ -241,6 +243,7 @@ impl AuthorityStorePruner {
             haneul_rpc_store::prune_history_cohort(
                 rpc_store.db(),
                 rpc_store.schema(),
+                retraction_cursors,
                 checkpoint_number,
                 pruned_tx_seq_exclusive,
                 &transaction_effects,
@@ -260,6 +263,7 @@ impl AuthorityStorePruner {
         metrics: Arc<AuthorityStorePruningMetrics>,
         pruned_tx_seq_exclusive: u64,
         rpc_store: Option<&RpcStore>,
+        retraction_cursors: &mut RetractionCursors,
         _: bool,
     ) -> anyhow::Result<()> {
         let _scope = monitored_scope("ObjectsLivePruner");
@@ -291,6 +295,7 @@ impl AuthorityStorePruner {
             haneul_rpc_store::prune_history_cohort(
                 rpc_store.db(),
                 rpc_store.schema(),
+                retraction_cursors,
                 checkpoint_number,
                 pruned_tx_seq_exclusive,
                 &transaction_effects,
@@ -298,7 +303,6 @@ impl AuthorityStorePruner {
         }
 
         wb.write()?;
-
         Ok(())
     }
 
@@ -407,6 +411,7 @@ impl AuthorityStorePruner {
         perpetual_db: &Arc<AuthorityPerpetualTables>,
         checkpoint_store: &Arc<CheckpointStore>,
         rpc_store: Option<&RpcStore>,
+        retraction_cursors: &mut RetractionCursors,
         config: AuthorityStorePruningConfig,
         metrics: Arc<AuthorityStorePruningMetrics>,
         epoch_duration_ms: u64,
@@ -442,6 +447,7 @@ impl AuthorityStorePruner {
             perpetual_db,
             checkpoint_store,
             rpc_store,
+            retraction_cursors,
             PruningMode::Objects,
             config.num_epochs_to_retain,
             pruned_checkpoint_number,
@@ -507,6 +513,9 @@ impl AuthorityStorePruner {
             perpetual_db,
             checkpoint_store,
             rpc_store,
+            // Checkpoints mode only prunes checkpoint tables and never calls
+            // `prune_objects_and_indexes`; the default cursor is inert.
+            &mut RetractionCursors::default(),
             PruningMode::Checkpoints,
             config
                 .num_epochs_to_retain_for_checkpoints()
@@ -535,6 +544,7 @@ impl AuthorityStorePruner {
         perpetual_db: &Arc<AuthorityPerpetualTables>,
         checkpoint_store: &Arc<CheckpointStore>,
         rpc_store: Option<&RpcStore>,
+        retraction_cursors: &mut RetractionCursors,
         mode: PruningMode,
         num_epochs_to_retain: u64,
         starting_checkpoint_number: CheckpointSequenceNumber,
@@ -614,6 +624,7 @@ impl AuthorityStorePruner {
                             metrics.clone(),
                             pruned_tx_seq_exclusive,
                             rpc_store,
+                            retraction_cursors,
                             !config.killswitch_tombstone_pruning,
                         )
                         .await?
@@ -646,6 +657,7 @@ impl AuthorityStorePruner {
                         metrics.clone(),
                         pruned_tx_seq_exclusive,
                         rpc_store,
+                        retraction_cursors,
                         !config.killswitch_tombstone_pruning,
                     )
                     .await?
@@ -938,10 +950,6 @@ impl AuthorityStorePruner {
         } else {
             Duration::from_secs(config.pruning_run_delay_seconds.unwrap_or(60 * 60))
         };
-        let mut objects_prune_interval =
-            tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
-        let mut checkpoints_prune_interval =
-            tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
 
         metrics
             .num_epochs_to_retain_for_objects
@@ -958,11 +966,20 @@ impl AuthorityStorePruner {
             let _ = jsonrpc_index;
             if let Some(num_epochs_to_retain) = config.num_epochs_to_retain_for_checkpoints() {
                 let prune_objects = config.num_epochs_to_retain != u64::MAX;
-                tokio::task::spawn(async move {
+                let prune_loop = async move {
+                    let mut retraction_cursors = RetractionCursors::default();
+                    let mut objects_prune_interval = tokio::time::interval_at(
+                        Instant::now() + pruning_initial_delay,
+                        tick_duration,
+                    );
+                    let mut checkpoints_prune_interval = tokio::time::interval_at(
+                        Instant::now() + pruning_initial_delay,
+                        tick_duration,
+                    );
                     loop {
                         tokio::select! {
                             _ = objects_prune_interval.tick(), if prune_objects => {
-                                if let Err(err) = Self::prune_objects_for_eligible_epochs(&perpetual_db, &checkpoint_store, rpc_store.as_ref(), config.clone(), metrics.clone(), epoch_duration_ms).await {
+                                if let Err(err) = Self::prune_objects_for_eligible_epochs(&perpetual_db, &checkpoint_store, rpc_store.as_ref(), &mut retraction_cursors, config.clone(), metrics.clone(), epoch_duration_ms).await {
                                     error!("Failed to prune objects: {:?}", err);
                                 }
                             },
@@ -974,14 +991,26 @@ impl AuthorityStorePruner {
                             _ = &mut recv => break,
                         }
                     }
-                });
+                };
+
+                #[cfg(not(msim))]
+                std::thread::Builder::new()
+                    .name("authority-store-pruner".to_string())
+                    .spawn(move || {
+                        let runtime = tokio::runtime::Builder::new_current_thread()
+                            .enable_all()
+                            .build()
+                            .expect("Failed to build pruner tokio runtime");
+                        runtime.block_on(prune_loop);
+                    })
+                    .expect("Failed to spawn authority store pruner thread");
+
+                #[cfg(msim)]
+                tokio::task::spawn(prune_loop);
             }
         }
         #[cfg(not(tidehunter))]
         {
-            let mut indexes_prune_interval =
-                tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
-
             let perpetual_db_for_compaction = perpetual_db.clone();
             if let Some(delay_days) = config.periodic_compaction_threshold_days {
                 spawn_monitored_task!(async move {
@@ -1006,11 +1035,19 @@ impl AuthorityStorePruner {
                     }
                 });
             }
-            tokio::task::spawn(async move {
+
+            let prune_loop = async move {
+                let mut retraction_cursors = RetractionCursors::default();
+                let mut objects_prune_interval =
+                    tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
+                let mut checkpoints_prune_interval =
+                    tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
+                let mut indexes_prune_interval =
+                    tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
                 loop {
                     tokio::select! {
                         _ = objects_prune_interval.tick(), if config.num_epochs_to_retain != u64::MAX => {
-                            if let Err(err) = Self::prune_objects_for_eligible_epochs(&perpetual_db, &checkpoint_store, rpc_store.as_ref(), config.clone(), metrics.clone(), epoch_duration_ms).await {
+                            if let Err(err) = Self::prune_objects_for_eligible_epochs(&perpetual_db, &checkpoint_store, rpc_store.as_ref(), &mut retraction_cursors, config.clone(), metrics.clone(), epoch_duration_ms).await {
                                 error!("Failed to prune objects: {:?}", err);
                             }
                             if let Err(err) = Self::prune_executed_tx_digests(&perpetual_db, &checkpoint_store).await {
@@ -1030,7 +1067,22 @@ impl AuthorityStorePruner {
                         _ = &mut recv => break,
                     }
                 }
-            });
+            };
+
+            #[cfg(not(msim))]
+            std::thread::Builder::new()
+                .name("authority-store-pruner".to_string())
+                .spawn(move || {
+                    let runtime = tokio::runtime::Builder::new_current_thread()
+                        .enable_all()
+                        .build()
+                        .expect("Failed to build pruner tokio runtime");
+                    runtime.block_on(prune_loop);
+                })
+                .expect("Failed to spawn authority store pruner thread");
+
+            #[cfg(msim)]
+            tokio::task::spawn(prune_loop);
         }
         sender
     }
@@ -1159,7 +1211,7 @@ mod tests {
     use typed_store::rocks::{DBMap, MetricConf, ReadWriteOptions, default_db_options};
 
     use super::AuthorityStorePruner;
-
+    use haneul_rpc_store::RetractionCursors;
     /// The embedded rpc-store gate: no bound without a store, nothing
     /// eligible while any cohort pipeline is unwatermarked, and one
     /// past the slowest pipeline's watermark otherwise.
@@ -1350,6 +1402,7 @@ mod tests {
                 metrics,
                 0,
                 None,
+                &mut RetractionCursors::default(),
                 true,
             )
             .await
@@ -1441,18 +1494,18 @@ mod tests {
         }
         let registry = Registry::default();
         let metrics = AuthorityStorePruningMetrics::new(&registry);
-        let total_pruned = AuthorityStorePruner::prune_objects_and_indexes(
+        AuthorityStorePruner::prune_objects_and_indexes(
             vec![(0, effects)],
             &perpetual_db,
             0,
             metrics,
             0,
             None,
+            &mut RetractionCursors::default(),
             true,
         )
-        .await;
-        info!("Total pruned keys = {:?}", total_pruned);
-
+        .await
+        .unwrap();
         perpetual_db.objects.compact_range(&start, &end)?;
         let after_compaction_size = get_sst_size(&db_path);
 

@@ -5,12 +5,13 @@
 use super::HaneulLintCode;
 use crate::{
     diag,
-    expansion::ast::ModuleIdent,
+    expansion::ast::{ModuleIdent, Visibility},
     haneul_mode::{
         CLOCK_MODULE_NAME, CLOCK_TYPE_NAME, HANEUL_ADDR_NAME, HANEUL_ADDR_VALUE,
         RANDOMNESS_MODULE_NAME, RANDOMNESS_STATE_TYPE_NAME,
         typing::{TxContextKind, is_mut_clock, is_mut_random, tx_context_kind},
     },
+    naming::ast::{Type, TypeInner, TypeName_},
     parser::ast::FunctionName,
     typing::{ast as T, visitor::simple_visitor},
 };
@@ -115,6 +116,40 @@ simple_visitor!(
                 self.add_diag(diag);
             }
         }
+
+        // `TxContext` can never appear in return position for a function callable from a
+        // transaction. Only public and entry functions can be called that way; private helpers
+        // returning references derived from a `TxContext` parameter are fine
+        if matches!(&fdef.visibility, Visibility::Public(_)) || fdef.entry.is_some() {
+            const RETURN_NOTE: &str = "Due to restrictions in PTB execution, 'TxContext' may \
+                never appear in the return type of a function callable from a transaction, by \
+                value or by reference. This function will not be callable from PTBs on Haneul";
+            for ret_ty in return_position_types(&signature.return_type) {
+                match tx_context_kind(ret_ty) {
+                    None | Some(TxContextKind::None) => (),
+                    Some(
+                        TxContextKind::Owned | TxContextKind::Mutable | TxContextKind::Immutable,
+                    ) => {
+                        let msg = "Invalid return type. 'TxContext' cannot be returned";
+                        let mut diag = diag!(
+                            HaneulLintCode::UncallableFunction.diag_info(),
+                            (ret_ty.loc, msg)
+                        );
+                        diag.add_note(RETURN_NOTE);
+                        self.add_diag(diag);
+                    }
+                }
+            }
+        }
         false
     }
 );
+
+/// The individual types in return position: the elements for a tuple return, otherwise the type
+/// itself
+fn return_position_types(ret_ty: &Type) -> Vec<&Type> {
+    match ret_ty.value.inner() {
+        TypeInner::Apply(_, sp!(_, TypeName_::Multiple(_)), tys) => tys.iter().collect(),
+        _ => vec![ret_ty],
+    }
+}

@@ -12,7 +12,6 @@ use crate::{
             context::{Context, CtxValue, GasCoinTransfer},
             trace_utils,
         },
-        loading::ast::DeserializedPackage,
         typing::{ast as T, verify::input_arguments::is_coin_send_funds},
     },
 };
@@ -99,6 +98,7 @@ where
         withdrawal_compatibility_conversions: _,
         original_command_len: _,
         commands,
+        unified_linkage: _,
     } = ast;
     let mut context = Context::new(
         env,
@@ -350,13 +350,10 @@ fn execute_command<Mode: ExecutionMode>(
         }
         T::Command__::Publish(payload, dep_ids, linkage) => {
             trace_utils::trace_publish_event(trace_builder_opt)?;
-            let DeserializedPackage {
-                deserialized_modules,
-                ..
-            } = context.deserialize_package(payload, &dep_ids)?;
+            let package_payload = context.deserialize_package(payload, &dep_ids)?;
 
             let original_id = context.publish_and_init_package(
-                deserialized_modules,
+                package_payload,
                 &dep_ids,
                 linkage,
                 trace_builder_opt,
@@ -386,12 +383,8 @@ fn execute_command<Mode: ExecutionMode>(
                 ));
             }
             // deserialize modules and charge gas
-            let DeserializedPackage {
-                deserialized_modules,
-                computed_digest,
-                ..
-            } = context.deserialize_package(payload, &dep_ids)?;
-            let computed_digest = computed_digest.to_vec();
+            let package_payload = context.deserialize_package(payload, &dep_ids)?;
+            let computed_digest = package_payload.computed_digest.to_vec();
 
             if computed_digest != upgrade_ticket.digest {
                 return Err(Mode::Error::from_kind(
@@ -404,7 +397,7 @@ fn execute_command<Mode: ExecutionMode>(
             }
 
             let upgraded_package_id = context.upgrade(
-                deserialized_modules,
+                package_payload,
                 &dep_ids,
                 current_package_id,
                 upgrade_ticket.policy,

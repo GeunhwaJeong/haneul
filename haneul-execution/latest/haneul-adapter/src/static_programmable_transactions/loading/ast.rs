@@ -13,6 +13,7 @@ use haneul_types::{
     base_types::{ObjectID, ObjectRef, RESOLVED_TX_CONTEXT, SequenceNumber, TxContextKind},
     object::ObjectPermissions,
 };
+use haneul_verifier::INIT_FN_NAME;
 use indexmap::IndexSet;
 use move_binary_format::{
     CompiledModule,
@@ -24,7 +25,7 @@ use move_core_types::{
     language_storage::{ModuleId, StructTag},
     u256::U256,
 };
-use std::rc::Rc;
+use std::{collections::BTreeSet, rc::Rc};
 
 //**************************************************************************************************
 // AST Nodes
@@ -38,6 +39,7 @@ pub struct Transaction {
     /// should be < `original_command_len`
     pub original_command_len: usize,
     pub commands: Commands,
+    pub unified_linkage: Option<ExecutableLinkage>,
 }
 
 pub type Inputs = Vec<(InputArg, InputType)>;
@@ -155,6 +157,46 @@ pub struct DeserializedPackage {
     // The computed digest of the package --
     // `MovePackage::compute_digest_for_modules_and_deps` with `hash_modules` set to `true`.
     pub computed_digest: [u8; 32],
+    // Names of the modules in this package that define a function named `init`.
+    pub modules_with_init: BTreeSet<Identifier>,
+}
+
+impl DeserializedPackage {
+    pub fn new(
+        deserialized_modules: Vec<CompiledModule>,
+        total_bytes: usize,
+        computed_digest: [u8; 32],
+    ) -> Self {
+        let modules_with_init = deserialized_modules
+            .iter()
+            .filter(|module| module_has_init(module))
+            .map(|module| module.identifier_at(module.self_handle().name).to_owned())
+            .collect();
+        Self {
+            deserialized_modules,
+            total_bytes,
+            computed_digest,
+            modules_with_init,
+        }
+    }
+
+    /// Returns true if this package defines any modules with function that could be a possible
+    /// `init` function.
+    pub fn has_potential_init(&self) -> bool {
+        !self.modules_with_init.is_empty()
+    }
+}
+
+/// Whether `module` defines a function named `init`.
+///
+/// NB: we presuppose that a function named `init` is the module's initializer. If it does not
+/// conform to the `init` signature requirements the entry points verifier rejects the publish
+/// later, failing the transaction as a whole.
+pub(crate) fn module_has_init(module: &CompiledModule) -> bool {
+    module.function_defs().iter().any(|func_def| {
+        let handle = module.function_handle_at(func_def.function);
+        module.identifier_at(handle.name) == INIT_FN_NAME
+    })
 }
 
 #[derive(Debug)]
@@ -241,6 +283,12 @@ impl Type {
             TxContextKind::None
         }
     }
+
+    /// Is this the `TxContext` datatype itself, not behind a reference?
+    pub fn is_tx_context_by_value(&self) -> bool {
+        matches!(self, Type::Datatype(dt) if dt.qualified_ident() == RESOLVED_TX_CONTEXT)
+    }
+
     pub fn all_addresses(&self) -> IndexSet<AccountAddress> {
         match self {
             Type::Bool

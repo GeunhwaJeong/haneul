@@ -90,6 +90,12 @@ pub struct TransactionToken {
 /// Compatibility dispatch over the on-wire cursor format.
 pub type CTransaction = OpaqueCursor<TransactionToken>;
 
+impl CTransaction {
+    /// The checkpoint this cursor points at.
+    pub(crate) fn checkpoint(&self) -> u64 {
+        self.checkpoint
+    }
+}
 /// Description of a transaction, the unit of activity on Haneul.
 #[Object]
 impl Transaction {
@@ -147,7 +153,8 @@ impl TransactionContents {
                 TransactionExpiration::Epoch(epoch_id) => {
                     Ok(Some(Epoch::with_id(self.scope.clone(), *epoch_id)))
                 }
-                TransactionExpiration::ValidDuring { max_epoch, .. } => {
+                TransactionExpiration::ValidDuring { max_epoch, .. }
+                | TransactionExpiration::Validity { max_epoch, .. } => {
                     if let Some(epoch_id) = max_epoch {
                         Ok(Some(Epoch::with_id(self.scope.clone(), *epoch_id)))
                     } else {
@@ -513,6 +520,17 @@ impl TransactionContents {
             return Ok(self.clone());
         }
 
+        // A just-streamed transaction runs ahead of the KV backend, so serve it from the in-memory
+        // streamed store (live streamed path only) until the backend catches up.
+        if let Some(streaming_transactions) = self.scope.streamed_transaction_store()
+            && let Some(contents) = streaming_transactions.get(&digest)
+        {
+            return Ok(Self {
+                scope: self.scope.clone(),
+                contents: Some(contents),
+            });
+        }
+
         let kv_loader: &KvLoader = ctx.data()?;
         let Some(transaction) = kv_loader
             .load_one_transaction(digest)
@@ -622,7 +640,7 @@ impl From<TransactionEffects> for Transaction {
 
 /// Hydrate a `Transaction` node from a `ListTransactions` stream item. The item carries the
 /// transaction's checkpointed contents, so fields resolve without a KV lookup.
-fn transaction_from_stream_item(
+pub(crate) fn transaction_from_stream_item(
     scope: Scope,
     payload: &v2::ExecutedTransaction,
 ) -> Result<Transaction, RpcError> {
@@ -684,11 +702,11 @@ async fn tx_affected_address(
         WHERE
             affected = {Bytea}
         "#,
-        affected_address.into_vec(),
+        affected_address.to_inner(),
     );
 
     if let Some(address) = sent_address {
-        query += query!(" AND sender = {Bytea}", address.into_vec());
+        query += query!(" AND sender = {Bytea}", address.to_inner());
     }
 
     tx_sequence_numbers(ctx, query, page).await
@@ -710,11 +728,11 @@ async fn tx_affected_object(
         WHERE
             affected = {Bytea}
         "#,
-        affected_object.into_vec(),
+        affected_object.to_inner(),
     );
 
     if let Some(address) = sent_address {
-        query += query!(" AND sender = {Bytea}", address.into_vec());
+        query += query!(" AND sender = {Bytea}", address.to_inner());
     }
 
     tx_sequence_numbers(ctx, query, page).await
@@ -736,7 +754,7 @@ async fn tx_call(
         WHERE
             package = {Bytea}
         "#,
-        function.package().into_vec(),
+        function.package().to_inner(),
     );
 
     if let Some(module) = function.module() {
@@ -748,7 +766,7 @@ async fn tx_call(
     }
 
     if let Some(address) = sent_address {
-        query += query!(" AND sender = {Bytea}", address.into_vec());
+        query += query!(" AND sender = {Bytea}", address.to_inner());
     }
 
     tx_sequence_numbers(ctx, query, page).await

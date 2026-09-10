@@ -29,6 +29,7 @@ use haneul_sdk_types::{
     ValidatorExecutionTimeObservation, VersionAssignment, VersionAssignmentV2,
     ZkLoginAuthenticator, ZkLoginPublicIdentifier,
 };
+use nonempty::NonEmpty;
 use tap::Pipe;
 
 use crate::crypto::HaneulSignature as _;
@@ -712,6 +713,28 @@ impl From<crate::transaction::TransactionExpiration> for TransactionExpiration {
                 chain: Digest::new(*chain.as_bytes()),
                 nonce,
             },
+            crate::transaction::TransactionExpiration::Validity {
+                min_epoch,
+                max_epoch,
+                min_timestamp,
+                max_timestamp,
+                chain,
+                nonce,
+                allowed_proposers,
+            } => Self::Validity {
+                min_epoch,
+                max_epoch,
+                min_timestamp,
+                max_timestamp,
+                chain: Digest::new(*chain.as_bytes()),
+                nonce,
+                allowed_proposers: allowed_proposers.map(|allowed| {
+                    haneul_sdk_types::AllowedProposers {
+                        epoch: allowed.epoch,
+                        proposers: allowed.proposers.into(),
+                    }
+                }),
+            },
         }
     }
 }
@@ -735,6 +758,30 @@ impl From<TransactionExpiration> for crate::transaction::TransactionExpiration {
                 max_timestamp,
                 chain: crate::digests::CheckpointDigest::from(chain).into(),
                 nonce,
+            },
+            TransactionExpiration::Validity {
+                min_epoch,
+                max_epoch,
+                min_timestamp,
+                max_timestamp,
+                chain,
+                nonce,
+                allowed_proposers,
+            } => Self::Validity {
+                min_epoch,
+                max_epoch,
+                min_timestamp,
+                max_timestamp,
+                chain: crate::digests::CheckpointDigest::from(chain).into(),
+                nonce,
+                // An empty set is rejected by the sdk's deserializer, so it can only appear on a
+                // value built in memory; drop the restriction rather than fabricating one.
+                allowed_proposers: allowed_proposers.and_then(|allowed| {
+                    Some(crate::transaction::AllowedProposers {
+                        epoch: allowed.epoch,
+                        proposers: NonEmpty::from_vec(allowed.proposers)?,
+                    })
+                }),
             },
             _ => unreachable!("sdk shouldn't have a variant that the mono repo doesn't"),
         }
@@ -854,6 +901,8 @@ impl From<crate::execution_status::CommandArgumentError> for CommandArgumentErro
                 Self::CannotWriteToExtendedReference,
             crate::execution_status::CommandArgumentError::InvalidReferenceArgument =>
                 Self::InvalidReferenceArgument,
+            crate::execution_status::CommandArgumentError::InvalidTxContext =>
+                Self::InvalidTxContext,
         }
     }
 }
