@@ -1,19 +1,18 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 908
 ---
 processed 14 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 11-35:
+task 1, lines 12-36:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 7326400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 36-41:
+task 2, lines 37-42:
 //# programmable --sender A --inputs @A
 //> 0: test::large_balance::create_holder();
 //> 1: test::large_balance::create_holder();
@@ -23,40 +22,40 @@ created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 3876000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 42-44:
+task 3, lines 43-45:
 //# programmable --sender A --inputs object(2,0) object(2,1) @A 18446744073709551615
 //> 0: test::large_balance::send_large_balance(Input(0), Input(2), Input(3));
 //> 1: test::large_balance::send_large_balance(Input(1), Input(2), Input(3));
 Error: Transaction Effects Status: Move Primitive Runtime Error. Location: haneul::funds_accumulator::add_to_accumulator_address (function index 8) at offset 0. Arithmetic error, stack overflow, max value depth, etc.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MovePrimitiveRuntimeError(MoveLocationOpt(Some(MoveLocation { module: ModuleId { address: haneul, name: Identifier("funds_accumulator") }, function: 8, instruction: 0, function_name: Some("add_to_accumulator_address") }))), source: Some(VMError { major_status: ARITHMETIC_ERROR, sub_status: None, message: Some("accumulator merge overflow: total merges 36893488147419103230 exceed u64::MAX"), exec_state: None, location: Module(ModuleId { address: haneul, name: Identifier("funds_accumulator") }), indices: [], offsets: [(FunctionDefinitionIndex(8), 0)] }), command: Some(1) } }
 
-task 4, lines 46-48:
+task 4, lines 47-49:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, line 49:
+task 5, line 50:
 //# run test::large_balance::send_large_balance --args object(2,0) @A 18446744073709551615 --sender A
 mutated: object(0,0), object(2,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(5,0), A, haneul::balance::Balance<test::large_balance::MARKER>, Merge, 18446744073709551615)
 gas summary: computation_cost: 1000000, storage_cost: 2432000,  storage_rebate: 2407680, non_refundable_storage_fee: 24320
 
-task 6, lines 51-53:
+task 6, lines 52-54:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, line 54:
+task 7, line 55:
 //# run test::large_balance::send_large_balance --args object(2,1) @A 18446744073709551615 --sender A
 mutated: object(0,0), object(2,1)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(5,0), A, haneul::balance::Balance<test::large_balance::MARKER>, Merge, 18446744073709551615)
 gas summary: computation_cost: 1000000, storage_cost: 2432000,  storage_rebate: 2407680, non_refundable_storage_fee: 24320
 
-task 8, lines 56-58:
+task 8, lines 57-59:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 9, lines 59-61:
+task 9, lines 60-62:
 //# programmable --sender A --inputs withdraw<haneul::balance::Balance<test::large_balance::MARKER>>(18446744073709551615) @B
 //> 0: haneul::balance::redeem_funds<test::large_balance::MARKER>(Input(0));
 //> 1: haneul::balance::send_funds<test::large_balance::MARKER>(Result(0), Input(1));
@@ -65,11 +64,11 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(5,0), A, haneul::balance::Balance<test::large_balance::MARKER>, Split, 18446744073709551615), (object(9,0), B, haneul::balance::Balance<test::large_balance::MARKER>, Merge, 18446744073709551615)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 10, lines 63-65:
+task 10, lines 64-66:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 11, lines 66-68:
+task 11, lines 67-69:
 //# programmable --sender A --inputs withdraw<haneul::balance::Balance<test::large_balance::MARKER>>(18446744073709551615) @B
 //> 0: haneul::balance::redeem_funds<test::large_balance::MARKER>(Input(0));
 //> 1: haneul::balance::send_funds<test::large_balance::MARKER>(Result(0), Input(1));
@@ -78,11 +77,11 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(5,0), A, haneul::balance::Balance<test::large_balance::MARKER>, Split, 18446744073709551615), (object(9,0), B, haneul::balance::Balance<test::large_balance::MARKER>, Merge, 18446744073709551615)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 12, lines 70-72:
+task 12, lines 71-73:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 13, lines 73-77:
+task 13, lines 74-78:
 //# programmable --sender A --inputs withdraw<haneul::balance::Balance<test::large_balance::MARKER>>(18446744073709551615) withdraw<haneul::balance::Balance<test::large_balance::MARKER>>(18446744073709551615) @B
 //> 0: haneul::balance::redeem_funds<test::large_balance::MARKER>(Input(0));
 //> 1: haneul::balance::redeem_funds<test::large_balance::MARKER>(Input(1));

@@ -2,7 +2,9 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-// tests documents the strange things that occur in dev inspect with an owned TxContext
+// tests owned TxContext usage in dev inspect. The TxContext signature rules apply even though
+// arbitrary values are otherwise allowed: TxContext cannot be taken by value or returned, so the
+// strange owned TxContext flows that dev inspect used to permit are now rejected
 
 //# init --addresses test=0x0
 
@@ -26,7 +28,7 @@ public fun owned_mut(_: TxContext, _: &mut TxContext) {
 
 
 //# programmable --dev-inspect --inputs struct(@0,vector[],0,0,0)
-// Invalid, cannot specify inferred TxContext
+// Invalid, cannot specify inferred TxContext; the arity error precedes the by-value check
 //> 0: test::m::owned(Input(0));
 //> test::m::mut_id(Result(0));
 
@@ -35,12 +37,12 @@ public fun owned_mut(_: TxContext, _: &mut TxContext) {
 //> test::m::owned_mut(Input(0), Input(0));
 
 //# programmable --dev-inspect --inputs struct(@0,vector[],0,0,0)
-// Invalid, cannot specify inferred TxContext
+// Invalid, cannot specify inferred TxContext; the arity error precedes the by-value check
 //> 0: test::m::owned(Input(0));
 //> test::m::owned_mut(Result(0), Result(0));
 
 //# programmable --dev-inspect --inputs struct(@0,vector[],0,0,0) struct(@0,vector[],0,0,0) struct(@0,vector[],0,0,0)
-// Valid, owned TxContext usage is not inferred since it is impossible outside of dev inspect
+// Invalid, TxContext cannot be taken by value, even in dev inspect where it was once possible
 //> 0: test::m::owned(Input(0));
 //> 1: test::m::owned(Result(0));
 //> 2: test::m::owned(Input(1));

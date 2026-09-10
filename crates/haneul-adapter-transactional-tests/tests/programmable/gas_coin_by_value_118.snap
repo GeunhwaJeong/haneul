@@ -6,13 +6,13 @@ processed 4 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 9-10:
+task 1, lines 10-11:
 //# programmable --sender A --inputs @B
 //> TransferObjects([Gas], Input(0))
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 12:
+task 2, line 13:
 //# view-object 0,0
 Owner: Account Address ( B )
 Version: 2
@@ -27,7 +27,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 3, lines 14-16:
+task 3, lines 15-17:
 //# programmable --sender B --inputs @A --gas-payment object(0,0)
 // This should fai:
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))

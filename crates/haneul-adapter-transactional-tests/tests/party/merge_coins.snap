@@ -1,19 +1,18 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 926
 ---
 processed 8 tasks
 
 init:
 A: object(0,0)
 
-task 1, lines 6-20:
+task 1, lines 7-21:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 10374000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 21-26:
+task 2, lines 22-27:
 //# programmable --sender A --inputs object(1,1) 100 @A
 //> 0: haneul::coin::mint<ex::m::M>(Input(0), Input(1));
 //> 1: haneul::coin::mint<ex::m::M>(Input(0), Input(1));
@@ -25,7 +24,7 @@ mutated: object(0,0), object(1,1)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 5198400,  storage_rebate: 2618352, non_refundable_storage_fee: 26448
 
-task 3, lines 28-29:
+task 3, lines 29-30:
 //# programmable --sender A --inputs object(2,1) object(2,0) @A
 //> MergeCoins(Input(1), [Input(0)])
 mutated: object(0,0), object(2,0)
@@ -33,7 +32,7 @@ deleted: object(2,1)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 2264800,  storage_rebate: 3506184, non_refundable_storage_fee: 35416
 
-task 4, lines 31-33:
+task 4, lines 32-34:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 4
@@ -48,7 +47,7 @@ Contents: haneul::coin::Coin<ex::m::M> {
     },
 }
 
-task 5, lines 34-39:
+task 5, lines 35-40:
 //# programmable --sender A --inputs object(1,1) 100 @A
 //> 0: haneul::coin::mint<ex::m::M>(Input(0), Input(1));
 //> 1: haneul::coin::mint<ex::m::M>(Input(0), Input(1));
@@ -60,7 +59,7 @@ mutated: object(0,0), object(1,1)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 5198400,  storage_rebate: 2618352, non_refundable_storage_fee: 26448
 
-task 6, lines 41-42:
+task 6, lines 42-43:
 //# programmable --sender A --inputs object(5,1) object(5,0) @A
 //> MergeCoins(Input(0), [Input(1)])
 mutated: object(0,0), object(5,1)
@@ -68,7 +67,7 @@ deleted: object(5,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 2264800,  storage_rebate: 3506184, non_refundable_storage_fee: 35416
 
-task 7, line 44:
+task 7, line 45:
 //# view-object 5,1
 Owner: ConsensusAddressOwner( 5, A )
 Version: 6

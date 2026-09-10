@@ -6,24 +6,24 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 10-15:
+task 1, lines 11-16:
 //# publish --dry-run
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 3906400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 17-24:
+task 2, lines 18-25:
 //# publish
 created: object(2,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 3906400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 26-31:
+task 3, lines 27-32:
 //# publish --dry-run
 Error: Transaction Effects Status: PublishErrorNonZeroAddress in command 0
 Execution Error: PublishErrorNonZeroAddress in command 0
 
-task 4, lines 33-38:
+task 4, lines 34-39:
 //# publish
 Error: Transaction Effects Status: Publish Error, Non-zero Address. The modules in the package must have their self-addresses set to zero.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: PublishErrorNonZeroAddress, source: Some("Publishing module m4 with non-zero address is not allowed"), command: Some(0) } }

@@ -6,20 +6,20 @@ processed 7 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-18:
+task 1, lines 7-19:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 5479600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 19-20:
+task 2, lines 20-21:
 //# programmable --sender A
 //> ex::m::create_party()
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 22-24:
+task 3, lines 23-25:
 //# view-object 2,0
 Owner: ConsensusAddressOwner( 2, A )
 Version: 2
@@ -31,13 +31,13 @@ Contents: ex::m::A {
     },
 }
 
-task 4, lines 25-26:
+task 4, lines 26-27:
 //# programmable --sender A --inputs object(2,0)
 //> haneul::transfer::public_freeze_object<ex::m::A>(Input(0))
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 5, lines 28-30:
+task 5, lines 29-31:
 //# view-object 2,0
 Owner: Immutable
 Version: 3
@@ -49,7 +49,7 @@ Contents: ex::m::A {
     },
 }
 
-task 6, lines 31-33:
+task 6, lines 32-34:
 //# programmable --sender A --inputs object(2,0) @A
 //> 0: haneul::party::single_owner(Input(1));
 //> haneul::transfer::public_party_transfer<ex::m::A>(Input(0), Result(0))

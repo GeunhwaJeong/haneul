@@ -20,6 +20,16 @@ module a::m {
     fun no_random_val(_: haneul::random::Random) {
         abort ERR
     }
+    #[allow(lint(uncallable_function))]
+    public fun ret_ctx_mut(
+        ctx: &mut haneul::tx_context::TxContext,
+    ): &mut haneul::tx_context::TxContext {
+        ctx
+    }
+    #[test_only]
+    public fun test_ret_ctx(ctx: &mut haneul::tx_context::TxContext): &mut haneul::tx_context::TxContext {
+        ctx
+    }
 }
 
 #[test_only]

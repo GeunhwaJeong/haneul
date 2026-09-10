@@ -6,13 +6,13 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-46:
+task 1, lines 9-47:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6232000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 47-55:
+task 2, lines 48-56:
 //# programmable --sender A --dev-inspect --inputs 42
 //> 0: test::m::new();
 //> 1: test::m::borrow_f(Result(0));
@@ -24,7 +24,7 @@ task 2, lines 47-55:
 mutated: object(_)
 gas summary: computation_cost: 500000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 56-66:
+task 3, lines 57-67:
 //# programmable --sender A --dev-inspect --inputs 42
 //> 0: test::m::new();
 //> 1: test::m::borrow_f_mut(Result(0));
@@ -37,7 +37,7 @@ task 3, lines 56-66:
 mutated: object(_)
 gas summary: computation_cost: 500000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, lines 67-73:
+task 4, lines 68-74:
 //# programmable --sender A --dev-inspect --inputs 43
 //> 0: test::m::new();
 //> 1: test::m::borrow_f_mut(Result(0));

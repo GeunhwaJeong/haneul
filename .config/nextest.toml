@@ -11,15 +11,30 @@ experimental = ["setup-scripts"]
 [scripts.setup.big-worker-stack]
 command = 'scripts/nextest/big-worker-stack.sh'
 
-# Apply the 8 MiB worker stack only to the binary that overflows. Listed under
+# Adapter transactional tests pinned to a protocol version that has no Haneul
+# equivalent are excluded by default. Haneul's protocol history starts at
+# version 115, so there is no framework bytecode for earlier versions (the
+# genesis builder falls back to the current framework, which those older
+# configurations cannot deserialize), and the Haneul numbering compresses
+# several upstream versions per release, so a few intermediate upstream
+# versions (131 here) have no configuration-equivalent Haneul version either.
+# Tests pinned to a version with an exact Haneul equivalent are re-pinned to it
+# instead. The excluded tests describe behaviour of versions this network never
+# ran; they stay in the tree so upstream syncs apply cleanly and can be run with
+# --ignore-default-filter.
+[profile.default]
+default-filter = 'not (package(haneul-adapter-transactional-tests) and test(/^run_test::(init\/entry_old\.mvir|runtime_behavior\/versioned_check_swap_loc_old\.move|mvcc\/v0\/child_of_child\.move|mvcc\/v0\/find_all_uids_dof\.move|mvcc\/v0\/find_all_uids_on_child\.move|mvcc\/v0\/find_all_uids\.move|mvcc\/v0\/middle_version_less_than_child\.move|mvcc\/v0\/not_root_version_flipped_case\.move|mvcc\/v0\/not_root_version\.move|entry_points\/obj_vector_generic_v20\.move|entry_points\/obj_vector_v20\.move|shared\/by_value_shared_object_v20\.move|transfer_object\/does_not_have_store_receive_version30\.move|shared\/re_share_v45\.move|upgrade\/abort_code_resolution_v46\.move|entry_points\/large_enum_v58\.move|programmable\/make_vec_non_existent_type_v71\.move|child_count\/count_decremented_v74\.move|deny_list_v2\/double_add_v74\.move|dynamic_fields\/mut_unchanged_chain_dof_v74\.move|dynamic_fields\/mut_unchanged_chain_v74\.move|dynamic_fields\/mut_unchanged_dof_v74\.move|dynamic_fields\/mut_unchanged_v74\.move|programmable\/index_before_typing_v78\.move|programmable\/large_dev_inspect_pure_v81\.move|programmable\/large_vector_v81\.move|upgrade\/type_resolution_v82\.move|upgrade\/type_resolution\.move|shared\/by_value_shared_object_deletion_via_make_move_vec_fails_v90\.move|shared\/by_value_shared_object_deletion_via_make_move_vec_v90\.move|shared\/by_value_shared_object_deletion_via_move_call_fails_v90\.move|shared\/by_value_shared_object_deletion_via_move_call_v90\.move|upgrade\/upgrade_init_lumpy_ordering_v131\.move)$/))'
+
+# Apply the 8 MiB worker stack to the whole package: multiple binaries overflow
+# (transactional_tests, jsonrpc_address_balance_coin_tests, ...). Listed under
 # both `default` (local runs) and `ci` (CI uses `--profile ci`); a named setup
 # script runs once per test run regardless of how many rules reference it.
 [[profile.default.scripts]]
-filter = 'package(haneul-indexer-alt-e2e-tests) and binary(transactional_tests)'
+filter = 'package(haneul-indexer-alt-e2e-tests)'
 setup = 'big-worker-stack'
 
 [[profile.ci.scripts]]
-filter = 'package(haneul-indexer-alt-e2e-tests) and binary(transactional_tests)'
+filter = 'package(haneul-indexer-alt-e2e-tests)'
 setup = 'big-worker-stack'
 
 [profile.ci]

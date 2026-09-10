@@ -6,7 +6,7 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 17-20:
+task 1, lines 18-21:
 //# programmable --sender A --inputs 1000000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -15,11 +15,11 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1000000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 22-24:
+task 2, lines 23-25:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 25-29:
+task 3, lines 26-30:
 //# programmable --sender A --gas-budget 100000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --inputs 100 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -28,7 +28,7 @@ created: object(3,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1988100)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, lines 30-32:
+task 4, lines 31-33:
 //# programmable --sender A --gas-budget 100000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(20000000) --inputs 100 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))

@@ -6,13 +6,13 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-18:
+task 1, lines 7-19:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
-gas summary: computation_cost: 1000000, storage_cost: 5008400,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 5054000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 20-22:
+task 2, lines 21-23:
 //# programmable --sender A --inputs 10
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::transfer::public_share_object<haneul::coin::Coin<haneul::haneul::HANEUL>>(Result(0));
@@ -20,7 +20,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 24-26:
+task 3, lines 25-27:
 //# programmable --sender A --inputs 10
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: p::m::sharer<haneul::coin::Coin<haneul::haneul::HANEUL>>(Result(0));
@@ -28,13 +28,13 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 28:
+task 4, line 29:
 //# run p::m::mint_shared
 created: object(4,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 30-32:
+task 5, lines 31-33:
 //# view-object 4,0
 Owner: Shared( 3 )
 Version: 3
@@ -49,7 +49,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 6, lines 33-37:
+task 6, lines 34-38:
 //# programmable --sender A --inputs 0 object(4,0) @A
 //> 0: SplitCoins(Input(1), [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(2));
@@ -58,7 +58,7 @@ created: object(6,0)
 mutated: object(0,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 7, lines 38-41:
+task 7, lines 39-42:
 //# programmable --sender A --inputs 0 object(4,0) @A
 //> 0: SplitCoins(Input(1), [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(2));

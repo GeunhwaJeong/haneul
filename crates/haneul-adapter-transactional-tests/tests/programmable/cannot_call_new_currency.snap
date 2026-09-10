@@ -6,13 +6,13 @@ processed 3 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-15:
+task 1, lines 9-16:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 4035600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 17-21:
+task 2, lines 18-22:
 //# programmable --sender A --inputs object(0xc) @A 6u8
 //> 0: test::m1::name();
 //> 1: haneul::coin_registry::new_currency<haneul::kiosk::Kiosk>(Input(0), Input(2), Result(0), Result(0), Result(0), Result(0));

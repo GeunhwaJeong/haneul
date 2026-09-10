@@ -45,7 +45,6 @@ rand.workspace = true
 roaring.workspace = true
 rayon.workspace = true
 reqwest.workspace = true
-rustc-hash.workspace = true
 scopeguard.workspace = true
 serde.workspace = true
 serde_json.workspace = true
@@ -89,7 +88,6 @@ haneul-framework.workspace = true
 haneul-swarm-config.workspace = true
 haneul-genesis-builder.workspace = true
 haneul-indexer-alt-framework = { workspace = true, default-features = false }
-haneul-inverted-index.workspace = true
 haneul-json-rpc-types.workspace = true
 haneul-macros.workspace = true
 haneul-network.workspace = true

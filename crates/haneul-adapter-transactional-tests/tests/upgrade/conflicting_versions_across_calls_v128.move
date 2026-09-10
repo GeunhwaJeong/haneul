@@ -9,7 +9,7 @@
 // independently, so the call into the v2 dependent succeeds (base v2) while the call into the v1
 // dependent runs base v1 and aborts with code 42 in the second command.
 
-//# init --protocol-version 128 --addresses Base_V1=0x0 Base_V2=0x0 Dep_V1=0x0 Dep_V2=0x0 --accounts A
+//# init --protocol-version 119 --addresses Base_V1=0x0 Base_V2=0x0 Dep_V1=0x0 Dep_V2=0x0 --accounts A
 
 //# publish --upgradeable --sender A
 module Base_V1::base {

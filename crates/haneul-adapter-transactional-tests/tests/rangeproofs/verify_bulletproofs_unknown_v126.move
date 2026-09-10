@@ -6,7 +6,7 @@
 // chains, so on this chain the native verifies the proof and the call succeeds.
 // Pinned to protocol version 126.
 
-//# init --addresses test=0x0 --protocol-version 126 --chain unknown
+//# init --addresses test=0x0 --protocol-version 118 --chain unknown
 
 //# publish
 #[allow(deprecated_usage)]

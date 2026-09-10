@@ -8,7 +8,6 @@ pub use checked::*;
 mod checked {
 
     use crate::execution_mode::{self, ExecutionMode};
-    use crate::execution_value::HaneulResolver;
     use crate::gas_charger::PaymentMethod;
     use haneul_types::accumulator_root::{ACCUMULATOR_ROOT_CREATE_FUNC, ACCUMULATOR_ROOT_MODULE};
     use haneul_types::balance::{
@@ -264,7 +263,7 @@ mod checked {
             metrics,
             move_vm,
             &mut temporary_store,
-            store.as_backing_package_store(),
+            store,
             tx_context,
             &mut gas_charger,
             None,
@@ -664,7 +663,7 @@ mod checked {
                     metrics,
                     move_vm,
                     temporary_store,
-                    store.as_backing_package_store(),
+                    store,
                     tx_ctx,
                     gas_charger,
                     None,
@@ -678,7 +677,7 @@ mod checked {
                     metrics,
                     move_vm,
                     temporary_store,
-                    store.as_backing_package_store(),
+                    store,
                     tx_ctx,
                     gas_charger,
                     None,
@@ -988,7 +987,7 @@ mod checked {
             metrics.clone(),
             move_vm,
             temporary_store,
-            store.as_backing_package_store(),
+            store,
             tx_ctx.clone(),
             gas_charger,
             None,
@@ -1020,7 +1019,7 @@ mod checked {
                     metrics.clone(),
                     move_vm,
                     temporary_store,
-                    store.as_backing_package_store(),
+                    store,
                     tx_ctx.clone(),
                     gas_charger,
                     None,
@@ -1099,7 +1098,7 @@ mod checked {
                     metrics.clone(),
                     move_vm,
                     temporary_store,
-                    store.as_backing_package_store(),
+                    store,
                     tx_ctx.clone(),
                     gas_charger,
                     None,
@@ -1173,7 +1172,7 @@ mod checked {
             metrics,
             move_vm,
             temporary_store,
-            store.as_backing_package_store(),
+            store,
             tx_ctx,
             gas_charger,
             None,
@@ -1323,7 +1322,7 @@ mod checked {
             metrics,
             move_vm,
             temporary_store,
-            store.as_backing_package_store(),
+            store,
             tx_ctx,
             gas_charger,
             None,
@@ -1396,7 +1395,7 @@ mod checked {
             metrics,
             move_vm,
             temporary_store,
-            store.as_backing_package_store(),
+            store,
             tx_ctx,
             gas_charger,
             None,

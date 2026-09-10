@@ -2,110 +2,25 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-use std::collections::BTreeSet;
 use std::collections::HashMap;
 
 use anyhow::Context;
-use anyhow::anyhow;
-use async_graphql::dataloader::Loader;
-use diesel::ExpressionMethods;
-use diesel::QueryDsl;
-use diesel::Queryable;
-use diesel::Selectable;
-use diesel::SelectableHelper;
-use haneul_indexer_alt_schema::schema::kv_transactions;
-use haneul_kvstore::TransactionEventsData;
 use haneul_rpc::field::FieldMaskUtil;
 use haneul_rpc::proto::haneul::rpc::v2 as proto;
-use haneul_rpc::proto::proto_to_timestamp_ms;
 use haneul_types::digests::TransactionDigest;
-use haneul_types::effects::TransactionEvents;
 use prost_types::FieldMask;
 
-use crate::bigtable_reader::BigtableReader;
 use crate::error::Error;
 use crate::ledger_grpc_reader::ChunkedLoader;
 use crate::ledger_grpc_reader::LedgerGrpcReader;
-use crate::pg_reader::PgReader;
 
 /// Key for fetching transaction events contents (Events, TimestampMs) by digest.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct TransactionEventsKey(pub TransactionDigest);
 
-/// Partial transaction and events for when you only need transaction content for events
-#[derive(Debug, Clone, Queryable, Selectable)]
-#[diesel(table_name = kv_transactions)]
-pub struct StoredTransactionEvents {
-    pub events: Vec<u8>,
-    pub timestamp_ms: i64,
-}
-
-#[async_trait::async_trait]
-impl Loader<TransactionEventsKey> for PgReader {
-    type Value = StoredTransactionEvents;
-    type Error = Error;
-
-    async fn load(
-        &self,
-        keys: &[TransactionEventsKey],
-    ) -> Result<HashMap<TransactionEventsKey, Self::Value>, Error> {
-        use kv_transactions::dsl as t;
-
-        if keys.is_empty() {
-            return Ok(HashMap::new());
-        }
-
-        let mut conn = self.connect().await?;
-
-        let digests: BTreeSet<_> = keys.iter().map(|d| d.0.into_inner()).collect();
-        let transactions: Vec<(Vec<u8>, StoredTransactionEvents)> = conn
-            .results(
-                t::kv_transactions
-                    .select((t::tx_digest, StoredTransactionEvents::as_select()))
-                    .filter(t::tx_digest.eq_any(digests)),
-            )
-            .await?;
-        let digest_to_stored: HashMap<_, _> = transactions
-            .into_iter()
-            .map(|(tx_digest, stored)| (tx_digest.clone(), stored))
-            .collect();
-
-        Ok(keys
-            .iter()
-            .filter_map(|key| {
-                let slice: &[u8] = key.0.as_ref();
-                Some((*key, digest_to_stored.get(slice).cloned()?))
-            })
-            .collect())
-    }
-}
-
-#[async_trait::async_trait]
-impl Loader<TransactionEventsKey> for BigtableReader {
-    type Value = TransactionEventsData;
-    type Error = Error;
-
-    async fn load(
-        &self,
-        keys: &[TransactionEventsKey],
-    ) -> Result<HashMap<TransactionEventsKey, Self::Value>, Self::Error> {
-        if keys.is_empty() {
-            return Ok(HashMap::new());
-        }
-
-        let digests: Vec<_> = keys.iter().map(|k| k.0).collect();
-        Ok(self
-            .transactions_events(&digests)
-            .await?
-            .into_iter()
-            .map(|(digest, events)| (TransactionEventsKey(digest), events))
-            .collect())
-    }
-}
-
 #[async_trait::async_trait]
 impl ChunkedLoader<TransactionEventsKey> for LedgerGrpcReader {
-    type Value = TransactionEventsData;
+    type Value = proto::ExecutedTransaction;
     type Error = Error;
 
     fn chunk_size(&self) -> usize {
@@ -115,7 +30,7 @@ impl ChunkedLoader<TransactionEventsKey> for LedgerGrpcReader {
     async fn load_chunk(
         &self,
         keys: &[TransactionEventsKey],
-    ) -> Result<HashMap<TransactionEventsKey, TransactionEventsData>, Error> {
+    ) -> Result<HashMap<TransactionEventsKey, proto::ExecutedTransaction>, Error> {
         let digests = keys.iter().map(|key| key.0.to_string()).collect();
 
         let mut request = proto::BatchGetTransactionsRequest::default();
@@ -141,33 +56,7 @@ impl ChunkedLoader<TransactionEventsKey> for LedgerGrpcReader {
                     .parse()
                     .context("Failed to parse transaction digest")?;
 
-                let events = executed
-                    .events
-                    .as_ref()
-                    .and_then(|e| e.bcs.as_ref())
-                    .map(|bcs| -> anyhow::Result<_> {
-                        let tx_events: TransactionEvents = bcs
-                            .deserialize()
-                            .context("Failed to deserialize transaction events")?;
-                        Ok(tx_events.data)
-                    })
-                    .transpose()?
-                    .unwrap_or_default();
-
-                let timestamp_ms = executed
-                    .timestamp
-                    .map(proto_to_timestamp_ms)
-                    .transpose()
-                    .map_err(|e| anyhow!("Failed to parse timestamp: {}", e))?
-                    .unwrap_or(0);
-
-                Ok((
-                    TransactionEventsKey(digest),
-                    TransactionEventsData {
-                        events,
-                        timestamp_ms,
-                    },
-                ))
+                Ok((TransactionEventsKey(digest), executed))
             })
             .collect::<anyhow::Result<_>>()
             .map_err(Error::from)
@@ -176,6 +65,8 @@ impl ChunkedLoader<TransactionEventsKey> for LedgerGrpcReader {
 
 #[cfg(test)]
 mod tests {
+    use async_graphql::dataloader::Loader;
+
     use super::*;
     use crate::ledger_grpc_reader::test_support::assert_chunked;
     use crate::ledger_grpc_reader::test_support::mock_reader;

@@ -19,7 +19,7 @@ use crate::{
     },
 };
 
-use super::ExtendedSerializedBlock;
+use super::{ExtendedSerializedBlock, SerializedBlockForm};
 
 pub(crate) struct TestService {
     pub(crate) handle_send_block: Vec<(AuthorityIndex, ExtendedSerializedBlock)>,
@@ -152,7 +152,10 @@ impl ObserverNetworkService for Mutex<TestService> {
                 blocks_to_send
                     .into_iter()
                     .map(|extended_block| ObserverStreamItem {
-                        blocks: vec![extended_block.block],
+                        blocks: vec![match extended_block.block {
+                            SerializedBlockForm::Full(bytes) => bytes,
+                            SerializedBlockForm::Slim(bytes) => bytes,
+                        }],
                         auxiliary_data: Default::default(),
                     }),
             );

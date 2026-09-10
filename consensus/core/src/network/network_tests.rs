@@ -18,6 +18,7 @@ use super::{
 use crate::{
     block::{TestBlock, VerifiedBlock},
     context::Context,
+    network::SerializedBlockForm,
 };
 
 trait ManagerBuilder {
@@ -34,7 +35,7 @@ impl ManagerBuilder for TonicManagerBuilder {
 
 fn block_for_round(round: Round) -> ExtendedSerializedBlock {
     ExtendedSerializedBlock {
-        block: Bytes::from(vec![round as u8; 16]),
+        block: SerializedBlockForm::Full(Bytes::from(vec![round as u8; 16])),
         excluded_ancestors: vec![],
     }
 }
@@ -106,7 +107,7 @@ async fn send_and_receive_blocks_with_auth(
     assert_eq!(
         service_0.lock().handle_send_block[0].1,
         ExtendedSerializedBlock {
-            block: test_block_1.serialized().clone(),
+            block: SerializedBlockForm::Full(test_block_1.serialized().clone()),
             excluded_ancestors: vec![],
         },
     );
@@ -115,7 +116,7 @@ async fn send_and_receive_blocks_with_auth(
     assert_eq!(
         service_1.lock().handle_send_block[0].1,
         ExtendedSerializedBlock {
-            block: test_block_0.serialized().clone(),
+            block: SerializedBlockForm::Full(test_block_0.serialized().clone()),
             excluded_ancestors: vec![],
         },
     );

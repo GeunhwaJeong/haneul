@@ -6,7 +6,7 @@ processed 10 tasks
 init:
 A: object(0,0)
 
-task 1, lines 13-18:
+task 1, lines 14-19:
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -16,7 +16,7 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 19-21:
+task 2, lines 20-22:
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -24,15 +24,15 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 23:
+task 3, line 24:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, line 25:
+task 4, line 26:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 5, lines 27-31:
+task 5, lines 28-32:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 3
@@ -47,21 +47,21 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 6, lines 32-33:
+task 6, lines 33-34:
 //# programmable --sender A --gas-budget 500000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --gas-payment object(2,0) --inputs @A
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
 deleted: object(2,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 999978120)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 35-40:
+task 7, lines 36-41:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, line 41:
+task 8, line 42:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100999978120
 
-task 9, line 43:
+task 9, line 44:
 //# view-object 2,0
 No object at id 2,0

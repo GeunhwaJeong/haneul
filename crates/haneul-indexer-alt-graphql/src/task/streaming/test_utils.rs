@@ -24,6 +24,7 @@ use tokio::sync::broadcast;
 use super::checkpoint_stream_task::SubscriptionBroadcast;
 use super::gap_recovery::CheckpointFetcher;
 use super::processed_checkpoint::ProcessedCheckpoint;
+use crate::metrics::SubscriptionMetrics;
 
 /// Per-key behavior of the mock fetcher.
 #[derive(Debug, Clone)]
@@ -114,7 +115,11 @@ pub(super) fn test_broadcast(
     let (tx, rx) = broadcast::channel(256);
     (
         tx,
-        Arc::new(SubscriptionBroadcast::new(rx, first_live_checkpoint)),
+        Arc::new(SubscriptionBroadcast::new(
+            rx,
+            first_live_checkpoint,
+            SubscriptionMetrics::new_for_test(),
+        )),
     )
 }
 

@@ -6,24 +6,24 @@ processed 7 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 12-23:
+task 1, lines 13-24:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 5722800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 24-26:
+task 2, lines 25-27:
 //# programmable --sender A --sponsor B --gas-budget 5000000 --inputs 10000 @B
 //> 0: test::big::make(Input(0));
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(1))
 Error: Transaction Effects Status: Insufficient Gas.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: InsufficientGas, source: None, command: None } }
 
-task 3, lines 28-31:
+task 3, lines 29-32:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 32-34:
+task 4, lines 33-35:
 //# view-object 0,1
 Owner: Account Address ( B )
 Version: 2
@@ -38,10 +38,10 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 5, lines 35-37:
+task 5, lines 36-38:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 No funds accumulator object found
 
-task 6, line 38:
+task 6, line 39:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 No funds accumulator object found

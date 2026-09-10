@@ -1,25 +1,24 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 926
 ---
 processed 15 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-42:
+task 1, lines 7-43:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 8192800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 44-46:
+task 2, lines 45-47:
 //# run ex::m::mint
 created: object(2,0), object(2,1), object(2,2), object(2,3), object(2,4), object(2,5)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 8375200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 47-49:
+task 3, lines 48-50:
 //# view-object 2,0
 Owner: Account Address ( _ )
 Version: 3
@@ -31,7 +30,7 @@ Contents: ex::m::PubA {
     },
 }
 
-task 4, lines 50-52:
+task 4, lines 51-53:
 //# view-object 2,1
 Owner: ConsensusAddressOwner( 3, _ )
 Version: 3
@@ -43,7 +42,7 @@ Contents: ex::m::PubA {
     },
 }
 
-task 5, lines 53-55:
+task 5, lines 54-56:
 //# view-object 2,2
 Owner: Account Address ( fake(2,0) )
 Version: 3
@@ -55,7 +54,7 @@ Contents: ex::m::PubB {
     },
 }
 
-task 6, lines 56-58:
+task 6, lines 57-59:
 //# view-object 2,4
 Owner: Account Address ( fake(2,1) )
 Version: 3
@@ -67,7 +66,7 @@ Contents: ex::m::PubB {
     },
 }
 
-task 7, lines 59-61:
+task 7, lines 60-62:
 //# view-object 2,5
 Owner: ConsensusAddressOwner( 3, fake(2,1) )
 Version: 3
@@ -79,7 +78,7 @@ Contents: ex::m::PubB {
     },
 }
 
-task 8, lines 62-65:
+task 8, lines 63-66:
 //# view-object 2,3
 Owner: ConsensusAddressOwner( 3, fake(2,0) )
 Version: 3
@@ -91,12 +90,12 @@ Contents: ex::m::PubB {
     },
 }
 
-task 9, line 66:
+task 9, line 67:
 //# run ex::m::receiver --args object(2,0) receiving(2,2)
 mutated: object(0,2), object(2,0), object(2,2)
 gas summary: computation_cost: 1000000, storage_cost: 3450400,  storage_rebate: 3415896, non_refundable_storage_fee: 34504
 
-task 10, lines 68-71:
+task 10, lines 69-72:
 //# view-object 2,2
 Owner: Account Address ( _ )
 Version: 4
@@ -108,12 +107,12 @@ Contents: ex::m::PubB {
     },
 }
 
-task 11, line 72:
+task 11, line 73:
 //# run ex::m::receiver --args object(2,1) receiving(2,4)
 mutated: object(0,2), object(2,1), object(2,4)
 gas summary: computation_cost: 1000000, storage_cost: 3450400,  storage_rebate: 3415896, non_refundable_storage_fee: 34504
 
-task 12, lines 74-77:
+task 12, lines 75-78:
 //# view-object 2,4
 Owner: Account Address ( _ )
 Version: 5
@@ -125,10 +124,10 @@ Contents: ex::m::PubB {
     },
 }
 
-task 13, line 79:
+task 13, line 80:
 //# run ex::m::receiver --args object(2,0) receiving(2,3)
 Error: Error checking transaction input objects: Object used as shared is not shared
 
-task 14, line 81:
+task 14, line 82:
 //# run ex::m::receiver --args object(2,1) receiving(2,5)
 Error: Error checking transaction input objects: Object used as shared is not shared

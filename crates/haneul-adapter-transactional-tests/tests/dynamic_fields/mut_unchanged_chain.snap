@@ -1,25 +1,24 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 926
 ---
 processed 11 tasks
 
 init:
 A: object(0,0)
 
-task 1, lines 10-86:
+task 1, lines 11-87:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 12106800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 88:
+task 2, line 89:
 //# run test::m1::create --sender A
 created: object(2,0), object(2,1), object(2,2), object(2,3), object(2,4), object(2,5), object(2,6), object(2,7), object(2,8), object(2,9)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 19866400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 90:
+task 3, line 91:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 2
@@ -31,7 +30,7 @@ Contents: test::m1::GreatGrandParent {
     },
 }
 
-task 4, lines 92-94:
+task 4, lines 93-95:
 //# view-object 2,1
 Owner: Shared( 2 )
 Version: 2
@@ -43,32 +42,32 @@ Contents: test::m1::GreatGrandParent {
     },
 }
 
-task 5, line 96:
+task 5, line 97:
 //# run test::m1::borrow_mut --sender A --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 2294820, non_refundable_storage_fee: 23180
 
-task 6, line 98:
+task 6, line 99:
 //# run test::m1::borrow_mut --sender A --args object(2,1)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 2294820, non_refundable_storage_fee: 23180
 
-task 7, line 100:
+task 7, line 101:
 //# run test::m1::add_remove --sender A --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 2294820, non_refundable_storage_fee: 23180
 
-task 8, line 102:
+task 8, line 103:
 //# run test::m1::add_remove --sender A --args object(2,1)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 2294820, non_refundable_storage_fee: 23180
 
-task 9, line 104:
+task 9, line 105:
 //# run test::m1::write_back --sender A --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 2294820, non_refundable_storage_fee: 23180
 
-task 10, line 106:
+task 10, line 107:
 //# run test::m1::write_back --sender A --args object(2,1)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 2294820, non_refundable_storage_fee: 23180

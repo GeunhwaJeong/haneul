@@ -1,87 +1,86 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 908
 ---
 processed 17 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 9-40:
+task 1, lines 10-41:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6741200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 42:
+task 2, line 43:
 //# run test::event_streams::emit_event --sender A --args 10
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [10, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
 accumulators_written: (object(2,0), test, haneul::accumulator_settlement::EventStreamHead, Merge, event_indices:[0])
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 44:
+task 3, line 45:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 46-48:
+task 4, lines 47-49:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 2
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
 
-task 5, line 49:
+task 5, line 50:
 //# run test::event_streams::emit_event --sender A --args 20
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [20, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
 accumulators_written: (object(2,0), test, haneul::accumulator_settlement::EventStreamHead, Merge, event_indices:[0])
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 51:
+task 6, line 52:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 53-55:
+task 7, lines 54-56:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 3
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
 
-task 8, line 56:
+task 8, line 57:
 //# run test::event_streams::emit_event --sender A --args 30
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [30, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
 accumulators_written: (object(2,0), test, haneul::accumulator_settlement::EventStreamHead, Merge, event_indices:[0])
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 9, line 58:
+task 9, line 59:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 10, lines 60-62:
+task 10, lines 61-63:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 4
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
 
-task 11, line 63:
+task 11, line 64:
 //# run test::event_streams::emit_event --sender A --args 40
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [40, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
 accumulators_written: (object(2,0), test, haneul::accumulator_settlement::EventStreamHead, Merge, event_indices:[0])
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 12, line 65:
+task 12, line 66:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 13, lines 67-69:
+task 13, lines 68-70:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 5
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
 
-task 14, line 70:
+task 14, line 71:
 //# run test::event_streams::mint_and_emit --sender A --args 50
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [50, 0, 0, 0, 0, 0, 0, 0] }
 created: object(14,0)
@@ -89,11 +88,11 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), test, haneul::accumulator_settlement::EventStreamHead, Merge, event_indices:[0])
 gas summary: computation_cost: 1000000, storage_cost: 2416800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 15, line 72:
+task 15, line 73:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 16, lines 74-77:
+task 16, lines 75-78:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 6

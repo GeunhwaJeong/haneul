@@ -27,10 +27,11 @@ use haneul_rpc::proto::haneul::rpc::v2::QueryEndReason;
 use haneul_rpc::proto::haneul::rpc::v2::Watermark;
 use haneul_rpc_api::ErrorReason;
 use haneul_rpc_api::RpcError;
-use haneul_rpc_api::ledger_history::query_options::CheckpointRange;
 use haneul_rpc_api::ledger_history::query_options::QueryOptions;
 use haneul_rpc_api::ledger_history::query_options::RangeExhaustion;
-use haneul_rpc_api::ledger_history::query_options::ResolvedRange;
+use haneul_rpc_api::ledger_history::query_options::ResolvedCheckpointRange;
+use haneul_rpc_api::ledger_history::query_options::ResolvedScan;
+use haneul_rpc_api::ledger_history::query_options::validate_checkpoint_bounds;
 use haneul_rpc_api::ledger_history::watermark::ScanTerminal;
 use haneul_rpc_api::ledger_history::watermark::advance_covered_bound_before_checkpoint;
 use haneul_rpc_api::ledger_history::watermark::boundary_cursor_cp;
@@ -102,11 +103,7 @@ pub(crate) async fn list_checkpoints(
     let objects_stage = ctx.stage(PipelineStage::Objects);
     let tx_seq_digest_stage = ctx.stage(PipelineStage::TxSeqDigest);
 
-    let checkpoint_range = CheckpointRange::from_request(
-        request.start_checkpoint,
-        request.end_checkpoint,
-        checkpoint_hi_exclusive,
-    )?;
+    validate_checkpoint_bounds(request.start_checkpoint, request.end_checkpoint)?;
     let read_mask = {
         let read_mask = request
             .read_mask
@@ -126,6 +123,12 @@ pub(crate) async fn list_checkpoints(
         endpoint.default_limit_items,
         endpoint.max_limit_items,
     )?;
+    let checkpoint_range = ResolvedCheckpointRange::from_request(
+        request.start_checkpoint,
+        request.end_checkpoint,
+        checkpoint_hi_exclusive,
+        &options,
+    )?;
     let limit_items = options.limit_items;
     let ordering = options.ordering;
     let direction = options.scan_direction();
@@ -136,11 +139,11 @@ pub(crate) async fn list_checkpoints(
     let exhaustion = cp_range.exhaustion;
     let range_end_position = cp_range.end_position;
     let entry_checkpoint = if direction.is_ascending() {
-        cp_range.range.start
+        cp_range.range().start
     } else {
-        cp_range.range.end.saturating_sub(1)
+        cp_range.range().end.saturating_sub(1)
     };
-    let cp_range = cp_range.range;
+    let cp_range = cp_range.range();
 
     if cp_range.is_empty() {
         info!(
@@ -657,10 +660,12 @@ fn range_end_response(
 /// are additionally bounded at runtime by the per-request bitmap bucket
 /// budget; that limit surfaces as SCAN_LIMIT, not as an up-front cp-range
 /// clamp.
-fn resolve_cp_range(checkpoint_range: CheckpointRange, options: &QueryOptions) -> ResolvedRange {
-    let cp_range = checkpoint_range.resolve(options);
+fn resolve_cp_range(
+    cp_range: ResolvedCheckpointRange,
+    options: &QueryOptions,
+) -> ResolvedScan<u64> {
     let range = cp_range.range.clone();
-    options.apply_cursor_bounds(cp_range.with_range(range, options.ordering))
+    ResolvedScan::<u64>::resolve(cp_range, range, options)
 }
 
 fn decode_checkpoint_row_key(key: &Bytes) -> Result<u64, RpcError> {

@@ -7,7 +7,7 @@
 // its own package version independently, so calling `return_0` from two versions of the same
 // package within a single PTB succeeds.
 
-//# init --protocol-version 128 --addresses Test_V1=0x0 Test_V2=0x0 --accounts A
+//# init --protocol-version 119 --addresses Test_V1=0x0 Test_V2=0x0 --accounts A
 
 //# publish --upgradeable --sender A
 module Test_V1::base {

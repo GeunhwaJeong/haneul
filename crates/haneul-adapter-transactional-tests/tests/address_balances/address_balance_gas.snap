@@ -6,7 +6,7 @@ processed 10 tasks
 init:
 A: object(0,0)
 
-task 1, lines 10-12:
+task 1, lines 11-13:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 1
@@ -21,7 +21,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 2, lines 13-16:
+task 2, lines 14-17:
 //# programmable --sender A --inputs 10000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -30,28 +30,28 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 10000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 18:
+task 3, line 19:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 20-22:
+task 4, lines 21-23:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 10000000000
 
-task 5, lines 23-25:
+task 5, lines 24-26:
 //# programmable --sender A --address-balance-gas
 // Use the object, but not as gas
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1000000)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 6, lines 26-28:
+task 6, lines 27-29:
 //# programmable --sender A --address-balance-gas --inputs object(0,0)
 // View gas coin after -- balance should be unchanged (except for the initial send_funds tx)
 mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1009880)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, line 29:
+task 7, line 30:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 3
@@ -66,10 +66,10 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 8, line 31:
+task 8, line 32:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 9, line 33:
+task 9, line 34:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 9997990120

@@ -1,13 +1,12 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 908
 ---
 processed 18 tasks
 
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 8-11:
+task 1, lines 9-12:
 //# programmable --sender A --inputs 10000000000 @A
 // First send funds to A's address balance so we can pay for gas from it
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -16,7 +15,7 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 10000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 13-16:
+task 2, lines 14-17:
 //# programmable --sender B --inputs 10000000000 @B
 // First send funds to B's address balance so we can pay for gas from it
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -25,7 +24,7 @@ mutated: object(0,1)
 accumulators_written: (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 10000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 18-21:
+task 3, lines 19-22:
 //# programmable --sender C --inputs 10000000000 @C
 // First send funds to C's address balance so we can pay for gas from it
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -34,23 +33,23 @@ mutated: object(0,2)
 accumulators_written: (object(3,0), C, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 10000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, line 23:
+task 4, line 24:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, line 25:
+task 5, line 26:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 10000000000
 
-task 6, line 27:
+task 6, line 28:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 10000000000
 
-task 7, line 29:
+task 7, line 30:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> C
 10000000000
 
-task 8, lines 31-33:
+task 8, lines 32-34:
 //# programmable --sender A --inputs @0x0 object(0,0) --address-balance-gas
 // Transfer gas coin to 0x0 via TransferObjects while paying with address balance
 //> TransferObjects([Gas], Input(0))
@@ -59,7 +58,7 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 5000000000)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 9, line 35:
+task 9, line 36:
 //# view-object 8,0
 Owner: Account Address ( test )
 Version: 3
@@ -74,7 +73,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 10, lines 37-39:
+task 10, lines 38-40:
 //# programmable --sender B --inputs @B object(0,1) --address-balance-gas
 // Transfer gas coin to the sender to show an object was created, even at the same address
 //> TransferObjects([Gas], Input(0))
@@ -83,7 +82,7 @@ mutated: object(0,1)
 accumulators_written: (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 5000000000)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 11, line 41:
+task 11, line 42:
 //# view-object 10,0
 Owner: Account Address ( B )
 Version: 3
@@ -98,7 +97,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 12, lines 43-46:
+task 12, lines 44-47:
 //# programmable --sender C --inputs @C 0 object(0,2) --address-balance-gas
 // Split off from the gas coin and transfer that to self. Only one coin in total should be created
 //> 0: SplitCoins(Gas, [Input(1)]);
@@ -108,7 +107,7 @@ mutated: object(0,2)
 accumulators_written: (object(3,0), C, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1997880)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 13, line 48:
+task 13, line 49:
 //# view-object 12,0
 Owner: Account Address ( C )
 Version: 3
@@ -123,18 +122,18 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 14, line 50:
+task 14, line 51:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 15, line 52:
+task 15, line 53:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 5000000000
 
-task 16, line 54:
+task 16, line 55:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 5000000000
 
-task 17, line 56:
+task 17, line 57:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> C
 9998002120

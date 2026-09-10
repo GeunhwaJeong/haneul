@@ -6,20 +6,20 @@ processed 11 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-34:
+task 1, lines 7-35:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6832400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 35-36:
+task 2, lines 36-37:
 //# programmable --sender A
 //> ex::m::create_party()
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 38-40:
+task 3, lines 39-41:
 //# view-object 2,0
 Owner: ConsensusAddressOwner( 2, A )
 Version: 2
@@ -31,7 +31,7 @@ Contents: ex::m::A {
     },
 }
 
-task 4, lines 41-42:
+task 4, lines 42-43:
 //# programmable --sender A --inputs object(2,0)
 //> ex::m::wrap(Input(0))
 created: object(4,0)
@@ -39,11 +39,11 @@ mutated: object(0,0)
 wrapped: object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2492800,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 5, line 44:
+task 5, line 45:
 //# view-object 2,0
 No object at id 2,0
 
-task 6, lines 46-48:
+task 6, lines 47-49:
 //# view-object 4,0
 Owner: ConsensusAddressOwner( 3, A )
 Version: 3
@@ -62,14 +62,14 @@ Contents: ex::m::AWrapper {
     },
 }
 
-task 7, lines 49-53:
+task 7, lines 50-54:
 //# programmable --inputs object(2,0) @A --sender A
 //> 0: haneul::party::single_owner(Input(1));
 //> haneul::transfer::public_party_transfer<ex::m::A>(Input(0), Result(0))
 // Unwrap the object.
 Error: INVALID TEST. Could not load object argument object(2,0)
 
-task 8, lines 54-57:
+task 8, lines 55-58:
 //# programmable --sender A --inputs object(4,0)
 //> ex::m::unwrap(Input(0))
 // Verify it can again be transferred to a different party.
@@ -78,14 +78,14 @@ unwrapped: object(2,0)
 deleted: object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2467872, non_refundable_storage_fee: 24928
 
-task 9, lines 58-60:
+task 9, lines 59-61:
 //# programmable --inputs object(2,0) @B --sender A
 //> 0: haneul::party::single_owner(Input(1));
 //> haneul::transfer::public_party_transfer<ex::m::A>(Input(0), Result(0))
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 10, line 62:
+task 10, line 63:
 //# view-object 2,0
 Owner: ConsensusAddressOwner( 5, B )
 Version: 5

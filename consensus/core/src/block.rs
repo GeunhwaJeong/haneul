@@ -53,6 +53,12 @@ pub(crate) struct BlockTransactionVotes {
     pub(crate) rejects: Vec<TransactionIndex>,
 }
 
+/// Maximum number of transaction vote targets in a V3 block. The proposer and the block verifier
+/// must use the same limit, which bounds the cost of block verification and vote tracking.
+pub(crate) fn max_transaction_vote_targets(context: &Context) -> usize {
+    context.protocol_config.gc_depth().max(1) as usize * context.committee.size()
+}
+
 /// A block includes references to previous round blocks and transactions that the authority
 /// considers valid.
 /// Well behaved authorities produce at most one block per round, but malicious authorities can
@@ -83,9 +89,8 @@ pub trait BlockAPI {
     /// Votes on if a transaction should be accepted or rejected.
     fn transaction_votes(&self) -> &[BlockTransactionVotes];
 
-    /// Transactions in this blocks' casual history at and before the cutoff round
-    /// will not receive accept votes from this block.
-    /// Only `BlockV3` carries this — earlier variants panic.
+    /// Highest round for which this block does not carry implicit accept votes.
+    /// V1 and V2 use the genesis round because they have no cutoff.
     fn transaction_votes_cutoff_round(&self) -> Round;
 
     /// Votes on commits observed by this authority.
@@ -181,7 +186,7 @@ impl BlockAPI for BlockV1 {
     }
 
     fn transaction_votes_cutoff_round(&self) -> Round {
-        panic!("transaction_votes_cutoff_round() is not supported on BlockV1");
+        GENESIS_ROUND
     }
 
     fn commit_votes(&self) -> &[CommitVote] {
@@ -284,7 +289,7 @@ impl BlockAPI for BlockV2 {
     }
 
     fn transaction_votes_cutoff_round(&self) -> Round {
-        panic!("transaction_votes_cutoff_round() is not supported on BlockV2");
+        GENESIS_ROUND
     }
 
     fn commit_votes(&self) -> &[CommitVote] {
@@ -483,6 +488,7 @@ impl SignedBlock {
         ensure!(
             committee.is_valid_index(block.author()),
             ConsensusError::InvalidAuthorityIndex {
+                loc: format!("verifying signature {}", block.slot()),
                 index: block.author(),
                 max: committee.size() - 1
             }
@@ -678,7 +684,9 @@ pub(crate) fn genesis_blocks(context: &Context) -> Vec<VerifiedBlock> {
         .committee
         .authorities()
         .map(|(authority_index, _)| {
-            let block = if context.protocol_config.transaction_voting_enabled() {
+            let block = if context.protocol_config.enable_v3() {
+                Block::V3(BlockV3::genesis_block(context, authority_index))
+            } else if context.protocol_config.transaction_voting_enabled() {
                 Block::V2(BlockV2::genesis_block(context, authority_index))
             } else {
                 Block::V1(BlockV1::genesis_block(context, authority_index))
@@ -773,6 +781,23 @@ impl TestBlock {
     pub fn build(self) -> Block {
         Block::V2(self.block)
     }
+
+    #[cfg(test)]
+    pub(crate) fn build_v3(self, transaction_votes_cutoff_round: Round) -> Block {
+        let block = self.block;
+        Block::V3(BlockV3::new(
+            block.epoch,
+            block.round,
+            block.author,
+            block.timestamp_ms,
+            block.ancestors,
+            block.transactions,
+            block.transaction_votes,
+            transaction_votes_cutoff_round,
+            block.commit_votes,
+            block.misbehavior_reports,
+        ))
+    }
 }
 
 /// A block can attach reports of misbehavior by other authorities.
@@ -798,10 +823,21 @@ mod tests {
     use fastcrypto::error::FastCryptoError;
 
     use crate::{
-        block::{BlockAPI, SignedBlock, TestBlock, genesis_blocks},
+        block::{BlockAPI, SignedBlock, TestBlock, genesis_blocks, max_transaction_vote_targets},
         context::Context,
         error::ConsensusError,
     };
+
+    #[tokio::test]
+    async fn test_max_transaction_vote_targets() {
+        let (mut context, _) = Context::new_for_test(4);
+        context.protocol_config.set_gc_depth_for_testing(5);
+        assert_eq!(max_transaction_vote_targets(&context), 20);
+
+        // A GC depth of zero must not make the limit zero, which would remove all vote targets.
+        context.protocol_config.set_gc_depth_for_testing(0);
+        assert_eq!(max_transaction_vote_targets(&context), 4);
+    }
 
     #[tokio::test]
     async fn test_sign_and_verify() {

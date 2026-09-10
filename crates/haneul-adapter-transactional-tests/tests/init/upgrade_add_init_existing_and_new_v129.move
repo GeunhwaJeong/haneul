@@ -7,7 +7,7 @@
 // before the existing-module-adds-init rule (which only exists once the feature is enabled) is ever
 // consulted.
 
-//# init --protocol-version 129 --addresses v0=0x0 v1=0x0 --accounts A
+//# init --protocol-version 120 --addresses v0=0x0 v1=0x0 --accounts A
 
 //# publish --upgradeable --sender A
 module v0::a;

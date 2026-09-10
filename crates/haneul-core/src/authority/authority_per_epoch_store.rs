@@ -37,12 +37,13 @@ use haneul_types::crypto::{AuthoritySignInfo, RandomnessRound};
 use haneul_types::digests::{ChainIdentifier, TransactionEffectsDigest};
 use haneul_types::dynamic_field::get_dynamic_field_from_store;
 use haneul_types::effects::{TransactionEffects, TransactionEffectsAPI};
-use haneul_types::error::{HaneulError, HaneulErrorKind, HaneulResult};
+use haneul_types::error::{HaneulError, HaneulErrorKind, HaneulResult, UserInputError};
 use haneul_types::executable_transaction::{
     TrustedExecutableTransactionWithAliases, VerifiedExecutableTransaction,
     VerifiedExecutableTransactionWithAliases,
 };
 use haneul_types::execution::{ExecutionTimeObservationKey, ExecutionTiming};
+use haneul_types::fp_ensure;
 use haneul_types::global_state_hash::GlobalStateHash;
 use haneul_types::haneul_system_state::epoch_start_haneul_system_state::{
     EpochStartSystemState, EpochStartSystemStateTrait,
@@ -315,6 +316,9 @@ pub struct AuthorityPerEpochStore {
 
     /// Committee of validators for the current epoch.
     committee: Arc<Committee>,
+
+    /// This authority's index in `committee`, or None if it is not a member.
+    own_committee_index: Option<u32>,
 
     /// Holds the underlying per-epoch typed store tables.
     /// This is an ArcSwapOption because it needs to be used concurrently,
@@ -1017,6 +1021,7 @@ impl AuthorityPerEpochStore {
 
         let s = Arc::new(Self {
             name,
+            own_committee_index: committee.authority_index(&name),
             committee: committee.clone(),
             protocol_config,
             tables: ArcSwapOption::new(Some(Arc::new(tables))),
@@ -1314,7 +1319,45 @@ impl AuthorityPerEpochStore {
             epoch: self.epoch(),
             chain_identifier: self.get_chain_identifier(),
             reference_gas_price: self.reference_gas_price(),
+            committee_size: self.committee.num_members() as u32,
         }
+    }
+
+    /// This validator's index in the current epoch's committee, if it is a member.
+    pub fn own_committee_index(&self) -> Option<u32> {
+        self.own_committee_index
+    }
+
+    /// Checks that the validator at committee index `proposer` is allowed to propose `tx` in
+    /// consensus. Enforced at admission, and again when verifying blocks received from peers,
+    /// where proposal by a disallowed validator is byzantine behavior.
+    pub fn check_allowed_proposer(&self, tx: &TransactionData, proposer: u32) -> HaneulResult {
+        // When the feature is disabled, `validity_check` rejects the expiration variant
+        // outright, so there is nothing to enforce here.
+        if !self.protocol_config().allowed_proposers() {
+            return Ok(());
+        }
+        fp_ensure!(
+            tx.expiration().is_allowed_proposer(proposer, self.epoch()),
+            UserInputError::ProposerNotAllowed { proposer }.into()
+        );
+        Ok(())
+    }
+
+    /// Checks that this validator is allowed to propose `tx` in consensus.
+    pub fn check_self_allowed_proposer(&self, tx: &TransactionData) -> HaneulResult {
+        if !self.protocol_config().allowed_proposers()
+            || !tx.expiration().restricts_proposers(self.epoch())
+        {
+            return Ok(());
+        }
+        let Some(own_index) = self.own_committee_index() else {
+            return Err(HaneulErrorKind::InvalidRequest(
+                "this node is not a member of the current committee".to_string(),
+            )
+            .into());
+        };
+        self.check_allowed_proposer(tx, own_index)
     }
 
     pub fn get_state_hash_for_checkpoint(

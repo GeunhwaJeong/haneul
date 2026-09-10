@@ -8,7 +8,6 @@ use std::{
     str::FromStr,
 };
 
-use crate::execution_value::HaneulResolver;
 use haneul_types::storage::{get_module, PackageObject};
 use haneul_types::{
     base_types::ObjectID,
@@ -28,7 +27,7 @@ use move_vm_types::data_store::LinkageResolver;
 /// `resolver` and the second via linkage information that is loaded from a move package.
 pub struct LinkageView<'state> {
     /// Interface to resolve packages, modules and resources directly from the store.
-    resolver: Box<dyn HaneulResolver + 'state>,
+    resolver: Box<dyn BackingPackageStore + 'state>,
     /// Information used to change module and type identities during linkage.
     linkage_info: Option<LinkageInfo>,
     /// Cache containing the type origin information from every package that has been set as the
@@ -54,7 +53,7 @@ pub struct LinkageInfo {
 pub struct SavedLinkage(LinkageInfo);
 
 impl<'state> LinkageView<'state> {
-    pub fn new(resolver: Box<dyn HaneulResolver + 'state>) -> Self {
+    pub fn new(resolver: Box<dyn BackingPackageStore + 'state>) -> Self {
         Self {
             resolver,
             linkage_info: None,

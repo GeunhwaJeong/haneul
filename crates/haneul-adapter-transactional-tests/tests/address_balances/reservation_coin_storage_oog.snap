@@ -6,13 +6,13 @@ processed 10 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 12-23:
+task 1, lines 13-24:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 5502400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 24-29:
+task 2, lines 25-30:
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -22,7 +22,7 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 30-32:
+task 3, lines 31-33:
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -30,28 +30,28 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 34:
+task 4, line 35:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 36-40:
+task 5, lines 37-41:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 6, lines 41-42:
+task 6, lines 42-43:
 //# programmable --sender A --gas-budget 5000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(5000000) --gas-payment object(3,0) --inputs 100
 //> test::oog::make(Input(0))
 Error: Transaction Effects Status: Insufficient Gas.
 Debug of error: InsufficientGas at command None
 
-task 7, line 44:
+task 7, line 45:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 46-49:
+task 8, lines 47-50:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100999978120
 
-task 9, line 50:
+task 9, line 51:
 //# view-object 3,0
 No object at id 3,0

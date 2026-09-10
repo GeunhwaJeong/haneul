@@ -6,7 +6,7 @@ processed 11 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 22-27:
+task 1, lines 23-28:
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -16,7 +16,7 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 28-30:
+task 2, lines 29-31:
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -24,37 +24,37 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 32:
+task 3, line 33:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, line 34:
+task 4, line 35:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 5, lines 36-38:
+task 5, lines 37-39:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> C
 No funds accumulator object found
 
-task 6, lines 39-40:
+task 6, lines 40-41:
 //# programmable --sender A --gas-budget 500000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --gas-payment object(2,0) --inputs @C
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
 deleted: object(2,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 500000000), (object(6,0), C, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1499978120)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 42-45:
+task 7, lines 43-46:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 46-48:
+task 8, lines 47-49:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 99500000000
 
-task 9, line 49:
+task 9, line 50:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> C
 1499978120
 
-task 10, line 51:
+task 10, line 52:
 //# view-object 2,0
 No object at id 2,0

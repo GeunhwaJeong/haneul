@@ -6,13 +6,13 @@ processed 23 tasks
 init:
 A: object(0,0)
 
-task 1, lines 17-27:
+task 1, lines 18-28:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 5722800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 28-33:
+task 2, lines 29-34:
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -22,113 +22,113 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 34:
+task 3, line 35:
 //# run test::big::make --args 10000 --sender A
 created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 2800000, storage_cost: 78226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 36:
+task 4, line 37:
 //# run test::big::make --args 10000 --sender A
 created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 2800000, storage_cost: 78226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, line 38:
+task 5, line 39:
 //# run test::big::make --args 10000 --sender A
 created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 2800000, storage_cost: 78226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 40:
+task 6, line 41:
 //# run test::big::make --args 10000 --sender A
 created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 2800000, storage_cost: 78226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, line 42:
+task 7, line 43:
 //# run test::big::make --args 10000 --sender A
 created: object(7,0)
 mutated: object(0,0)
 gas summary: computation_cost: 2800000, storage_cost: 78226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, line 44:
+task 8, line 45:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 9, lines 46-48:
+task 9, lines 47-49:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 10, line 49:
+task 10, line 50:
 //# view-object 3,0 --hide-contents
 Owner: Account Address ( A )
 Version: 3
 Type: test::big::W
 
-task 11, line 51:
+task 11, line 52:
 //# view-object 4,0 --hide-contents
 Owner: Account Address ( A )
 Version: 4
 Type: test::big::W
 
-task 12, line 53:
+task 12, line 54:
 //# view-object 5,0 --hide-contents
 Owner: Account Address ( A )
 Version: 5
 Type: test::big::W
 
-task 13, line 55:
+task 13, line 56:
 //# view-object 6,0 --hide-contents
 Owner: Account Address ( A )
 Version: 6
 Type: test::big::W
 
-task 14, lines 57-62:
+task 14, lines 58-63:
 //# view-object 7,0 --hide-contents
 Owner: Account Address ( A )
 Version: 7
 Type: test::big::W
 
-task 15, lines 63-64:
+task 15, lines 64-65:
 //# programmable --sender A --gas-budget 2500000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10000000) --inputs object(3,0) object(4,0) object(5,0) object(6,0) object(7,0) @A
 //> TransferObjects([Input(0), Input(1), Input(2), Input(3), Input(4)], Input(5))
 Error: Transaction Effects Status: Insufficient Gas.
 Debug of error: InsufficientGas at command None
 
-task 16, line 66:
+task 16, line 67:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 17, lines 68-74:
+task 17, lines 69-75:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 99997500000
 
-task 18, line 75:
+task 18, line 76:
 //# view-object 3,0 --hide-contents
 Owner: Account Address ( A )
 Version: 8
 Type: test::big::W
 
-task 19, line 77:
+task 19, line 78:
 //# view-object 4,0 --hide-contents
 Owner: Account Address ( A )
 Version: 8
 Type: test::big::W
 
-task 20, line 79:
+task 20, line 80:
 //# view-object 5,0 --hide-contents
 Owner: Account Address ( A )
 Version: 8
 Type: test::big::W
 
-task 21, line 81:
+task 21, line 82:
 //# view-object 6,0 --hide-contents
 Owner: Account Address ( A )
 Version: 8
 Type: test::big::W
 
-task 22, line 83:
+task 22, line 84:
 //# view-object 7,0 --hide-contents
 Owner: Account Address ( A )
 Version: 8
