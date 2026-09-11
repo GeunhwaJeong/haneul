@@ -788,3 +788,14 @@ zstd = "0.13.2"
 async-graphql = { git = "https://github.com/GeunhwaJeong/async-graphql", branch = "v7.0.1-react-18-graphiql-4" }
 async-graphql-axum = { git = "https://github.com/GeunhwaJeong/async-graphql", branch = "v7.0.1-react-18-graphiql-4" }
 async-graphql-value = { git = "https://github.com/GeunhwaJeong/async-graphql", branch = "v7.0.1-react-18-graphiql-4" }
+
+# The simulator (`msim`) declares its tokio fork and async-task from their
+# original hosts. Redirect those two git sources to the maintained mirrors so
+# that simtest and deterministic builds fetch everything from one org. The
+# revisions are unchanged, so the resolved code is byte-identical.
+[patch."https://github.com/MystenLabs/tokio-msim-fork.git"]
+real_tokio = { git = "https://github.com/GeunhwaJeong/tokio-msim-fork.git", rev = "e8ce7593bfbfbbd7c7ee8671faecb062a8966b2d" }
+tokio-util = { git = "https://github.com/GeunhwaJeong/tokio-msim-fork.git", rev = "e8ce7593bfbfbbd7c7ee8671faecb062a8966b2d" }
+
+[patch."https://github.com/mystenmark/async-task"]
+async-task = { git = "https://github.com/GeunhwaJeong/async-task", rev = "4e45b26e11126b191701b9b2ce5e2346b8d7682f" }
