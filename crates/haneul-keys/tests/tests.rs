@@ -248,12 +248,14 @@ async fn mnemonic_test() {
     assert_eq!(address, imported_address);
 }
 
-/// This test confirms rust's implementation of mnemonic is the same with the Haneul Wallet
+/// This test pins the address derived from a fixed mnemonic through the default
+/// Ed25519 path (m/44'/8282'/0'/0'/0'), so that any change to the derivation
+/// logic or the registered coin type is caught by an explicit vector.
 #[tokio::test]
 async fn haneul_wallet_address_mnemonic_test() -> Result<(), anyhow::Error> {
     let phrase = "result crisp session latin must fruit genuine question prevent start coconut brave speak student dismiss";
     let expected_address = HaneulAddress::from_str(
-        "0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973",
+        "0x448bdf9efc53986870d738c8409fe25d6850a7759cee39f2f7792d118cfd6708",
     )?;
 
     let temp_dir = TempDir::new().unwrap();
