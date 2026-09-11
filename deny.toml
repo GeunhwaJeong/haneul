@@ -230,9 +230,4 @@ allow-git = []
 [sources.allow-org]
 github = [
     "GeunhwaJeong",
-    "MystenLabs",
-    "mystenmark",
-    "amnn",
-    "nextest-rs",
-    "0xsiddharthks",
 ]
