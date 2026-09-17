@@ -1613,7 +1613,7 @@ async fn sync_checkpoint_contents_from_archive_iteration<S>(
             warn!("Archival ingestion url for state sync is not configured");
             return;
         };
-        if ingestion_url.contains("checkpoints.mainnet.haneul.io") {
+        if ingestion_url.contains("checkpoints.mainnet.haneulfoundation.org") {
             warn!("{} can't be used as an archival fallback", ingestion_url);
             return;
         }

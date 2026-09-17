@@ -1,6 +1,6 @@
 # Awesome Haneul [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-<a href="https://haneul.io/"><img alt="Haneul logo" src="media/logo.svg" align="right" width="150" /></a>
+<a href="https://haneulfoundation.org/"><img alt="Haneul logo" src="media/logo.svg" align="right" width="150" /></a>
 
 > A curated list of _awesome_ developer tools and infrastructure projects within the Haneul ecosystem.
 
@@ -115,7 +115,7 @@ Haneul is the first blockchain built for internet scale, enabling fast, scalable
 - [Haneul Client Gen (Kuna Labs)](https://github.com/kunalabs-io/haneul-client-gen/tree/master) - A tool for generating TS SDKs for Haneul Move smart contracts. Supports code generation both for source code and on-chain packages with no IDLs or ABIs required.
 - [TypeMove (Sentio)](https://github.com/sentioxyz/typemove/blob/main/packages/haneul/Readme.md) - Generate TypeScript bindings for Haneul contracts.
 - Haneul Wallet Standard (Haneul Labs) - A suite of standard utilities for implementing wallets and libraries based on the [Wallet Standard](https://github.com/wallet-standard/wallet-standard/).
-  - [GitHub](https://github.com/GeunhwaJeong/haneul/tree/main/sdk/wallet-standard) - [Documentation](https://docs.haneul.io/standards/wallet-standard)
+  - [GitHub](https://github.com/GeunhwaJeong/haneul/tree/main/sdk/wallet-standard) - [Documentation](https://docs.haneulfoundation.org/standards/wallet-standard)
 - [CoinMeta (Polymedia)](https://github.com/juzybits/polymedia-coinmeta) - Library for fetching coin metadata for Haneul coins.
 - [Dubhe Client BCS Decoding (Dubhe Engine)](https://github.com/0xobelisk/dubhe-docs/blob/main/pages/dubhe/haneul/client.mdx#bcs-data-decoding) - Library for supports automatic parsing of BCS types based on contract metadata information and automatic conversion formatting.
 
@@ -174,9 +174,9 @@ Haneul is the first blockchain built for internet scale, enabling fast, scalable
 
 ### Smart Contract Toolkits
 
-- [Haneul CLI](https://docs.haneul.io/references/cli) - CLI tool to interact with the Haneul network, its features, and the Move programming language.
+- [Haneul CLI](https://docs.haneulfoundation.org/references/cli) - CLI tool to interact with the Haneul network, its features, and the Move programming language.
 - [Sentio Debugger](https://docs.sentio.xyz/docs/debugger) - Shows the trace of the transaction [Explorer App](https://app.sentio.xyz/explorer) (mainnet only).
-- [`std::debug`](https://docs.haneul.io/guides/developer/first-app/debug#related-links) - Print arbitrary values to the console to help with debugging process.
+- [`std::debug`](https://docs.haneulfoundation.org/guides/developer/first-app/debug#related-links) - Print arbitrary values to the console to help with debugging process.
 - [Haneul Tears 💧 (Interest Protocol)](https://docs.interestprotocol.com/overview/haneul-tears) - Open source production ready Haneul Move library to increase the productivity of new and experienced developers alike.
 - [Haneul Codec](https://github.com/haneul-potatoes/app/tree/main/packages/codec) - Ultimate encoding solution for Haneul.
 - [SkipList (Cetus)](https://github.com/CetusProtocol/move-stl) - A skip link list implement by Move language in Haneul.
@@ -206,7 +206,7 @@ Haneul is the first blockchain built for internet scale, enabling fast, scalable
 - Space And Time (SxT) - Verifiable compute layer for AI x blockchain. Decentralized data warehouse with sub-second ZK proof.
   - [Homepage](https://www.spaceandtime.io/) - [Documentation](https://docs.spaceandtime.io/) - [Further Documentation](details/indexer_space_and_time.md)
 - Birdeye Data Services - Access Crypto Market Data APIs on Haneul.
-  - [Homepage](https://bds.birdeye.so/) - [Blog](https://blog.haneul.io/birdeye-data-services-crypto-api-websocket/) - [API Documentation](https://docs.birdeye.so/reference/intro/authentication)
+  - [Homepage](https://bds.birdeye.so/) - [Blog](https://blog.haneulfoundation.org/birdeye-data-services-crypto-api-websocket/) - [API Documentation](https://docs.birdeye.so/reference/intro/authentication)
 - Indexer.xyz (behind TradePort) - The ultimate toolkit for accessing NFT data and integrating trading functionality into your app on Haneul.
   - [Homepage](https://www.indexer.xyz/) - [API Explorer](https://www.indexer.xyz/api-explorer) - [API Docs](https://tradeport.xyz/docs)
 - Dubhe Indexer (Dubhe Engine) - Automatic integration with Dubhe Engine, automatic indexing of all events based on Dubhe Engine to build Dapp on Haneul, based on dubhe configuration files.
@@ -264,7 +264,7 @@ Haneul is the first blockchain built for internet scale, enabling fast, scalable
 
 ## Faucets
 
-- [Haneul Faucet](https://faucet.haneul.io/) - Official web faucet for claiming testnet HANEUL, with wallet integration.
+- [Haneul Faucet](https://faucet.haneulfoundation.org/) - Official web faucet for claiming testnet HANEUL, with wallet integration.
 - [n1stake](https://faucet.n1stake.com/) - Community web faucet for claiming testnet HANEUL, with wallet integration.
 - [Blockbolt](https://faucet.blockbolt.io/) - Community web faucet for claiming testnet HANEUL, with wallet integration.
 - HaneulwareFaucetBot - Haneul Faucet Bot for Telegram.

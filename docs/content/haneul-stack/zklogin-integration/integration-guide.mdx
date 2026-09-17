@@ -86,7 +86,7 @@ import { Ed25519Keypair } from '@haneullabs/haneul/keypairs/ed25519';
 import { generateNonce, generateRandomness } from '@haneullabs/haneul/zklogin';
 import { HaneulGrpcClient } from '@haneullabs/haneul/grpc';
 
-const FULLNODE_URL = 'https://fullnode.testnet.haneul.io:443';
+const FULLNODE_URL = 'https://fullnode.testnet.haneulfoundation.org:443';
 const haneulClient = new HaneulGrpcClient({ baseUrl: FULLNODE_URL, network: 'testnet' });
 const { systemState } = await haneulClient.core.getCurrentSystemState();
 const { epoch } = systemState;

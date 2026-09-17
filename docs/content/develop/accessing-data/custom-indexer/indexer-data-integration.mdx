@@ -70,9 +70,9 @@ The Mainnet and Testnet GCS buckets are:
 - Mainnet: `gs://haneullabs-mainnet-checkpoints-use4`
 - Testnet: `gs://haneullabs-testnet-checkpoints-use4`
 
-The public-good HTTPS checkpoint stores are `https://checkpoints.mainnet.haneul.io` and `https://checkpoints.testnet.haneul.io`. They are public-good testing endpoints with only the most recent 30 days of checkpoints. Do not use them as a production backfill, recovery, fallback, or steady-state source.
+The public-good HTTPS checkpoint stores are `https://checkpoints.mainnet.haneulfoundation.org` and `https://checkpoints.testnet.haneulfoundation.org`. They are public-good testing endpoints with only the most recent 30 days of checkpoints. Do not use them as a production backfill, recovery, fallback, or steady-state source.
 
-The public-good fullnode endpoints are `https://fullnode.mainnet.haneul.io:443`, `https://fullnode.testnet.haneul.io:443`, and `https://fullnode.devnet.haneul.io:443`. They are also for testing only and are not intended for production indexers. For production, obtain a fullnode gRPC endpoint from an RPC provider with capacity and retention appropriate for your workload.
+The public-good fullnode endpoints are `https://fullnode.mainnet.haneulfoundation.org:443`, `https://fullnode.testnet.haneulfoundation.org:443`, and `https://fullnode.devnet.haneulfoundation.org:443`. They are also for testing only and are not intended for production indexers. For production, obtain a fullnode gRPC endpoint from an RPC provider with capacity and retention appropriate for your workload.
 
 ## Recommended production flow
 
@@ -123,9 +123,9 @@ The streaming client automatically falls back to the polling client when streami
 
 The following public-good endpoints are available for testing only:
 
-- Mainnet: `https://fullnode.mainnet.haneul.io:443`
-- Testnet: `https://fullnode.testnet.haneul.io:443`
-- Devnet: `https://fullnode.devnet.haneul.io:443`
+- Mainnet: `https://fullnode.mainnet.haneulfoundation.org:443`
+- Testnet: `https://fullnode.testnet.haneulfoundation.org:443`
+- Devnet: `https://fullnode.devnet.haneulfoundation.org:443`
 
 Do not use these public-good endpoints for a production indexer. Use a production-grade fullnode endpoint from an RPC provider instead.
 
@@ -154,7 +154,7 @@ Use the public HTTPS store only for development or tests against a checkpoint th
 
 ```sh
 $ cargo run -- \
-  --remote-store-url https://checkpoints.testnet.haneul.io \
+  --remote-store-url https://checkpoints.testnet.haneulfoundation.org \
   --first-checkpoint RECENT_CHECKPOINT
 ```
 

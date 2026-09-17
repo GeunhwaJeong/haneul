@@ -1,6 +1,6 @@
 # Walrus Attributes Indexer
 
-This is an extension of the [Custom Indexer guide](https://docs.haneul.io/guides/developer/advanced/custom-indexer) to show how to index Walrus blobs and their associated `Metadata` dynamic fields.
+This is an extension of the [Custom Indexer guide](https://docs.haneulfoundation.org/guides/developer/advanced/custom-indexer) to show how to index Walrus blobs and their associated `Metadata` dynamic fields.
 
 ## Quickstart
 
@@ -16,7 +16,7 @@ To run the indexer:
 
 ```sh
 RUST_LOG=info cargo run --release -- \
-    --remote-store-url https://checkpoints.mainnet.haneul.io
+    --remote-store-url https://checkpoints.mainnet.haneulfoundation.org
 ```
 
 Other useful commands:

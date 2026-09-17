@@ -77,7 +77,7 @@ async fn create_credential_and_sign_test_tx_with_passkey_multisig(
     let store: Option<Passkey> = None;
     let my_authenticator = Authenticator::new(my_aaguid, store, user_validation_method);
     let mut my_client = Client::new(my_authenticator);
-    let origin = Url::parse("https://www.haneul.io").unwrap();
+    let origin = Url::parse("https://www.haneulfoundation.org").unwrap();
 
     // Create credential.
     let challenge_bytes_from_rp: Bytes = random_vec(32).into();

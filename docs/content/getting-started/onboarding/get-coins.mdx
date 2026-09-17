@@ -97,7 +97,7 @@ $ haneul client new-address ed25519
 
 ## Request HANEUL tokens from faucet {#online-faucet}
 
-Visit the [online faucet](https://faucet.haneul.io/) to request HANEUL tokens.
+Visit the [online faucet](https://faucet.haneulfoundation.org/) to request HANEUL tokens.
 
 Then, follow these steps: 
 
@@ -183,7 +183,7 @@ Use the following cURL commands to set console variables and request tokens dire
 ```sh
 $ ADDRESS=$(haneul client active-address)
 $ NETWORK=testnet
-$ curl --location --request POST "https://faucet.${NETWORK}.haneul.io/v2/gas" \
+$ curl --location --request POST "https://faucet.${NETWORK}.haneulfoundation.org/v2/gas" \
 --header "Content-Type: application/json" \
 --data-raw "{
     \"FixedAmountRequest\": {
@@ -192,7 +192,7 @@ $ curl --location --request POST "https://faucet.${NETWORK}.haneul.io/v2/gas" \
 }"
 ```
 
-If you're working with a local network, replace `"https://faucet.${NETWORK}.haneul.io/v2/gas"` with the appropriate value based on which package runs your network:
+If you're working with a local network, replace `"https://faucet.${NETWORK}.haneulfoundation.org/v2/gas"` with the appropriate value based on which package runs your network:
 
 - `haneul-faucet`: `http://127.0.0.1:5003/gas`
 - `haneul`: `http://127.0.0.1:9123/gas`

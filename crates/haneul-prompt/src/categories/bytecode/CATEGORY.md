@@ -28,5 +28,5 @@ disassembly (`haneul move disassemble` output), which is 1:1 with the executed b
 ## External references
 
 - [move-book.com](https://move-book.com) — Move language reference.
-- [docs.haneul.io](https://docs.haneul.io) — Haneul framework + on-chain conventions.
+- [docs.haneulfoundation.org](https://docs.haneulfoundation.org) — Haneul framework + on-chain conventions.
 - [`move-binary-format` source](https://github.com/GeunhwaJeong/haneul/tree/main/external-crates/move/crates/move-binary-format) — the canonical definition of the `.mv` table layout and instruction set.

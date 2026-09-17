@@ -314,9 +314,9 @@ Before using address balance gas payments, you can verify that the feature is en
 const network = 'testnet';
 
 const networkUrls = {
-	mainnet: 'https://fullnode.mainnet.haneul.io:443',
-	testnet: 'https://fullnode.testnet.haneul.io:443',
-	devnet: 'https://fullnode.devnet.haneul.io:443',
+	mainnet: 'https://fullnode.mainnet.haneulfoundation.org:443',
+	testnet: 'https://fullnode.testnet.haneulfoundation.org:443',
+	devnet: 'https://fullnode.devnet.haneulfoundation.org:443',
 };
 
 const client = new HaneulGrpcClient({
@@ -404,20 +404,20 @@ All balance values are returned as strings. Use `BigInt(balance.balance)` for nu
 Use [`GetBalance`](/references/fullnode-protocol) and [`ListBalances`](/references/fullnode-protocol) from `StateService`:
 
 ```bash
-buf curl --protocol grpc https://fullnode.testnet.haneul.io/haneul.rpc.v2.StateService/GetBalance \
+buf curl --protocol grpc https://fullnode.testnet.haneulfoundation.org/haneul.rpc.v2.StateService/GetBalance \
     -d '{
         "owner": "<ADDRESS>",
         "coin_type": "0x2::haneul::HANEUL"
     }'
 
 # List all balances
-buf curl --protocol grpc https://fullnode.testnet.haneul.io/haneul.rpc.v2.StateService/ListBalances \
+buf curl --protocol grpc https://fullnode.testnet.haneulfoundation.org/haneul.rpc.v2.StateService/ListBalances \
     -d '{"owner": "<ADDRESS>"}'
 ```
 
 ### GraphQL
 
-Copy the examples below into [GraphQL IDE (Testnet)](https://graphql.testnet.haneul.io/graphql) to try them out:
+Copy the examples below into [GraphQL IDE (Testnet)](https://graphql.testnet.haneulfoundation.org/graphql) to try them out:
 
 ```graphql
 # Single balance

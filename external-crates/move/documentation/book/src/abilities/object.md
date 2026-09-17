@@ -5,9 +5,9 @@ the data to persist between transactions.
 
 For more details, see the Haneul documentation on
 
-- [The Object Model](https://docs.haneul.io/concepts/object-model)
-- [Move Rules for Objects](https://docs.haneul.io/concepts/haneul-move-concepts#global-unique)
-- [Transferring Objects](https://docs.haneul.io/concepts/transfers)
+- [The Object Model](https://docs.haneulfoundation.org/concepts/object-model)
+- [Move Rules for Objects](https://docs.haneulfoundation.org/concepts/haneul-move-concepts#global-unique)
+- [Transferring Objects](https://docs.haneulfoundation.org/concepts/transfers)
 
 ## Object Rules
 

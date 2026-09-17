@@ -124,7 +124,7 @@ const NUM_CONCURRENCY_REQS: usize = 8;
 const RATE_LIMIT_MILLIS: u64 = 50;
 /// Handed to users whose CLI has fallen behind the network's protocol version.
 const CLI_INSTALL_DOCS: &str =
-    "https://docs.haneul.io/guides/developer/getting-started/haneul-install";
+    "https://docs.haneulfoundation.org/guides/developer/getting-started/haneul-install";
 
 pub(crate) static USER_AGENT: &str =
     concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
@@ -473,7 +473,7 @@ pub enum HaneulClientCommands {
         name = "test-publish",
         after_long_help = "The `test-publish` command is used to publish packages ephemerally, i.e. without recording the published addresses in the main `Published.toml` file. Running `haneul client test-publish --pubfile-path <pubfile> --build-env <env>` will build the package for environment <env>, but will publish it on the current network, taking the dependency addresses from <pubfile>. It will also record the publication information for the package in <pubfile>. \n\
                 \n\
-                See https://docs.haneul.io/guides/developer/packages/move-package-management for more information."
+                See https://docs.haneulfoundation.org/guides/developer/packages/move-package-management for more information."
     )]
     TestPublish(TestPublishArgs),
 
@@ -485,7 +485,7 @@ pub enum HaneulClientCommands {
         name = "test-upgrade",
         after_long_help = "The `test-upgrade` command is used to upgrade ephemeral packages, for packages published using `test-publish` command. This does not write publication info to `Published.toml` file. Running `haneul client test-upgrade --pubfile-path <pubfile> --build-env <env>` will build the package for environment <env>, but will publish it on the current network, taking the dependency addresses from <pubfile>. It will also record the publication information for the package in <pubfile>. \n\
             \n\
-            See https://docs.haneul.io/guides/developer/packages/move-package-management for more information."
+            See https://docs.haneulfoundation.org/guides/developer/packages/move-package-management for more information."
     )]
     TestUpgrade(TestUpgradeArgs),
 
@@ -1593,8 +1593,8 @@ impl HaneulClientCommands {
                 let address = context.get_identity_address(address)?;
                 let url = if let Some(url) = url {
                     ensure!(
-                        !url.starts_with("https://faucet.testnet.haneul.io"),
-                        "For testnet tokens, please use the Web UI: https://faucet.haneul.io/?address={address}"
+                        !url.starts_with("https://faucet.testnet.haneulfoundation.org"),
+                        "For testnet tokens, please use the Web UI: https://faucet.haneulfoundation.org/?address={address}"
                     );
                     url
                 } else {
@@ -4551,12 +4551,12 @@ fn find_faucet_url(address: HaneulAddress, rpc: &str) -> anyhow::Result<String> 
     let localhost_0 = url_to_host(HANEUL_LOCAL_NETWORK_URL_0)?;
 
     if host == devnet_host {
-        return Ok("https://faucet.devnet.haneul.io/v2/gas".to_string());
+        return Ok("https://faucet.devnet.haneulfoundation.org/v2/gas".to_string());
     }
 
     if host == testnet_host {
         bail!(
-            "For testnet tokens, please use the Web UI: https://faucet.haneul.io/?address={address}"
+            "For testnet tokens, please use the Web UI: https://faucet.haneulfoundation.org/?address={address}"
         );
     }
 

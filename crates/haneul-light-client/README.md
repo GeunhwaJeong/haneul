@@ -23,11 +23,11 @@ The light client requires a config file and a directory to cache checkpoints, an
 The config file for the light client takes a URL for a full node, a directory to store checkpoint summaries (that must exist) and within the directory to name of the genesis blob for the Haneul network. 
 
 ```
-full_node_url: "https://fullnode.mainnet.haneul.io:443"
+full_node_url: "https://fullnode.mainnet.haneulfoundation.org:443"
 # make sure this directory is created and has genesis.blob 
 checkpoint_summary_dir: "checkpoints_dir"
 genesis_filename: "genesis.blob"
-object_store_url: "https://checkpoints.mainnet.haneul.io"
+object_store_url: "https://checkpoints.mainnet.haneulfoundation.org"
 graphql_url: "https://haneul-mainnet.haneul-labs.com/graphql"
 archive_store_config:
   object-store: "S3"

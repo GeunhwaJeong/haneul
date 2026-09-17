@@ -851,7 +851,7 @@ impl Default for TransactionKeyValueStoreReadConfig {
 }
 
 fn default_base_url() -> String {
-    "https://transactions.haneul.io/".to_string()
+    "https://transactions.haneulfoundation.org/".to_string()
 }
 
 fn default_cache_size() -> u64 {

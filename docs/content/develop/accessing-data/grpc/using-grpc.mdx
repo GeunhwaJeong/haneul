@@ -153,7 +153,7 @@ The following limits are configured in the Haneul full node source code and appl
 | Subscription buffer | 1,024 items per subscriber | [`CHECKPOINT_MAILBOX_SIZE`](https://github.com/GeunhwaJeong/haneul/blob/main/crates/haneul-rpc-api/src/subscription/mod.rs) |
 | Max subscribers | 1,024 | [`DEFAULT_MAX_SUBSCRIBERS`](https://github.com/GeunhwaJeong/haneul/blob/main/crates/haneul-rpc-api/src/subscription/mod.rs) |
 
-The public Haneul Foundation endpoints at `fullnode.<network>.haneul.io` are behind load balancers that impose additional rate limits (requests per second, concurrent streams, and message size caps) beyond what the node itself configures. Contact your provider for their specific limits, or check the full node's `grpc` configuration section if you operate your own node.
+The public Haneul Foundation endpoints at `fullnode.<network>.haneulfoundation.org` are behind load balancers that impose additional rate limits (requests per second, concurrent streams, and message size caps) beyond what the node itself configures. Contact your provider for their specific limits, or check the full node's `grpc` configuration section if you operate your own node.
 
 ## Field presence
 

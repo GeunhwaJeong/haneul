@@ -40,7 +40,7 @@ function trackPlausibleEvent(request, visitorType) {
     },
     body: JSON.stringify({
       name: 'pageview',
-      domain: 'docs.haneul.io',
+      domain: 'docs.haneulfoundation.org',
       url: url.toString(),
       referrer: request.headers.get('referer') || '',
       props: { visitor_type: visitorType },

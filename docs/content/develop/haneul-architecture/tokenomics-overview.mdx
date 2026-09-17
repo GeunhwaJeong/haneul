@@ -109,7 +109,7 @@ At the end of each epoch, the protocol distributes stake rewards to participants
 
 1. The total amount of stake rewards is distributed across various entities. The storage fund is taken into account in the calculation of the epoch total stake, which is not owned by any entities in the way that staked HANEUL is. Instead, the Haneul economic model distributes the stake rewards accruing to the storage fund to validators for compensation of their storage costs.
 
-The distribution mechanisms built into Haneul tokenomics encourages a healthy competition for fair prices where validators set low gas fees while operating with viable business models. Refer to the [whitepaper](https://docs.haneul.io/paper/tokenomics.pdf) for in-depth review of the mathematical proofs that support this structure.
+The distribution mechanisms built into Haneul tokenomics encourages a healthy competition for fair prices where validators set low gas fees while operating with viable business models. Refer to the [whitepaper](https://docs.haneulfoundation.org/paper/tokenomics.pdf) for in-depth review of the mathematical proofs that support this structure.
 
 ### Vesting schedules
 
@@ -157,7 +157,7 @@ All honest validators on Haneul receive their staking rewards with full certaint
 
 ### Staking 
 
-Stake HANEUL tokens by sending a transaction to the network that calls the <a href="/references/framework/haneul_haneul_system/staking_pool#haneul_system_staking_pool_request_add_stake" data-noBrokenLinkCheck='true'>staking function</a> implemented as part of the <a href="/references/framework/haneul_haneul_system/staking_pool" data-noBrokenLinkCheck='true'>system Move package</a>. This transaction wraps the HANEUL tokens in a self-custodial stake [object](/develop/haneul-architecture/object-model). This stake object contains information including the validator staking pool ID and the activation [epoch](/develop/haneul-architecture/epochs) of the stake. With the introduction of [SIP-6](https://blog.haneul.io/liquid-staking-coming-haneul/), you can participate in liquid staking protocols using your staked objects.
+Stake HANEUL tokens by sending a transaction to the network that calls the <a href="/references/framework/haneul_haneul_system/staking_pool#haneul_system_staking_pool_request_add_stake" data-noBrokenLinkCheck='true'>staking function</a> implemented as part of the <a href="/references/framework/haneul_haneul_system/staking_pool" data-noBrokenLinkCheck='true'>system Move package</a>. This transaction wraps the HANEUL tokens in a self-custodial stake [object](/develop/haneul-architecture/object-model). This stake object contains information including the validator staking pool ID and the activation [epoch](/develop/haneul-architecture/epochs) of the stake. With the introduction of [SIP-6](https://blog.haneulfoundation.org/liquid-staking-coming-haneul/), you can participate in liquid staking protocols using your staked objects.
 
 [Haneul-compatible crypto wallets](https://slush.app/) typically have functionality to initiate staking and unstaking from your Haneul address. See the respective documentation for these tools to begin staking your HANEUL.
 

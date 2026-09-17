@@ -678,9 +678,9 @@ impl ToolCommand {
                 let aws_endpoint = env::var("AWS_SNAPSHOT_ENDPOINT").ok().or_else(|| {
                     if no_sign_request {
                         if network == Chain::Mainnet {
-                            Some("https://formal-snapshot.mainnet.haneul.io".to_string())
+                            Some("https://formal-snapshot.mainnet.haneulfoundation.org".to_string())
                         } else if network == Chain::Testnet {
-                            Some("https://formal-snapshot.testnet.haneul.io".to_string())
+                            Some("https://formal-snapshot.testnet.haneulfoundation.org".to_string())
                         } else {
                             None
                         }
@@ -748,8 +748,12 @@ impl ToolCommand {
                 };
 
                 let ingestion_url = ingestion_url.unwrap_or_else(|| match network {
-                    Chain::Mainnet => "https://checkpoints.mainnet.haneul.io".to_string(),
-                    Chain::Testnet => "https://checkpoints.testnet.haneul.io".to_string(),
+                    Chain::Mainnet => {
+                        "https://checkpoints.mainnet.haneulfoundation.org".to_string()
+                    }
+                    Chain::Testnet => {
+                        "https://checkpoints.testnet.haneulfoundation.org".to_string()
+                    }
                     _ => panic!(
                         "--ingestion-url must be specified when --network is not mainnet or testnet"
                     ),

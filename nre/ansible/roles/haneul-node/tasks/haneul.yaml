@@ -77,7 +77,7 @@
 
 - name: Place binary
   ansible.builtin.get_url:
-    url: "https://releases.haneul.io/{{ haneul_release }}/haneul-node"
+    url: "https://releases.haneulfoundation.org/{{ haneul_release }}/haneul-node"
     dest: /opt/haneul/bin/haneul-node
     force: true
     mode: "0755"

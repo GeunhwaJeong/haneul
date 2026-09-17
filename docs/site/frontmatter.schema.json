@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://docs.haneul.io/frontmatter.schema.json",
+  "$id": "https://docs.haneulfoundation.org/frontmatter.schema.json",
   "title": "Haneul docs page frontmatter",
   "description": "Canonical schema for the YAML frontmatter on Haneul documentation pages (docs/content/**/*.mdx). Validated locally via `pnpm docs:validate-frontmatter` (wiring it into the Docs Frontmatter Check CI workflow as a failing gate is a follow-up). Unknown top-level keys are allowed (additionalProperties: true) so Docusaurus-native frontmatter fields not enumerated here don't break validation; the nested `goal`, goal-check, and `builder_paths` objects are validated strictly (additionalProperties: false) because downstream tooling relies on their exact shape. See docs/README.md for prose documentation of each field.",
   "type": "object",

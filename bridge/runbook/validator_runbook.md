@@ -1,1 +1,1 @@
-The runbook is now located at haneul/docs/content/guides/operator/bridge-node-configuration.mdx. You can view it online at https://docs.haneul.io/guides/operator/bridge-node-configuration
+The runbook is now located at haneul/docs/content/guides/operator/bridge-node-configuration.mdx. You can view it online at https://docs.haneulfoundation.org/guides/operator/bridge-node-configuration

@@ -326,8 +326,8 @@ You see something similar to:
 
 ```
 localnet => http://0.0.0.0:9000
-testnet => https://fullnode.testnet.haneul.io:443 
-devnet => https://fullnode.devnet.haneul.io:443 (active)
+testnet => https://fullnode.testnet.haneulfoundation.org:443 
+devnet => https://fullnode.devnet.haneulfoundation.org:443 (active)
 ```
 
 Then, try switching to another network:
@@ -553,7 +553,7 @@ Detect the category in TypeScript:
 import { HaneulGrpcClient } from '@haneullabs/haneul/grpc';
 
 const client = new HaneulGrpcClient({
-  baseUrl: 'https://fullnode.mainnet.haneul.io:443',
+  baseUrl: 'https://fullnode.mainnet.haneulfoundation.org:443',
   network: 'mainnet',
 });
 
@@ -608,7 +608,7 @@ For single-get calls, wrap the call in a `try`/`catch`:
 import { HaneulGrpcClient } from '@haneullabs/haneul/grpc';
 
 const client = new HaneulGrpcClient({
-  baseUrl: 'https://fullnode.mainnet.haneul.io:443',
+  baseUrl: 'https://fullnode.mainnet.haneulfoundation.org:443',
   network: 'mainnet',
 });
 

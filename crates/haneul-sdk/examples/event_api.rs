@@ -35,8 +35,8 @@ async fn main() -> Result<(), anyhow::Error> {
     println!(" *** Query events ***\n ");
 
     let ws = HaneulClientBuilder::default()
-        .ws_url("wss://rpc.testnet.haneul.io:443")
-        .build("https://fullnode.testnet.haneul.io:443")
+        .ws_url("wss://rpc.testnet.haneulfoundation.org:443")
+        .build("https://fullnode.testnet.haneulfoundation.org:443")
         .await?;
     println!("WS version {:?}", ws.api_version());
 

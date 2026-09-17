@@ -20,5 +20,5 @@ The Haneul TypeScript SDK is a modular library of tools for interacting with the
 - [Haneul BCS types are supported](https://github.com/GeunhwaJeong/haneul/blob/main/sdk/typescript/src/bcs)
 - [Kiosk SDK](https://sdk.haneul-labs.com/kiosk)
 - [zkSend (Stashed) SDK](https://sdk.haneul-labs.com/zksend)
-- [DeepBookV3 SDK](https://docs.haneul.io/standards/deepbookv3-sdk)
+- [DeepBookV3 SDK](https://docs.haneulfoundation.org/standards/deepbookv3-sdk)
 - [HaneulNS SDK](https://docs.haneulns.io/developer/sdk)

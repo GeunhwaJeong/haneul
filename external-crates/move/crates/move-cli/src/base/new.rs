@@ -95,7 +95,7 @@ impl New {
             [dependencies]
 
             # Read more about the package management system options:
-            # https://docs.haneul.io/guides/developer/packages/move-package-management
+            # https://docs.haneulfoundation.org/guides/developer/packages/move-package-management
             "#
             ),
         )?;

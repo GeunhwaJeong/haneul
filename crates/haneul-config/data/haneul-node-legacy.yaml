@@ -47,10 +47,10 @@ grpc-load-shed: null
 grpc-concurrency-limit: 20000000000
 p2p-config:
   listen-address: 0.0.0.0:8084
-  external-address: /dns/hello.haneul.io/udp/8084
+  external-address: /dns/hello.haneulfoundation.org/udp/8084
   seed-peers:
   - peer-id: 1cab034c3d3e43f8a33d39b3e358815537439ad8dc89c6660cac2e4ee994f017
-    address: /dns/test.haneul.io/udp/8084
+    address: /dns/test.haneulfoundation.org/udp/8084
   state-sync:
     checkpoint-content-timeout-ms: 10000
   anemo-config:
@@ -96,7 +96,7 @@ state-snapshot-write-config:
   concurrency: 0
 indexer-max-subscriptions: null
 transaction-kv-store-read-config:
-  base-url: https://transactions.haneul.io/
+  base-url: https://transactions.haneulfoundation.org/
   cache-size: 100000
 jwk-fetch-interval-seconds: 3600
 zklogin-oauth-providers:

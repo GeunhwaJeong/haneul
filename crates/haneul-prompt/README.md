@@ -22,7 +22,7 @@ the binary at build time via `include_str!`.
 ## Install
 
 `haneul prompt` is built into the Haneul CLI. Install `haneul` per the [official Haneul CLI install
-guide](https://docs.haneul.io/getting-started/onboarding/haneul-install); once `haneul` is on
+guide](https://docs.haneulfoundation.org/getting-started/onboarding/haneul-install); once `haneul` is on
 your `PATH`, `haneul prompt` is available.
 
 ## Commands

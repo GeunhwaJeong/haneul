@@ -18,7 +18,7 @@ export type PredictConfig = {
 // Mainnet launch. Source: Contract Information page.
 const TESTNET: PredictConfig = {
 	network: 'testnet',
-	fullnodeUrl: 'https://fullnode.testnet.haneul.io:443',
+	fullnodeUrl: 'https://fullnode.testnet.haneulfoundation.org:443',
 	packageId: '0xf5ea2b3749c65d6e56507cc35388719aadb28f9cab873696a2f8687f5c785138',
 	predictObjectId: '0xc8736204d12f0a7277c86388a68bf8a194b0a14c5538ad13f22cbd8e2a38028a',
 	// DeepBook Test USDC (DUSDC), 6 decimals.

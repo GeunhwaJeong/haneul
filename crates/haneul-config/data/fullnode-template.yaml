@@ -26,7 +26,7 @@ authority-store-pruning-config:
   pruning-run-delay-seconds: 60
 
 state-archive-read-config:
-    # Use https://checkpoints.mainnet.haneul.io for mainnet
-    # Use https://checkpoints.testnet.haneul.io for testnet
-    - ingestion-url: "https://checkpoints.<mainnet|testnet>.haneul.io"
+    # Use https://checkpoints.mainnet.haneulfoundation.org for mainnet
+    # Use https://checkpoints.testnet.haneulfoundation.org for testnet
+    - ingestion-url: "https://checkpoints.<mainnet|testnet>.haneulfoundation.org"
       concurrency: 5

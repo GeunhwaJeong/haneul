@@ -21,16 +21,16 @@ use tempfile::tempdir;
 use test_cluster::{TestCluster, TestClusterBuilder};
 use tracing::info;
 
-const DEVNET_FAUCET_ADDR: &str = "https://faucet.devnet.haneul.io:443";
-const STAGING_FAUCET_ADDR: &str = "https://faucet.staging.haneul.io:443";
-const CONTINUOUS_FAUCET_ADDR: &str = "https://faucet.ci.haneul.io:443";
-const CONTINUOUS_NOMAD_FAUCET_ADDR: &str = "https://faucet.nomad.ci.haneul.io:443";
-const TESTNET_FAUCET_ADDR: &str = "https://faucet.testnet.haneul.io:443";
-const DEVNET_FULLNODE_ADDR: &str = "https://rpc.devnet.haneul.io:443";
-const STAGING_FULLNODE_ADDR: &str = "https://fullnode.staging.haneul.io:443";
-const CONTINUOUS_FULLNODE_ADDR: &str = "https://fullnode.ci.haneul.io:443";
-const CONTINUOUS_NOMAD_FULLNODE_ADDR: &str = "https://fullnode.nomad.ci.haneul.io:443";
-const TESTNET_FULLNODE_ADDR: &str = "https://fullnode.testnet.haneul.io:443";
+const DEVNET_FAUCET_ADDR: &str = "https://faucet.devnet.haneulfoundation.org:443";
+const STAGING_FAUCET_ADDR: &str = "https://faucet.staging.haneulfoundation.org:443";
+const CONTINUOUS_FAUCET_ADDR: &str = "https://faucet.ci.haneulfoundation.org:443";
+const CONTINUOUS_NOMAD_FAUCET_ADDR: &str = "https://faucet.nomad.ci.haneulfoundation.org:443";
+const TESTNET_FAUCET_ADDR: &str = "https://faucet.testnet.haneulfoundation.org:443";
+const DEVNET_FULLNODE_ADDR: &str = "https://rpc.devnet.haneulfoundation.org:443";
+const STAGING_FULLNODE_ADDR: &str = "https://fullnode.staging.haneulfoundation.org:443";
+const CONTINUOUS_FULLNODE_ADDR: &str = "https://fullnode.ci.haneulfoundation.org:443";
+const CONTINUOUS_NOMAD_FULLNODE_ADDR: &str = "https://fullnode.nomad.ci.haneulfoundation.org:443";
+const TESTNET_FULLNODE_ADDR: &str = "https://fullnode.testnet.haneulfoundation.org:443";
 
 pub struct ClusterFactory;
 

@@ -14,13 +14,13 @@ title: Haneul Bridge Testnet Incentive Program FAQ
 **A:** After the program ends, the rewards will be sent to eligible participants' Haneul addresses on Mainnet that they used to test Haneul Bridge on testnet.
 
 **Q: Am I eligible for rewards if I test the bridge by directly calling the contract/package?**\
-**A:** No, to be eligible, users must directly interact with the [Haneul Bridge web interface on Testnet](https://bridge.testnet.haneul.io/?ref=blog.haneul.io)
+**A:** No, to be eligible, users must directly interact with the [Haneul Bridge web interface on Testnet](https://bridge.testnet.haneulfoundation.org/?ref=blog.haneulfoundation.org)
 
-**Q: Can I use a bot to bulk test the [Haneul Bridge Testnet](https://bridge.testnet.haneul.io/)?**\
+**Q: Can I use a bot to bulk test the [Haneul Bridge Testnet](https://bridge.testnet.haneulfoundation.org/)?**\
 **A:** We expect real valuable signals and feedback to come from human testers. **Using a bot for testing is discouraged and will negatively impact your final rewards.**
 
 **Q: How do I get test tokens?**\
-**A:** Refer to the ["How to Guide" found in our latest blog post](https://blog.haneul.io/haneul-bridge-live-on-testnet-with-incentives/).
+**A:** Refer to the ["How to Guide" found in our latest blog post](https://blog.haneulfoundation.org/haneul-bridge-live-on-testnet-with-incentives/).
 
 **Q: What is a roundtrip bridge? Do I have to do a round trip bridge to be eligible for rewards? What if I do three Ethereum to Haneul transfers and one Haneul to Ethereum transfer?**\
 **A:** A roundtrip consists of bridging assets from Sepolia to Haneul Testnet, then bridging from Haneul Testnet back to Sepolia. Only a round trip is eligible for rewards. If an address does three Ethereum to Haneul transfers and one Haneul to Ethereum transfer, it will be counted as one eligible test activity.
@@ -32,7 +32,7 @@ title: Haneul Bridge Testnet Incentive Program FAQ
 **A:** No it doesn't. Namely transferring 1 Native Sepolia ETH from Ethereum to Haneul and 500 USDC from Haneul to Ethereum is considered an eligible test activity.
 
 **Q: I see my transfer is "delayed". What does it mean?**\
-**A:** Check the "What is the limiter?" on the [FAQ section of the Haneul Bridge Website] (https://bridge.testnet.haneul.io/#faq). On Mainnet we expect the limiter to be hit rarely. However during the incentivize program we may intentionally trigger this scenario more often to thoroughly test it.
+**A:** Check the "What is the limiter?" on the [FAQ section of the Haneul Bridge Website] (https://bridge.testnet.haneulfoundation.org/#faq). On Mainnet we expect the limiter to be hit rarely. However during the incentivize program we may intentionally trigger this scenario more often to thoroughly test it.
 
 **Q: Is there a point system or dashboard for this program?**\
 **A:** No, eligible test activities are not calculated in real time.

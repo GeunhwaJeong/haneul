@@ -29,7 +29,7 @@ impl RpcPackageStore {
     ///
     /// # Example
     /// ```ignore
-    /// let store = RpcPackageStore::new("https://fullnode.testnet.haneul.io:443");
+    /// let store = RpcPackageStore::new("https://fullnode.testnet.haneulfoundation.org:443");
     /// ```
     pub fn new(rpc_url: &str) -> Self {
         let client = Client::new(rpc_url).expect("Failed to create RPC client - invalid URL");
@@ -46,7 +46,7 @@ impl RpcPackageStore {
     /// use haneul_rpc_resolver::package_store::RpcPackageStore;
     /// use haneul_package_resolver::Resolver;
     ///
-    /// let store = RpcPackageStore::new("https://fullnode.testnet.haneul.io:443");
+    /// let store = RpcPackageStore::new("https://fullnode.testnet.haneulfoundation.org:443");
     /// let cached_store = store.with_cache();
     /// let resolver = Resolver::new(cached_store);
     /// ```

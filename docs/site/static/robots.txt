@@ -1,5 +1,5 @@
 # https://www.rfc-editor.org/rfc/rfc9309
-# robots.txt for docs.haneul.io
+# robots.txt for docs.haneulfoundation.org
 #
 # Policy: documentation is public and intended for broad consumption,
 # including by AI systems. All crawlers are allowed with the exception
@@ -102,4 +102,4 @@ Allow: /
 # for use by AI systems, agents, and LLMs.
 Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
-Sitemap: https://docs.haneul.io/sitemap.xml
+Sitemap: https://docs.haneulfoundation.org/sitemap.xml

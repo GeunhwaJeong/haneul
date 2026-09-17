@@ -77,7 +77,7 @@ validator_configs:
       archive-interval-epochs: 0
     indexer-max-subscriptions: ~
     transaction-kv-store-read-config:
-      base-url: "https://transactions.haneul.io/"
+      base-url: "https://transactions.haneulfoundation.org/"
       cache-size: 100000
     jwk-fetch-interval-seconds: 3600
     zklogin-oauth-providers:
@@ -237,7 +237,7 @@ validator_configs:
       archive-interval-epochs: 0
     indexer-max-subscriptions: ~
     transaction-kv-store-read-config:
-      base-url: "https://transactions.haneul.io/"
+      base-url: "https://transactions.haneulfoundation.org/"
       cache-size: 100000
     jwk-fetch-interval-seconds: 3600
     zklogin-oauth-providers:
@@ -397,7 +397,7 @@ validator_configs:
       archive-interval-epochs: 0
     indexer-max-subscriptions: ~
     transaction-kv-store-read-config:
-      base-url: "https://transactions.haneul.io/"
+      base-url: "https://transactions.haneulfoundation.org/"
       cache-size: 100000
     jwk-fetch-interval-seconds: 3600
     zklogin-oauth-providers:
@@ -557,7 +557,7 @@ validator_configs:
       archive-interval-epochs: 0
     indexer-max-subscriptions: ~
     transaction-kv-store-read-config:
-      base-url: "https://transactions.haneul.io/"
+      base-url: "https://transactions.haneulfoundation.org/"
       cache-size: 100000
     jwk-fetch-interval-seconds: 3600
     zklogin-oauth-providers:
@@ -717,7 +717,7 @@ validator_configs:
       archive-interval-epochs: 0
     indexer-max-subscriptions: ~
     transaction-kv-store-read-config:
-      base-url: "https://transactions.haneul.io/"
+      base-url: "https://transactions.haneulfoundation.org/"
       cache-size: 100000
     jwk-fetch-interval-seconds: 3600
     zklogin-oauth-providers:
@@ -877,7 +877,7 @@ validator_configs:
       archive-interval-epochs: 0
     indexer-max-subscriptions: ~
     transaction-kv-store-read-config:
-      base-url: "https://transactions.haneul.io/"
+      base-url: "https://transactions.haneulfoundation.org/"
       cache-size: 100000
     jwk-fetch-interval-seconds: 3600
     zklogin-oauth-providers:
@@ -1037,7 +1037,7 @@ validator_configs:
       archive-interval-epochs: 0
     indexer-max-subscriptions: ~
     transaction-kv-store-read-config:
-      base-url: "https://transactions.haneul.io/"
+      base-url: "https://transactions.haneulfoundation.org/"
       cache-size: 100000
     jwk-fetch-interval-seconds: 3600
     zklogin-oauth-providers:

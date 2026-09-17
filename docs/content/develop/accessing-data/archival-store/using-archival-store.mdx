@@ -59,8 +59,8 @@ Treat archival and historical data as a data-access convenience, not as proof. W
 
 The Haneul Foundation operates an Archival Service as a public good:
 
-- Testnet: `archive.testnet.haneul.io`
-- Mainnet: `archive.mainnet.haneul.io`
+- Testnet: `archive.testnet.haneulfoundation.org`
+- Mainnet: `archive.mainnet.haneulfoundation.org`
 
 These endpoints have strict rate limits.
 
@@ -75,14 +75,14 @@ For example, to fetch a historical transaction using `grpcurl`:
 ```shell
 grpcurl -d '{
   "digest": "BASE58_TX_DIGEST"
-}' archive.testnet.haneul.io:443 haneul.rpc.v2.LedgerService/GetTransaction
+}' archive.testnet.haneulfoundation.org:443 haneul.rpc.v2.LedgerService/GetTransaction
 ```
 
 ## Using the Archival Service as a fallback
 
 Apps can query the Archival Service when a full node returns retention-related errors. This application-level fallback does not implicitly happen inside the full node.
 
-If the full node returns `NOT_FOUND` for data that should exist, retry against an Archival Service endpoint such as `archive.mainnet.haneul.io:443`.
+If the full node returns `NOT_FOUND` for data that should exist, retry against an Archival Service endpoint such as `archive.mainnet.haneulfoundation.org:443`.
 
 ## Running your own instance
 
