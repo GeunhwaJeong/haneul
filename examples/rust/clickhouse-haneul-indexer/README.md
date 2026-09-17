@@ -20,7 +20,7 @@ docker exec clickhouse-dev clickhouse-client --query "GRANT CREATE, INSERT, SELE
 ### 3. Run the indexer
 
 ```bash
-cargo run -- --remote-store-url https://checkpoints.testnet.haneul.io --last-checkpoint=10
+cargo run -- --remote-store-url https://checkpoints.testnet.haneulfoundation.org --last-checkpoint=10
 ```
 
 That's it! The indexer will:

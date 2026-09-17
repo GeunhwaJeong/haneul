@@ -114,6 +114,6 @@ Refer to the following articles outlining general differences between gRPC and G
 
 :::
 
-Directly connect to [JSON-RPC](/references/haneul-api) hosted on Haneul [full nodes](/operators/full-node/haneul-full-node) that are operated by [RPC providers](https://haneul.io/developers#dev-tools) (filter by `RPC`) or [data indexer operators](https://github.com/haneul-foundation/awesome-haneul?tab=readme-ov-file#indexers--data-services). The Mainnet, Testnet, or Devnet load balancer URLs abstract the Haneul Foundation-managed full nodes. Do not use those for production.
+Directly connect to [JSON-RPC](/references/haneul-api) hosted on Haneul [full nodes](/operators/full-node/haneul-full-node) that are operated by [RPC providers](https://haneulfoundation.org/developers#dev-tools) (filter by `RPC`) or [data indexer operators](https://github.com/haneul-foundation/awesome-haneul?tab=readme-ov-file#indexers--data-services). The Mainnet, Testnet, or Devnet load balancer URLs abstract the Haneul Foundation-managed full nodes. Do not use those for production.
 
 You can get real-time or historical data using JSON-RPC while it remains available. The retention period for historical data depends on the [pruning strategy](/operators/data-management/managing-data#haneul-node-pruning-policies) that node operators implement. Do not assume a full node implicitly falls back to the Archival Store; use GraphQL with Archival configured by the operator, or query an Archival Service endpoint directly.

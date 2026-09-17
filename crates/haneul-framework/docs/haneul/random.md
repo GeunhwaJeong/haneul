@@ -397,7 +397,7 @@ Create a generator. Can be used to derive up to MAX_U16 * 32 random bytes.
 Using randomness can be error-prone if you don't observe the subtleties in its correct use, for example, randomness
 dependent code might be exploitable to attacks that carefully set the gas budget
 in a way that breaks security. For more information, see:
-https://docs.haneul.io/guides/developer/advanced/randomness-onchain
+https://docs.haneulfoundation.org/guides/developer/advanced/randomness-onchain
 
 
 <pre><code><b>public</b> <b>fun</b> <a href="../haneul/random.md#haneul_random_new_generator">new_generator</a>(r: &<a href="../haneul/random.md#haneul_random_Random">haneul::random::Random</a>, ctx: &<b>mut</b> <a href="../haneul/tx_context.md#haneul_tx_context_TxContext">haneul::tx_context::TxContext</a>): <a href="../haneul/random.md#haneul_random_RandomGenerator">haneul::random::RandomGenerator</a>

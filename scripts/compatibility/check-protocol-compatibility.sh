@@ -25,13 +25,13 @@ if [ -z "$RELEASED_COMMIT" ]; then
 
   case "$NETWORK" in
     devnet)
-      URL="https://$API_USER:$API_KEY@gateway.mimir.haneul.io/prometheus/api/v1/query"
+      URL="https://$API_USER:$API_KEY@gateway.mimir.haneulfoundation.org/prometheus/api/v1/query"
       ;;
     testnet)
-      URL="http://$API_USER:$API_KEY@metrics-gw-2.testnet.haneul.io/prometheus/api/v1/query"
+      URL="http://$API_USER:$API_KEY@metrics-gw-2.testnet.haneulfoundation.org/prometheus/api/v1/query"
       ;;
     mainnet)
-      URL="https://$API_USER:$API_KEY@metrics-gw-2.mainnet.haneul.io/prometheus/api/v1/query"
+      URL="https://$API_USER:$API_KEY@metrics-gw-2.mainnet.haneulfoundation.org/prometheus/api/v1/query"
       ;;
   esac
 

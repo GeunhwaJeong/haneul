@@ -12,11 +12,11 @@ use std::str::FromStr;
 use haneul_types::supported_protocol_versions::Chain;
 
 /// GraphQL endpoint for Haneul mainnet.
-pub(crate) const MAINNET_GQL_URL: &str = "https://graphql.mainnet.haneul.io/graphql";
+pub(crate) const MAINNET_GQL_URL: &str = "https://graphql.mainnet.haneulfoundation.org/graphql";
 /// GraphQL endpoint for Haneul testnet.
-pub(crate) const TESTNET_GQL_URL: &str = "https://graphql.testnet.haneul.io/graphql";
+pub(crate) const TESTNET_GQL_URL: &str = "https://graphql.testnet.haneulfoundation.org/graphql";
 /// GraphQL endpoint for Haneul devnet.
-pub(crate) const DEVNET_GQL_URL: &str = "https://graphql.devnet.haneul.io/graphql";
+pub(crate) const DEVNET_GQL_URL: &str = "https://graphql.devnet.haneulfoundation.org/graphql";
 
 /// Represents a Haneul network node configuration.
 ///

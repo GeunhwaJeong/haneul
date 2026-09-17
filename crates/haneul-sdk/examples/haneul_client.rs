@@ -28,15 +28,15 @@ async fn main() -> Result<(), anyhow::Error> {
         haneul_local.api_version()
     );
 
-    // Haneul devnet -- https://fullnode.devnet.haneul.io:443
+    // Haneul devnet -- https://fullnode.devnet.haneulfoundation.org:443
     let haneul_devnet = HaneulClientBuilder::default().build_devnet().await?;
     println!("Haneul devnet version: {}", haneul_devnet.api_version());
 
-    // Haneul testnet -- https://fullnode.testnet.haneul.io:443
+    // Haneul testnet -- https://fullnode.testnet.haneulfoundation.org:443
     let haneul_testnet = HaneulClientBuilder::default().build_testnet().await?;
     println!("Haneul testnet version: {}", haneul_testnet.api_version());
 
-    // Haneul mainnet -- https://fullnode.mainnet.haneul.io:443
+    // Haneul mainnet -- https://fullnode.mainnet.haneulfoundation.org:443
     let haneul_mainnet = HaneulClientBuilder::default().build_mainnet().await?;
     println!("Haneul mainnet version: {}", haneul_mainnet.api_version());
 

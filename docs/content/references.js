@@ -216,7 +216,7 @@ const references = [
 			{
 				type: 'link',
 				label: 'Submit a SIP',
-				href: 'https://sips.haneul.io',
+				href: 'https://sips.haneulfoundation.org',
 			},
 			'references/contribute/code-of-conduct',
 			'references/contribute/style-guide',

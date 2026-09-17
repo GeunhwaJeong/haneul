@@ -216,8 +216,8 @@ pub async fn perform_zk_login_test_tx(
 fn get_config(network: &str) -> (&str, &str) {
     match network {
         "devnet" => (
-            "https://faucet.devnet.haneul.io/v2/gas",
-            "https://rpc.devnet.haneul.io:443",
+            "https://faucet.devnet.haneulfoundation.org/v2/gas",
+            "https://rpc.devnet.haneulfoundation.org:443",
         ),
         "localnet" => ("http://127.0.0.1:9123/v2/gas", "http://127.0.0.1:9000"),
         _ => panic!("Invalid network"),

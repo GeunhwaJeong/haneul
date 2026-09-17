@@ -17,8 +17,12 @@ use std::sync::Arc;
 #[command(rename_all = "kebab-case")]
 enum Command {
     Fetch {
-        // default value of 'https://transactions.haneul.io/'
-        #[arg(short, long, default_value = "https://transactions.haneul.io/mainnet")]
+        // default value of 'https://transactions.haneulfoundation.org/'
+        #[arg(
+            short,
+            long,
+            default_value = "https://transactions.haneulfoundation.org/mainnet"
+        )]
         base_url: String,
 
         #[arg(short, long)]
@@ -142,7 +146,7 @@ impl Command {
             }
             Command::DecodeKey { url } => {
                 // url may look like
-                // https://transactions.haneul.io/mainnet/jlkqmZbVuunngIyy2vjBOJSETrM56EH_kIc5wuLvDydN_x0GAAAAAA/ob
+                // https://transactions.haneulfoundation.org/mainnet/jlkqmZbVuunngIyy2vjBOJSETrM56EH_kIc5wuLvDydN_x0GAAAAAA/ob
                 // extract the digest and type
                 let parts: Vec<_> = url.split('/').collect();
 

@@ -236,7 +236,7 @@ The generated configuration includes the following parameters:
 | `eth:eth-contracts-start-block-fallback` | The starting block BridgeNodes queries for from Ethereum FullNode. This number should be the block where Solidity contracts are deployed or slightly before. Only used when the node has no stored cursor for the contract yet. |
 | `eth:eth-contracts-start-block-override` | Optional. Forces the Ethereum syncer to restart from this block on **every** start, ignoring the stored cursor. Use it once to replay a range after an incident, then remove it: left in place it re-scans everything since the deployment block on each restart, which on a rate-limited RPC plan can take hours. |
 | `eth:eth-rpc-urls` | Optional list of Ethereum RPC URLs (in addition to, or instead of, `eth-rpc-url`). The node spreads requests across them. The client syncer plus the three watchdog observables poll the Ethereum RPC roughly every 10 seconds, which exceeds the daily quota of most free plans; use a paid plan or several providers. Repeated `429 Too Many Requests` errors in the log mean the plan is too small. |
-| `metrics:push-url` | The URL of the remote Haneul metrics pipeline (for example, `https://metrics-proxy.[testnet_OR_mainnet].haneul.io:8443/publish/metrics`). See the [metrics push section](#metrics-push) for more details. |
+| `metrics:push-url` | The URL of the remote Haneul metrics pipeline (for example, `https://metrics-proxy.[testnet_OR_mainnet].haneulfoundation.org:8443/publish/metrics`). See the [metrics push section](#metrics-push) for more details. |
 
 With `run-client: true`, you can find these additional fields in the generated config:
 
@@ -377,7 +377,7 @@ To enable metrics push, set the following parameters in `BridgeNodeConfig`:
 
 ```yaml
 metrics:
-    push-url: https://metrics-proxy.[testnet|mainnet].haneul.io:8443/publish/metrics
+    push-url: https://metrics-proxy.[testnet|mainnet].haneulfoundation.org:8443/publish/metrics
 ```
 
 The proxy authenticates pushed metrics by using the metrics key pair. It is similar to `haneul-node` pushing metrics with `NetworkKey`. Unlike `NetworkKey`, the bridge node metrics key is not recorded on chain and can be ephemeral. The metrics key is loaded from the `metrics-key-pair` field in `BridgeNodeConfig` if provided, otherwise a new key pair is generated on the fly. The proxy queries node public keys periodically by hitting the metrics public API key of each node.

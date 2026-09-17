@@ -47,7 +47,7 @@ pub struct KvArgs {
     #[arg(long)]
     pub kv_max_decoding_message_size: Option<usize>,
 
-    /// gRPC endpoint URL for the ledger service (e.g., archive.mainnet.haneul.io)
+    /// gRPC endpoint URL for the ledger service (e.g., archive.mainnet.haneulfoundation.org)
     #[arg(long)]
     pub ledger_grpc_url: Option<Uri>,
 

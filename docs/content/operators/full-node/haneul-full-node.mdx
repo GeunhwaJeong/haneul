@@ -283,7 +283,7 @@ After starting a full node, verify it is healthy before serving traffic:
     $ curl -s http://localhost:9184/metrics | grep highest_synced_checkpoint
 
     # Compare against a public endpoint
-    $ grpcurl fullnode.mainnet.haneul.io:443 haneul.rpc.v2.LedgerService/GetCheckpoint \
+    $ grpcurl fullnode.mainnet.haneulfoundation.org:443 haneul.rpc.v2.LedgerService/GetCheckpoint \
         | grep sequenceNumber
     ```
 
@@ -430,13 +430,13 @@ When you are ready to run `haneul-node` in your production environment, you can 
     ```sh
     p2p-config:
       seed-peers:
-        - address: /dns/mel-00.mainnet.haneul.io/udp/8084
+        - address: /dns/mel-00.mainnet.haneulfoundation.org/udp/8084
           peer-id: d32b55bdf1737ec415df8c88b3bf91e194b59ee3127e3f38ea46fd88ba2e7849
-        - address: /dns/ewr-00.mainnet.haneul.io/udp/8084
+        - address: /dns/ewr-00.mainnet.haneulfoundation.org/udp/8084
           peer-id: c7bf6cb93ca8fdda655c47ebb85ace28e6931464564332bf63e27e90199c50ee
-        - address: /dns/ewr-01.mainnet.haneul.io/udp/8084
+        - address: /dns/ewr-01.mainnet.haneulfoundation.org/udp/8084
           peer-id: 3227f8a05f0faa1a197c075d31135a366a1c6f3d4872cb8af66c14dea3e0eb66
-        - address: /dns/lhr-00.mainnet.haneul.io/udp/8084
+        - address: /dns/lhr-00.mainnet.haneulfoundation.org/udp/8084
           peer-id: c619a5e0f8f36eac45118c1f8bda28f0f508e2839042781f1d4a9818043f732c
         - address: /dns/haneul-mainnet-ssfn-1.nodeinfra.com/udp/8084
           peer-id: 0c52ca8d2b9f51be4a50eb44ace863c05aadc940a7bd15d4d3f498deb81d7fc6
@@ -458,19 +458,19 @@ When you are ready to run `haneul-node` in your production environment, you can 
     ```sh
     p2p-config:
       seed-peers:
-        - address: /dns/yto-tnt-ssfn-01.testnet.haneul.io/udp/8084
+        - address: /dns/yto-tnt-ssfn-01.testnet.haneulfoundation.org/udp/8084
           peer-id: 2ed53564d5581ded9b6773970ac2f1c84d39f9edf01308ff5a1ffe09b1add7b3
-        - address: /dns/yto-tnt-ssfn-00.testnet.haneul.io/udp/8084
+        - address: /dns/yto-tnt-ssfn-00.testnet.haneulfoundation.org/udp/8084
           peer-id: 6563732e5ab33b4ae09c73a98fd37499b71b8f03c27b5cc51acc26934974aff2
-        - address: /dns/nrt-tnt-ssfn-00.testnet.haneul.io/udp/8084
+        - address: /dns/nrt-tnt-ssfn-00.testnet.haneulfoundation.org/udp/8084
           peer-id: 23a1f7cd901b6277cbedaa986b3fc183f171d800cabba863d48f698f518967e1
-        - address: /dns/ewr-tnt-ssfn-00.testnet.haneul.io/udp/8084
+        - address: /dns/ewr-tnt-ssfn-00.testnet.haneulfoundation.org/udp/8084
           peer-id: df8a8d128051c249e224f95fcc463f518a0ebed8986bbdcc11ed751181fecd38
-        - address: /dns/lax-tnt-ssfn-00.testnet.haneul.io/udp/8084
+        - address: /dns/lax-tnt-ssfn-00.testnet.haneulfoundation.org/udp/8084
           peer-id: f9a72a0a6c17eed09c27898eab389add704777c03e135846da2428f516a0c11d
-        - address: /dns/lhr-tnt-ssfn-00.testnet.haneul.io/udp/8084
+        - address: /dns/lhr-tnt-ssfn-00.testnet.haneulfoundation.org/udp/8084
           peer-id: 9393d6056bb9c9d8475a3cf3525c747257f17c6a698a7062cbbd1875bc6ef71e
-        - address: /dns/mel-tnt-ssfn-00.testnet.haneul.io/udp/8084
+        - address: /dns/mel-tnt-ssfn-00.testnet.haneulfoundation.org/udp/8084
           peer-id: c88742f46e66a11cb8c84aca488065661401ef66f726cb9afeb8a5786d83456e
     ```
 

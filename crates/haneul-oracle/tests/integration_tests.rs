@@ -418,7 +418,7 @@ async fn get_gas(client: &Client, sender: HaneulAddress) -> (ObjectRef, u64) {
 }
 
 async fn init_test_client() -> (Client, Keystore, HaneulAddress) {
-    let client = Client::new("https://rpc.devnet.haneul.io:443").unwrap();
+    let client = Client::new("https://rpc.devnet.haneulfoundation.org:443").unwrap();
 
     let keystore = Keystore::File(
         FileBasedKeystore::load_or_create(

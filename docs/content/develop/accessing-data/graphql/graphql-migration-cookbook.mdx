@@ -87,9 +87,9 @@ Each recipe pairs a JSON-RPC call with its GraphQL replacement and explains the 
 
 GraphQL queries run against the online IDE or any GraphQL endpoint. Access the service at:
 
-- **Mainnet:** https://graphql.mainnet.haneul.io/graphql
-- **Testnet:** https://graphql.testnet.haneul.io/graphql
-- **Devnet:** https://graphql.devnet.haneul.io/graphql
+- **Mainnet:** https://graphql.mainnet.haneulfoundation.org/graphql
+- **Testnet:** https://graphql.testnet.haneulfoundation.org/graphql
+- **Devnet:** https://graphql.devnet.haneulfoundation.org/graphql
 
 For `curl` examples, replace `<GRAPHQL_ENDPOINT>` with your provider's GraphQL URL. See [GraphQL for Haneul RPC](/develop/accessing-data/graphql/graphql-rpc) for headers, variables, fragments, and pagination details.
 
@@ -107,7 +107,7 @@ Replace `haneul_getObject` with `Query.object`. Select only the fields you need 
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -161,7 +161,7 @@ Replace `haneul_multiGetObjects` with `Query.multiGetObjects`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -210,7 +210,7 @@ Replace `haneul_getTransactionBlock` with `Query.transaction`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -258,7 +258,7 @@ Replace `haneul_multiGetTransactionBlocks` with `Query.multiGetTransactions`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -297,7 +297,7 @@ Replace `haneul_getTotalTransactionBlocks` with `Checkpoint.networkTotalTransact
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -332,7 +332,7 @@ Replace `haneulx_queryTransactionBlocks` with `Query.transactions` and a `Transa
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -386,7 +386,7 @@ Replace `haneulx_queryEvents` with `Query.events` and an `EventFilter`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -440,7 +440,7 @@ query {
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -485,7 +485,7 @@ Replace `haneul_getCheckpoint` with `Query.checkpoint`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -523,7 +523,7 @@ Replace `haneul_getCheckpoints` polling with `Query.checkpoints` pagination.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -569,7 +569,7 @@ Replace `haneulx_getBalance` and `haneulx_getAllBalances` with `Address.balance`
 
 ```sh
 # Single coin type
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -579,7 +579,7 @@ curl -X POST https://fullnode.mainnet.haneul.io:443 \
   }'
 
 # All coin types
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -633,7 +633,7 @@ Replace `haneulx_getCoins` and `haneulx_getAllCoins` with `Address.objects` filt
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -683,7 +683,7 @@ Replace `haneulx_getCoinMetadata` with `Query.coinMetadata`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -719,7 +719,7 @@ Replace `haneulx_getOwnedObjects` with `Address.objects`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -768,7 +768,7 @@ Replace `haneulx_getDynamicFields` with `Object.dynamicFields`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -828,7 +828,7 @@ Replace `haneulx_getDynamicFieldObject` with `Object.dynamicObjectField`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -875,7 +875,7 @@ Replace `haneul_executeTransactionBlock` with `Mutation.executeTransaction`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -936,7 +936,7 @@ Replace `haneul_dryRunTransactionBlock` and `haneul_devInspectTransactionBlock` 
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -989,7 +989,7 @@ Replace `haneulx_getReferenceGasPrice` with `Epoch.referenceGasPrice`.
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -1021,7 +1021,7 @@ Replace `haneulx_getStakes` and `haneulx_getStakesByIds` with `Address.objects` 
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -1060,7 +1060,7 @@ JSON-RPC provided `haneulx_getValidatorsApy` as a convenience method. GraphQL do
 <TabItem value="json-rpc" label="JSON-RPC (deprecated)">
 
 ```sh
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -1115,7 +1115,7 @@ Replace `haneul_getNormalizedMoveModule`, `haneul_getNormalizedMoveFunction`, an
 
 ```sh
 # Get a normalized Move module
-curl -X POST https://fullnode.mainnet.haneul.io:443 \
+curl -X POST https://fullnode.mainnet.haneulfoundation.org:443 \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -1282,4 +1282,4 @@ Different queries hit different data sources with different retention. Live obje
 
 ### Public endpoints are not production endpoints
 
-The public URLs at `https://graphql.<NETWORK>.haneul.io/graphql` are rate-limited and intended for development. Production apps should use a provider endpoint or operate their own [GraphQL and Indexer stack](/operators/data-management/indexer-stack-setup).
+The public URLs at `https://graphql.<NETWORK>.haneulfoundation.org/graphql` are rate-limited and intended for development. Production apps should use a provider endpoint or operate their own [GraphQL and Indexer stack](/operators/data-management/indexer-stack-setup).

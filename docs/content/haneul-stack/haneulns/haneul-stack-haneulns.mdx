@@ -251,7 +251,7 @@ For offchain resolution in a TypeScript or JavaScript app, you have 2 options:
 {/* TODO: Import code from GeunhwaJeong/haneul-typescript — show resolveNameServiceNames example */}
 {/* Description: Reverse lookup (address to default name) using HaneulClient.resolveNameServiceNames */}
 
-For [GraphQL RPC](/develop/accessing-data/graphql/graphql-rpc), use the `resolveHaneulnsAddress` query for lookup and the `defaultHaneulnsName` field on the `Address` type for reverse lookup. See the [Haneul GraphQL reference](https://docs.haneul.io/references/haneul-api/haneul-graphql/reference/api/queries/resolve-haneulns-address) for the full schema.
+For [GraphQL RPC](/develop/accessing-data/graphql/graphql-rpc), use the `resolveHaneulnsAddress` query for lookup and the `defaultHaneulnsName` field on the `Address` type for reverse lookup. See the [Haneul GraphQL reference](https://docs.haneulfoundation.org/references/haneul-api/haneul-graphql/reference/api/queries/resolve-haneulns-address) for the full schema.
 
 ### Lookup with the HaneulNS SDK extension
 
@@ -417,7 +417,7 @@ The `MessagingClientProvider` in Haneul Messenger composes `HaneulStackMessaging
 import { SealClient } from '@haneullabs/seal';
 import { HaneulStackMessagingClient, WalrusStorageAdapter } from '@haneullabs/messaging';
 
-const extendedClient = new HaneulClient({ url: 'https://fullnode.testnet.haneul.io:443' })
+const extendedClient = new HaneulClient({ url: 'https://fullnode.testnet.haneulfoundation.org:443' })
   .$extend(
     SealClient.asClientExtension({
       serverConfigs: SEAL_SERVERS.map((id) => ({ objectId: id, weight: 1 })),

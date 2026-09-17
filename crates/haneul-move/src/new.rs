@@ -32,7 +32,7 @@ impl New {
                 */
 
                 // For Move coding conventions, see
-                // https://docs.haneul.io/develop/write-move/move-best-practices
+                // https://docs.haneulfoundation.org/develop/write-move/move-best-practices
 
                 "#,
             ),

@@ -1,89 +1,89 @@
 {
   "linkset": [
     {
-      "anchor": "https://docs.haneul.io/references/haneul-api",
+      "anchor": "https://docs.haneulfoundation.org/references/haneul-api",
       "service-doc": [
         {
-          "href": "https://docs.haneul.io/references/haneul-api",
+          "href": "https://docs.haneulfoundation.org/references/haneul-api",
           "type": "text/html",
           "title": "Haneul JSON-RPC API Documentation"
         }
       ],
       "service-desc": [
         {
-          "href": "https://docs.haneul.io/open-spec/mainnet/openrpc.json",
+          "href": "https://docs.haneulfoundation.org/open-spec/mainnet/openrpc.json",
           "type": "application/json",
           "title": "Haneul JSON-RPC OpenRPC Specification (Mainnet)"
         },
         {
-          "href": "https://docs.haneul.io/open-spec/testnet/openrpc.json",
+          "href": "https://docs.haneulfoundation.org/open-spec/testnet/openrpc.json",
           "type": "application/json",
           "title": "Haneul JSON-RPC OpenRPC Specification (Testnet)"
         },
         {
-          "href": "https://docs.haneul.io/open-spec/devnet/openrpc.json",
+          "href": "https://docs.haneulfoundation.org/open-spec/devnet/openrpc.json",
           "type": "application/json",
           "title": "Haneul JSON-RPC OpenRPC Specification (Devnet)"
         }
       ]
     },
     {
-      "anchor": "https://fullnode.mainnet.haneul.io:443",
+      "anchor": "https://fullnode.mainnet.haneulfoundation.org:443",
       "service-doc": [
         {
-          "href": "https://docs.haneul.io/references/haneul-api",
+          "href": "https://docs.haneulfoundation.org/references/haneul-api",
           "type": "text/html",
           "title": "Haneul JSON-RPC API Documentation"
         }
       ],
       "service-desc": [
         {
-          "href": "https://docs.haneul.io/open-spec/mainnet/openrpc.json",
+          "href": "https://docs.haneulfoundation.org/open-spec/mainnet/openrpc.json",
           "type": "application/json",
           "title": "Haneul JSON-RPC OpenRPC Specification"
         }
       ]
     },
     {
-      "anchor": "https://graphql.mainnet.haneul.io/graphql",
+      "anchor": "https://graphql.mainnet.haneulfoundation.org/graphql",
       "service-doc": [
         {
-          "href": "https://docs.haneul.io/references/haneul-graphql",
+          "href": "https://docs.haneulfoundation.org/references/haneul-graphql",
           "type": "text/html",
           "title": "Haneul GraphQL RPC Documentation"
         }
       ]
     },
     {
-      "anchor": "https://graphql.testnet.haneul.io/graphql",
+      "anchor": "https://graphql.testnet.haneulfoundation.org/graphql",
       "service-doc": [
         {
-          "href": "https://docs.haneul.io/references/haneul-graphql",
+          "href": "https://docs.haneulfoundation.org/references/haneul-graphql",
           "type": "text/html",
           "title": "Haneul GraphQL RPC Documentation (Testnet)"
         }
       ]
     },
     {
-      "anchor": "https://docs.haneul.io",
+      "anchor": "https://docs.haneulfoundation.org",
       "service-doc": [
         {
-          "href": "https://docs.haneul.io/llms.txt",
+          "href": "https://docs.haneulfoundation.org/llms.txt",
           "type": "text/plain",
           "title": "LLM-optimized documentation index"
         },
         {
-          "href": "https://docs.haneul.io/references/framework",
+          "href": "https://docs.haneulfoundation.org/references/framework",
           "type": "text/html",
           "title": "Haneul Move Framework Reference"
         },
         {
-          "href": "https://docs.haneul.io/references/cli",
+          "href": "https://docs.haneulfoundation.org/references/cli",
           "type": "text/html",
           "title": "Haneul CLI Reference"
         },
         {
-          "href": "https://docs.haneul.io/references/haneul-sdks",
+          "href": "https://docs.haneulfoundation.org/references/haneul-sdks",
           "type": "text/html",
           "title": "Haneul SDK Reference"
         }

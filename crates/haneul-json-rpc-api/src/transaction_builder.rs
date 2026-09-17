@@ -130,7 +130,7 @@ pub trait TransactionBuilder {
         function: String,
         /// the type arguments of the Move function
         type_arguments: Vec<HaneulTypeTag>,
-        /// the arguments to be passed into the Move function, in [HaneulJson](https://docs.haneul.io/build/haneul-json) format
+        /// the arguments to be passed into the Move function, in [HaneulJson](https://docs.haneulfoundation.org/build/haneul-json) format
         arguments: Vec<HaneulJsonValue>,
         /// gas object to be used in this transaction, node will pick one from the signer's possession if not provided
         gas: Option<ObjectID>,

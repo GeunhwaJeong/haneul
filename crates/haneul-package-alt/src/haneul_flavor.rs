@@ -270,7 +270,7 @@ fn validate_modern_manifest_does_not_use_legacy_system_names(
     for name in dep_names {
         if legacy_names.contains_key(&name) {
             return Err(format!(
-                "Dependency `{name}` is a legacy system name and cannot be used. See https://docs.haneul.io/guides/developer/packages/move-package-management#system-dependencies"
+                "Dependency `{name}` is a legacy system name and cannot be used. See https://docs.haneulfoundation.org/guides/developer/packages/move-package-management#system-dependencies"
             ));
         }
     }

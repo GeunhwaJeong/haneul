@@ -1,4 +1,4 @@
-name: Build and Deploy docs.haneul.io
+name: Build and Deploy docs.haneulfoundation.org
 
 on:
   workflow_dispatch:

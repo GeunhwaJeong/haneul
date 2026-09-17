@@ -38,10 +38,10 @@ struct FaucetResponse {
     error: Option<String>,
 }
 
-// const HANEUL_FAUCET: &str = "https://faucet.devnet.haneul.io/v2/gas"; // devnet faucet
+// const HANEUL_FAUCET: &str = "https://faucet.devnet.haneulfoundation.org/v2/gas"; // devnet faucet
 
 // Testnet faucet is under heavy rate limit, we recommend using devnet for these examples
-pub const HANEUL_FAUCET: &str = "https://faucet.testnet.haneul.io/v2/gas"; // testnet faucet
+pub const HANEUL_FAUCET: &str = "https://faucet.testnet.haneulfoundation.org/v2/gas"; // testnet faucet
 
 // const HANEUL_FAUCET: &str = "http://127.0.0.1:9123/v2/gas";
 
@@ -136,7 +136,7 @@ pub async fn request_tokens_from_faucet(
     // wait for the faucet to finish the batch of token requests
     loop {
         let resp = client
-            .get("https://faucet.testnet.haneul.io/v1/status")
+            .get("https://faucet.testnet.haneulfoundation.org/v1/status")
             .header("Content-Type", "application/json")
             .json(&json_body)
             .send()

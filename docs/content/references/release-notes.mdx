@@ -883,7 +883,7 @@ As mentioned above, a clique with a shared object by-value is always hot. In oth
 
 Why? This rule is needed since shared objects cannot be wrapped—they either have to be re-shared or deleted. This means that a shared-object could be used to force behavior in a way similar to a hot potato. But unlike a hot potato, we cannot tell from signature of the function if it is used properly.
 
-If this algorithm was “dynamic” rather than “static”, it could be more precise at the cost of clarity. That is, a static set of rules is typically easier to describe and follow as compared to a dynamic set of rules. However, [party objects](https://docs.haneul.io/guides/developer/objects/object-ownership/party) will fall under this restriction under more narrow cases than with shared objects. As such, we think that this restriction will be acceptable long term without having to sacrifice the clarity of the static system.
+If this algorithm was “dynamic” rather than “static”, it could be more precise at the cost of clarity. That is, a static set of rules is typically easier to describe and follow as compared to a dynamic set of rules. However, [party objects](https://docs.haneulfoundation.org/guides/developer/objects/object-ownership/party) will fall under this restriction under more narrow cases than with shared objects. As such, we think that this restriction will be acceptable long term without having to sacrifice the clarity of the static system.
 
 #### Coming Soon (v1.63 or later)
 

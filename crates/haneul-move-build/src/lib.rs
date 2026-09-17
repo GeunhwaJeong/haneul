@@ -265,7 +265,9 @@ pub fn decorate_warnings(warning_diags: Diagnostics, files: Option<&MappedFiles>
         report_warnings(f, warning_diags);
     }
     if any_linter_warnings {
-        eprintln!("Please report feedback on the linter warnings at https://forums.haneul.io\n");
+        eprintln!(
+            "Please report feedback on the linter warnings at https://forums.haneulfoundation.org\n"
+        );
     }
     if filtered_diags_num > 0 {
         eprintln!(

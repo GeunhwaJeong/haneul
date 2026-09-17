@@ -37,7 +37,7 @@ pub const HANEUL_KEYSTORE_FILENAME: &str = "haneul.keystore";
 pub const HANEUL_KEYSTORE_ALIASES_FILENAME: &str = "haneul.aliases";
 pub const HANEUL_BENCHMARK_GENESIS_GAS_KEYSTORE_FILENAME: &str = "benchmark.keystore";
 pub const HANEUL_GENESIS_FILENAME: &str = "genesis.blob";
-pub const HANEUL_DEV_NET_URL: &str = "https://fullnode.devnet.haneul.io:443";
+pub const HANEUL_DEV_NET_URL: &str = "https://fullnode.devnet.haneulfoundation.org:443";
 
 pub const AUTHORITIES_DB_NAME: &str = "authorities_db";
 pub const CONSENSUS_DB_NAME: &str = "consensus_db";

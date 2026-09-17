@@ -140,7 +140,7 @@ public struct RandomGenerator has drop {
 /// Using randomness can be error-prone if you don't observe the subtleties in its correct use, for example, randomness
 /// dependent code might be exploitable to attacks that carefully set the gas budget
 /// in a way that breaks security. For more information, see:
-/// https://docs.haneul.io/guides/developer/advanced/randomness-onchain
+/// https://docs.haneulfoundation.org/guides/developer/advanced/randomness-onchain
 public fun new_generator(r: &Random, ctx: &mut TxContext): RandomGenerator {
     let inner = r.load_inner();
     let seed = hmac_sha3_256(

@@ -8,7 +8,7 @@ the package. Disassembly is the working view for all reading and analysis.
 ```sh
 PKG=0x<package_id>
 NETWORK=mainnet                 # or testnet, devnet
-GQL="https://graphql.${NETWORK}.haneul.io/graphql"
+GQL="https://graphql.${NETWORK}.haneulfoundation.org/graphql"
 OUT="./.move-work/$PKG"
 mkdir -p "$OUT/mv" "$OUT/asm"
 ```

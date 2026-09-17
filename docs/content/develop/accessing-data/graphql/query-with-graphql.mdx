@@ -65,9 +65,9 @@ This guide provides practical examples for querying the Haneul network using Gra
 
 Access the GraphQL service for Haneul RPC through an online IDE that provides a complete toolbox for fetching data and executing transactions on the network:
 
-- Mainnet: https://graphql.mainnet.haneul.io/graphql
-- Testnet: https://graphql.testnet.haneul.io/graphql
-- Devnet: https://graphql.devnet.haneul.io/graphql
+- Mainnet: https://graphql.mainnet.haneulfoundation.org/graphql
+- Testnet: https://graphql.testnet.haneulfoundation.org/graphql
+- Devnet: https://graphql.devnet.haneulfoundation.org/graphql
 
 :::info
 
@@ -96,7 +96,7 @@ By default, each response contains the following HTTP response headers:
 - `x-haneul-rpc-version`: The version of the service that handled the request.
 
 ```sh
-$ curl -i -X POST https://graphql.testnet.haneul.io/graphql\
+$ curl -i -X POST https://graphql.testnet.haneulfoundation.org/graphql\
      --header 'x-haneul-rpc-show-usage: true'                 \
      --header 'Content-Type: application/json'             \
      --data '{
@@ -170,7 +170,7 @@ query ($epochID: Int) {
 
 #### Within the GraphQL IDE
 
-When using the [GraphQL online integrated development environment (IDE)](https://graphql.mainnet.haneul.io/graphql), supply variables as a JSON object to the query in the **Variables** pane at the bottom of the main editing window. You receive a warning if you supply a variable but don't declare it.
+When using the [GraphQL online integrated development environment (IDE)](https://graphql.mainnet.haneulfoundation.org/graphql), supply variables as a JSON object to the query in the **Variables** pane at the bottom of the main editing window. You receive a warning if you supply a variable but don't declare it.
 
 #### Within requests
 

@@ -17,7 +17,7 @@ Run the following command to see available commands:
 cargo run --bin haneul-rpc-loadgen -- -h
 ```
 
-To try this locally, refer to the [docs](https://docs.haneul.io/guides/developer/getting-started/local-network). Recommend setting `database-url` to an env variable. Note: run `RUST_LOG="consensus=off" cargo run haneul -- start --with-faucet --force-regenesis --with-indexer` to rebuild.
+To try this locally, refer to the [docs](https://docs.haneulfoundation.org/guides/developer/getting-started/local-network). Recommend setting `database-url` to an env variable. Note: run `RUST_LOG="consensus=off" cargo run haneul -- start --with-faucet --force-regenesis --with-indexer` to rebuild.
 
 ### Example 1: Get All Checkpoints
 
