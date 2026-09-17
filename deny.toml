@@ -70,14 +70,19 @@ ignore = [
     # releases with quick-xml >= 0.41.
     "RUSTSEC-2026-0194",
     "RUSTSEC-2026-0195",
-    # `im` and its dependencies `bitmaps` and `sized-chunks` are unmaintained;
-    # pulled in transitively (fastcrypto-zkp, Move tooling). No safe upgrade available.
-    "RUSTSEC-2026-0247",
+    # `im` and its dependency `sized-chunks` are unmaintained; pulled in
+    # transitively (fastcrypto-zkp, Move tooling). No safe upgrade available.
+    # (`bitmaps`, RUSTSEC-2026-0247, is listed above.)
     "RUSTSEC-2026-0248",
     "RUSTSEC-2026-0251",
     # `im::OrdSet` aliasing unsoundness in the same unmaintained `im` tree; no safe
     # upgrade available and no OrdSet mutation-under-iteration call sites here.
     "RUSTSEC-2023-0126",
+    # `clear_on_drop` is unmaintained, and no safe upgrade is available. It is
+    # transitive through bulletproofs 5.0.0 in fastcrypto. Review by 2027-03-14
+    # or if bulletproofs releases a zeroize-based replacement. Upstream proposal:
+    # https://github.com/zkcrypto/bulletproofs/pull/17
+    "RUSTSEC-2026-0283",
 ]
 # Threshold for security vulnerabilities, any vulnerability with a CVSS score
 # lower than the range specified will be ignored. Note that ignored advisories
