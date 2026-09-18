@@ -815,6 +815,5 @@ haneulStackSidebar: [
 		],
 	},
     'operators/exchange-integration',
-    'operators/bridge-node-configuration',
 ],
 };
