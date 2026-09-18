@@ -1,37 +1,37 @@
-/crates/haneul-types/src/crypto.rs @joyqvq @kchalkias @benr-ml
-/crates/haneul-types/src/base_types.rs @joyqvq
-/crates/haneul-keys/ @joyqvq
-/crates/haneul-protocol-config @mystenmark
+/crates/haneul-types/src/crypto.rs @GeunhwaJeong
+/crates/haneul-types/src/base_types.rs @GeunhwaJeong
+/crates/haneul-keys/ @GeunhwaJeong
+/crates/haneul-protocol-config @GeunhwaJeong
 
-*.md @jessiemongeon1
-*.mdx @jessiemongeon1
+*.md @GeunhwaJeong
+*.mdx @GeunhwaJeong
 # Omit auto-generated changelogs and changesets from docs review:
 /.changeset/*.md
 CHANGELOG.md
 
 # When native functions change, so we can evaluate cost impact
-/crates/haneul-framework/src/natives/ @dariorussi
+/crates/haneul-framework/src/natives/ @GeunhwaJeong
 
 # System packages tracking
-/crates/haneul-framework/ @GeunhwaJeong/devx-move
+/crates/haneul-framework/ @GeunhwaJeong
 
 # GraphQL RPC working group
-/crates/haneul-default-config @GeunhwaJeong/devx-indexers-and-rpcs
-/crates/haneul-display @GeunhwaJeong/devx-indexers-and-rpcs
-/crates/haneul-field-count* @GeunhwaJeong/devx-indexers-and-rpcs
-/crates/haneul-graphql* @GeunhwaJeong/devx-indexers-and-rpcs
-/crates/haneul-indexer* @GeunhwaJeong/devx-indexers-and-rpcs
-/crates/haneul-pg-db @GeunhwaJeong/devx-indexers-and-rpcs
-/crates/haneul-sql-macro @GeunhwaJeong/devx-indexers-and-rpcs
+/crates/haneul-default-config @GeunhwaJeong
+/crates/haneul-display @GeunhwaJeong
+/crates/haneul-field-count* @GeunhwaJeong
+/crates/haneul-graphql* @GeunhwaJeong
+/crates/haneul-indexer* @GeunhwaJeong
+/crates/haneul-pg-db @GeunhwaJeong
+/crates/haneul-sql-macro @GeunhwaJeong
 
 # Consensus working group
-/consensus/ @GeunhwaJeong/consensus
-/crates/haneul-core/src/consensus_adapter.rs @GeunhwaJeong/consensus
-/crates/haneul-core/src/consensus_handler.rs @GeunhwaJeong/consensus
-/crates/haneul-core/src/consensus_manager/ @GeunhwaJeong/consensus
-/crates/haneul-core/src/consensus_validator.rs @GeunhwaJeong/consensus
-/crates/haneul-core/src/transaction_driver/ @GeunhwaJeong/consensus
-/crates/haneul-core/src/transaction_orchestrator.rs @GeunhwaJeong/consensus
-/crates/haneul-core/src/validator_client_monitor/ @GeunhwaJeong/consensus
+/consensus/ @GeunhwaJeong
+/crates/haneul-core/src/consensus_adapter.rs @GeunhwaJeong
+/crates/haneul-core/src/consensus_handler.rs @GeunhwaJeong
+/crates/haneul-core/src/consensus_manager/ @GeunhwaJeong
+/crates/haneul-core/src/consensus_validator.rs @GeunhwaJeong
+/crates/haneul-core/src/transaction_driver/ @GeunhwaJeong
+/crates/haneul-core/src/transaction_orchestrator.rs @GeunhwaJeong
+/crates/haneul-core/src/validator_client_monitor/ @GeunhwaJeong
 
-/docker/ @GeunhwaJeong/haneul-pe
+/docker/ @GeunhwaJeong
