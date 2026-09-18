@@ -125,7 +125,7 @@ When modifying `crates/haneul-protocol-config/src/lib.rs`, always invoke `/proto
 
 ### Raising a PR:
 
-When opening or updating a PR in this repo, always invoke the `/send-pr` skill.
+When opening or updating a PR in this repo, always invoke the `/send-pr` skill. PR titles and commit subjects follow the path-prefixed format described in `AGENTS.md`.
 
 ### Comment Writing Guidelines
 

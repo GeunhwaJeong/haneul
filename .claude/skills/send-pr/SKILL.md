@@ -159,4 +159,9 @@ Check only the boxes whose surface this PR actually changes, and for each checke
 
 ### Title
 
-One concise line describing the change in terms of its effect, matching the existing commit-message style of the repo. No type-prefix unless the surrounding history uses one.
+One concise line describing the change in terms of its effect, in the format `<path>[, <path>...]: <lowercase summary>` as described in `AGENTS.md`. Name only the directories with functional changes (comma-separated), or the parent directory when a change trickles through the whole tree (`crates: upgrade to protocol version 127`). Use `chore`, `build`, `ci` or `test` as the prefix only when the change has no natural path. Do not append the PR number; GitHub adds it on squash merge.
+
+Examples:
+- `crates/haneul-core: retry consensus submissions on transient errors`
+- `docs: hide products that have no counterpart on Haneul`
+- `build: fetch the simulator's tokio fork from the maintained mirror`
