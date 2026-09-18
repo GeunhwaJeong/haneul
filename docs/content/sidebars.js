@@ -570,7 +570,6 @@ haneulStackSidebar: [
     'haneul-stack',
     'haneul-stack/on-chain-primitives/access-time',
     'haneul-stack/on-chain-primitives/randomness-onchain',
-    'haneul-stack/sagat',
     {
       type: 'category',
       label: 'Walrus',
@@ -772,29 +771,6 @@ haneulStackSidebar: [
         'haneul-stack/zklogin-integration/developer-account',
         'haneul-stack/zklogin-integration/zklogin-demo',
         'haneul-stack/zklogin-integration/zklogin',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Hashi',
-      link: { type: 'doc', id: 'haneul-stack/hashi/index' },
-      items: [
-        {
-          type: 'link',
-          label: 'Hashi Docs',
-          href: 'https://haneullabs.github.io/hashi/design/',
-        },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'HaneulPlay0X1',
-      link: { type: 'doc', id: 'haneul-stack/haneulplay0x1/index' },
-      items: [
-        'haneul-stack/haneulplay0x1/integration',
-        'haneul-stack/haneulplay0x1/wallet-integration',
-        'haneul-stack/haneulplay0x1/best-practices',
-        'haneul-stack/haneulplay0x1/migration-strategies',
       ],
     },
   ],
