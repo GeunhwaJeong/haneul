@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find the last report issue open
-        uses: micalevisk/last-issue-action@305829d9728f47beb0029417167a0af890edfd6e # pin@v2.1
+        uses: micalevisk/last-issue-action@010dfff63530f63c7a9fd54211bde51cc38cff73 # pin@v2.4.0
         id: last_issue
         with:
           state: open
