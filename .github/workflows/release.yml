@@ -173,7 +173,7 @@ jobs:
             ./tmp/haneul-${{ env.haneul_tag }}-${{ env.os_type }}.tgz
 
       - name: Attach artifacts to ${{ env.haneul_tag }} release in GH
-        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # pin@v2.5.0
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # pin@v3.0.3
         with:
           tag_name: ${{ env.haneul_tag }}
           files: |
