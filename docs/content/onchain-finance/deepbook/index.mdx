@@ -1,32 +1,41 @@
 ---
-title: DeepBook
+title: Byeol
 description: >-
-  DeepBook is Haneul's native liquidity layer, providing a central limit order book
-  for spot trading, margin trading, and prediction markets.
+  Byeol is the central limit order book exchange deployed on Haneul Mainnet,
+  providing onchain spot trading for wallets, aggregators, and other apps.
 keywords:
-  - deepbook
-  - deepbookv3
-  - deep book
+  - byeol
   - central limit order book
   - clob
   - spot trading
-  - margin
-  - predict
+  - decentralized exchange
   - liquidity
-  - DEEP token
+  - BYL token
 questions:
-  - What is DeepBook in Haneul?
-  - What topics does DeepBook cover?
-  - How does deepbook work on Haneul?
+  - What is Byeol in Haneul?
+  - Where is Byeol deployed on Haneul?
+  - How does Byeol work on Haneul?
 answer: >-
-  DeepBook is Haneul's native liquidity layer, providing a central limit order book
-  for spot trading, margin trading, and prediction markets.
+  Byeol is the central limit order book exchange deployed on Haneul Mainnet,
+  providing onchain spot trading for wallets, aggregators, and other apps.
 ---
 
-DeepBook is Haneul's native liquidity layer, providing a central limit order book for spot trading, margin trading, and prediction markets.
+Byeol is a central limit order book (CLOB) exchange deployed on Haneul Mainnet. It provides onchain spot trading that wallets, aggregators, and other apps can build on. Byeol is developed and operated as its own project, separate from the Haneul framework, and its contract documentation lives in the [Byeol repository](https://github.com/GeunhwaJeong/byeol).
 
-Before you build, decide how your code calls DeepBook. You can depend on the DeepBookV3 Move package from your own Move module, compose transactions with the TypeScript SDK, or read market data without signing transactions. See [Choose your integration model](/onchain-finance/deepbook/deepbookv3/deepbook#choose-your-integration-model) to compare the options.
+Byeol does not include an end-user interface. Apps place and match orders by calling the public functions of the `Pool` shared object, either from a Move package that depends on Byeol or from a programmable transaction block. Every order requires a `BalanceManager` shared object that holds the trader's funds, while the swap endpoints accept coins directly so routers can trade without one.
 
-import DocCardList from '@theme/DocCardList';
+## Mainnet deployment
 
-<DocCardList />
+| Object | ID |
+| --- | --- |
+| Byeol core package | `0xfa6cb7b6b0116d552e70cc83f293456502ebf7c37485762570077fde11a7cda8` |
+| Registry (shared) | `0xed6388354d0d6708573104f98885fadd95727d8c24c4f0d110bdf2412777b2eb` |
+| HANEUL/wUSDC pool (shared) | `0xba20cefb68684d17a38945c8f96b87a08ed79c95ac6894cced657331f4381370` |
+| BYL token package | `0xedcf12e21f1c6fbfd8fa8fa831a53868cefad279f1d164825e0a5acf09e5ee78` |
+
+The HANEUL/wUSDC pool is whitelisted, so it charges no maker or taker fee and does not require BYL to trade.
+
+## Learn more
+
+- [Byeol repository](https://github.com/GeunhwaJeong/byeol): architecture, `BalanceManager` and `Pool` documentation, and deployment records.
+- [Byeol Move source](https://github.com/GeunhwaJeong/byeol/tree/main/packages/byeol): the package to depend on from your own Move module.
