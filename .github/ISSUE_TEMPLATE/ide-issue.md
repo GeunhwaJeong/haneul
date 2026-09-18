@@ -1,9 +1,9 @@
 ---
 name: Move IDE Issue
 about: Create a new report for issues encountered running Move IDE
-title: Move IDE issue report'
+title: 'Move IDE issue report'
 labels: move-ide
-assignees: 'awelc'
+assignees: 'GeunhwaJeong'
 ---
 
 ## IDE Setup

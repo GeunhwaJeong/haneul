@@ -27,7 +27,7 @@ Provide as much detail as possible, including steps to reproduce the issue, expe
 
 ## New Haneul features
 
-If you want to contribute code that creates a feature on Haneul, start with a [Haneul Improvement Proposal](https://github.com/haneul-foundation/sips/tree/main) before developing the logic.
+If you want to contribute code that creates a feature on Haneul, start by [opening an issue](https://github.com/GeunhwaJeong/haneul/issues/new/choose) that describes the proposal, so the design can be discussed before developing the logic.
 
 ## New Haneul Framework Contributions
 
