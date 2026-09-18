@@ -128,8 +128,8 @@ Please make sure your contributions adhere to our coding guidelines:
 
 * Code must be formatted with `cargo fmt` and must pass `cargo xclippy` without warnings.
 * Pull requests need to be based on and opened against the `main` branch.
-* Commit messages should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format, prefixed with the area they modify.
-  * E.g. "fix(name-service): point mainnet config at the deployed objects"
+* Pull request titles and commit messages should be prefixed with the path(s) they modify, followed by a short lowercase summary. Changes with no natural path use `chore`, `build`, `ci` or `test`.
+  * E.g. "crates/haneul-core, consensus: retry consensus submissions on transient errors"
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details on configuring your environment, managing project dependencies, and testing procedures.
 

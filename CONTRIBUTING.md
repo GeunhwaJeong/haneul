@@ -47,11 +47,19 @@ Ensure your changes are well-tested. Provide a clear description of your changes
 
 Reference any relevant issue numbers in your pull request. Be responsive to feedback from maintainers.
 
+Name the pull request after the paths it changes, followed by a short lowercase summary:
+
+```
+<path>[, <path>...]: <summary>
+```
+
+For example, `crates/haneul-core: retry consensus submissions on transient errors` or `consensus, crates/haneul-node: share the block verifier between services`. List only the directories with functional changes; a change that trickles through the whole tree names the parent directory instead, such as `crates: upgrade to protocol version 127`. Changes with no natural path use `chore`, `build`, `ci` or `test` as the prefix. Pull requests are squash-merged, so the title becomes the commit subject on `main`.
+
 ## Code Standards
 
 Follow existing code structure and formatting.
 
-Write meaningful commit messages.
+Write meaningful commit messages. Commit subjects use the same path-prefixed format as pull request titles, and the body explains why the change is correct.
 
 Ensure all tests pass before submitting a pull request.
 
