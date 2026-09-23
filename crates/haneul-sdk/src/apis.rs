@@ -1047,8 +1047,8 @@ impl EventApi {
     /// #[tokio::main]
     /// async fn main() -> Result<(), anyhow::Error> {
     ///     let haneul = HaneulClientBuilder::default()
-    ///         .ws_url("wss://rpc.mainnet.haneulfoundation.org:443")
-    ///         .build("https://fullnode.mainnet.haneulfoundation.org:443")
+    ///         .ws_url("wss://rpc.mainnet.haneul.io:443")
+    ///         .build("https://fullnode.mainnet.haneul.io:443")
     ///         .await?;
     ///     let mut subscribe_all = haneul
     ///         .event_api()

@@ -203,7 +203,7 @@ Exploit: ...
 For every audit, record alongside the findings:
 
 - Target package id + network (`mainnet` / `testnet` / `devnet`)
-- GraphQL endpoint used (e.g. `https://graphql.mainnet.haneulfoundation.org/graphql`)
+- GraphQL endpoint used (e.g. `https://graphql.mainnet.haneul.io/graphql`)
 - `haneul --version` (the binary that ran `haneul prompt` and `haneul move disassemble`)
 
 Recording the tool version matters because textual disassembly can change across `haneul`

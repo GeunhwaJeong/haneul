@@ -19,15 +19,15 @@ use haneul_sdk::HaneulClientBuilder;
 
 #[tokio::main]
 async fn main() -> Result<(), anyhow::Error> {
-    // Haneul testnet -- https://fullnode.testnet.haneulfoundation.org:443
+    // Haneul testnet -- https://fullnode.testnet.haneul.io:443
     let haneul_testnet = HaneulClientBuilder::default().build_testnet().await?;
     println!("Haneul testnet version: {}", haneul_testnet.api_version());
 
-     // Haneul devnet -- https://fullnode.devnet.haneulfoundation.org:443
+     // Haneul devnet -- https://fullnode.devnet.haneul.io:443
     let haneul_devnet = HaneulClientBuilder::default().build_devnet().await?;
     println!("Haneul devnet version: {}", haneul_devnet.api_version());
 
-    // Haneul mainnet -- https://fullnode.mainnet.haneulfoundation.org:443
+    // Haneul mainnet -- https://fullnode.mainnet.haneul.io:443
     let haneul_mainnet = HaneulClientBuilder::default().build_mainnet().await?;
     println!("Haneul mainnet version: {}", haneul_mainnet.api_version());
 
@@ -58,7 +58,7 @@ There are serveral files ending in `_api.rs` which provide code examples of the 
 
 ### Prerequisites
 
-Unless otherwise specified, most of these examples assume `Rust` and `cargo` are installed, and that there is an available internet connection. The examples connect to the Haneul testnet (`https://fullnode.testnet.haneulfoundation.org:443`) and execute different APIs using the active address from the local wallet. If there is no local wallet, it will create one, generate two addresses, set one of them to be active, and it will request 1 HANEUL from the testnet faucet for the active address.
+Unless otherwise specified, most of these examples assume `Rust` and `cargo` are installed, and that there is an available internet connection. The examples connect to the Haneul testnet (`https://fullnode.testnet.haneul.io:443`) and execute different APIs using the active address from the local wallet. If there is no local wallet, it will create one, generate two addresses, set one of them to be active, and it will request 1 HANEUL from the testnet faucet for the active address.
 
 ### Running the existing examples
 
@@ -78,13 +78,13 @@ In the root folder of the `haneul` repository (or in the `haneul-sdk` crate fold
 The `HaneulClientBuilder` struct provides a connection to the JSON-RPC server that you use for all read-only operations. The default URLs to connect to the Haneul network are:
 
 - Local: http://127.0.0.1:9000
-- Devnet: https://fullnode.devnet.haneulfoundation.org:443
-- Testnet: https://fullnode.testnet.haneulfoundation.org:443
-- Mainnet: https://fullnode.mainnet.haneulfoundation.org:443
+- Devnet: https://fullnode.devnet.haneul.io:443
+- Testnet: https://fullnode.testnet.haneul.io:443
+- Mainnet: https://fullnode.mainnet.haneul.io:443
 
-For all available servers, see [here](https://haneulfoundation.org/networkinfo).
+For all available servers, see [here](https://haneul.io/networkinfo).
 
-For running a local Haneul network, please follow [this guide](https://docs.haneulfoundation.org/build/haneul-local-network) for installing Haneul and [this guide](https://docs.haneulfoundation.org/build/haneul-local-network#start-the-local-network) for starting the local Haneul network.
+For running a local Haneul network, please follow [this guide](https://docs.haneul.io/build/haneul-local-network) for installing Haneul and [this guide](https://docs.haneul.io/build/haneul-local-network#start-the-local-network) for starting the local Haneul network.
 
 
 ```rust
@@ -101,11 +101,11 @@ async fn main() -> Result<(), anyhow::Error> {
     let haneul_local = HaneulClientBuilder::default().build_localnet().await?;
     println!("Haneul local network version: {}", haneul_local.api_version());
 
-    // Haneul devnet -- https://fullnode.devnet.haneulfoundation.org:443
+    // Haneul devnet -- https://fullnode.devnet.haneul.io:443
     let haneul_devnet = HaneulClientBuilder::default().build_devnet().await?;
     println!("Haneul devnet version: {}", haneul_devnet.api_version());
 
-    // Haneul testnet -- https://fullnode.testnet.haneulfoundation.org:443
+    // Haneul testnet -- https://fullnode.testnet.haneul.io:443
     let haneul_testnet = HaneulClientBuilder::default().build_testnet().await?;
     println!("Haneul testnet version: {}", haneul_testnet.api_version());
 

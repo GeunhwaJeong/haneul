@@ -1062,7 +1062,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "25769832374-famecqrhe2gkebt5fvqms2263046lj96.apps.googleusercontent.com",
-                    "https://haneulfoundation.org/",
+                    "https://haneul.io/",
                     &jwt_randomness,
                 )?;
                 let url_2 = get_oidc_url(
@@ -1070,7 +1070,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "rs1bh065i9ya4ydvifixl4kss0uhpt",
-                    "https://haneulfoundation.org/",
+                    "https://haneul.io/",
                     &jwt_randomness,
                 )?;
                 let url_3 = get_oidc_url(
@@ -1078,7 +1078,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "233307156352917",
-                    "https://haneulfoundation.org/",
+                    "https://haneul.io/",
                     &jwt_randomness,
                 )?;
                 let url_4 = get_oidc_url(
@@ -1086,13 +1086,13 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "aa6bddf393b54d4e0d42ae0014edfd2f",
-                    "https://haneulfoundation.org/",
+                    "https://haneul.io/",
                     &jwt_randomness,
                 )?;
                 let url_5 = get_token_exchange_url(
                     OIDCProvider::Kakao,
                     "aa6bddf393b54d4e0d42ae0014edfd2f",
-                    "https://haneulfoundation.org/",
+                    "https://haneul.io/",
                     "$YOUR_AUTH_CODE",
                     "", // not needed
                 )?;
@@ -1101,7 +1101,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "nl.digkas.wallet.client",
-                    "https://haneulfoundation.org/",
+                    "https://haneul.io/",
                     &jwt_randomness,
                 )?;
                 let url_7 = get_oidc_url(
@@ -1109,13 +1109,13 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "2426087588661.5742457039348",
-                    "https://haneulfoundation.org/",
+                    "https://haneul.io/",
                     &jwt_randomness,
                 )?;
                 let url_8 = get_token_exchange_url(
                     OIDCProvider::Slack,
                     "2426087588661.5742457039348",
-                    "https://haneulfoundation.org/",
+                    "https://haneul.io/",
                     "$YOUR_AUTH_CODE",
                     "39b955a118f2f21110939bf3dff1de90",
                 )?;
@@ -1127,7 +1127,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "6c56t7re6ekgmv23o7to8r0sic",
-                    "https://www.haneulfoundation.org/",
+                    "https://www.haneul.io/",
                     &jwt_randomness,
                 )?;
                 let url_10 = get_oidc_url(
@@ -1135,7 +1135,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "2e3e87cb-bf24-4399-ab98-48343d457124",
-                    "https://www.haneulfoundation.org",
+                    "https://www.haneul.io",
                     &jwt_randomness,
                 )?;
                 let url_11 = get_oidc_url(
@@ -1143,7 +1143,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "kns-dev",
-                    "https://haneulfoundation.org/", // placeholder
+                    "https://haneul.io/", // placeholder
                     &jwt_randomness,
                 )?;
                 let url_12 = get_oidc_url(
@@ -1159,7 +1159,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "2e3i87cb-bf24-4399-ab98-48343d457124",
-                    "https://www.haneulfoundation.org",
+                    "https://www.haneul.io",
                     &jwt_randomness,
                 )?;
                 let url_15 = get_oidc_url(
@@ -1175,7 +1175,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "583ebc6d-abd8-4057-8c77-78405628e42d",
-                    "https://www.haneulfoundation.org",
+                    "https://www.haneul.io",
                     &jwt_randomness,
                 )?;
                 let url_17 = get_oidc_url(
@@ -1183,7 +1183,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "c8815001-f950-4147-905e-4833d904cd38",
-                    "https://www.haneulfoundation.org",
+                    "https://www.haneul.io",
                     &jwt_randomness,
                 )?;
                 let url_18 = get_oidc_url(
@@ -1191,7 +1191,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "42e9pih2409ktfhmkmo2ipup2h",
-                    "https://www.haneulfoundation.org",
+                    "https://www.haneul.io",
                     &jwt_randomness,
                 )?;
                 let url_19 = get_oidc_url(
@@ -1199,7 +1199,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "gammaprime-dev",
-                    "https://www.haneulfoundation.org/",
+                    "https://www.haneul.io/",
                     &jwt_randomness,
                 )?;
                 let url_20 = get_oidc_url(
@@ -1210,7 +1210,7 @@ impl KeyToolCommand {
                     &eph_pk_bytes,
                     max_epoch,
                     "test-gammaprime-dev",
-                    "https://www.haneulfoundation.org/",
+                    "https://www.haneul.io/",
                     &jwt_randomness,
                 )?;
                 // This is only for CLI testing. If frontend apps will be built, no need to add anything here.
@@ -1235,7 +1235,7 @@ impl KeyToolCommand {
                 println!("Visit URL (AWS - Gamma Prime): {url_19}");
                 println!("Visit URL (AWS - Test Gamma Prime): {url_20}");
                 println!(
-                    "Finish login and paste the entire URL here (e.g. https://haneulfoundation.org/#id_token=...):"
+                    "Finish login and paste the entire URL here (e.g. https://haneul.io/#id_token=...):"
                 );
 
                 let parsed_token = read_cli_line()?;

@@ -22,7 +22,7 @@ sudo chown -R haneul:haneul /opt/haneul
 - Pre-built binary stored in Amazon S3:
         
 ```shell
-wget https://releases.haneulfoundation.org/$HANEUL_SHA/haneul-node
+wget https://releases.haneul.io/$HANEUL_SHA/haneul-node
 chmod +x haneul-node
 sudo mv haneul-node /opt/haneul/bin
 ```
@@ -116,7 +116,7 @@ sudo systemctl stop haneul-node
 2. Fetch the new haneul-node binary
 
 ```shell
-wget https://releases.haneulfoundation.org/${HANEUL_SHA}/haneul-node
+wget https://releases.haneul.io/${HANEUL_SHA}/haneul-node
 ```
 
 3. Update and move the new binary:

@@ -107,8 +107,8 @@ Haneul provides checkpoint data through multiple sources:
 
 - **GCS buckets (production backfill and recovery):** `gs://haneullabs-testnet-checkpoints-use4` for Testnet or `gs://haneullabs-mainnet-checkpoints-use4` for Mainnet. These buckets have full checkpoint retention and are Requester Pays enabled, so configure GCS credentials and a billing project before using them.
 - **Fullnode gRPC (production steady state):** Use a production-grade endpoint from an [RPC provider](/develop/accessing-data/rpc-providers) for polling and streaming after the historical backfill reaches the network tip.
-- **Public-good fullnode gRPC (testing only):** `https://fullnode.testnet.haneulfoundation.org:443`, `https://fullnode.mainnet.haneulfoundation.org:443`, and `https://fullnode.devnet.haneulfoundation.org:443`. Do not use these endpoints for production ingestion.
-- **Public HTTPS checkpoint stores (testing only, most recent 30 days):** `https://checkpoints.testnet.haneulfoundation.org` for Testnet or `https://checkpoints.mainnet.haneulfoundation.org` for Mainnet. Do not use these public-good endpoints for production ingestion.
+- **Public-good fullnode gRPC (testing only):** `https://fullnode.testnet.haneul.io:443`, `https://fullnode.mainnet.haneul.io:443`, and `https://fullnode.devnet.haneul.io:443`. Do not use these endpoints for production ingestion.
+- **Public HTTPS checkpoint stores (testing only, most recent 30 days):** `https://checkpoints.testnet.haneul.io` for Testnet or `https://checkpoints.mainnet.haneul.io` for Mainnet. Do not use these public-good endpoints for production ingestion.
 
 :::
 
@@ -466,17 +466,17 @@ $ cargo run -- \
     --streaming-url "$FULLNODE_GRPC_URL"
 ```
 
-For testing only, you can instead use the public-good Testnet endpoint `https://fullnode.testnet.haneulfoundation.org:443`. The public-good Mainnet, Testnet, and Devnet fullnode endpoints are not intended for production use.
+For testing only, you can instead use the public-good Testnet endpoint `https://fullnode.testnet.haneul.io:443`. The public-good Mainnet, Testnet, and Devnet fullnode endpoints are not intended for production use.
 
 **Testing only: public HTTPS checkpoint store (most recent 30 days):**
 
 ```sh
 $ cargo run -- \
-    --remote-store-url https://checkpoints.testnet.haneulfoundation.org \
+    --remote-store-url https://checkpoints.testnet.haneul.io \
     --first-checkpoint RECENT_CHECKPOINT
 ```
 
-The public HTTPS checkpoint stores (`https://checkpoints.testnet.haneulfoundation.org` and `https://checkpoints.mainnet.haneulfoundation.org`) retain only the most recent 30 days of checkpoints. Use them only for testing. When using one with a fresh database, set `--first-checkpoint` to a checkpoint that is still within the retained range; otherwise, the indexer starts at checkpoint 0 and retries missing checkpoints indefinitely. For production backfills, use `--remote-store-gcs` with `haneullabs-testnet-checkpoints-use4` for Testnet or `haneullabs-mainnet-checkpoints-use4` for Mainnet. See [Use Requester Pays](https://cloud.google.com/storage/docs/using-requester-pays) and [Running a Remote Store](/operators/data-management/remote-store-setup) for more information.
+The public HTTPS checkpoint stores (`https://checkpoints.testnet.haneul.io` and `https://checkpoints.mainnet.haneul.io`) retain only the most recent 30 days of checkpoints. Use them only for testing. When using one with a fresh database, set `--first-checkpoint` to a checkpoint that is still within the retained range; otherwise, the indexer starts at checkpoint 0 and retries missing checkpoints indefinitely. For production backfills, use `--remote-store-gcs` with `haneullabs-testnet-checkpoints-use4` for Testnet or `haneullabs-mainnet-checkpoints-use4` for Mainnet. See [Use Requester Pays](https://cloud.google.com/storage/docs/using-requester-pays) and [Running a Remote Store](/operators/data-management/remote-store-setup) for more information.
 
 :::info
 

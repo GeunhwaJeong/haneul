@@ -1,7 +1,7 @@
 # Move
 
 Provides language support for the Move programming language. For information about Move visit the
-language [documentation](https://docs.haneulfoundation.org/concepts/haneul-move-concepts). It also provides early-stage
+language [documentation](https://docs.haneul.io/concepts/haneul-move-concepts). It also provides early-stage
 support for trace-debugging Move unit tests using a familiar VSCode debugging interface (e.g., stepping
 through the code, tracking local variable names, setting line breakpoints).
 
@@ -24,7 +24,7 @@ the pre-built move-analyzer binary is not available for your platform or if you 
 binary stored in a different location.
 
 If you want to build, test, and trace Move code using the extension, you must install the `haneul` binary on
-your machine - see [here](https://docs.haneulfoundation.org/guides/developer/getting-started/haneul-install) for
+your machine - see [here](https://docs.haneul.io/guides/developer/getting-started/haneul-install) for
 instructions. The extension assumes that the `haneul` binary is in your system path, but you can set
 its custom location using VSCode's settings (`⌘` + `,` on macOS, or use the menu item *Code >
 Preferences > Settings*). Search for the `move.haneul.path` user setting, set it to the new location of
@@ -33,7 +33,7 @@ the `haneul` binary, and restart VSCode.
 In order to trace-debug Move code execution, the `haneul` binary must be built with the `tracing` feature flag.
 If your version of the `haneul` binary was not built with this feature flag, an attempt to trace test
 execution will fail. In this case you may have to build the `haneul` binary from source following these
-[instructions](https://docs.haneulfoundation.org/guides/developer/getting-started/haneul-install#install-haneul-binaries-from-source).
+[instructions](https://docs.haneul.io/guides/developer/getting-started/haneul-install#install-haneul-binaries-from-source).
 
 # Troubleshooting
 
@@ -48,7 +48,7 @@ This can be done in two steps:
 1. Install the move-analyzer installation prerequisites for your platform. They are the same
 as prerequisites for Haneul installation - for Linux, macOS and Windows these prerequisites and
 their installation instructions can be found
-[here](https://docs.haneulfoundation.org/guides/developer/getting-started/haneul-install#additional-prerequisites-by-operating-system)
+[here](https://docs.haneul.io/guides/developer/getting-started/haneul-install#additional-prerequisites-by-operating-system)
 2. Invoke `cargo install --git https://github.com/GeunhwaJeong/haneul haneul-move-lsp` to install the
 `move-analyzer` language server in your Cargo binary directory, which is typically located
 in the `~/.cargo/bin` (macOS/Linux) or `C:\Users\USER\.cargo\bin` (Windows) directory.
@@ -74,7 +74,7 @@ extension.
 
 ## What if everything else fails?
 
-Check [Haneul Developer Forum](https://forums.haneulfoundation.org/c/technical-support) to see if the problem
+Check [Haneul Developer Forum](https://forums.haneul.io/c/technical-support) to see if the problem
 has already been reported and, if not, report it there.
 
 # Features

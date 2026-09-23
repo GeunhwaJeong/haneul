@@ -1,7 +1,7 @@
 # Haneul Custom Indexer Example
 This is a complementary example to the Haneul Custom Indexer documentation.
 It demonstrates how to create a custom indexer for the Haneul search engine.
-See the [Haneul Custom Indexer documentation](https://docs.haneulfoundation.org/guides/developer/advanced/custom-indexer) for more information.
+See the [Haneul Custom Indexer documentation](https://docs.haneul.io/guides/developer/advanced/custom-indexer) for more information.
 
 ## Prerequisites
 - Rust

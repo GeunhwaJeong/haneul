@@ -125,7 +125,7 @@ Because there is no difference in the result of the object transfer, you can use
 
 An object must receive another object before it can use it. To receive the object, use a `Receiving(o: ObjectRef)` argument type in a [programmable transaction block (PTB)](/develop/transactions/ptbs/prog-txn-blocks). This argument takes an object reference containing the object's `ObjectID`, `Version`, and `Digest`, similar to address-owned object arguments. However, `Receiving` PTB arguments are not passed as an owned value or mutable reference within the transaction.
 
-The core receiving interface in Move is defined in the [`transfer`](https://docs.haneulfoundation.org/references/framework/haneul_haneul/transferx) module in the Haneul framework:
+The core receiving interface in Move is defined in the [`transfer`](https://docs.haneul.io/references/framework/haneul_haneul/transferx) module in the Haneul framework:
 
 ```move
 module haneul::transfer;

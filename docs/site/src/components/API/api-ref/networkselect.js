@@ -26,7 +26,7 @@ const NetworkSelect = () => {
     window.dispatchEvent(new Event("storage"));
   }, [selection]);
 
-  const rpcUrl = `https://fullnode.${selection}.haneulfoundation.org:443`;
+  const rpcUrl = `https://fullnode.${selection}.haneul.io:443`;
 
   return (
     <StyledEngineProvider injectFirst>

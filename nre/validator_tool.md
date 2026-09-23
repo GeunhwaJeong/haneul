@@ -8,7 +8,7 @@ This document is focused on using Validator Tool.
 
 ## Preparation
 
-1. Make sure you have completed all the [prerequisites](https://docs.haneulfoundation.org/devnet/build/install).
+1. Make sure you have completed all the [prerequisites](https://docs.haneul.io/devnet/build/install).
 
 2. Build the `haneul` binary, which you will need for the genesis ceremony. This step can be done on any machine you like. It does not have to be done on the machine on which you will run the validator.
 
@@ -37,7 +37,7 @@ This document is focused on using Validator Tool.
       b. `active_address` is correct in `client.yaml`.
       b. `haneul.keystore` contains your account key pair.
 
-    If at this point you can't find where `client.yaml` or `haneul.keystore` is or have other questions, read [Haneul Client CLI tutorial](https://docs.haneulfoundation.org/devnet/build/cli-client).
+    If at this point you can't find where `client.yaml` or `haneul.keystore` is or have other questions, read [Haneul Client CLI tutorial](https://docs.haneul.io/devnet/build/cli-client).
 
 ``` bash
 $HANEUL_BINARY client

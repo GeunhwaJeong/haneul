@@ -13,7 +13,7 @@ import styles from "./index.module.css";
 // so this points at the external Haneul blog as an interim (external links are not
 // route-checked, so the strict build passes). Swap this single constant to
 // "/developer-updates" when the dedicated page ships.
-export const DEVELOPER_UPDATES_URL = "https://blog.haneulfoundation.org";
+export const DEVELOPER_UPDATES_URL = "https://blog.haneul.io";
 
 export default function Home() {
   const developerResources = [

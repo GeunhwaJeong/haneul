@@ -4,7 +4,7 @@
     "name": "Haneul Documentation",
     "version": "1.0.0",
     "description": "AI-powered Q&A over Haneul blockchain documentation. Ask questions about Move programming, Haneul architecture, SDK usage, transaction building, and more.",
-    "homepage": "https://docs.haneulfoundation.org",
+    "homepage": "https://docs.haneul.io",
     "contactEmail": "docs@haneul-labs.com"
   },
   "transport": {
@@ -29,19 +29,19 @@
   },
   "relatedResources": [
     {
-      "href": "https://docs.haneulfoundation.org/llms.txt",
+      "href": "https://docs.haneul.io/llms.txt",
       "type": "text/plain",
       "title": "LLM-optimized documentation index",
       "rel": "service-doc"
     },
     {
-      "href": "https://docs.haneulfoundation.org/.well-known/api-catalog",
+      "href": "https://docs.haneul.io/.well-known/api-catalog",
       "type": "application/linkset+json",
       "title": "Haneul API catalog",
       "rel": "api-catalog"
     },
     {
-      "href": "https://docs.haneulfoundation.org/sitemap.xml",
+      "href": "https://docs.haneul.io/sitemap.xml",
       "type": "application/xml",
       "title": "Full site index",
       "rel": "sitemap"

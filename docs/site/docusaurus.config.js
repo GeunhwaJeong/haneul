@@ -73,7 +73,7 @@ const config = {
     },
   ],
   // Set the production url of your site here
-  url: "https://docs.haneulfoundation.org",
+  url: "https://docs.haneul.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -215,7 +215,7 @@ const config = {
     [
       require.resolve("./src/shared/plugins/plausible"),
       {
-        domain: "docs.haneulfoundation.org",
+        domain: "docs.haneul.io",
         enableInDev: false,
         trackOutboundLinks: true,
         hashMode: false,
@@ -364,7 +364,7 @@ const config = {
       "data-mcp-enabled": "true",
       "data-mcp-server-url": "https://haneul.mcp.kapa.ai",
       "data-mcp-button-text": "Use Haneul MCP Server",
-      "data-chat-disclaimer": "**New:** Install [Haneul Agent Skills](https://docs.haneulfoundation.org/skills) to supercharge your AI coding agent with Haneul expertise.",
+      "data-chat-disclaimer": "**New:** Install [Haneul Agent Skills](https://docs.haneul.io/skills) to supercharge your AI coding agent with Haneul expertise.",
       async: true,
     },
   ],
@@ -526,7 +526,7 @@ const config = {
         logo: {
           alt: "Haneul Logo",
           src: "img/haneul-logo-footer.svg",
-          href: "https://haneulfoundation.org",
+          href: "https://haneul.io",
         },
         style: "dark",
         copyright: `© ${new Date().getFullYear()} Haneul Foundation | Documentation distributed under <a href="https://github.com/GeunhwaJeong/haneul/blob/main/docs/site/LICENSE">CC BY 4.0</a>`,

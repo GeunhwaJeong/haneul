@@ -15,9 +15,9 @@ export default function ProtocolConfig(props) {
     params: [],
   };
   const urls = [
-    "https://fullnode.mainnet.haneulfoundation.org:443",
-    "https://fullnode.testnet.haneulfoundation.org:443",
-    "https://fullnode.devnet.haneulfoundation.org:443",
+    "https://fullnode.mainnet.haneul.io:443",
+    "https://fullnode.testnet.haneul.io:443",
+    "https://fullnode.devnet.haneul.io:443",
   ];
   const [results, setResults] = useState({
     mainnet: null,

@@ -21,7 +21,7 @@ bridge-indexer --config-path config.yaml
 
 ```yaml
 ---
-remote_store_url: https://checkpoints.mainnet.haneulfoundation.org
+remote_store_url: https://checkpoints.mainnet.haneul.io
 eth_rpc_url: {eth rpc url}
 haneul_rpc_url: {haneul rpc url}
 

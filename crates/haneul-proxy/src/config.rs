@@ -103,7 +103,7 @@ fn hostname_default() -> Option<String> {
 
 /// the default remote write url
 fn remote_write_url() -> String {
-    "http://metrics-gw.testnet.haneulfoundation.org/api/v1/push".to_string()
+    "http://metrics-gw.testnet.haneul.io/api/v1/push".to_string()
 }
 
 /// load our config file from a path

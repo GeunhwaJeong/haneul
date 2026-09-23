@@ -6,7 +6,7 @@ import { Transaction } from '@haneullabs/haneul/transactions';
 import { HaneulGrpcClient } from '@haneullabs/haneul/grpc';
 import { Ed25519Keypair } from '@haneullabs/haneul/keypairs/ed25519';
 
-const client = new HaneulGrpcClient({ baseUrl: 'https://fullnode.testnet.haneulfoundation.org:443', network: 'testnet' });
+const client = new HaneulGrpcClient({ baseUrl: 'https://fullnode.testnet.haneul.io:443', network: 'testnet' });
 const buyerKeypair = new Ed25519Keypair();
 const sponsorKeypair = new Ed25519Keypair();
 const buyerAddress = buyerKeypair.toHaneulAddress();

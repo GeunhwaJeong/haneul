@@ -29,7 +29,7 @@ export function KioskCreation({ onCreate }: { onCreate: () => void }) {
 					connects to Testnet and that you have at least 1 HANEUL to cover gas fees. You can get test
 					HANEUL tokens using{' '}
 					<a
-						href="https://docs.haneulfoundation.org/build/faucet"
+						href="https://docs.haneul.io/build/faucet"
 						target="_blank"
 						rel="noreferrer"
 						className="underline"

@@ -144,13 +144,13 @@ if (typeof window !== 'undefined') {
 								apis: [
 									{
 										name: 'Haneul JSON-RPC',
-										docs: 'https://docs.haneulfoundation.org/references/haneul-api',
-										spec: 'https://docs.haneulfoundation.org/open-spec/mainnet/openrpc.json',
+										docs: 'https://docs.haneul.io/references/haneul-api',
+										spec: 'https://docs.haneul.io/open-spec/mainnet/openrpc.json',
 									},
 									{
 										name: 'Haneul GraphQL',
-										docs: 'https://docs.haneulfoundation.org/references/haneul-graphql',
-										endpoint: 'https://graphql.mainnet.haneulfoundation.org/graphql',
+										docs: 'https://docs.haneul.io/references/haneul-graphql',
+										endpoint: 'https://graphql.mainnet.haneul.io/graphql',
 									},
 								],
 							}),

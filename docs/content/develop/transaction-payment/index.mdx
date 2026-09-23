@@ -139,7 +139,7 @@ import { Transaction } from '@haneullabs/haneul/transactions';
 // Replace with a real coin type. For allowlisted stablecoins, see
 // /develop/transaction-payment/gasless-stablecoin-transfers#eligible-stablecoins
 const USDC = '0xUSDC_PACKAGE::usdc::USDC';
-const client = new HaneulGrpcClient({ network: 'mainnet', baseUrl: 'https://fullnode.mainnet.haneulfoundation.org:443' });
+const client = new HaneulGrpcClient({ network: 'mainnet', baseUrl: 'https://fullnode.mainnet.haneul.io:443' });
 
 const tx = new Transaction();
 tx.setSender(senderAddress);

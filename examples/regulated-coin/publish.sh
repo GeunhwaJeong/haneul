@@ -17,8 +17,8 @@ MOVE_PACKAGE_PATH=./move
 
 haneul client switch --env testnet
 
-NETWORK="https://rpc.testnet.haneulfoundation.org:443"
-FAUCET="https://faucet.testnet.haneulfoundation.org/gas"
+NETWORK="https://rpc.testnet.haneul.io:443"
+FAUCET="https://faucet.testnet.haneul.io/gas"
     
 haneul client switch --env testnet
 

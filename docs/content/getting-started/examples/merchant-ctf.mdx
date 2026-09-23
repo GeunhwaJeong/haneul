@@ -176,7 +176,7 @@ $ pnpm install
 $ pnpm init-keypair
 ```
 
-Fund the generated address with Testnet HANEUL and USDC. For Testnet HANEUL, visit the [HANEUL Faucet](https://faucet.haneulfoundation.org/). For USDC, use a faucet such as [Circle's USDC faucet](https://faucet.circle.com/) and select **Haneul Testnet** as the network.
+Fund the generated address with Testnet HANEUL and USDC. For Testnet HANEUL, visit the [HANEUL Faucet](https://faucet.haneul.io/). For USDC, use a faucet such as [Circle's USDC faucet](https://faucet.circle.com/) and select **Haneul Testnet** as the network.
 
 You need at least 3,849,000 USDC units (3.849 USDC with 6 decimals). 
 
@@ -194,7 +194,7 @@ import keyPairJson from "../keypair.json" with { type: "json" };
 const keypair = Ed25519Keypair.fromSecretKey(keyPairJson.privateKey);
 const client = new HaneulGrpcClient({
   network: "testnet",
-  baseUrl: "https://fullnode.testnet.haneulfoundation.org:443",
+  baseUrl: "https://fullnode.testnet.haneul.io:443",
 });
 
 const address = keypair.getPublicKey().toHaneulAddress();

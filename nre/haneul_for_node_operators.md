@@ -39,11 +39,11 @@ There are pre-built container images available in [Docker Hub](https://hub.docke
 And pre built `linux/amd64` binaries available in S3 that can be fetched using one of the following methods:
 
 ```shell
-wget https://releases.haneulfoundation.org/$HANEUL_SHA/haneul-node
+wget https://releases.haneul.io/$HANEUL_SHA/haneul-node
 ```
 
 ```shell
-curl https://releases.haneulfoundation.org/$HANEUL_SHA/haneul-node -o haneul-node
+curl https://releases.haneul.io/$HANEUL_SHA/haneul-node -o haneul-node
 ```
 
 To build directly from source:
@@ -126,7 +126,7 @@ The following keys are used by Haneul Node:
 
 These are configured in the [Haneul Node configuration file](#configuration).
 
-You can generate each of these via the [haneul cli](https://docs.haneulfoundation.org/guides/developer/getting-started/haneul-install).
+You can generate each of these via the [haneul cli](https://docs.haneul.io/guides/developer/getting-started/haneul-install).
 
 ```
 $ haneul keytool generate bls12381
@@ -202,7 +202,7 @@ curl localhost:1337/logging -d "info"
 
 Public dashboard for network wide visibility:
 
-- [Haneul Testnet Validators](https://metrics.haneulfoundation.org/public-dashboards/9b841d63c9bf43fe8acec4f0fa991f5e)
+- [Haneul Testnet Validators](https://metrics.haneul.io/public-dashboards/9b841d63c9bf43fe8acec4f0fa991f5e)
 
 For viewing total stake of validators, current active set and candidates:
 
@@ -242,12 +242,12 @@ p2p-config:
 The following chain operations are executed using the `haneul` CLI. This binary is built and provided as a release similar to `haneul-node`, examples:
 
 ```shell
-wget https://releases.haneulfoundation.org/$HANEUL_SHA/haneul
+wget https://releases.haneul.io/$HANEUL_SHA/haneul
 chmod +x haneul
 ```
 
 ```shell
-curl https://releases.haneulfoundation.org/$HANEUL_SHA/haneul -o haneul
+curl https://releases.haneul.io/$HANEUL_SHA/haneul -o haneul
 chmod +x haneul
 ```
 
@@ -304,7 +304,7 @@ haneul client call --package 0x3 --module haneul_system --function rotate_operat
 
 By default the new `Cap` object is transferred to the validator address, which then could be transferred to the new delegatee address. At this point, the old `Cap` becomes invalidated and no longer represents eligibility.
 
-To get the current valid `Cap` object's ID of a validator, use the Haneul Client CLI `haneul client objects` command after setting the holder as the active address. Or go to the [explorer](https://explorer.haneulfoundation.org/object/0x0000000000000000000000000000000000000005) and look for `operation_cap_id` of that validator in the `validators` module.
+To get the current valid `Cap` object's ID of a validator, use the Haneul Client CLI `haneul client objects` command after setting the holder as the active address. Or go to the [explorer](https://explorer.haneul.io/object/0x0000000000000000000000000000000000000005) and look for `operation_cap_id` of that validator in the `validators` module.
 
 ### Updating the Gas Price Survey Quote
 

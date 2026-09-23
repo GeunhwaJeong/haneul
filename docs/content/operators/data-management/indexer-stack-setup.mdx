@@ -43,7 +43,7 @@ See [Haneul Data Access](/develop/accessing-data/data-serving) for more informat
 
 ## Production fullnode endpoints
 
-The `https://fullnode.mainnet.haneulfoundation.org:443`, `https://fullnode.testnet.haneulfoundation.org:443`, and `https://fullnode.devnet.haneulfoundation.org:443` endpoints are public-good services for testing only. They are not intended for a production indexer or GraphQL stack. For every fullnode URL in this guide, use a production-grade gRPC endpoint from an [RPC provider](/develop/accessing-data/rpc-providers) with sufficient capacity and retention for your workload.
+The `https://fullnode.mainnet.haneul.io:443`, `https://fullnode.testnet.haneul.io:443`, and `https://fullnode.devnet.haneul.io:443` endpoints are public-good services for testing only. They are not intended for a production indexer or GraphQL stack. For every fullnode URL in this guide, use a production-grade gRPC endpoint from an [RPC provider](/develop/accessing-data/rpc-providers) with sufficient capacity and retention for your workload.
 
 ## Requester Pays checkpoint buckets {#requester-pays}
 
@@ -189,7 +189,7 @@ If recovery requires checkpoints outside the fullnode's retention, stop the proc
 
 :::info
 
-For checkpoint ingestion, the public `https://checkpoints.mainnet.haneulfoundation.org` and `https://checkpoints.testnet.haneulfoundation.org` stores are for testing only. Do not use them for production backfill, recovery, fallback, or steady state. See [Checkpoint Data Sources](/develop/accessing-data/custom-indexer/indexer-data-integration#checkpoint-data-sources) for the source matrix.
+For checkpoint ingestion, the public `https://checkpoints.mainnet.haneul.io` and `https://checkpoints.testnet.haneul.io` stores are for testing only. Do not use them for production backfill, recovery, fallback, or steady state. See [Checkpoint Data Sources](/develop/accessing-data/custom-indexer/indexer-data-integration#checkpoint-data-sources) for the source matrix.
 
 :::
 
@@ -382,7 +382,7 @@ The restore command reads from two distinct sources:
 1. Exactly 1 formal snapshot source, such as `--http`, `--gcs`, `--azure`, `--s3`, or `--local`.
 1. A required `--remote-store-url`. The restorer uses this store to map the snapshot epoch to its ending checkpoint and fetch that checkpoint; it is not the post-restore catch-up source.
 
-Mainnet and Testnet restores can use `https://checkpoints.mainnet.haneulfoundation.org` or `https://checkpoints.testnet.haneulfoundation.org` for `--remote-store-url`, respectively.
+Mainnet and Testnet restores can use `https://checkpoints.mainnet.haneul.io` or `https://checkpoints.testnet.haneul.io` for `--remote-store-url`, respectively.
 
 ```sh
 $ export CONSISTENT_STORE_PATH=/path/to/consistent-store
@@ -390,8 +390,8 @@ $ mkdir -p "$(dirname "$CONSISTENT_STORE_PATH")"
 
 $ haneul-indexer-alt-consistent-store restore \
     --database-path "$CONSISTENT_STORE_PATH" \
-    --http https://formal-snapshot.mainnet.haneulfoundation.org \
-    --remote-store-url https://checkpoints.mainnet.haneulfoundation.org \
+    --http https://formal-snapshot.mainnet.haneul.io \
+    --remote-store-url https://checkpoints.mainnet.haneul.io \
     --object-file-concurrency 5 \
     --pipeline address_balances \
     --pipeline balances \
@@ -404,7 +404,7 @@ $ haneul-indexer-alt-consistent-store restore \
 | **CLI parameter** | **Description** |
 | --- | --- |
 | `--database-path` | Empty path where the RocksDB database is created. |
-| `--http`, `--gcs`, `--azure`, `--s3`, or `--local` | Formal snapshot source. Specify exactly one. See [managed snapshots](https://docs.haneulfoundation.org/operators/snapshots#haneullabs-labs-managed-snapshots). |
+| `--http`, `--gcs`, `--azure`, `--s3`, or `--local` | Formal snapshot source. Specify exactly one. See [managed snapshots](https://docs.haneul.io/operators/snapshots#haneullabs-labs-managed-snapshots). |
 | `--remote-store-url` | Public HTTPS checkpoint store used to read the epoch mapping and selected end-of-epoch checkpoint during restore. |
 | `--object-file-concurrency` | Number of formal-snapshot object files to download concurrently. |
 | `--pipeline` | Runtime pipeline name to restore. Repeat once for each required pipeline. |
@@ -448,7 +448,7 @@ Do not route traffic to this temporary catch-up process. After it reaches the ne
 
 To build a consistent store without a formal snapshot, run from an empty path against the full-retention GCS bucket and process from checkpoint 0. Do not set `--first-checkpoint` to a later checkpoint, because doing so produces incomplete ownership and balance state.
 
-For Testnet, use `https://formal-snapshot.testnet.haneulfoundation.org`, `https://checkpoints.testnet.haneulfoundation.org`, and a production-grade Testnet fullnode endpoint from an RPC provider. Use the `haneullabs-testnet-checkpoints-use4` bucket when GCS catch-up is necessary. Keep every source on the same network and use a separate RocksDB path per network.
+For Testnet, use `https://formal-snapshot.testnet.haneul.io`, `https://checkpoints.testnet.haneul.io`, and a production-grade Testnet fullnode endpoint from an RPC provider. Use the `haneullabs-testnet-checkpoints-use4` bucket when GCS catch-up is necessary. Keep every source on the same network and use a separate RocksDB path per network.
 
 ### Run config recommendations
 
@@ -548,7 +548,7 @@ $ haneul-indexer-alt-graphql rpc \
     --indexer-config tx_calls.toml \
     --indexer-config tx_kinds.toml \
     --indexer-config unpruned.toml \
-    --ledger-grpc-url https://archive.mainnet.haneulfoundation.org:443 \
+    --ledger-grpc-url https://archive.mainnet.haneul.io:443 \
     --consistent-store-url http://127.0.0.1:7001 \
     --database-url postgres://username:password@localhost:5432/database \
     --fullnode-rpc-url "$FULLNODE_GRPC_URL" \

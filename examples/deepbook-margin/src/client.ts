@@ -36,7 +36,7 @@ export function marginClient(
 ): DeepBookMarginClient {
 	return new HaneulGrpcClient({
 		network: 'testnet',
-		baseUrl: 'https://fullnode.testnet.haneulfoundation.org:443',
+		baseUrl: 'https://fullnode.testnet.haneul.io:443',
 	}).$extend(deepbook({ address, ...options }));
 }
 // docs::/#client

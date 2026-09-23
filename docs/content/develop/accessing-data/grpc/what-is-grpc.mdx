@@ -116,7 +116,7 @@ Streaming APIs are useful for building indexers, dashboards, or bots that need t
 
 If a full node does not return a specific object, transaction, or checkpoint, the data might have been pruned based on the node's retention configuration. Full node gRPC does not automatically fall back to Archival. To access high-retention data, configure your application to query the [Archival Store and Service](/develop/accessing-data/archival-store) directly.
 
-You can reuse the same gRPC `LedgerService` methods for this lookup, but you must point the client at an Archival Service endpoint such as `archive.mainnet.haneulfoundation.org:443` or your provider's archival URL instead of the full node's URL.
+You can reuse the same gRPC `LedgerService` methods for this lookup, but you must point the client at an Archival Service endpoint such as `archive.mainnet.haneul.io:443` or your provider's archival URL instead of the full node's URL.
 
 ## Best practices
 

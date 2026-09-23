@@ -114,8 +114,8 @@ This S3 endpoint is specifically for archival fallback configuration in `fullnod
 
 | **Network** | **URL** |
 | --- | --- |
-| Mainnet | `https://checkpoints.mainnet.haneulfoundation.org` |
-| Testnet | `https://checkpoints.testnet.haneulfoundation.org` |
+| Mainnet | `https://checkpoints.mainnet.haneul.io` |
+| Testnet | `https://checkpoints.testnet.haneul.io` |
 
 **Retention:** Most recent 30 days only.
 
@@ -123,7 +123,7 @@ This S3 endpoint is specifically for archival fallback configuration in `fullnod
 
 :::caution
 
-These endpoints are public-good services for testing only. Do not use them for production backfill, recovery, or steady-state indexer operation. State sync explicitly rejects `checkpoints.mainnet.haneulfoundation.org` as an archive source. For full-retention access, use the [GCS](#checkpoint-gcs) or [S3](#checkpoint-s3) buckets.
+These endpoints are public-good services for testing only. Do not use them for production backfill, recovery, or steady-state indexer operation. State sync explicitly rejects `checkpoints.mainnet.haneul.io` as an archive source. For full-retention access, use the [GCS](#checkpoint-gcs) or [S3](#checkpoint-s3) buckets.
 
 :::
 
@@ -139,8 +139,8 @@ Snapshot stores contain point-in-time database state for bootstrapping [full nod
 
 | **Network** | **URL** |
 | --- | --- |
-| Mainnet | `https://formal-snapshot.mainnet.haneulfoundation.org` |
-| Testnet | `https://formal-snapshot.testnet.haneulfoundation.org` |
+| Mainnet | `https://formal-snapshot.mainnet.haneul.io` |
+| Testnet | `https://formal-snapshot.testnet.haneul.io` |
 
 **Retention:** Varies by network. Mainnet currently retains approximately the last 60 epochs. Testnet retains approximately the last 90 epochs. Check the live manifest to confirm the current range before planning a restore.
 

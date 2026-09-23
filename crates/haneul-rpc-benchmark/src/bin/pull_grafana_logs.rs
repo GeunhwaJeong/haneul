@@ -48,7 +48,7 @@ struct LogEntry {
 }
 
 /// One example message is:
-/// 2025-02-11T23:15:17.944697206Z stderr F 2025-02-11T23:15:17.944501Z  INFO haneul_edge_proxy::handlers: Sampled read request headers={"host": "wallet-rpc.mainnet.haneulfoundation.org", "client-sdk-type": "typescript", "client-sdk-version": "1.17.0", "client-target-api-version": "1.40.0", "client-request-method": "haneulx_getBalance", "content-type": "application/json", "content-length": "152", "accept-encoding": "gzip", "user-agent": "okhttp/4.9.2", "x-cloud-trace-context": "31caa7db658044d850a002ccf4ff15b1/8018737809747708392", "cookie": "_cfuvid=h0GD1bYot45Ln6kVCdL4qsFCCyw3h2cLw3caDNmhWNw-1739262948231-0.0.1.1-604800000", "via": "1.1 google", "x-forwarded-for": "171.236.184.3, 34.8.28.138", "x-forwarded-proto": "https", "connection": "Keep-Alive"} body=b"{\"jsonrpc\":\"2.0\",\"id\":189393,\"method\":\"haneulx_getBalance\",\"params\":[\"0x23cad599a375b9c2cedd62fa20112526c90a71764230425cb7f557c0c0b3b150\",\"0x2::haneul::HANEUL\"]}" peer_type=Read
+/// 2025-02-11T23:15:17.944697206Z stderr F 2025-02-11T23:15:17.944501Z  INFO haneul_edge_proxy::handlers: Sampled read request headers={"host": "wallet-rpc.mainnet.haneul.io", "client-sdk-type": "typescript", "client-sdk-version": "1.17.0", "client-target-api-version": "1.40.0", "client-request-method": "haneulx_getBalance", "content-type": "application/json", "content-length": "152", "accept-encoding": "gzip", "user-agent": "okhttp/4.9.2", "x-cloud-trace-context": "31caa7db658044d850a002ccf4ff15b1/8018737809747708392", "cookie": "_cfuvid=h0GD1bYot45Ln6kVCdL4qsFCCyw3h2cLw3caDNmhWNw-1739262948231-0.0.1.1-604800000", "via": "1.1 google", "x-forwarded-for": "171.236.184.3, 34.8.28.138", "x-forwarded-proto": "https", "connection": "Keep-Alive"} body=b"{\"jsonrpc\":\"2.0\",\"id\":189393,\"method\":\"haneulx_getBalance\",\"params\":[\"0x23cad599a375b9c2cedd62fa20112526c90a71764230425cb7f557c0c0b3b150\",\"0x2::haneul::HANEUL\"]}" peer_type=Read
 fn extract_from_message(message: &str) -> Option<LogEntry> {
     let timestamp = message.split_whitespace().next()?.to_string();
 
@@ -193,9 +193,8 @@ async fn main() {
 }
 
 async fn run() -> Result<(), Box<dyn Error>> {
-    let grafana_url = env::var("GRAFANA_LOGS_URL").unwrap_or_else(|_| {
-        "https://metrics.haneulfoundation.org/loki/api/v1/query_range".to_string()
-    });
+    let grafana_url = env::var("GRAFANA_LOGS_URL")
+        .unwrap_or_else(|_| "https://metrics.haneul.io/loki/api/v1/query_range".to_string());
     let net = env::var("NET").unwrap_or_else(|_| "mainnet".to_string());
     let namespace = if net == "testnet" {
         "rpc-testnet".to_string()

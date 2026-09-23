@@ -13,6 +13,6 @@ haneul move --client.config $CONFIG build -p modern_using_legacy_name
 success: false
 exit_code: 1
 ----- stdout -----
-Error while loading dependency .: Dependency `DeepBook` is a legacy system name and cannot be used. See https://docs.haneulfoundation.org/guides/developer/packages/move-package-management#system-dependencies
+Error while loading dependency .: Dependency `DeepBook` is a legacy system name and cannot be used. See https://docs.haneul.io/guides/developer/packages/move-package-management#system-dependencies
 
 ----- stderr -----

@@ -29,9 +29,9 @@ db-checkpoint-config:
   perform-db-checkpoints-at-epoch-end: false
 indirect-objects-threshold: 18446744073709551615
 state-archive-read-config:
-  - ingestion-url: "https://checkpoints.mainnet.haneulfoundation.org" # or https://checkpoints.testnet.haneulfoundation.org
+  - ingestion-url: "https://checkpoints.mainnet.haneul.io" # or https://checkpoints.testnet.haneul.io
     concurrency: 5
 metrics:
   push-interval-seconds: 60
-  # push-url: https://metrics-proxy.testnet.haneulfoundation.org:8443/publish/metrics
-  # push-url: https://metrics-proxy.mainnet.haneulfoundation.org:8443/publish/metrics
+  # push-url: https://metrics-proxy.testnet.haneul.io:8443/publish/metrics
+  # push-url: https://metrics-proxy.mainnet.haneul.io:8443/publish/metrics

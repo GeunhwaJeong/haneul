@@ -6,7 +6,7 @@
 //!
 //! It aims at providing a similar SDK functionality like the one existing for
 //! [TypeScript](https://github.com/GeunhwaJeong/haneul/tree/main/sdk/typescript/).
-//! Haneul Rust SDK builds on top of the [JSON RPC API](https://docs.haneulfoundation.org/haneul-jsonrpc)
+//! Haneul Rust SDK builds on top of the [JSON RPC API](https://docs.haneul.io/haneul-jsonrpc)
 //! and therefore many of the return types are the ones specified in [haneul_types].
 //!
 //! The API is split in several parts corresponding to different functionalities
@@ -120,9 +120,9 @@ pub const HANEUL_COIN_TYPE: &str = "0x2::haneul::HANEUL";
 pub const HANEUL_LOCAL_NETWORK_URL: &str = "http://127.0.0.1:9000";
 pub const HANEUL_LOCAL_NETWORK_URL_0: &str = "http://0.0.0.0:9000";
 pub const HANEUL_LOCAL_NETWORK_GAS_URL: &str = "http://127.0.0.1:5003/v2/gas";
-pub const HANEUL_DEVNET_URL: &str = "https://fullnode.devnet.haneulfoundation.org:443";
-pub const HANEUL_TESTNET_URL: &str = "https://fullnode.testnet.haneulfoundation.org:443";
-pub const HANEUL_MAINNET_URL: &str = "https://fullnode.mainnet.haneulfoundation.org:443";
+pub const HANEUL_DEVNET_URL: &str = "https://fullnode.devnet.haneul.io:443";
+pub const HANEUL_TESTNET_URL: &str = "https://fullnode.testnet.haneul.io:443";
+pub const HANEUL_MAINNET_URL: &str = "https://fullnode.mainnet.haneul.io:443";
 
 /// A Haneul client builder for connecting to the Haneul network
 ///

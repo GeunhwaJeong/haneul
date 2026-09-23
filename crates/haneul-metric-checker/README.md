@@ -5,7 +5,7 @@ The `haneul-metric-checker` crate is used for querying prometheus metrics and va
 ### Example Usage
 
 ```
-RUST_LOG=debug cargo run --package haneul-metric-checker --bin haneul-metric-checker  -- --api-key xxxxxxxx --api-user xxxx_metrics --config checks.yaml --url https://xxxx.haneulfoundation.org/prometheus
+RUST_LOG=debug cargo run --package haneul-metric-checker --bin haneul-metric-checker  -- --api-key xxxxxxxx --api-user xxxx_metrics --config checks.yaml --url https://xxxx.haneul.io/prometheus
 ```
 
 ### Example Config

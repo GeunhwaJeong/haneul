@@ -152,7 +152,7 @@ The 3 interfaces differ in how they reach pruned history:
 
 - **Full node gRPC** serves the complete RPC surface (transaction execution, point lookups, checkpoint subscriptions), but only within the full node's retention window.
 
-- **The Archival Service** is a separate gRPC service that serves unpruned point lookups for checkpoints, transactions, and objects. It is scoped to those point lookups, so it does not serve the rest of the full node RPC surface, such as transaction execution or live state queries. Reuse the same `LedgerService` methods, but point the client at an Archival Service endpoint such as `archive.mainnet.haneulfoundation.org:443` or your provider's archival URL. See [Archival Store](/develop/accessing-data/archival-store).
+- **The Archival Service** is a separate gRPC service that serves unpruned point lookups for checkpoints, transactions, and objects. It is scoped to those point lookups, so it does not serve the rest of the full node RPC surface, such as transaction execution or live state queries. Reuse the same `LedgerService` methods, but point the client at an Archival Service endpoint such as `archive.mainnet.haneul.io:443` or your provider's archival URL. See [Archival Store](/develop/accessing-data/archival-store).
 
 - **GraphQL** is a unified interface that serves both recent data and, when the operator configures archival access, unpruned point lookups, with no client-side fallback.
 
@@ -166,7 +166,7 @@ JSON-RPC offered WebSocket subscriptions for events and transactions, which have
 
 ### Public load balancer URLs are not production endpoints
 
-The public URLs at `https://fullnode.<network>.haneulfoundation.org` and `https://graphql.<network>.haneulfoundation.org/graphql` are rate-limited and intended for development and public-good access. Do not point a production exchange, indexer, or wallet backend at them. Run your own [Haneul full node](/operators/full-node/haneul-full-node) or contract with a provider for a dedicated gRPC or GraphQL endpoint.
+The public URLs at `https://fullnode.<network>.haneul.io` and `https://graphql.<network>.haneul.io/graphql` are rate-limited and intended for development and public-good access. Do not point a production exchange, indexer, or wallet backend at them. Run your own [Haneul full node](/operators/full-node/haneul-full-node) or contract with a provider for a dedicated gRPC or GraphQL endpoint.
 
 ### Object and coin queries behave differently
 
@@ -199,7 +199,7 @@ A full node retains a configurable window of recent data and prunes older histor
 
 Not all tools in the Haneul ecosystem require manual migration:
 
-- **Haneul CLI**: No changes needed. The CLI already uses gRPC internally. The `rpc` field in `~/.haneul/haneul_config/client.yaml` points at the same `fullnode.*.haneulfoundation.org:443` URLs, which serve both JSON-RPC and gRPC.
+- **Haneul CLI**: No changes needed. The CLI already uses gRPC internally. The `rpc` field in `~/.haneul/haneul_config/client.yaml` points at the same `fullnode.*.haneul.io:443` URLs, which serve both JSON-RPC and gRPC.
 
 - **dApp Kit**: The currently published `@haneullabs/dapp-kit` client factory requires `HaneulJsonRpcClient` and does not accept `HaneulGrpcClient`. Continue using its JSON-RPC client until a dApp Kit release explicitly adds transport-agnostic client support; do not substitute `HaneulGrpcClient` in `createClient`.
 
