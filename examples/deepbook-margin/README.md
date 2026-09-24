@@ -20,7 +20,7 @@ markers: `client`, `find-manager`, `create-manager`, `risk-params`,
 
 Margin trading borrows funds and can be liquidated. These samples target Haneul
 Testnet with the SDK's Testnet constants; do not point them at Mainnet without
-understanding the [margin risks](https://docs.haneulfoundation.org/onchain-finance/deepbook/deepbook-margin/margin-risks).
+understanding the [margin risks](https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/margin-risks).
 
 `run-margin.mts` (not committed) is a local execution harness, not a doc sample.
 It reads a Testnet key from `DEEPBOOK_DOCS_TESTNET_KEY` (env only, never logged),

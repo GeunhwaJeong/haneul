@@ -13,7 +13,7 @@
 
 The OpenDive Haneul Unity SDK is the first fully-featured Unity SDK with offline transaction building.
 
-This means that games built with our SDK can directly craft custom Move calls without relying Haneul's "unsafe" RPC calls under the [Transaction Builder API](https://docs.haneulfoundation.org/haneul-api-ref#transaction-builder-api) -- which in turn reduces the number of RPC / Network requests.
+This means that games built with our SDK can directly craft custom Move calls without relying Haneul's "unsafe" RPC calls under the [Transaction Builder API](https://docs.haneul.io/haneul-api-ref#transaction-builder-api) -- which in turn reduces the number of RPC / Network requests.
 
 ## Features
 

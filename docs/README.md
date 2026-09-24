@@ -1,6 +1,6 @@
 # Haneul Documentation
 
-This directory contains the source for [docs.haneulfoundation.org](https://docs.haneulfoundation.org). It is split between `content/` (documentation pages) and `site/` (Docusaurus configuration, plugins, and scripts).
+This directory contains the source for [docs.haneul.io](https://docs.haneul.io). It is split between `content/` (documentation pages) and `site/` (Docusaurus configuration, plugins, and scripts).
 
 ## Repository layout
 
@@ -232,7 +232,7 @@ Key scripts in `docs/site/scripts/`:
 
 ## For AI agents and LLMs
 
-- **`llms.txt`**: Generated at `https://docs.haneulfoundation.org/llms.txt`. Use as entry point for documentation structure.
+- **`llms.txt`**: Generated at `https://docs.haneul.io/llms.txt`. Use as entry point for documentation structure.
 - **Style guide skill**: Machine-readable style rules at `docs/haneul-documentation-style-guide.skill`.
 - **`sidebars.js`**: Full navigation tree at `docs/content/sidebars.js`.
 - **`mdx-components.mdx`**: Custom component reference at `docs/content/references/contribute/mdx-components.mdx`.
@@ -245,7 +245,7 @@ To preview before your changes are ready for review, [mark your PR as a draft](h
 
 ## Style guide
 
-All contributions must follow the [Haneul Documentation Style Guide](https://docs.haneulfoundation.org/references/contribute/style-guide):
+All contributions must follow the [Haneul Documentation Style Guide](https://docs.haneul.io/references/contribute/style-guide):
 
 - US English, active voice, present tense, second person ("you")
 - No Latin abbreviations (use "for example" not "e.g.")
@@ -254,11 +254,11 @@ All contributions must follow the [Haneul Documentation Style Guide](https://doc
 
 ## Contributing
 
-- [Contribution process](https://docs.haneulfoundation.org/references/contribute/contribution-process)
-- [Repo contributing guidelines](https://docs.haneulfoundation.org/references/contribute/contribute-to-haneul-repos)
-- [Style guide](https://docs.haneulfoundation.org/references/contribute/style-guide)
-- [MDX components](https://docs.haneulfoundation.org/references/contribute/mdx-components)
-- [Code of conduct](https://docs.haneulfoundation.org/references/contribute/code-of-conduct)
+- [Contribution process](https://docs.haneul.io/references/contribute/contribution-process)
+- [Repo contributing guidelines](https://docs.haneul.io/references/contribute/contribute-to-haneul-repos)
+- [Style guide](https://docs.haneul.io/references/contribute/style-guide)
+- [MDX components](https://docs.haneul.io/references/contribute/mdx-components)
+- [Code of conduct](https://docs.haneul.io/references/contribute/code-of-conduct)
 
 ## License
 

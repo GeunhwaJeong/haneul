@@ -217,7 +217,7 @@ jobs:
         env:
           HANEUL_PRIVATE_KEY: ${{ secrets.TESTNET_PRIVATE_KEY }}
         run: |
-          haneul client new-env --alias testnet --rpc https://fullnode.testnet.haneulfoundation.org:443
+          haneul client new-env --alias testnet --rpc https://fullnode.testnet.haneul.io:443
           haneul client switch --env testnet
           haneul keytool import "$HANEUL_PRIVATE_KEY" ed25519
           haneul client switch --address ${{ vars.TESTNET_ADDRESS }}

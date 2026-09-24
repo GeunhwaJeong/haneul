@@ -74,7 +74,7 @@ An exchange integration needs reliable access to Haneul network data and the abi
 
 :::caution
 
-The public endpoints at `https://fullnode.<network>.haneulfoundation.org` and `https://graphql.<network>.haneulfoundation.org/graphql` are rate-limited and intended for development. Do not point a production exchange at them. Run your own full node or use a provider endpoint with a contract that meets your throughput and uptime needs.
+The public endpoints at `https://fullnode.<network>.haneul.io` and `https://graphql.<network>.haneul.io/graphql` are rate-limited and intended for development. Do not point a production exchange at them. Run your own full node or use a provider endpoint with a contract that meets your throughput and uptime needs.
 
 :::
 
@@ -151,7 +151,7 @@ Haneul is a DAG-based blockchain and uses checkpoints for node synchronization a
 
 - Checkpoints do not fork, roll back, or reorganize.
 
-- Haneul creates about 4 checkpoints every second. Find the most current statistic on the [Haneul public dashboard](https://metrics.haneulfoundation.org/public-dashboards/4ceb11cc210d4025b122294586961169).
+- Haneul creates about 4 checkpoints every second. Find the most current statistic on the [Haneul public dashboard](https://metrics.haneul.io/public-dashboards/4ceb11cc210d4025b122294586961169).
 
 ### Checkpoint API operations {#checkpoint-api-operations}
 
@@ -273,7 +273,7 @@ Treat deposit and withdrawal pipelines as event-driven and idempotent. The follo
 
 ## Production considerations
 
-- **Endpoints.** Use your own full node or a contracted provider endpoint. Do not rely on the public `fullnode.<network>.haneulfoundation.org` or `graphql.<network>.haneulfoundation.org` URLs for production traffic.
+- **Endpoints.** Use your own full node or a contracted provider endpoint. Do not rely on the public `fullnode.<network>.haneul.io` or `graphql.<network>.haneul.io` URLs for production traffic.
 
 - **Observability.** Configure full node [logging](/operators/observability#logging-levels) and [metrics monitoring](/operators/full-node/monitoring) so you can detect lag or failures quickly.
 

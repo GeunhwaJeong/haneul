@@ -633,17 +633,17 @@ haneulStackSidebar: [
 		{
           type: 'link',
           label: 'DeepBookV3',
-          href: 'https://docs.haneulfoundation.org/onchain-finance/deepbook/deepbookv3/deepbook',
+          href: 'https://docs.haneul.io/onchain-finance/deepbook/deepbookv3/deepbook',
         },
 		{
           type: 'link',
           label: 'DeepBook Margin',
-          href: 'https://docs.haneulfoundation.org/onchain-finance/deepbook/deepbook-margin/design',
+          href: 'https://docs.haneul.io/onchain-finance/deepbook/deepbook-margin/design',
         },
 		{
           type: 'link',
           label: 'DeepBook Predict',
-          href: 'https://docs.haneulfoundation.org/onchain-finance/deepbook/deepbook-predict/design',
+          href: 'https://docs.haneul.io/onchain-finance/deepbook/deepbook-predict/design',
         },
       ],
     },

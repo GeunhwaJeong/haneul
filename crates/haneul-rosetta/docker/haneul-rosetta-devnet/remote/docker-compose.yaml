@@ -13,7 +13,7 @@ services:
       - -c
       - |
         /usr/local/bin/haneul-rosetta generate-rosetta-cli-config --env devnet &
-        /usr/local/bin/haneul-rosetta start-online-remote-server --env devnet --genesis-path genesis.blob --full-node-url https://fullnode.devnet.haneulfoundation.org:443
+        /usr/local/bin/haneul-rosetta start-online-remote-server --env devnet --genesis-path genesis.blob --full-node-url https://fullnode.devnet.haneul.io:443
     stdin_open: true
     tty: true
   rosetta-offline:

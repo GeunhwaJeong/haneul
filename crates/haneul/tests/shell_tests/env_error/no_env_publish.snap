@@ -22,6 +22,6 @@ To publish on a different environment, you can use `haneul client switch --env <
 
 To make a temporary publication on `devnet`, use the `haneul client test-publish` command instead.
 
-It is also possible to add a new environment to `Move.toml` if you want to maintain a persistent publication on `devnet`; see https://docs.haneulfoundation.org/guides/developer/packages/move-package-management#environments for more details.
+It is also possible to add a new environment to `Move.toml` if you want to maintain a persistent publication on `devnet`; see https://docs.haneul.io/guides/developer/packages/move-package-management#environments for more details.
 
 ----- stderr -----

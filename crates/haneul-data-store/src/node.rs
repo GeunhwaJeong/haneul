@@ -12,13 +12,13 @@ use haneul_types::supported_protocol_versions::Chain;
 use std::str::FromStr;
 
 /// GraphQL endpoint for Haneul mainnet.
-pub const MAINNET_GQL_URL: &str = "https://graphql.mainnet.haneulfoundation.org/graphql";
+pub const MAINNET_GQL_URL: &str = "https://graphql.mainnet.haneul.io/graphql";
 /// GraphQL endpoint for Haneul testnet.
-pub const TESTNET_GQL_URL: &str = "https://graphql.testnet.haneulfoundation.org/graphql";
+pub const TESTNET_GQL_URL: &str = "https://graphql.testnet.haneul.io/graphql";
 /// JSON-RPC endpoint for Haneul mainnet.
-pub const MAINNET_RPC_URL: &str = "https://fullnode.mainnet.haneulfoundation.org:443";
+pub const MAINNET_RPC_URL: &str = "https://fullnode.mainnet.haneul.io:443";
 /// JSON-RPC endpoint for Haneul testnet.
-pub const TESTNET_RPC_URL: &str = "https://fullnode.testnet.haneulfoundation.org:443";
+pub const TESTNET_RPC_URL: &str = "https://fullnode.testnet.haneul.io:443";
 
 /// Represents a Haneul network node configuration.
 ///

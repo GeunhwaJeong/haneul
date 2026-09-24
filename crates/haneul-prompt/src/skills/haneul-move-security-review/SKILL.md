@@ -29,7 +29,7 @@ description: >
 
 > **Sources.** Per-rule citation `HaneulLabs/skills → <file>`. **[+domain]** = established
 > auditing practice not in upstream skills (high-yield, easy to miss — e.g. SM-A3, SM-B4).
-> Verify on-chain facts against [docs.haneulfoundation.org](https://docs.haneulfoundation.org),
+> Verify on-chain facts against [docs.haneul.io](https://docs.haneul.io),
 > [move-book.com](https://move-book.com), or framework source.
 
 > **Representation.** The catalog is stated in Move semantics. Use `.move` files when

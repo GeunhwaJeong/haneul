@@ -1,8 +1,8 @@
-full_node_url: "https://fullnode.testnet.haneulfoundation.org:443"
+full_node_url: "https://fullnode.testnet.haneul.io:443"
 # make sure this directory is created and has genesis.blob 
 checkpoint_summary_dir: "testnet_checkpoints_dir"
 genesis_filename: "genesis.blob"
-object_store_url: "https://checkpoints.testnet.haneulfoundation.org"
+object_store_url: "https://checkpoints.testnet.haneul.io"
 graphql_url: "https://haneul-testnet.haneul-labs.com/graphql"
 archive_store_config:
   object-store: "S3"

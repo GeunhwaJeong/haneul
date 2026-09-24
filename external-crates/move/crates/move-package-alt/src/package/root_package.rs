@@ -1747,6 +1747,6 @@ pkg_b = { local = "../pkg_b" }"#,
         drop(root);
 
         let legacy_err = scenario.root_package_err("legacy").await;
-        assert_snapshot!(legacy_err, @"Packages with old-style Move.toml files cannot depend on new-style packages. See https://docs.haneulfoundation.org/references/package-managers/package-manager-migration for instructions.");
+        assert_snapshot!(legacy_err, @"Packages with old-style Move.toml files cannot depend on new-style packages. See https://docs.haneul.io/references/package-managers/package-manager-migration for instructions.");
     }
 }

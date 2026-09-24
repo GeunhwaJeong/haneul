@@ -180,7 +180,7 @@ If you compute the address seed yourself (outside the SDK) and pass it to `compu
 
 :::caution
 
-If you call `genAddressSeed` and `computeZkLoginAddressFromSeed` separately, pass the raw `iss` from the JWT to both functions. Do not strip or add a protocol prefix. The SDK normalizes the value internally. Mismatched `iss` values between the address seed and the address computation produce a different address, and transactions signed for that address fail with `InvalidSignature` ([Security Best Practices](https://docs.haneulfoundation.org/develop/security/best-practices)).
+If you call `genAddressSeed` and `computeZkLoginAddressFromSeed` separately, pass the raw `iss` from the JWT to both functions. Do not strip or add a protocol prefix. The SDK normalizes the value internally. Mismatched `iss` values between the address seed and the address computation produce a different address, and transactions signed for that address fail with `InvalidSignature` ([Security Best Practices](https://docs.haneul.io/develop/security/best-practices)).
 
 :::
 

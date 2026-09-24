@@ -29,7 +29,7 @@ convenience:
 
 - `.move` source files — for source repositories you are explicitly reviewing.
   Move packages organize sources under `sources/` with a `Move.toml` manifest at the
-  root; see [docs.haneulfoundation.org](https://docs.haneulfoundation.org/develop/manage-packages/move-package-management)
+  root; see [docs.haneul.io](https://docs.haneul.io/develop/manage-packages/move-package-management)
   for the canonical layout.
 - `.asm` disassembly of compiled bytecode — for deployed on-chain packages. Produce `.asm` files via
   `haneul-and-move-tools/fetch-and-disassemble.md`.
@@ -60,7 +60,7 @@ Record with every audit report the inputs needed to re-derive the same findings:
 - **The Move code under audit:**
   - Source audit: source repo + commit / branch.
   - Bytecode audit: target package id and network; GraphQL endpoint used
-    (e.g., `https://graphql.mainnet.haneulfoundation.org/graphql`).
+    (e.g., `https://graphql.mainnet.haneul.io/graphql`).
 - `haneul --version` (the binary that ran `haneul prompt`; for bytecode audits, also the
   binary that ran `haneul move disassemble`).
 
@@ -69,5 +69,5 @@ Record with every audit report the inputs needed to re-derive the same findings:
 - [HaneulLabs/skills](https://github.com/GeunhwaJeong/skills) — the constructive Haneul / Move
   skills the `SM-*` rules are derived from. Useful when you need to understand the
   well-formed pattern an `SM-*` rule describes the violation of.
-- [docs.haneulfoundation.org](https://docs.haneulfoundation.org) — Haneul framework documentation.
+- [docs.haneul.io](https://docs.haneul.io) — Haneul framework documentation.
 - [move-book.com](https://move-book.com) — Move language reference.

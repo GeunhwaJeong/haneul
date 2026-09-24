@@ -45,8 +45,8 @@ The output sink is selected with `--store`:
 ```bash
 # Zero-setup ndjson run.
 cargo run --release -p haneul-execution-backtest -- \
-  --remote-store-url https://checkpoints.mainnet.haneulfoundation.org \
-  --fullnode-url https://haneullabs-rpc.mainnet.haneulfoundation.org:443 \
+  --remote-store-url https://checkpoints.mainnet.haneul.io \
+  --fullnode-url https://haneullabs-rpc.mainnet.haneul.io:443 \
   --graphql mainnet \
   --start-epoch 1152 --end-epoch 1152 --status all \
   --execute-concurrency 24 \
@@ -55,8 +55,8 @@ cargo run --release -p haneul-execution-backtest -- \
 
 # Postgres run, with a run identifier (see --task below).
 cargo run --release -p haneul-execution-backtest -- \
-  --remote-store-url https://checkpoints.mainnet.haneulfoundation.org \
-  --fullnode-url https://haneullabs-rpc.mainnet.haneulfoundation.org:443 \
+  --remote-store-url https://checkpoints.mainnet.haneul.io \
+  --fullnode-url https://haneullabs-rpc.mainnet.haneul.io:443 \
   --graphql mainnet \
   --start-epoch 1152 --end-epoch 1152 --status all \
   --cache ./.package-cache \
@@ -66,10 +66,10 @@ cargo run --release -p haneul-execution-backtest -- \
 
 - **Checkpoint source.** Prefer a remote object store — the fast archival path — with a
   `--fullnode-url` supplied separately for epoch + package resolution. The HTTP endpoint
-  (`--remote-store-url https://checkpoints.<network>.haneulfoundation.org`) is the zero-setup option but **only
+  (`--remote-store-url https://checkpoints.<network>.haneul.io`) is the zero-setup option but **only
   retains roughly the last 30 days**, so backtesting older epochs needs the GCS bucket directly via
   `--remote-store-gcs <bucket>` (see [accessing checkpoint
-  data](https://docs.haneulfoundation.org/guides/developer/advanced/custom-indexer#remote-reader)); running
+  data](https://docs.haneul.io/guides/developer/advanced/custom-indexer#remote-reader)); running
   colocated with the bucket also avoids egress cost and latency. Alternatively a single
   `--rpc-api-url` fullnode can serve as both (slower; see the rate-limit caveat below).
 - **`--graphql`** (required) is the GraphQL endpoint used to read each epoch's framework packages as
@@ -171,7 +171,7 @@ are counted in `coin_reservation_skipped` and skipped.
   consensus-layer congestion / randomness control never ran on chain, so they "succeed" here. These
   are detected from the on-chain effects and counted under `cancellation_excluded` rather than
   reported as divergences.
-- **Public-node rate limiting.** Package fetches go to the fullnode; `fullnode.mainnet.haneulfoundation.org`
+- **Public-node rate limiting.** Package fetches go to the fullnode; `fullnode.mainnet.haneul.io`
   returns HTTP 429 under concurrent load. The fetcher retries with backoff, but prefer
   `--remote-store-url` for checkpoints plus a dedicated/archival fullnode. Public nodes also prune
   old epochs — only recent epochs are available there.

@@ -135,7 +135,7 @@ export default function MultiSigAddressGenerator() {
 					<CardHeader>
 						<CardTitle>Haneul MultiSig Address</CardTitle>
 						<CardDescription>
-							https://docs.haneulfoundation.org/testnet/learn/cryptography/haneul-multisig
+							https://docs.haneul.io/testnet/learn/cryptography/haneul-multisig
 						</CardDescription>
 					</CardHeader>
 					<CardContent>

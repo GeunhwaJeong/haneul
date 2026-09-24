@@ -152,7 +152,7 @@ impl EnvFinder<'_> {
                     "Your current environment is `{active_env}`, but the package does not define an `{active_env}` environment.\n\n\
                     To publish on a different environment, you can use `haneul client switch --env <env>` before publishing.\n\n\
                     To make a temporary publication on `{active_env}`, use the `haneul client test-publish` command instead.\n\n\
-                    It is also possible to add a new environment to `Move.toml` if you want to maintain a persistent publication on `{active_env}`; see https://docs.haneulfoundation.org/guides/developer/packages/move-package-management#environments for more details."
+                    It is also possible to add a new environment to `Move.toml` if you want to maintain a persistent publication on `{active_env}`; see https://docs.haneul.io/guides/developer/packages/move-package-management#environments for more details."
                 );
             } else {
                 let options =

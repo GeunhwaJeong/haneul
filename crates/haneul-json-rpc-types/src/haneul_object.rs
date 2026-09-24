@@ -203,7 +203,7 @@ pub struct HaneulObjectData {
     pub storage_rebate: Option<u64>,
     /// The Display metadata for frontend UI rendering, default to be None unless HaneulObjectDataOptions.showContent is set to true
     /// This can also be None if the struct type does not have Display defined
-    /// See more details in <https://forums.haneulfoundation.org/t/nft-object-display-proposal/4872>
+    /// See more details in <https://forums.haneul.io/t/nft-object-display-proposal/4872>
     #[serde(skip_serializing_if = "Option::is_none")]
     pub display: Option<DisplayFieldsResponse>,
     /// Move object content or package content, default to be None unless HaneulObjectDataOptions.showContent is set to true

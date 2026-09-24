@@ -67,7 +67,7 @@ Use the `haneul client envs` command to find the network environments set up in 
 ╭────────┬────────────────────────────────────┬────────╮
 │ alias  │ url                                │ active │
 ├────────┼────────────────────────────────────┼────────┤
-│ devnet │ https://fullnode.devnet.haneulfoundation.org:443 │ *  	   │
+│ devnet │ https://fullnode.devnet.haneul.io:443 │ *  	   │
 ╰────────┴────────────────────────────────────┴────────╯
 ```
 
@@ -76,7 +76,7 @@ Use the `haneul client envs` command to find the network environments set up in 
 Use `client new-env` to add details for a new network environment. This example creates an environment pointer to Haneul Mainnet. Setting the `alias` value makes referencing the environment less prone to typographical errors. After running this command, Haneul updates your client.yaml file in `~/.haneul/haneul_config` with the new information.
 
 ```
-$ haneul client new-env --alias=mainnet --rpc https://fullnode.mainnet.haneulfoundation.org:443
+$ haneul client new-env --alias=mainnet --rpc https://fullnode.mainnet.haneul.io:443
 
 Added new Haneul env [mainnet] to config.
 ```
@@ -107,7 +107,7 @@ $ haneul client active-address
 
 ### Request a HANEUL coin from faucet
 
-If you use one of the standard public RPCs (for example, `fullnode.devnet.haneulfoundation.org:443`), you can use the `faucet` command to request gas coins. If you use a custom faucet service, then pass in the URL to the faucet using the `--url` option.
+If you use one of the standard public RPCs (for example, `fullnode.devnet.haneul.io:443`), you can use the `faucet` command to request gas coins. If you use a custom faucet service, then pass in the URL to the faucet using the `--url` option.
 The `faucet` command works for a local network, as well. If you start your network with a custom faucet port, include the `--url` option.
 
 ```sh

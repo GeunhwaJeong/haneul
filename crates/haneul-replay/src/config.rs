@@ -109,7 +109,7 @@ impl Default for ReplayableNetworkConfigSet {
             name: "testnet".to_string(),
             epoch_zero_start_timestamp: 0,
             epoch_zero_rgp: 0,
-            public_full_node: url_from_str("https://fullnode.testnet.haneulfoundation.org:443")
+            public_full_node: url_from_str("https://fullnode.testnet.haneul.io:443")
                 .expect("invalid socket address")
                 .to_string(),
         };
@@ -117,7 +117,7 @@ impl Default for ReplayableNetworkConfigSet {
             name: "devnet".to_string(),
             epoch_zero_start_timestamp: 0,
             epoch_zero_rgp: 0,
-            public_full_node: url_from_str("https://fullnode.devnet.haneulfoundation.org:443")
+            public_full_node: url_from_str("https://fullnode.devnet.haneul.io:443")
                 .expect("invalid socket address")
                 .to_string(),
         };
@@ -125,7 +125,7 @@ impl Default for ReplayableNetworkConfigSet {
             name: "mainnet".to_string(),
             epoch_zero_start_timestamp: 0,
             epoch_zero_rgp: 0,
-            public_full_node: url_from_str("https://fullnode.mainnet.haneulfoundation.org:443")
+            public_full_node: url_from_str("https://fullnode.mainnet.haneul.io:443")
                 .expect("invalid socket address")
                 .to_string(),
         };

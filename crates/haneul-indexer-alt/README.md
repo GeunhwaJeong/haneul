@@ -101,7 +101,7 @@ file).
 ```sh
 cargo run --bin haneul-indexer-alt -- indexer               \
   --database-url {url}                                   \
-  --remote-store-url https://checkpoints.mainnet.haneulfoundation.org  \
+  --remote-store-url https://checkpoints.mainnet.haneul.io  \
   --config indexer_alt_config.toml
 ```
 

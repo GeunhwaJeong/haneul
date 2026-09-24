@@ -373,7 +373,7 @@ async fn sign_passkey_personal_message(msg: &[u8]) -> (Vec<u8>, Vec<u8>, HaneulA
         }
     }
 
-    let origin = url::Url::parse("https://www.haneulfoundation.org").unwrap();
+    let origin = url::Url::parse("https://www.haneul.io").unwrap();
 
     // Create credential.
     let my_authenticator =

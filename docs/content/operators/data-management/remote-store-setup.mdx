@@ -86,7 +86,7 @@ haneul-checkpoint-blob-indexer \
     --compression-level 3
 ```
 
-For Testnet, use `--remote-store-gcs haneullabs-testnet-checkpoints-use4`. Both buckets are [GCS Requester Pays](/operators/data-management/available-data-stores#checkpoint-gcs). Do not use the public HTTPS endpoints (`checkpoints.mainnet.haneulfoundation.org` / `checkpoints.testnet.haneulfoundation.org`) for full-retention backfill because they retain only the most recent 30 days.
+For Testnet, use `--remote-store-gcs haneullabs-testnet-checkpoints-use4`. Both buckets are [GCS Requester Pays](/operators/data-management/available-data-stores#checkpoint-gcs). Do not use the public HTTPS endpoints (`checkpoints.mainnet.haneul.io` / `checkpoints.testnet.haneul.io`) for full-retention backfill because they retain only the most recent 30 days.
 
 ## Alternative: Backfill from a full node
 

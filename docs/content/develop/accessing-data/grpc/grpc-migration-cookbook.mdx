@@ -1294,7 +1294,7 @@ const fullNode = new HaneulGrpcClient({
 });
 
 const archive = new HaneulGrpcClient({
-  baseUrl: 'https://archive.mainnet.haneulfoundation.org:443',
+  baseUrl: 'https://archive.mainnet.haneul.io:443',
   network: 'mainnet',
 });
 
@@ -1337,4 +1337,4 @@ gRPC streams can terminate for several reasons. Understanding the server's conne
 
 **Server-side timeout:** Unary requests use the general gRPC timeout, which defaults to 60 seconds. Each streaming `List*` API has its own configurable `timeout-ms`; the full node configuration examples use 5 seconds. This deadline covers the entire list stream, so a long backfill can end even after returning frames. Resume from the latest `watermark.cursor` while preserving the original upper bound. Network, proxy, and GOAWAY interruptions require the same cursor-based recovery.
 
-**Public endpoint limitations:** The public URLs at `https://fullnode.<network>.haneulfoundation.org` are behind load balancers that impose their own connection timeouts and rate limits beyond what the Haneul node configures. Long-running streams are more likely to be interrupted on public endpoints. For production streaming workloads, run your own [Haneul full node](/operators/full-node/haneul-full-node) or use a provider with a dedicated gRPC endpoint.
+**Public endpoint limitations:** The public URLs at `https://fullnode.<network>.haneul.io` are behind load balancers that impose their own connection timeouts and rate limits beyond what the Haneul node configures. Long-running streams are more likely to be interrupted on public endpoints. For production streaming workloads, run your own [Haneul full node](/operators/full-node/haneul-full-node) or use a provider with a dedicated gRPC endpoint.

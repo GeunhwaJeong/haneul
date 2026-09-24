@@ -277,8 +277,7 @@ impl TestTransactionBuilder {
                 CallArg::Pure(bcs::to_bytes("example_nft_name").unwrap()),
                 CallArg::Pure(bcs::to_bytes("example_nft_description").unwrap()),
                 CallArg::Pure(
-                    bcs::to_bytes("https://haneulfoundation.org/_nuxt/img/haneul-logo.8d3c44e.svg")
-                        .unwrap(),
+                    bcs::to_bytes("https://haneul.io/_nuxt/img/haneul-logo.8d3c44e.svg").unwrap(),
                 ),
             ],
         )

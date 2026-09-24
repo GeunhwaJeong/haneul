@@ -40,7 +40,7 @@ answer: >-
   transfers on Haneul.
 ---
 
-A [`TransferPolicy`](https://docs.haneulfoundation.org/references/framework/haneul_haneul/transfer_policy) on Haneul is a customizable primitive that enables the owner of a type to create custom rules that define how the type can be transferred. You can set any number of rules, such as paying a royalty or commission, and all must be satisfied in a single transaction for the transfer to succeed. A `TransferPolicy` can be used within a Haneul Kiosk marketplace or any other system that integrates the `TransferPolicy` primitive. 
+A [`TransferPolicy`](https://docs.haneul.io/references/framework/haneul_haneul/transfer_policy) on Haneul is a customizable primitive that enables the owner of a type to create custom rules that define how the type can be transferred. You can set any number of rules, such as paying a royalty or commission, and all must be satisfied in a single transaction for the transfer to succeed. A `TransferPolicy` can be used within a Haneul Kiosk marketplace or any other system that integrates the `TransferPolicy` primitive. 
 
 In a kiosk, creating and sharing a `TransferPolicy<T>` makes the type `T` tradable in that kiosk. On every kiosk purchase, the `TransferPolicy` must confirm the `TransferRequest`, or the transaction fails.
 

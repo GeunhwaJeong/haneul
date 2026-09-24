@@ -47,6 +47,6 @@ success
 success
 === publish legacy_depends_on_modern ===
     Should fail because legacy packages are not allowed to depend on modern packages
-Packages with old-style Move.toml files cannot depend on new-style packages. See https://docs.haneulfoundation.org/references/package-managers/package-manager-migration for instructions.
+Packages with old-style Move.toml files cannot depend on new-style packages. See https://docs.haneul.io/references/package-managers/package-manager-migration for instructions.
 
 ----- stderr -----

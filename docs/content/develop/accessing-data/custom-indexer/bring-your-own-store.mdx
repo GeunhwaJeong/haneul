@@ -166,7 +166,7 @@ async fn main() -> anyhow::Result<()> {
             streaming: StreamingClientArgs {
                 // Public-good Testnet endpoint for testing only. Production
                 // indexers must use a fullnode endpoint from an RPC provider.
-                streaming_url: Some("https://fullnode.testnet.haneulfoundation.org:443".parse()?),
+                streaming_url: Some("https://fullnode.testnet.haneul.io:443".parse()?),
                 ..Default::default()
             },
             ..Default::default()

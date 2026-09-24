@@ -56,7 +56,7 @@ pub trait IndexerApi {
     #[method(name = "queryEvents")]
     async fn query_events(
         &self,
-        /// The event query criteria. See [Event filter](https://docs.haneulfoundation.org/build/event_api#event-filters) documentation for examples.
+        /// The event query criteria. See [Event filter](https://docs.haneul.io/build/event_api#event-filters) documentation for examples.
         query: EventFilter,
         /// optional paging cursor
         cursor: Option<EventID>,
@@ -70,7 +70,7 @@ pub trait IndexerApi {
     #[subscription(name = "subscribeEvent", item = HaneulEvent)]
     fn subscribe_event(
         &self,
-        /// The filter criteria of the event stream. See [Event filter](https://docs.haneulfoundation.org/build/event_api#event-filters) documentation for examples.
+        /// The filter criteria of the event stream. See [Event filter](https://docs.haneul.io/build/event_api#event-filters) documentation for examples.
         filter: EventFilter,
     ) -> SubscriptionResult;
 
