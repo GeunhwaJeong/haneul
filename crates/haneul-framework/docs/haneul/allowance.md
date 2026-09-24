@@ -62,17 +62,7 @@ All policy checks (rate limits, lifetime caps, expiry) are enforced by this modu
 -  [Function `share_new`](#haneul_allowance_share_new)
 
 
-<pre><code><b>use</b> <a href="../std/address.md#std_address">std::address</a>;
-<b>use</b> <a href="../std/ascii.md#std_ascii">std::ascii</a>;
-<b>use</b> <a href="../std/bcs.md#std_bcs">std::bcs</a>;
-<b>use</b> <a href="../std/internal.md#std_internal">std::internal</a>;
-<b>use</b> <a href="../std/option.md#std_option">std::option</a>;
-<b>use</b> <a href="../std/string.md#std_string">std::string</a>;
-<b>use</b> <a href="../std/type_name.md#std_type_name">std::type_name</a>;
-<b>use</b> <a href="../std/u128.md#std_u128">std::u128</a>;
-<b>use</b> <a href="../std/u64.md#std_u64">std::u64</a>;
-<b>use</b> <a href="../std/vector.md#std_vector">std::vector</a>;
-<b>use</b> <a href="../haneul/accumulator.md#haneul_accumulator">haneul::accumulator</a>;
+<pre><code><b>use</b> <a href="../haneul/accumulator.md#haneul_accumulator">haneul::accumulator</a>;
 <b>use</b> <a href="../haneul/address.md#haneul_address">haneul::address</a>;
 <b>use</b> <a href="../haneul/balance.md#haneul_balance">haneul::balance</a>;
 <b>use</b> <a href="../haneul/clock.md#haneul_clock">haneul::clock</a>;
@@ -85,6 +75,16 @@ All policy checks (rate limits, lifetime caps, expiry) are enforced by this modu
 <b>use</b> <a href="../haneul/transfer.md#haneul_transfer">haneul::transfer</a>;
 <b>use</b> <a href="../haneul/tx_context.md#haneul_tx_context">haneul::tx_context</a>;
 <b>use</b> <a href="../haneul/vec_map.md#haneul_vec_map">haneul::vec_map</a>;
+<b>use</b> <a href="../std/address.md#std_address">std::address</a>;
+<b>use</b> <a href="../std/ascii.md#std_ascii">std::ascii</a>;
+<b>use</b> <a href="../std/bcs.md#std_bcs">std::bcs</a>;
+<b>use</b> <a href="../std/internal.md#std_internal">std::internal</a>;
+<b>use</b> <a href="../std/option.md#std_option">std::option</a>;
+<b>use</b> <a href="../std/string.md#std_string">std::string</a>;
+<b>use</b> <a href="../std/type_name.md#std_type_name">std::type_name</a>;
+<b>use</b> <a href="../std/u128.md#std_u128">std::u128</a>;
+<b>use</b> <a href="../std/u64.md#std_u64">std::u64</a>;
+<b>use</b> <a href="../std/vector.md#std_vector">std::vector</a>;
 </code></pre>
 
 
