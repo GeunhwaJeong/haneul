@@ -121,6 +121,12 @@ fn test_gap_version() {
         system_packages_for_protocol(126.into()).unwrap(),
         system_packages_for_protocol(125.into()).unwrap(),
     );
+    // version 127 upgrades the Haneul framework (the allowance module) and gets its
+    // own entry again.
+    assert_ne!(
+        system_packages_for_protocol(127.into()).unwrap(),
+        system_packages_for_protocol(126.into()).unwrap(),
+    );
 }
 
 #[test]
