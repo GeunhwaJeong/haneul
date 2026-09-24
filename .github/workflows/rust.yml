@@ -214,7 +214,7 @@ jobs:
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - name: Install cargo-hakari, and cache the binary
-        uses: baptiste0928/cargo-install@1cd874a5478fdca35d868ccc74640c5aabbb8f1b # pin@v3.0.0
+        uses: baptiste0928/cargo-install@8195d4f734a149db85385bb4102b42efcd373759 # pin@v3.5.0
         with:
           crate: cargo-hakari
           locked: true
