@@ -46,11 +46,6 @@ ignore = [
     "RUSTSEC-2025-0057",
     # bincode unmaintained - maintainers consider 1.3.3 complete, used by anemo and haneul crates
     "RUSTSEC-2025-0141",
-    # `bitmaps` is unmaintained (all versions). It is a transitive dependency of
-    # `imbl`, the RUSTSEC-recommended replacement for the unmaintained `im` crate
-    # (which Haneul and fastcrypto have both migrated away from). Unmaintained-only
-    # advisory, no unsoundness. Revisit if imbl drops its bitmaps dependency.
-    "RUSTSEC-2026-0247",
     # rand 0.8.5 unsoundness when a custom logger invokes rand reentrantly during
     # thread-local RNG init. Not triggerable in Haneul: logging uses tracing/tracing-subscriber
     # which never calls rand during setup. Migrating rand 0.8 -> 0.9 would require ~316
@@ -72,7 +67,6 @@ ignore = [
     "RUSTSEC-2026-0195",
     # `im` and its dependency `sized-chunks` are unmaintained; pulled in
     # transitively (fastcrypto-zkp, Move tooling). No safe upgrade available.
-    # (`bitmaps`, RUSTSEC-2026-0247, is listed above.)
     "RUSTSEC-2026-0248",
     "RUSTSEC-2026-0251",
     # `im::OrdSet` aliasing unsoundness in the same unmaintained `im` tree; no safe
