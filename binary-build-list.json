@@ -13,7 +13,6 @@
         "stress",
         "haneul-proxy",
         "haneul-metric-checker",
-        "haneul-analytics-indexer",
-        "haneul-security-watchdog"
+        "haneul-analytics-indexer"
 	]
 }

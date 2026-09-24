@@ -1015,6 +1015,20 @@ impl<'a> UnresolvedInput<'a> {
                             haneul_rpc::proto::haneul::rpc::v2::funds_withdrawal::Source::Sponsor => {
                                 WithdrawFrom::Sponsor
                             }
+                            haneul_rpc::proto::haneul::rpc::v2::funds_withdrawal::Source::SenderAllowance => {
+                                WithdrawFrom::SenderAllowance {
+                                    funder: w.funder().parse().map_err(|e| {
+                                        FieldViolation::new("funder")
+                                            .with_description(format!("invalid funder: {e}"))
+                                            .with_reason(ErrorReason::FieldInvalid)
+                                    })?,
+                                    allowance: w.allowance().parse().map_err(|e| {
+                                        FieldViolation::new("allowance")
+                                            .with_description(format!("invalid allowance: {e}"))
+                                            .with_reason(ErrorReason::FieldInvalid)
+                                    })?,
+                                }
+                            }
                             _ => WithdrawFrom::Sender,
                         },
                     })

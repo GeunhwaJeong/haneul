@@ -1,21 +1,22 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+assertion_line: 937
 ---
 processed 22 tasks
 
-task 1, lines 7-78:
+task 1, lines 6-77:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 11354400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 80:
+task 2, line 79:
 //# run tto::M1::start
 created: object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 82:
+task 3, line 81:
 //# view-object 2,0
 Owner: Account Address ( _ )
 Version: 3
@@ -27,7 +28,7 @@ Contents: tto::M1::A {
     },
 }
 
-task 4, line 84:
+task 4, line 83:
 //# view-object 2,1
 Owner: Account Address ( fake(2,0) )
 Version: 3
@@ -39,7 +40,7 @@ Contents: tto::M1::B {
     },
 }
 
-task 5, line 86:
+task 5, line 85:
 //# view-object 2,2
 Owner: Account Address ( fake(2,0) )
 Version: 3
@@ -51,7 +52,7 @@ Contents: tto::M1::B {
     },
 }
 
-task 6, line 88:
+task 6, line 87:
 //# view-object 2,3
 Owner: Account Address ( fake(2,0) )
 Version: 3
@@ -63,7 +64,7 @@ Contents: tto::M1::B {
     },
 }
 
-task 7, lines 90-92:
+task 7, line 89:
 //# view-object 2,4
 Owner: Account Address ( fake(2,0) )
 Version: 3
@@ -75,82 +76,83 @@ Contents: tto::M1::B {
     },
 }
 
-task 8, lines 93-96:
+task 8, lines 91-93:
+// Make the Move vec but then never use it -- this should be fine since they're all drop
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
-// Make the Move vec and pass, but never receive
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 2181960, non_refundable_storage_fee: 22040
 
-task 9, lines 97-101:
+task 9, lines 95-98:
+// Make the Move vec and pass, but never receive
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
 //> 1: tto::M1::receive_none(Input(0), Result(0));
-// Make the Move vec of receiving arguments and then receive all but the last. Only the ince we receive should be mutated
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 2181960, non_refundable_storage_fee: 22040
 
-task 10, lines 102-106:
+task 10, lines 100-103:
+// Make the Move vec of receiving arguments and then receive all but the last. Only the ince we receive should be mutated
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
 //> 1: tto::M1::receive_all_but_last(Input(0), Result(0));
-// Make the Move vec of receiving arguments, pass to a function by immref, then later use the vec to receive all of them
 mutated: object(0,0), object(2,0), object(2,2), object(2,3), object(2,4)
 gas summary: computation_cost: 1000000, storage_cost: 5852000,  storage_rebate: 5793480, non_refundable_storage_fee: 58520
 
-task 11, lines 107-112:
+task 11, lines 105-109:
+// Make the Move vec of receiving arguments, pass to a function by immref, then later use the vec to receive all of them
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
 //> 1: tto::M1::receive_none_by_immref(Input(0), Result(0));
 //> 2: tto::M1::receive_all_send_back(Input(0), Result(0));
-// Make the Move vec of receiving arguments, pass to a function by mutref, then later use the vec to receive all of them
 mutated: object(0,0), object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
 gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 6997320, non_refundable_storage_fee: 70680
 
-task 12, lines 113-118:
+task 12, lines 111-115:
+// Make the Move vec of receiving arguments, pass to a function by mutref, then later use the vec to receive all of them
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
 //> 1: tto::M1::receive_none_by_mutref(Input(0), Result(0));
 //> 2: tto::M1::receive_all_send_back(Input(0), Result(0));
+mutated: object(0,0), object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
+gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 6997320, non_refundable_storage_fee: 70680
+
+task 13, lines 117-121:
 // Make the Move vec of receiving arguments, pass to a function by mutref and receive some
-mutated: object(0,0), object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
-gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 6997320, non_refundable_storage_fee: 70680
-
-task 13, lines 119-124:
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
 //> 1: tto::M1::receive_all_but_last_by_mut_ref(Input(0), Result(0));
 //> 2: tto::M1::receive_all_by_mut_ref(Input(0), Result(0));
+mutated: object(0,0), object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
+gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 6997320, non_refundable_storage_fee: 70680
+
+task 14, lines 123-127:
 // Make the Move vec of receiving arguments, pass to a function by mutref, receive some, then pass by mutref again to receive the rest
-mutated: object(0,0), object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
-gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 6997320, non_refundable_storage_fee: 70680
-
-task 14, lines 125-130:
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
 //> 1: tto::M1::receive_all_but_last_by_mut_ref(Input(0), Result(0));
 //> 2: tto::M1::receive_all_by_mut_ref(Input(0), Result(0));
-// Make the Move vec of receiving arguments, pass to a function by mutref, receive some, then pass by value to receive the rest
 mutated: object(0,0), object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
 gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 6997320, non_refundable_storage_fee: 70680
 
-task 15, lines 131-136:
+task 15, lines 129-133:
+// Make the Move vec of receiving arguments, pass to a function by mutref, receive some, then pass by value to receive the rest
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
 //> 1: tto::M1::receive_all_but_last_by_mut_ref(Input(0), Result(0));
 //> 2: tto::M1::receive_all_send_back(Input(0), Result(0));
-// Make the Move vec of receiving arguments and then receive all of them
 mutated: object(0,0), object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
 gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 6997320, non_refundable_storage_fee: 70680
 
-task 16, lines 137-139:
+task 16, lines 135-138:
+// Make the Move vec of receiving arguments and then receive all of them
 //# programmable --inputs object(2,0) receiving(2,1) receiving(2,2) receiving(2,3) receiving(2,4)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::B>>([Input(1), Input(2), Input(3), Input(4)]);
 //> 1: tto::M1::receive_all(Input(0), Result(0));
 mutated: object(0,0), object(2,0), object(2,1), object(2,2), object(2,3), object(2,4)
 gas summary: computation_cost: 1000000, storage_cost: 7068000,  storage_rebate: 6997320, non_refundable_storage_fee: 70680
 
-task 17, line 141:
+task 17, line 140:
 //# view-object 2,0
 Owner: Account Address ( _ )
 Version: 12
@@ -162,7 +164,7 @@ Contents: tto::M1::A {
     },
 }
 
-task 18, line 143:
+task 18, line 142:
 //# view-object 2,1
 Owner: Account Address ( _ )
 Version: 12
@@ -174,7 +176,7 @@ Contents: tto::M1::B {
     },
 }
 
-task 19, line 145:
+task 19, line 144:
 //# view-object 2,2
 Owner: Account Address ( _ )
 Version: 12
@@ -186,7 +188,7 @@ Contents: tto::M1::B {
     },
 }
 
-task 20, line 147:
+task 20, line 146:
 //# view-object 2,3
 Owner: Account Address ( _ )
 Version: 12
@@ -198,7 +200,7 @@ Contents: tto::M1::B {
     },
 }
 
-task 21, line 149:
+task 21, line 148:
 //# view-object 2,4
 Owner: Account Address ( _ )
 Version: 12

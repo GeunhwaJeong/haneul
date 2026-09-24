@@ -14,6 +14,8 @@ use haneul_kvstore::EPOCH_START_PIPELINE;
 use haneul_kvstore::EVENT_BITMAP_INDEX_PIPELINE;
 use haneul_kvstore::KeyValueStoreReader;
 use haneul_kvstore::OBJECTS_PIPELINE;
+use haneul_kvstore::PACKAGES_BY_ID_PIPELINE;
+use haneul_kvstore::PACKAGES_PIPELINE;
 pub use haneul_kvstore::PoolConfig;
 use haneul_kvstore::TRANSACTIONS_PIPELINE;
 use haneul_kvstore::TX_SEQ_DIGEST_PIPELINE;
@@ -23,6 +25,8 @@ use haneul_package_resolver::Resolver;
 use haneul_rpc::proto::haneul::rpc::v2::GetServiceInfoResponse;
 use haneul_rpc::proto::haneul::rpc::v2::ledger_service_server::LedgerService;
 use haneul_rpc::proto::haneul::rpc::v2::ledger_service_server::LedgerServiceServer;
+use haneul_rpc::proto::haneul::rpc::v2::move_package_service_server::MovePackageService;
+use haneul_rpc::proto::haneul::rpc::v2::move_package_service_server::MovePackageServiceServer;
 use haneul_rpc_api::ServerVersion;
 use haneul_types::digests::ChainIdentifier;
 use haneul_types::message_envelope::Message;
@@ -62,13 +66,15 @@ use package_store::BigTablePackageStore;
 
 /// Pipelines whose watermarks always bound the `GetServiceInfo` checkpoint
 /// height, because every instance serves the point-lookup APIs that read them.
-pub const DEFAULT_SERVICE_INFO_WATERMARK_PIPELINES: [&str; 6] = [
+pub const DEFAULT_SERVICE_INFO_WATERMARK_PIPELINES: [&str; 8] = [
     CHECKPOINTS_PIPELINE,
     CHECKPOINTS_BY_DIGEST_PIPELINE,
     TRANSACTIONS_PIPELINE,
     OBJECTS_PIPELINE,
     EPOCH_START_PIPELINE,
     EPOCH_END_PIPELINE,
+    PACKAGES_PIPELINE,
+    PACKAGES_BY_ID_PIPELINE,
 ];
 
 /// Pipelines that only back the List APIs. Folded into the `GetServiceInfo`
@@ -294,9 +300,17 @@ where
     LedgerServiceServer::new(service).send_compressed(tonic::codec::CompressionEncoding::Zstd)
 }
 
-/// Build and start one gRPC listener serving `ledger`'s `LedgerService`, wired with the given
-/// (shared, already-constructed) metrics/logging layers and optional reflection. `builder` carries
-/// whatever TLS config the caller wants for this listener (or none, for a plaintext listener).
+fn move_package_service_with_response_compression<T>(service: T) -> MovePackageServiceServer<T>
+where
+    T: MovePackageService,
+{
+    MovePackageServiceServer::new(service).send_compressed(tonic::codec::CompressionEncoding::Zstd)
+}
+
+/// Build and start one gRPC listener serving `ledger`'s `LedgerService` and `MovePackageService`,
+/// wired with the given (shared, already-constructed) metrics/logging layers and optional reflection.
+/// `builder` carries whatever TLS config the caller wants for this listener (or none, for a plaintext
+/// listener).
 ///
 /// Used once per listener -- the primary listener, and the optional second plaintext one -- so
 /// that expensive shared pieces (metrics, allowlist, request-log layer) are constructed once by
@@ -323,6 +337,9 @@ fn spawn_listener(
             ),
         ))
         .layer(request_log_layer)
+        .add_service(move_package_service_with_response_compression(
+            ledger.clone(),
+        ))
         .add_service(ledger_service_with_response_compression(ledger));
 
     if enable_reflection {
@@ -573,7 +590,7 @@ impl KvRpcServer {
 
         // Second, unencrypted listener for trusted internal callers (e.g.
         // other in-cluster services) that should not need to negotiate TLS
-        // to reach this server. Serves the same `LedgerService`.
+        // to reach this server. Serves the same `LedgerService` and `MovePackageService`.
         if let Some(plaintext_address) = config.plaintext_address {
             let ledger =
                 ledger_for_plaintext.expect("cloned above whenever plaintext_address is set");

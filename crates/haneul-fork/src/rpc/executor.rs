@@ -135,14 +135,14 @@ impl TransactionExecutor for ForkedTransactionExecutor {
 
     fn simulate_transaction(
         &self,
-        _transaction: TransactionData,
-        _checks: TransactionChecks,
-        _allow_mock_gas_coin: bool,
+        transaction: TransactionData,
+        checks: TransactionChecks,
+        allow_mock_gas_coin: bool,
     ) -> Result<SimulateTransactionResult, HaneulError> {
-        Err(HaneulErrorKind::Unknown(
-            "simulate_transaction is not supported by the forked network yet".to_string(),
-        )
-        .into())
+        self.context
+            .simulacrum()
+            .blocking_read()
+            .simulate_transaction(transaction, checks, allow_mock_gas_coin)
     }
 }
 

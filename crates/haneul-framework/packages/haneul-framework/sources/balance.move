@@ -111,6 +111,7 @@ public fun redeem_funds<T>(withdrawal: haneul::funds_accumulator::Withdrawal<Bal
 }
 
 /// Create a `Withdrawal<Balance<T>>` from an object to withdraw funds from it.
+/// Aborts if `value` exceeds the funds currently available to `obj`.
 public fun withdraw_funds_from_object<T>(obj: &mut UID, value: u64): Withdrawal<Balance<T>> {
     haneul::funds_accumulator::withdraw_from_object(obj, value as u256)
 }

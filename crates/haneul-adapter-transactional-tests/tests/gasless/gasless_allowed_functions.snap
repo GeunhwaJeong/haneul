@@ -3,16 +3,21 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 17 tasks
 
+// Tests each whitelisted gasless function:
+// - balance::send_funds
+// - balance::redeem_funds
+// - funds_accumulator::withdrawal_split
+
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 12-26:
+task 1, lines 11-25:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 10776800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 30-34:
+task 3, lines 29-33:
 //# programmable --sender A --inputs 10000 object(1,1) @A
 // Fund A
 //> 0: haneul::coin::mint<test::usdc::USDC>(Input(1), Input(0));
@@ -23,15 +28,16 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(3,0), A, haneul::balance::Balance<test::usdc::USDC>, Merge, 10000)
 gas summary: computation_cost: 1000000, storage_cost: 2690400,  storage_rebate: 2663496, non_refundable_storage_fee: 26904
 
-task 4, line 36:
+task 4, line 35:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 38-40:
+task 5, line 37:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> A
 10000
 
-task 6, lines 41-43:
+task 6, lines 39-42:
+// redeem_funds: withdraw and send back to self
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs withdraw<haneul::balance::Balance<test::usdc::USDC>>(1000) @A
 //> 0: haneul::balance::redeem_funds<test::usdc::USDC>(Input(0));
 //> 1: haneul::balance::send_funds<test::usdc::USDC>(Result(0), Input(1));
@@ -39,15 +45,16 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(3,0), A, haneul::balance::Balance<test::usdc::USDC>, Merge, 0)
 gas summary: computation_cost: 0, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 7, line 45:
+task 7, line 44:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 47-49:
+task 8, line 46:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> A
 10000
 
-task 9, lines 50-52:
+task 9, lines 48-51:
+// send_funds: send to another address
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs withdraw<haneul::balance::Balance<test::usdc::USDC>>(2000) @B
 //> 0: haneul::balance::redeem_funds<test::usdc::USDC>(Input(0));
 //> 1: haneul::balance::send_funds<test::usdc::USDC>(Result(0), Input(1));
@@ -55,19 +62,20 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(3,0), A, haneul::balance::Balance<test::usdc::USDC>, Split, 2000), (object(9,0), B, haneul::balance::Balance<test::usdc::USDC>, Merge, 2000)
 gas summary: computation_cost: 0, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 10, line 54:
+task 10, line 53:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 11, line 56:
+task 11, line 55:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> A
 8000
 
-task 12, lines 58-60:
+task 12, line 57:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> B
 2000
 
-task 13, lines 61-66:
+task 13, lines 59-65:
+// withdrawal_split: split 3000 to A, remainder (2000) to B
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs withdraw<haneul::balance::Balance<test::usdc::USDC>>(5000) 3000u256 @A @B
 //> 0: haneul::funds_accumulator::withdrawal_split<haneul::balance::Balance<test::usdc::USDC>>(Input(0), Input(1));
 //> 1: haneul::balance::redeem_funds<test::usdc::USDC>(Result(0));
@@ -78,14 +86,14 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(3,0), A, haneul::balance::Balance<test::usdc::USDC>, Split, 2000), (object(9,0), B, haneul::balance::Balance<test::usdc::USDC>, Merge, 2000)
 gas summary: computation_cost: 0, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 14, line 68:
+task 14, line 67:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 15, line 70:
+task 15, line 69:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> A
 6000
 
-task 16, line 72:
+task 16, line 71:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> B
 4000

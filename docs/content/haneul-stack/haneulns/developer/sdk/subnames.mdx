@@ -25,6 +25,12 @@ answer: >-
   parent rules, extendExpiration to extend time, and removeLeafSubName to delete.
 ---
 
+:::caution
+
+The examples on this page use `HaneulnsClient`. `@haneullabs/haneulns` 2.0 still exports it, but the [`haneulns()` client extension](/haneul-stack/haneulns/developer/sdk) is the preferred pattern. The `HaneulnsTransaction` commands themselves are unchanged, but the client you pass them is constructed differently. See [Migrating @haneullabs/haneulns](https://sdk.haneul-labs.com/haneul/migrations/haneul-2.0/haneulns).
+
+:::
+
 The following subname-related PTB commands are available through the SDK. For name registration, renewal, and other operations, see [Building Transactions](./transactions).
 
 ### Create a subname

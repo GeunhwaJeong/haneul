@@ -3,16 +3,20 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 14 tasks
 
+// tests accessing version of the input parent, not the runtime parent
+
 init:
 P1: object(0,0), P2: object(0,1)
 
-task 1, lines 9-54:
+task 1, lines 8-51:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 7478400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 56-58:
+// Create object A and bump the version to 4
+
+task 2, lines 55-57:
 //# programmable --sender P1 --inputs @P1
 //> 0: test::m::a();
 //> TransferObjects([Result(0)], Input(0))
@@ -20,19 +24,19 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 60-61:
+task 3, lines 59-60:
 //# programmable --sender P1 --inputs object(2,0)
 //> test::m::nop();
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 4, lines 63-64:
+task 4, lines 62-63:
 //# programmable --sender P1 --inputs object(2,0)
 //> test::m::nop();
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 5, lines 66-69:
+task 5, line 65:
 //# view-object 2,0
 Owner: Account Address ( P1 )
 Version: 4
@@ -44,7 +48,9 @@ Contents: test::m::A {
     },
 }
 
-task 6, lines 71-73:
+// Create object B witha version 2 and 3 for it's dynamic field
+
+task 6, lines 70-72:
 //# programmable --sender P2 --inputs @P2
 //> 0: test::m::b();
 //> TransferObjects([Result(0)], Input(0))
@@ -52,7 +58,7 @@ created: object(6,0), object(6,1)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 3663200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 7, line 75:
+task 7, line 74:
 //# view-object 6,1
 Owner: Object ID: ( fake(6,0) )
 Version: 2
@@ -66,13 +72,13 @@ Contents: haneul::dynamic_field::Field<u64, u64> {
     value: 0u64,
 }
 
-task 8, lines 77-78:
+task 8, lines 76-77:
 //# programmable --sender P2 --inputs object(6,0)
 //> 0: test::m::bump(Input(0));
 mutated: object(0,1), object(6,0), object(6,1)
 gas summary: computation_cost: 1000000, storage_cost: 3663200,  storage_rebate: 3626568, non_refundable_storage_fee: 36632
 
-task 9, lines 80-84:
+task 9, line 79:
 //# view-object 6,1
 Owner: Object ID: ( fake(6,0) )
 Version: 3
@@ -86,36 +92,42 @@ Contents: haneul::dynamic_field::Field<u64, u64> {
     value: 1u64,
 }
 
-task 10, lines 86-91:
+// Append object B to object A, but using version 2 of object B. And ensure that
+// when we later read the dynamic field of object B, we get the version 2 value.
+
+task 10, lines 85-87:
 //# programmable --sender P2 --inputs object(2,0)@4 object(6,0)@2 0 --dev-inspect
 //> 0: test::m::append(Input(0), Input(1));
 //> 1: test::m::check(Input(0), Input(2));
-// checking that with version 3 we get the other value, then flip them to ensure
-// they abort
 created: object(10,0)
 mutated: object(_), object(2,0)
 wrapped: object(6,0)
 gas summary: computation_cost: 500000, storage_cost: 4126800,  storage_rebate: 2392632, non_refundable_storage_fee: 24168
 
-task 11, lines 93-97:
+// checking that with version 3 we get the other value, then flip them to ensure
+// they abort
+
+task 11, lines 92-94:
 //# programmable --sender P2 --inputs object(2,0)@4 object(6,0)@3 1 --dev-inspect
 //> 0: test::m::append(Input(0), Input(1));
 //> 1: test::m::check(Input(0), Input(2));
-// @2 with value 1 aborts
 created: object(10,0)
 mutated: object(_), object(2,0)
 wrapped: object(6,0)
 gas summary: computation_cost: 500000, storage_cost: 4126800,  storage_rebate: 2392632, non_refundable_storage_fee: 24168
 
-task 12, lines 99-103:
+// @2 with value 1 aborts
+
+task 12, lines 98-100:
 //# programmable --sender P2 --inputs object(2,0)@4 object(6,0)@2 1 --dev-inspect
 //> 0: test::m::append(Input(0), Input(1));
 //> 1: test::m::check(Input(0), Input(2));
-// @3 with value 0 aborts
 Error: Transaction Effects Status: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("m") }, function: 4, instruction: 13, function_name: Some("check") }, 0) in command 1
 Execution Error: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("m") }, function: 4, instruction: 13, function_name: Some("check") }, 0) in command 1
 
-task 13, lines 105-107:
+// @3 with value 0 aborts
+
+task 13, lines 104-106:
 //# programmable --sender P2 --inputs object(2,0)@4 object(6,0)@3 0 --dev-inspect
 //> 0: test::m::append(Input(0), Input(1));
 //> 1: test::m::check(Input(0), Input(2));

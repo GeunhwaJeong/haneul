@@ -282,7 +282,7 @@ impl BenchmarkContext {
                     let component = self.benchmark_component;
                     tokio::spawn(async move {
                         validator
-                            .execute_transaction(tx, &AssignedVersions::default(), component)
+                            .execute_transaction(tx, &AssignedVersions::empty(), component)
                             .await
                     })
                 })
@@ -369,7 +369,7 @@ impl BenchmarkContext {
         let versions = assigned_versions
             .get(&sample.key())
             .cloned()
-            .unwrap_or_default();
+            .unwrap_or_else(AssignedVersions::empty);
 
         info!(
             "Sample transaction digest={:?}: {:?}",
@@ -494,7 +494,7 @@ impl BenchmarkContext {
                     let validator = self.validator();
                     tokio::spawn(async move {
                         validator
-                            .execute_transaction_in_memory(store, tx, &AssignedVersions::default())
+                            .execute_transaction_in_memory(store, tx, &AssignedVersions::empty())
                             .await
                     })
                 })

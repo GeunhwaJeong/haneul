@@ -88,10 +88,23 @@ haneul client ptb \
     --move-call 0x2::coin::send_funds '<COIN_TYPE>' coin @<RECIPIENT_ADDRESS>
 ```
 
+The CLI also provides a dedicated `haneul client send-funds` command that does this without building a PTB:
+
+```bash
+# Send 0.005 HANEUL to a recipient's address balance
+haneul client send-funds --to <RECIPIENT_ADDRESS> --amount 5000000
+
+# Send another coin type, drawing from the sender's address balance
+haneul client send-funds --to <RECIPIENT_ADDRESS> --amount 5000000 \
+    --coin-type <COIN_TYPE> --from-address-balance
+```
+
+The command takes the following flags:
+
 | **Flag** | **Description** |
 |----------|----------------|
 | `--to` | Recipient address. |
-| `--amount` | Amount to send in GEUNHWA. |
+| `--amount` | Amount to send in GEUNHWA. Required unless you pass `--all-coins`. |
 | `--coin-type` | Coin type to send. Defaults to `0x2::haneul::HANEUL`. |
 | `--all-coins` | Send all coin balance of the specified type. Cannot combine with `--from-address-balance`. |
 | `--from-address-balance` | Draw the amount from the sender's address balance rather than their coins. |
@@ -112,7 +125,7 @@ public fun send_funds<T>(balance: Balance<T>, recipient: address)
 public fun send_funds<T>(coin: Coin<T>, recipient: address)
 ```
 
-Learn more at [haneul-framework/sources/balance.move](https://github.com/GeunhwaJeong/haneul/blob/main/crates/haneul-framework/packages/haneul-framework/sources/balance.move#L102)) and [haneul-framework/sources/coin.move](https://github.com/GeunhwaJeong/haneul/blob/main/crates/haneul-framework/packages/haneul-framework/sources/coin.move#L176).
+Learn more at [haneul-framework/sources/balance.move](https://github.com/GeunhwaJeong/haneul/blob/main/crates/haneul-framework/packages/haneul-framework/sources/balance.move#L102) and [haneul-framework/sources/coin.move](https://github.com/GeunhwaJeong/haneul/blob/main/crates/haneul-framework/packages/haneul-framework/sources/coin.move#L176).
 
 ## Withdrawing funds
 
@@ -165,7 +178,7 @@ tx.transferObjects([tx.coin({ balance: requiredAmount })], recipient);
 
 ### TypeScript SDK: Manual withdrawals
 
-For explicit control over address balance withdrawals, use [`tx.withdrawal()`](https://haneul-typescript-docs-git-mh-address-balance-docs-haneullabs-labs.vercel.app/haneul/transactions/reference#address-balance-withdrawals). The withdrawal must be redeemed through `redeem_funds` to produce a usable `Coin<T>` or `Balance<T>`:
+For explicit control over address balance withdrawals, use [`tx.withdrawal()`](https://sdk.haneul-labs.com/haneul/transactions/reference#address-balance-withdrawals). The withdrawal must be redeemed through `redeem_funds` to produce a usable `Coin<T>` or `Balance<T>`:
 
 ```typescript
 import { Transaction } from '@haneullabs/haneul/transactions';

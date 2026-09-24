@@ -3,22 +3,25 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 11 tasks
 
+// This test tests that objects that are borrowed mutably or added/removed, but not modified, do not
+// need to be marked as mutated. Uses dynamic object fields
+
 init:
 A: object(0,0)
 
-task 1, lines 10-51:
+task 1, lines 9-50:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 8656400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 53:
+task 2, line 52:
 //# run test::m1::create --sender A
 created: object(2,0), object(2,1), object(2,2), object(2,3), object(2,4), object(2,5)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 11400000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 55:
+task 3, line 54:
 //# view-object 2,1
 Owner: Shared( 2 )
 Version: 2
@@ -30,7 +33,7 @@ Contents: test::m1::Object {
     },
 }
 
-task 4, lines 57-59:
+task 4, line 56:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 2
@@ -42,32 +45,34 @@ Contents: test::m1::Object {
     },
 }
 
-task 5, line 61:
+// for all of these, only the inputs are mutated
+
+task 5, line 60:
 //# run test::m1::borrow_mut --sender A --args object(2,1)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 2242000,  storage_rebate: 2219580, non_refundable_storage_fee: 22420
 
-task 6, line 63:
+task 6, line 62:
 //# run test::m1::borrow_mut --sender A --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2242000,  storage_rebate: 2219580, non_refundable_storage_fee: 22420
 
-task 7, line 65:
+task 7, line 64:
 //# run test::m1::add_remove --sender A --args object(2,1)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 2242000,  storage_rebate: 2219580, non_refundable_storage_fee: 22420
 
-task 8, line 67:
+task 8, line 66:
 //# run test::m1::add_remove --sender A --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2242000,  storage_rebate: 2219580, non_refundable_storage_fee: 22420
 
-task 9, line 69:
+task 9, line 68:
 //# run test::m1::write_back --sender A --args object(2,1)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 2242000,  storage_rebate: 2219580, non_refundable_storage_fee: 22420
 
-task 10, line 71:
+task 10, line 70:
 //# run test::m1::write_back --sender A --args object(2,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2242000,  storage_rebate: 2219580, non_refundable_storage_fee: 22420

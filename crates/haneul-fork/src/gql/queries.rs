@@ -39,7 +39,7 @@ pub(crate) mod txn_query {
         Transaction as HaneulTransaction, TransactionData, VerifiedTransaction,
     };
 
-    use crate::TransactionInfo;
+    use crate::gql::TransactionInfo;
 
     #[derive(cynic::Scalar, Debug, Clone)]
     #[cynic(graphql_type = "Base64")]
@@ -1349,7 +1349,7 @@ pub(crate) mod object_query {
     use haneul_types::object::Object;
 
     use super::*;
-    use crate::{ObjectKey as GqlObjectKey, VersionQuery};
+    use crate::gql::{ObjectKey as GqlObjectKey, VersionQuery};
 
     #[derive(cynic::Scalar, Debug, Clone)]
     #[cynic(graphql_type = "HaneulAddress")]

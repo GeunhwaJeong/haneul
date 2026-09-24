@@ -92,6 +92,7 @@ impl ServerHarness {
             keystore,
             genesis_checkpoint,
             config.genesis.haneul_system_object(),
+            chain_identifier,
             &config,
             store.clone(),
             rng,

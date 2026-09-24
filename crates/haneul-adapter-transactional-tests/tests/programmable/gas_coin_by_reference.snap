@@ -3,53 +3,56 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 9 tasks
 
+// tests valid gas coin usage by reference
+
 init:
 A: object(0,0)
 
-task 1, lines 9-25:
+task 1, lines 8-22:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 4104000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 26-27:
+task 2, lines 24-26:
+// can pass to Move function by ref
 //# programmable --sender A
 //> test::m1::t1<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 29-30:
+task 3, lines 28-29:
 //# programmable --sender A
 //> test::m1::t2<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 32-33:
+task 4, lines 31-32:
 //# programmable --sender A
 //> test::m1::t2<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 35-36:
+task 5, lines 34-35:
 //# programmable --sender A
 //> test::m1::t4<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 38-39:
+task 6, lines 37-38:
 //# programmable --sender A
 //> test::m1::t5<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 41-44:
+task 7, lines 40-41:
 //# programmable --sender A
 //> test::m1::t6<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
-// can pass to merge and split
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, lines 45-47:
+task 8, lines 43-46:
+// can pass to merge and split
 //# programmable --sender A --inputs 10  --gas-budget 10000000000
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])

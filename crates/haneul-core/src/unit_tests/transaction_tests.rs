@@ -1414,7 +1414,6 @@ async fn test_shared_object_v2_denied() {
             "share",
             vec![],
             vec![],
-            true,
         )
         .await
         .unwrap();

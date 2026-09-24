@@ -8,17 +8,15 @@
 //! invariants live here, behind the [`InvariantChecker`] API: that the transaction neither mints
 //! nor burns HANEUL, that balance-accumulator withdrawals stay authorized, and that every modified
 //! object traces back to an authenticated owner. [`TemporaryStore`] owns one `InvariantChecker`,
-//! forwards the little bookkeeping it accumulates during execution to it (see
-//! [`record_ptb_event_range`]), and defers to it for the checks. Keeping it in its own module
-//! keeps the invariant accounting -- which reaches across gas, accumulator events, settlement HANEUL,
-//! per-object storage rebates, and object ownership -- out of the main store code.
+//! forwards execution observations needed by invariant checks to it, and defers to it for
+//! the checks. Keeping it in its own module keeps the invariant accounting -- which reaches across
+//! gas, accumulator events, settlement HANEUL, per-object storage rebates, and object ownership -- out
+//! of the main store code.
 //!
 //! Note these are invariant *assertions* (a failure means a bug, and aborts or panics), distinct
 //! from transaction-validation guards like `TemporaryStore::check_accumulator_amounts_representable`
 //! that can legitimately reject a well-formed transaction.
 //!
-//! [`record_ptb_event_range`]: InvariantChecker::record_ptb_event_range
-
 use std::collections::{BTreeMap, BTreeSet, HashSet};
 use std::ops::Range;
 use std::sync::Arc;
@@ -27,8 +25,8 @@ use haneullabs_common::debug_fatal;
 use move_vm_runtime::runtime::MoveRuntime;
 
 use haneul_types::TypeTag;
+use haneul_types::allowance::parse_allowance_object;
 use haneul_types::base_types::{HaneulAddress, ObjectID, SequenceNumber};
-use haneul_types::coin_reservation::ParsedDigest;
 use haneul_types::effects::{AccumulatorOperation, AccumulatorValue};
 use haneul_types::error::{ExecutionError, HaneulResult};
 use haneul_types::execution::DynamicallyLoadedObjectMetadata;
@@ -36,46 +34,24 @@ use haneul_types::gas::GasCostSummary;
 use haneul_types::is_system_package;
 use haneul_types::layout_resolver::LayoutResolver;
 use haneul_types::object::{Object, ObjectPermissions, Owner};
-use haneul_types::transaction::{Command, GasData, TransactionKind};
 
 use crate::execution_mode::ExecutionMode;
 use crate::gas_charger::{GasCharger, PaymentLocation};
 use crate::temporary_store::TemporaryStore;
 use crate::type_layout_resolver::TypeLayoutResolver;
 
-/// The per-transaction inputs the invariant checks need that are derived from the raw transaction
-/// (rather than accumulated during execution). Built once, up front, by
-/// [`InvariantChecker::set_transaction_inputs`] so the checks read them off the store instead of
-/// receiving them as threaded arguments.
-#[derive(Default)]
-struct InvariantInputs {
-    /// Per-`(address, type)` funds-accumulator reservation budget authorized by this transaction.
-    /// Sources: PTB `FundsWithdrawalArg`s (sender/sponsor as owner), gas paid entirely from an
-    /// address balance, and gas-data coin-reservation digests. Consumed by
-    /// `check_address_balance_changes` and `check_ownership_invariants`.
-    input_reservations: BTreeMap<(HaneulAddress, TypeTag), u64>,
-    /// For the advance-epoch transaction, `(epoch_fees minted, epoch_rebates burned)`; `None`
-    /// for every other transaction. Needed by `check_haneul_conserved_expensive`, which must account
-    /// for the HANEUL the epoch change mints and burns.
-    advance_epoch_gas_summary: Option<(u64, u64)>,
-    /// The genesis transaction mints the initial HANEUL supply and so is exempt from conservation.
-    is_genesis: bool,
-    /// What each `Publish`/`Upgrade` command in the PTB says the package it writes should look like.
-    /// `None` when the transaction is not a PTB.
-    declared_packages: Option<Vec<(usize, BTreeSet<ObjectID>)>>,
-}
-
-/// Holds the invariant-check-only bookkeeping accumulated during execution and exposes the
+/// Holds invariant-check-only bookkeeping accumulated during execution and exposes the
 /// post-execution system-invariant checks (HANEUL conservation, balance-accumulator authorization,
 /// object ownership) as its API.
 ///
-/// It owns the transaction-derived inputs the checks need ([`InvariantInputs`], set once up
-/// front) and the PTB-emitted accumulator-event ranges accumulated during execution; the rest of
-/// the data the checks need (modified objects, accumulator events, settlement HANEUL, gas summary,
-/// ...) is read from the owning [`TemporaryStore`] passed to each check method.
+/// Immutable check inputs and execution results are read from the owning [`TemporaryStore`]
+/// passed to each check method.
+#[derive(Default)]
 pub(crate) struct InvariantChecker {
-    /// Transaction-derived inputs, populated by [`Self::set_transaction_inputs`] before execution.
-    inputs: InvariantInputs,
+    /// A map from wrapped object to its container, used to authenticate wrapped mutations.
+    wrapped_object_containers: BTreeMap<ObjectID, ObjectID>,
+    /// All object IDs generated by the object runtime, including created-and-then-deleted objects.
+    generated_runtime_ids: BTreeSet<ObjectID>,
     /// Index ranges into `execution_results.accumulator_events` for events emitted from PTB
     /// (Move) execution. Each `record_ptb_event_range` call appends a contiguous range
     /// bracketing the merge. Any index outside these ranges was emitted by the runtime outside
@@ -87,44 +63,40 @@ pub(crate) struct InvariantChecker {
 }
 
 impl InvariantChecker {
-    pub(crate) fn new() -> Self {
-        Self {
-            inputs: InvariantInputs::default(),
-            ptb_emitted_accumulator_event_ranges: Vec::new(),
-        }
-    }
-
-    /// Derive and cache the per-transaction invariant-check inputs from the raw transaction. Must be
-    /// called once, before execution, and *after* any gas-smash filtering of `gas_data`, since the
-    /// reservation budget reads the final gas payment list.
-    pub(crate) fn set_transaction_inputs(
+    pub(crate) fn save_wrapped_object_containers(
         &mut self,
-        transaction_kind: &TransactionKind,
-        gas_data: &GasData,
-        transaction_signer: HaneulAddress,
+        wrapped_object_containers: BTreeMap<ObjectID, ObjectID>,
     ) {
-        self.inputs = InvariantInputs {
-            input_reservations: compute_input_reservations(
-                transaction_kind,
-                gas_data,
-                transaction_signer,
-            ),
-            advance_epoch_gas_summary: transaction_kind.get_advance_epoch_tx_gas_summary(),
-            is_genesis: matches!(transaction_kind, TransactionKind::Genesis(_)),
-            declared_packages: declared_packages(transaction_kind),
-        };
+        #[cfg(debug_assertions)]
+        {
+            for (id, container1) in &wrapped_object_containers {
+                if let Some(container2) = self.wrapped_object_containers.get(id) {
+                    assert_eq!(container1, container2);
+                }
+            }
+            for (id, container1) in &self.wrapped_object_containers {
+                if let Some(container2) = wrapped_object_containers.get(id) {
+                    assert_eq!(container1, container2);
+                }
+            }
+        }
+        // Merge the two maps because we may be calling the execution engine more than once
+        // (e.g. in advance epoch transaction, where we may be publishing a new system package).
+        self.wrapped_object_containers
+            .extend(wrapped_object_containers);
     }
 
-    /// The funds-accumulator reservation budget for this transaction. Also consumed by
-    /// `TemporaryStore::check_ownership_invariants`, which shares the same authorization model.
-    pub(crate) fn input_reservations(&self) -> &BTreeMap<(HaneulAddress, TypeTag), u64> {
-        &self.inputs.input_reservations
-    }
-
-    /// Drop the PTB-emitted ranges. Called from `TemporaryStore::drop_writes` since the
-    /// underlying accumulator events the ranges point into are cleared at the same time.
-    pub(crate) fn clear(&mut self) {
-        self.ptb_emitted_accumulator_event_ranges.clear();
+    pub(crate) fn save_generated_object_ids(&mut self, generated_ids: BTreeSet<ObjectID>) {
+        #[cfg(debug_assertions)]
+        {
+            for id in &self.generated_runtime_ids {
+                assert!(!generated_ids.contains(id))
+            }
+            for id in &generated_ids {
+                assert!(!self.generated_runtime_ids.contains(id));
+            }
+        }
+        self.generated_runtime_ids.extend(generated_ids);
     }
 
     /// Record that the accumulator events in `[start, end)` (indices into
@@ -254,7 +226,7 @@ impl InvariantChecker {
     ) -> Result<(), ExecutionError> {
         use haneul_types::balance::Balance;
 
-        let input_reservations = &self.inputs.input_reservations;
+        let input_reservations = &store.post_execution_check_inputs.input_reservations;
         let mut actual_changes: BTreeMap<(HaneulAddress, TypeTag), i128> = BTreeMap::new();
         let mut has_ptb_withdrawals: BTreeSet<(HaneulAddress, TypeTag)> = BTreeSet::new();
         let mut has_ptb_deposits: BTreeSet<(HaneulAddress, TypeTag)> = BTreeSet::new();
@@ -361,7 +333,7 @@ impl InvariantChecker {
         gas_summary: &GasCostSummary,
         layout_resolver: &mut impl LayoutResolver,
     ) -> Result<(), ExecutionError> {
-        let advance_epoch_gas_summary = self.inputs.advance_epoch_gas_summary;
+        let advance_epoch_gas_summary = store.post_execution_check_inputs.advance_epoch_gas_summary;
         // Accumulate in u128. The per-object HANEUL totals are bounded by the real supply, but the
         // accumulator-event terms below are not: an object-sourced withdrawal/deposit (backing
         // verified only at settlement) can contribute up to u64::MAX on each side, and a transaction
@@ -498,61 +470,14 @@ fn get_input_haneul(
     }
 }
 
-/// Compute the per-`(address, type)` funds-accumulator reservation budget authorized by the
-/// transaction. Today every funds accumulator is a `Balance<T>`, but the `(address, TypeTag)`
-/// keying lets this generalize as more accumulator types are added. Sources:
-/// - PTB `FundsWithdrawalArg`s for any supported accumulator type (sender or sponsor as owner).
-/// - Gas paid entirely from address balance (credits `(gas_owner, Balance<HANEUL>)`).
-/// - Gas-data entries with coin-reservation digests (also credit `(gas_owner, Balance<HANEUL>)`).
-fn compute_input_reservations(
-    transaction_kind: &TransactionKind,
-    gas_data: &GasData,
-    transaction_signer: HaneulAddress,
-) -> BTreeMap<(HaneulAddress, TypeTag), u64> {
-    use haneul_types::balance::Balance;
-    use haneul_types::gas_coin::GAS;
-    use haneul_types::transaction::{Reservation, WithdrawFrom, is_gas_paid_from_address_balance};
-
-    let mut reservations: BTreeMap<(HaneulAddress, TypeTag), u64> = BTreeMap::new();
-    let haneul_balance_type = Balance::type_tag(GAS::type_tag());
-
-    for arg in transaction_kind.get_funds_withdrawals() {
-        let owner = match arg.withdraw_from {
-            WithdrawFrom::Sender => transaction_signer,
-            WithdrawFrom::Sponsor => gas_data.owner,
-        };
-        let Reservation::MaxAmountU64(reservation) = arg.reservation;
-        *reservations
-            .entry((owner, arg.type_arg.to_type_tag()))
-            .or_insert(0) += reservation;
-    }
-
-    if is_gas_paid_from_address_balance(gas_data, transaction_kind) {
-        *reservations
-            .entry((gas_data.owner, haneul_balance_type.clone()))
-            .or_insert(0) += gas_data.budget;
-    }
-
-    for entry in &gas_data.payment {
-        if let Ok(parsed) = ParsedDigest::try_from(entry.2) {
-            *reservations
-                .entry((gas_data.owner, haneul_balance_type.clone()))
-                .or_insert(0) += parsed.reservation_amount();
-        }
-    }
-
-    reservations
-}
-
 impl InvariantChecker {
     /// Run the HANEUL-conservation and balance-accumulator invariant checks against the
     /// (already-finalized, gas-charged) `store`. Read-only: the caller (the execution engine's
     /// `run_conservation_checks`) owns any recovery that mutates state.
     ///
     /// Returns `Ok(())` when the checks are not applicable: the genesis transaction mints the HANEUL
-    /// supply, and dev-inspect mode is allowed to violate conservation. The transaction-derived
-    /// inputs the checks need (reservation budget, advance-epoch mint/burn, genesis flag) were
-    /// cached up front by [`Self::set_transaction_inputs`].
+    /// supply, and dev-inspect mode is allowed to violate conservation. Immutable check inputs are
+    /// read from the store.
     pub(crate) fn check_conservation_invariants<Mode: ExecutionMode>(
         &self,
         store: &TemporaryStore<'_>,
@@ -560,7 +485,7 @@ impl InvariantChecker {
         enable_expensive_checks: bool,
         cost_summary: &GasCostSummary,
     ) -> Result<(), ExecutionError> {
-        if self.inputs.is_genesis || Mode::skip_conservation_checks() {
+        if store.post_execution_check_inputs.is_genesis || Mode::skip_conservation_checks() {
             return Ok(());
         }
         let simple_conservation_checks = store.protocol_config().simple_conservation_checks();
@@ -591,7 +516,7 @@ impl InvariantChecker {
             return Ok(());
         }
 
-        let Some(declared) = &self.inputs.declared_packages else {
+        let Some(declared) = &store.post_execution_check_inputs.declared_packages else {
             return Ok(());
         };
 
@@ -632,12 +557,11 @@ impl InvariantChecker {
         sender: &HaneulAddress,
         sponsor: &Option<HaneulAddress>,
         gas_charger: &GasCharger,
-        mutable_inputs: &HashSet<ObjectID>,
         is_epoch_change: bool,
     ) -> HaneulResult<()> {
         // The funds-accumulator reservation budget is shared with the conservation checks; see
         // `Self::check_address_balance_changes`.
-        let input_reservations = self.input_reservations();
+        let input_reservations = &store.post_execution_check_inputs.input_reservations;
         let gas_objs: HashSet<&ObjectID> = gas_charger.used_coins().map(|g| &g.0).collect();
         let gas_owner = sponsor.as_ref().unwrap_or(sender);
 
@@ -692,13 +616,14 @@ impl InvariantChecker {
             })
             .filter(|id| {
                 // remove any non-mutable inputs. This will remove deleted or readonly shared
-                // objects
-                mutable_inputs.contains(id)
+                // objects.
+                store.mutable_input_refs.contains_key(id)
+                    || store.non_exclusive_input_original_versions.contains_key(id)
             })
             .copied()
             // Add any object IDs generated in the object runtime during execution to the
             // authenticated set (i.e., new (non-package) objects, and possibly ephemeral UIDs).
-            .chain(store.generated_runtime_ids.iter().copied())
+            .chain(self.generated_runtime_ids.iter().copied())
             .map(HaneulAddress::from)
             .collect();
 
@@ -736,7 +661,7 @@ impl InvariantChecker {
             }
 
             let parent = if let Some(container_id) =
-                store.wrapped_object_containers.get(&to_authenticate)
+                self.wrapped_object_containers.get(&to_authenticate)
             {
                 // It's a wrapped object, so check that the container is authenticated
                 *container_id
@@ -747,7 +672,7 @@ impl InvariantChecker {
                     panic!(
                         "Failed to load object {to_authenticate:?}.\n \
                          If it cannot be loaded, we would expect it to be in the wrapped object map: {:#?}",
-                        &store.wrapped_object_containers
+                        &self.wrapped_object_containers
                     )
                 };
 
@@ -808,6 +733,18 @@ impl InvariantChecker {
                     PaymentLocation::Coin(_) => None,
                     PaymentLocation::AddressBalance(address) => Some(address),
                 });
+        // A Split at a non-signer key requires every allowance id declared for it as a loaded,
+        // matching input.
+        let is_allowance_backed = |key: &(HaneulAddress, TypeTag)| {
+            let Some(allowance_ids) = store.post_execution_check_inputs.allowance_ids.get(key)
+            else {
+                return false;
+            };
+            allowance_ids.iter().all(|id| {
+                let resolved = store.input_objects.get(id).map(parse_allowance_object);
+                matches!(resolved, Some(Ok(a)) if a.funder == key.0 && a.funds_type == key.1)
+            })
+        };
         let mut funds_net_changes: BTreeMap<(HaneulAddress, TypeTag), i128> = BTreeMap::new();
         for event in store.execution_results.accumulator_events.iter() {
             let amount = match event.write.value {
@@ -831,13 +768,17 @@ impl InvariantChecker {
             // Authorized if it is:
             // - A merge/deposit (anyone can deposit)
             // - A withdrawal
-            //   - with a corresponding input reservation
+            //   - with a corresponding input reservation (the signer's or allowance-backed)
             //   - from an object authenticated for mutation
             //   - for the gas payment (potentially from a GasCoin send_funds transfer)
             let authorized = match event.write.operation {
                 AccumulatorOperation::Merge => true,
                 AccumulatorOperation::Split => {
-                    input_reservations.contains_key(&key)
+                    let is_authorized_input_reservation = input_reservations.contains_key(&key)
+                        && (address == *sender
+                            || address == *gas_owner
+                            || is_allowance_backed(&key));
+                    is_authorized_input_reservation
                         || objects_authenticated_for_mutation.contains(&address)
                         || (*type_tag == haneul_balance_type
                             && gas_payment_address_balance
@@ -847,8 +788,8 @@ impl InvariantChecker {
             assert!(
                 authorized,
                 "Unauthenticated funds-accumulator Split at address {address} for type \
-                 {type_tag}: no input reservation, address is not an authenticated object, and \
-                 it is not the final gas payment address balance"
+                 {type_tag}: no signer or allowance-backed input reservation, address is not an \
+                 authenticated object, and it is not the final gas payment address balance"
             );
         }
 
@@ -872,25 +813,4 @@ impl InvariantChecker {
 
         Ok(())
     }
-}
-
-/// What each `Publish`/`Upgrade` command declares about the package it writes, in command order.
-/// `None` for transaction kinds that are not PTBs.
-fn declared_packages(
-    transaction_kind: &TransactionKind,
-) -> Option<Vec<(usize, BTreeSet<ObjectID>)>> {
-    let TransactionKind::ProgrammableTransaction(pt) = transaction_kind else {
-        return None;
-    };
-    Some(
-        pt.commands
-            .iter()
-            .filter_map(|command| match command {
-                Command::Publish(modules, dep_ids) | Command::Upgrade(modules, dep_ids, _, _) => {
-                    Some((modules.len(), dep_ids.iter().copied().collect()))
-                }
-                _ => None,
-            })
-            .collect(),
-    )
 }

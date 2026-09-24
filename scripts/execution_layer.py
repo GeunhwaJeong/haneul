@@ -355,8 +355,11 @@ def cut_command(f):
     return [
         *["./target/debug/cut", "--feature", f],
         *[repo_root()],
-        *["-d", f"haneul-execution/latest:haneul-execution/{f}:-latest"],
-        *["-d", f"external-crates/move:external-crates/move/move-execution/{f}"],
+        *[
+            "-d",
+            f"haneul-execution/latest:haneul-execution/historical-versions/{f}:-latest",
+        ],
+        *["-d", f"external-crates/move:external-crates/move/historical-versions/{f}"],
         *["-p", "haneul-adapter-latest"],
         *["-p", "haneul-move-natives-latest"],
         *["-p", "haneul-verifier-latest"],
@@ -372,10 +375,11 @@ def cut_directories(f):
     haneul_base = Path() / "haneul-execution"
     external = Path() / "external-crates"
 
+    haneul_cut = haneul_base / f if f == "latest" else haneul_base / "historical-versions" / f
     crates = [
-        haneul_base / f / "haneul-adapter",
-        haneul_base / f / "haneul-move-natives",
-        haneul_base / f / "haneul-verifier",
+        haneul_cut / "haneul-adapter",
+        haneul_cut / "haneul-move-natives",
+        haneul_cut / "haneul-verifier",
     ]
 
     if f == "latest":
@@ -390,10 +394,10 @@ def cut_directories(f):
     else:
         crates.extend(
             [
-                external / "move" / "move-execution" / f / "crates" / "move-abstract-interpreter",
-                external / "move" / "move-execution" / f / "crates" / "move-bytecode-verifier",
-                external / "move" / "move-execution" / f / "crates" / "move-vm-runtime",
-                external / "move" / "move-execution" / f / "crates" / "bytecode-verifier-tests",
+                external / "move" / "historical-versions" / f / "crates" / "move-abstract-interpreter",
+                external / "move" / "historical-versions" / f / "crates" / "move-bytecode-verifier",
+                external / "move" / "historical-versions" / f / "crates" / "move-vm-runtime",
+                external / "move" / "historical-versions" / f / "crates" / "bytecode-verifier-tests",
             ]
         )
 

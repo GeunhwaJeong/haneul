@@ -3,22 +3,29 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 17 tasks
 
+// DEPRECATED child count no longer tracked
+// tests various ways of "removing" a child decrements the count
+
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 10-52:
+task 1, lines 9-47:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 7562000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 54:
+//
+// Test remove
+//
+
+task 2, line 53:
 //# run test::m::mint --sender A
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 56:
+task 3, line 55:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 2
@@ -30,19 +37,19 @@ Contents: test::m::S {
     },
 }
 
-task 4, line 58:
+task 4, line 57:
 //# run test::m::add --sender A --args object(2,0) 1
 created: object(4,0), object(4,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 5859600,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 5, line 60:
+task 5, line 59:
 //# run test::m::remove --sender A --args object(2,0) 1
 mutated: object(0,0), object(2,0)
 deleted: object(4,0), object(4,1)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 5801004, non_refundable_storage_fee: 58596
 
-task 6, lines 62-66:
+task 6, line 61:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 4
@@ -54,13 +61,17 @@ Contents: test::m::S {
     },
 }
 
-task 7, line 68:
+//
+// Test remove and add
+//
+
+task 7, line 67:
 //# run test::m::mint --sender A
 created: object(7,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, line 70:
+task 8, line 69:
 //# view-object 7,0
 Owner: Account Address ( A )
 Version: 5
@@ -72,18 +83,18 @@ Contents: test::m::S {
     },
 }
 
-task 9, line 72:
+task 9, line 71:
 //# run test::m::add --sender A --args object(7,0) 1
 created: object(9,0), object(9,1)
 mutated: object(0,0), object(7,0)
 gas summary: computation_cost: 1000000, storage_cost: 5859600,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 10, line 74:
+task 10, line 73:
 //# run test::m::remove_and_add --sender A --args object(7,0) 1
 mutated: object(0,0), object(7,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 11, lines 76-80:
+task 11, line 75:
 //# view-object 7,0
 Owner: Account Address ( A )
 Version: 7
@@ -95,13 +106,17 @@ Contents: test::m::S {
     },
 }
 
-task 12, line 82:
+//
+// Test remove and wrap
+//
+
+task 12, line 81:
 //# run test::m::mint --sender A
 created: object(12,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 13, line 84:
+task 13, line 83:
 //# view-object 12,0
 Owner: Account Address ( A )
 Version: 8
@@ -113,20 +128,20 @@ Contents: test::m::S {
     },
 }
 
-task 14, line 86:
+task 14, line 85:
 //# run test::m::add --sender A --args object(12,0) 1
 created: object(14,0), object(14,1)
 mutated: object(0,0), object(12,0)
 gas summary: computation_cost: 1000000, storage_cost: 5859600,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 15, line 88:
+task 15, line 87:
 //# run test::m::remove_and_wrap --sender A --args object(12,0) 1
 created: object(15,0)
 mutated: object(0,0), object(12,0), object(14,1)
 wrapped: object(14,0)
 gas summary: computation_cost: 1000000, storage_cost: 6102800,  storage_rebate: 5801004, non_refundable_storage_fee: 58596
 
-task 16, line 90:
+task 16, line 89:
 //# view-object 12,0
 Owner: Account Address ( A )
 Version: 10

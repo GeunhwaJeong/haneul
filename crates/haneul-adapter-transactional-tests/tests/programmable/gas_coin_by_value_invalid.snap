@@ -3,57 +3,60 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 9 tasks
 
+// tests invalid gas coin usage by value
+
 init:
 A: object(0,0)
 
-task 1, lines 9-24:
+task 1, lines 8-21:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 3883600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 25-26:
+task 2, lines 23-25:
+// cannot pass to Move function
 //# programmable --sender A
 //> test::m1::t1<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
 
-task 3, lines 28-29:
+task 3, lines 27-28:
 //# programmable --sender A
 //> test::m1::t2<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
 
-task 4, lines 31-34:
+task 4, lines 30-31:
 //# programmable --sender A
 //> test::m1::t2<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
+Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
+Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
+
+task 5, lines 33-36:
 // cannot merge gas coin
-Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
-Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
-
-task 5, lines 35-39:
 //# programmable --sender A --inputs 10  --gas-budget 10000000000
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Result(0), [Gas])
-// cannot use gas coin in a vector
 Error: Transaction Effects Status: Invalid command argument at 1. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: InvalidGasCoinUsage }, source: None, command: Some(1) } }
 
-task 6, lines 40-43:
+task 6, lines 38-40:
+// cannot use gas coin in a vector
 //# programmable --sender A
 //> MakeMoveVec([Gas])
-// we give the error that the gas coin was taken, even though this call is invalid
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
 
-task 7, lines 44-46:
+task 7, lines 42-45:
+// we give the error that the gas coin was taken, even though this call is invalid
 //# programmable --sender A --inputs @A
 //> TransferObjects([Gas], Input(0));
 //> test::m1::t1<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(1) } }
 
-task 8, lines 48-52:
+task 8, lines 47-51:
 //# programmable --sender A --inputs @A
 // Similarly we try to use the gas coin both with send_funds and TransferObjects, and get an
 // error that the gas coin was already moved, even though the call is _valid_.

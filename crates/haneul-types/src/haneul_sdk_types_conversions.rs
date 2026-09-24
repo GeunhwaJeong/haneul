@@ -1343,6 +1343,12 @@ impl From<crate::transaction::CallArg> for Input {
                     crate::transaction::WithdrawFrom::Sponsor => {
                         haneul_sdk_types::WithdrawFrom::Sponsor
                     }
+                    crate::transaction::WithdrawFrom::SenderAllowance { funder, allowance } => {
+                        haneul_sdk_types::WithdrawFrom::SenderAllowance {
+                            funder: funder.into(),
+                            allowance: allowance.into(),
+                        }
+                    }
                 };
 
                 Self::FundsWithdrawal(FundsWithdrawal::new(
@@ -1403,6 +1409,12 @@ impl From<Input> for crate::transaction::CallArg {
                         }
                         haneul_sdk_types::WithdrawFrom::Sponsor => {
                             crate::transaction::WithdrawFrom::Sponsor
+                        }
+                        haneul_sdk_types::WithdrawFrom::SenderAllowance { funder, allowance } => {
+                            crate::transaction::WithdrawFrom::SenderAllowance {
+                                funder: funder.into(),
+                                allowance: allowance.into(),
+                            }
                         }
                         _ => {
                             unreachable!("sdk shouldn't have a variant that the mono repo doesn't")

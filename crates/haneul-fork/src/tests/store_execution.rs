@@ -95,6 +95,7 @@ async fn test_simulacrum() -> (
         keystore,
         config.genesis.checkpoint(),
         config.genesis.haneul_system_object(),
+        (*config.genesis.checkpoint().digest()).into(),
         &config,
         store,
         rng,

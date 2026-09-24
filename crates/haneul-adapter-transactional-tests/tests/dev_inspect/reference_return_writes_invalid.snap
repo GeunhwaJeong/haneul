@@ -3,16 +3,18 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 7 tasks
 
+// tests invalid transfers/writes of mut references
+
 init:
 A: object(0,0)
 
-task 1, lines 9-51:
+task 1, lines 8-50:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6498000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 53-58:
+task 2, lines 52-57:
 //# programmable --dev-inspect
 // transfer parent with child
 //> 0: test::m::pair();
@@ -22,7 +24,7 @@ task 2, lines 53-58:
 Error: Transaction Effects Status: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument } in command 2
 Execution Error: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument } in command 2
 
-task 3, lines 60-66:
+task 3, lines 59-65:
 //# programmable --dev-inspect
 // borrow parent, transfer parent with child
 //> 0: test::m::pair();
@@ -33,7 +35,7 @@ task 3, lines 60-66:
 Error: Transaction Effects Status: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument } in command 3
 Execution Error: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument } in command 3
 
-task 4, lines 68-74:
+task 4, lines 67-73:
 //# programmable --dev-inspect
 // transfer parent with children
 //> 0: test::m::pair();
@@ -44,7 +46,7 @@ task 4, lines 68-74:
 Error: Transaction Effects Status: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument } in command 2
 Execution Error: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument } in command 2
 
-task 5, lines 76-82:
+task 5, lines 75-81:
 //# programmable --dev-inspect
 // transfer parent with child, one was released
 //> 0: test::m::pair();
@@ -55,7 +57,7 @@ task 5, lines 76-82:
 Error: Transaction Effects Status: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument } in command 3
 Execution Error: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument } in command 3
 
-task 6, lines 84-91:
+task 6, lines 83-90:
 //# programmable --dev-inspect
 // write to parent with imm child, mut was released
 //> 0: test::m::pair();

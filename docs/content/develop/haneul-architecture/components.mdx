@@ -82,7 +82,7 @@ Learn more about the [Haneul networks](/develop/haneul-architecture/networks).
 
 ### Nodes
 
-On Haneul, nodes on the network participate directly in the chain's consensus mechanism to validate all onchain activity. Activity comes in the form of transaction blocks that must be validated before being finalized and permanently committed to the network's history.
+On Haneul, validator nodes run the consensus mechanism that orders and commits all onchain activity. Full nodes do not take part in consensus. They verify the committed state independently and locally, then serve queries about it.
 
 There are 2 types of nodes on Haneul:
 
@@ -100,7 +100,7 @@ To learn more about consensus on Haneul, see:
 
 - [Haneul Consensus](/develop/haneul-architecture/consensus)
 
-- [Validator Committee](/develop/haneul-architecture/consensus)
+- [Epochs and reconfiguration](/develop/haneul-architecture/epochs), which is when the validator set can change
 
 ## Transactions
 

@@ -3,16 +3,18 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 8 tasks
 
+// tests valid gas coin usage by value
+
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 9-10:
+task 1, lines 8-9:
 //# programmable --sender A --inputs @B
 //> TransferObjects([Gas], Input(0))
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 12:
+task 2, line 11:
 //# view-object 0,0
 Owner: Account Address ( B )
 Version: 2
@@ -27,25 +29,25 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 3, lines 14-15:
+task 3, lines 13-14:
 //# programmable --sender B --inputs @A --gas-payment object(0,0)
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
 deleted: object(0,0)
 accumulators_written: (object(3,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 299999997990120)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 17:
+task 4, line 16:
 //# view-object 0,0
 No object at id 0,0
 
-task 5, line 19:
+task 5, line 18:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 6, line 21:
+task 6, line 20:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 299999997990120
 
-task 7, line 23:
+task 7, line 22:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 No funds accumulator object found

@@ -3,59 +3,68 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 14 tasks
 
+// Test demonstrating arithmetic overflow protection when withdrawing from address balances.
+// Creates two independent Supply objects, mints 18446744073709551615 (u64::MAX) from each,
+// sends both amounts to address A, then attempts to withdraw both amounts in a single PTB.
+// The withdraw operation fails with arithmetic error because the total exceeds u64::MAX.
+
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 12-36:
+task 1, lines 11-33:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 7326400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 37-42:
+task 2, lines 35-39:
+// Create two supply holders
 //# programmable --sender A --inputs @A
 //> 0: test::large_balance::create_holder();
 //> 1: test::large_balance::create_holder();
 //> TransferObjects([Result(0), Result(1)], Input(0))
-// Send two large transfers in a single PTB - should cause Move abort due to overflow
 created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 3876000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 43-45:
+task 3, lines 41-44:
+// Send two large transfers in a single PTB - should cause Move abort due to overflow
 //# programmable --sender A --inputs object(2,0) object(2,1) @A 18446744073709551615
 //> 0: test::large_balance::send_large_balance(Input(0), Input(2), Input(3));
 //> 1: test::large_balance::send_large_balance(Input(1), Input(2), Input(3));
 Error: Transaction Effects Status: Move Primitive Runtime Error. Location: haneul::funds_accumulator::add_to_accumulator_address (function index 8) at offset 0. Arithmetic error, stack overflow, max value depth, etc.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MovePrimitiveRuntimeError(MoveLocationOpt(Some(MoveLocation { module: ModuleId { address: haneul, name: Identifier("funds_accumulator") }, function: 8, instruction: 0, function_name: Some("add_to_accumulator_address") }))), source: Some(VMError { major_status: ARITHMETIC_ERROR, sub_status: None, message: Some("accumulator merge overflow: total merges 36893488147419103230 exceed u64::MAX"), exec_state: None, location: Module(ModuleId { address: haneul, name: Identifier("funds_accumulator") }), indices: [], offsets: [(FunctionDefinitionIndex(8), 0)] }), command: Some(1) } }
 
-task 4, lines 47-49:
+task 4, line 46:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, line 50:
+task 5, lines 48-49:
+// Send first large amount separately - should succeed
 //# run test::large_balance::send_large_balance --args object(2,0) @A 18446744073709551615 --sender A
 mutated: object(0,0), object(2,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(5,0), A, haneul::balance::Balance<test::large_balance::MARKER>, Merge, 18446744073709551615)
 gas summary: computation_cost: 1000000, storage_cost: 2432000,  storage_rebate: 2407680, non_refundable_storage_fee: 24320
 
-task 6, lines 52-54:
+task 6, line 51:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, line 55:
+task 7, lines 53-54:
+// Send second large amount separately - should succeed
 //# run test::large_balance::send_large_balance --args object(2,1) @A 18446744073709551615 --sender A
 mutated: object(0,0), object(2,1)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(5,0), A, haneul::balance::Balance<test::large_balance::MARKER>, Merge, 18446744073709551615)
 gas summary: computation_cost: 1000000, storage_cost: 2432000,  storage_rebate: 2407680, non_refundable_storage_fee: 24320
 
-task 8, lines 57-59:
+task 8, line 56:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 9, lines 60-62:
+task 9, lines 58-61:
+// Withdraw first large amount - should succeed
 //# programmable --sender A --inputs withdraw<haneul::balance::Balance<test::large_balance::MARKER>>(18446744073709551615) @B
 //> 0: haneul::balance::redeem_funds<test::large_balance::MARKER>(Input(0));
 //> 1: haneul::balance::send_funds<test::large_balance::MARKER>(Result(0), Input(1));
@@ -64,11 +73,12 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(5,0), A, haneul::balance::Balance<test::large_balance::MARKER>, Split, 18446744073709551615), (object(9,0), B, haneul::balance::Balance<test::large_balance::MARKER>, Merge, 18446744073709551615)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 10, lines 64-66:
+task 10, line 63:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 11, lines 67-69:
+task 11, lines 65-68:
+// Withdraw second large amount - should succeed
 //# programmable --sender A --inputs withdraw<haneul::balance::Balance<test::large_balance::MARKER>>(18446744073709551615) @B
 //> 0: haneul::balance::redeem_funds<test::large_balance::MARKER>(Input(0));
 //> 1: haneul::balance::send_funds<test::large_balance::MARKER>(Result(0), Input(1));
@@ -77,11 +87,12 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(5,0), A, haneul::balance::Balance<test::large_balance::MARKER>, Split, 18446744073709551615), (object(9,0), B, haneul::balance::Balance<test::large_balance::MARKER>, Merge, 18446744073709551615)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 12, lines 71-73:
+task 12, line 70:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 13, lines 74-78:
+task 13, lines 72-77:
+// Attempt to withdraw both large amounts in a single PTB - should fail with arithmetic error
 //# programmable --sender A --inputs withdraw<haneul::balance::Balance<test::large_balance::MARKER>>(18446744073709551615) withdraw<haneul::balance::Balance<test::large_balance::MARKER>>(18446744073709551615) @B
 //> 0: haneul::balance::redeem_funds<test::large_balance::MARKER>(Input(0));
 //> 1: haneul::balance::redeem_funds<test::large_balance::MARKER>(Input(1));

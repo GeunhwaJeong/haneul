@@ -29,7 +29,7 @@ pub enum TransactionInput {
     OwnedOrImmutable(OwnedOrImmutable),
     SharedInput(SharedInput),
     Receiving(Receiving),
-    BalanceWithdraw(BalanceWithdraw),
+    BalanceWithdraw(Box<BalanceWithdraw>),
 }
 
 impl TransactionInput {
@@ -74,7 +74,7 @@ impl TransactionInput {
             }
 
             (CA::FundsWithdrawal(withdrawal), _) => {
-                Self::BalanceWithdraw(BalanceWithdraw::from_native(withdrawal, scope))
+                Self::BalanceWithdraw(Box::new(BalanceWithdraw::from_native(withdrawal, scope)))
             }
         }
     }

@@ -709,6 +709,7 @@ Put a <code><a href="../haneul/coin.md#haneul_coin_Coin">Coin</a>&lt;T&gt;</code
 ## Function `redeem_funds`
 
 Redeem a <code>Withdrawal&lt;Balance&lt;T&gt;&gt;</code> and create a <code><a href="../haneul/coin.md#haneul_coin_Coin">Coin</a>&lt;T&gt;</code> from the withdrawn Balance<T>.
+Aborts if an object withdrawal exceeds the funds currently available to the object.
 
 
 <pre><code><b>public</b> <b>fun</b> <a href="../haneul/coin.md#haneul_coin_redeem_funds">redeem_funds</a>&lt;T&gt;(withdrawal: <a href="../haneul/funds_accumulator.md#haneul_funds_accumulator_Withdrawal">haneul::funds_accumulator::Withdrawal</a>&lt;<a href="../haneul/balance.md#haneul_balance_Balance">haneul::balance::Balance</a>&lt;T&gt;&gt;, ctx: &<b>mut</b> <a href="../haneul/tx_context.md#haneul_tx_context_TxContext">haneul::tx_context::TxContext</a>): <a href="../haneul/coin.md#haneul_coin_Coin">haneul::coin::Coin</a>&lt;T&gt;

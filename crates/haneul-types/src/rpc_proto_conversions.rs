@@ -2942,10 +2942,16 @@ impl From<crate::transaction::FundsWithdrawalArg> for FundsWithdrawal {
         };
         let crate::transaction::WithdrawalTypeArg::Balance(coin_type) = value.type_arg;
         message.coin_type = Some(coin_type.to_canonical_string(true));
-        message.set_source(match value.withdraw_from {
+        let source = match value.withdraw_from {
             crate::transaction::WithdrawFrom::Sender => Source::Sender,
             crate::transaction::WithdrawFrom::Sponsor => Source::Sponsor,
-        });
+            crate::transaction::WithdrawFrom::SenderAllowance { funder, allowance } => {
+                message.funder = Some(funder.to_string());
+                message.allowance = Some(allowance.to_string());
+                Source::SenderAllowance
+            }
+        };
+        message.set_source(source);
 
         message
     }
@@ -3134,6 +3140,10 @@ impl Merge<&crate::effects::TransactionEffectsV1> for TransactionEffects {
                 .iter()
                 .map(ToString::to_string)
                 .collect();
+        }
+
+        if mask.contains(Self::LAMPORT_VERSION_FIELD.name) {
+            self.lamport_version = Some(value.lamport_version().value());
         }
 
         if mask.contains(Self::CHANGED_OBJECTS_FIELD.name)
@@ -3672,5 +3682,20 @@ impl TryFrom<&ObjectSet> for crate::full_checkpoint_content::ObjectSet {
         }
 
         Ok(objects)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::effects::TransactionEffectsAPI;
+
+    #[test]
+    fn transaction_effects_v1_proto_includes_lamport_version() {
+        let effects = crate::effects::TransactionEffectsV1::default();
+        let lamport_version = effects.lamport_version().value();
+        let proto: haneul_rpc::proto::haneul::rpc::v2::TransactionEffects =
+            crate::effects::TransactionEffects::V1(effects).into();
+
+        assert_eq!(proto.lamport_version, Some(lamport_version));
     }
 }

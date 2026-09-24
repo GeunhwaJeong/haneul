@@ -8,11 +8,13 @@ mod read_store;
 mod shared_in_memory_store;
 mod write_store;
 
+use crate::HANEUL_ACCUMULATOR_ROOT_OBJECT_ID;
 use crate::base_types::{
-    ConsensusObjectSequenceKey, FullObjectID, FullObjectRef, HaneulAddress, TransactionDigest,
-    VersionNumber,
+    ConsensusObjectSequenceKey, ConsensusObjectVersion, FullObjectID, FullObjectRef, HaneulAddress,
+    SystemObjectVersions, TransactionDigest, VersionNumber,
 };
 use crate::committee::EpochId;
+use crate::effects::InputConsensusObject;
 use crate::effects::{TransactionEffects, TransactionEffectsAPI};
 use crate::error::{ExecutionError, HaneulError, HaneulErrorKind};
 use crate::execution::{DynamicallyLoadedObjectMetadata, ExecutionResults};
@@ -186,6 +188,15 @@ pub enum ObjectChange {
 pub trait StorageView: Storage + ParentSync + RuntimeObjectResolver {}
 impl<T: Storage + ParentSync + RuntimeObjectResolver> StorageView for T {}
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[must_use]
+pub enum ObjectFundsSufficiency {
+    Sufficient,
+    Insufficient,
+    Overflow,
+    LoadError(String),
+}
+
 /// An abstraction of the (possibly distributed) store for objects. This
 /// API only allows for the retrieval of objects, not any state changes
 pub trait RuntimeObjectResolver: BackingPackageStore {
@@ -239,6 +250,12 @@ pub trait RuntimeObjectResolver: BackingPackageStore {
             None
         }
     }
+}
+
+/// Resolves the balance available for object-funds withdrawals during execution.
+pub trait ObjectFundsResolver {
+    fn object_available_balance(&self, owner: HaneulAddress, type_: &TypeTag)
+    -> HaneulResult<u128>;
 }
 
 pub struct DenyListResult {
@@ -823,7 +840,58 @@ pub fn get_transaction_output_objects(
     Ok(output_objects)
 }
 
-// Returns an iterator over the ObjectKey's of objects read or written by this transaction
+impl SystemObjectVersions {
+    /// Obtains pinned system object versions from effects, queries the store for the initial shared versions.
+    pub fn from_effects(effects: &TransactionEffects, store: &dyn ObjectStore) -> Self {
+        let accumulator_version = effects
+            .accessed_consensus_objects()
+            .into_iter()
+            .find_map(|ico| match ico {
+                InputConsensusObject::Mutate((id, version, _))
+                | InputConsensusObject::ReadOnly((id, version, _))
+                    if id == HANEUL_ACCUMULATOR_ROOT_OBJECT_ID =>
+                {
+                    Some(version)
+                }
+                _ => None,
+            })
+            .map(|version| {
+                let initial_shared_version = store
+                    .get_object(&HANEUL_ACCUMULATOR_ROOT_OBJECT_ID)
+                    .and_then(|object| object.owner().start_version())
+                    // unwrap safe because if effects contain the accumulator root object, it must
+                    // exist in the store and is a shared object.
+                    .unwrap();
+                ConsensusObjectVersion {
+                    initial_shared_version,
+                    version,
+                }
+            });
+        Self::new(accumulator_version)
+    }
+
+    /// Before execution, get the latest versions of the implicitly read system objects from the store,
+    /// and use these versions as the exact version to read during execution.
+    /// This is used only in environments where there is no consensus to assign versions, e.g. simulacrum and dry-run.
+    pub fn from_latest_in_store(store: &dyn ObjectStore) -> Self {
+        let accumulator_version =
+            store
+                .get_object(&HANEUL_ACCUMULATOR_ROOT_OBJECT_ID)
+                .map(|object| {
+                    let initial_shared_version = object
+                        .owner()
+                        .start_version()
+                        .expect("accumulator root must be a consensus object");
+                    ConsensusObjectVersion {
+                        initial_shared_version,
+                        version: object.version(),
+                    }
+                });
+        Self::new(accumulator_version)
+    }
+}
+
+// Returns a set of the ObjectKey's of objects read or written by this transaction
 pub fn get_transaction_object_set(
     transaction: &TransactionData,
     effects: &TransactionEffects,
@@ -957,6 +1025,16 @@ impl crate::storage::ObjectStore for TrackingBackingStore<'_> {
     fn get_object(&self, object_id: &ObjectID) -> Option<Object> {
         self.inner
             .get_object(object_id)
+            .inspect(|o| self.track_object(o))
+    }
+
+    fn load_implicitly_read_system_object(
+        &self,
+        object_id: &ObjectID,
+        version: crate::base_types::ConsensusObjectVersion,
+    ) -> Option<Object> {
+        self.inner
+            .load_implicitly_read_system_object(object_id, version)
             .inspect(|o| self.track_object(o))
     }
 

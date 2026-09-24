@@ -14,7 +14,7 @@ use haneul_indexer_alt::config::IndexerConfig;
 use haneul_indexer_alt_framework::ingestion::ClientArgs;
 use haneul_indexer_alt_framework::ingestion::ingestion_client::IngestionClientArgs;
 use haneul_indexer_alt_jsonrpc::NodeArgs;
-use haneul_transactional_test_runner::create_adapter;
+use haneul_transactional_test_runner::create_adapter_and_taskify;
 use haneul_transactional_test_runner::offchain_state::OffchainStateReader;
 use haneul_transactional_test_runner::offchain_state::TestResponse;
 use haneul_transactional_test_runner::run_tasks_with_adapter;
@@ -168,15 +168,16 @@ async fn run_test(path: &Path) -> Result<(), Box<dyn Error>> {
     telemetry_subscribers::init_for_testing();
 
     // start the adapter first to start the executor (simulacrum)
-    let (output, mut adapter) =
-        create_adapter::<HaneulTestAdapter>(path, Some(Arc::new(PRE_COMPILED.clone()))).await?;
+    let (output, mut adapter, tasks) =
+        create_adapter_and_taskify::<HaneulTestAdapter>(path, Some(Arc::new(PRE_COMPILED.clone())))
+            .await?;
 
     // configure access to the off-chain reader
     let c = cluster(adapter.offchain_config.as_ref().unwrap()).await;
     adapter.with_offchain_reader(Box::new(OffchainReader::new(c.clone())));
 
     // run the tasks in the test
-    run_tasks_with_adapter(path, adapter, output, None).await?;
+    run_tasks_with_adapter(path, adapter, output, tasks, None).await?;
     Ok(())
 }
 

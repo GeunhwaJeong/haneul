@@ -2,9 +2,6 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-use std::net::SocketAddr;
-use std::path::PathBuf;
-
 use anyhow::Context;
 use anyhow::Result;
 use clap::CommandFactory;
@@ -15,19 +12,14 @@ use reqwest::Url;
 use serde::Serialize;
 use tracing::info;
 
-use haneul_types::base_types::HaneulAddress;
-use haneul_types::base_types::ObjectID;
-
 use crate::AdvanceCheckpointRequest;
 use crate::AdvanceClockRequest;
+use crate::DEFAULT_RPC_ADDR;
 use crate::ForkingServiceClient;
 use crate::GetStatusRequest;
 use crate::GraphQLClient;
-use crate::Node;
+use crate::StartArgs;
 use crate::seed::SeedInput;
-
-/// Default bind address for the RPC server.
-pub const DEFAULT_RPC_ADDR: &str = "127.0.0.1:9000";
 
 #[derive(Parser)]
 #[command(
@@ -47,34 +39,8 @@ pub struct Cli {
 enum Command {
     /// Start a forked Haneul network
     Start {
-        /// Network to fork from: mainnet, testnet, devnet, or a custom GraphQL URL
-        #[arg(long, default_value = "mainnet")]
-        network: Node,
-
-        /// Checkpoint sequence number to fork at (defaults to latest)
-        #[arg(long)]
-        checkpoint: Option<u64>,
-
-        /// Optional directory where to store the fork data. If none is provided, a default
-        /// directory is used based on `XDG_DATA_HOME` or `HOME` env variables (APPData on Windows)
-        #[arg(long)]
-        data_dir: Option<PathBuf>,
-
-        /// Address whose owned objects should be recorded in the seed manifest
-        ///
-        /// This can be specified multiple times to seed multiple addresses
-        #[arg(long = "address")]
-        addresses: Vec<HaneulAddress>,
-
-        /// Object ID to fetch and seed if it is owned by an address
-        ///
-        /// This can be specified multiple times to seed multiple objects
-        #[arg(long = "object")]
-        object_ids: Vec<ObjectID>,
-
-        /// Address to bind the RPC server to.
-        #[arg(long, default_value = DEFAULT_RPC_ADDR)]
-        rpc_addr: SocketAddr,
+        #[command(flatten)]
+        args: StartArgs,
     },
 
     /// Advance the network clock by a given duration
@@ -147,28 +113,7 @@ impl Cli {
 
     pub async fn execute(self, version: &'static str) -> Result<()> {
         match self.command {
-            Command::Start {
-                network,
-                checkpoint,
-                data_dir,
-                addresses,
-                object_ids,
-                rpc_addr,
-            } => {
-                cmd_start(
-                    network,
-                    checkpoint,
-                    data_dir,
-                    SeedInput {
-                        addresses: addresses.into_iter().collect(),
-                        object_ids: object_ids.into_iter().collect(),
-                    },
-                    rpc_addr,
-                    self.json_output,
-                    version,
-                )
-                .await
-            }
+            Command::Start { args } => cmd_start(args, self.json_output, version).await,
             Command::AdvanceClock {
                 rpc_addr,
                 duration_ms,
@@ -192,15 +137,19 @@ fn print_output<T: Serialize + std::fmt::Display>(value: &T, json_output: bool) 
     }
 }
 
-async fn cmd_start(
-    node: Node,
-    checkpoint: Option<u64>,
-    data_dir: Option<PathBuf>,
-    seed_input: SeedInput,
-    rpc_addr: SocketAddr,
-    json_output: bool,
-    version: &'static str,
-) -> Result<()> {
+async fn cmd_start(args: StartArgs, json_output: bool, version: &'static str) -> Result<()> {
+    let StartArgs {
+        network: node,
+        checkpoint,
+        data_dir,
+        addresses,
+        object_ids,
+        rpc_addr,
+    } = args;
+    let seed_input = SeedInput {
+        addresses: addresses.into_iter().collect(),
+        object_ids: object_ids.into_iter().collect(),
+    };
     let network_name = node.network_name();
 
     let resolved_start = crate::startup::resolve_start_checkpoint_from_local(

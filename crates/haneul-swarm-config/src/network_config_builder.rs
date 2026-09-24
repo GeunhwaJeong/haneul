@@ -8,10 +8,10 @@ use std::{num::NonZeroUsize, path::Path, sync::Arc};
 
 use haneul_config::ExecutionCacheConfig;
 use haneul_config::genesis::{TokenAllocation, TokenDistributionScheduleBuilder};
-use haneul_config::node::AuthorityOverloadConfig;
 #[cfg(msim)]
 use haneul_config::node::ExecutionTimeObserverConfig;
 use haneul_config::node::FundsWithdrawSchedulerType;
+use haneul_config::node::{AuthorityOverloadConfig, ConsensusTransactionPoolConfig};
 use haneul_config::transaction_deny_config::PeerDenySyncConfig;
 use haneul_protocol_config::Chain;
 use haneul_types::base_types::{AuthorityName, HaneulAddress};
@@ -116,6 +116,7 @@ pub struct ConfigBuilder<R = OsRng> {
     jwk_fetch_interval: Option<Duration>,
     num_unpruned_validators: Option<usize>,
     authority_overload_config: Option<AuthorityOverloadConfig>,
+    consensus_transaction_pool_config: Option<ConsensusTransactionPoolConfig>,
     execution_cache_config: Option<ExecutionCacheConfig>,
     data_ingestion_dir: Option<PathBuf>,
     policy_config: Option<PolicyConfig>,
@@ -162,6 +163,7 @@ impl ConfigBuilder {
             jwk_fetch_interval: None,
             num_unpruned_validators: None,
             authority_overload_config: None,
+            consensus_transaction_pool_config: None,
             execution_cache_config: None,
             data_ingestion_dir: None,
             policy_config: None,
@@ -361,6 +363,14 @@ impl<R> ConfigBuilder<R> {
         self
     }
 
+    pub fn with_consensus_transaction_pool_config(
+        mut self,
+        config: ConsensusTransactionPoolConfig,
+    ) -> Self {
+        self.consensus_transaction_pool_config = Some(config);
+        self
+    }
+
     pub fn with_execution_cache_config(mut self, c: ExecutionCacheConfig) -> Self {
         self.execution_cache_config = Some(c);
         self
@@ -389,6 +399,7 @@ impl<R> ConfigBuilder<R> {
             num_unpruned_validators: self.num_unpruned_validators,
             jwk_fetch_interval: self.jwk_fetch_interval,
             authority_overload_config: self.authority_overload_config,
+            consensus_transaction_pool_config: self.consensus_transaction_pool_config,
             execution_cache_config: self.execution_cache_config,
             data_ingestion_dir: self.data_ingestion_dir,
             policy_config: self.policy_config,
@@ -584,6 +595,10 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                         builder.with_authority_overload_config(authority_overload_config.clone());
                 }
 
+                if let Some(config) = &self.consensus_transaction_pool_config {
+                    builder = builder.with_consensus_transaction_pool_config(config.clone());
+                }
+
                 if let Some(execution_cache_config) = &self.execution_cache_config {
                     builder = builder.with_execution_cache_config(execution_cache_config.clone());
                 }
@@ -769,9 +784,12 @@ mod test {
                 &epoch.epoch_id(),
                 epoch.epoch_start_timestamp(),
                 input_objects,
-                std::collections::BTreeMap::new(),
+                haneul_types::base_types::SystemObjectVersions::empty(),
+                // The genesis transaction cannot withdraw object funds, so there are never
+                // unsettled withdrawals for it to account for.
+                &haneul_types::accumulator_root::EmptyUnsettledObjectFunds,
                 gas_data,
-                HaneulGasStatus::new_unmetered(),
+                HaneulGasStatus::new_unmetered(&protocol_config),
                 kind,
                 None, // compat_args
                 signer,

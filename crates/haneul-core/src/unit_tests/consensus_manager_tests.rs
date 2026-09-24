@@ -79,6 +79,7 @@ async fn test_consensus_manager() {
         consensus_config,
         &registry_service,
         consensus_client,
+        None,
         haneul_types::node_role::NodeRole::Validator,
     );
 
@@ -164,6 +165,7 @@ async fn test_consensus_manager_address_update() {
         consensus_config,
         &registry_service,
         consensus_client,
+        None,
         NodeRole::Validator,
     ));
 
@@ -306,6 +308,7 @@ async fn test_consensus_active_address_source_metric() {
         consensus_config,
         &registry_service,
         consensus_client,
+        None,
         NodeRole::Validator,
     );
 

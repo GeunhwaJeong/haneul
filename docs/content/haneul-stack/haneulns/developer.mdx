@@ -118,15 +118,13 @@ HaneulNS NFT ownership allows any address to be set as the target address. So, t
 
 ### Offchain resolution
 
-For offchain resolution, use the available Haneul API endpoints:
+For offchain resolution, pass the name to the [`address`](/references/haneul-api/haneul-graphql/beta/reference/operations/queries/address) GraphQL query. To fetch the full name record instead of just the target address, use the [`nameRecord`](/references/haneul-api/haneul-graphql/beta/reference/operations/queries/name-record) query.
 
-- [JSON-RPC](https://docs.haneul.io/haneul-api-ref#haneulx_resolvenameserviceaddress)
-
-- [GraphQL](https://docs.haneul.io/references/haneul-api/haneul-graphql/reference/api/queries/resolve-haneulns-address)
+The JSON-RPC `haneulx_resolveNameServiceAddress` method previously served this lookup. JSON-RPC is disabled on Haneul Foundation Mainnet full nodes, so migrate any code still calling it. See the [JSON-RPC Migration Guide](/develop/accessing-data/json-rpc-migration).
 
 :::info
 
-For GraphQL's default name resolution, use the [`defaultHaneulnsName` field](https://docs.haneul.io/references/haneul-api/haneul-graphql/reference/types/objects/address).
+For reverse lookup, read the [`defaultNameRecord` field](/references/haneul-api/haneul-graphql/beta/reference/types/objects/address) on the `Address` type. It replaced `defaultHaneulnsName`.
 
 :::
 
@@ -208,7 +206,7 @@ This allows for complex queries such as:
 
 You can find the indexer in the [`haneulns-indexer` GitHub repository](https://github.com/GeunhwaJeong/haneul/tree/main/crates/haneulns-indexer). Feel free to spin up your own service if you are looking to index data tailored to your needs.
 
-For a deeper understanding of how the indexer works and how to integrate it into your projects, refer to [Haneul's custom indexer documentation](https://docs.haneul.io/guides/developer/advanced/custom-indexer).
+For a deeper understanding of how the indexer works and how to integrate it into your projects, refer to [Haneul's custom indexer documentation](/develop/accessing-data/custom-indexer).
 
 ## Subnames
 

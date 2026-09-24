@@ -10,7 +10,7 @@ use futures::{TryStreamExt, future::join_all};
 use haneul_rpc::client::Client;
 use haneul_rpc::field::FieldMaskUtil;
 use haneul_rpc::proto::haneul::rpc::v2::{
-    GetBalanceRequest, GetCheckpointRequest, GetEpochRequest, ListOwnedObjectsRequest,
+    GetBalanceRequest, GetEpochRequest, ListOwnedObjectsRequest,
 };
 use haneul_sdk_types::{Address, StructTag};
 use haneul_types::base_types::HaneulAddress;
@@ -24,7 +24,6 @@ use crate::types::{
 };
 use crate::{HaneulEnv, OnlineServerContext};
 use haneul_types::base_types::{ObjectID, SequenceNumber};
-use haneul_types::messages_checkpoint::CheckpointSequenceNumber;
 
 /// BCS layout for `0x3::staking_pool::FungibleStakedHaneul`.
 /// Field order must match the Move struct definition exactly (BCS is positional).
@@ -48,27 +47,13 @@ pub async fn balance(
     let address = request.account_identifier.address;
     let currencies = &request.currencies;
 
-    let checkpoint = get_checkpoint(&mut ctx).await?;
+    let block_identifier = ctx.blocks().current_block_identifier().await?;
     let balances = get_balances(&mut ctx, &request, address, currencies.clone()).await?;
 
     Ok(AccountBalanceResponse {
-        block_identifier: ctx.blocks().create_block_identifier(checkpoint).await?,
+        block_identifier,
         balances,
     })
-}
-
-async fn get_checkpoint(ctx: &mut OnlineServerContext) -> Result<CheckpointSequenceNumber, Error> {
-    let request =
-        GetCheckpointRequest::latest().with_read_mask(FieldMask::from_paths(["sequence_number"]));
-
-    Ok(ctx
-        .client
-        .ledger_client()
-        .get_checkpoint(request)
-        .await?
-        .into_inner()
-        .checkpoint()
-        .sequence_number())
 }
 
 async fn get_balances(

@@ -1,0 +1,52 @@
+[package]
+name = "haneul-adapter-v3"
+version = "0.1.0"
+authors.workspace = true
+description = "Adapter and accompanying CLI for local haneul development"
+license = "Apache-2.0"
+publish = false
+edition = "2024"
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { workspace = true, features = ["backtrace"] }
+bcs.workspace = true
+leb128.workspace = true
+tracing.workspace = true
+serde.workspace = true
+indexmap.workspace = true
+serde_json.workspace = true
+
+move-binary-format.workspace = true
+move-bytecode-utils.workspace = true
+move-bytecode-verifier-meter.workspace = true
+move-core-types.workspace = true
+move-trace-format.workspace = true
+move-vm-config.workspace = true
+haneullabs-common.workspace = true
+haneullabs-metrics.workspace = true
+nonempty.workspace = true
+
+move-bytecode-verifier = { path = "../../../../external-crates/move/historical-versions/v3/crates/move-bytecode-verifier", package = "move-bytecode-verifier-v3" }
+move-vm-runtime = { path = "../../../../external-crates/move/historical-versions/v3/crates/move-vm-runtime", package = "move-vm-runtime-v3" }
+move-vm-profiler = { path = "../../../../external-crates/move/crates/move-vm-profiler" }
+haneul-move-natives = { path = "../haneul-move-natives", package = "haneul-move-natives-v3" }
+haneul-verifier = { path = "../haneul-verifier", package = "haneul-verifier-v3" }
+move-vm-types = { path = "../../../../external-crates/move/historical-versions/v3/crates/move-vm-types", package = "move-vm-types-v3" }
+move-regex-borrow-graph = { path = "../../../../external-crates/move/crates/move-regex-borrow-graph" }
+
+haneul-macros.workspace = true
+haneul-protocol-config.workspace = true
+haneul-types.workspace = true
+parking_lot.workspace = true
+either.workspace = true
+
+[features]
+tracing = [
+    "haneul-types/tracing",
+    "move-vm-runtime/tracing",
+    "move-vm-profiler/tracing",
+    "move-vm-config/tracing",
+]

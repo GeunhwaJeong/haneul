@@ -1065,7 +1065,7 @@ impl TryFrom<TransactionEffects> for HaneulTransactionBlockEffects {
                 gas_used: effect.gas_cost_summary().clone(),
                 shared_objects: to_haneul_object_ref(
                     effect
-                        .input_consensus_objects()
+                        .accessed_consensus_objects()
                         .into_iter()
                         .map(|kind| {
                             #[allow(deprecated)]
@@ -2438,6 +2438,9 @@ impl HaneulCallArg {
                     withdraw_from: match arg.withdraw_from {
                         WithdrawFrom::Sender => HaneulWithdrawFrom::Sender,
                         WithdrawFrom::Sponsor => HaneulWithdrawFrom::Sponsor,
+                        WithdrawFrom::SenderAllowance { funder, allowance } => {
+                            HaneulWithdrawFrom::SenderAllowance { funder, allowance }
+                        }
                     },
                 })
             }
@@ -2539,6 +2542,10 @@ pub enum HaneulWithdrawalTypeArg {
 pub enum HaneulWithdrawFrom {
     Sender,
     Sponsor,
+    SenderAllowance {
+        funder: HaneulAddress,
+        allowance: ObjectID,
+    },
 }
 
 #[derive(Eq, PartialEq, Debug, Clone, Serialize, Deserialize, JsonSchema)]

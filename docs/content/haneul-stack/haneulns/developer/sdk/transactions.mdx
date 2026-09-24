@@ -25,6 +25,12 @@ answer: >-
   ability to compose multiple operations in a single transaction.
 ---
 
+:::caution
+
+The examples on this page use `HaneulnsClient`. `@haneullabs/haneulns` 2.0 still exports it, but the [`haneulns()` client extension](/haneul-stack/haneulns/developer/sdk) is the preferred pattern. The `HaneulnsTransaction` commands themselves are unchanged, but the client you pass them is constructed differently. See [Migrating @haneullabs/haneulns](https://sdk.haneul-labs.com/haneul/migrations/haneul-2.0/haneulns).
+
+:::
+
 `HaneulnsTransaction` is the client you use similar to `Transaction`, and helps in building a transaction.
 You need to instantiate it once in every programmable transaction block (PTB) that you are building.
 

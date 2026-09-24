@@ -11,8 +11,7 @@ use std::collections::BTreeMap;
 use haneul_types::accumulator_root::AccumulatorValue;
 use haneul_types::balance::Balance;
 use haneul_types::base_types::HaneulAddress;
-use haneul_types::base_types::ObjectID;
-use haneul_types::base_types::SequenceNumber;
+use haneul_types::base_types::SystemObjectVersions;
 use haneul_types::coin_reservation::ParsedObjectRefWithdrawal;
 use haneul_types::digests::{ChainIdentifier, TransactionDigest};
 use haneul_types::effects::{InputConsensusObject, TransactionEffects, TransactionEffectsAPI};
@@ -129,7 +128,7 @@ struct PreparedTx {
     /// its recorded effects. The executor loads each system object at exactly this version and
     /// treats a system read with no assigned version as an invariant violation, so it must cover
     /// every such object the transaction touched.
-    system_object_versions: BTreeMap<ObjectID, SequenceNumber>,
+    system_object_versions: SystemObjectVersions,
     gas_data: GasData,
     gas_status: HaneulGasStatus,
     txn_kind: TransactionKind,
@@ -213,19 +212,7 @@ pub(crate) fn execute_one_transaction(
         }
     };
 
-    // The versions the transaction's system (consensus) objects were sequenced against, recovered
-    // from its effects (mirrors the per-transaction map a live node assigns). Cancelled inputs carry
-    // no live version and are excluded above, so only mutated/read-only entries remain.
-    let system_object_versions = executed
-        .effects
-        .input_consensus_objects()
-        .into_iter()
-        .filter_map(|ico| match ico {
-            InputConsensusObject::Mutate((id, v, _))
-            | InputConsensusObject::ReadOnly((id, v, _)) => Some((id, v)),
-            _ => None,
-        })
-        .collect();
+    let system_object_versions = SystemObjectVersions::from_effects(&executed.effects, store);
 
     let gas_data = txn_data.gas_data().clone();
     let signer = txn_data.sender();
@@ -496,6 +483,9 @@ fn run_execution(
             ctx.epoch_start_timestamp_ms,
             input_objects,
             system_object_versions,
+            // TODO: When backtesting object funds withdraws, we will need unsettled balance
+            // information to reproduce the original execution.
+            &haneul_types::accumulator_root::EmptyUnsettledObjectFunds,
             gas_data,
             gas_status,
             txn_kind,
@@ -544,7 +534,7 @@ fn log_divergence(
         .collect();
     let missing_consensus: Vec<String> = executed
         .effects
-        .input_consensus_objects()
+        .accessed_consensus_objects()
         .into_iter()
         .filter_map(|ico| match ico {
             InputConsensusObject::Mutate((id, v, _))

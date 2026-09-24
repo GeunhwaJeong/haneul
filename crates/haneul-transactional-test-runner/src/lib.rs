@@ -19,7 +19,7 @@ pub mod test_adapter;
 
 #[cfg(feature = "testing")]
 pub use move_transactional_test_runner::framework::{
-    create_adapter, run_tasks_with_adapter, run_test_impl,
+    create_adapter_and_taskify, run_tasks_with_adapter, run_test_impl,
 };
 
 #[cfg(feature = "testing")]
@@ -156,14 +156,9 @@ impl TransactionalAdapter for ValidatorWithFullnode {
         &mut self,
         transaction: Transaction,
     ) -> anyhow::Result<(TransactionEffects, Option<ExecutionError>)> {
-        let is_consensus_tx = transaction.is_consensus_tx();
-        let (_, effects, execution_error) = submit_and_execute_with_error(
-            &self.validator,
-            Some(&self.fullnode),
-            transaction,
-            is_consensus_tx,
-        )
-        .await?;
+        let (_, effects, execution_error) =
+            submit_and_execute_with_error(&self.validator, Some(&self.fullnode), transaction)
+                .await?;
         let effects = effects.into_data();
         self.pending_effects.push(effects.clone());
         Ok((effects, execution_error))

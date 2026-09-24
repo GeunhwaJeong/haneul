@@ -3,16 +3,18 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 15 tasks
 
+// Tests minimum transfer amount enforcement for gasless transactions.
+
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 9-25:
+task 1, lines 8-22:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 10776800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 28-32:
+task 3, lines 27-31:
 //# programmable --sender A --inputs 50000 object(1,1) @A
 // Mint 50000 USDC and send to A's address balance
 //> 0: haneul::coin::mint<test::usdc::USDC>(Input(1), Input(0));
@@ -23,15 +25,15 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(3,0), A, haneul::balance::Balance<test::usdc::USDC>, Merge, 50000)
 gas summary: computation_cost: 1000000, storage_cost: 2690400,  storage_rebate: 2663496, non_refundable_storage_fee: 26904
 
-task 4, line 34:
+task 4, line 33:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, line 36:
+task 5, line 35:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> A
 50000
 
-task 6, lines 38-41:
+task 6, lines 37-40:
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs withdraw<haneul::balance::Balance<test::usdc::USDC>>(500) @B
 // Test 1: Transfer BELOW minimum (500 < 1000) should fail
 //> 0: haneul::balance::redeem_funds<test::usdc::USDC>(Input(0));
@@ -39,7 +41,7 @@ task 6, lines 38-41:
 Error: Transaction Effects Status: Insufficient Gas.
 Debug of error: InsufficientGas at command None
 
-task 7, lines 43-46:
+task 7, lines 42-45:
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs withdraw<haneul::balance::Balance<test::usdc::USDC>>(1000) @B
 // Test 2: Transfer AT minimum (1000) should succeed
 //> 0: haneul::balance::redeem_funds<test::usdc::USDC>(Input(0));
@@ -48,19 +50,19 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(3,0), A, haneul::balance::Balance<test::usdc::USDC>, Split, 1000), (object(7,0), B, haneul::balance::Balance<test::usdc::USDC>, Merge, 1000)
 gas summary: computation_cost: 0, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 8, line 48:
+task 8, line 47:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 9, line 50:
+task 9, line 49:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> A
 49000
 
-task 10, line 52:
+task 10, line 51:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> B
 1000
 
-task 11, lines 54-59:
+task 11, lines 53-58:
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs withdraw<haneul::balance::Balance<test::usdc::USDC>>(500) withdraw<haneul::balance::Balance<test::usdc::USDC>>(500) @B
 // Test 3: Two 500 transfers to SAME recipient, aggregated 1000 meets minimum
 //> 0: haneul::balance::redeem_funds<test::usdc::USDC>(Input(0));
@@ -71,15 +73,15 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(3,0), A, haneul::balance::Balance<test::usdc::USDC>, Split, 1000), (object(7,0), B, haneul::balance::Balance<test::usdc::USDC>, Merge, 1000)
 gas summary: computation_cost: 0, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 12, line 61:
+task 12, line 60:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 13, line 63:
+task 13, line 62:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> B
 2000
 
-task 14, lines 65-70:
+task 14, lines 64-69:
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs withdraw<haneul::balance::Balance<test::usdc::USDC>>(1500) withdraw<haneul::balance::Balance<test::usdc::USDC>>(500) @B @C
 // Test 4: Two recipients, one above minimum (1500), one below (500) should fail
 //> 0: haneul::balance::redeem_funds<test::usdc::USDC>(Input(0));

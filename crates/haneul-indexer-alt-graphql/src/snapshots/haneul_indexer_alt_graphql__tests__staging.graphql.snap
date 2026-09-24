@@ -401,6 +401,14 @@ Input for withdrawing funds from an accumulator.
 """
 type BalanceWithdraw {
 	"""
+	The allowance authorizing the withdrawal, if `withdrawFrom` is `SENDER_ALLOWANCE`. Use `asTransactionObject` to see it as this transaction referenced it.
+	"""
+	allowance: Address
+	"""
+	The account whose funds are withdrawn, if `withdrawFrom` is `SENDER_ALLOWANCE`.
+	"""
+	funder: Address
+	"""
 	How much to withdraw from the accumulator.
 	"""
 	reservation: WithdrawalReservation
@@ -1690,11 +1698,6 @@ type GenesisTransaction {
 	"""
 	objects(first: Int, after: String, last: Int, before: String): ObjectConnection
 }
-
-"""
-String containing 32 byte hex-encoded address, with a leading '0x'. Leading zeroes can be omitted on input but will always appear in outputs (HaneulAddress in output is guaranteed to be 66 characters long).
-"""
-scalar HaneulAddress
 
 """
 Interface implemented by GraphQL types representing entities that are identified by an address.
@@ -4211,6 +4214,11 @@ type Subscription {
 }
 
 """
+String containing 32 byte hex-encoded address, with a leading '0x'. Leading zeroes can be omitted on input but will always appear in outputs (HaneulAddress in output is guaranteed to be 66 characters long).
+"""
+scalar HaneulAddress
+
+"""
 Future behavior of a currency's supply.
 """
 enum SupplyState {
@@ -4706,6 +4714,10 @@ enum WithdrawFrom {
 	The funds are withdrawn from the sponsor's account.
 	"""
 	SPONSOR
+	"""
+	The funds are withdrawn from the account of an allowance's funder, under an allowance granted to the transaction sender. See `BalanceWithdraw.funder` and `BalanceWithdraw.allowance`.
+	"""
+	SENDER_ALLOWANCE
 }
 
 type WithdrawMaxAmountU64 {

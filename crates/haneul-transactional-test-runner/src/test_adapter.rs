@@ -721,6 +721,8 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
             stop_line,
             data,
             task_text,
+            unattached_comments_before: _,
+            unattached_comments_after: _,
         } = task;
         macro_rules! get_obj {
             ($fake_id:ident, $version:expr) => {{
@@ -1053,8 +1055,12 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
                 gas_price,
             }) => {
                 let mut builder = ProgrammableTransactionBuilder::new();
-                let obj_arg =
-                    HaneulValue::Object(fake_id, None).into_argument(&mut builder, self)?;
+                let sender_address = self.get_sender(sender.clone()).address;
+                let obj_arg = HaneulValue::Object(fake_id, None).into_argument(
+                    &mut builder,
+                    self,
+                    sender_address,
+                )?;
                 let recipient = match self.accounts.get(&recipient) {
                     Some(test_account) => test_account.address,
                     None => panic!("Unbound account {}", recipient),
@@ -1133,14 +1139,18 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
                 }
 
                 let inputs = self.compiled_state().resolve_args(inputs)?;
+                let sender_address = self.get_sender(sender.clone()).address;
                 let inputs: Vec<CallArg> = inputs
                     .into_iter()
-                    .map(|arg| arg.into_call_arg(self))
+                    .map(|arg| arg.into_call_arg(self, sender_address))
                     .collect::<anyhow::Result<_>>()?;
-                let file = data.ok_or_else(|| {
-                    anyhow::anyhow!("Missing commands for programmable transaction")
-                })?;
-                let contents = std::fs::read_to_string(file.path())?;
+                // `data` is absent when taskification finds no input text (rather than creating an
+                // empty temporary file), including when comments are rendered separately in
+                // snapshots. Treat it as empty input instead of rejecting an empty transaction.
+                let contents = match data {
+                    Some(file) => std::fs::read_to_string(file.path())?,
+                    None => String::new(),
+                };
                 let commands = ParsedCommand::parse_vec(&contents)?;
                 let staged = &self.staged_modules;
                 let state = &self.compiled_state;
@@ -1212,7 +1222,7 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
                         },
                     );
                     if bench_programmable {
-                        let assigned_versions = AssignedVersions::default();
+                        let assigned_versions = AssignedVersions::empty();
                         let objects = self
                             .executor
                             .read_input_objects(transaction.clone(), assigned_versions)
@@ -1498,8 +1508,11 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
                     HaneulValue::Shared(_, _, _) => {
                         bail!("shared object is not supported as an input")
                     }
-                    HaneulValue::Withdraw(_, _) => {
+                    HaneulValue::Withdraw(_, _) | HaneulValue::AllowanceWithdraw(_, _, _, _) => {
                         bail!("withdraw reservation is not supported as an input for set-address")
+                    }
+                    HaneulValue::CoinReservation(_, _) => {
+                        bail!("coin reservation is not supported as an input for set-address")
                     }
                 };
                 let value = NumericalAddress::new(value.into_bytes(), NumberFormat::Hex);
@@ -1556,7 +1569,7 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
                     .unwrap();
 
                 // Note: benchmark does not support shared object version assignment
-                let assigned_versions = AssignedVersions::default();
+                let assigned_versions = AssignedVersions::empty();
                 let objects = self
                     .executor
                     .read_input_objects(tx.clone(), assigned_versions)
@@ -1667,7 +1680,7 @@ impl HaneulTestAdapter {
         &*self.executor
     }
 
-    fn get_chain_identifier(&self) -> ChainIdentifier {
+    pub(crate) fn get_chain_identifier(&self) -> ChainIdentifier {
         self.get_checkpoint_by_sequence_number(0)
             .map(|cp| ChainIdentifier::from(*cp.digest()))
             .unwrap_or_else(|| {
@@ -1804,7 +1817,12 @@ impl HaneulTestAdapter {
         let mut builder = ProgrammableTransactionBuilder::new();
 
         // Argument::Input(0)
-        HaneulValue::Object(upgrade_capability, None).into_argument(&mut builder, self)?;
+        let sender_address = self.get_sender(Some(sender.clone())).address;
+        HaneulValue::Object(upgrade_capability, None).into_argument(
+            &mut builder,
+            self,
+            sender_address,
+        )?;
         let upgrade_arg = builder.pure(policy).unwrap();
         let digest: Vec<u8> = MovePackage::compute_digest_for_modules_and_deps(
             &modules_bytes,
@@ -2013,9 +2031,10 @@ impl HaneulTestAdapter {
             sender, gas_price, ..
         } = extra;
         let mut builder = ProgrammableTransactionBuilder::new();
+        let sender_address = self.get_sender(sender.clone()).address;
         let arguments = args
             .into_iter()
-            .map(|arg| arg.into_argument(&mut builder, self))
+            .map(|arg| arg.into_argument(&mut builder, self, sender_address))
             .collect::<anyhow::Result<_>>()?;
         let package_id = ObjectID::from(*module_id.address());
 

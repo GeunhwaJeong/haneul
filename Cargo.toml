@@ -59,24 +59,24 @@ exclude = [
   "external-crates/move/crates/move-vm-transactional-tests",
   "external-crates/move/crates/serializer-tests",
   "external-crates/move/crates/test-generation",
-  "external-crates/move/move-execution/v0/crates/move-bytecode-verifier",
-  "external-crates/move/move-execution/v0/crates/move-stdlib-natives",
-  "external-crates/move/move-execution/v0/crates/move-vm-runtime",
-  "external-crates/move/move-execution/v0/crates/move-vm-types",
-  "external-crates/move/move-execution/v1/crates/move-bytecode-verifier",
-  "external-crates/move/move-execution/v1/crates/move-stdlib-natives",
-  "external-crates/move/move-execution/v1/crates/move-vm-runtime",
-  "external-crates/move/move-execution/v1/crates/move-vm-types",
-  "external-crates/move/move-execution/v2/crates/move-abstract-interpreter",
-  "external-crates/move/move-execution/v2/crates/move-bytecode-verifier",
-  "external-crates/move/move-execution/v2/crates/move-stdlib-natives",
-  "external-crates/move/move-execution/v2/crates/move-vm-runtime",
-  "external-crates/move/move-execution/v2/crates/move-vm-types",
-  "external-crates/move/move-execution/v3/crates/move-abstract-interpreter",
-  "external-crates/move/move-execution/v3/crates/move-bytecode-verifier",
-  "external-crates/move/move-execution/v3/crates/move-stdlib-natives",
-  "external-crates/move/move-execution/v3/crates/move-vm-runtime",
-  "external-crates/move/move-execution/v3/crates/move-vm-types",
+  "external-crates/move/historical-versions/v0/crates/move-bytecode-verifier",
+  "external-crates/move/historical-versions/v0/crates/move-stdlib-natives",
+  "external-crates/move/historical-versions/v0/crates/move-vm-runtime",
+  "external-crates/move/historical-versions/v0/crates/move-vm-types",
+  "external-crates/move/historical-versions/v1/crates/move-bytecode-verifier",
+  "external-crates/move/historical-versions/v1/crates/move-stdlib-natives",
+  "external-crates/move/historical-versions/v1/crates/move-vm-runtime",
+  "external-crates/move/historical-versions/v1/crates/move-vm-types",
+  "external-crates/move/historical-versions/v2/crates/move-abstract-interpreter",
+  "external-crates/move/historical-versions/v2/crates/move-bytecode-verifier",
+  "external-crates/move/historical-versions/v2/crates/move-stdlib-natives",
+  "external-crates/move/historical-versions/v2/crates/move-vm-runtime",
+  "external-crates/move/historical-versions/v2/crates/move-vm-types",
+  "external-crates/move/historical-versions/v3/crates/move-abstract-interpreter",
+  "external-crates/move/historical-versions/v3/crates/move-bytecode-verifier",
+  "external-crates/move/historical-versions/v3/crates/move-stdlib-natives",
+  "external-crates/move/historical-versions/v3/crates/move-vm-runtime",
+  "external-crates/move/historical-versions/v3/crates/move-vm-types",
 ]
 
 members = [
@@ -210,26 +210,26 @@ members = [
   "crates/x",
   "haneul-execution",
   "haneul-execution/cut",
+  "haneul-execution/historical-versions/v0/haneul-adapter",
+  "haneul-execution/historical-versions/v0/haneul-move-natives",
+  "haneul-execution/historical-versions/v0/haneul-verifier",
+  "haneul-execution/historical-versions/v1/haneul-adapter",
+  "haneul-execution/historical-versions/v1/haneul-move-natives",
+  "haneul-execution/historical-versions/v1/haneul-verifier",
+  "haneul-execution/historical-versions/v2/haneul-adapter",
+  "haneul-execution/historical-versions/v2/haneul-move-natives",
+  "haneul-execution/historical-versions/v2/haneul-verifier",
+  "haneul-execution/historical-versions/v3/haneul-adapter",
+  "haneul-execution/historical-versions/v3/haneul-move-natives",
+  "haneul-execution/historical-versions/v3/haneul-verifier",
   "haneul-execution/latest/haneul-adapter",
   "haneul-execution/latest/haneul-move-natives",
   "haneul-execution/latest/haneul-verifier",
-  "haneul-execution/v0/haneul-adapter",
-  "haneul-execution/v0/haneul-move-natives",
-  "haneul-execution/v0/haneul-verifier",
-  "haneul-execution/v1/haneul-adapter",
-  "haneul-execution/v1/haneul-move-natives",
-  "haneul-execution/v1/haneul-verifier",
-  "haneul-execution/v2/haneul-adapter",
-  "haneul-execution/v2/haneul-move-natives",
-  "haneul-execution/v2/haneul-verifier",
-  "haneul-execution/v3/haneul-adapter",
-  "haneul-execution/v3/haneul-move-natives",
-  "haneul-execution/v3/haneul-verifier",
 ]
 
 [workspace.package]
 # This version string will be inherited by haneul-core, haneul-faucet, haneul-node, haneul-tools, haneul-sdk, haneul-move-build, and haneul crates.
-version = "1.11.0"
+version = "1.12.0"
 authors = ["Geunhwa Jeong <jeonggh892@gmail.com>"]
 repository = "https://github.com/GeunhwaJeong/haneul"
 
@@ -396,12 +396,12 @@ either = "1.8.0"
 enum_dispatch = "^0.3"
 expect-test = "1.4.0"
 eyre = "0.6.8"
-fastcrypto = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "a9f994cd6b2882c7e916786943712fce1f2b6013" }
-fastcrypto-tbls = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "a9f994cd6b2882c7e916786943712fce1f2b6013" }
-fastcrypto-vdf = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "a9f994cd6b2882c7e916786943712fce1f2b6013", features = [
+fastcrypto = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "076bf5ad8cea140dc7cf5c5861c24a36acdf64ce" }
+fastcrypto-tbls = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "076bf5ad8cea140dc7cf5c5861c24a36acdf64ce" }
+fastcrypto-vdf = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "076bf5ad8cea140dc7cf5c5861c24a36acdf64ce", features = [
   "experimental",
 ] }
-fastcrypto-zkp = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "a9f994cd6b2882c7e916786943712fce1f2b6013", package = "fastcrypto-zkp" }
+fastcrypto-zkp = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "076bf5ad8cea140dc7cf5c5861c24a36acdf64ce", package = "fastcrypto-zkp" }
 fdlimit = "0.2.1"
 flate2 = "1.0.28"
 fs_extra = "1.3.0"
@@ -410,6 +410,7 @@ futures-core = "0.3.21"
 gcp_auth = "0.12.6"
 git-version = "0.3.5"
 governor = "0.6.0"
+h2 = "0.4.19"
 haneul = { path = "crates/haneul" }
 haneul-adapter-transactional-tests = { path = "crates/haneul-adapter-transactional-tests" }
 haneul-analytics-indexer = { path = "crates/haneul-analytics-indexer" }
@@ -423,7 +424,7 @@ haneul-config = { path = "crates/haneul-config" }
 haneul-consistent-store = { path = "crates/haneul-consistent-store" }
 haneul-core = { path = "crates/haneul-core" }
 haneul-cost = { path = "crates/haneul-cost" }
-haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "6d631c01c8c34b84d83bcd76a6b5836b36444896", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
+haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "48cae861d5745a1bae0b28535e556cfe1c74d81e", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
 haneul-data-ingestion-core = { path = "crates/haneul-data-ingestion-core" }
 haneul-data-store = { path = "crates/haneul-data-store" }
 haneul-display = { path = "crates/haneul-display" }
@@ -490,7 +491,7 @@ haneul-proxy = { path = "crates/haneul-proxy" }
 haneul-replay = { path = "crates/haneul-replay" }
 haneul-replay-2 = { path = "crates/haneul-replay-2" }
 haneul-rosetta = { path = "crates/haneul-rosetta" }
-haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "6d631c01c8c34b84d83bcd76a6b5836b36444896", features = [ "unstable" ] }
+haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "48cae861d5745a1bae0b28535e556cfe1c74d81e", features = [ "unstable" ] }
 
 ### Workspace Members ###
 haneul-rpc-api = { path = "crates/haneul-rpc-api" }
@@ -499,7 +500,7 @@ haneul-rpc-loadgen = { path = "crates/haneul-rpc-loadgen" }
 haneul-rpc-resolver = { path = "crates/haneul-rpc-resolver" }
 haneul-rpc-store = { path = "crates/haneul-rpc-store" }
 haneul-sdk = { path = "crates/haneul-sdk" }
-haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "6d631c01c8c34b84d83bcd76a6b5836b36444896", features = [ "hash", "serde" ] }
+haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "48cae861d5745a1bae0b28535e556cfe1c74d81e", features = [ "hash", "serde" ] }
 haneul-simulator = { path = "crates/haneul-simulator" }
 haneul-snapshot = { path = "crates/haneul-snapshot" }
 haneul-source-verification = { path = "crates/haneul-source-verification" }
