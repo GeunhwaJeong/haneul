@@ -1,28 +1,27 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 937
 ---
 processed 16 tasks
 
-task 1, lines 6-57:
+task 1, lines 7-58:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 8945200,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 8990800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 59:
+task 2, line 60:
 //# run t2::o2::create
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 61:
+task 3, line 62:
 //# run t2::o2::create
 created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 63:
+task 4, line 64:
 //# view-object 2,0
 Owner: Shared( 3 )
 Version: 3
@@ -34,7 +33,7 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 5, line 65:
+task 5, line 66:
 //# view-object 3,0
 Owner: Shared( 4 )
 Version: 4
@@ -46,7 +45,7 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 6, lines 67-70:
+task 6, lines 68-71:
 // pass through a move function and then try to freeze
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: t2::o2::id<t2::o2::Obj2>(Input(1));
@@ -54,7 +53,7 @@ task 6, lines 67-70:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 7, lines 72-75:
+task 7, lines 73-76:
 // pass through a move function and then try to add as dof
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: t2::o2::id<t2::o2::Obj2>(Input(1));
@@ -62,7 +61,7 @@ task 7, lines 72-75:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 8, lines 77-80:
+task 8, lines 78-81:
 // pass through a move function and then try to add as df
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: t2::o2::id<t2::o2::Obj2>(Input(1));
@@ -70,7 +69,7 @@ task 8, lines 77-80:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 9, lines 82-85:
+task 9, lines 83-86:
 // pass through a move function and then try to transfer it
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: t2::o2::id<t2::o2::Obj2>(Input(1));
@@ -78,13 +77,13 @@ task 9, lines 82-85:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 10, line 87:
+task 10, line 88:
 //# run t2::o2::mint_shared_coin
 created: object(10,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 11, line 89:
+task 11, line 90:
 //# view-object 10,0
 Owner: Shared( 9 )
 Version: 9
@@ -99,7 +98,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 12, lines 91-96:
+task 12, lines 92-97:
 // Try to double-use the input
 //# programmable --inputs 0 object(10,0) @0x0
 //> 0: t2::o2::id<haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(1));
@@ -109,7 +108,7 @@ task 12, lines 91-96:
 Error: Transaction Effects Status: Invalid command argument at 0. Specified argument location does not have a value and cannot be used
 Debug of error: CommandArgumentError { arg_idx: 0, kind: ArgumentWithoutValue } at command Some(3)
 
-task 13, lines 98-103:
+task 13, lines 99-104:
 // Try to double-use the input using a user-defined function
 //# programmable --inputs 0 object(10,0) @0x0
 //> 0: t2::o2::id<haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(1));
@@ -119,7 +118,7 @@ task 13, lines 98-103:
 Error: Transaction Effects Status: Invalid command argument at 0. Specified argument location does not have a value and cannot be used
 Debug of error: CommandArgumentError { arg_idx: 0, kind: ArgumentWithoutValue } at command Some(3)
 
-task 14, lines 105-110:
+task 14, lines 106-111:
 // Try to transfer the shared object and double-use the input
 //# programmable --inputs 0 object(10,0) @0x0
 //> 0: t2::o2::id<haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(1));
@@ -129,7 +128,7 @@ task 14, lines 105-110:
 Error: Transaction Effects Status: Invalid command argument at 0. Specified argument location does not have a value and cannot be used
 Debug of error: CommandArgumentError { arg_idx: 0, kind: ArgumentWithoutValue } at command Some(3)
 
-task 15, lines 112-117:
+task 15, lines 113-118:
 // Try to transfer the shared object
 //# programmable --inputs 0 object(10,0) @0x0
 //> 0: t2::o2::id<haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(1));

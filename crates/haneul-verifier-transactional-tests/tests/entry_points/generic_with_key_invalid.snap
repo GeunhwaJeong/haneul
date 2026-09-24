@@ -5,13 +5,13 @@ processed 2 tasks
 
 // invalid, type parameters with key are not valid when nested as no primitive has key
 
-task 0, lines 6-16:
+task 0, lines 7-17:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 4408000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 1, lines 18-28:
+task 1, lines 19-29:
 //# publish
 created: object(2,0)
 mutated: object(0,0)

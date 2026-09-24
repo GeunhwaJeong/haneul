@@ -9,13 +9,13 @@ processed 3 tasks
 init:
 A: object(0,0)
 
-task 1, lines 9-593:
+task 1, lines 10-594:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 24038800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 595-634:
+task 2, lines 596-635:
 //# programmable --sender A --gas-budget 50000000000000
 //> 0: test::worst::make255();
 //> 1: test::worst::make255();

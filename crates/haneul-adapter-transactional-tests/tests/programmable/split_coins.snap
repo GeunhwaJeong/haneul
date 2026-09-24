@@ -8,13 +8,13 @@ processed 20 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 9-22:
+task 1, lines 10-23:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
-gas summary: computation_cost: 1000000, storage_cost: 5806400,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 5852000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 24-26:
+task 2, lines 25-27:
 //# programmable --sender A --inputs 100000 @A
 //> SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -22,14 +22,14 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 28-29:
+task 3, lines 29-30:
 // let's get ourselves a coin worth 1000
 //# run haneul::pay::split_and_transfer --type-args haneul::haneul::HANEUL --args object(2,0) 1000 @A --sender A
 created: object(3,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 4, line 31:
+task 4, line 32:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 3
@@ -44,7 +44,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 5, lines 33-36:
+task 5, lines 34-37:
 // split 100 off the freshly created coin
 //# programmable --sender A --inputs object(3,0) 100 @B
 //> 0: SplitCoins(Input(0), [Input(1)]);
@@ -53,7 +53,7 @@ created: object(5,0)
 mutated: object(0,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 6, line 38:
+task 6, line 39:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 4
@@ -68,7 +68,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 7, line 40:
+task 7, line 41:
 //# view-object 5,0
 Owner: Account Address ( B )
 Version: 4
@@ -83,7 +83,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 8, lines 43-46:
+task 8, lines 44-47:
 // split 100 off the freshly created coin twice
 //# programmable --sender A --inputs object(3,0) 100 @B
 //> 0: SplitCoins(Input(0), [Input(1), Input(1)]);
@@ -92,7 +92,7 @@ created: object(8,0), object(8,1)
 mutated: object(0,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 3952000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 9, line 48:
+task 9, line 49:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 5
@@ -107,7 +107,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 10, line 50:
+task 10, line 51:
 //# view-object 8,0
 Owner: Account Address ( B )
 Version: 5
@@ -122,7 +122,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 11, line 52:
+task 11, line 53:
 //# view-object 8,1
 Owner: Account Address ( B )
 Version: 5
@@ -137,7 +137,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 12, lines 54-58:
+task 12, lines 55-59:
 // split 100 off the freshly created coin twice taking one input from Move call
 //# programmable --sender A --inputs object(3,0) 100 @B
 //> 0: test::m1::ret_one_amount();
@@ -147,7 +147,7 @@ created: object(12,0), object(12,1)
 mutated: object(0,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 3952000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 13, line 60:
+task 13, line 61:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 6
@@ -162,7 +162,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 14, line 62:
+task 14, line 63:
 //# view-object 12,0
 Owner: Account Address ( B )
 Version: 6
@@ -177,7 +177,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 15, line 64:
+task 15, line 65:
 //# view-object 12,1
 Owner: Account Address ( B )
 Version: 6
@@ -192,7 +192,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 16, lines 66-72:
+task 16, lines 67-73:
 // split 100 off the freshly created coin twice taking one input from Move call and transfer them
 // using another Move call
 //# programmable --sender A --inputs object(3,0) 100 @B
@@ -204,7 +204,7 @@ created: object(16,0), object(16,1)
 mutated: object(0,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 3952000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 17, line 74:
+task 17, line 75:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 7
@@ -219,7 +219,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 18, line 76:
+task 18, line 77:
 //# view-object 16,0
 Owner: Account Address ( B )
 Version: 7
@@ -234,7 +234,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 19, line 78:
+task 19, line 79:
 //# view-object 16,1
 Owner: Account Address ( B )
 Version: 7

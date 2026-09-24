@@ -9,29 +9,29 @@ processed 23 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 9-52:
+task 1, lines 10-53:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2), object(1,3), object(1,4), object(1,5)
 mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 20459200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 54-55:
+task 2, lines 55-56:
 // Deny account B.
 //# run haneul::coin::deny_list_v2_add --args object(0x403) object(1,3) @B --type-args test::regulated_coin::REGULATED_COIN --sender A
-events: Event { package_id: haneul, transaction_module: Identifier("coin"), sender: A, type_: StructTag { address: haneul, module: Identifier("deny_list"), name: Identifier("PerTypeConfigCreated"), type_params: [] }, contents: [0, 0, 0, 0, 0, 0, 0, 0, 96, 53, 50, 102, 50, 51, 99, 57, 97, 51, 53, 56, 99, 49, 50, 52, 102, 54, 54, 51, 49, 99, 53, 57, 57, 50, 52, 99, 49, 51, 54, 55, 97, 49, 52, 50, 53, 100, 49, 102, 97, 54, 57, 102, 52, 57, 102, 54, 98, 51, 51, 99, 102, 55, 49, 97, 51, 98, 100, 98, 102, 100, 57, 56, 101, 58, 58, 114, 101, 103, 117, 108, 97, 116, 101, 100, 95, 99, 111, 105, 110, 58, 58, 82, 69, 71, 85, 76, 65, 84, 69, 68, 95, 67, 79, 73, 78, 120, 101, 245, 33, 166, 3, 229, 112, 67, 65, 88, 144, 38, 82, 63, 187, 151, 44, 176, 199, 240, 155, 235, 159, 168, 192, 23, 199, 90, 252, 212, 63] }
+events: Event { package_id: haneul, transaction_module: Identifier("coin"), sender: A, type_: StructTag { address: haneul, module: Identifier("deny_list"), name: Identifier("PerTypeConfigCreated"), type_params: [] }, contents: [0, 0, 0, 0, 0, 0, 0, 0, 96, 49, 52, 55, 56, 98, 53, 54, 56, 98, 101, 54, 101, 49, 56, 54, 51, 97, 48, 101, 101, 48, 54, 50, 99, 97, 51, 51, 52, 97, 99, 50, 102, 50, 50, 101, 99, 98, 98, 97, 55, 51, 55, 50, 56, 56, 98, 56, 48, 49, 57, 101, 53, 48, 54, 101, 102, 51, 56, 51, 50, 99, 56, 52, 50, 58, 58, 114, 101, 103, 117, 108, 97, 116, 101, 100, 95, 99, 111, 105, 110, 58, 58, 82, 69, 71, 85, 76, 65, 84, 69, 68, 95, 67, 79, 73, 78, 210, 4, 35, 135, 76, 7, 218, 38, 109, 189, 147, 32, 223, 53, 110, 108, 5, 107, 192, 2, 0, 11, 67, 48, 54, 26, 7, 178, 158, 100, 3, 195] }
 created: object(2,0), object(2,1), object(2,2)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
 gas summary: computation_cost: 1000000, storage_cost: 12190400,  storage_rebate: 2746260, non_refundable_storage_fee: 27740
 
-task 3, lines 57-58:
+task 3, lines 58-59:
 // Enable global pause.
 //# run haneul::coin::deny_list_v2_enable_global_pause --args object(0x403) object(1,3) --type-args test::regulated_coin::REGULATED_COIN --sender A
 created: object(3,0)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
 gas summary: computation_cost: 1000000, storage_cost: 6657600,  storage_rebate: 4356396, non_refundable_storage_fee: 44004
 
-task 4, lines 60-61:
+task 4, lines 61-62:
 // View the setting objects
 //# view-object 2,1
 Owner: Object ID: ( fake(2,0) )
@@ -64,7 +64,7 @@ Contents: haneul::dynamic_field::Field<haneul::deny_list::AddressKey, haneul::co
     },
 }
 
-task 5, line 63:
+task 5, line 64:
 //# view-object 3,0
 Owner: Object ID: ( fake(2,0) )
 Version: 4
@@ -96,23 +96,23 @@ Contents: haneul::dynamic_field::Field<haneul::deny_list::GlobalPauseKey, haneul
     },
 }
 
-task 6, line 65:
+task 6, line 66:
 //# advance-epoch
 Epoch advanced: 1
 
-task 7, lines 67-68:
+task 7, lines 68-69:
 // Deny account B.
 //# run haneul::coin::deny_list_v2_add --args object(0x403) object(1,3) @B --type-args test::regulated_coin::REGULATED_COIN --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 6870400,  storage_rebate: 6794172, non_refundable_storage_fee: 68628
 
-task 8, lines 70-71:
+task 8, lines 71-72:
 // Enable global pause.
 //# run haneul::coin::deny_list_v2_enable_global_pause --args object(0x403) object(1,3) --type-args test::regulated_coin::REGULATED_COIN --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 6665200,  storage_rebate: 6591024, non_refundable_storage_fee: 66576
 
-task 9, lines 73-74:
+task 9, lines 74-75:
 // View the setting objects
 //# view-object 2,1
 Owner: Object ID: ( fake(2,0) )
@@ -147,7 +147,7 @@ Contents: haneul::dynamic_field::Field<haneul::deny_list::AddressKey, haneul::co
     },
 }
 
-task 10, line 76:
+task 10, line 77:
 //# view-object 3,0
 Owner: Object ID: ( fake(2,0) )
 Version: 6
@@ -181,23 +181,23 @@ Contents: haneul::dynamic_field::Field<haneul::deny_list::GlobalPauseKey, haneul
     },
 }
 
-task 11, line 78:
+task 11, line 79:
 //# advance-epoch
 Epoch advanced: 2
 
-task 12, lines 80-81:
+task 12, lines 81-82:
 // Undeny account B.
 //# run haneul::coin::deny_list_v2_remove --args object(0x403) object(1,3) @B --type-args test::regulated_coin::REGULATED_COIN --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 6862800,  storage_rebate: 6801696, non_refundable_storage_fee: 68704
 
-task 13, lines 83-84:
+task 13, lines 84-85:
 // Disable global pause.
 //# run haneul::coin::deny_list_v2_disable_global_pause --args object(0x403) object(1,3) --type-args test::regulated_coin::REGULATED_COIN --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 6657600,  storage_rebate: 6598548, non_refundable_storage_fee: 66652
 
-task 14, lines 86-87:
+task 14, lines 87-88:
 // Verify the setting objects are still present
 //# view-object 2,1
 Owner: Object ID: ( fake(2,0) )
@@ -230,7 +230,7 @@ Contents: haneul::dynamic_field::Field<haneul::deny_list::AddressKey, haneul::co
     },
 }
 
-task 15, line 89:
+task 15, line 90:
 //# view-object 3,0
 Owner: Object ID: ( fake(2,0) )
 Version: 8
@@ -262,41 +262,41 @@ Contents: haneul::dynamic_field::Field<haneul::deny_list::GlobalPauseKey, haneul
     },
 }
 
-task 16, line 91:
+task 16, line 92:
 //# advance-epoch
 Epoch advanced: 3
 
-task 17, lines 93-94:
+task 17, lines 94-95:
 // Undeny account B.
 //# run haneul::coin::deny_list_v2_remove --args object(0x403) object(1,3) @B --type-args test::regulated_coin::REGULATED_COIN --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
 deleted: object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 4400400,  storage_rebate: 6794172, non_refundable_storage_fee: 68628
 
-task 18, lines 96-97:
+task 18, lines 97-98:
 // Disable global pause.
 //# run haneul::coin::deny_list_v2_disable_global_pause --args object(0x403) object(1,3) --type-args test::regulated_coin::REGULATED_COIN --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
 deleted: object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 4400400,  storage_rebate: 6591024, non_refundable_storage_fee: 66576
 
-task 19, lines 99-100:
+task 19, lines 100-101:
 // Verify the setting objects are deleted
 //# view-object 2,1
 No object at id 2,1
 
-task 20, line 102:
+task 20, line 103:
 //# view-object 3,0
 No object at id 3,0
 
-task 21, lines 104-105:
+task 21, lines 105-106:
 // Assert that the address is no longer denied.
 //# run test::regulated_coin::assert_address_deny_status --args immshared(0x403) @B false --sender A
 mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 22, lines 107-108:
+task 22, lines 108-109:
 // Assert that global pause is disabled.
 //# run test::regulated_coin::assert_global_pause_status --args immshared(0x403) false --sender A
 mutated: object(0,0)

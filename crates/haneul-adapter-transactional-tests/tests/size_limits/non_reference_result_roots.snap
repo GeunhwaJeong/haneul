@@ -9,13 +9,13 @@ processed 3 tasks
 init:
 A: object(0,0)
 
-task 1, lines 9-526:
+task 1, lines 10-527:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 9386000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 528-1551:
+task 2, lines 529-1552:
 //# programmable
 //> 0: test::amplifier::r255();
 //> 1: test::amplifier::r255();

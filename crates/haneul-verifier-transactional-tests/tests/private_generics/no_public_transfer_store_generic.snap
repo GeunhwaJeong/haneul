@@ -7,27 +7,27 @@ processed 6 tasks
 // Note: it is not possible to make a generic type `T<...> has key, store`
 // where a given instantiation`T<...>` has key but does _not_ have store
 
-task 1, lines 10-19:
+task 1, lines 11-20:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::transfer::transfer'. Type argument #0 must be a type defined in the current module, found 'T0'. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_transfer'."), command: Some(0) } }
 
-task 2, lines 21-30:
+task 2, lines 22-31:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::transfer::freeze_object'. Type argument #0 must be a type defined in the current module, found 'T0'. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_freeze_object'."), command: Some(0) } }
 
-task 3, lines 32-41:
+task 3, lines 33-42:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::transfer::share_object'. Type argument #0 must be a type defined in the current module, found 'T0'. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_share_object'."), command: Some(0) } }
 
-task 4, lines 43-54:
+task 4, lines 44-55:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::transfer::receive'. Type argument #0 must be a type defined in the current module, found 'T0'. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_receive'."), command: Some(0) } }
 
-task 5, lines 56-66:
+task 5, lines 57-67:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::transfer::party_transfer'. Type argument #0 must be a type defined in the current module, found 'T0'. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_party_transfer'."), command: Some(0) } }

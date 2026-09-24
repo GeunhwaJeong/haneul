@@ -8,7 +8,7 @@ processed 10 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-50:
+task 1, lines 9-51:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
@@ -16,7 +16,7 @@ gas summary: computation_cost: 1000000, storage_cost: 6498000,  storage_rebate: 
 
 // single mut child
 
-task 2, lines 54-59:
+task 2, lines 55-60:
 //# programmable
 // write to child, write to parent
 //> 0: test::m::pair();
@@ -26,7 +26,7 @@ task 2, lines 54-59:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 61-66:
+task 3, lines 62-67:
 //# programmable
 // read parent, write to child
 //> 0: test::m::pair();
@@ -36,7 +36,7 @@ task 3, lines 61-66:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 68-74:
+task 4, lines 69-75:
 //# programmable
 // borrow parent, write to child, write to parent
 //> 0: test::m::pair();
@@ -47,7 +47,7 @@ task 4, lines 68-74:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 76-83:
+task 5, lines 77-84:
 //# programmable
 // borrow parent, read parent, write to child
 //> 0: test::m::pair();
@@ -61,7 +61,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // multiple mut children
 
-task 6, lines 87-93:
+task 6, lines 88-94:
 //# programmable
 // write to children, write to parent
 //> 0: test::m::pair();
@@ -72,7 +72,7 @@ task 6, lines 87-93:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 95-102:
+task 7, lines 96-103:
 //# programmable
 // borrow parent, write to children, read parent
 //> 0: test::m::pair();
@@ -86,7 +86,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // mut child, imm child
 
-task 8, lines 106-114:
+task 8, lines 107-115:
 //# programmable
 // write to child, read child, write to parent
 //> 0: test::m::pair();
@@ -99,7 +99,7 @@ task 8, lines 106-114:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 9, lines 116-125:
+task 9, lines 117-126:
 //# programmable
 // borrow parent, write to child, read child, read parent
 //> 0: test::m::pair();

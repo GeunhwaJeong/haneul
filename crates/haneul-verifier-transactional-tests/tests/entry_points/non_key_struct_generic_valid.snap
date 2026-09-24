@@ -5,7 +5,7 @@ processed 1 task
 
 // valid, T has store, thus Obj has key
 
-task 0, lines 6-18:
+task 0, lines 7-19:
 //# publish
 created: object(1,0)
 mutated: object(0,0)

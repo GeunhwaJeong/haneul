@@ -1,28 +1,27 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 937
 ---
 processed 22 tasks
 
-task 1, lines 6-97:
+task 1, lines 7-98:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 11065600,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 11111200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 99:
+task 2, line 100:
 //# run t2::o2::create
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 101:
+task 3, line 102:
 //# run t2::o2::create
 created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 103:
+task 4, line 104:
 //# view-object 2,0
 Owner: Shared( 3 )
 Version: 3
@@ -34,7 +33,7 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 5, line 105:
+task 5, line 106:
 //# view-object 3,0
 Owner: Shared( 4 )
 Version: 4
@@ -46,7 +45,7 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 6, lines 107-110:
+task 6, lines 108-111:
 // Make MoveVec and then try to freeze
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(1)]);
@@ -54,7 +53,7 @@ task 6, lines 107-110:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 7, lines 112-115:
+task 7, lines 113-116:
 // Make MoveVec and then try to add as dof
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(1)]);
@@ -62,7 +61,7 @@ task 7, lines 112-115:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 8, lines 117-120:
+task 8, lines 118-121:
 // Make MoveVec and then try to add as df
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(1)]);
@@ -70,7 +69,7 @@ task 8, lines 117-120:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 9, lines 122-125:
+task 9, lines 123-126:
 // Make MoveVec and then try to transfer it
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(1)]);
@@ -78,7 +77,7 @@ task 9, lines 122-125:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 10, lines 127-131:
+task 10, lines 128-132:
 // Make MoveVec pop and return it, then try to freeze
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(1)]);
@@ -87,7 +86,7 @@ task 10, lines 127-131:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 11, lines 133-137:
+task 11, lines 134-138:
 // Make MoveVec pop and return it, then try to add as dof
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(1)]);
@@ -96,7 +95,7 @@ task 11, lines 133-137:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 12, lines 139-143:
+task 12, lines 140-144:
 // Make MoveVec pop and return it, then try to add as df
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(1)]);
@@ -105,7 +104,7 @@ task 12, lines 139-143:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 13, lines 145-149:
+task 13, lines 146-150:
 // Make MoveVec pop and return it, then try to transfer it
 //# programmable --inputs object(2,0) object(3,0)
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(1)]);
@@ -114,7 +113,7 @@ task 13, lines 145-149:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 14, lines 151-155:
+task 14, lines 152-156:
 // Make MoveVec pop and return it, then try to transfer it with PT transfer
 //# programmable --inputs object(3,0) @0x0
 //> 0: MakeMoveVec<t2::o2::Obj2>([Input(0)]);
@@ -123,13 +122,13 @@ task 14, lines 151-155:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 15, line 157:
+task 15, line 158:
 //# run t2::o2::mint_shared_coin
 created: object(15,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 16, line 159:
+task 16, line 160:
 //# view-object 15,0
 Owner: Shared( 14 )
 Version: 14
@@ -144,7 +143,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 17, lines 161-167:
+task 17, lines 162-168:
 // This is OK -- split off from a shared object and transfer the split-off coin
 // But fails because we need to reshare the shared object
 //# programmable --inputs 0 object(15,0) @0x0
@@ -155,7 +154,7 @@ task 17, lines 161-167:
 Error: Transaction Effects Status: Unused result without the drop ability. Command result 1, return value 0
 Debug of error: UnusedValueWithoutDrop { result_idx: 1, secondary_idx: 0 } at command None
 
-task 18, lines 169-175:
+task 18, lines 170-176:
 // Try to call public_share_object directly -- this should fail
 //# programmable --inputs 0 object(15,0) @0x0
 //> 0: MakeMoveVec([Input(1)]);
@@ -166,7 +165,7 @@ task 18, lines 169-175:
 Error: Transaction Effects Status: Invalid command argument at 0. Specified argument location does not have a value and cannot be used
 Debug of error: CommandArgumentError { arg_idx: 0, kind: ArgumentWithoutValue } at command Some(4)
 
-task 19, lines 177-184:
+task 19, lines 178-185:
 // Try to reshare the shared object -- this should fail since the input was
 // used for the `MakeMoveVec` call
 //# programmable --inputs 0 object(15,0) @0x0
@@ -178,7 +177,7 @@ task 19, lines 177-184:
 Error: Transaction Effects Status: Invalid command argument at 0. Specified argument location does not have a value and cannot be used
 Debug of error: CommandArgumentError { arg_idx: 0, kind: ArgumentWithoutValue } at command Some(4)
 
-task 20, lines 186-193:
+task 20, lines 187-194:
 // Try to transfer the shared object -- this should fail since the input was
 // used for the `MakeMoveVec` call
 //# programmable --inputs 0 object(15,0) @0x0
@@ -190,7 +189,7 @@ task 20, lines 186-193:
 Error: Transaction Effects Status: Invalid command argument at 0. Specified argument location does not have a value and cannot be used
 Debug of error: CommandArgumentError { arg_idx: 0, kind: ArgumentWithoutValue } at command Some(4)
 
-task 21, lines 195-201:
+task 21, lines 196-202:
 // Try to transfer the shared object
 //# programmable --inputs 0 object(15,0) @0x0
 //> 0: MakeMoveVec([Input(1)]);

@@ -13,7 +13,7 @@ processed 10 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, line 13:
+task 1, line 14:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 1
@@ -28,7 +28,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 2, lines 15-19:
+task 2, lines 16-20:
 // Seed A's address balance.
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -38,7 +38,7 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 21-24:
+task 3, lines 22-25:
 // Create a second HANEUL coin owned by A (will be smashed in as a secondary).
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -47,15 +47,15 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 26:
+task 4, line 27:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, line 28:
+task 5, line 29:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 6, lines 30-35:
+task 6, lines 31-36:
 // Pay gas with `[Coin, Coin, AddressBalance]`. Smash target is the gas coin
 // (object 0,0). The second coin (object 3,0) gets deleted; the withdrawal
 // secondary emits a `Split, 500_000_000` accumulator event.
@@ -68,16 +68,16 @@ deleted: object(3,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 500000000)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 7, line 37:
+task 7, line 38:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 39-40:
+task 8, lines 40-41:
 // A's address balance should have dropped by exactly 500_000_000.
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 99500000000
 
-task 9, lines 42-44:
+task 9, lines 43-45:
 // Smash target (object 0,0) holds the leftover (start + secondary coin value
 // + reservation - net gas cost). Object 3,0 should no longer exist.
 //# view-object 0,0

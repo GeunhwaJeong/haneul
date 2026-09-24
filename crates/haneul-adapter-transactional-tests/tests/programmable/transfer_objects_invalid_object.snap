@@ -8,19 +8,19 @@ processed 7 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 8-33:
+task 1, lines 9-34:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6171200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 35-37:
+task 2, lines 36-38:
 // no objects
 //# programmable --sender A --inputs @A
 //> TransferObjects([], Input(0));
 Error: Error checking transaction input objects: TransferObjects, MergeCoin, and Publish cannot have empty arguments. If MakeMoveVec has empty arguments, it must have a type specified
 
-task 3, lines 39-42:
+task 3, lines 40-43:
 // not an object
 //# programmable --sender A --inputs @A
 //> 0: test::m1::cap();
@@ -28,7 +28,7 @@ task 3, lines 39-42:
 Error: Transaction Effects Status: Invalid command argument at 0. Object passed to TransferObject does not have public transfer, i.e. the `store` ability
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidTransferObject }, source: None, command: Some(1) } }
 
-task 4, lines 44-49:
+task 4, lines 45-50:
 // not an object (but sneaky)
 //# programmable --sender A --inputs @A
 //> 0: test::m1::cap();
@@ -38,7 +38,7 @@ task 4, lines 44-49:
 Error: Transaction Effects Status: Invalid command argument at 0. Object passed to TransferObject does not have public transfer, i.e. the `store` ability
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidTransferObject }, source: None, command: Some(2) } }
 
-task 5, lines 51-55:
+task 5, lines 52-56:
 // one object, one not
 //# programmable --sender A --inputs @A
 //> 0: test::m1::new();
@@ -47,7 +47,7 @@ task 5, lines 51-55:
 Error: Transaction Effects Status: Invalid command argument at 1. Object passed to TransferObject does not have public transfer, i.e. the `store` ability
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: InvalidTransferObject }, source: None, command: Some(2) } }
 
-task 6, lines 57-63:
+task 6, lines 58-64:
 // one object, one not (but sneaky)
 //# programmable --sender A --inputs @A
 //> 0: test::m1::new();

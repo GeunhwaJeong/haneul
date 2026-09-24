@@ -8,7 +8,7 @@ processed 8 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 8-11:
+task 1, lines 9-12:
 // Send 1000000000 from A to B
 //# programmable --sender A --inputs 1000000000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -17,15 +17,15 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 13:
+task 2, line 14:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, line 15:
+task 3, line 16:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 1000000000
 
-task 4, line 17:
+task 4, line 18:
 //# view-object 0,1
 Owner: Account Address ( B )
 Version: 1
@@ -40,17 +40,17 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 5, lines 19-20:
+task 5, lines 20-21:
 // Use address balance as gas
 //# transfer-object --recipient A --sender B 0,1 --gas-budget 1000000000 --address-balance-gas
 mutated: object(0,1)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1988000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 6, line 22:
+task 6, line 23:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, line 24:
+task 7, line 25:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 998012000

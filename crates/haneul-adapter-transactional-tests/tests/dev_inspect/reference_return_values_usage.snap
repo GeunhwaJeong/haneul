@@ -8,13 +8,13 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-44:
+task 1, lines 9-45:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6232000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 46-53:
+task 2, lines 47-54:
 // read from a returned reference
 //# programmable --sender A --dev-inspect --inputs 42
 //> 0: test::m::new();
@@ -26,7 +26,7 @@ task 2, lines 46-53:
 mutated: object(_)
 gas summary: computation_cost: 500000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 55-62:
+task 3, lines 56-63:
 // read from a returned reference, with "subtyping"
 //# programmable --sender A --dev-inspect --inputs 42
 //> 0: test::m::new();
@@ -38,7 +38,7 @@ task 3, lines 55-62:
 mutated: object(_)
 gas summary: computation_cost: 500000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, lines 65-73:
+task 4, lines 66-74:
 // Read from the struct again to check that the reference was actually
 // updated, and not just `Result(1)`
 //# programmable --sender A --dev-inspect --inputs 43

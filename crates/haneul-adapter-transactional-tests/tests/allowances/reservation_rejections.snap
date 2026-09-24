@@ -15,7 +15,7 @@ processed 20 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 15-18:
+task 1, lines 16-19:
 //# programmable --sender A --inputs 5000 @A
 // Fund A's (the funder) address balance.
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -24,7 +24,7 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 5000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 20-24:
+task 2, lines 21-25:
 //# programmable --sender C --inputs 1000 @C
 // Fund C, so the wrong-funder case gets past the balance check and reaches
 // the funder comparison.
@@ -34,20 +34,20 @@ mutated: object(0,2)
 accumulators_written: (object(2,0), C, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 26:
+task 3, line 27:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 28-31:
+task 4, lines 29-32:
 //# programmable --sender A --inputs b"capped" @B vector[10000u256] vector[] vector[99999999999999]
 // A issues an allowance to B: 10000 lifetime cap, more than A's balance.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(4,0), object(4,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6444800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6536000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 33-37:
+task 5, lines 34-38:
 //# programmable --sender A --inputs b"rated" @B vector[] vector[] vector[] 100000 200u256
 // A issues a second allowance to B: rate limit only, 200 per window.
 //> 0: haneul::allowance::periodic_rate_limit(Input(5), Input(6));
@@ -55,27 +55,27 @@ task 5, lines 33-37:
 //> 2: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(1));
 created: object(5,0), object(5,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6764000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6855200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 39-41:
+task 6, lines 40-42:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(6000,@A,object(4,0)) mutshared(4,0) immshared(6)
 // Within the 10000 cap but over A's 5000 balance: rejected at signing.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Insufficient address balance of coin type 0x2::haneul::HANEUL for address @A: the transaction requires 6000 but only 5000 is available. Note that the address balance does not include funds held in Coin objects owned by the address; to spend those funds, use the Coin objects directly as transaction inputs.
 
-task 7, lines 43-45:
+task 7, lines 44-46:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@C,object(4,0)) mutshared(4,0) immshared(6)
 // B declares C as the funder of A's allowance: rejected at signing.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Specified funder @C does not match the funder of allowance object(4,0)
 
-task 8, lines 47-49:
+task 8, lines 48-50:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(6)) immshared(6)
 // B declares the Clock as the allowance: rejected at signing.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(1));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Specified allowance object(0xobject(0x0000000000000000000000000000000000000000000000000000000000000006)) is not a haneul::allowance::Allowance
 
-task 9, lines 51-54:
+task 9, lines 52-55:
 //# programmable --sender B --inputs 100 @B
 // A plain coin for the next case.
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -84,47 +84,47 @@ created: object(9,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 10, lines 56-58:
+task 10, lines 57-59:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(9,0)) object(9,0) immshared(6)
 // B declares their own coin as the allowance: rejected at signing.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Specified allowance object(9,0) is not a haneul::allowance::Allowance
 
-task 11, lines 60-62:
+task 11, lines 61-63:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(4,0)) immshared(6)
 // The declared allowance is not an input of the tx: rejected at signing.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(1));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Specified allowance object(4,0) not found among the tx inputs
 
-task 12, lines 64-68:
+task 12, lines 65-69:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(300,@A,object(5,0)) mutshared(5,0) immshared(6) @B
 // 300 against the rate-limited allowance's 200 per window: admitted at
 // signing (limits are not read there) and aborts at execution.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2));
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(3));
-Error: Transaction Effects Status: Move Abort in haneul::allowance::charge (function index 34) at offset 79 at line 442 with clever code 4
-Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("allowance") }, function: 34, instruction: 79, function_name: Some("charge") }, 13836185853565075465) at command Some(0)
+Error: Transaction Effects Status: Move Abort in haneul::allowance::charge (function index 34) at offset 79 at line 443 with clever code 4
+Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("allowance") }, function: 34, instruction: 79, function_name: Some("charge") }, 13836185857860042761) at command Some(0)
 
-task 13, lines 70-72:
+task 13, lines 71-73:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(0,@A,object(4,0)) mutshared(4,0) immshared(6)
 // A zero reservation: rejected at signing.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Balance withdraw reservation amount must be non-zero
 
-task 14, lines 74-77:
+task 14, lines 75-78:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(18446744073709551615,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(1,@A,object(4,0)) mutshared(4,0) immshared(6)
 // Reservations summing past u64::MAX at one key: rejected at signing, so the
 // unchecked sums on the execution side stay unreachable.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(2), Input(0), Input(3));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Balance withdraw reservation overflow
 
-task 15, lines 79-81:
+task 15, lines 80-82:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(4,0)) mutshared(4,0) immshared(6)
 // Eleven declarations against the ten-per-transaction cap: rejected at signing.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(11), Input(0), Input(12));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Maximum number of balance withdraw reservations is 10
 
-task 16, lines 83-86:
+task 16, lines 84-87:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(4,0)) immshared(4,0) immshared(6)
 // The allowance declared as an immutable input: signing accepts the
 // declaration, but the spend needs `&mut` and fails.
@@ -132,7 +132,7 @@ task 16, lines 83-86:
 Error: Transaction Effects Status: Invalid command argument at 0. Immutable objects cannot be passed by mutable reference, &mut.
 Debug of error: CommandArgumentError { arg_idx: 0, kind: InvalidObjectByMutRef } at command Some(0)
 
-task 17, lines 88-92:
+task 17, lines 89-93:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(4,0)) immshared(4,0) 1 @B
 // The same immutable declaration left unused: the transaction succeeds and
 // consumes nothing.
@@ -143,7 +143,7 @@ mutated: object(0,1)
 unchanged_shared: object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 18, line 94:
+task 18, line 95:
 //# view-object 4,0
 Owner: Shared( 3 )
 Version: 3
@@ -193,7 +193,7 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 0u256,
 }
 
-task 19, lines 96-97:
+task 19, lines 97-98:
 //# view-object 5,0
 Owner: Shared( 4 )
 Version: 5

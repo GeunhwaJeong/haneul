@@ -5,7 +5,7 @@ processed 1 task
 
 // valid, type parameters with key are valid as long as they are not nested
 
-task 0, lines 6-16:
+task 0, lines 7-17:
 //# publish
 created: object(1,0)
 mutated: object(0,0)

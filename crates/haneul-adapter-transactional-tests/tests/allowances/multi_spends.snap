@@ -11,7 +11,7 @@ processed 13 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 11-14:
+task 1, lines 12-15:
 //# programmable --sender A --inputs 5000 @A
 // Fund A's (the funder) address balance.
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -20,11 +20,11 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 5000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 16:
+task 2, line 17:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 18-22:
+task 3, lines 19-23:
 //# programmable --sender A --inputs b"multi" @B vector[10000u256] vector[] vector[] 100000 100u256
 // A issues an allowance to B: 10000 lifetime cap, 100 per 100s window.
 //> 0: haneul::allowance::periodic_rate_limit(Input(5), Input(6));
@@ -32,9 +32,9 @@ task 3, lines 18-22:
 //> 2: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(1));
 created: object(3,0), object(3,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 7007200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 7098400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 24-31:
+task 4, lines 25-32:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(30,@A,object(3,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(30,@A,object(3,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(30,@A,object(3,0)) mutshared(3,0) immshared(6) @B
 // Three spends of 30 in one PTB, all within the window: all settle.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(3), Input(0), Input(4));
@@ -46,9 +46,9 @@ task 4, lines 24-31:
 mutated: object(0,1), object(3,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 90), (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 90)
-gas summary: computation_cost: 1000000, storage_cost: 4772800,  storage_rebate: 3686760, non_refundable_storage_fee: 37240
+gas summary: computation_cost: 1000000, storage_cost: 4818400,  storage_rebate: 3731904, non_refundable_storage_fee: 37696
 
-task 5, lines 33-34:
+task 5, lines 34-35:
 //# view-object 3,0
 Owner: Shared( 3 )
 Version: 4
@@ -109,7 +109,7 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 90u256,
 }
 
-task 6, lines 36-42:
+task 6, lines 37-43:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(5,@A,object(3,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(3,0)) mutshared(3,0) immshared(6) @B
 // 90 of the 100 window is used. Execution settles the first spend (95), then
 // aborts on the second (105 > 100), rolling back the whole transaction.
@@ -117,10 +117,10 @@ task 6, lines 36-42:
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(4));
 //> 2: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(2), Input(1), Input(3));
 //> 3: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(2), Input(4));
-Error: Transaction Effects Status: Move Abort in haneul::allowance::charge (function index 34) at offset 79 at line 442 with clever code 4
-Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("allowance") }, function: 34, instruction: 79, function_name: Some("charge") }, 13836185853565075465) at command Some(2)
+Error: Transaction Effects Status: Move Abort in haneul::allowance::charge (function index 34) at offset 79 at line 443 with clever code 4
+Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("allowance") }, function: 34, instruction: 79, function_name: Some("charge") }, 13836185857860042761) at command Some(2)
 
-task 7, lines 44-45:
+task 7, lines 45-46:
 //# view-object 3,0
 Owner: Shared( 3 )
 Version: 5
@@ -181,7 +181,7 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 90u256,
 }
 
-task 9, lines 49-54:
+task 9, lines 50-55:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(5,@A,object(3,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(10,@A,object(3,0)) mutshared(3,0) immshared(6) @B
 // The identical transaction after the window rolls over: both settle.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(2), Input(0), Input(3));
@@ -191,9 +191,9 @@ task 9, lines 49-54:
 mutated: object(0,1), object(3,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 15), (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 15)
-gas summary: computation_cost: 1000000, storage_cost: 4772800,  storage_rebate: 4725072, non_refundable_storage_fee: 47728
+gas summary: computation_cost: 1000000, storage_cost: 4818400,  storage_rebate: 4770216, non_refundable_storage_fee: 48184
 
-task 10, lines 56-57:
+task 10, lines 57-58:
 //# view-object 3,0
 Owner: Shared( 3 )
 Version: 6
@@ -254,7 +254,7 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 105u256,
 }
 
-task 11, lines 59-65:
+task 11, lines 60-66:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(60,@A,object(3,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(60,@A,object(3,0)) mutshared(3,0) immshared(6) @B
 // Two 60s on top of the 15 already spent this window: signing admits them
 // (no limit math there); execution settles the first (75), aborts the second.
@@ -262,10 +262,10 @@ task 11, lines 59-65:
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(4));
 //> 2: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(2), Input(1), Input(3));
 //> 3: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(2), Input(4));
-Error: Transaction Effects Status: Move Abort in haneul::allowance::charge (function index 34) at offset 79 at line 442 with clever code 4
-Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("allowance") }, function: 34, instruction: 79, function_name: Some("charge") }, 13836185853565075465) at command Some(2)
+Error: Transaction Effects Status: Move Abort in haneul::allowance::charge (function index 34) at offset 79 at line 443 with clever code 4
+Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("allowance") }, function: 34, instruction: 79, function_name: Some("charge") }, 13836185857860042761) at command Some(2)
 
-task 12, lines 67-68:
+task 12, lines 68-69:
 //# view-object 3,0
 Owner: Shared( 3 )
 Version: 7

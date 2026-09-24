@@ -27,8 +27,8 @@ use 0x2::balance::Balance;
 use 0x2::clock::Clock;
 use 0x2::coin::Coin;
 use 0x2::coin::TreasuryCap;
-use 0x2::object::UID;
 use 0x2::haneul::HANEUL;
+use 0x2::object::UID;
 use 0x2::table::Table;
 use 0x2::tx_context::TxContext;
 
@@ -117,7 +117,7 @@ const C17: vector<u8> = vector[123u8, 116u8, 105u8, 99u8, 107u8, 125u8];
 
 const C18: vector<u8> = vector[104u8, 116u8, 116u8, 112u8, 115u8, 58u8, 47u8, 47u8, 105u8, 115u8, 115u8, 112u8, 46u8, 105u8, 111u8, 47u8, 97u8, 115u8, 115u8, 101u8, 116u8, 115u8, 47u8, 123u8, 116u8, 105u8, 99u8, 107u8, 125u8, 46u8, 115u8, 118u8, 103u8];
 
-const C19: vector<u8> = vector[123u8, 34u8, 112u8, 34u8, 58u8, 34u8, 115u8, 117u8, 105u8, 45u8, 50u8, 48u8, 34u8, 44u8, 34u8, 116u8, 105u8, 99u8, 107u8, 34u8, 58u8, 34u8, 123u8, 116u8, 105u8, 99u8, 107u8, 125u8, 34u8, 44u8, 34u8, 97u8, 109u8, 116u8, 34u8, 58u8, 34u8, 123u8, 97u8, 109u8, 111u8, 117u8, 110u8, 116u8, 125u8, 34u8, 125u8];
+const C19: vector<u8> = vector[123u8, 34u8, 112u8, 34u8, 58u8, 34u8, 104u8, 97u8, 110u8, 101u8, 117u8, 108u8, 45u8, 50u8, 48u8, 34u8, 44u8, 34u8, 116u8, 105u8, 99u8, 107u8, 34u8, 58u8, 34u8, 123u8, 116u8, 105u8, 99u8, 107u8, 125u8, 34u8, 44u8, 34u8, 97u8, 109u8, 116u8, 34u8, 58u8, 34u8, 123u8, 97u8, 109u8, 111u8, 117u8, 110u8, 116u8, 125u8, 34u8, 125u8];
 
 const C20: vector<u64> = vector[];
 

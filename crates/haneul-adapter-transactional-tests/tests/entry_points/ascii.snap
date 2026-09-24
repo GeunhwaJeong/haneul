@@ -1,13 +1,12 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 937
 ---
 processed 6 tasks
 
 init:
 A: object(0,0)
 
-task 1, lines 6-23:
+task 1, lines 7-24:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
@@ -15,21 +14,21 @@ gas summary: computation_cost: 1000000, storage_cost: 5760800,  storage_rebate: 
 
 // string of ASCII characters as byte string
 
-task 2, line 27:
+task 2, line 28:
 //# run Test::M::ascii_arg --sender A --args b"SomeString"
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
 // string of ASCII characters as UTF8 string
 
-task 3, line 32:
+task 3, line 33:
 //# run Test::M::ascii_arg --sender A --args "SomeString"
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
 // vector of ASCII character strings as byte strings
 
-task 4, line 37:
+task 4, line 38:
 //# run Test::M::ascii_vec_arg --sender A --args vector[b"Some",b"String"]
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
@@ -40,7 +39,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // error - a character out of ASCII range
 
-task 5, line 47:
+task 5, line 48:
 //# run Test::M::ascii_arg --sender A --args "Some∫tring"
 Error: Transaction Effects Status: Invalid command argument at 0. The argument cannot be deserialized into a value of the specified type
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidBCSBytes }, source: Some("Function expects std::ascii::String but provided argument's value does not match"), command: Some(0) } }

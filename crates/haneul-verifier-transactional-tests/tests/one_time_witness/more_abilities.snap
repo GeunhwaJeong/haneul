@@ -5,17 +5,17 @@ processed 4 tasks
 
 // invalid, struct type has abilities beyond drop
 
-task 1, lines 8-19:
+task 1, lines 9-20:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("one-time witness type candidate _::m::M must have a single ability: drop"), command: Some(0) } }
 
-task 2, lines 21-32:
+task 2, lines 22-33:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("one-time witness type candidate _::m::M must have a single ability: drop"), command: Some(0) } }
 
-task 3, lines 34-45:
+task 3, lines 35-46:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("one-time witness type candidate _::m::M must have a single ability: drop"), command: Some(0) } }

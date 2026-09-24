@@ -5,13 +5,13 @@ processed 3 tasks
 
 // Two `&mut Y` results from two ctx-taking calls coexist and can both be written through.
 
-task 1, lines 8-39:
+task 1, lines 9-40:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 6376400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 41-51:
+task 2, lines 42-52:
 //# programmable --inputs 1
 //> 0: test::m::new();
 //> 1: test::m::new();

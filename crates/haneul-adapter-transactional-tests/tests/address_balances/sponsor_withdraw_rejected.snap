@@ -8,7 +8,7 @@ processed 4 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 8-13:
+task 1, lines 9-14:
 // Seed B's address balance so a hypothetical sponsor-side withdrawal would
 // have funds available.
 //# programmable --sender B --inputs 100000000000 @B
@@ -19,11 +19,11 @@ mutated: object(0,1)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 15:
+task 2, line 16:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 17-22:
+task 3, lines 18-23:
 // Sponsored tx with withdraw gas payment -- expected to be rejected by
 // validation. The withdraw amount targets B (the sponsor) at the test-runner
 // level, but validation resolves it against A (sender), producing a mismatch.

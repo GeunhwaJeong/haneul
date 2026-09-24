@@ -5,7 +5,7 @@ processed 1 task
 
 // valid, option of primitives is allowed
 
-task 0, lines 6-23:
+task 0, lines 7-24:
 //# publish
 created: object(1,0)
 mutated: object(0,0)

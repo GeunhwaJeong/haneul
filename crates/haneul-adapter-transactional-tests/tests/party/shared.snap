@@ -1,19 +1,18 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 937
 ---
 processed 8 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-21:
+task 1, lines 7-22:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 5958400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 23-25:
+task 2, lines 24-26:
 // Create a shared object.
 //# programmable --sender A
 //> ex::m::create_and_share()
@@ -21,7 +20,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 27:
+task 3, line 28:
 //# view-object 2,0
 Owner: Shared( 2 )
 Version: 2
@@ -33,7 +32,7 @@ Contents: ex::m::S {
     },
 }
 
-task 4, lines 29-32:
+task 4, lines 30-33:
 // Verify the shared object can't be transferred to party ownership.
 //# programmable --sender A --inputs object(2,0) @A
 //> 0: haneul::party::single_owner(Input(1));
@@ -41,7 +40,7 @@ task 4, lines 29-32:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 5, lines 34-36:
+task 5, lines 35-37:
 // Create a party object.
 //# programmable --sender A
 //> ex::m::create_party()
@@ -49,7 +48,7 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 38:
+task 6, line 39:
 //# view-object 5,0
 Owner: ConsensusAddressOwner( 4, A )
 Version: 4
@@ -61,7 +60,7 @@ Contents: ex::m::S {
     },
 }
 
-task 7, lines 40-42:
+task 7, lines 41-43:
 // Verify the party object can't be shared.
 //# programmable --sender A --inputs object(5,0)
 //> haneul::transfer::public_share_object<ex::m::S>(Input(0))

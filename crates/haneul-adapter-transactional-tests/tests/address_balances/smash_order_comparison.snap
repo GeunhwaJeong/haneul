@@ -26,7 +26,7 @@ processed 17 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 26-30:
+task 1, lines 27-31:
 // Seed A's and B's address balances identically.
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -36,7 +36,7 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 32-35:
+task 2, lines 33-36:
 //# programmable --sender B --inputs 100000000000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -45,7 +45,7 @@ mutated: object(0,1)
 accumulators_written: (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 37-40:
+task 3, lines 38-41:
 // Create identical 1_000_000_000 coins, one per sender.
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -54,7 +54,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 42-44:
+task 4, lines 43-45:
 //# programmable --sender B --inputs 1000000000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -62,20 +62,20 @@ created: object(4,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, line 46:
+task 5, line 47:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 6, lines 48-49:
+task 6, lines 49-50:
 // ===== Before state =====
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 7, line 51:
+task 7, line 52:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 100000000000
 
-task 8, line 53:
+task 8, line 54:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 3
@@ -90,7 +90,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 9, line 55:
+task 9, line 56:
 //# view-object 4,0
 Owner: Account Address ( B )
 Version: 3
@@ -105,7 +105,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 10, lines 57-62:
+task 10, lines 58-63:
 // ===== Case A: smash [Coin, AB] =====
 // Coin (object 3,0, value 1_000_000_000) is the smash target.
 // Reservation = 500_000_000 from A's address balance.
@@ -117,7 +117,7 @@ mutated: object(3,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 500000000)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 11, lines 64-69:
+task 11, lines 65-70:
 // ===== Case B: smash [AB, Coin] =====
 // Reservation = 500_000_000 from B's address balance is the smash target.
 // Coin (object 4,0, value 1_000_000_000) is the secondary; will be deleted.
@@ -129,18 +129,18 @@ deleted: object(4,0)
 accumulators_written: (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 998990020)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 12, line 71:
+task 12, line 72:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 13, lines 73-76:
+task 13, lines 74-77:
 // ===== After state =====
 // A: AB balance dropped by exactly 500M (the Split withdraw event). Coin 3,0
 // is still alive, mutated to hold (1B + 500M - case_A_gas_cost).
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 99500000000
 
-task 14, line 78:
+task 14, line 79:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 4
@@ -155,12 +155,12 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 15, lines 80-82:
+task 15, lines 81-83:
 // B: AB balance shows (start - 500M + 1B - case_B_gas_cost) = start + 500M
 // minus case_B_gas. Coin 4,0 no longer exists.
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 100998990020
 
-task 16, line 84:
+task 16, line 85:
 //# view-object 4,0
 No object at id 4,0

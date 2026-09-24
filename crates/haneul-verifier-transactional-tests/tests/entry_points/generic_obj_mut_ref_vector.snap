@@ -5,7 +5,7 @@ processed 1 task
 
 // invalid, a mutable reference to vector of objects
 
-task 0, lines 6-15:
+task 0, lines 7-16:
 //# publish
 created: object(1,0)
 mutated: object(0,0)

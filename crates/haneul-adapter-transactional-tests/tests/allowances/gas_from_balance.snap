@@ -10,7 +10,7 @@ processed 13 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 10-13:
+task 1, lines 11-14:
 //# programmable --sender A --inputs 10000000000 @A
 // Fund A's (the funder and later gas payer) address balance.
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -19,7 +19,7 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 10000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 15-18:
+task 2, lines 16-19:
 //# programmable --sender B --inputs 10000000000 @B
 // Fund B's (the spender and gas payer) address balance.
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -28,20 +28,20 @@ mutated: object(0,1)
 accumulators_written: (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 10000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 20:
+task 3, line 21:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 22-25:
+task 4, lines 23-26:
 //# programmable --sender A --inputs b"tob" @B vector[100000u256] vector[] vector[99999999999999]
 // A issues an allowance to B: 100000 lifetime cap.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(4,0), object(4,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6422000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6513200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 27-31:
+task 5, lines 28-32:
 //# programmable --sender B --address-balance-gas --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(50000,@A,object(4,0)) mutshared(4,0) immshared(6) @B
 // B spends A's allowance while paying gas from B's own balance: the gas key
 // and the allowance key settle independently.
@@ -49,19 +49,19 @@ task 5, lines 27-31:
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(3));
 mutated: object(4,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
-accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 50000), (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 981388)
-gas summary: computation_cost: 1000000, storage_cost: 3138800,  storage_rebate: 3107412, non_refundable_storage_fee: 31388
+accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 50000), (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 981844)
+gas summary: computation_cost: 1000000, storage_cost: 3184400,  storage_rebate: 3152556, non_refundable_storage_fee: 31844
 
-task 6, lines 33-36:
+task 6, lines 34-37:
 //# programmable --sender A --inputs b"self" @A vector[100000u256] vector[] vector[99999999999999]
 // A issues an allowance to themselves: 100000 lifetime cap.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(6,0), object(6,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6429600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6520800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 38-42:
+task 7, lines 39-43:
 //# programmable --sender A --address-balance-gas --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(30000,@A,object(6,0)) mutshared(6,0) immshared(6) @B
 // The gas reservation and the allowance reservation on the same key: A pays
 // gas from the balance their own allowance also debits.
@@ -69,10 +69,10 @@ task 7, lines 38-42:
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(3));
 mutated: object(6,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
-accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1061464), (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 30000)
-gas summary: computation_cost: 1000000, storage_cost: 3146400,  storage_rebate: 3114936, non_refundable_storage_fee: 31464
+accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1061920), (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 30000)
+gas summary: computation_cost: 1000000, storage_cost: 3192000,  storage_rebate: 3160080, non_refundable_storage_fee: 31920
 
-task 8, lines 44-45:
+task 8, lines 45-46:
 //# view-object 4,0
 Owner: Shared( 3 )
 Version: 4
@@ -119,7 +119,7 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 50000u256,
 }
 
-task 9, lines 47-48:
+task 9, lines 48-49:
 //# view-object 6,0
 Owner: Shared( 4 )
 Version: 5
@@ -167,14 +167,14 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 30000u256,
 }
 
-task 10, line 50:
+task 10, line 51:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 11, lines 52-53:
+task 11, lines 53-54:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
-9998888536
+9998888080
 
-task 12, lines 55-56:
+task 12, lines 56-57:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
-9999048612
+9999048156

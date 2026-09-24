@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 937
 ---
 processed 24 tasks
 
@@ -14,33 +13,33 @@ A: object(0,0)
 
 // tfer, then abort
 
-task 1, lines 13-60:
+task 1, lines 14-61:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
-gas summary: computation_cost: 1000000, storage_cost: 9332800,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 9378400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
 // **Merge owned into shared**
 
-task 2, line 64:
+task 2, line 65:
 //# run t2::o2::mint_owned_coin
 created: object(2,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 66:
+task 3, line 67:
 //# run t2::o2::mint_shared_coin
 created: object(3,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 68:
+task 4, line 69:
 //# run t2::o2::mint_shared_obj
 created: object(4,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, line 70:
+task 5, line 71:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 3
@@ -55,7 +54,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 6, line 72:
+task 6, line 73:
 //# view-object 3,0
 Owner: Shared( 4 )
 Version: 4
@@ -70,7 +69,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 7, line 74:
+task 7, line 75:
 //# view-object 4,0
 Owner: Shared( 5 )
 Version: 5
@@ -82,7 +81,7 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 8, lines 76-79:
+task 8, lines 77-80:
 // Merge and then try to freeze
 //# programmable --sender A --inputs object(2,0) object(3,0)
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -90,7 +89,7 @@ task 8, lines 76-79:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 9, lines 81-84:
+task 9, lines 82-85:
 // Merge and then try to add as dof
 //# programmable --sender A --inputs object(2,0) object(3,0) object(4,0)
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -98,7 +97,7 @@ task 9, lines 81-84:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 10, lines 86-89:
+task 10, lines 87-90:
 // Merge and then try to add as df
 //# programmable --sender A --inputs object(2,0) object(3,0) object(4,0)
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -106,7 +105,7 @@ task 10, lines 86-89:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 11, lines 91-94:
+task 11, lines 92-95:
 // Merge and then try to transfer it
 //# programmable --sender A --inputs object(2,0) object(3,0) object(4,0)
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -114,7 +113,7 @@ task 11, lines 91-94:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 12, lines 96-99:
+task 12, lines 97-100:
 // Merge and then try to transfer it with PTB transfer
 //# programmable --sender A --inputs object(2,0) object(3,0) object(4,0) @A
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -124,25 +123,25 @@ Debug of error: SharedObjectOperationNotAllowed at command None
 
 // **Merge shared into shared**
 
-task 13, line 103:
+task 13, line 104:
 //# run t2::o2::mint_shared_coin
 created: object(13,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 14, line 105:
+task 14, line 106:
 //# run t2::o2::mint_shared_coin
 created: object(14,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 15, line 107:
+task 15, line 108:
 //# run t2::o2::mint_shared_obj
 created: object(15,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 16, line 109:
+task 16, line 110:
 //# view-object 13,0
 Owner: Shared( 6 )
 Version: 6
@@ -157,7 +156,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 17, line 111:
+task 17, line 112:
 //# view-object 14,0
 Owner: Shared( 7 )
 Version: 7
@@ -172,7 +171,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 18, line 113:
+task 18, line 114:
 //# view-object 15,0
 Owner: Shared( 8 )
 Version: 8
@@ -184,7 +183,7 @@ Contents: t2::o2::Obj2 {
     },
 }
 
-task 19, lines 115-118:
+task 19, lines 116-119:
 // Merge and then try to freeze
 //# programmable --sender A --inputs object(13,0) object(14,0)
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -192,7 +191,7 @@ task 19, lines 115-118:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 20, lines 120-123:
+task 20, lines 121-124:
 // Merge and then try to add as dof
 //# programmable --sender A --inputs object(13,0) object(14,0) object(15,0)
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -200,7 +199,7 @@ task 20, lines 120-123:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 21, lines 125-128:
+task 21, lines 126-129:
 // Merge and then try to add as df
 //# programmable --sender A --inputs object(13,0) object(14,0) object(15,0)
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -208,7 +207,7 @@ task 21, lines 125-128:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 22, lines 130-133:
+task 22, lines 131-134:
 // Merge and then try to transfer it
 //# programmable --sender A --inputs object(13,0) object(14,0) object(15,0)
 //> 0: MergeCoins(Input(1), [Input(0)]);
@@ -216,7 +215,7 @@ task 22, lines 130-133:
 Error: Transaction Effects Status: The shared object operation is not allowed.
 Debug of error: SharedObjectOperationNotAllowed at command None
 
-task 23, lines 135-138:
+task 23, lines 136-139:
 // Merge and then try to transfer it with PTB transfer
 //# programmable --sender A --inputs object(13,0) object(14,0) object(15,0) @A
 //> 0: MergeCoins(Input(1), [Input(0)]);

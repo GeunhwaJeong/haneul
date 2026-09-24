@@ -1,19 +1,18 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 937
 ---
 processed 7 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-16:
+task 1, lines 7-17:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 5479600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 18-20:
+task 2, lines 19-21:
 // Create a party object.
 //# programmable --sender A
 //> ex::m::create_party()
@@ -21,7 +20,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 22:
+task 3, line 23:
 //# view-object 2,0
 Owner: ConsensusAddressOwner( 2, A )
 Version: 2
@@ -33,14 +32,14 @@ Contents: ex::m::A {
     },
 }
 
-task 4, lines 24-26:
+task 4, lines 25-27:
 // Freeze the party object.
 //# programmable --sender A --inputs object(2,0)
 //> haneul::transfer::public_freeze_object<ex::m::A>(Input(0))
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 5, line 28:
+task 5, line 29:
 //# view-object 2,0
 Owner: Immutable
 Version: 3
@@ -52,7 +51,7 @@ Contents: ex::m::A {
     },
 }
 
-task 6, lines 30-33:
+task 6, lines 31-34:
 // Verify the Immutalbe object can't be transferred back to party ownership.
 //# programmable --sender A --inputs object(2,0) @A
 //> 0: haneul::party::single_owner(Input(1));

@@ -10,14 +10,14 @@ processed 16 tasks
 init:
 A: object(0,0), C: object(0,1), F1: object(0,2), F10: object(0,3), F11: object(0,4), F2: object(0,5), F3: object(0,6), F4: object(0,7), F5: object(0,8), F6: object(0,9), F7: object(0,10), F8: object(0,11), F9: object(0,12)
 
-task 1, lines 10-33:
+task 1, lines 11-34:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2), object(1,3), object(1,4), object(1,5)
 mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 18323600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 35-48:
+task 2, lines 36-49:
 //# programmable --sender A --inputs object(1,5) 100 @F1 @F2 @F3 @F4 @F5 @F6 @F7 @F8 @F9 @F10 @F11
 // Fund each funder's address balance.
 //> 0: SplitCoins(Input(0), [Input(1), Input(1), Input(1), Input(1), Input(1), Input(1), Input(1), Input(1), Input(1), Input(1), Input(1)]);
@@ -37,11 +37,11 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(2,0), F1, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,1), F10, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,2), F11, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,3), F2, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,4), F3, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,5), F4, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,6), F5, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,7), F6, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,8), F7, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,9), F8, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100), (object(2,10), F9, haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>, Merge, 100)
 gas summary: computation_cost: 1840000, storage_cost: 2462400,  storage_rebate: 2437776, non_refundable_storage_fee: 24624
 
-task 3, line 50:
+task 3, line 51:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 52-55:
+task 4, lines 53-56:
 //# programmable --sender F1 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F1 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -50,7 +50,7 @@ created: object(4,0), object(4,1)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 5, lines 57-60:
+task 5, lines 58-61:
 //# programmable --sender F2 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F2 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -59,7 +59,7 @@ created: object(5,0), object(5,1)
 mutated: object(0,5)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 6, lines 62-65:
+task 6, lines 63-66:
 //# programmable --sender F3 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F3 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -68,7 +68,7 @@ created: object(6,0), object(6,1)
 mutated: object(0,6)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 7, lines 67-70:
+task 7, lines 68-71:
 //# programmable --sender F4 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F4 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -77,7 +77,7 @@ created: object(7,0), object(7,1)
 mutated: object(0,7)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 8, lines 72-75:
+task 8, lines 73-76:
 //# programmable --sender F5 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F5 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -86,7 +86,7 @@ created: object(8,0), object(8,1)
 mutated: object(0,8)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 9, lines 77-80:
+task 9, lines 78-81:
 //# programmable --sender F6 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F6 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -95,7 +95,7 @@ created: object(9,0), object(9,1)
 mutated: object(0,9)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 10, lines 82-85:
+task 10, lines 83-86:
 //# programmable --sender F7 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F7 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -104,7 +104,7 @@ created: object(10,0), object(10,1)
 mutated: object(0,10)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 11, lines 87-90:
+task 11, lines 88-91:
 //# programmable --sender F8 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F8 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -113,7 +113,7 @@ created: object(11,0), object(11,1)
 mutated: object(0,11)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 12, lines 92-95:
+task 12, lines 93-96:
 //# programmable --sender F9 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F9 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -122,7 +122,7 @@ created: object(12,0), object(12,1)
 mutated: object(0,12)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 13, lines 97-100:
+task 13, lines 98-101:
 //# programmable --sender F10 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F10 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -131,7 +131,7 @@ created: object(13,0), object(13,1)
 mutated: object(0,3)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 14, lines 102-105:
+task 14, lines 103-106:
 //# programmable --sender F11 --inputs b"" @C vector[100u256] vector[] vector[99999999999999]
 // F11 issues an allowance to C.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -140,7 +140,7 @@ created: object(14,0), object(14,1)
 mutated: object(0,4)
 gas summary: computation_cost: 1000000, storage_cost: 6733600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 15, lines 107-130:
+task 15, lines 108-131:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F1,object(4,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F2,object(5,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F3,object(6,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F4,object(7,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F5,object(8,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F6,object(9,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F7,object(10,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F8,object(11,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F9,object(12,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F10,object(13,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin::REGULATED_COIN>>(10,@F11,object(14,0)) mutshared(4,0) mutshared(5,0) mutshared(6,0) mutshared(7,0) mutshared(8,0) mutshared(9,0) mutshared(10,0) mutshared(11,0) mutshared(12,0) mutshared(13,0) mutshared(14,0) immshared(6) @C
 // Eleven withdrawals: one over the limit, rejected at signing.
 //> 0: haneul::allowance::balance_spend<test::regulated_coin::REGULATED_COIN>(Input(11), Input(0), Input(22));

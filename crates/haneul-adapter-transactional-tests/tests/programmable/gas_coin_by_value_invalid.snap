@@ -8,32 +8,32 @@ processed 9 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-21:
+task 1, lines 9-22:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 3883600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 23-25:
+task 2, lines 24-26:
 // cannot pass to Move function
 //# programmable --sender A
 //> test::m1::t1<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
 
-task 3, lines 27-28:
+task 3, lines 28-29:
 //# programmable --sender A
 //> test::m1::t2<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
 
-task 4, lines 30-31:
+task 4, lines 31-32:
 //# programmable --sender A
 //> test::m1::t2<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas)
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
 
-task 5, lines 33-36:
+task 5, lines 34-37:
 // cannot merge gas coin
 //# programmable --sender A --inputs 10  --gas-budget 10000000000
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -41,14 +41,14 @@ task 5, lines 33-36:
 Error: Transaction Effects Status: Invalid command argument at 1. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: InvalidGasCoinUsage }, source: None, command: Some(1) } }
 
-task 6, lines 38-40:
+task 6, lines 39-41:
 // cannot use gas coin in a vector
 //# programmable --sender A
 //> MakeMoveVec([Gas])
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(0) } }
 
-task 7, lines 42-45:
+task 7, lines 43-46:
 // we give the error that the gas coin was taken, even though this call is invalid
 //# programmable --sender A --inputs @A
 //> TransferObjects([Gas], Input(0));
@@ -56,7 +56,7 @@ task 7, lines 42-45:
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid taking of the Gas coin. It can only be used by-value with TransferObjects
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidGasCoinUsage }, source: None, command: Some(1) } }
 
-task 8, lines 47-51:
+task 8, lines 48-52:
 //# programmable --sender A --inputs @A
 // Similarly we try to use the gas coin both with send_funds and TransferObjects, and get an
 // error that the gas coin was already moved, even though the call is _valid_.

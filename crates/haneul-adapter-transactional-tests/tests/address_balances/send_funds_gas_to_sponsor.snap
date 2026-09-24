@@ -11,7 +11,7 @@ processed 6 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 11-16:
+task 1, lines 12-17:
 // Sponsored tx: sender = A, sponsor = B. Default gas payment uses B's gas
 // coin (object 0,1). Workload `send_funds(Gas, @B)` transfers the gas coin
 // to B's AB during execution; `finish_gas_coin` then overrides
@@ -22,21 +22,21 @@ deleted: object(0,1)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 299999999000000)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 18:
+task 2, line 19:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 20-21:
+task 3, lines 21-22:
 // Sponsor B's gas coin should be deleted (consumed by send_funds).
 //# view-object 0,1
 No object at id 0,1
 
-task 4, lines 23-25:
+task 4, lines 24-26:
 // B's AB receives a single net Merge = original_coin_value - net_gas.
 // A's AB is unchanged (no accumulator object for A exists).
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 299999999000000
 
-task 5, line 27:
+task 5, line 28:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 No funds accumulator object found

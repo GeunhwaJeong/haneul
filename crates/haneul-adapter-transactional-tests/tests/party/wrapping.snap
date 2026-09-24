@@ -1,19 +1,18 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 937
 ---
 processed 11 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-32:
+task 1, lines 7-33:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6832400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 34-36:
+task 2, lines 35-37:
 // Create a party object.
 //# programmable --sender A
 //> ex::m::create_party()
@@ -21,7 +20,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 38:
+task 3, line 39:
 //# view-object 2,0
 Owner: ConsensusAddressOwner( 2, A )
 Version: 2
@@ -33,7 +32,7 @@ Contents: ex::m::A {
     },
 }
 
-task 4, lines 40-42:
+task 4, lines 41-43:
 // Wrap the party object.
 //# programmable --sender A --inputs object(2,0)
 //> ex::m::wrap(Input(0))
@@ -42,11 +41,11 @@ mutated: object(0,0)
 wrapped: object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2492800,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 5, line 44:
+task 5, line 45:
 //# view-object 2,0
 No object at id 2,0
 
-task 6, line 46:
+task 6, line 47:
 //# view-object 4,0
 Owner: ConsensusAddressOwner( 3, A )
 Version: 3
@@ -65,14 +64,14 @@ Contents: ex::m::AWrapper {
     },
 }
 
-task 7, lines 48-51:
+task 7, lines 49-52:
 // Verify the wrapped object can't be transferred.
 //# programmable --inputs object(2,0) @A --sender A
 //> 0: haneul::party::single_owner(Input(1));
 //> haneul::transfer::public_party_transfer<ex::m::A>(Input(0), Result(0))
 Error: INVALID TEST. Could not load object argument object(2,0)
 
-task 8, lines 53-55:
+task 8, lines 54-56:
 // Unwrap the object.
 //# programmable --sender A --inputs object(4,0)
 //> ex::m::unwrap(Input(0))
@@ -81,7 +80,7 @@ unwrapped: object(2,0)
 deleted: object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2467872, non_refundable_storage_fee: 24928
 
-task 9, lines 57-60:
+task 9, lines 58-61:
 // Verify it can again be transferred to a different party.
 //# programmable --inputs object(2,0) @B --sender A
 //> 0: haneul::party::single_owner(Input(1));
@@ -89,7 +88,7 @@ task 9, lines 57-60:
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 10, line 62:
+task 10, line 63:
 //# view-object 2,0
 Owner: ConsensusAddressOwner( 5, B )
 Version: 5

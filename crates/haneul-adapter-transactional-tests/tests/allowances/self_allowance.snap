@@ -10,7 +10,7 @@ processed 17 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 10-13:
+task 1, lines 11-14:
 //# programmable --sender A --inputs 5000 @A
 // Fund A's (the funder) address balance.
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -19,20 +19,20 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 5000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 15:
+task 2, line 16:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 17-20:
+task 3, lines 18-21:
 //# programmable --sender A --inputs b"self" @A vector[1000u256] vector[] vector[99999999999999]
 // A issues an allowance to themselves: 1000 lifetime cap.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(3,0), object(3,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6429600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6520800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 22-25:
+task 4, lines 23-26:
 //# programmable --sender A --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(400,@A,object(3,0)) mutshared(3,0) immshared(6) @B
 // A spends 400 through their own allowance.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2));
@@ -40,9 +40,9 @@ task 4, lines 22-25:
 mutated: object(0,0), object(3,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 400), (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 400)
-gas summary: computation_cost: 1000000, storage_cost: 4134400,  storage_rebate: 4093056, non_refundable_storage_fee: 41344
+gas summary: computation_cost: 1000000, storage_cost: 4180000,  storage_rebate: 4138200, non_refundable_storage_fee: 41800
 
-task 5, lines 27-33:
+task 5, lines 28-34:
 //# programmable --sender A --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(200,@A,object(3,0)) withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100) mutshared(3,0) immshared(6) @B
 // An allowance withdrawal and a plain withdrawal, both against A's balance:
 // the reservations coalesce at one key and settle as one Split.
@@ -53,9 +53,9 @@ task 5, lines 27-33:
 mutated: object(0,0), object(3,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 300), (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 300)
-gas summary: computation_cost: 1000000, storage_cost: 4134400,  storage_rebate: 4093056, non_refundable_storage_fee: 41344
+gas summary: computation_cost: 1000000, storage_cost: 4180000,  storage_rebate: 4138200, non_refundable_storage_fee: 41800
 
-task 6, lines 35-36:
+task 6, lines 36-37:
 //# view-object 3,0
 Owner: Shared( 3 )
 Version: 5
@@ -103,11 +103,11 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 600u256,
 }
 
-task 7, line 38:
+task 7, line 39:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 40-41:
+task 8, lines 41-42:
 //# view-object 1,0
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 3
@@ -125,7 +125,7 @@ Contents: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::balance:
     },
 }
 
-task 9, lines 43-44:
+task 9, lines 44-45:
 //# view-object 4,0
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 3
@@ -143,7 +143,7 @@ Contents: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::balance:
     },
 }
 
-task 10, lines 46-51:
+task 10, lines 47-52:
 //# programmable --sender A --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(3,0)) mutshared(3,0) object(3,1) immshared(6) @B
 // Spend and revoke in one PTB: the withdrawal consumes first, then the
 // revoke deletes the allowance and its cap.
@@ -154,18 +154,18 @@ mutated: object(0,0)
 deleted: object(3,0), object(3,1)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 100), (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 6365304, non_refundable_storage_fee: 64296
+gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 6455592, non_refundable_storage_fee: 65208
 
-task 11, lines 53-56:
+task 11, lines 54-57:
 //# programmable --sender A --inputs b"self2" @A vector[1000u256] vector[] vector[99999999999999]
 // A second self-allowance, for the reversed order below.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(11,0), object(11,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6437200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6528400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 12, lines 58-63:
+task 12, lines 59-64:
 //# programmable --sender A --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(11,0)) mutshared(11,0) object(11,1) immshared(6) @B
 // Revoke first: the spend cannot use the consumed allowance, so the whole
 // transaction rolls back, revocation included.
@@ -175,7 +175,7 @@ task 12, lines 58-63:
 Error: Transaction Effects Status: Invalid command argument at 0. Specified argument location does not have a value and cannot be used
 Debug of error: CommandArgumentError { arg_idx: 0, kind: ArgumentWithoutValue } at command Some(1)
 
-task 13, lines 65-66:
+task 13, lines 66-67:
 //# view-object 11,0
 Owner: Shared( 7 )
 Version: 8
@@ -224,11 +224,11 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 0u256,
 }
 
-task 14, line 68:
+task 14, line 69:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 15, lines 70-71:
+task 15, lines 71-72:
 //# view-object 1,0
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 4
@@ -246,7 +246,7 @@ Contents: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::balance:
     },
 }
 
-task 16, lines 73-74:
+task 16, lines 74-75:
 //# view-object 4,0
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 4

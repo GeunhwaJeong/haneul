@@ -14,7 +14,7 @@ processed 9 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, line 14:
+task 1, line 15:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 1
@@ -29,7 +29,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 2, lines 16-20:
+task 2, lines 17-21:
 // Seed A's address balance.
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -39,15 +39,15 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 22:
+task 3, line 23:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, line 24:
+task 4, line 25:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 5, lines 26-31:
+task 5, lines 27-32:
 // Pay gas with `[gas_coin, withdraw, withdraw]`. The two withdrawals share
 // the same address-balance location and are summed during smashing; the
 // smash target is the real gas coin (object 0,0).
@@ -59,17 +59,17 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1000000000)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 33:
+task 6, line 34:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 35-37:
+task 7, lines 36-38:
 // Address balance should have decreased by exactly the net gas usage on the
 // reserved amount (1_000_000_000 reserved minus what survives in the coin).
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 99000000000
 
-task 8, lines 39-41:
+task 8, lines 40-42:
 // Inspect the gas coin: leftover reservation stays here, not refunded to A's
 // address balance.
 //# view-object 0,0

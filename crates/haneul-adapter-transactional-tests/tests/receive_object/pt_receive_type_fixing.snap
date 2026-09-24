@@ -1,22 +1,21 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 937
 ---
 processed 13 tasks
 
-task 1, lines 6-50:
+task 1, lines 7-51:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 9006000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 52:
+task 2, line 53:
 //# run tto::M1::start
 created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 3420000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 54:
+task 3, line 55:
 //# view-object 2,0
 Owner: Account Address ( _ )
 Version: 3
@@ -28,7 +27,7 @@ Contents: tto::M1::A {
     },
 }
 
-task 4, line 56:
+task 4, line 57:
 //# view-object 2,1
 Owner: Account Address ( fake(2,0) )
 Version: 3
@@ -40,7 +39,7 @@ Contents: tto::M1::B {
     },
 }
 
-task 5, lines 58-62:
+task 5, lines 59-63:
 // Pass a receiving object through a move function, and then use the returned
 // Receiving argument in a subsequent command.
 //# programmable --inputs object(2,0) receiving(2,1)
@@ -49,7 +48,7 @@ task 5, lines 58-62:
 mutated: object(0,0), object(2,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 3420000,  storage_rebate: 3385800, non_refundable_storage_fee: 34200
 
-task 6, lines 64-67:
+task 6, lines 65-68:
 //# programmable --inputs object(2,0) receiving(2,1)
 //> 0: tto::M1::pass_through_a(Input(1));
 // Now treated as Receiving<B> in the new PTB execution
@@ -57,21 +56,21 @@ task 6, lines 64-67:
 Error: Transaction Effects Status: Invalid command argument at 1. The type of the value does not match the expected type
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: TypeMismatch }, source: None, command: Some(1) } }
 
-task 7, lines 69-71:
+task 7, lines 70-72:
 //# programmable --inputs object(2,0) receiving(2,1)
 //> 0: tto::M1::pass_through_mut_ref_a(Input(1));
 //> tto::M1::receiver(Input(0), Input(1));
 Error: Transaction Effects Status: Move Runtime Abort. Location: haneul::transfer::receive_impl (function index 15) at offset 0, Abort Code: 3
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("transfer") }, function: 15, instruction: 0, function_name: Some("receive_impl") }, 3), source: Some(VMError { major_status: ABORTED, sub_status: Some(3), message: None, exec_state: None, location: Module(ModuleId { address: haneul, name: Identifier("transfer") }), indices: [], offsets: [(FunctionDefinitionIndex(15), 0)] }), command: Some(1) } }
 
-task 8, lines 73-75:
+task 8, lines 74-76:
 //# programmable --inputs object(2,0) receiving(2,1)
 //> 0: tto::M1::pass_through_ref_a(Input(1));
 //> tto::M1::receiver(Input(0), Input(1));
 Error: Transaction Effects Status: Move Runtime Abort. Location: haneul::transfer::receive_impl (function index 15) at offset 0, Abort Code: 3
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("transfer") }, function: 15, instruction: 0, function_name: Some("receive_impl") }, 3), source: Some(VMError { major_status: ABORTED, sub_status: Some(3), message: None, exec_state: None, location: Module(ModuleId { address: haneul, name: Identifier("transfer") }), indices: [], offsets: [(FunctionDefinitionIndex(15), 0)] }), command: Some(1) } }
 
-task 9, lines 77-80:
+task 9, lines 78-81:
 // make vec, then unpack it and make sure the type is fixed
 //# programmable --inputs object(2,0) receiving(2,1)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::A>>([Input(1)]);
@@ -79,7 +78,7 @@ task 9, lines 77-80:
 Error: Transaction Effects Status: Invalid command argument at 0. The type of the value does not match the expected type
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: TypeMismatch }, source: None, command: Some(1) } }
 
-task 10, lines 82-85:
+task 10, lines 83-86:
 //# programmable --inputs object(2,0) receiving(2,1)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::A>>([Input(1)]);
 //> 1: tto::M1::unpacker_a(Result(0));
@@ -87,7 +86,7 @@ task 10, lines 82-85:
 Error: Transaction Effects Status: Invalid command argument at 1. The type of the value does not match the expected type
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: TypeMismatch }, source: None, command: Some(2) } }
 
-task 11, lines 87-91:
+task 11, lines 88-92:
 // This is fine since we are going A -> A in the unpack. But we should fail the call.
 //# programmable --inputs object(2,0) receiving(2,1)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::A>>([Input(1)]);
@@ -96,7 +95,7 @@ task 11, lines 87-91:
 Error: Transaction Effects Status: Invalid command argument at 1. The type of the value does not match the expected type
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: TypeMismatch }, source: None, command: Some(2) } }
 
-task 12, lines 93-96:
+task 12, lines 94-97:
 // This should fail since we're going A -> B in the unpack.
 //# programmable --inputs object(2,0) receiving(2,1)
 //> 0: MakeMoveVec<haneul::transfer::Receiving<tto::M1::A>>([Input(1)]);

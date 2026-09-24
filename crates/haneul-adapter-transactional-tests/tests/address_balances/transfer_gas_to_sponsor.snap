@@ -12,7 +12,7 @@ processed 4 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 12-16:
+task 1, lines 13-17:
 // Sponsored tx: sender = A, sponsor = B. Default gas payment uses B's gas
 // coin (0,1). Workload transfers Gas back to B; final gas charge is debited
 // from the (still-existing) gas coin's value.
@@ -21,11 +21,11 @@ task 1, lines 12-16:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 18:
+task 2, line 19:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 20-22:
+task 3, lines 21-23:
 // Gas coin (0,1) should still exist, owned by B, with value reduced by
 // net_gas. Storage cost is for the mutation (no new objects created).
 //# view-object 0,1

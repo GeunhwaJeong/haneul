@@ -5,7 +5,7 @@ processed 1 task
 
 // invalid, otw type instantiated
 
-task 0, lines 6-24:
+task 0, lines 7-25:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("one-time witness type _::m::M is instantiated in the _::m::pack function and must never be"), command: Some(0) } }

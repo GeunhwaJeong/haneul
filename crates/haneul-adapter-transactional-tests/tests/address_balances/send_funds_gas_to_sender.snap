@@ -12,7 +12,7 @@ processed 10 tasks
 init:
 A: object(0,0)
 
-task 1, lines 12-16:
+task 1, lines 13-17:
 // Seed A's address balance.
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -22,7 +22,7 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 18-21:
+task 2, lines 19-22:
 // Create a 1B coin owned by A - this will be the secondary in the smash.
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -31,15 +31,15 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 23:
+task 3, line 24:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, line 25:
+task 4, line 26:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 5, line 27:
+task 5, line 28:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 3
@@ -54,7 +54,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 6, lines 29-33:
+task 6, lines 30-34:
 // Pay with [AB(500M), Coin(1B)]; send_funds(Gas, @A) - recipient is the
 // original AB owner. The override target equals the original gas charge
 // location.
@@ -64,11 +64,11 @@ deleted: object(2,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 999978120)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, line 35:
+task 7, line 36:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 37-41:
+task 8, lines 38-42:
 // After: A's AB should reflect all accumulator events - deposit-back from
 // smashing the secondary coin (Merge: coin value), the send_funds transfer
 // of the ephemeral coin to A's AB (Merge: full smashed value), the override-
@@ -76,6 +76,6 @@ task 8, lines 37-41:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100999978120
 
-task 9, line 43:
+task 9, line 44:
 //# view-object 2,0
 No object at id 2,0

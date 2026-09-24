@@ -8,7 +8,7 @@ processed 14 tasks
 init:
 A: object(0,0)
 
-task 1, lines 8-69:
+task 1, lines 9-70:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
@@ -16,7 +16,7 @@ gas summary: computation_cost: 1000000, storage_cost: 10032000,  storage_rebate:
 
 // Move call value parameter
 
-task 2, lines 73-75:
+task 2, lines 74-76:
 //# programmable --sender A --inputs 112u64
 //> 0: test::m::id_ref<u64>(Input(0));
 //> 1: test::m::check(Result(0), Input(0));
@@ -25,7 +25,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0
 
 // SplitCoins amount
 
-task 3, lines 79-82:
+task 3, lines 80-83:
 //# programmable --sender A --inputs 100u64 @A
 //> 0: test::m::id_ref<u64>(Input(0));
 //> 1: SplitCoins(Gas, [Result(0)]);
@@ -36,7 +36,7 @@ gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 
 
 // TransferObjects recipient
 
-task 4, lines 86-89:
+task 4, lines 87-90:
 //# programmable --sender A --inputs @A 100u64
 //> 0: test::m::id_ref<address>(Input(0));
 //> 1: SplitCoins(Gas, [Input(1)]);
@@ -47,7 +47,7 @@ gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 
 
 // MakeMoveVec element, mixed with a pure value
 
-task 5, lines 93-96:
+task 5, lines 94-97:
 //# programmable --sender A --inputs 7u64 3u64
 //> 0: test::m::id_ref<u64>(Input(0));
 //> 1: MakeMoveVec<u64>([Result(0), Input(0), Result(0)]);
@@ -57,7 +57,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // Read through a mutable reference, before and after a write
 
-task 6, lines 100-105:
+task 6, lines 101-106:
 //# programmable --sender A --inputs 1u64 2u64
 //> 0: test::m::pair(Input(0), Input(1));
 //> 1: test::m::borrow_x_mut(Result(0));
@@ -69,7 +69,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // Read of a copyable struct
 
-task 7, lines 109-112:
+task 7, lines 110-113:
 //# programmable --sender A --inputs 1u64 2u64
 //> 0: test::m::pair(Input(0), Input(1));
 //> 1: test::m::id_ref<test::m::Pair>(Result(0));
@@ -79,7 +79,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // Read of nested results
 
-task 8, lines 116-120:
+task 8, lines 117-121:
 //# programmable --sender A --inputs 1u64 2u64
 //> 0: test::m::pair(Input(0), Input(1));
 //> 1: test::m::borrow_x_y(Result(0));
@@ -90,7 +90,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // Read of a reference into an object input
 
-task 9, lines 124-126:
+task 9, lines 125-127:
 //# programmable --sender A --inputs 112u64 @A
 //> 0: test::m::new_obj(Input(0));
 //> TransferObjects([Result(0)], Input(1))
@@ -98,7 +98,7 @@ created: object(9,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2272400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 10, lines 128-130:
+task 10, lines 129-131:
 //# programmable --sender A --inputs object(9,0) 112u64
 //> 0: test::m::borrow_value(Input(0));
 //> 1: test::m::check(Result(0), Input(1));
@@ -107,7 +107,7 @@ gas summary: computation_cost: 1000000, storage_cost: 2272400,  storage_rebate: 
 
 // The same reference read twice in one command, and again in a later command
 
-task 11, lines 134-137:
+task 11, lines 135-138:
 //# programmable --sender A --inputs 112u64
 //> 0: test::m::id_ref<u64>(Input(0));
 //> 1: test::m::check(Result(0), Result(0));
@@ -117,7 +117,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // Read alongside a copy of another reference with the same root, which extends the borrow
 
-task 12, lines 141-146:
+task 12, lines 142-147:
 //# programmable --sender A --inputs 1u64 2u64
 //> 0: test::m::pair(Input(0), Input(1));
 //> 1: test::m::id_ref<test::m::Pair>(Result(0));
@@ -129,7 +129,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // Read of a reference into the referent while the referent itself is also copied
 
-task 13, lines 150-153:
+task 13, lines 151-154:
 //# programmable --sender A --inputs 1u64 2u64
 //> 0: test::m::pair(Input(0), Input(1));
 //> 1: test::m::borrow_x(Result(0));
