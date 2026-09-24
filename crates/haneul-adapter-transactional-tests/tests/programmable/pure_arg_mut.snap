@@ -3,16 +3,20 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 6 tasks
 
+// tests that pure arguments have distinct values/locals per type usage
+
 init:
 A: object(0,0)
 
-task 1, lines 9-44:
+task 1, lines 9-41:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 7562000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 45-54:
+task 2, lines 43-51:
+// In statically checked PTBs, tests that each type usage gets its own value/locals
+// Originally, this will fail for changing types
 //# programmable --inputs 0u8
 //> test::m1::modify_u8(Input(0));
 //> test::m1::modify_ascii(Input(0));
@@ -20,20 +24,20 @@ task 2, lines 45-54:
 //> test::m1::assert_u8(Input(0));
 //> test::m1::assert_ascii(Input(0));
 //> test::m1::assert_string(Input(0));
-// Tests that locals of the same type are distinct even if they are the same value+type
-// This should abort
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 55-59:
+task 3, lines 53-57:
+// Tests that locals of the same type are distinct even if they are the same value+type
+// This should abort
 //# programmable --inputs 0u8 0u8
 //> test::m1::modify_u8(Input(0));
 //> test::m1::assert_string(Input(1));
-// In statically checked PTBs, tests that each type can be borrowed mutably separately
 Error: Transaction Effects Status: Move Abort in test::m1::assert_string (function index 6) at offset 11 at line 35
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("m1") }, function: 6, instruction: 11, function_name: Some("assert_string") }, 13906834328962203647), source: Some(VMError { major_status: ABORTED, sub_status: Some(13906834328962203647), message: Some("test::m1::assert_string at offset 11"), exec_state: None, location: Module(ModuleId { address: test, name: Identifier("m1") }), indices: [], offsets: [(FunctionDefinitionIndex(6), 11)] }), command: Some(1) } }
 
-task 4, lines 60-64:
+task 4, lines 59-64:
+// In statically checked PTBs, tests that each type can be borrowed mutably separately
 //# programmable --inputs 0u8
 //> 0: test::m1::borrow_mut<u8>(Input(0));
 //> 1: test::m1::borrow_mut<std::ascii::String>(Input(0));

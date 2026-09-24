@@ -3,6 +3,8 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 27 tasks
 
+// Tests gasless transactions with coin object inputs, MergeCoins, and SplitCoins.
+
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
@@ -24,9 +26,11 @@ mutated: object(0,0), object(1,1)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 6657600,  storage_rebate: 2663496, non_refundable_storage_fee: 26904
 
-task 4, lines 42-44:
+task 4, line 42:
 //# create-checkpoint
 Checkpoint created: 1
+
+// --- Test 1: Simple coin input sent via coin::send_funds ---
 
 task 5, lines 46-48:
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs object(3,0) @B
@@ -41,9 +45,11 @@ task 6, line 50:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 52-54:
+task 7, line 52:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> B
 5000
+
+// --- Test 2: MergeCoins then coin::send_funds ---
 
 task 8, lines 56-59:
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs object(3,1) object(3,2) @C
@@ -59,9 +65,11 @@ task 9, line 61:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 10, lines 63-65:
+task 10, line 63:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> C
 10000
+
+// --- Test 3: Mint fresh coins, SplitCoins then send parts to different recipients ---
 
 task 11, lines 67-70:
 //# programmable --sender A --inputs 9000 object(1,1) @A
@@ -96,9 +104,11 @@ task 15, line 82:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> B
 8000
 
-task 16, lines 84-86:
+task 16, line 84:
 //# view-funds haneul::balance::Balance<test::usdc::USDC> C
 16000
+
+// --- Test 4: Immutable coin input rejected ---
 
 task 17, lines 88-91:
 //# programmable --sender A --inputs object(1,1) 1000
@@ -109,12 +119,13 @@ created: object(17,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 4012800,  storage_rebate: 2663496, non_refundable_storage_fee: 26904
 
-task 18, lines 93-97:
+task 18, lines 93-95:
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs object(17,0) @B
 // Reject: immutable coin
 //> 0: haneul::coin::send_funds<test::usdc::USDC>(Input(0), Input(1));
-// --- Test 5: Shared coin input rejected ---
 Error: Error checking transaction input objects: Feature is not supported: Gasless transactions only support owned object inputs
+
+// --- Test 5: Shared coin input rejected ---
 
 task 19, lines 99-102:
 //# programmable --sender A --inputs object(1,1) 1000
@@ -131,13 +142,14 @@ task 20, lines 104-106:
 //> 0: haneul::coin::send_funds<test::usdc::USDC>(Input(0), Input(1));
 Error: Error checking transaction input objects: Feature is not supported: Gasless transactions only support owned object inputs
 
-task 21, lines 108-113:
+task 21, lines 108-111:
 //# programmable --sender A --address-balance-gas --gas-price 0 --gas-budget 0 --inputs object(19,0) @B 1
 // Reject: shared coin (used but not deleted)
 //> 0: SplitCoins(Input(0), [Input(2)]);
 //> 1: haneul::coin::send_funds<test::usdc::USDC>(NestedResult(0, 0), Input(1));
-// --- Test 6: Party coin input succeeds (used and unused) ---
 Error: Error checking transaction input objects: Feature is not supported: Gasless transactions only support owned object inputs
+
+// --- Test 6: Party coin input succeeds (used and unused) ---
 
 task 22, lines 115-121:
 //# programmable --sender A --inputs object(1,1) 2000 @A

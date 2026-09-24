@@ -3,16 +3,19 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 12 tasks
 
+// tests various valid operations involving TransferObjects
+
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 9-33:
+task 1, lines 9-31:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6026800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 34-36:
+task 2, lines 33-36:
+// simple
 //# programmable --sender A --inputs @A
 //> 0: test::m1::new();
 //> TransferObjects([Result(0)], Input(0));
@@ -20,7 +23,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2280000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 38-40:
+task 3, line 38:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 2
@@ -35,7 +38,8 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 4, lines 41-44:
+task 4, lines 40-44:
+// cast using a Move function
 //# programmable --sender A --inputs 0u256
 //> 0: haneul::address::from_u256(Input(0));
 //> 1: test::m1::new();
@@ -44,7 +48,7 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2280000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 46-48:
+task 5, line 46:
 //# view-object 4,0
 Owner: Account Address ( _ )
 Version: 3
@@ -57,7 +61,8 @@ Contents: test::m1::Pub {
     value: 112u64,
 }
 
-task 6, lines 49-54:
+task 6, lines 48-54:
+// compilicated Move logic
 //# programmable --sender A --inputs @B true
 //> 0: haneul::address::to_u256(Input(0));
 //> 1: haneul::address::from_u256(Result(0));
@@ -68,7 +73,7 @@ created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2280000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 56-58:
+task 7, line 56:
 //# view-object 6,0
 Owner: Account Address ( B )
 Version: 4
@@ -81,7 +86,8 @@ Contents: test::m1::Pub {
     value: 112u64,
 }
 
-task 8, lines 59-66:
+task 8, lines 58-66:
+// many object types
 //# programmable --sender A --inputs @B true
 //> 0: haneul::address::to_u256(Input(0));
 //> 1: haneul::address::from_u256(Result(0));

@@ -2,18 +2,31 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
+use std::collections::HashSet;
 use std::sync::Arc;
 
 use anyhow::Result;
 use haneul_config::{
     transaction_deny_config::TransactionDenyConfig, verifier_signing_config::VerifierSigningConfig,
 };
+use haneul_core::{
+    accumulators::{
+        funds_read::AccountFundsRead, object_funds_checker::metrics::ObjectFundsCheckerMetrics,
+        unsettled_object_withdrawals::UnsettledObjectWithdrawals,
+    },
+    transaction_simulation::{SimulationInputLoader, simulate_transaction},
+};
 use haneul_execution::Executor;
 use haneul_protocol_config::{Chain, ProtocolConfig, ProtocolVersion};
 use haneul_types::{
+    HANEUL_ACCUMULATOR_ROOT_OBJECT_ID,
+    accumulator_root::{AccumulatorObjId, AccumulatorValue, U128, UnsettledObjectFundsRead},
+    base_types::{ObjectRef, SequenceNumber, TransactionDigest},
+    coin_reservation::BorrowedCoinReservationResolver,
     committee::{Committee, EpochId},
     digests::ChainIdentifier,
-    effects::TransactionEffects,
+    effects::{TransactionEffects, TransactionEffectsAPI},
+    error::HaneulResult,
     execution_params::ExecutionOrEarlyError,
     gas::HaneulGasStatus,
     haneul_system_state::{
@@ -22,10 +35,18 @@ use haneul_types::{
     },
     inner_temporary_store::InnerTemporaryStore,
     metrics::{BytecodeVerifierMetrics, ExecutionMetrics},
-    transaction::{TransactionDataAPI, VerifiedTransaction},
+    transaction::{
+        InputObjectKind, InputObjects, ReceivingObjects, TransactionData, TransactionDataAPI,
+        TxValidityCheckContext, VerifiedTransaction,
+    },
+    transaction_executor::{SimulateTransactionResult, TransactionChecks},
 };
 
 use crate::SimulatorStore;
+
+struct SimulatorAccountFundsRead<'a, S>(&'a S);
+
+struct SimulatorInputLoader<'a, S>(&'a S);
 
 pub struct EpochState {
     epoch_start_state: EpochStartSystemState,
@@ -34,7 +55,10 @@ pub struct EpochState {
     execution_metrics: Arc<ExecutionMetrics>,
     bytecode_verifier_metrics: Arc<BytecodeVerifierMetrics>,
     executor: Arc<dyn Executor + Send + Sync>,
+    /// Keeps arbitrary simulated packages out of committed execution's VM cache.
+    simulation_executor: Arc<dyn Executor + Send + Sync>,
     chain_identifier: ChainIdentifier,
+    unsettled_object_withdrawals: Arc<UnsettledObjectWithdrawals>,
     /// A counter that advances each time we advance the clock in order to ensure that each update
     /// txn has a unique digest. This is reset on epoch changes
     next_consensus_round: u64,
@@ -58,6 +82,10 @@ impl EpochState {
         let execution_metrics = Arc::new(ExecutionMetrics::new(&registry));
         let bytecode_verifier_metrics = Arc::new(BytecodeVerifierMetrics::new(&registry));
         let executor = haneul_execution::executor(&protocol_config, true).unwrap();
+        let simulation_executor = haneul_execution::executor(&protocol_config, true).unwrap();
+        let unsettled_object_withdrawals = Arc::new(UnsettledObjectWithdrawals::new(Arc::new(
+            ObjectFundsCheckerMetrics::new(&registry),
+        )));
 
         Self {
             epoch_start_state,
@@ -66,7 +94,9 @@ impl EpochState {
             execution_metrics,
             bytecode_verifier_metrics,
             executor,
+            simulation_executor,
             chain_identifier,
+            unsettled_object_withdrawals,
             next_consensus_round: 0,
         }
     }
@@ -152,6 +182,10 @@ impl EpochState {
 
         let transaction_data = transaction.data().transaction_data();
         let (kind, signer, gas_data) = transaction_data.execution_parts();
+        let system_object_versions =
+            haneul_types::base_types::SystemObjectVersions::from_latest_in_store(
+                store.backing_store(),
+            );
         let (inner_temp_store, gas_status, effects, _timings, result) = self
             .executor
             .execute_transaction_to_effects_and_execution_error(
@@ -164,7 +198,8 @@ impl EpochState {
                 &self.epoch_start_state.epoch(),
                 self.epoch_start_state.epoch_start_timestamp_ms(),
                 checked_input_objects,
-                std::collections::BTreeMap::new(),
+                system_object_versions,
+                self.unsettled_object_withdrawals.as_ref() as &dyn UnsettledObjectFundsRead,
                 gas_data,
                 gas_status,
                 kind,
@@ -173,6 +208,129 @@ impl EpochState {
                 tx_digest,
                 &mut None,
             );
+        if self
+            .protocol_config
+            .check_object_funds_withdraw_in_execution()
+            && effects.status().is_ok()
+            && let Some(accumulator_version) =
+                system_object_versions.get(&HANEUL_ACCUMULATOR_ROOT_OBJECT_ID)
+        {
+            self.unsettled_object_withdrawals
+                .record_object_funds_withdraws(
+                    transaction.transaction_data(),
+                    &effects,
+                    &inner_temp_store.accumulator_running_max_withdraws,
+                    accumulator_version.version,
+                    self.chain_identifier,
+                );
+        }
         Ok((inner_temp_store, gas_status, effects, result))
+    }
+
+    pub(crate) fn commit_accumulator_versions(
+        &self,
+        committed_accumulator_versions: Vec<SequenceNumber>,
+    ) {
+        self.unsettled_object_withdrawals
+            .commit_accumulator_versions(committed_accumulator_versions);
+    }
+
+    pub(crate) fn simulate_transaction<S: SimulatorStore + Send + Sync>(
+        &self,
+        store: &S,
+        transaction_deny_config: &TransactionDenyConfig,
+        verifier_signing_config: &VerifierSigningConfig,
+        transaction: TransactionData,
+        checks: TransactionChecks,
+        allow_mock_gas_coin: bool,
+    ) -> HaneulResult<SimulateTransactionResult> {
+        let input_loader = SimulatorInputLoader(store);
+        let account_funds_read = SimulatorAccountFundsRead(store);
+        let coin_reservation_resolver = BorrowedCoinReservationResolver::new(store);
+        let certificate_deny_set = HashSet::new();
+
+        simulate_transaction(
+            transaction,
+            checks,
+            allow_mock_gas_coin,
+            Some(self.reference_gas_price()),
+            TxValidityCheckContext {
+                config: &self.protocol_config,
+                epoch: self.epoch(),
+                chain_identifier: self.chain_identifier,
+                reference_gas_price: self.reference_gas_price(),
+                committee_size: self.committee.num_members() as u32,
+            },
+            self.epoch(),
+            self.epoch_start_state.epoch_start_timestamp_ms(),
+            self.chain_identifier,
+            transaction_deny_config,
+            &certificate_deny_set,
+            &input_loader,
+            store,
+            store,
+            self.simulation_executor.as_ref(),
+            &coin_reservation_resolver,
+            &account_funds_read,
+            verifier_signing_config,
+            &self.bytecode_verifier_metrics,
+            &self.execution_metrics,
+        )
+    }
+}
+
+impl<S: SimulatorStore + Send + Sync> SimulatorAccountFundsRead<'_, S> {
+    fn account_amount(
+        &self,
+        account_id: &AccumulatorObjId,
+        version: Option<SequenceNumber>,
+    ) -> u128 {
+        AccumulatorValue::load_by_id::<U128>(self.0, version, *account_id)
+            .expect("simulator accumulator reads must succeed")
+            .map(|value| value.value)
+            .unwrap_or(0)
+    }
+}
+
+impl<S: SimulatorStore + Send + Sync> AccountFundsRead for SimulatorAccountFundsRead<'_, S> {
+    fn get_latest_account_amount(&self, account_id: &AccumulatorObjId) -> u128 {
+        self.account_amount(account_id, None)
+    }
+
+    fn get_consistent_latest_account_amount_and_version(
+        &self,
+        account_id: &AccumulatorObjId,
+    ) -> (u128, SequenceNumber) {
+        let root_version = SimulatorStore::get_object(self.0, &HANEUL_ACCUMULATOR_ROOT_OBJECT_ID)
+            .expect("simulator accumulator root must exist")
+            .version();
+        (
+            self.get_account_amount_at_version(account_id, root_version),
+            root_version,
+        )
+    }
+
+    fn get_account_amount_at_version(
+        &self,
+        account_id: &AccumulatorObjId,
+        version: SequenceNumber,
+    ) -> u128 {
+        self.account_amount(account_id, Some(version))
+    }
+}
+
+impl<S: SimulatorStore> SimulationInputLoader for SimulatorInputLoader<'_, S> {
+    fn read_objects_for_simulation(
+        &self,
+        transaction_digest: &TransactionDigest,
+        input_object_kinds: &[InputObjectKind],
+        receiving_object_refs: &[ObjectRef],
+        _epoch_id: EpochId,
+    ) -> HaneulResult<(InputObjects, ReceivingObjects)> {
+        self.0.read_objects_for_synchronous_execution(
+            transaction_digest,
+            input_object_kinds,
+            receiving_object_refs,
+        )
     }
 }

@@ -9,7 +9,6 @@ use haneul_types::crypto::AuthorityStrongQuorumSignInfo;
 use haneul_types::messages_checkpoint::CheckpointContents;
 use haneul_types::messages_checkpoint::CheckpointSummary;
 
-#[cfg(feature = "staging")]
 use crate::scope::ExecutionObjectMap;
 
 /// A checkpoint received from gRPC with pre-deserialized data for subscriber consumption.
@@ -21,7 +20,6 @@ pub(crate) struct ProcessedCheckpoint {
     /// Checkpoint-wide execution objects (inputs and outputs across all transactions in the
     /// checkpoint, including tombstones for deleted/wrapped objects). Object visibility in a
     /// streamed scope is end-of-checkpoint, matching what the indexed Query API exposes.
-    #[cfg(feature = "staging")]
     pub(crate) execution_objects: ExecutionObjectMap,
 }
 

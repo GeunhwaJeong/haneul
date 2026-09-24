@@ -17,7 +17,7 @@ mod checked {
     use haneul_types::metrics::BytecodeVerifierMetrics;
     use haneul_types::object::ObjectPermission;
     use haneul_types::transaction::{
-        CheckedInputObjects, InputObjectKind, InputObjects, ObjectReadResult, ObjectReadResultKind,
+        CheckedInputObjects, InputObjectKind, InputObjects, ObjectReadResultKind,
         ReceivingObjectReadResult, ReceivingObjects, SharedObjectMutability, TransactionData,
         TransactionDataAPI, TransactionKind,
     };
@@ -63,7 +63,7 @@ mod checked {
         gas_ownership_checks: bool,
     ) -> HaneulResult<HaneulGasStatus> {
         if transaction.kind().is_system_tx() {
-            Ok(HaneulGasStatus::new_unmetered())
+            Ok(HaneulGasStatus::new_unmetered(protocol_config))
         } else {
             let is_gasless =
                 protocol_config.enable_gasless() && transaction.is_gasless_transaction();
@@ -96,39 +96,8 @@ mod checked {
             &input_objects,
             &[],
         )?;
+        transaction.check_allowance_inputs(&input_objects)?;
         check_receiving_objects(&input_objects, receiving_objects)?;
-        // Runs verifier, which could be expensive.
-        check_non_system_packages_to_be_published(
-            transaction,
-            protocol_config,
-            metrics,
-            verifier_signing_config,
-        )?;
-
-        Ok((gas_status, input_objects.into_checked()))
-    }
-
-    pub fn check_transaction_input_with_given_gas(
-        protocol_config: &ProtocolConfig,
-        reference_gas_price: u64,
-        transaction: &TransactionData,
-        mut input_objects: InputObjects,
-        receiving_objects: ReceivingObjects,
-        gas_object: Object,
-        metrics: &Arc<BytecodeVerifierMetrics>,
-        verifier_signing_config: &VerifierSigningConfig,
-    ) -> HaneulResult<(HaneulGasStatus, CheckedInputObjects)> {
-        let gas_object_ref = gas_object.compute_object_reference();
-        input_objects.push(ObjectReadResult::new_from_gas_object(&gas_object));
-
-        let gas_status = check_transaction_input_inner(
-            protocol_config,
-            reference_gas_price,
-            transaction,
-            &input_objects,
-            &[gas_object_ref],
-        )?;
-        check_receiving_objects(&input_objects, &receiving_objects)?;
         // Runs verifier, which could be expensive.
         check_non_system_packages_to_be_published(
             transaction,
@@ -161,6 +130,8 @@ mod checked {
         )?;
         // NB: We do not check receiving objects when executing. Only at signing time do we check.
         // NB: move verifier is only checked at signing time, not at execution.
+        // NB: allowance withdrawal declarations are only validated at signing; at execution
+        // the allowance's own Move checks enforce policy on consensus-sequenced state.
 
         Ok((gas_status, input_objects.into_checked()))
     }

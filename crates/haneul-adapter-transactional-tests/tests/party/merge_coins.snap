@@ -6,13 +6,14 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 1, lines 7-21:
+task 1, lines 7-19:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 10374000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 22-27:
+task 2, lines 21-27:
+// Verify ConsenusAddressOwner coin can be merged into AddressOwner coin.
 //# programmable --sender A --inputs object(1,1) 100 @A
 //> 0: haneul::coin::mint<ex::m::M>(Input(0), Input(1));
 //> 1: haneul::coin::mint<ex::m::M>(Input(0), Input(1));
@@ -32,7 +33,7 @@ deleted: object(2,1)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 gas summary: computation_cost: 1000000, storage_cost: 2264800,  storage_rebate: 3506184, non_refundable_storage_fee: 35416
 
-task 4, lines 32-34:
+task 4, line 32:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 4
@@ -47,7 +48,8 @@ Contents: haneul::coin::Coin<ex::m::M> {
     },
 }
 
-task 5, lines 35-40:
+task 5, lines 34-40:
+// Verify AddressOwner coin can be merged into ConsensusAddressOwner coin.
 //# programmable --sender A --inputs object(1,1) 100 @A
 //> 0: haneul::coin::mint<ex::m::M>(Input(0), Input(1));
 //> 1: haneul::coin::mint<ex::m::M>(Input(0), Input(1));

@@ -1,10 +1,11 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 908
 ---
 processed 1 task
 
-task 0, lines 6-17:
+// invalid, non key structs are not supported
+
+task 0, lines 7-18:
 //# publish
 created: object(1,0)
 mutated: object(0,0)

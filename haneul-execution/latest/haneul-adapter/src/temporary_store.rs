@@ -6,14 +6,19 @@ use crate::execution_mode::ExecutionMode;
 use crate::gas_charger::GasCharger;
 use haneul_protocol_config::ProtocolConfig;
 use haneul_types::accumulator_event::AccumulatorEvent;
-use haneul_types::accumulator_root::AccumulatorObjId;
-use haneul_types::base_types::VersionDigest;
+use haneul_types::accumulator_root::{
+    AccumulatorObjId, AccumulatorValue as AccumulatorRootValue, EmptyUnsettledObjectFunds,
+    UnsettledObjectFundsRead,
+};
+use haneul_types::base_types::{SystemObjectVersions, VersionDigest};
+use haneul_types::coin_reservation::ParsedDigest;
 use haneul_types::committee::EpochId;
 use haneul_types::deny_list_v2::check_coin_deny_list_v2_during_execution;
 use haneul_types::effects::{
     AccumulatorOperation, AccumulatorValue, AccumulatorWriteV1, TransactionEffects,
     TransactionEffectsV2, TransactionEvents,
 };
+use haneul_types::error::HaneulErrorKind;
 use haneul_types::execution::{
     DynamicallyLoadedObjectMetadata, ExecutionResults, ExecutionResultsV2, SharedInput,
 };
@@ -21,11 +26,12 @@ use haneul_types::execution_status::{ExecutionErrorKind, ExecutionStatus};
 use haneul_types::haneul_system_state::{AdvanceEpochParams, get_haneul_system_state_wrapper};
 use haneul_types::inner_temporary_store::InnerTemporaryStore;
 use haneul_types::object::Data;
-use haneul_types::storage::{BackingStore, DenyListResult, PackageObject};
-use haneul_types::transaction::{GasData, TransactionKind};
+use haneul_types::storage::{BackingStore, DenyListResult, ObjectFundsResolver, PackageObject};
+use haneul_types::transaction::{Command, GasData, TransactionKind, is_gasless_transaction};
 use haneul_types::{
-    HANEUL_DENY_LIST_OBJECT_ID,
+    HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, HANEUL_DENY_LIST_OBJECT_ID,
     base_types::{HaneulAddress, ObjectID, ObjectRef, SequenceNumber, TransactionDigest},
+    digests::ObjectDigest,
     effects::EffectsObjectChange,
     error::{ExecutionError, HaneulResult},
     gas::GasCostSummary,
@@ -35,15 +41,56 @@ use haneul_types::{
     transaction::InputObjects,
 };
 use haneul_types::{HANEUL_SYSTEM_STATE_OBJECT_ID, TypeTag, is_system_package};
-use haneullabs_common::ZipDebugEqIteratorExt;
+use haneullabs_common::{ZipDebugEqIteratorExt, debug_fatal};
 use haneullabs_metrics::monitored_scope;
 use move_vm_runtime::runtime::MoveRuntime;
 use parking_lot::RwLock;
+use std::cell::RefCell;
 use std::collections::{BTreeMap, BTreeSet, HashSet};
 use std::sync::Arc;
 
 pub(crate) mod invariants;
 use invariants::InvariantChecker;
+
+/// Declared allowance ids per `(funder, funds type)` key.
+type AllowanceIds = BTreeMap<(HaneulAddress, TypeTag), Vec<ObjectID>>;
+
+#[derive(Default)]
+struct PostExecutionCheckInputs {
+    /// Per-`(address, type)` funds-accumulator reservation budget authorized by this transaction.
+    /// Shared by gasless execution validation and the post-execution invariant checks.
+    input_reservations: BTreeMap<(HaneulAddress, TypeTag), u64>,
+    /// The allowance ids declared per `WithdrawFrom::SenderAllowance` reservation key. Consumed by
+    /// `check_ownership_invariants` to authorize Splits at non-signer keys.
+    allowance_ids: AllowanceIds,
+    /// For the advance-epoch transaction, `(epoch_fees minted, epoch_rebates burned)`; `None`
+    /// for every other transaction. Needed by the expensive HANEUL conservation check.
+    advance_epoch_gas_summary: Option<(u64, u64)>,
+    /// The genesis transaction mints the initial HANEUL supply and so is exempt from conservation.
+    is_genesis: bool,
+    /// What each `Publish`/`Upgrade` command in the PTB says the package it writes should look like.
+    /// `None` when the transaction is not a PTB.
+    declared_packages: Option<Vec<(usize, BTreeSet<ObjectID>)>>,
+}
+
+impl PostExecutionCheckInputs {
+    fn new(transaction: (&TransactionKind, &GasData, HaneulAddress), enable_gasless: bool) -> Self {
+        let (transaction_kind, gas_data, transaction_signer) = transaction;
+        let (input_reservations, allowance_ids) = compute_input_reservations(
+            transaction_kind,
+            gas_data,
+            transaction_signer,
+            enable_gasless,
+        );
+        Self {
+            input_reservations,
+            allowance_ids,
+            advance_epoch_gas_summary: transaction_kind.get_advance_epoch_tx_gas_summary(),
+            is_genesis: matches!(transaction_kind, TransactionKind::Genesis(_)),
+            declared_packages: declared_packages(transaction_kind),
+        }
+    }
+}
 
 pub struct TemporaryStore<'backing> {
     // The backing store for retrieving Move packages onchain.
@@ -54,6 +101,9 @@ pub struct TemporaryStore<'backing> {
     store: &'backing dyn BackingStore,
     tx_digest: TransactionDigest,
     input_objects: BTreeMap<ObjectID, Object>,
+    /// Immutable transaction-derived inputs needed for various checks after execution finishes.
+    // TODO: We should merge all input-derived immutable data to a single struct.
+    post_execution_check_inputs: PostExecutionCheckInputs,
 
     /// Store the original versions of the non-exclusive write inputs, in order to detect
     /// mutations (which are illegal, but not prevented by the type system).
@@ -68,8 +118,6 @@ pub struct TemporaryStore<'backing> {
     execution_results: ExecutionResultsV2,
     /// Objects that were loaded during execution (dynamic fields + received objects).
     loaded_runtime_objects: BTreeMap<ObjectID, DynamicallyLoadedObjectMetadata>,
-    /// A map from wrapped object to its container. Used during expensive invariant checks.
-    wrapped_object_containers: BTreeMap<ObjectID, ObjectID>,
     protocol_config: &'backing ProtocolConfig,
 
     /// Every package that was loaded from DB store during execution.
@@ -80,11 +128,6 @@ pub struct TemporaryStore<'backing> {
     /// any of the objects referenced in this set.
     receiving_objects: Vec<ObjectRef>,
 
-    /// The set of all generated object IDs from the object runtime during the transaction. This includes any
-    /// created-and-then-deleted objects in addition to any `new_ids` which contains only the set
-    /// of created (but not deleted) IDs in the transaction.
-    generated_runtime_ids: BTreeSet<ObjectID>,
-
     // TODO: Now that we track epoch here, there are a few places we don't need to pass it around.
     /// The current epoch.
     cur_epoch: EpochId,
@@ -93,23 +136,83 @@ pub struct TemporaryStore<'backing> {
     /// input objects. This allows us to commit them to the effects.
     loaded_per_epoch_config_objects: RwLock<BTreeSet<ObjectID>>,
 
-    /// Transaction-derived inputs and bookkeeping for the post-execution system-invariant checks
-    /// (HANEUL conservation, balance-accumulator authorization, object ownership). See
-    /// [`invariants::InvariantChecker`].
+    /// Execution-attempt bookkeeping for post-execution system checks.
     invariants: InvariantChecker,
+
+    /// Versions of system objects this transaction may implicitly read during execution.
+    system_object_versions: SystemObjectVersions,
+
+    /// System objects implicitly read during execution, keyed by object ID, with the version (and its
+    /// digest) at which they were read.
+    /// Interior-mutable because reads happen behind `&self` (`RuntimeObjectResolver`).
+    loaded_system_objects: RefCell<BTreeMap<ObjectID, (SequenceNumber, ObjectDigest)>>,
+
+    unsettled_object_funds: &'backing dyn UnsettledObjectFundsRead,
 }
 
 impl<'backing> TemporaryStore<'backing> {
     /// Creates a new store associated with an authority store, and populates it with
     /// initial objects.
-    pub fn new(
+    #[allow(clippy::too_many_arguments)]
+    pub(crate) fn new(
         store: &'backing dyn BackingStore,
         input_objects: InputObjects,
         receiving_objects: Vec<ObjectRef>,
         tx_digest: TransactionDigest,
         protocol_config: &'backing ProtocolConfig,
         cur_epoch: EpochId,
-        _system_object_versions: BTreeMap<ObjectID, SequenceNumber>,
+        system_object_versions: SystemObjectVersions,
+        transaction: (&TransactionKind, &GasData, HaneulAddress),
+        unsettled_object_funds: &'backing dyn UnsettledObjectFundsRead,
+    ) -> Self {
+        let post_execution_check_inputs =
+            PostExecutionCheckInputs::new(transaction, protocol_config.enable_gasless());
+        Self::new_with_input_objects(
+            store,
+            input_objects,
+            receiving_objects,
+            tx_digest,
+            protocol_config,
+            cur_epoch,
+            system_object_versions,
+            post_execution_check_inputs,
+            unsettled_object_funds,
+        )
+    }
+
+    pub(crate) fn new_for_genesis_state_update(
+        store: &'backing dyn BackingStore,
+        tx_digest: TransactionDigest,
+        protocol_config: &'backing ProtocolConfig,
+    ) -> Self {
+        Self::new_with_input_objects(
+            store,
+            InputObjects::new(vec![]),
+            vec![],
+            tx_digest,
+            protocol_config,
+            0,
+            SystemObjectVersions::empty(),
+            PostExecutionCheckInputs {
+                is_genesis: true,
+                ..Default::default()
+            },
+            // The genesis transaction cannot withdraw object funds, so there are never
+            // unsettled withdrawals for it to account for.
+            &EmptyUnsettledObjectFunds,
+        )
+    }
+
+    fn new_with_input_objects(
+        store: &'backing dyn BackingStore,
+        input_objects: InputObjects,
+        receiving_objects: Vec<ObjectRef>,
+        tx_digest: TransactionDigest,
+        protocol_config: &'backing ProtocolConfig,
+        cur_epoch: EpochId,
+        system_object_versions: SystemObjectVersions,
+        post_execution_check_inputs: PostExecutionCheckInputs,
+        unsettled_object_funds: &'backing dyn UnsettledObjectFundsRead,
     ) -> Self {
         let mutable_input_refs = input_objects.exclusive_mutable_inputs();
         let non_exclusive_input_original_versions = input_objects.non_exclusive_input_objects();
@@ -145,14 +248,49 @@ impl<'backing> TemporaryStore<'backing> {
             execution_results: ExecutionResultsV2::default(),
             protocol_config,
             loaded_runtime_objects: BTreeMap::new(),
-            wrapped_object_containers: BTreeMap::new(),
             runtime_packages_loaded_from_db: RwLock::new(BTreeMap::new()),
             receiving_objects,
-            generated_runtime_ids: BTreeSet::new(),
             cur_epoch,
             loaded_per_epoch_config_objects: RwLock::new(BTreeSet::new()),
-            invariants: InvariantChecker::new(),
+            post_execution_check_inputs,
+            invariants: InvariantChecker::default(),
+            system_object_versions,
+            loaded_system_objects: RefCell::new(BTreeMap::new()),
+            unsettled_object_funds,
         }
+    }
+
+    /// Checks that the system object `object_id` is available at the version this transaction
+    /// requires, and records the read so it can be emitted into effects
+    /// and reproduced on replay.
+    /// This is expected to return Some in normal cases. If it ever returns None, it should be
+    /// treated as an invariant violation.
+    pub fn load_implicitly_read_system_object(&self, object_id: &ObjectID) -> Option<Object> {
+        let version = match self.system_object_versions.get(object_id) {
+            Some(version) => version,
+            None => {
+                debug_fatal!(
+                    "system_object_versions must contain entry for object_id: {:?}",
+                    object_id
+                );
+                return None;
+            }
+        };
+        let object = self
+            .store
+            // If this transaction needs to read an implicit system object,
+            // the version must be assigned before execution.
+            .load_implicitly_read_system_object(object_id, version)?;
+        // Record the read version so it can be emitted into effects as a read-only consensus object and
+        // reproduced on replay.
+        self.loaded_system_objects
+            .borrow_mut()
+            .insert(*object_id, (object.version(), object.digest()));
+        Some(object)
+    }
+
+    pub fn unsettled_object_funds(&self) -> &dyn UnsettledObjectFundsRead {
+        self.unsettled_object_funds
     }
 
     // Helpers to access private fields
@@ -220,14 +358,14 @@ impl<'backing> TemporaryStore<'backing> {
     /// Bounding HANEUL to `TOTAL_SUPPLY_GEUNHWA` rejects any such amount here, *before* gas is charged, so
     /// the rejected PTB-emitted writes are dropped on gas reset and only the (bounded) gas events
     /// remain. Crucially, `TOTAL_SUPPLY_GEUNHWA` is ~8.4B HANEUL below `u64::MAX`, so the gas events emitted
-    /// after this check (which move only real HANEUL) cannot push any per-key total past `u64::MAX` —
+    /// after this check (which move only real HANEUL) cannot push any per-key total past `u64::MAX` -
     /// hence they need not be re-checked. Non-HANEUL balances have no uncapped gas path, so the
     /// object-runtime per-key `u64::MAX` cap is the binding guard there and we only backstop u64
     /// representability.
     ///
     /// The per-key limits are not sufficient on their own: withdrawn HANEUL can be spread across several
     /// object keys (each withdrawal `<= TOTAL_SUPPLY_GEUNHWA`) and then recombined *outside* the
-    /// accumulator — e.g. each withdrawal redeemed to a `Coin<HANEUL>` and merged into the PTB gas coin
+    /// accumulator - e.g. each withdrawal redeemed to a `Coin<HANEUL>` and merged into the PTB gas coin
     /// via `MergeCoins`, which is an object mutation, not an accumulator event. The recombined coin
     /// can then reach `u64::MAX` and overflow `deduct_gas` on a refund. So we also bound the
     /// *cross-key* total HANEUL withdrawn (gross Split) to the supply, capping the total HANEUL a single
@@ -435,10 +573,12 @@ impl<'backing> TemporaryStore<'backing> {
         let lamport_version = self.lamport_timestamp;
         // TODO: Cleanup this clone. Potentially add unchanged_shraed_objects directly to InnerTempStore.
         let loaded_per_epoch_config_objects = self.loaded_per_epoch_config_objects.read().clone();
+        let loaded_system_objects = self.loaded_system_objects.borrow().clone();
         let unchanged_consensus_objects = TransactionEffectsV2::compute_unchanged_consensus_objects(
             shared_object_refs,
             loaded_per_epoch_config_objects,
             &object_changes,
+            loaded_system_objects,
         );
         let inner = self.into_inner(accumulator_running_max_withdraws);
 
@@ -574,8 +714,62 @@ impl<'backing> TemporaryStore<'backing> {
 
     pub fn drop_writes(&mut self) {
         self.execution_results.drop_writes();
-        // The PTB-emitted ranges pointed into the now-cleared accumulator_events vec.
-        self.invariants.clear();
+        self.invariants = InvariantChecker::default();
+    }
+
+    /// Consume this (post-execution) store and return the store used by a `BumpOnly` exit: keep
+    /// the input-derived state as well as information about the execution needed for replay,
+    /// discard everything related to the execution results, then bump the mutable
+    /// inputs. Its effects record only those version bumps and the input dependencies.
+    pub(crate) fn into_bump_only(self) -> Self {
+        let Self {
+            // Input-derived - reused verbatim.
+            store,
+            tx_digest,
+            input_objects,
+            non_exclusive_input_original_versions,
+            stream_ended_consensus_objects,
+            lamport_timestamp,
+            mutable_input_refs,
+            receiving_objects,
+            cur_epoch,
+            protocol_config,
+            post_execution_check_inputs,
+            system_object_versions,
+            // Represents what happened during execution, which needs to be kept.
+            loaded_runtime_objects,
+            runtime_packages_loaded_from_db,
+            loaded_per_epoch_config_objects,
+            loaded_system_objects,
+            unsettled_object_funds,
+            // Execution outcomes can be discarded.
+            execution_results: _,
+            invariants: _,
+        } = self;
+        let mut bump_only = Self {
+            store,
+            tx_digest,
+            input_objects,
+            non_exclusive_input_original_versions,
+            stream_ended_consensus_objects,
+            lamport_timestamp,
+            mutable_input_refs,
+            receiving_objects,
+            cur_epoch,
+            protocol_config,
+            loaded_runtime_objects,
+            runtime_packages_loaded_from_db,
+            loaded_per_epoch_config_objects,
+            post_execution_check_inputs,
+            system_object_versions,
+            loaded_system_objects,
+            unsettled_object_funds,
+            execution_results: ExecutionResultsV2::default(),
+            invariants: InvariantChecker::default(),
+        };
+        // The only writes a BumpOnly exit records: bump the versions of the mutable inputs it locked.
+        bump_only.ensure_active_inputs_mutated();
+        bump_only
     }
 
     pub fn read_object(&self, id: &ObjectID) -> Option<&Object> {
@@ -613,36 +807,12 @@ impl<'backing> TemporaryStore<'backing> {
         &mut self,
         wrapped_object_containers: BTreeMap<ObjectID, ObjectID>,
     ) {
-        #[cfg(debug_assertions)]
-        {
-            for (id, container1) in &wrapped_object_containers {
-                if let Some(container2) = self.wrapped_object_containers.get(id) {
-                    assert_eq!(container1, container2);
-                }
-            }
-            for (id, container1) in &self.wrapped_object_containers {
-                if let Some(container2) = wrapped_object_containers.get(id) {
-                    assert_eq!(container1, container2);
-                }
-            }
-        }
-        // Merge the two maps because we may be calling the execution engine more than once
-        // (e.g. in advance epoch transaction, where we may be publishing a new system package).
-        self.wrapped_object_containers
-            .extend(wrapped_object_containers);
+        self.invariants
+            .save_wrapped_object_containers(wrapped_object_containers);
     }
 
     pub fn save_generated_object_ids(&mut self, generated_ids: BTreeSet<ObjectID>) {
-        #[cfg(debug_assertions)]
-        {
-            for id in &self.generated_runtime_ids {
-                assert!(!generated_ids.contains(id))
-            }
-            for id in &generated_ids {
-                assert!(!self.generated_runtime_ids.contains(id));
-            }
-        }
-        self.generated_runtime_ids.extend(generated_ids);
+        self.invariants.save_generated_object_ids(generated_ids);
     }
 
     pub fn estimate_effects_size_upperbound(&self) -> usize {
@@ -660,12 +830,36 @@ impl<'backing> TemporaryStore<'backing> {
             .fold(0, |sum, obj| sum + obj.object_size_for_gas_metering())
     }
 
-    /// Validates gasless post-execution invariants:
+    /// Validates gasless post-execution requirements using the reservations cached when the store
+    /// is constructed.
+    pub(crate) fn check_gasless_execution_requirements(&self) -> Result<(), String> {
+        use haneul_types::balance::Balance;
+
+        // Gasless requirements are expressed in coin types `T`, while the shared input reservation
+        // budget is keyed by accumulator types `Balance<T>`.
+        let withdrawal_reservations = self
+            .post_execution_check_inputs
+            .input_reservations
+            .iter()
+            .filter_map(|((owner, ty), amount)| {
+                Balance::maybe_get_balance_type_param(ty)
+                    .map(|coin_type| ((*owner, coin_type), *amount))
+            })
+            .collect();
+        self.check_gasless_execution_requirements_with_reservations(Some(&withdrawal_reservations))
+    }
+
+    /// Validates gasless post-execution requirements:
     /// - No new objects were created or existing objects mutated (written_objects is empty)
     /// - The set of deleted objects exactly equals the set of input Coin objects
     /// - Each recipient receives at least the minimum transfer amount per token type
     /// - Unused withdrawal reservation (reservation - actual split) is 0 or >= min_amount
-    pub fn check_gasless_execution_requirements(
+    ///
+    /// Parameterized entry for the legacy path, which computes its (flag-gated) reservations
+    /// out-of-band. Deleted with legacy at the next execution cut.
+    // TODO: This is kept as pub due to legacy callers. Once the legacy path is deleted in a
+    // newer executor, we can fold this into `check_gasless_execution_requirements`.
+    pub(crate) fn check_gasless_execution_requirements_with_reservations(
         &self,
         withdrawal_reservations: Option<&BTreeMap<(HaneulAddress, TypeTag), u64>>,
     ) -> Result<(), String> {
@@ -819,20 +1013,6 @@ impl<'backing> TemporaryStore<'backing> {
         self.protocol_config
     }
 
-    /// Cache the transaction-derived inputs the system-invariant checks need (consumed by both the
-    /// conservation checks and the ownership-invariant check). Must be called once, before
-    /// execution, after any gas-smash filtering of `gas_data`.
-    /// See [`invariants::InvariantChecker::set_transaction_inputs`].
-    pub(crate) fn set_invariant_inputs(
-        &mut self,
-        transaction_kind: &TransactionKind,
-        gas_data: &GasData,
-        transaction_signer: HaneulAddress,
-    ) {
-        self.invariants
-            .set_transaction_inputs(transaction_kind, gas_data, transaction_signer);
-    }
-
     /// Run the (read-only) HANEUL-conservation and balance-accumulator invariant checks.
     /// See [`invariants::InvariantChecker::check_conservation_invariants`].
     pub(crate) fn check_conservation_invariants<Mode: ExecutionMode>(
@@ -861,7 +1041,6 @@ impl<'backing> TemporaryStore<'backing> {
         sender: &HaneulAddress,
         sponsor: &Option<HaneulAddress>,
         gas_charger: &GasCharger,
-        mutable_inputs: &HashSet<ObjectID>,
         is_epoch_change: bool,
     ) -> HaneulResult<()> {
         self.invariants.check_ownership_invariants(
@@ -869,7 +1048,6 @@ impl<'backing> TemporaryStore<'backing> {
             sender,
             sponsor,
             gas_charger,
-            mutable_inputs,
             is_epoch_change,
         )
     }
@@ -882,7 +1060,10 @@ impl TemporaryStore<'_> {
     /// All objects will be updated with their new (current) storage rebate/cost.
     /// `HaneulGasStatus` `storage_rebate` and `storage_gas_units` track the transaction
     /// overall storage rebate and cost.
-    pub(crate) fn collect_storage_and_rebate(&mut self, gas_charger: &mut GasCharger) {
+    pub(crate) fn collect_storage_and_rebate(
+        &mut self,
+        gas_charger: &mut GasCharger,
+    ) -> Result<(), ExecutionError> {
         // Use two loops because we cannot mut iterate written while calling get_object_modified_at.
         let old_storage_rebates: Vec<_> = self
             .execution_results
@@ -903,18 +1084,19 @@ impl TemporaryStore<'_> {
             // new object size
             let new_object_size = object.object_size_for_gas_metering();
             // track changes and compute the new object `storage_rebate`
-            let new_storage_rebate = gas_charger.track_storage_mutation(
-                object.id(),
-                new_object_size,
-                old_storage_rebate,
-            );
+            let new_storage_rebate = gas_charger
+                .track_storage_mutation(object.id(), new_object_size, old_storage_rebate)
+                .ok_or_else(|| ExecutionError::from_kind(ExecutionErrorKind::InvariantViolation))?;
             object.storage_rebate = new_storage_rebate;
         }
 
-        self.collect_rebate(gas_charger);
+        self.collect_rebate(gas_charger)
     }
 
-    pub(crate) fn collect_rebate(&self, gas_charger: &mut GasCharger) {
+    pub(crate) fn collect_rebate(
+        &self,
+        gas_charger: &mut GasCharger,
+    ) -> Result<(), ExecutionError> {
         for object_id in &self.execution_results.modified_objects {
             if self
                 .execution_results
@@ -929,8 +1111,11 @@ impl TemporaryStore<'_> {
                 // Unwrap is safe because this loop iterates through all modified objects.
                 .unwrap()
                 .storage_rebate;
-            gas_charger.track_storage_mutation(*object_id, 0, storage_rebate);
+            gas_charger
+                .track_storage_mutation(*object_id, 0, storage_rebate)
+                .ok_or_else(|| ExecutionError::from_kind(ExecutionErrorKind::InvariantViolation))?;
         }
+        Ok(())
     }
 
     pub fn check_execution_results_consistency<Mode: ExecutionMode>(
@@ -1018,6 +1203,119 @@ impl RuntimeObjectResolver for TemporaryStore<'_> {
             epoch_id,
         )
     }
+}
+
+impl ObjectFundsResolver for TemporaryStore<'_> {
+    /// Loads the object balance at the required version and subtracts withdrawals from the same
+    /// checkpoint that have not settled yet.
+    /// This function is expected never to fail; an error indicates an invariant violation.
+    fn object_available_balance(
+        &self,
+        owner: HaneulAddress,
+        type_: &TypeTag,
+    ) -> HaneulResult<u128> {
+        let required_version = self
+            .load_implicitly_read_system_object(&HANEUL_ACCUMULATOR_ROOT_OBJECT_ID)
+            .ok_or(HaneulErrorKind::ExecutionInvariantViolation)?
+            .version();
+
+        let settled = AccumulatorRootValue::load(self, Some(required_version), owner, type_)?
+            .and_then(|value| value.as_u128())
+            .unwrap_or(0);
+
+        let unsettled = self.unsettled_object_funds.get_unsettled_object_withdraw(
+            &AccumulatorRootValue::get_field_id(owner, type_)?,
+            required_version,
+        );
+        settled
+            .checked_sub(unsettled)
+            .ok_or_else(|| HaneulErrorKind::ExecutionInvariantViolation.into())
+    }
+}
+
+/// Compute the per-`(address, type)` funds-accumulator reservation budget authorized by the
+/// transaction, and the allowance ids declared per key. Today every funds accumulator is a
+/// `Balance<T>`, but the `(address, TypeTag)` keying lets this generalize as more accumulator
+/// types are added. Budget sources:
+/// - PTB `FundsWithdrawalArg`s for any supported accumulator type (sender, sponsor, or
+///   allowance funder as owner).
+/// - Gas paid entirely from address balance (credits `(gas_owner, Balance<HANEUL>)`).
+/// - Gas-data entries with coin-reservation digests (also credit `(gas_owner, Balance<HANEUL>)`).
+fn compute_input_reservations(
+    transaction_kind: &TransactionKind,
+    gas_data: &GasData,
+    transaction_signer: HaneulAddress,
+    enable_gasless: bool,
+) -> (BTreeMap<(HaneulAddress, TypeTag), u64>, AllowanceIds) {
+    use haneul_types::balance::Balance;
+    use haneul_types::gas_coin::GAS;
+    use haneul_types::transaction::{Reservation, WithdrawFrom, is_gas_paid_from_address_balance};
+
+    let is_gasless = enable_gasless && is_gasless_transaction(gas_data, transaction_kind);
+    let mut reservations: BTreeMap<(HaneulAddress, TypeTag), u64> = BTreeMap::new();
+    let mut allowance_ids = AllowanceIds::new();
+    let haneul_balance_type = Balance::type_tag(GAS::type_tag());
+
+    for arg in transaction_kind.get_funds_withdrawals() {
+        let ty = arg.type_arg.to_type_tag();
+        let owner = match arg.withdraw_from {
+            WithdrawFrom::Sender => transaction_signer,
+            WithdrawFrom::Sponsor => gas_data.owner,
+            // The funder will differ from the signer/sponsor, but permission
+            // is verified at signing
+            WithdrawFrom::SenderAllowance { funder, allowance } => {
+                allowance_ids
+                    .entry((funder, ty.clone()))
+                    .or_default()
+                    .push(allowance);
+                funder
+            }
+        };
+        let Reservation::MaxAmountU64(reservation) = arg.reservation;
+        let entry = reservations.entry((owner, ty)).or_insert(0);
+        *entry = entry.saturating_add(reservation);
+    }
+
+    // Gasless transactions charge no gas, so gas sources grant no reservation (their budget is
+    // validated to be 0 anyway; skipping keeps the map free of a phantom zero entry).
+    if !is_gasless && is_gas_paid_from_address_balance(gas_data, transaction_kind) {
+        let entry = reservations
+            .entry((gas_data.owner, haneul_balance_type.clone()))
+            .or_insert(0);
+        *entry = entry.saturating_add(gas_data.budget);
+    }
+
+    for entry in &gas_data.payment {
+        if let Ok(parsed) = ParsedDigest::try_from(entry.2) {
+            let entry = reservations
+                .entry((gas_data.owner, haneul_balance_type.clone()))
+                .or_insert(0);
+            *entry = entry.saturating_add(parsed.reservation_amount());
+        }
+    }
+
+    (reservations, allowance_ids)
+}
+
+/// What each `Publish`/`Upgrade` command declares about the package it writes, in command order.
+/// `None` for transaction kinds that are not PTBs.
+fn declared_packages(
+    transaction_kind: &TransactionKind,
+) -> Option<Vec<(usize, BTreeSet<ObjectID>)>> {
+    let TransactionKind::ProgrammableTransaction(pt) = transaction_kind else {
+        return None;
+    };
+    Some(
+        pt.commands
+            .iter()
+            .filter_map(|command| match command {
+                Command::Publish(modules, dep_ids) | Command::Upgrade(modules, dep_ids, _, _) => {
+                    Some((modules.len(), dep_ids.iter().copied().collect()))
+                }
+                _ => None,
+            })
+            .collect(),
+    )
 }
 
 /// Compares the owner and payload of an object.

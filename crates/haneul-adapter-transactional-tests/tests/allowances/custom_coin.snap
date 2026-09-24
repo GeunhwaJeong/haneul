@@ -1,0 +1,221 @@
+---
+source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+---
+processed 22 tasks
+
+// Allowances over a custom coin: the funder's only balance is FOO (reservation
+// checking is per-type, no HANEUL required), and a dual-type PTB spends a FOO and
+// a HANEUL allowance from the same funder as two independent keys.
+
+init:
+A: object(0,0), B: object(0,1)
+
+task 1, lines 11-25:
+//# publish --sender A
+created: object(1,0), object(1,1), object(1,2)
+mutated: object(0,0)
+gas summary: computation_cost: 1000000, storage_cost: 10617200,  storage_rebate: 0, non_refundable_storage_fee: 0
+
+task 2, lines 27-30:
+//# programmable --sender A --inputs object(1,1) 5000 @A
+// Fund A's FOO address balance; A holds no HANEUL balance yet.
+//> 0: haneul::coin::mint<test::foo::FOO>(Input(0), Input(1));
+//> 1: haneul::coin::send_funds<test::foo::FOO>(Result(0), Input(2));
+mutated: object(0,0), object(1,1)
+unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
+accumulators_written: (object(2,0), A, haneul::balance::Balance<test::foo::FOO>, Merge, 5000)
+gas summary: computation_cost: 1000000, storage_cost: 2675200,  storage_rebate: 2648448, non_refundable_storage_fee: 26752
+
+task 3, line 32:
+//# create-checkpoint
+Checkpoint created: 1
+
+task 4, lines 34-37:
+//# programmable --sender A --inputs b"foo" @B vector[1000u256] vector[] vector[99999999999999]
+// A issues a FOO allowance to B: 1000 lifetime cap.
+//> 0: std::option::none<haneul::allowance::RateLimit>();
+//> 1: haneul::allowance::new<haneul::balance::Balance<test::foo::FOO>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
+created: object(4,0), object(4,1)
+mutated: object(0,0)
+gas summary: computation_cost: 1000000, storage_cost: 6422000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+
+task 5, lines 39-42:
+//# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<test::foo::FOO>>(400,@A,object(4,0)) mutshared(4,0) immshared(6) @B
+// B spends 400 FOO while the funder has no HANEUL balance at all.
+//> 0: haneul::allowance::balance_spend<test::foo::FOO>(Input(1), Input(0), Input(2));
+//> 1: haneul::balance::send_funds<test::foo::FOO>(Result(0), Input(3));
+mutated: object(0,1), object(4,0)
+unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
+accumulators_written: (object(2,0), A, haneul::balance::Balance<test::foo::FOO>, Split, 400), (object(5,0), B, haneul::balance::Balance<test::foo::FOO>, Merge, 400)
+gas summary: computation_cost: 1000000, storage_cost: 4126800,  storage_rebate: 3107412, non_refundable_storage_fee: 31388
+
+task 6, lines 44-45:
+//# view-funds haneul::balance::Balance<test::foo::FOO> A
+5000
+
+task 7, lines 47-48:
+//# view-funds haneul::balance::Balance<test::foo::FOO> B
+No funds accumulator object found
+
+task 8, line 50:
+//# create-checkpoint
+Checkpoint created: 2
+
+task 9, line 52:
+//# view-funds haneul::balance::Balance<test::foo::FOO> A
+4600
+
+task 10, line 54:
+//# view-funds haneul::balance::Balance<test::foo::FOO> B
+400
+
+task 11, lines 56-59:
+//# programmable --sender A --inputs 1000 @A
+// Fund A's HANEUL balance for the dual-type spend below.
+//> 0: SplitCoins(Gas, [Input(0)]);
+//> 1: haneul::coin::send_funds<haneul::haneul::HANEUL>(Result(0), Input(1));
+mutated: object(0,0)
+accumulators_written: (object(11,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1000)
+gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+
+task 12, line 61:
+//# create-checkpoint
+Checkpoint created: 3
+
+task 13, lines 63-66:
+//# programmable --sender A --inputs b"haneul" @B vector[1000u256] vector[] vector[99999999999999]
+// A issues a HANEUL allowance to B: 1000 lifetime cap.
+//> 0: std::option::none<haneul::allowance::RateLimit>();
+//> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
+created: object(13,0), object(13,1)
+mutated: object(0,0)
+gas summary: computation_cost: 1000000, storage_cost: 6536000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+
+task 14, lines 68-73:
+//# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<test::foo::FOO>>(300,@A,object(4,0)) allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(200,@A,object(13,0)) mutshared(4,0) mutshared(13,0) immshared(6) @B
+// One PTB, two types from one funder: two keys, two Splits.
+//> 0: haneul::allowance::balance_spend<test::foo::FOO>(Input(2), Input(0), Input(4));
+//> 1: haneul::balance::send_funds<test::foo::FOO>(Result(0), Input(5));
+//> 2: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(3), Input(1), Input(4));
+//> 3: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(2), Input(5));
+mutated: object(0,1), object(4,0), object(13,0)
+unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
+accumulators_written: (object(2,0), A, haneul::balance::Balance<test::foo::FOO>, Split, 300), (object(5,0), B, haneul::balance::Balance<test::foo::FOO>, Merge, 300), (object(11,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 200), (object(14,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 200)
+gas summary: computation_cost: 1000000, storage_cost: 7334000,  storage_rebate: 7260660, non_refundable_storage_fee: 73340
+
+task 15, lines 75-76:
+//# view-object 4,0
+Owner: Shared( 4 )
+Version: 7
+Contents: haneul::allowance::Allowance<haneul::balance::Balance<test::foo::FOO>> {
+    id: haneul::object::UID {
+        id: haneul::object::ID {
+            bytes: fake(4,0),
+        },
+    },
+    settings: haneul::allowance::Settings {
+        funder: A,
+        spender: std::option::Option<address> {
+            vec: vector[
+                B,
+            ],
+        },
+        app: std::option::Option<std::type_name::TypeName> {
+            vec: vector[],
+        },
+        lifetime_cap: std::option::Option<u256> {
+            vec: vector[
+                1000u256,
+            ],
+        },
+        start_timestamp_ms: std::option::Option<u64> {
+            vec: vector[],
+        },
+        expiration_timestamp_ms: std::option::Option<u64> {
+            vec: vector[
+                99999999999999u64,
+            ],
+        },
+        rate_limit: std::option::Option<haneul::allowance::RateLimit> {
+            vec: vector[],
+        },
+        name: std::string::String {
+            bytes: vector[
+                102u8,
+                111u8,
+                111u8,
+            ],
+        },
+    },
+    current_spend: 700u256,
+}
+
+task 16, lines 78-79:
+//# view-object 13,0
+Owner: Shared( 6 )
+Version: 7
+Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::HANEUL>> {
+    id: haneul::object::UID {
+        id: haneul::object::ID {
+            bytes: fake(13,0),
+        },
+    },
+    settings: haneul::allowance::Settings {
+        funder: A,
+        spender: std::option::Option<address> {
+            vec: vector[
+                B,
+            ],
+        },
+        app: std::option::Option<std::type_name::TypeName> {
+            vec: vector[],
+        },
+        lifetime_cap: std::option::Option<u256> {
+            vec: vector[
+                1000u256,
+            ],
+        },
+        start_timestamp_ms: std::option::Option<u64> {
+            vec: vector[],
+        },
+        expiration_timestamp_ms: std::option::Option<u64> {
+            vec: vector[
+                99999999999999u64,
+            ],
+        },
+        rate_limit: std::option::Option<haneul::allowance::RateLimit> {
+            vec: vector[],
+        },
+        name: std::string::String {
+            bytes: vector[
+                104u8,
+                97u8,
+                110u8,
+                101u8,
+                117u8,
+                108u8,
+            ],
+        },
+    },
+    current_spend: 200u256,
+}
+
+task 17, line 81:
+//# create-checkpoint
+Checkpoint created: 4
+
+task 18, lines 83-84:
+//# view-funds haneul::balance::Balance<test::foo::FOO> A
+4300
+
+task 19, lines 86-87:
+//# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
+800
+
+task 20, lines 89-90:
+//# view-funds haneul::balance::Balance<test::foo::FOO> B
+700
+
+task 21, lines 92-93:
+//# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
+200

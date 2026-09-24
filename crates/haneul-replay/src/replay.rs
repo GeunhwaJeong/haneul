@@ -765,7 +765,7 @@ impl LocalExec {
         let expensive_checks = true;
         let transaction_kind = override_transaction_kind.unwrap_or(tx_info.kind.clone());
         let gas_status = if tx_info.kind.is_system_tx() {
-            HaneulGasStatus::new_unmetered()
+            HaneulGasStatus::new_unmetered(protocol_config)
         } else {
             HaneulGasStatus::new(
                 tx_info.gas_budget,
@@ -803,7 +803,13 @@ impl LocalExec {
                 &tx_info.executed_epoch,
                 tx_info.epoch_start_timestamp,
                 checked_input_objects,
-                std::collections::BTreeMap::new(),
+                // TODO: Support implicit system object reads for replay.
+                haneul_types::base_types::SystemObjectVersions::empty(),
+                // TODO: Replaying a transaction that withdrew object funds needs the unsettled
+                // withdrawals that earlier transactions in the same consensus commit had
+                // accumulated at execution time. Until those are reconstructed, replaying such a
+                // transaction can diverge from the original execution.
+                &haneul_types::accumulator_root::EmptyUnsettledObjectFunds,
                 gas_data,
                 gas_status,
                 transaction_kind.clone(),
@@ -891,6 +897,7 @@ impl LocalExec {
                             &tx_info.executed_epoch,
                             tx_info.epoch_start_timestamp,
                             CheckedInputObjects::new_for_replay(input_objects),
+                            haneul_types::base_types::SystemObjectVersions::empty(),
                             gas_data,
                             HaneulGasStatus::new(
                                 tx_info.gas_budget,
@@ -1000,7 +1007,12 @@ impl LocalExec {
                 &executed_epoch,
                 epoch_start_timestamp,
                 input_objects,
-                std::collections::BTreeMap::new(),
+                haneul_types::base_types::SystemObjectVersions::empty(),
+                // TODO: Replaying a transaction that withdrew object funds needs the unsettled
+                // withdrawals that earlier transactions in the same consensus commit had
+                // accumulated at execution time. Until those are reconstructed, replaying such a
+                // transaction can diverge from the original execution.
+                &haneul_types::accumulator_root::EmptyUnsettledObjectFunds,
                 gas_data,
                 gas_status,
                 kind,

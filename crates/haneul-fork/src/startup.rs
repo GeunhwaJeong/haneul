@@ -33,10 +33,10 @@ use haneul_types::storage::RpcStateReader;
 use simulacrum::Simulacrum;
 use simulacrum::store::in_mem_store::KeyStore;
 
-use crate::CheckpointRead;
-use crate::GraphQLClient;
 use crate::Node;
 use crate::context::Context;
+use crate::gql::CheckpointRead;
+use crate::gql::GraphQLClient;
 use crate::metadata::MetadataStore;
 use crate::proto::forking::forking_service_server::ForkingServiceServer;
 use crate::rpc::executor::ForkedTransactionExecutor;
@@ -188,6 +188,7 @@ pub async fn initialize(
         keystore,
         base_checkpoint,
         system_state,
+        rpc_chain_identifier,
         &config,
         store,
         rng,

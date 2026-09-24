@@ -1,0 +1,41 @@
+---
+source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+---
+processed 6 tasks
+
+// A legacy coin reservation input in a PTB whose command aborts. The injected
+// conversion to a `Coin` runs, then the original command fails.
+
+init:
+A: object(0,0), B: object(0,1)
+
+task 1, lines 10-14:
+// Seed A's address balance.
+//# programmable --sender A --inputs 100000000000 @A
+//> 0: SplitCoins(Gas, [Input(0)]);
+//> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
+//> 2: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(1), Input(1));
+mutated: object(0,0)
+accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
+gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
+
+task 2, line 16:
+//# create-checkpoint
+Checkpoint created: 1
+
+task 3, lines 18-21:
+// Splitting more than the reserved amount aborts.
+//# programmable --sender A --inputs coin_reservation<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) 1000000000 @B
+//> 0: haneul::coin::split<haneul::haneul::HANEUL>(Input(0), Input(1));
+//> 1: TransferObjects([Result(0)], Input(2))
+Error: Transaction Effects Status: Move Runtime Abort. Location: haneul::balance::split (function index 7) at offset 10, Abort Code: 2
+Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("balance") }, function: 7, instruction: 10, function_name: Some("split") }, 2) at command Some(0)
+
+task 4, line 23:
+//# create-checkpoint
+Checkpoint created: 2
+
+task 5, lines 25-26:
+// The failed transaction leaves A's balance unchanged.
+//# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
+100000000000

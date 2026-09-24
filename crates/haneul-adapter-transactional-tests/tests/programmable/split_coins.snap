@@ -3,6 +3,8 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 20 tasks
 
+// tests various valid operations involving SplitCoins
+
 init:
 A: object(0,0), B: object(0,1)
 
@@ -12,22 +14,22 @@ created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 5852000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 25-29:
+task 2, lines 25-27:
 //# programmable --sender A --inputs 100000 @A
 //> SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
-// let's get ourselves a coin worth 1000
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 30:
+task 3, lines 29-30:
+// let's get ourselves a coin worth 1000
 //# run haneul::pay::split_and_transfer --type-args haneul::haneul::HANEUL --args object(2,0) 1000 @A --sender A
 created: object(3,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 4, lines 32-34:
+task 4, line 32:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 3
@@ -42,7 +44,8 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 5, lines 35-37:
+task 5, lines 34-37:
+// split 100 off the freshly created coin
 //# programmable --sender A --inputs object(3,0) 100 @B
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> TransferObjects([NestedResult(0,0)], Input(2));
@@ -65,7 +68,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 7, lines 41-44:
+task 7, line 41:
 //# view-object 5,0
 Owner: Account Address ( B )
 Version: 4
@@ -80,7 +83,8 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 8, lines 45-47:
+task 8, lines 44-47:
+// split 100 off the freshly created coin twice
 //# programmable --sender A --inputs object(3,0) 100 @B
 //> 0: SplitCoins(Input(0), [Input(1), Input(1)]);
 //> TransferObjects([NestedResult(0,0), NestedResult(0,1)], Input(2));
@@ -118,7 +122,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 11, lines 53-55:
+task 11, line 53:
 //# view-object 8,1
 Owner: Account Address ( B )
 Version: 5
@@ -133,7 +137,8 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 12, lines 56-59:
+task 12, lines 55-59:
+// split 100 off the freshly created coin twice taking one input from Move call
 //# programmable --sender A --inputs object(3,0) 100 @B
 //> 0: test::m1::ret_one_amount();
 //> 1: SplitCoins(Input(0), [Result(0), Input(1)]);
@@ -172,7 +177,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 15, lines 65-68:
+task 15, line 65:
 //# view-object 12,1
 Owner: Account Address ( B )
 Version: 6
@@ -187,7 +192,9 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 16, lines 69-73:
+task 16, lines 67-73:
+// split 100 off the freshly created coin twice taking one input from Move call and transfer them
+// using another Move call
 //# programmable --sender A --inputs object(3,0) 100 @B
 //> 0: test::m1::ret_one_amount();
 //> 1: SplitCoins(Input(0), [Result(0), Input(1)]);

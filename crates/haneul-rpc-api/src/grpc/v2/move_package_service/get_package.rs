@@ -11,6 +11,7 @@ use crate::{
 };
 use haneul_rpc::proto::google::rpc::bad_request::FieldViolation;
 use haneul_rpc::proto::haneul::rpc::v2::{GetPackageRequest, GetPackageResponse, Package};
+use haneul_types::move_package::MovePackage;
 
 #[tracing::instrument(skip(service))]
 pub fn get_package(service: &RpcService, request: GetPackageRequest) -> Result<GetPackageResponse> {
@@ -21,10 +22,16 @@ pub fn get_package(service: &RpcService, request: GetPackageRequest) -> Result<G
     })?;
 
     let package = load_package(service, package_id_str)?;
+    get_package_response(&package)
+}
+
+/// Build a `GetPackage` response from an already-loaded package. Shared with other implementors
+/// of `MovePackageService` (e.g. haneul-kv-rpc) that load packages from a different backend.
+pub fn get_package_response(package: &MovePackage) -> Result<GetPackageResponse> {
     let package_id = package.id();
 
     let resolved_package =
-        haneul_package_resolver::Package::read_from_package(&package).map_err(convert_error)?;
+        haneul_package_resolver::Package::read_from_package(package).map_err(convert_error)?;
 
     let modules: Vec<_> = resolved_package
         .modules()

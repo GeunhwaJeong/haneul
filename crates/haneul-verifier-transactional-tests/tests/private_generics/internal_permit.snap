@@ -1,26 +1,27 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 908
 ---
 processed 4 tasks
 
-task 0, lines 6-18:
+// tests that internal::permit can only be called on types internal to the module
+
+task 0, lines 7-19:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 4826000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 1, lines 20-31:
+task 1, lines 21-32:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::t::test_fail_foreign_type. Invalid call to 'std::internal::permit'. Type argument #0 must be a type defined in the current module, found 'std::string::String'."), command: Some(0) } }
 
-task 2, lines 33-45:
+task 2, lines 34-46:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::t::test_fail_permit_type. Invalid call to 'std::internal::permit'. Type argument #0 must be a type defined in the current module, found 'std::internal::Permit<_::t::Internal>'."), command: Some(0) } }
 
-task 3, lines 47-59:
+task 3, lines 48-60:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::t::test_fail_permit_type. Invalid call to 'std::internal::permit'. Type argument #0 must be a type defined in the current module, found 'vector<_::t::Internal>'."), command: Some(0) } }

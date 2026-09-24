@@ -5,7 +5,7 @@
 
 use crate::accumulators::coin_reservations::CachingCoinReservationResolver;
 use crate::accumulators::funds_read::AccountFundsRead;
-use crate::accumulators::object_funds_checker::ObjectFundsChecker;
+use crate::accumulators::object_funds_checker::ObjectFundsCheckerDEPRECATED;
 use crate::accumulators::object_funds_checker::metrics::ObjectFundsCheckerMetrics;
 use crate::accumulators::transaction_rewriting::rewrite_transaction_for_coin_reservations;
 use crate::accumulators::unsettled_object_withdrawals::UnsettledObjectWithdrawals;
@@ -37,6 +37,8 @@ use haneul_config::transaction_deny_config::TransactionDenyConfig;
 use haneul_execution::Executor;
 use haneul_protocol_config::PerObjectCongestionControlMode;
 use haneul_types::accumulator_root::AccumulatorObjId;
+use haneul_types::accumulator_root::UnsettledObjectFundsRead;
+use haneul_types::base_types::SystemObjectVersions;
 use haneul_types::dynamic_field::visitor as DFV;
 use haneul_types::execution::ExecutionOutput;
 use haneul_types::execution::ExecutionTimeObservationKey;
@@ -67,7 +69,6 @@ use move_binary_format::CompiledModule;
 use move_binary_format::binary_config::BinaryConfig;
 use move_core_types::annotated_value::MoveStructLayout;
 use move_core_types::language_storage::ModuleId;
-use nonempty::NonEmpty;
 use parking_lot::Mutex;
 use prometheus::{
     Histogram, HistogramVec, IntCounter, IntCounterVec, IntGauge, IntGaugeVec, Registry,
@@ -129,7 +130,7 @@ use haneul_storage::key_value_store_metrics::KeyValueStoreMetrics;
 use haneul_types::accumulator_root::AccumulatorValue;
 use haneul_types::authenticator_state::get_authenticator_state;
 use haneul_types::balance::Balance;
-use haneul_types::coin_reservation;
+use haneul_types::coin_reservation::{self, CoinReservationResolverTrait};
 use haneul_types::committee::{EpochId, ProtocolVersion};
 use haneul_types::crypto::{AuthoritySignInfo, Signer};
 use haneul_types::deny_list_v1::check_coin_deny_list_v1;
@@ -142,7 +143,7 @@ use haneul_types::effects::{
 use haneul_types::error::{ExecutionError, HaneulErrorKind, UserInputError};
 use haneul_types::event::EventID;
 use haneul_types::executable_transaction::VerifiedExecutableTransaction;
-use haneul_types::execution_status::ExecutionErrorKind;
+use haneul_types::execution_status::ExecutionStatus;
 use haneul_types::gas::{GasCostSummary, HaneulGasStatus};
 use haneul_types::haneul_system_state::HaneulSystemStateTrait;
 use haneul_types::haneul_system_state::epoch_start_haneul_system_state::EpochStartSystemStateTrait;
@@ -162,7 +163,9 @@ use haneul_types::messages_grpc::{
     TransactionInfoRequest, TransactionInfoResponse, TransactionStatus,
 };
 use haneul_types::metrics::{BytecodeVerifierMetrics, ExecutionMetrics};
-use haneul_types::object::{MoveObject, OBJECT_START_VERSION, Owner, PastObjectRead};
+#[cfg(test)]
+use haneul_types::object::MoveObject;
+use haneul_types::object::{OBJECT_START_VERSION, Owner, PastObjectRead};
 use haneul_types::signature::GenericSignature;
 use haneul_types::storage::{
     BackingPackageStore, BackingStore, ObjectKey, ObjectOrTombstone, ObjectStore, WriteKind,
@@ -350,6 +353,7 @@ pub struct AuthorityMetrics {
     pub consensus_committed_user_transactions: IntGaugeVec,
     pub consensus_finalized_user_transactions: IntGaugeVec,
     pub consensus_rejected_user_transactions: IntGaugeVec,
+    pub consensus_dropped_user_transactions: IntGaugeVec,
     pub consensus_calculated_throughput: IntGauge,
     pub consensus_calculated_throughput_profile: IntGauge,
     pub consensus_block_handler_block_processed: IntCounter,
@@ -774,6 +778,12 @@ impl AuthorityMetrics {
                 &["authority"],
                 registry,
             ).unwrap(),
+            consensus_dropped_user_transactions: register_int_gauge_vec_with_registry!(
+                "consensus_dropped_user_transactions",
+                "Number of user transactions dropped post-consensus, sliced by submitter",
+                &["authority"],
+                registry,
+            ).unwrap(),
             execution_metrics: Arc::new(ExecutionMetrics::new(registry)),
             bytecode_verifier_metrics: Arc::new(BytecodeVerifierMetrics::new(registry)),
             zklogin_sig_count: register_int_counter_with_registry!(
@@ -901,7 +911,7 @@ pub struct ExecutionEnv {
 impl Default for ExecutionEnv {
     fn default() -> Self {
         Self {
-            assigned_versions: Default::default(),
+            assigned_versions: AssignedVersions::empty(),
             expected_effects_digest: None,
             funds_withdraw_status: FundsWithdrawStatus::MaybeSufficient,
             barrier_dependencies: Default::default(),
@@ -1054,7 +1064,7 @@ pub struct AuthorityState {
     /// Notification channel for reconfiguration
     notify_epoch: tokio::sync::watch::Sender<EpochId>,
 
-    pub(crate) object_funds_checker: ArcSwapOption<ObjectFundsChecker>,
+    pub(crate) object_funds_checker: ArcSwapOption<ObjectFundsCheckerDEPRECATED>,
     object_funds_checker_metrics: Arc<ObjectFundsCheckerMetrics>,
     pub(crate) unsettled_object_withdrawals: Arc<UnsettledObjectWithdrawals>,
 
@@ -1111,52 +1121,6 @@ impl AuthorityState {
         self.checkpoint_store.get_epoch_state_commitments(epoch)
     }
 
-    /// Runs deny list checks and processes funds withdrawals. Called before loading input
-    /// objects, since these checks don't depend on object state.
-    fn pre_object_load_checks(
-        &self,
-        tx_data: &TransactionData,
-        tx_signatures: &[GenericSignature],
-        input_object_kinds: &[InputObjectKind],
-        receiving_objects_refs: &[ObjectRef],
-        protocol_config: &ProtocolConfig,
-    ) -> HaneulResult<BTreeMap<AccumulatorObjId, (u64, TypeTag, HaneulAddress)>> {
-        // Note: the deny checks may do redundant package loads but:
-        // - they only load packages when there is an active package deny map
-        // - the loads are cached anyway
-        let deny_config = self
-            .transaction_deny_config_manager
-            .effective_config()
-            .load();
-        haneul_transaction_checks::deny::check_transaction_for_signing(
-            tx_data,
-            tx_signatures,
-            input_object_kinds,
-            receiving_objects_refs,
-            &deny_config,
-            self.get_backing_package_store().as_ref(),
-        )?;
-
-        let declared_withdrawals = tx_data.process_funds_withdrawals_for_signing(
-            self.chain_identifier,
-            self.coin_reservation_resolver.as_ref(),
-        )?;
-
-        self.execution_cache_trait_pointers
-            .account_funds_read
-            .check_amounts_available(&declared_withdrawals)?;
-
-        if protocol_config.gasless_verify_remaining_balance() && tx_data.is_gasless_transaction() {
-            let min_amounts =
-                haneul_types::transaction::get_gasless_allowed_token_types(protocol_config);
-            self.execution_cache_trait_pointers
-                .account_funds_read
-                .check_remaining_amounts_after_withdrawal(&declared_withdrawals, &min_amounts)?;
-        }
-
-        Ok(declared_withdrawals)
-    }
-
     fn handle_transaction_deny_checks(
         &self,
         transaction: &VerifiedTransaction,
@@ -1168,12 +1132,21 @@ impl AuthorityState {
         let input_object_kinds = tx_data.input_objects()?;
         let receiving_objects_refs = tx_data.receiving_objects();
 
-        self.pre_object_load_checks(
+        let transaction_deny_config = self
+            .transaction_deny_config_manager
+            .effective_config()
+            .load();
+        pre_object_load_checks(
             tx_data,
             transaction.tx_signatures(),
             &input_object_kinds,
             &receiving_objects_refs,
             epoch_store.protocol_config(),
+            transaction_deny_config.as_ref(),
+            self.get_backing_package_store().as_ref(),
+            self.chain_identifier,
+            self.coin_reservation_resolver.as_ref(),
+            self.get_account_funds_read().as_ref(),
         )?;
 
         let (input_objects, receiving_objects) = self.input_loader.read_objects_for_signing(
@@ -1218,11 +1191,11 @@ impl AuthorityState {
             self.coin_reservation_resolver.as_ref(),
         )?;
 
-        let funds_withdraw_types = declared_withdrawals
+        let funds_withdrawals = declared_withdrawals
             .values()
-            .filter_map(|(_, type_tag, _)| {
+            .filter_map(|(_, type_tag, funder)| {
                 Balance::maybe_get_balance_type_param(type_tag)
-                    .map(|ty| ty.to_canonical_string(false))
+                    .map(|ty| (*funder, ty.to_canonical_string(false)))
             })
             .collect::<BTreeSet<_>>();
 
@@ -1231,7 +1204,7 @@ impl AuthorityState {
                 tx_data.sender(),
                 checked_input_objects,
                 receiving_objects,
-                funds_withdraw_types.clone(),
+                funds_withdrawals.clone(),
                 &self.get_object_store(),
             )?;
         }
@@ -1241,7 +1214,7 @@ impl AuthorityState {
                 tx_data.sender(),
                 checked_input_objects,
                 receiving_objects,
-                funds_withdraw_types.clone(),
+                funds_withdrawals,
                 &self.get_object_store(),
             )?;
         }
@@ -1934,7 +1907,7 @@ impl AuthorityState {
         self.metrics.total_effects.inc();
         self.metrics.total_certs.inc();
 
-        let consensus_object_count = effects.input_consensus_objects().len();
+        let consensus_object_count = effects.accessed_consensus_objects().len();
         if consensus_object_count > 0 {
             self.metrics.shared_obj_tx.inc();
         }
@@ -1972,7 +1945,8 @@ impl AuthorityState {
         epoch_id: &EpochId,
         epoch_timestamp_ms: u64,
         input_objects: CheckedInputObjects,
-        system_object_versions: BTreeMap<ObjectID, SequenceNumber>,
+        system_object_versions: SystemObjectVersions,
+        unsettled_object_funds: &dyn UnsettledObjectFundsRead,
         gas_data: GasData,
         gas_status: HaneulGasStatus,
         kind: TransactionKind,
@@ -1998,6 +1972,7 @@ impl AuthorityState {
                 epoch_timestamp_ms,
                 input_objects,
                 system_object_versions,
+                unsettled_object_funds,
                 gas_data,
                 gas_status,
                 kind,
@@ -2073,12 +2048,7 @@ impl AuthorityState {
             self.config.certificate_deny_config.certificate_deny_set(),
             &execution_env.funds_withdraw_status,
         );
-        // Versions of system objects this transaction may read during execution, each at the version
-        // it was sequenced against.
-        let system_object_versions = execution_env
-            .assigned_versions
-            .system_object_versions
-            .clone();
+        let system_object_versions = execution_env.assigned_versions.system_object_versions;
         let accumulator_version = execution_env.assigned_versions.accumulator_version();
         let execution_params = match early_execution_error {
             None => ExecutionOrEarlyError::ok(accumulator_version),
@@ -2102,6 +2072,9 @@ impl AuthorityState {
 
         let tracking_store = TrackingBackingStore::new(self.get_backing_store().as_ref());
 
+        let unsettled_object_funds =
+            self.unsettled_object_withdrawals.as_ref() as &dyn UnsettledObjectFundsRead;
+
         #[allow(unused_mut)]
         let (inner_temp_store, _, mut effects, timings, execution_error_opt) = self
             .execute_transaction_to_effects(
@@ -2121,6 +2094,7 @@ impl AuthorityState {
                     .epoch_start_timestamp(),
                 input_objects,
                 system_object_versions,
+                unsettled_object_funds,
                 gas_data,
                 gas_status,
                 kind,
@@ -2129,20 +2103,52 @@ impl AuthorityState {
                 tx_digest,
             );
 
-        let object_funds_checker = self.object_funds_checker.load();
-        if let Some(object_funds_checker) = object_funds_checker.as_ref()
-            && !object_funds_checker.should_commit_object_funds_withdraws(
-                certificate,
-                &effects,
-                &inner_temp_store.accumulator_running_max_withdraws,
-                &execution_env,
-                self.get_account_funds_read(),
-                &self.execution_scheduler,
-                epoch_store,
-            )
-        {
-            assert_reachable!("retry object withdraw later");
-            return ExecutionOutput::RetryLater;
+        if !protocol_config.check_object_funds_withdraw_in_execution() {
+            // TODO: Move the object funds checker to the executor so that it can eventually be
+            // removed from the active code path.
+            let object_funds_checker = self.object_funds_checker.load();
+            if let Some(object_funds_checker) = object_funds_checker.as_ref()
+                && !object_funds_checker.should_commit_object_funds_withdraws(
+                    certificate,
+                    &effects,
+                    &inner_temp_store.accumulator_running_max_withdraws,
+                    &execution_env,
+                    self.get_account_funds_read(),
+                    &self.execution_scheduler,
+                    epoch_store,
+                )
+            {
+                assert_reachable!("retry object withdraw later");
+                return ExecutionOutput::RetryLater;
+            }
+        } else {
+            match effects.status() {
+                ExecutionStatus::Success => {
+                    if let Some(accumulator_version) =
+                        execution_env.assigned_versions.accumulator_version()
+                    {
+                        self.unsettled_object_withdrawals
+                            .record_object_funds_withdraws(
+                                certificate.transaction_data(),
+                                &effects,
+                                &inner_temp_store.accumulator_running_max_withdraws,
+                                accumulator_version,
+                                self.chain_identifier,
+                            );
+                    }
+                }
+                ExecutionStatus::Failure(failure) => {
+                    if haneul_types::funds_accumulator::is_object_funds_insufficient_abort(
+                        &failure.error,
+                    ) {
+                        assert_reachable!("object funds insufficient in execution");
+                        self.object_funds_checker_metrics
+                            .in_execution_check_result
+                            .with_label_values(&["insufficient"])
+                            .inc();
+                    }
+                }
+            }
         }
 
         // (test-only) Inject a fork before the effects-digest check below. Placed here so that a
@@ -2466,7 +2472,7 @@ impl AuthorityState {
 
     pub fn simulate_transaction(
         &self,
-        mut transaction: TransactionData,
+        transaction: TransactionData,
         checks: TransactionChecks,
         allow_mock_gas_coin: bool,
     ) -> HaneulResult<SimulateTransactionResult> {
@@ -2485,260 +2491,43 @@ impl AuthorityState {
             .into());
         }
 
-        let dev_inspect = checks.disabled();
-        if dev_inspect && self.config.dev_inspect_disabled {
+        if checks.disabled() && self.config.dev_inspect_disabled {
             return Err(HaneulErrorKind::UnsupportedFeatureError {
                 error: "simulate with checks disabled is not allowed on this node".to_string(),
             }
             .into());
         }
 
-        // Reject coin reservations in gas payment when the execution engine
-        // doesn't support them.
-        let protocol_config = epoch_store.protocol_config();
-        if !protocol_config.enable_coin_reservation_obj_refs()
-            && transaction.gas().iter().any(|obj_ref| {
-                haneul_types::coin_reservation::ParsedDigest::is_coin_reservation_digest(&obj_ref.2)
-            })
-        {
-            return Err(HaneulErrorKind::UnsupportedFeatureError {
-                error:
-                    "coin reservations in gas payment are not supported at this protocol version"
-                        .to_string(),
-            }
-            .into());
-        }
+        let transaction_deny_config = self
+            .transaction_deny_config_manager
+            .effective_config()
+            .load();
+        let epoch_data = epoch_store.epoch_start_config().epoch_data();
+        let suggested_gas_price = self
+            .congestion_tracker
+            .get_suggested_gas_prices(&transaction);
 
-        // Compute input/receiving object kinds before mock gas injection so the mock
-        // gas reference is not included in input_object_kinds (it is added to
-        // input_objects directly after object loading).
-        let input_object_kinds = transaction.input_objects()?;
-        let receiving_object_refs = transaction.receiving_objects();
-
-        // Inject mock gas coin before validity_check so that on protocol versions
-        // where address-balance gas payments are not yet enabled, the non-empty
-        // payment check in validity_check passes for simulate/dev-inspect requests
-        // submitted without explicit gas.
-        // Also required before pre_object_load_checks so that funds-withdrawal
-        // processing sees non-empty payment and doesn't create an address-balance
-        // withdrawal for gas.
-        // Skip mock gas for gasless transactions — they don't use gas coins.
-        let is_gasless = protocol_config.enable_gasless() && transaction.is_gasless_transaction();
-        let mock_gas_object = if allow_mock_gas_coin && transaction.gas().is_empty() && !is_gasless
-        {
-            let obj = Object::new_move(
-                MoveObject::new_gas_coin(
-                    OBJECT_START_VERSION,
-                    ObjectID::MAX,
-                    DEV_INSPECT_GAS_COIN_VALUE,
-                ),
-                Owner::AddressOwner(transaction.gas_data().owner),
-                TransactionDigest::genesis_marker(),
-            );
-            transaction.gas_data_mut().payment = vec![obj.compute_object_reference()];
-            Some(obj)
-        } else {
-            None
-        };
-
-        // Full validity check including gas budget and price.
-        transaction.validity_check(&epoch_store.tx_validity_check_context())?;
-
-        let declared_withdrawals = self.pre_object_load_checks(
-            &transaction,
-            &[],
-            &input_object_kinds,
-            &receiving_object_refs,
-            epoch_store.protocol_config(),
-        )?;
-        let address_funds: BTreeSet<_> = declared_withdrawals.keys().cloned().collect();
-
-        let (mut input_objects, receiving_objects) = self.input_loader.read_objects_for_signing(
-            // We don't want to cache this transaction since it's a simulation.
-            None,
-            &input_object_kinds,
-            &receiving_object_refs,
-            epoch_store.epoch(),
-        )?;
-
-        // Add mock gas to input objects after loading (it doesn't exist in the store).
-        let mock_gas_id = mock_gas_object.map(|obj| {
-            let id = obj.id();
-            input_objects.push(ObjectReadResult::new_from_gas_object(&obj));
-            id
-        });
-
-        let protocol_config = epoch_store.protocol_config();
-
-        let (gas_status, checked_input_objects) = if dev_inspect {
-            haneul_transaction_checks::check_dev_inspect_input(
-                protocol_config,
-                &transaction,
-                input_objects,
-                receiving_objects,
-                epoch_store.reference_gas_price(),
-            )?
-        } else {
-            haneul_transaction_checks::check_transaction_input(
-                epoch_store.protocol_config(),
-                epoch_store.reference_gas_price(),
-                &transaction,
-                input_objects,
-                &receiving_objects,
-                &self.metrics.bytecode_verifier_metrics,
-                &self.config.verifier_signing_config,
-            )?
-        };
-
-        let executor = epoch_store.simulate_executor();
-
-        let (mut kind, signer, gas_data) = transaction.execution_parts();
-        let rewritten_inputs = rewrite_transaction_for_coin_reservations(
+        crate::transaction_simulation::simulate_transaction(
+            transaction,
+            checks,
+            allow_mock_gas_coin,
+            suggested_gas_price,
+            epoch_store.tx_validity_check_context(),
+            epoch_data.epoch_id(),
+            epoch_data.epoch_start_timestamp(),
             self.chain_identifier,
-            &*self.coin_reservation_resolver,
-            signer,
-            &mut kind,
-            None,
-        )?;
-        let early_execution_error = get_early_execution_error(
-            &transaction.digest(),
-            &checked_input_objects,
+            transaction_deny_config.as_ref(),
             self.config.certificate_deny_config.certificate_deny_set(),
-            &FundsWithdrawStatus::MaybeSufficient,
-        );
-        // Dev-inspect/simulation path (not committed): no assigned accumulator version here, so the
-        // IFFW short-circuit applies unconditionally (`None`), matching non-mainnet execution.
-        let execution_params = match early_execution_error {
-            None => ExecutionOrEarlyError::ok(None),
-            Some(errors) => ExecutionOrEarlyError::failed(errors, None),
-        };
-
-        let tracking_store = TrackingBackingStore::new(self.get_backing_store().as_ref());
-
-        // Clone inputs for potential retry if object funds check fails post-execution.
-        let cloned_input_objects = checked_input_objects.clone();
-        let cloned_gas = gas_data.clone();
-        let cloned_kind = kind.clone();
-        let tx_digest = transaction.digest();
-        let epoch_id = epoch_store.epoch_start_config().epoch_data().epoch_id();
-        let epoch_timestamp_ms = epoch_store
-            .epoch_start_config()
-            .epoch_data()
-            .epoch_start_timestamp();
-        let (inner_temp_store, _, effects, execution_result) = executor.dev_inspect_transaction(
-            &tracking_store,
-            protocol_config,
-            self.metrics.execution_metrics.clone(),
-            false, // expensive_checks
-            execution_params,
-            &epoch_id,
-            epoch_timestamp_ms,
-            checked_input_objects,
-            gas_data,
-            gas_status,
-            kind,
-            rewritten_inputs.clone(),
-            signer,
-            tx_digest,
-            dev_inspect,
-        );
-
-        // Post-execution: check object funds (non-address withdrawals discovered during execution).
-        let (inner_temp_store, effects, execution_result) = if execution_result.is_ok() {
-            let has_insufficient_object_funds = inner_temp_store
-                .accumulator_running_max_withdraws
-                .iter()
-                .filter(|(id, _)| !address_funds.contains(id))
-                .any(|(id, max_withdraw)| {
-                    let balance = self.get_account_funds_read().get_latest_account_amount(id);
-                    balance < *max_withdraw
-                });
-
-            if has_insufficient_object_funds {
-                let retry_gas_status = HaneulGasStatus::new(
-                    cloned_gas.budget,
-                    cloned_gas.price,
-                    epoch_store.reference_gas_price(),
-                    protocol_config,
-                )?;
-                let (store, _, effects, result) = executor.dev_inspect_transaction(
-                    &tracking_store,
-                    protocol_config,
-                    self.metrics.execution_metrics.clone(),
-                    false,
-                    ExecutionOrEarlyError::failed(
-                        NonEmpty::new(ExecutionErrorKind::InsufficientFundsForWithdraw),
-                        None,
-                    ),
-                    &epoch_id,
-                    epoch_timestamp_ms,
-                    cloned_input_objects,
-                    cloned_gas,
-                    retry_gas_status,
-                    cloned_kind,
-                    rewritten_inputs,
-                    signer,
-                    tx_digest,
-                    dev_inspect,
-                );
-                (store, effects, result)
-            } else {
-                (inner_temp_store, effects, execution_result)
-            }
-        } else {
-            (inner_temp_store, effects, execution_result)
-        };
-
-        let loaded_runtime_objects = tracking_store.into_read_objects();
-        let unchanged_loaded_runtime_objects =
-            crate::transaction_outputs::unchanged_loaded_runtime_objects(
-                &transaction,
-                &effects,
-                &loaded_runtime_objects,
-            );
-
-        let object_set = {
-            let objects = {
-                let mut objects = loaded_runtime_objects;
-
-                for o in inner_temp_store
-                    .input_objects
-                    .into_values()
-                    .chain(inner_temp_store.written.into_values())
-                {
-                    objects.insert(o);
-                }
-
-                objects
-            };
-
-            let object_keys = haneul_types::storage::get_transaction_object_set(
-                &transaction,
-                &effects,
-                &unchanged_loaded_runtime_objects,
-            );
-
-            let mut set = haneul_types::full_checkpoint_content::ObjectSet::default();
-            for k in object_keys {
-                if let Some(o) = objects.get(&k) {
-                    set.insert(o.clone());
-                }
-            }
-
-            set
-        };
-
-        Ok(SimulateTransactionResult {
-            objects: object_set,
-            events: effects.events_digest().map(|_| inner_temp_store.events),
-            effects,
-            execution_result,
-            mock_gas_id,
-            unchanged_loaded_runtime_objects,
-            suggested_gas_price: self
-                .congestion_tracker
-                .get_suggested_gas_prices(&transaction),
-        })
+            &self.input_loader,
+            self.get_backing_store().as_ref(),
+            self.get_backing_package_store().as_ref(),
+            epoch_store.simulate_executor().as_ref(),
+            self.coin_reservation_resolver.as_ref(),
+            self.get_account_funds_read().as_ref(),
+            &self.config.verifier_signing_config,
+            &self.metrics.bytecode_verifier_metrics,
+            &self.metrics.execution_metrics,
+        )
     }
 
     /// The object ID for gas can be any object ID, even for an uncreated object
@@ -3813,7 +3602,7 @@ impl AuthorityState {
                 let inner = self
                     .get_object(&HANEUL_ACCUMULATOR_ROOT_OBJECT_ID)
                     .map(|o| {
-                        Arc::new(ObjectFundsChecker::new(
+                        Arc::new(ObjectFundsCheckerDEPRECATED::new(
                             o.version(),
                             self.unsettled_object_withdrawals.clone(),
                             self.object_funds_checker_metrics.clone(),
@@ -6872,7 +6661,7 @@ impl NodeStateDump {
 
         // Record all the shared objects
         let mut shared_objects = Vec::new();
-        for kind in effects.input_consensus_objects() {
+        for kind in effects.accessed_consensus_objects() {
             match kind {
                 InputConsensusObject::Mutate(obj_ref) | InputConsensusObject::ReadOnly(obj_ref) => {
                     if let Some(w) = object_store.get_object_by_key(&obj_ref.0, obj_ref.1) {
@@ -6964,4 +6753,44 @@ impl NodeStateDump {
         let file = File::open(path)?;
         serde_json::from_reader(file).map_err(|e| anyhow::anyhow!(e))
     }
+}
+
+/// Run deny list checks and process funds withdrawals before loading input objects.
+pub(crate) fn pre_object_load_checks(
+    tx_data: &TransactionData,
+    tx_signatures: &[GenericSignature],
+    input_object_kinds: &[InputObjectKind],
+    receiving_objects_refs: &[ObjectRef],
+    protocol_config: &ProtocolConfig,
+    transaction_deny_config: &TransactionDenyConfig,
+    backing_package_store: &dyn BackingPackageStore,
+    chain_identifier: ChainIdentifier,
+    coin_reservation_resolver: &dyn CoinReservationResolverTrait,
+    account_funds_read: &dyn AccountFundsRead,
+) -> HaneulResult<BTreeMap<AccumulatorObjId, (u64, TypeTag, HaneulAddress)>> {
+    // Note: the deny checks may do redundant package loads but:
+    // - they only load packages when there is an active package deny map
+    // - the loads are cached anyway
+    haneul_transaction_checks::deny::check_transaction_for_signing(
+        tx_data,
+        tx_signatures,
+        input_object_kinds,
+        receiving_objects_refs,
+        transaction_deny_config,
+        backing_package_store,
+    )?;
+
+    let declared_withdrawals = tx_data
+        .process_funds_withdrawals_for_signing(chain_identifier, coin_reservation_resolver)?;
+
+    account_funds_read.check_amounts_available(&declared_withdrawals)?;
+
+    if protocol_config.gasless_verify_remaining_balance() && tx_data.is_gasless_transaction() {
+        let min_amounts =
+            haneul_types::transaction::get_gasless_allowed_token_types(protocol_config);
+        account_funds_read
+            .check_remaining_amounts_after_withdrawal(&declared_withdrawals, &min_amounts)?;
+    }
+
+    Ok(declared_withdrawals)
 }

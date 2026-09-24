@@ -3,6 +3,9 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 17 tasks
 
+// Exercise test functions that emit authenticated events
+
+// Protocol version pinned to avoid snapshot churn from genesis changes
 init:
 A: object(0,0), B: object(0,1)
 
@@ -23,13 +26,14 @@ task 3, line 45:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 47-49:
+task 4, line 47:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 2
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
 
-task 5, line 50:
+task 5, lines 49-50:
+// Checkpoint 2: Add second event - should trigger MMR merge at height 1
 //# run test::event_streams::emit_event --sender A --args 20
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [20, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
@@ -40,13 +44,14 @@ task 6, line 52:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 54-56:
+task 7, line 54:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 3
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
 
-task 8, line 57:
+task 8, lines 56-57:
+// Checkpoint 3: Add third event - should place at MMR[0]
 //# run test::event_streams::emit_event --sender A --args 30
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [30, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
@@ -57,13 +62,14 @@ task 9, line 59:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 10, lines 61-63:
+task 10, line 61:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 4
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
 
-task 11, line 64:
+task 11, lines 63-64:
+// Checkpoint 4: Add fourth event - should trigger cascade merge to MMR[2]
 //# run test::event_streams::emit_event --sender A --args 40
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [40, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
@@ -74,13 +80,14 @@ task 12, line 66:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 13, lines 68-70:
+task 13, line 68:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 5
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
 
-task 14, line 71:
+task 14, lines 70-71:
+// Test minting an object and emitting an event in the same transaction
 //# run test::event_streams::mint_and_emit --sender A --args 50
 events: Event { package_id: test, transaction_module: Identifier("event_streams"), sender: A, type_: StructTag { address: test, module: Identifier("event_streams"), name: Identifier("AuthEvent"), type_params: [] }, contents: [50, 0, 0, 0, 0, 0, 0, 0] }
 created: object(14,0)
@@ -92,8 +99,11 @@ task 15, line 73:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 16, lines 75-78:
+task 16, line 75:
 //# view-object 2,0 --hide-contents
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 6
 Type: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::accumulator_settlement::EventStreamHead>, haneul::accumulator_settlement::EventStreamHead>
+
+// Run the test with:
+// $ cargo nextest run -p haneul-adapter-transactional-tests emit_authenticated

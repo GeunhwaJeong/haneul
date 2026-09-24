@@ -18,41 +18,47 @@ created: object(2,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 5935600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 3, lines 31-43:
+task 3, lines 31-41:
 //# upgrade --package V1 --upgrade-capability 1,1 --sender A --policy additive
 created: object(3,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 5935600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
+
+// Value of the constant has changed -- this is incompatible in additive and dep_only policies
 
 task 4, lines 45-55:
 //# upgrade --package V2 --upgrade-capability 1,1 --sender A --policy additive
 Error: Transaction Effects Status: Invalid package upgrade. New package is incompatible with previous version
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: PackageUpgradeError { upgrade_error: IncompatibleUpgrade }, source: Some(PartialVMError { major_status: BACKWARD_INCOMPATIBLE_MODULE_UPDATE, sub_status: None, message: None, exec_state: None, indices: [], offsets: [] }), command: Some(1) } }
 
-task 5, lines 57-69:
+task 5, lines 57-67:
 //# upgrade --package V2 --upgrade-capability 1,1 --sender A --policy dep_only
 Error: Transaction Effects Status: Invalid package upgrade. New package is incompatible with previous version
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: PackageUpgradeError { upgrade_error: IncompatibleUpgrade }, source: Some(PartialVMError { major_status: BACKWARD_INCOMPATIBLE_MODULE_UPDATE, sub_status: None, message: None, exec_state: None, indices: [], offsets: [] }), command: Some(1) } }
 
-task 6, lines 70-88:
+task 6, lines 69-85:
+// Fine to introduce a new constant with the additive policy
 //# upgrade --package V2 --upgrade-capability 1,1 --sender A --policy additive
 created: object(6,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 6384000,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 7, lines 89-104:
+task 7, lines 88-102:
+// OK to remove constants in additive policy as long as they're unused
 //# upgrade --package V3 --upgrade-capability 1,1 --sender A --policy additive
 created: object(7,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 6308000,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 8, lines 105-119:
+task 8, lines 104-117:
+// OK to remove constants in dep_only policy -- if they're unused
 //# upgrade --package V4 --upgrade-capability 1,1 --sender A --policy dep_only
 created: object(8,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 6224400,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 9, lines 120-133:
+task 9, lines 119-133:
+// Fine to introduce a new constant as long as it's not used in either policy
 //# upgrade --package V5 --upgrade-capability 1,1 --sender A --policy dep_only
 created: object(9,0)
 mutated: object(0,0), object(1,1)

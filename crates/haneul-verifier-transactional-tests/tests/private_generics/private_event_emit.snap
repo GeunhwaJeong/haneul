@@ -3,78 +3,80 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 17 tasks
 
-task 1, lines 8-18:
+// tests modules cannot emit events for types not defined in the current module
+
+task 1, lines 9-19:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit'. Type argument #0 must be a type defined in the current module, found 'haneul::coin::CurrencyCreated<u64>'."), command: Some(0) } }
 
-task 2, lines 20-29:
+task 2, lines 21-30:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit'. Type argument #0 must be a type defined in the current module, found 'T0'."), command: Some(0) } }
 
-task 3, lines 31-40:
+task 3, lines 32-41:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit'. Type argument #0 must be a type defined in the current module, found 'u64'."), command: Some(0) } }
 
-task 4, lines 42-55:
+task 4, lines 43-56:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit'. Type argument #0 must be a type defined in the current module, found 'vector<_::m::X>'."), command: Some(0) } }
 
-task 5, lines 57-70:
+task 5, lines 58-71:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit'. Type argument #0 must be a type defined in the current module, found 'vector<_::m::X>'."), command: Some(0) } }
 
-task 6, lines 72-81:
+task 6, lines 73-82:
 //# publish
 created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 3990000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, lines 85-95:
+task 8, lines 86-96:
 //# publish --dependencies test
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::t::t. Invalid call to 'haneul::event::emit'. Type argument #0 must be a type defined in the current module, found 'test::m::X'."), command: Some(0) } }
 
-task 9, lines 97-107:
+task 9, lines 98-108:
 //# publish --dependencies test
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::t::t. Invalid call to 'haneul::event::emit'. Type argument #0 must be a type defined in the current module, found 'test::m::Y'."), command: Some(0) } }
 
-task 10, lines 109-119:
+task 10, lines 110-120:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit_authenticated'. Type argument #0 must be a type defined in the current module, found 'haneul::coin::CurrencyCreated<u64>'."), command: Some(0) } }
 
-task 11, lines 121-130:
+task 11, lines 122-131:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit_authenticated'. Type argument #0 must be a type defined in the current module, found 'T0'."), command: Some(0) } }
 
-task 12, lines 132-141:
+task 12, lines 133-142:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit_authenticated'. Type argument #0 must be a type defined in the current module, found 'u64'."), command: Some(0) } }
 
-task 13, lines 143-156:
+task 13, lines 144-157:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit_authenticated'. Type argument #0 must be a type defined in the current module, found 'vector<_::m::X>'."), command: Some(0) } }
 
-task 14, lines 158-171:
+task 14, lines 159-172:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m::t. Invalid call to 'haneul::event::emit_authenticated'. Type argument #0 must be a type defined in the current module, found 'vector<_::m::X>'."), command: Some(0) } }
 
-task 15, lines 173-183:
+task 15, lines 174-184:
 //# publish --dependencies test
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::t::t. Invalid call to 'haneul::event::emit_authenticated'. Type argument #0 must be a type defined in the current module, found 'test::m::X'."), command: Some(0) } }
 
-task 16, lines 185-195:
+task 16, lines 186-196:
 //# publish --dependencies test
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::t::t. Invalid call to 'haneul::event::emit_authenticated'. Type argument #0 must be a type defined in the current module, found 'test::m::Y'."), command: Some(0) } }

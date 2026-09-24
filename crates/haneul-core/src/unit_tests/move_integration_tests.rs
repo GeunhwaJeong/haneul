@@ -1233,7 +1233,6 @@ async fn test_entry_point_vector_error() {
         "obj_vec_destroy",
         vec![],
         vec![TestCallArg::ObjVec(vec![shared_obj_id])],
-        true, // shared object in arguments
     )
     .await
     .unwrap();
@@ -1626,7 +1625,6 @@ async fn test_entry_point_vector_any_error() {
         "obj_vec_destroy_any",
         vec![any_type_tag.clone()],
         vec![TestCallArg::ObjVec(vec![shared_obj_id])],
-        true, // shared object in arguments
     )
     .await
     .unwrap();

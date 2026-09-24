@@ -829,9 +829,9 @@ def do_commit(repo: Path, state: State) -> str:
     #   - haneul-execution/src/<cut>.rs       module wiring file (untracked until staged)
     #   - external-crates/.../<cut>/       generated Move crate tree
     for p in (
-        f"haneul-execution/{state.cut_name}",
+        f"haneul-execution/historical-versions/{state.cut_name}",
         f"haneul-execution/src/{state.cut_name}.rs",
-        f"external-crates/move/move-execution/{state.cut_name}",
+        f"external-crates/move/historical-versions/{state.cut_name}",
     ):
         if (repo / p).exists():
             paths.append(p)

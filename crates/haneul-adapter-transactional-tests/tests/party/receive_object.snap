@@ -12,13 +12,14 @@ created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 8192800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 45-47:
+task 2, line 45:
 //# run ex::m::mint
 created: object(2,0), object(2,1), object(2,2), object(2,3), object(2,4), object(2,5)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 8375200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 48-50:
+task 3, lines 47-48:
+// fastpath_parent
 //# view-object 2,0
 Owner: Account Address ( _ )
 Version: 3
@@ -30,7 +31,8 @@ Contents: ex::m::PubA {
     },
 }
 
-task 4, lines 51-53:
+task 4, lines 50-51:
+// party_parent
 //# view-object 2,1
 Owner: ConsensusAddressOwner( 3, _ )
 Version: 3
@@ -42,7 +44,8 @@ Contents: ex::m::PubA {
     },
 }
 
-task 5, lines 54-56:
+task 5, lines 53-54:
+// fastpath_child_fastpath_parent
 //# view-object 2,2
 Owner: Account Address ( fake(2,0) )
 Version: 3
@@ -54,7 +57,8 @@ Contents: ex::m::PubB {
     },
 }
 
-task 6, lines 57-59:
+task 6, lines 56-57:
+// fastpath_child_party_parent
 //# view-object 2,4
 Owner: Account Address ( fake(2,1) )
 Version: 3
@@ -66,7 +70,8 @@ Contents: ex::m::PubB {
     },
 }
 
-task 7, lines 60-62:
+task 7, lines 59-60:
+// party_child_party_parent
 //# view-object 2,5
 Owner: ConsensusAddressOwner( 3, fake(2,1) )
 Version: 3
@@ -78,7 +83,8 @@ Contents: ex::m::PubB {
     },
 }
 
-task 8, lines 63-66:
+task 8, lines 62-63:
+// party_child_fastpath_parent
 //# view-object 2,3
 Owner: ConsensusAddressOwner( 3, fake(2,0) )
 Version: 3
@@ -90,12 +96,13 @@ Contents: ex::m::PubB {
     },
 }
 
-task 9, line 67:
+task 9, lines 66-67:
+// 1. Can receive a fastpath object from a fastpath parent.
 //# run ex::m::receiver --args object(2,0) receiving(2,2)
 mutated: object(0,2), object(2,0), object(2,2)
 gas summary: computation_cost: 1000000, storage_cost: 3450400,  storage_rebate: 3415896, non_refundable_storage_fee: 34504
 
-task 10, lines 69-72:
+task 10, line 69:
 //# view-object 2,2
 Owner: Account Address ( _ )
 Version: 4
@@ -107,12 +114,13 @@ Contents: ex::m::PubB {
     },
 }
 
-task 11, line 73:
+task 11, lines 72-73:
+// 2. Can receive a fastpath object from a party parent.
 //# run ex::m::receiver --args object(2,1) receiving(2,4)
 mutated: object(0,2), object(2,1), object(2,4)
 gas summary: computation_cost: 1000000, storage_cost: 3450400,  storage_rebate: 3415896, non_refundable_storage_fee: 34504
 
-task 12, lines 75-78:
+task 12, line 75:
 //# view-object 2,4
 Owner: Account Address ( _ )
 Version: 5
@@ -123,6 +131,8 @@ Contents: ex::m::PubB {
         },
     },
 }
+
+// 3. Cannot receive a party object from any parent type.
 
 task 13, line 80:
 //# run ex::m::receiver --args object(2,0) receiving(2,3)

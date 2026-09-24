@@ -218,7 +218,10 @@ impl SingleValidator {
                 &self.epoch_store.epoch(),
                 0,
                 input_objects,
-                std::collections::BTreeMap::new(),
+                haneul_types::base_types::SystemObjectVersions::empty(),
+                // The benchmark only measures execution throughput and never withdraws object
+                // funds, so there are no unsettled withdrawals to account for.
+                &haneul_types::accumulator_root::EmptyUnsettledObjectFunds,
                 gas_data,
                 gas_status,
                 kind,

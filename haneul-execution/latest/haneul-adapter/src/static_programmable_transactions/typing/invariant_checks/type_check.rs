@@ -19,7 +19,10 @@ use crate::{
         },
     },
 };
-use haneul_types::{coin::RESOLVED_COIN_STRUCT, funds_accumulator::RESOLVED_WITHDRAWAL_STRUCT};
+use haneul_types::{
+    allowance::RESOLVED_ALLOWANCE_WITHDRAWAL_STRUCT, coin::RESOLVED_COIN_STRUCT,
+    funds_accumulator::RESOLVED_WITHDRAWAL_STRUCT,
+};
 
 struct Context<'txn> {
     objects: Vec<&'txn T::Type>,
@@ -72,7 +75,7 @@ fn verify_<Mode: ExecutionMode>(env: &Env<Mode>, txn: &T::Transaction) -> anyhow
         object_input(obj)?;
     }
     for w in withdrawals {
-        withdrawal_input(&w.ty)?;
+        withdrawal_input(w)?;
     }
     for p in pure {
         pure_input::<Mode>(p)?;
@@ -100,7 +103,8 @@ fn object_input(obj: &T::ObjectInput) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn withdrawal_input(ty: &T::Type) -> anyhow::Result<()> {
+fn withdrawal_input(w: &T::WithdrawalInput) -> anyhow::Result<()> {
+    let ty = &w.ty;
     anyhow::ensure!(ty.abilities().has_drop(), "withdrawal type must have drop");
     let T::Type::Datatype(dt) = ty else {
         anyhow::bail!("withdrawal input must be a datatype, got {ty:?}");
@@ -110,11 +114,23 @@ fn withdrawal_input(ty: &T::Type) -> anyhow::Result<()> {
         "withdrawal input must have exactly one type argument, got {}",
         dt.type_arguments.len()
     );
-    anyhow::ensure!(
-        dt.qualified_ident() == RESOLVED_WITHDRAWAL_STRUCT,
-        "withdrawal input must be haneul::funds_accumulator::Withdrawal, got {:?}",
-        dt.qualified_ident()
-    );
+    // The source and the type must agree on the withdrawal's kind.
+    match &w.source {
+        T::WithdrawalSource::Direct { .. } => {
+            anyhow::ensure!(
+                dt.qualified_ident() == RESOLVED_WITHDRAWAL_STRUCT,
+                "direct withdrawal input must be haneul::funds_accumulator::Withdrawal, got {:?}",
+                dt.qualified_ident()
+            );
+        }
+        T::WithdrawalSource::Allowance { .. } => {
+            anyhow::ensure!(
+                dt.qualified_ident() == RESOLVED_ALLOWANCE_WITHDRAWAL_STRUCT,
+                "allowance withdrawal input must be haneul::allowance::AllowanceWithdrawal, got {:?}",
+                dt.qualified_ident()
+            );
+        }
+    }
     Ok(())
 }
 

@@ -13,12 +13,14 @@ use haneul_package_alt::{HaneulFlavor, find_environment};
 use haneul_protocol_config::ProtocolConfig;
 use haneul_sdk::wallet_context::WalletContext;
 use haneul_types::{
+    TypeTag,
     base_types::{HaneulAddress, TxContext},
     digests::TransactionDigest,
     gas::{HaneulGasStatus, HaneulGasStatusAPI},
     gas_model::{tables::GasStatus, units_types::Gas},
     in_memory_storage::InMemoryStorage,
     metrics::ExecutionMetrics,
+    storage::ObjectFundsResolver,
 };
 use move_cli::base::{
     self,
@@ -176,7 +178,20 @@ impl HaneulVMTestSetup {
 /// protocol config be threaded into the native context extensions.
 pub struct HaneulExtensionsBuilder<'a> {
     store: InMemoryTestStore,
+    object_funds_resolver: UnlimitedObjectFundsResolver,
     protocol_config: &'a ProtocolConfig,
+}
+
+struct UnlimitedObjectFundsResolver;
+
+impl ObjectFundsResolver for UnlimitedObjectFundsResolver {
+    fn object_available_balance(
+        &self,
+        _owner: HaneulAddress,
+        _type_: &TypeTag,
+    ) -> haneul_types::error::HaneulResult<u128> {
+        Ok(u128::MAX)
+    }
 }
 
 impl VMTestSetup for HaneulVMTestSetup {
@@ -214,6 +229,7 @@ impl VMTestSetup for HaneulVMTestSetup {
     fn new_extensions_builder(&self) -> HaneulExtensionsBuilder<'_> {
         HaneulExtensionsBuilder {
             store: InMemoryTestStore(RefCell::new(InMemoryStorage::default())),
+            object_funds_resolver: UnlimitedObjectFundsResolver,
             protocol_config: &self.protocol_config,
         }
     }
@@ -230,6 +246,7 @@ impl VMTestSetup for HaneulVMTestSetup {
         let protocol_config = builder.protocol_config;
         ext.add(ObjectRuntime::new(
             &builder.store,
+            &builder.object_funds_resolver,
             BTreeMap::new(),
             false,
             protocol_config,

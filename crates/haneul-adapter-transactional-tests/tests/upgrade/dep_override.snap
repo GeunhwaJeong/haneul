@@ -6,6 +6,8 @@ processed 22 tasks
 init:
 A: object(0,0)
 
+// 3 versions of the transitive dependency
+
 task 1, lines 11-19:
 //# publish --upgradeable --sender A
 created: object(1,0), object(1,1)
@@ -18,11 +20,13 @@ created: object(2,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 6817200,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 3, lines 31-42:
+task 3, lines 31-39:
 //# upgrade --package Test_DepDepV2 --upgrade-capability 1,1 --sender A
 created: object(3,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 6817200,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
+
+// 2 versions of the direct dependency
 
 task 4, lines 45-50:
 //# publish --upgradeable --dependencies Test_DepDepV1 --sender A
@@ -30,23 +34,29 @@ created: object(4,0), object(4,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 6558800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 52-60:
+task 5, lines 52-57:
 //# upgrade --package Test_DepV1 --upgrade-capability 4,1 --dependencies Test_DepDepV2 --sender A
 created: object(5,0)
 mutated: object(0,0), object(4,1)
 gas summary: computation_cost: 1000000, storage_cost: 6558800,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 6, lines 63-70:
+// 3 versions of the root package
+
+task 6, lines 63-68:
 //# publish --upgradeable --dependencies Test_DepV1 Test_DepDepV1 --sender A
 created: object(6,0), object(6,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 7037600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 72-79:
+// override direct dependency
+
+task 7, lines 72-77:
 //# upgrade --package Test_V1 --upgrade-capability 6,1 --dependencies Test_DepV2 Test_DepDepV2 --sender A
 created: object(7,0)
 mutated: object(0,0), object(6,1)
 gas summary: computation_cost: 1000000, storage_cost: 7037600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
+
+// override indirect dependency
 
 task 8, lines 81-86:
 //# upgrade --package Test_V2 --upgrade-capability 6,1 --dependencies Test_DepV1 Test_DepDepV3 --sender A
@@ -98,7 +108,7 @@ created: object(13,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 14, lines 98-101:
+task 14, line 98:
 //# view-object 13,0
 Owner: Shared( 4 )
 Version: 4
@@ -110,6 +120,9 @@ Contents: Test_DepDepV1::DepDepM1::Obj {
     },
     v: 0u64,
 }
+
+// call same function from two different module versions but defined in both modules (should produce
+// different result due to overrides)
 
 task 15, lines 103-104:
 //# programmable --sender A
@@ -138,7 +151,7 @@ Contents: Test_DepDepV1::DepDepM1::Obj {
     v: 7u64,
 }
 
-task 18, lines 111-116:
+task 18, line 111:
 //# view-object 16,0
 Owner: Shared( 11 )
 Version: 11
@@ -151,15 +164,23 @@ Contents: Test_DepDepV1::DepDepM1::Obj {
     v: 0u64,
 }
 
-task 19, lines 118-124:
+// expected upgrade errors
+
+// missing direct dependency (should fail)
+
+task 19, lines 118-122:
 //# upgrade --package Test_V3 --upgrade-capability 6,1 --dependencies Test_DepDepV1 --sender A
 Error: Transaction Effects Status: Publish/Upgrade Error, Missing dependency. A dependency of a published or upgraded package has not been assigned an on-chain address.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: PublishUpgradeMissingDependency, source: None, command: Some(1) } }
 
-task 20, lines 126-132:
+// missing indirect dependency (should fail)
+
+task 20, lines 126-130:
 //# upgrade --package Test_V3 --upgrade-capability 6,1 --dependencies Test_DepV2 --sender A
 Error: Transaction Effects Status: Publish/Upgrade Error, Missing dependency. A dependency of a published or upgraded package has not been assigned an on-chain address.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: PublishUpgradeMissingDependency, source: None, command: Some(1) } }
+
+// downgrade indirect dependency (should fail)
 
 task 21, lines 134-138:
 //# upgrade --package Test_V3 --upgrade-capability 6,1 --dependencies Test_DepV2 Test_DepDepV1 --sender A

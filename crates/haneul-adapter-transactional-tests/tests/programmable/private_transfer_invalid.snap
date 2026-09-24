@@ -3,14 +3,18 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 11 tasks
 
+// tests calling public transfer functions
+
 init:
 A: object(0,0)
 
-task 1, lines 9-18:
+task 1, lines 9-16:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 5244000,  storage_rebate: 0, non_refundable_storage_fee: 0
+
+// Has store, but cannot be used with internal variants
 
 task 2, lines 20-22:
 //# programmable --sender A --inputs @A
@@ -26,13 +30,14 @@ task 3, lines 24-26:
 Error: Transaction Effects Status: Non Entry Function Invoked. Move Call must start with an entry function
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: NonEntryFunctionInvoked, source: Some("Cannot directly call function 'haneul::transfer::share_object' since type parameter #0 can only be instantiated with types defined within the caller's module. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_share_object'."), command: Some(1) } }
 
-task 4, lines 28-33:
+task 4, lines 28-30:
 //# programmable
 //> 0: test::m1::pub();
 //> haneul::transfer::freeze_object<test::m1::Pub>(Result(0));
-// Does not have store, cannot be used with internal variants
 Error: Transaction Effects Status: Non Entry Function Invoked. Move Call must start with an entry function
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: NonEntryFunctionInvoked, source: Some("Cannot directly call function 'haneul::transfer::freeze_object' since type parameter #0 can only be instantiated with types defined within the caller's module. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_freeze_object'."), command: Some(1) } }
+
+// Does not have store, cannot be used with internal variants
 
 task 5, lines 35-37:
 //# programmable --sender A --inputs @A
@@ -48,13 +53,14 @@ task 6, lines 39-41:
 Error: Transaction Effects Status: Non Entry Function Invoked. Move Call must start with an entry function
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: NonEntryFunctionInvoked, source: Some("Cannot directly call function 'haneul::transfer::share_object' since type parameter #0 can only be instantiated with types defined within the caller's module. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_share_object'."), command: Some(1) } }
 
-task 7, lines 43-48:
+task 7, lines 43-45:
 //# programmable
 //> 0: test::m1::priv();
 //> haneul::transfer::freeze_object<test::m1::Priv>(Result(0));
-// Does not have store, cannot be used with public variants
 Error: Transaction Effects Status: Non Entry Function Invoked. Move Call must start with an entry function
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: NonEntryFunctionInvoked, source: Some("Cannot directly call function 'haneul::transfer::freeze_object' since type parameter #0 can only be instantiated with types defined within the caller's module. If the type has the 'store' ability, use the public variant instead: 'haneul::transfer::public_freeze_object'."), command: Some(1) } }
+
+// Does not have store, cannot be used with public variants
 
 task 8, lines 50-52:
 //# programmable --sender A --inputs @A

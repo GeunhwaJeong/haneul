@@ -55,8 +55,10 @@ Objects on Haneul can either be immutable or mutable. An immutable object cannot
 To make an object immutable, call the [`haneul::transfer::public_freeze_object`](/references/framework/haneul_haneul/transfer#haneul_transfer_public_freeze_object) function from the [transfer module](https://github.com/GeunhwaJeong/haneul/blob/main/crates/haneul-framework/packages/haneul-framework/sources/transfer.move):
 
 ```move
-public native fun public_freeze_object<T: key>(obj: T);
+public fun public_freeze_object<T: key + store>(obj: T)
 ```
+
+The `store` ability is what lets you freeze an object from outside the module that defines it. For a type without `store`, its defining module can call [`haneul::transfer::freeze_object`](/references/framework/haneul_haneul/transfer#haneul_transfer_freeze_object) instead, which takes `T: key`.
 
 This call permanently makes the object immutable. The operation cannot be reversed. Only freeze objects when you are certain they never need modification.
 

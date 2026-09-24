@@ -58,8 +58,8 @@ use move_core_types::annotated_value::MoveTypeLayout;
 use move_core_types::language_storage::StructTag;
 use simulacrum::store::SimulatorStore;
 
-use crate::GraphQLClient;
-use crate::TransactionInfo;
+use crate::gql::GraphQLClient;
+use crate::gql::TransactionInfo;
 use crate::local_store::LocalStore;
 use crate::local_store::ObjectRemoval;
 use crate::metadata::MetadataStore;

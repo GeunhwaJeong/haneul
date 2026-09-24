@@ -166,6 +166,7 @@ public fun put<T>(balance: &mut Balance<T>, coin: Coin<T>) {
 // === Address Balance <-> Coin utility functions ===
 
 /// Redeem a `Withdrawal<Balance<T>>` and create a `Coin<T>` from the withdrawn Balance<T>.
+/// Aborts if an object withdrawal exceeds the funds currently available to the object.
 public fun redeem_funds<T>(
     withdrawal: haneul::funds_accumulator::Withdrawal<Balance<T>>,
     ctx: &mut TxContext,

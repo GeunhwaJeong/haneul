@@ -19,14 +19,14 @@ use haneul_types::messages_checkpoint::CheckpointSequenceNumber;
 use haneul_types::messages_checkpoint::VerifiedCheckpoint;
 use haneul_types::object::Object;
 
-use crate::CheckpointRead;
 use crate::Node;
-use crate::ObjectKey;
-use crate::ObjectRead;
-use crate::TransactionInfo;
-use crate::TransactionRead;
 use crate::gql::AddressOwnedObject;
+use crate::gql::CheckpointRead;
+use crate::gql::ObjectKey;
+use crate::gql::ObjectRead;
 use crate::gql::ObjectSeedMetadata;
+use crate::gql::TransactionInfo;
+use crate::gql::TransactionRead;
 use crate::gql::queries;
 
 /// Worker threads for [`gql_runtime`]. GraphQL calls are I/O-bound and issued one at a time from a
@@ -280,7 +280,7 @@ mod tests {
 
     use super::super::queries::checkpoint_query::{CheckpointArgs, Query as CheckpointQuery};
     use super::*;
-    use crate::VersionQuery;
+    use crate::gql::VersionQuery;
 
     fn mock_store(server: &MockServer) -> GraphQLClient {
         GraphQLClient::new(Node::Custom(server.uri()), "test-version").expect("store should build")

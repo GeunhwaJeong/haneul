@@ -3,26 +3,39 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 20 tasks
 
+// Lamport-timestamp rule on `[AddressBalance, Coin]` smash: mutable inputs
+// end up at max(input versions) + 1 across the full input set, including
+// the secondary Coin (which is deleted during smashing).
+// Setup:
+//   - three W mutable inputs created early at low versions (call them K),
+//   - one Coin X created and then bumped (via being the gas object in
+//     several minimal txs) to a high version C >> K,
+//   - final tx smashes `[withdraw, X]` and force-mutates W1, W2, W3.
+// Expected: post-tx versions of W1, W2, W3 all equal C + 1 (not K + 1),
+// confirming X's pre-tx version is folded into the tx's lamport timestamp
+// even though X itself is deleted.
+
 init:
 A: object(0,0)
 
-task 1, lines 19-26:
+task 1, lines 19-24:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 5152800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 27-32:
+task 2, lines 26-30:
+// Seed A's AB so we have funds for the final tx.
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
 //> 2: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(1), Input(1));
-// Create three small W mutable inputs early so they end up at low versions.
 mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 33:
+task 3, lines 32-33:
+// Create three small W mutable inputs early so they end up at low versions.
 //# run test::obj::make --sender A
 created: object(3,0)
 mutated: object(0,0)
@@ -34,22 +47,23 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 37-39:
+task 5, line 37:
 //# run test::obj::make --sender A
 created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 40-44:
+task 6, lines 39-42:
+// Create Coin X (split off from A's default gas coin).
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
-// Bump X's version by using it as the gas object in three minimal txs.
 created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 45-47:
+task 7, lines 44-47:
+// Bump X's version by using it as the gas object in three minimal txs.
 //# programmable --sender A --gas-budget 5000000 --gas-payment object(6,0) --inputs 1 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -73,11 +87,13 @@ created: object(9,0)
 mutated: object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 10, lines 57-60:
+task 10, line 57:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 11, line 61:
+task 11, lines 59-61:
+// Pre-state: W1, W2, W3 are at low versions; X is at a higher version due to
+// the bumping above.
 //# view-object 3,0 --hide-contents
 Owner: Account Address ( A )
 Version: 3
@@ -95,13 +111,17 @@ Owner: Account Address ( A )
 Version: 5
 Type: test::obj::W
 
-task 14, lines 67-72:
+task 14, line 67:
 //# view-object 6,0 --hide-contents
 Owner: Account Address ( A )
 Version: 9
 Type: haneul::coin::Coin<haneul::haneul::HANEUL>
 
-task 15, lines 73-74:
+task 15, lines 69-74:
+// Final tx: smash `[withdraw, X]` with W1, W2, W3 as mutable inputs.
+// X is the secondary and gets deleted during smashing. Lamport timestamp
+// for this tx = max(W*, X, AB accumulator) + 1 = X.version + 1 (since X is
+// the highest).
 //# programmable --sender A --gas-budget 5000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(5000000) --gas-payment object(6,0) --inputs object(3,0) object(4,0) object(5,0) @A
 //> TransferObjects([Input(0), Input(1), Input(2)], Input(3))
 mutated: object(3,0), object(4,0), object(5,0)
@@ -109,11 +129,13 @@ deleted: object(6,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 993947769)
 gas summary: computation_cost: 1000000, storage_cost: 3670800,  storage_rebate: 4612212, non_refundable_storage_fee: 46588
 
-task 16, lines 76-79:
+task 16, line 76:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 17, line 80:
+task 17, lines 78-80:
+// Post-state: W1, W2, W3 should all be at the same post-tx version, which
+// equals (X's pre-tx version) + 1 -- not (W's pre-tx version + 1).
 //# view-object 3,0 --hide-contents
 Owner: Account Address ( A )
 Version: 10

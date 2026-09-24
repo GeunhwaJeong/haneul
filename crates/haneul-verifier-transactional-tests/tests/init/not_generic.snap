@@ -3,7 +3,7 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 1 task
 
-task 0, lines 4-11:
+task 0, lines 5-12:
 //# publish
 Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("_::m. 'init' function cannot have type parameters"), command: Some(0) } }

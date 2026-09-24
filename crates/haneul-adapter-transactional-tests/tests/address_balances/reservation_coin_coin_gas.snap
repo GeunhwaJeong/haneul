@@ -3,10 +3,18 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 10 tasks
 
+// `[AddressBalance, Coin, Coin]`: address-balance withdrawal as smash target
+// with two Coin secondaries.
+//   - both coins are consumed (deleted),
+//   - surplus (total smashed minus reservation) is deposited back into the
+//     address balance via a single Merge accumulator event,
+//   - the gas charge against the address balance happens at final charging
+//     time via a separate Split event.
+
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 15-17:
+task 1, line 15:
 //# view-object 0,0
 Owner: Account Address ( A )
 Version: 1
@@ -21,17 +29,18 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 2, lines 18-23:
+task 2, lines 17-21:
+// Seed A's address balance.
 //# programmable --sender A --inputs 100000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
 //> 2: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(1), Input(1));
-// Create two extra HANEUL coins to be smashed into the withdrawal target.
 mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 24-26:
+task 3, lines 23-26:
+// Create two extra HANEUL coins to be smashed into the withdrawal target.
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -51,11 +60,14 @@ task 5, line 32:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 6, lines 34-38:
+task 6, line 34:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 100000000000
 
-task 7, lines 39-41:
+task 7, lines 36-41:
+// Pay with `[AddressBalance, Coin, Coin]`. Smash target is the reservation;
+// both coins are deleted. total_smashed = 500_000_000 + 1_000_000_000 +
+// 1_000_000_000 = 2_500_000_000; deposit-back = 2_000_000_000.
 //# programmable --sender A --gas-budget 500000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --gas-payment object(3,0) --gas-payment object(4,0) --inputs 100000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -64,10 +76,13 @@ deleted: object(3,0), object(4,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1999868240)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 8, lines 43-47:
+task 8, line 43:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 9, line 48:
+task 9, lines 45-48:
+// A's address balance should reflect: starting balance + 2B deposit-back -
+// net gas charge. The deposit-back event and the gas charge event should be
+// visible as separate accumulator entries in the snapshot.
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
 101999868240

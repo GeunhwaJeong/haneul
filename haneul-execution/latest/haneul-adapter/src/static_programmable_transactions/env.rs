@@ -22,6 +22,7 @@ use crate::{
 use haneul_protocol_config::ProtocolConfig;
 use haneul_types::{
     HANEUL_FRAMEWORK_PACKAGE_ID, Identifier, TypeTag,
+    allowance::RESOLVED_ALLOWANCE_WITHDRAWAL_STRUCT,
     balance::RESOLVED_BALANCE_STRUCT,
     base_types::{ObjectID, TxContext},
     coin::RESOLVED_COIN_STRUCT,
@@ -383,6 +384,30 @@ where
             name: n.to_owned(),
             type_arguments: vec![inner_type],
         })))
+    }
+
+    pub fn allowance_withdrawal_type(&self, inner_type: Type) -> Result<Type, Mode::Error> {
+        const ALLOWANCE_WITHDRAWAL_ABILITIES: AbilitySet = AbilitySet::singleton(Ability::Drop);
+        let (a, m, n) = RESOLVED_ALLOWANCE_WITHDRAWAL_STRUCT;
+        let module = ModuleId::new(*a, m.to_owned());
+        Ok(Type::Datatype(Rc::new(Datatype {
+            abilities: ALLOWANCE_WITHDRAWAL_ABILITIES,
+            module,
+            name: n.to_owned(),
+            type_arguments: vec![inner_type],
+        })))
+    }
+
+    /// Either `Withdrawal` or `AllowanceWithdrawal` depending on the source
+    pub fn withdrawal_type_for_source(
+        &self,
+        source: &L::WithdrawalSource,
+        funds_type: Type,
+    ) -> Result<Type, Mode::Error> {
+        match source {
+            L::WithdrawalSource::Direct { .. } => self.withdrawal_type(funds_type),
+            L::WithdrawalSource::Allowance { .. } => self.allowance_withdrawal_type(funds_type),
+        }
     }
 
     pub fn vector_type(&self, element_type: Type) -> Result<Type, Mode::Error> {
