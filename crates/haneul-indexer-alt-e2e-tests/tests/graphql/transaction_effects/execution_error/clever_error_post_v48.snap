@@ -6,49 +6,49 @@ processed 6 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-14:
+task 1, lines 7-15:
 //# publish --sender A --upgradeable
 created: object(1,0), object(1,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5814000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 16-31:
+task 2, lines 17-32:
 //# upgrade --package test --upgrade-capability 1,1 --sender A
 created: object(2,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 6338400,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 3, line 33:
+task 3, line 34:
 //# run test::clever_error_post_v48::test_new_error --sender A
-Error: Transaction Effects Status: Move Abort in test::clever_error_post_v48::test_new_error (function index 1) at offset 1 at line 26
-Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("clever_error_post_v48") }, function: 1, instruction: 1, function_name: Some("test_new_error") }, 13906834286012661763), source: Some(VMError { major_status: ABORTED, sub_status: Some(13906834286012661763), message: Some("fake(1,0)::clever_error_post_v48::test_new_error at offset 1"), exec_state: None, location: Module(ModuleId { address: fake(1,0), name: Identifier("clever_error_post_v48") }), indices: [], offsets: [(FunctionDefinitionIndex(1), 1)] }), command: Some(0) } }
+Error: Transaction Effects Status: Move Abort in test::clever_error_post_v48::test_new_error (function index 1) at offset 1 at line 27
+Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("clever_error_post_v48") }, function: 1, instruction: 1, function_name: Some("test_new_error") }, 13906834290307629059), source: Some(VMError { major_status: ABORTED, sub_status: Some(13906834290307629059), message: Some("fake(1,0)::clever_error_post_v48::test_new_error at offset 1"), exec_state: None, location: Module(ModuleId { address: fake(1,0), name: Identifier("clever_error_post_v48") }), indices: [], offsets: [(FunctionDefinitionIndex(1), 1)] }), command: Some(0) } }
 
-task 4, line 35:
+task 4, line 36:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 37-65:
+task 5, lines 38-66:
 //# run-graphql
 Response: {
   "data": {
     "originalPackage": {
-      "address": "0x3660cad88aba4ea7890593cc17c0437105cab7946008d3e9caf0dc27e5aa211a"
+      "address": "0x60cb0c2f61785203c60e9bc0915b29dda84202d2996b48fc681af7e21e605145"
     },
     "upgradedPackage": {
-      "address": "0xdfd491f9dc40f6408b3c858b9f7acf530475f43239b82a45f9a4f7dedac88a32"
+      "address": "0x8882234e36d489f4e66b8d5d94674cdebb655cd721898cb682b8da2c0571d315"
     },
     "cleverErrorPostV48": {
       "executionError": {
-        "abortCode": "13906834286012661763",
-        "sourceLineNumber": 26,
+        "abortCode": "13906834290307629059",
+        "sourceLineNumber": 27,
         "instructionOffset": 1,
         "identifier": "ENewError",
         "constant": "New error in v2",
-        "message": "Error in 1st command, from '0xdfd491f9dc40f6408b3c858b9f7acf530475f43239b82a45f9a4f7dedac88a32::clever_error_post_v48::test_new_error' (line 26), abort 'ENewError': New error in v2",
+        "message": "Error in 1st command, from '0x8882234e36d489f4e66b8d5d94674cdebb655cd721898cb682b8da2c0571d315::clever_error_post_v48::test_new_error' (line 27), abort 'ENewError': New error in v2",
         "module": {
           "name": "clever_error_post_v48",
           "package": {
-            "address": "0xdfd491f9dc40f6408b3c858b9f7acf530475f43239b82a45f9a4f7dedac88a32"
+            "address": "0x8882234e36d489f4e66b8d5d94674cdebb655cd721898cb682b8da2c0571d315"
           }
         },
         "function": {
