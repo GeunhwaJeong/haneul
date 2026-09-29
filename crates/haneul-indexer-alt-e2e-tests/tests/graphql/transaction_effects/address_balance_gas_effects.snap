@@ -6,7 +6,7 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-9:
+task 1, lines 7-10:
 //# programmable --sender A --inputs 1000000000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -15,33 +15,33 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 11-20:
+task 2, lines 12-21:
 //# publish
 created: object(2,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 3663200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 22:
+task 3, line 23:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 24-25:
+task 4, lines 25-26:
 //# programmable --sender A --address-balance-gas --inputs 1000
 //> 0: test::mod::fails()
 Error: Transaction Effects Status: Move Runtime Abort. Location: test::mod::fails (function index 0) at offset 1, Abort Code: 42
 Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("mod") }, function: 0, instruction: 1, function_name: Some("fails") }, 42) at command Some(0)
 
-task 5, lines 27-28:
+task 5, lines 28-29:
 //# programmable --sender A --address-balance-gas
 //> 0: test::mod::succeeds()
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1000000)
 gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 6, line 30:
+task 6, line 31:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 32-66:
+task 7, lines 33-67:
 //# run-graphql
 Response: {
   "data": {
