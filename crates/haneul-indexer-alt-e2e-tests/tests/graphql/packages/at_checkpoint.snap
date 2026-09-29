@@ -6,29 +6,29 @@ processed 13 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-9:
+task 1, lines 7-10:
 //# publish --upgradeable --sender A
 created: object(1,0), object(1,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5099600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 11:
+task 2, line 12:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 13-16:
+task 3, lines 14-17:
 //# upgrade --package P1 --upgrade-capability 1,1 --sender A
 created: object(3,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 5099600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 4, lines 18-21:
+task 4, lines 19-22:
 //# upgrade --package P2 --upgrade-capability 1,1 --sender A
 created: object(4,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 5099600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 5, lines 23-25:
+task 5, lines 24-26:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -36,70 +36,70 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 27:
+task 6, line 28:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 29-45:
+task 7, lines 30-46:
 //# run-graphql
 Response: {
   "data": {
     "p1": {
-      "address": "0xeb5db227847b9d91a026b27a44398de49ad829edc86292a9952680f5ee59e949",
+      "address": "0x4ec216c344fdfdfa936f35054136b61b6496f6bf95af398da98b620df5aab6b3",
       "version": 1
     },
     "p2": {
-      "address": "0xf6446ccfba8d673c9e22e91159644fc0d1a3d95fcf64bd49633f775f695aa706",
+      "address": "0x45cac6a7b90ef09ed752802ca824dbde379f56b226375f4990299ed36f06ef47",
       "version": 2
     },
     "p3": {
-      "address": "0xa259da138eccdc52e3339898cdf055f050f3c978d544d3878ad06935a5471850",
+      "address": "0x3ffea8dd29c7c9831c3c69f26f72a716e2213f77a3aacb77bfce39e5aab750de",
       "version": 3
     }
   }
 }
 
-task 8, lines 47-74:
+task 8, lines 48-75:
 //# run-graphql
 Response: {
   "data": {
     "latest": {
-      "address": "0xa259da138eccdc52e3339898cdf055f050f3c978d544d3878ad06935a5471850",
+      "address": "0x3ffea8dd29c7c9831c3c69f26f72a716e2213f77a3aacb77bfce39e5aab750de",
       "version": 3
     },
     "c0": null,
     "c1": {
-      "address": "0xeb5db227847b9d91a026b27a44398de49ad829edc86292a9952680f5ee59e949",
+      "address": "0x4ec216c344fdfdfa936f35054136b61b6496f6bf95af398da98b620df5aab6b3",
       "version": 1
     },
     "c2": {
-      "address": "0xa259da138eccdc52e3339898cdf055f050f3c978d544d3878ad06935a5471850",
+      "address": "0x3ffea8dd29c7c9831c3c69f26f72a716e2213f77a3aacb77bfce39e5aab750de",
       "version": 3
     }
   }
 }
 
-task 9, lines 76-98:
+task 9, lines 77-99:
 //# run-graphql
 Response: {
   "data": {
     "latest": {
-      "address": "0xa259da138eccdc52e3339898cdf055f050f3c978d544d3878ad06935a5471850",
+      "address": "0x3ffea8dd29c7c9831c3c69f26f72a716e2213f77a3aacb77bfce39e5aab750de",
       "version": 3
     },
     "c0": null,
     "c1": {
-      "address": "0xeb5db227847b9d91a026b27a44398de49ad829edc86292a9952680f5ee59e949",
+      "address": "0x4ec216c344fdfdfa936f35054136b61b6496f6bf95af398da98b620df5aab6b3",
       "version": 1
     },
     "c2": {
-      "address": "0xa259da138eccdc52e3339898cdf055f050f3c978d544d3878ad06935a5471850",
+      "address": "0x3ffea8dd29c7c9831c3c69f26f72a716e2213f77a3aacb77bfce39e5aab750de",
       "version": 3
     }
   }
 }
 
-task 10, lines 100-121:
+task 10, lines 101-122:
 //# run-graphql
 Response: {
   "data": {
@@ -122,7 +122,7 @@ Response: {
   }
 }
 
-task 11, lines 123-126:
+task 11, lines 124-127:
 //# run-graphql
 Response: {
   "data": {
@@ -147,14 +147,14 @@ Response: {
   ]
 }
 
-task 12, lines 128-144:
+task 12, lines 129-145:
 //# run-graphql
 Response: {
   "data": {
     "implicit": null,
     "explicit": null,
     "object": {
-      "address": "0xf01288b6b07e3392406ca634c9ee6da5ff8eb53ecaf7e4cd8556ecd9e535437c",
+      "address": "0x103cb00aac0fe66a4f7f1976e94a17d14e46ebef384b5dc5e43f33c2478fb460",
       "version": 5
     }
   }

@@ -3,15 +3,15 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 5 tasks
 
-task 1, line 6:
+task 1, line 7:
 //# advance-epoch --create-random-state
 Epoch advanced: 1
 
-task 3, line 10:
+task 3, line 11:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 4, lines 12-27:
+task 4, lines 13-28:
 //# run-graphql
 Response: {
   "data": {

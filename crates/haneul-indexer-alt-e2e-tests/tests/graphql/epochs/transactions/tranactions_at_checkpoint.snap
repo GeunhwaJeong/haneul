@@ -6,11 +6,11 @@ processed 9 tasks
 init:
 A: object(0,0)
 
-task 1, line 6:
+task 1, line 7:
 //# advance-epoch
 Epoch advanced: 1
 
-task 2, lines 8-10:
+task 2, lines 9-11:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -18,7 +18,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 12-14:
+task 3, lines 13-15:
 //# programmable --sender A --inputs 43 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -26,29 +26,29 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 16:
+task 4, line 17:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 5, lines 18-20:
+task 5, lines 19-21:
 //# programmable --sender A --inputs 1
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 22:
+task 6, line 23:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 7, lines 24-26:
+task 7, lines 25-27:
 //# programmable --sender A --inputs 2
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, lines 28-66:
+task 8, lines 29-67:
 //# run-graphql
 Response: {
   "data": {
@@ -59,7 +59,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAA=",
             "node": {
-              "digest": "85r5mfnut7T1NNBmbL7RpGMf9caJe5VEnpiCJxkz7eDE",
+              "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 0,
@@ -73,7 +73,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAE=",
             "node": {
-              "digest": "GtHkWEVdLDkA1QeXAhPuJBYbUEGPLAGKheGcsguXwoMo",
+              "digest": "CNoqJw7gBs5UuB9LKVpicrrbYQDmoTMswooLqMTYGxHM",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 1,
@@ -94,7 +94,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAA=",
             "node": {
-              "digest": "85r5mfnut7T1NNBmbL7RpGMf9caJe5VEnpiCJxkz7eDE",
+              "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 0,
@@ -121,7 +121,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAI=",
             "node": {
-              "digest": "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs",
+              "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 2,
@@ -135,7 +135,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAM=",
             "node": {
-              "digest": "887ZoGG2uRiXqs9ytzyVJom4YDjJjoDXJKruvKcepsT2",
+              "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 2,
@@ -156,7 +156,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAI=",
             "node": {
-              "digest": "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs",
+              "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 2,
@@ -170,7 +170,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAM=",
             "node": {
-              "digest": "887ZoGG2uRiXqs9ytzyVJom4YDjJjoDXJKruvKcepsT2",
+              "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 2,

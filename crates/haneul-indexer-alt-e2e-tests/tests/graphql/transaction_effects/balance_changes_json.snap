@@ -6,7 +6,7 @@ processed 8 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 6-9:
+task 1, lines 7-10:
 // Transaction with balance changes - transfer HANEUL from A to B
 //# programmable --sender A --inputs 1000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -15,7 +15,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 11-16:
+task 2, lines 12-17:
 // Transaction with multiple balance changes - transfer to multiple recipients
 //# programmable --sender A --inputs 500 @B 300 @C
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -26,11 +26,11 @@ created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 18:
+task 3, line 19:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 20-25:
+task 4, lines 21-26:
 //# run-graphql
 Response: {
   "data": {
@@ -51,7 +51,7 @@ Response: {
   }
 }
 
-task 5, lines 27-32:
+task 5, lines 28-33:
 //# run-graphql
 Response: {
   "data": {
@@ -77,12 +77,12 @@ Response: {
   }
 }
 
-task 6, lines 34-42:
+task 6, lines 35-43:
 //# run-graphql
 Response: {
   "data": {
     "transaction": {
-      "digest": "8p5YLTzxCKZTmXfMUcrY4ffkwsrC6cW5fwFiuyLZnDcD",
+      "digest": "BxZpnc45Ac2pKxV4ZcwRm8WskmZNS4zaaYjJn7vbgY2s",
       "effects": {
         "balanceChangesJson": [
           {
@@ -101,7 +101,7 @@ Response: {
   }
 }
 
-task 7, lines 44-49:
+task 7, lines 45-50:
 //# run-graphql
 Response: {
   "data": {

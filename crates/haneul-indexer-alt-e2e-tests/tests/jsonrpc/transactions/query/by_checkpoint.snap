@@ -20,11 +20,11 @@ A: object(0,0)
 // 19. Cursor points after the expected checkpoint
 // 20, 21. Cursor points before and after the expected checkpoint, reversed
 
-task 1, line 20:
+task 1, line 21:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 2, lines 22-24:
+task 2, lines 23-25:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -32,11 +32,11 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 26:
+task 3, line 27:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 4, lines 28-30:
+task 4, lines 29-31:
 //# programmable --sender A --inputs 43 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -44,7 +44,7 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 32-34:
+task 5, lines 33-35:
 //# programmable --sender A --inputs 44 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -52,7 +52,7 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 36-38:
+task 6, lines 37-39:
 //# programmable --sender A --inputs 45 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -60,7 +60,7 @@ created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 40-42:
+task 7, lines 41-43:
 //# programmable --sender A --inputs 46 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -68,11 +68,11 @@ created: object(7,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, line 44:
+task 8, line 45:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 9, lines 46-50:
+task 9, lines 47-51:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -80,7 +80,7 @@ Response: {
   "result": {
     "epoch": "0",
     "sequenceNumber": "0",
-    "digest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1",
+    "digest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN",
     "networkTotalTransactions": "1",
     "epochRollingGasCostSummary": {
       "computationCost": "0",
@@ -90,14 +90,14 @@ Response: {
     },
     "timestampMs": "0",
     "transactions": [
-      "85r5mfnut7T1NNBmbL7RpGMf9caJe5VEnpiCJxkz7eDE"
+      "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ"
     ],
     "checkpointCommitments": [],
-    "validatorSignature": "opngWrNN1GAlo0T9hi0/PYUMHK4rucl+9WKijrKLXXjba1ZhvqFdSAAle4aMvE86"
+    "validatorSignature": "ow88Jdaji/7wfHDC+w4qTmA8OMnxi4bTyQM+XoG6NpmUu8y5fmKSP1BWfGWTk60m"
   }
 }
 
-task 10, lines 52-56:
+task 10, lines 53-57:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -105,9 +105,9 @@ Response: {
   "result": {
     "epoch": "0",
     "sequenceNumber": "1",
-    "digest": "YK5vC7np6H5DHS7jnmzZPHn8rR4x9VXn6ZxE6crnhAA",
+    "digest": "73QG6D72KNAacGdZrjmgejGp84iSjqQajWtUy7GPZeta",
     "networkTotalTransactions": "2",
-    "previousDigest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1",
+    "previousDigest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN",
     "epochRollingGasCostSummary": {
       "computationCost": "0",
       "storageCost": "0",
@@ -119,11 +119,11 @@ Response: {
       "FnRLaJFCiQDLmx8HEJsaNfLAnGX1TULDnuLWBhDrLACm"
     ],
     "checkpointCommitments": [],
-    "validatorSignature": "rOnWXLtTgyxkaajiZq8wsMwRk35a5h6qX4giEYtK5S0mbP9eF8ZbRZLXdRb6BxIT"
+    "validatorSignature": "ogEKGex+APhWDHZdUljx0h/OuMBUf53XnXIVWKnjXQ/VZcTFhDbZaVoBcmxtIPRb"
   }
 }
 
-task 11, lines 58-62:
+task 11, lines 59-63:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -131,9 +131,9 @@ Response: {
   "result": {
     "epoch": "0",
     "sequenceNumber": "2",
-    "digest": "GRE2oKbup6UFQ8kBE1iSZoNLeJA7hWdsipkFdoJqcNiV",
+    "digest": "8pqswwWw1K3Jkz14jr3fLNETopVGVxnDtAw9RoHrTEz1",
     "networkTotalTransactions": "4",
-    "previousDigest": "YK5vC7np6H5DHS7jnmzZPHn8rR4x9VXn6ZxE6crnhAA",
+    "previousDigest": "73QG6D72KNAacGdZrjmgejGp84iSjqQajWtUy7GPZeta",
     "epochRollingGasCostSummary": {
       "computationCost": "1000000",
       "storageCost": "1976000",
@@ -142,15 +142,15 @@ Response: {
     },
     "timestampMs": "0",
     "transactions": [
-      "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs",
+      "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
       "2iEZQGAgJYgzmcNC2eLrbNejeTJHJxY4Xy4yKj7R3D8g"
     ],
     "checkpointCommitments": [],
-    "validatorSignature": "p//QtE8vC/8EOe4TS8ogc3bH7m9DeRmOZgvKpWRPw+w8bYjVcqje5nQIz02lkIOW"
+    "validatorSignature": "qepVRAgtg8Pwbp3bbzBFLoYZriU9aJKynfVYU7Hmcpu2LOT+kgo8YmP78nbKx4jG"
   }
 }
 
-task 12, lines 64-68:
+task 12, lines 65-69:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -158,9 +158,9 @@ Response: {
   "result": {
     "epoch": "0",
     "sequenceNumber": "3",
-    "digest": "Fj844PT3413hYVBtScSWyHy7VZyaEg9C8WE53sMiFLtM",
+    "digest": "HFKzJycRfFEysDce4YbEnbGjeYkFgjFtUfLivfYo84Az",
     "networkTotalTransactions": "9",
-    "previousDigest": "GRE2oKbup6UFQ8kBE1iSZoNLeJA7hWdsipkFdoJqcNiV",
+    "previousDigest": "8pqswwWw1K3Jkz14jr3fLNETopVGVxnDtAw9RoHrTEz1",
     "epochRollingGasCostSummary": {
       "computationCost": "5000000",
       "storageCost": "9880000",
@@ -169,18 +169,18 @@ Response: {
     },
     "timestampMs": "0",
     "transactions": [
-      "887ZoGG2uRiXqs9ytzyVJom4YDjJjoDXJKruvKcepsT2",
-      "5SSP1a1L5pXjn9mcq9knSiskG9QHhShk5fEdGpTMgsEC",
-      "MUxiTByXVB2P4buRwnD8x8PUj3zYqmVV776vztadJeK",
-      "ENfK4j3XThy1JbaCuLeK756JcaQrzXuN4ZojgUDST8c4",
+      "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
+      "6Q8vV8pZa9RBYqdxTW4exMa1sV56CRoMqk9m5QqnMzUj",
+      "41oRCFEF1KVdkqq4eDx9jkyTapTd2DVnCpgwukiVZ1Ts",
+      "BJtkm7dpxxvBC2AcB3oUuvHfWtcYC7XKyLKrPiG98E9x",
       "GvJUfeVXR9rGHPhuq6Fju2MmNBTtxZhkZMyJgaSDYXQN"
     ],
     "checkpointCommitments": [],
-    "validatorSignature": "oIIw0bciOy5u/NsUHMP3c0mtxHUfUC2ahi7+Ns0GCIG+lsnSPhRU19/ouo4Rlqy0"
+    "validatorSignature": "jnc7DxOt3TZGPMfCsz017hvwmwybjqrYYU27XhbaouzRfyEvWzrAQT2MjZvr/WLU"
   }
 }
 
-task 13, lines 70-76:
+task 13, lines 71-77:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -198,7 +198,7 @@ Response: {
   }
 }
 
-task 14, lines 78-84:
+task 14, lines 79-85:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -206,7 +206,7 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs",
+        "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
         "timestampMs": "0",
         "checkpoint": "2"
       },
@@ -221,7 +221,7 @@ Response: {
   }
 }
 
-task 15, lines 86-92:
+task 15, lines 87-93:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -229,22 +229,22 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "887ZoGG2uRiXqs9ytzyVJom4YDjJjoDXJKruvKcepsT2",
+        "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "5SSP1a1L5pXjn9mcq9knSiskG9QHhShk5fEdGpTMgsEC",
+        "digest": "6Q8vV8pZa9RBYqdxTW4exMa1sV56CRoMqk9m5QqnMzUj",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "MUxiTByXVB2P4buRwnD8x8PUj3zYqmVV776vztadJeK",
+        "digest": "41oRCFEF1KVdkqq4eDx9jkyTapTd2DVnCpgwukiVZ1Ts",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "ENfK4j3XThy1JbaCuLeK756JcaQrzXuN4ZojgUDST8c4",
+        "digest": "BJtkm7dpxxvBC2AcB3oUuvHfWtcYC7XKyLKrPiG98E9x",
         "timestampMs": "0",
         "checkpoint": "3"
       },
@@ -259,7 +259,7 @@ Response: {
   }
 }
 
-task 16, lines 94-101:
+task 16, lines 95-102:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -277,7 +277,7 @@ Response: {
   }
 }
 
-task 17, lines 103-110:
+task 17, lines 104-111:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -290,7 +290,7 @@ Response: {
         "checkpoint": "2"
       },
       {
-        "digest": "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs",
+        "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
         "timestampMs": "0",
         "checkpoint": "2"
       }
@@ -300,7 +300,7 @@ Response: {
   }
 }
 
-task 18, lines 112-119:
+task 18, lines 113-120:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -313,22 +313,22 @@ Response: {
         "checkpoint": "3"
       },
       {
-        "digest": "ENfK4j3XThy1JbaCuLeK756JcaQrzXuN4ZojgUDST8c4",
+        "digest": "BJtkm7dpxxvBC2AcB3oUuvHfWtcYC7XKyLKrPiG98E9x",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "MUxiTByXVB2P4buRwnD8x8PUj3zYqmVV776vztadJeK",
+        "digest": "41oRCFEF1KVdkqq4eDx9jkyTapTd2DVnCpgwukiVZ1Ts",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "5SSP1a1L5pXjn9mcq9knSiskG9QHhShk5fEdGpTMgsEC",
+        "digest": "6Q8vV8pZa9RBYqdxTW4exMa1sV56CRoMqk9m5QqnMzUj",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "887ZoGG2uRiXqs9ytzyVJom4YDjJjoDXJKruvKcepsT2",
+        "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
         "timestampMs": "0",
         "checkpoint": "3"
       }
@@ -338,7 +338,7 @@ Response: {
   }
 }
 
-task 19, lines 121-128:
+task 19, lines 122-129:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -356,7 +356,7 @@ Response: {
   }
 }
 
-task 20, lines 130-137:
+task 20, lines 131-138:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -364,7 +364,7 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs",
+        "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
         "timestampMs": "0",
         "checkpoint": "2"
       },
@@ -379,7 +379,7 @@ Response: {
   }
 }
 
-task 21, lines 139-146:
+task 21, lines 140-147:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -387,12 +387,12 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "887ZoGG2uRiXqs9ytzyVJom4YDjJjoDXJKruvKcepsT2",
+        "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "5SSP1a1L5pXjn9mcq9knSiskG9QHhShk5fEdGpTMgsEC",
+        "digest": "6Q8vV8pZa9RBYqdxTW4exMa1sV56CRoMqk9m5QqnMzUj",
         "timestampMs": "0",
         "checkpoint": "3"
       }
@@ -402,7 +402,7 @@ Response: {
   }
 }
 
-task 22, lines 148-155:
+task 22, lines 149-156:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -420,7 +420,7 @@ Response: {
   }
 }
 
-task 23, lines 157-164:
+task 23, lines 158-165:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -433,7 +433,7 @@ Response: {
         "checkpoint": "2"
       },
       {
-        "digest": "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs",
+        "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
         "timestampMs": "0",
         "checkpoint": "2"
       }
@@ -443,7 +443,7 @@ Response: {
   }
 }
 
-task 24, lines 166-173:
+task 24, lines 167-174:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -456,7 +456,7 @@ Response: {
         "checkpoint": "3"
       },
       {
-        "digest": "ENfK4j3XThy1JbaCuLeK756JcaQrzXuN4ZojgUDST8c4",
+        "digest": "BJtkm7dpxxvBC2AcB3oUuvHfWtcYC7XKyLKrPiG98E9x",
         "timestampMs": "0",
         "checkpoint": "3"
       }
@@ -466,7 +466,7 @@ Response: {
   }
 }
 
-task 25, lines 175-182:
+task 25, lines 176-183:
 //# run-jsonrpc --cursors 6
 Response: {
   "jsonrpc": "2.0",
@@ -474,7 +474,7 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "ENfK4j3XThy1JbaCuLeK756JcaQrzXuN4ZojgUDST8c4",
+        "digest": "BJtkm7dpxxvBC2AcB3oUuvHfWtcYC7XKyLKrPiG98E9x",
         "timestampMs": "0",
         "checkpoint": "3"
       },
@@ -489,7 +489,7 @@ Response: {
   }
 }
 
-task 26, lines 184-191:
+task 26, lines 185-192:
 //# run-jsonrpc --cursors 6
 Response: {
   "jsonrpc": "2.0",
@@ -497,12 +497,12 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "5SSP1a1L5pXjn9mcq9knSiskG9QHhShk5fEdGpTMgsEC",
+        "digest": "6Q8vV8pZa9RBYqdxTW4exMa1sV56CRoMqk9m5QqnMzUj",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "887ZoGG2uRiXqs9ytzyVJom4YDjJjoDXJKruvKcepsT2",
+        "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
         "timestampMs": "0",
         "checkpoint": "3"
       }
@@ -512,7 +512,7 @@ Response: {
   }
 }
 
-task 27, lines 193-200:
+task 27, lines 194-201:
 //# run-jsonrpc --cursors 0
 Response: {
   "jsonrpc": "2.0",
@@ -520,12 +520,12 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "887ZoGG2uRiXqs9ytzyVJom4YDjJjoDXJKruvKcepsT2",
+        "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
         "timestampMs": "0",
         "checkpoint": "3"
       },
       {
-        "digest": "5SSP1a1L5pXjn9mcq9knSiskG9QHhShk5fEdGpTMgsEC",
+        "digest": "6Q8vV8pZa9RBYqdxTW4exMa1sV56CRoMqk9m5QqnMzUj",
         "timestampMs": "0",
         "checkpoint": "3"
       }
@@ -535,7 +535,7 @@ Response: {
   }
 }
 
-task 28, lines 202-209:
+task 28, lines 203-210:
 //# run-jsonrpc --cursors 9
 Response: {
   "jsonrpc": "2.0",
@@ -547,7 +547,7 @@ Response: {
   }
 }
 
-task 29, lines 211-218:
+task 29, lines 212-219:
 //# run-jsonrpc --cursors 0
 Response: {
   "jsonrpc": "2.0",
@@ -559,7 +559,7 @@ Response: {
   }
 }
 
-task 30, lines 220-227:
+task 30, lines 221-228:
 //# run-jsonrpc --cursors 9
 Response: {
   "jsonrpc": "2.0",
@@ -572,7 +572,7 @@ Response: {
         "checkpoint": "3"
       },
       {
-        "digest": "ENfK4j3XThy1JbaCuLeK756JcaQrzXuN4ZojgUDST8c4",
+        "digest": "BJtkm7dpxxvBC2AcB3oUuvHfWtcYC7XKyLKrPiG98E9x",
         "timestampMs": "0",
         "checkpoint": "3"
       }

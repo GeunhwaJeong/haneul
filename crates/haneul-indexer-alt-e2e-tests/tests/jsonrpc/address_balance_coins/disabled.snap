@@ -10,7 +10,7 @@ processed 4 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 10-14:
+task 1, lines 11-15:
 // Send 1_000_000_000 from A to B's address balance
 //# programmable --sender A --inputs 1000000000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -20,11 +20,11 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 16:
+task 2, line 17:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 18-23:
+task 3, lines 19-24:
 // B should see the address balance coin in getCoins
 //# run-jsonrpc
 Response: {
@@ -34,14 +34,14 @@ Response: {
     "data": [
       {
         "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL",
-        "coinObjectId": "0x46c131cd7a9211815d0ab878f85e3aa8ad7d53a9ffeaad6c4852858a1ee00bce",
+        "coinObjectId": "0xf6070ab8b4c1a906ea6daeecb5fa179767686a23e98c8f83bc1529cdeb0012b0",
         "version": "1",
-        "digest": "9u2vJpdJ7LUF7yA3kgzyA3X7dNSgzDSWFgNG263aG417",
+        "digest": "DoP1u52MZzBWgCSosM7RBe46oEX7BH8xi1CjdjoWjy7C",
         "balance": "300000000000000",
-        "previousTransaction": "8hiPtxCvD8PTrLMKgajSSHBnQxBJ2te77oHSRHoouyEy"
+        "previousTransaction": "5MxyY8gc75MniXvsD2oRdGxs1bfiiH1gCsefY5V2EaE"
       }
     ],
-    "nextCursor": "zAEAp7AycDh4qnTDEmk1eJ/R1NfhEdWRGwkkfWljBhwxK1oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEY29pbgAAAAAAAAAEQ29pbgAAAAAAAAABAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAANzdWkAAAAAAAAAA1NVSQAAAAAAAAAAAf/+7ybOkT//RsExzXqSEYFdCrh4+F46qK19U6n/6q1sSFKFih7gC84=",
+    "nextCursor": "0gEAp7AycDh4qnTDEmk1eJ/R1NfhEdWRGwkkfWljBhwxK1oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEY29pbgAAAAAAAAAEQ29pbgAAAAAAAAABAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAZoYW5ldWwAAAAAAAAABkhBTkVVTAAAAAAAAAAAAf/+7ybOkT//9gcKuLTBqQbqba7stfoXl2doaiPpjI+DvBUpzesAErA=",
     "hasNextPage": false
   }
 }

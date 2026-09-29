@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --accounts A B C --simulator
+//# init --protocol-version 115 --accounts A B C --simulator
 
 //# programmable --sender A --inputs 42 @B
 //> 0: SplitCoins(Gas, [Input(0)]);

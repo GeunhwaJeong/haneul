@@ -6,25 +6,25 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 1
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 12-31:
+task 3, lines 13-32:
 //# run-graphql
 Response: {
   "data": {
     "transactionEffects": {
       "status": "SUCCESS",
       "lamportVersion": 2,
-      "effectsDigest": "4yqHNEp89vRcQLZJWaNwhono5jf7Dpb63kCXcqYghhbL",
+      "effectsDigest": "GrG1mDo4jB8TZY7QBPLK1GkQSAYK8MY8FcBYEZDxHhHS",
       "events": null
     }
   },
@@ -48,7 +48,7 @@ Response: {
   ]
 }
 
-task 4, lines 33-53:
+task 4, lines 34-54:
 //# run-graphql
 Response: {
   "data": {

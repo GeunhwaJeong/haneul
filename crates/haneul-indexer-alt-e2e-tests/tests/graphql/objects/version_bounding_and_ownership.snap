@@ -24,7 +24,7 @@ A: object(0,0)
 // another object B only modifies A, not B (it is A's "owner" field that has
 // been updated).
 
-task 1, lines 24-27:
+task 1, lines 25-28:
 //# programmable --sender A --inputs 100
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::object::id_address<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas);
@@ -33,7 +33,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 29-32:
+task 2, lines 30-33:
 //# programmable --sender A --inputs 200
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::object::id_address<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas);
@@ -42,11 +42,11 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 34:
+task 3, line 35:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 36-39:
+task 4, lines 37-40:
 //# programmable --sender A --inputs 300
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::object::id_address<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas);
@@ -55,7 +55,7 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 41-46:
+task 5, lines 42-47:
 //# programmable --sender A --inputs 400 500
 //> 0: SplitCoins(Gas, [Input(0), Input(1)]);
 //> 1: haneul::object::id_address<haneul::coin::Coin<haneul::haneul::HANEUL>>(NestedResult(0,0));
@@ -66,7 +66,7 @@ created: object(5,0), object(5,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 48-50:
+task 6, lines 49-51:
 //# programmable --sender A --inputs 600 @0x2
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -74,27 +74,27 @@ created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, line 52:
+task 7, line 53:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 54-57:
+task 8, lines 55-58:
 //# publish --upgradeable --sender A
 created: object(8,0), object(8,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5099600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 9, lines 59-62:
+task 9, lines 60-63:
 //# upgrade --package P0 --upgrade-capability 8,1 --sender A
 created: object(9,0)
 mutated: object(0,0), object(8,1)
 gas summary: computation_cost: 1000000, storage_cost: 5099600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 10, line 64:
+task 10, line 65:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 11, lines 66-71:
+task 11, lines 67-72:
 //# run-graphql
 Response: {
   "data": {
@@ -122,7 +122,7 @@ Response: {
   ]
 }
 
-task 12, lines 73-80:
+task 12, lines 74-81:
 //# run-graphql
 Response: {
   "data": {
@@ -153,7 +153,7 @@ Response: {
   ]
 }
 
-task 13, lines 82-87:
+task 13, lines 83-88:
 //# run-graphql
 Response: {
   "data": {
@@ -181,7 +181,7 @@ Response: {
   ]
 }
 
-task 14, lines 89-94:
+task 14, lines 90-95:
 //# run-graphql
 Response: {
   "data": {
@@ -209,7 +209,7 @@ Response: {
   ]
 }
 
-task 15, lines 96-101:
+task 15, lines 97-102:
 //# run-graphql
 Response: {
   "data": {
@@ -237,7 +237,7 @@ Response: {
   ]
 }
 
-task 16, lines 103-108:
+task 16, lines 104-109:
 //# run-graphql
 Response: {
   "data": {
@@ -265,7 +265,7 @@ Response: {
   ]
 }
 
-task 17, lines 110-115:
+task 17, lines 111-116:
 //# run-graphql
 Response: {
   "data": {
@@ -293,7 +293,7 @@ Response: {
   ]
 }
 
-task 18, lines 117-122:
+task 18, lines 118-123:
 //# run-graphql
 Response: {
   "data": {
@@ -321,7 +321,7 @@ Response: {
   ]
 }
 
-task 19, lines 124-129:
+task 19, lines 125-130:
 //# run-graphql
 Response: {
   "data": {
@@ -349,7 +349,7 @@ Response: {
   ]
 }
 
-task 20, lines 131-140:
+task 20, lines 132-141:
 //# run-graphql
 Response: {
   "data": {
@@ -383,7 +383,7 @@ Response: {
   ]
 }
 
-task 21, lines 142-151:
+task 21, lines 143-152:
 //# run-graphql
 Response: {
   "data": {
@@ -417,7 +417,7 @@ Response: {
   ]
 }
 
-task 22, lines 153-162:
+task 22, lines 154-163:
 //# run-graphql
 Response: {
   "data": {
@@ -451,7 +451,7 @@ Response: {
   ]
 }
 
-task 23, lines 164-173:
+task 23, lines 165-174:
 //# run-graphql
 Response: {
   "data": {
@@ -485,7 +485,7 @@ Response: {
   ]
 }
 
-task 24, lines 175-184:
+task 24, lines 176-185:
 //# run-graphql
 Response: {
   "data": {
@@ -654,7 +654,7 @@ Response: {
   ]
 }
 
-task 25, lines 186-195:
+task 25, lines 187-196:
 //# run-graphql
 Response: {
   "data": {
@@ -823,7 +823,7 @@ Response: {
   ]
 }
 
-task 26, lines 197-206:
+task 26, lines 198-207:
 //# run-graphql
 Response: {
   "data": {
@@ -992,7 +992,7 @@ Response: {
   ]
 }
 
-task 27, lines 208-217:
+task 27, lines 209-218:
 //# run-graphql
 Response: {
   "data": {
@@ -1161,7 +1161,7 @@ Response: {
   ]
 }
 
-task 28, lines 219-224:
+task 28, lines 220-225:
 //# run-graphql
 Response: {
   "data": {
@@ -1189,7 +1189,7 @@ Response: {
   ]
 }
 
-task 29, lines 226-233:
+task 29, lines 227-234:
 //# run-graphql
 Response: {
   "data": {
@@ -1220,7 +1220,7 @@ Response: {
   ]
 }
 
-task 30, lines 235-240:
+task 30, lines 236-241:
 //# run-graphql
 Response: {
   "data": {
@@ -1248,7 +1248,7 @@ Response: {
   ]
 }
 
-task 31, lines 242-247:
+task 31, lines 243-248:
 //# run-graphql
 Response: {
   "data": {
@@ -1276,7 +1276,7 @@ Response: {
   ]
 }
 
-task 32, lines 249-254:
+task 32, lines 250-255:
 //# run-graphql
 Response: {
   "data": {
@@ -1304,7 +1304,7 @@ Response: {
   ]
 }
 
-task 33, lines 256-273:
+task 33, lines 257-274:
 //# run-graphql
 Response: {
   "data": {
@@ -1320,14 +1320,14 @@ Response: {
               },
               {
                 "outputState": {
-                  "asMovePackage": {
-                    "objects": null
-                  }
+                  "asMovePackage": null
                 }
               },
               {
                 "outputState": {
-                  "asMovePackage": null
+                  "asMovePackage": {
+                    "objects": null
+                  }
                 }
               }
             ]
@@ -1351,7 +1351,7 @@ Response: {
         "effects",
         "objectChanges",
         "nodes",
-        1,
+        2,
         "outputState",
         "asMovePackage",
         "objects"
@@ -1363,7 +1363,7 @@ Response: {
   ]
 }
 
-task 34, lines 275-292:
+task 34, lines 276-293:
 //# run-graphql
 Response: {
   "data": {
@@ -1372,6 +1372,11 @@ Response: {
         "effects": {
           "objectChanges": {
             "nodes": [
+              {
+                "outputState": {
+                  "asMovePackage": null
+                }
+              },
               {
                 "outputState": {
                   "asMovePackage": null
@@ -1383,11 +1388,6 @@ Response: {
                     "balances": null
                   }
                 }
-              },
-              {
-                "outputState": {
-                  "asMovePackage": null
-                }
               }
             ]
           }
@@ -1410,7 +1410,7 @@ Response: {
         "effects",
         "objectChanges",
         "nodes",
-        1,
+        2,
         "outputState",
         "asMovePackage",
         "balances"
@@ -1422,7 +1422,7 @@ Response: {
   ]
 }
 
-task 35, lines 294-311:
+task 35, lines 295-312:
 //# run-graphql
 Response: {
   "data": {
@@ -1431,6 +1431,11 @@ Response: {
         "effects": {
           "objectChanges": {
             "nodes": [
+              {
+                "outputState": {
+                  "asMovePackage": null
+                }
+              },
               {
                 "outputState": {
                   "asMovePackage": null
@@ -1442,11 +1447,6 @@ Response: {
                     "balance": null
                   }
                 }
-              },
-              {
-                "outputState": {
-                  "asMovePackage": null
-                }
               }
             ]
           }
@@ -1469,7 +1469,7 @@ Response: {
         "effects",
         "objectChanges",
         "nodes",
-        1,
+        2,
         "outputState",
         "asMovePackage",
         "balance"
@@ -1481,7 +1481,7 @@ Response: {
   ]
 }
 
-task 36, lines 313-330:
+task 36, lines 314-331:
 //# run-graphql
 Response: {
   "data": {
@@ -1497,14 +1497,14 @@ Response: {
               },
               {
                 "outputState": {
-                  "asMovePackage": {
-                    "multiGetBalances": null
-                  }
+                  "asMovePackage": null
                 }
               },
               {
                 "outputState": {
-                  "asMovePackage": null
+                  "asMovePackage": {
+                    "multiGetBalances": null
+                  }
                 }
               }
             ]
@@ -1528,7 +1528,7 @@ Response: {
         "effects",
         "objectChanges",
         "nodes",
-        1,
+        2,
         "outputState",
         "asMovePackage",
         "multiGetBalances"
@@ -1540,7 +1540,7 @@ Response: {
   ]
 }
 
-task 37, lines 332-341:
+task 37, lines 333-342:
 //# run-graphql
 Response: {
   "data": {
@@ -1577,7 +1577,7 @@ Response: {
   ]
 }
 
-task 38, lines 343-352:
+task 38, lines 344-353:
 //# run-graphql
 Response: {
   "data": {
@@ -1614,7 +1614,7 @@ Response: {
   ]
 }
 
-task 39, lines 354-363:
+task 39, lines 355-364:
 //# run-graphql
 Response: {
   "data": {
@@ -1651,7 +1651,7 @@ Response: {
   ]
 }
 
-task 40, lines 365-374:
+task 40, lines 366-375:
 //# run-graphql
 Response: {
   "data": {
@@ -1688,7 +1688,7 @@ Response: {
   ]
 }
 
-task 41, lines 376-394:
+task 41, lines 377-395:
 //# run-graphql
 Response: {
   "data": {
@@ -1700,7 +1700,7 @@ Response: {
               {
                 "contents": {
                   "json": {
-                    "id": "0x6a6d9d8d5a5d1de0367343245d467103c5de924a80cc29362424bf463c45a8bc",
+                    "id": "0x14f1dadca3d30bb6a6d604b27c10e7deca05ee81cead5d587ed1dae06ba40cac",
                     "balance": "200"
                   }
                 }
@@ -1708,7 +1708,7 @@ Response: {
               {
                 "contents": {
                   "json": {
-                    "id": "0xfaff7427455515c46c131e569dc6a3a54ac019845da9d21690eb1b3cd1d041d3",
+                    "id": "0xbecf5d0b6eb50e0f666a0cb734cea8cdbcd00810f355a1ccf025969ad802abc9",
                     "balance": "100"
                   }
                 }
@@ -1740,7 +1740,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0x6a6d9d8d5a5d1de0367343245d467103c5de924a80cc29362424bf463c45a8bc",
+                "id": "0x14f1dadca3d30bb6a6d604b27c10e7deca05ee81cead5d587ed1dae06ba40cac",
                 "balance": "200"
               }
             }
@@ -1748,7 +1748,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0xfaff7427455515c46c131e569dc6a3a54ac019845da9d21690eb1b3cd1d041d3",
+                "id": "0xbecf5d0b6eb50e0f666a0cb734cea8cdbcd00810f355a1ccf025969ad802abc9",
                 "balance": "100"
               }
             }
@@ -1775,7 +1775,7 @@ Response: {
   }
 }
 
-task 42, lines 396-416:
+task 42, lines 397-417:
 //# run-graphql
 Response: {
   "data": {
@@ -1787,7 +1787,7 @@ Response: {
               {
                 "contents": {
                   "json": {
-                    "id": "0x0f0a6ddbeb0a6e22b2e6d068ee1569be1df2fc870fa9df4247653af7a9e1f7a9",
+                    "id": "0x79910079172eb66c2ef09e929daaee2e1e8d5915a767f4f1328afd3e45ef3d74",
                     "balance": "400"
                   }
                 }
@@ -1795,7 +1795,7 @@ Response: {
               {
                 "contents": {
                   "json": {
-                    "id": "0xa415622372eca8998b16036ce9857d09b06aca4398c0ff5b8b30e89f89105a42",
+                    "id": "0xe42bb865cea9e6b13cd6141d1f864207353e6bba34a4c1bf3ce7da7767eeccb3",
                     "balance": "300"
                   }
                 }
@@ -1803,7 +1803,7 @@ Response: {
               {
                 "contents": {
                   "json": {
-                    "id": "0x6a6d9d8d5a5d1de0367343245d467103c5de924a80cc29362424bf463c45a8bc",
+                    "id": "0x14f1dadca3d30bb6a6d604b27c10e7deca05ee81cead5d587ed1dae06ba40cac",
                     "balance": "200"
                   }
                 }
@@ -1811,7 +1811,7 @@ Response: {
               {
                 "contents": {
                   "json": {
-                    "id": "0xfaff7427455515c46c131e569dc6a3a54ac019845da9d21690eb1b3cd1d041d3",
+                    "id": "0xbecf5d0b6eb50e0f666a0cb734cea8cdbcd00810f355a1ccf025969ad802abc9",
                     "balance": "100"
                   }
                 }
@@ -1843,7 +1843,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0x0f0a6ddbeb0a6e22b2e6d068ee1569be1df2fc870fa9df4247653af7a9e1f7a9",
+                "id": "0x79910079172eb66c2ef09e929daaee2e1e8d5915a767f4f1328afd3e45ef3d74",
                 "balance": "400"
               }
             }
@@ -1851,7 +1851,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0xa415622372eca8998b16036ce9857d09b06aca4398c0ff5b8b30e89f89105a42",
+                "id": "0xe42bb865cea9e6b13cd6141d1f864207353e6bba34a4c1bf3ce7da7767eeccb3",
                 "balance": "300"
               }
             }
@@ -1859,7 +1859,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0x6a6d9d8d5a5d1de0367343245d467103c5de924a80cc29362424bf463c45a8bc",
+                "id": "0x14f1dadca3d30bb6a6d604b27c10e7deca05ee81cead5d587ed1dae06ba40cac",
                 "balance": "200"
               }
             }
@@ -1867,7 +1867,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0xfaff7427455515c46c131e569dc6a3a54ac019845da9d21690eb1b3cd1d041d3",
+                "id": "0xbecf5d0b6eb50e0f666a0cb734cea8cdbcd00810f355a1ccf025969ad802abc9",
                 "balance": "100"
               }
             }
@@ -1894,7 +1894,7 @@ Response: {
   }
 }
 
-task 43, lines 418-439:
+task 43, lines 419-440:
 //# run-graphql
 Response: {
   "data": {
@@ -1904,7 +1904,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0x0f0a6ddbeb0a6e22b2e6d068ee1569be1df2fc870fa9df4247653af7a9e1f7a9",
+                "id": "0x79910079172eb66c2ef09e929daaee2e1e8d5915a767f4f1328afd3e45ef3d74",
                 "balance": "400"
               }
             }
@@ -1912,7 +1912,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0xa415622372eca8998b16036ce9857d09b06aca4398c0ff5b8b30e89f89105a42",
+                "id": "0xe42bb865cea9e6b13cd6141d1f864207353e6bba34a4c1bf3ce7da7767eeccb3",
                 "balance": "300"
               }
             }
@@ -1920,7 +1920,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0x6a6d9d8d5a5d1de0367343245d467103c5de924a80cc29362424bf463c45a8bc",
+                "id": "0x14f1dadca3d30bb6a6d604b27c10e7deca05ee81cead5d587ed1dae06ba40cac",
                 "balance": "200"
               }
             }
@@ -1928,7 +1928,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0xfaff7427455515c46c131e569dc6a3a54ac019845da9d21690eb1b3cd1d041d3",
+                "id": "0xbecf5d0b6eb50e0f666a0cb734cea8cdbcd00810f355a1ccf025969ad802abc9",
                 "balance": "100"
               }
             }
@@ -1958,7 +1958,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0x0f0a6ddbeb0a6e22b2e6d068ee1569be1df2fc870fa9df4247653af7a9e1f7a9",
+                "id": "0x79910079172eb66c2ef09e929daaee2e1e8d5915a767f4f1328afd3e45ef3d74",
                 "balance": "400"
               }
             },
@@ -1967,7 +1967,7 @@ Response: {
                 {
                   "contents": {
                     "json": {
-                      "id": "0x4962ac0a9540de481cd3c2b3214b9f947db1e235259874e5cef7c92276d86c96",
+                      "id": "0xcda3c94c0f0b9f5fa5c9ada0d63289fbacc629dc7d1be25fd100ae85fd54432b",
                       "balance": "500"
                     }
                   }
@@ -1994,7 +1994,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0xa415622372eca8998b16036ce9857d09b06aca4398c0ff5b8b30e89f89105a42",
+                "id": "0xe42bb865cea9e6b13cd6141d1f864207353e6bba34a4c1bf3ce7da7767eeccb3",
                 "balance": "300"
               }
             },
@@ -2014,7 +2014,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0x6a6d9d8d5a5d1de0367343245d467103c5de924a80cc29362424bf463c45a8bc",
+                "id": "0x14f1dadca3d30bb6a6d604b27c10e7deca05ee81cead5d587ed1dae06ba40cac",
                 "balance": "200"
               }
             },
@@ -2034,7 +2034,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0xfaff7427455515c46c131e569dc6a3a54ac019845da9d21690eb1b3cd1d041d3",
+                "id": "0xbecf5d0b6eb50e0f666a0cb734cea8cdbcd00810f355a1ccf025969ad802abc9",
                 "balance": "100"
               }
             },
@@ -2057,7 +2057,7 @@ Response: {
   }
 }
 
-task 44, lines 441-469:
+task 44, lines 442-470:
 //# run-graphql
 Response: {
   "data": {
@@ -2068,7 +2068,7 @@ Response: {
             {
               "contents": {
                 "json": {
-                  "id": "0x0f0a6ddbeb0a6e22b2e6d068ee1569be1df2fc870fa9df4247653af7a9e1f7a9",
+                  "id": "0x79910079172eb66c2ef09e929daaee2e1e8d5915a767f4f1328afd3e45ef3d74",
                   "balance": "400"
                 }
               }
@@ -2076,7 +2076,7 @@ Response: {
             {
               "contents": {
                 "json": {
-                  "id": "0xa415622372eca8998b16036ce9857d09b06aca4398c0ff5b8b30e89f89105a42",
+                  "id": "0xe42bb865cea9e6b13cd6141d1f864207353e6bba34a4c1bf3ce7da7767eeccb3",
                   "balance": "300"
                 }
               }
@@ -2084,7 +2084,7 @@ Response: {
             {
               "contents": {
                 "json": {
-                  "id": "0x6a6d9d8d5a5d1de0367343245d467103c5de924a80cc29362424bf463c45a8bc",
+                  "id": "0x14f1dadca3d30bb6a6d604b27c10e7deca05ee81cead5d587ed1dae06ba40cac",
                   "balance": "200"
                 }
               }
@@ -2092,7 +2092,7 @@ Response: {
             {
               "contents": {
                 "json": {
-                  "id": "0xfaff7427455515c46c131e569dc6a3a54ac019845da9d21690eb1b3cd1d041d3",
+                  "id": "0xbecf5d0b6eb50e0f666a0cb734cea8cdbcd00810f355a1ccf025969ad802abc9",
                   "balance": "100"
                 }
               }
@@ -2125,7 +2125,7 @@ Response: {
               {
                 "contents": {
                   "json": {
-                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                     "balance": "299999979417080"
                   }
                 },
@@ -2134,7 +2134,7 @@ Response: {
                     {
                       "contents": {
                         "json": {
-                          "id": "0x0f0a6ddbeb0a6e22b2e6d068ee1569be1df2fc870fa9df4247653af7a9e1f7a9",
+                          "id": "0x79910079172eb66c2ef09e929daaee2e1e8d5915a767f4f1328afd3e45ef3d74",
                           "balance": "400"
                         }
                       }
@@ -2142,7 +2142,7 @@ Response: {
                     {
                       "contents": {
                         "json": {
-                          "id": "0xa415622372eca8998b16036ce9857d09b06aca4398c0ff5b8b30e89f89105a42",
+                          "id": "0xe42bb865cea9e6b13cd6141d1f864207353e6bba34a4c1bf3ce7da7767eeccb3",
                           "balance": "300"
                         }
                       }
@@ -2150,7 +2150,7 @@ Response: {
                     {
                       "contents": {
                         "json": {
-                          "id": "0x6a6d9d8d5a5d1de0367343245d467103c5de924a80cc29362424bf463c45a8bc",
+                          "id": "0x14f1dadca3d30bb6a6d604b27c10e7deca05ee81cead5d587ed1dae06ba40cac",
                           "balance": "200"
                         }
                       }
@@ -2158,7 +2158,7 @@ Response: {
                     {
                       "contents": {
                         "json": {
-                          "id": "0xfaff7427455515c46c131e569dc6a3a54ac019845da9d21690eb1b3cd1d041d3",
+                          "id": "0xbecf5d0b6eb50e0f666a0cb734cea8cdbcd00810f355a1ccf025969ad802abc9",
                           "balance": "100"
                         }
                       }
@@ -2185,8 +2185,8 @@ Response: {
               {
                 "contents": {
                   "json": {
-                    "id": "0x63749e3dc225943cdc4aab3543d02f7c06ddd6b9d63d049a5cceca1b0ed46d03",
-                    "package": "0xa317d209f0c0446d8c5ea37b00363491c48977d56c34fb14909cb9ffe8351692",
+                    "id": "0xc2aaab4cdfb2c37bbbb0ba28547214fb7843f46dfbec27266b3ec6dd3014117e",
+                    "package": "0xdcf45fe8d8aa47ea9e64bce2ef0f5c2e944e65d1d8b7538f7e0a855c0efd34f7",
                     "version": "2",
                     "policy": 0
                   }
@@ -2212,7 +2212,7 @@ Response: {
   }
 }
 
-task 45, lines 471-495:
+task 45, lines 472-496:
 //# run-graphql
 Response: {
   "data": {
@@ -2222,7 +2222,7 @@ Response: {
           {
             "contents": {
               "json": {
-                "id": "0x2a9717b27fc90ecaf05d6dbc8a456f44aa14dc902869f54f73d96e39db511911",
+                "id": "0x06b8a7689ef38b0302373d14f63fdc8e495b841563fa0d66975246d361d051b0",
                 "balance": "600"
               }
             }

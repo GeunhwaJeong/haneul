@@ -15,19 +15,19 @@ processed 5 tasks
 // The test description is at the top because the JSON does not have explicit
 // syntax for comments.
 
-task 1, line 18:
+task 1, line 19:
 //# run-jsonrpc
 Error: Missing JSON-RPC query
 
-task 2, lines 20-23:
+task 2, lines 21-24:
 //# run-jsonrpc
 Error: Failed to parse JSON-RPC query
 
-task 3, lines 25-29:
+task 3, lines 26-30:
 //# run-jsonrpc
 Error: Failed to parse JSON-RPC query
 
-task 4, lines 31-35:
+task 4, lines 32-36:
 //# run-jsonrpc --show-headers
 Headers: {
     "access-control-allow-origin": "*",

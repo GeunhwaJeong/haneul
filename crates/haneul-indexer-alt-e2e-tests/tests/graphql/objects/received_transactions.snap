@@ -6,39 +6,39 @@ processed 8 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-22:
+task 1, lines 7-23:
 //# publish
 created: object(1,0), object(1,1)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6946400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 24:
+task 2, line 25:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 26-27:
+task 3, lines 27-28:
 // A transfers an object to 0x2 (checkpoint 2)
 //# run P0::m::create_and_transfer --sender A --args 100 @0x2
 created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2272400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, line 29:
+task 4, line 30:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 5, lines 31-32:
+task 5, lines 32-33:
 // B transfers an object to 0x2 (checkpoint 3)
 //# run P0::m::create_and_transfer --sender B --args 200 @0x2
 created: object(5,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 2272400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 6, line 34:
+task 6, line 35:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 7, lines 36-68:
+task 7, lines 37-69:
 //# run-graphql
 Response: {
   "data": {
@@ -47,7 +47,7 @@ Response: {
         "edges": [
           {
             "node": {
-              "digest": "3r3hUzJaNmH8FaQmW9xgGPRnEpfBKHrx7PvxmraGLNyu",
+              "digest": "f3DZLGyM4JB4usvPZWUAUmnt3HCPwmhTJ53T8eiK3UQ",
               "sender": {
                 "address": "0xda83166d01afd7ddcf8af5f844f45aaa53f48548e5117c23f5a2978cfd422244"
               },
@@ -60,7 +60,7 @@ Response: {
           },
           {
             "node": {
-              "digest": "Djdfd6Vizd9hRSbednSxGtzeePekbTwitUCxxMHH35qS",
+              "digest": "4La6cHUtPoC9MXsMjDfSe4Sro33GMzG2UURaTyD4J1fM",
               "sender": {
                 "address": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
               },
@@ -73,7 +73,7 @@ Response: {
           },
           {
             "node": {
-              "digest": "FzVLphuFjBjNEDPWk8GAMT2mPx4UXAc3AGrn7XL7yPg6",
+              "digest": "B4EiUDhhJqqAqWhU6o66wha6SnbN5UL93nyb9hxkee4J",
               "sender": {
                 "address": "0xa7b032703878aa74c3126935789fd1d4d7e111d5911b09247d6963061c312b5a"
               },
@@ -90,7 +90,7 @@ Response: {
         "edges": [
           {
             "node": {
-              "digest": "Djdfd6Vizd9hRSbednSxGtzeePekbTwitUCxxMHH35qS",
+              "digest": "4La6cHUtPoC9MXsMjDfSe4Sro33GMzG2UURaTyD4J1fM",
               "sender": {
                 "address": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
               }
@@ -102,7 +102,7 @@ Response: {
         "edges": [
           {
             "node": {
-              "digest": "Djdfd6Vizd9hRSbednSxGtzeePekbTwitUCxxMHH35qS",
+              "digest": "4La6cHUtPoC9MXsMjDfSe4Sro33GMzG2UURaTyD4J1fM",
               "sender": {
                 "address": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
               }

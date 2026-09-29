@@ -6,7 +6,7 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-33:
+task 1, lines 7-34:
 //# run-graphql
 Response: {
   "data": {
@@ -14,23 +14,23 @@ Response: {
   }
 }
 
-task 2, lines 35-41:
+task 2, lines 36-42:
 //# publish --upgradeable --sender A
 created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5487200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 43-60:
+task 3, lines 44-61:
 //# upgrade --package P0 --upgrade-capability 2,1 --sender A
 created: object(3,0)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 6878000,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 4, line 62:
+task 4, line 63:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 64-96:
+task 5, lines 65-97:
 //# run-graphql
 Response: {
   "data": {
@@ -43,7 +43,7 @@ Response: {
               "nodes": [
                 {
                   "name": "Status",
-                  "fullyQualifiedName": "0x2976f1370596947f238f7e4e476dc95d1c71198093c14710ef9bc6eb8aa23db9::M::Status",
+                  "fullyQualifiedName": "0xea3ca5488433d61207ddca4131821def38bb7168ffd43bcc89982ccdc13f7b35::M::Status",
                   "abilities": [
                     "COPY",
                     "DROP"
@@ -83,7 +83,7 @@ Response: {
               "nodes": [
                 {
                   "name": "Complex",
-                  "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Complex",
+                  "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Complex",
                   "abilities": [
                     "STORE"
                   ],
@@ -147,7 +147,7 @@ Response: {
                 },
                 {
                   "name": "Result",
-                  "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Result",
+                  "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Result",
                   "abilities": [
                     "DROP"
                   ],
@@ -202,7 +202,7 @@ Response: {
                 },
                 {
                   "name": "Status",
-                  "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Status",
+                  "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Status",
                   "abilities": [
                     "COPY",
                     "DROP"
@@ -240,7 +240,7 @@ Response: {
   }
 }
 
-task 6, lines 98-126:
+task 6, lines 99-127:
 //# run-graphql --cursors "Complex" "Status"
 Response: {
   "data": {
@@ -254,15 +254,15 @@ Response: {
           "nodes": [
             {
               "name": "Complex",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Complex"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Complex"
             },
             {
               "name": "Result",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Result"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Result"
             },
             {
               "name": "Status",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Status"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Status"
             }
           ]
         },
@@ -274,11 +274,11 @@ Response: {
           "nodes": [
             {
               "name": "Complex",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Complex"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Complex"
             },
             {
               "name": "Result",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Result"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Result"
             }
           ]
         },
@@ -290,11 +290,11 @@ Response: {
           "nodes": [
             {
               "name": "Result",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Result"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Result"
             },
             {
               "name": "Status",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Status"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Status"
             }
           ]
         },
@@ -306,7 +306,7 @@ Response: {
           "nodes": [
             {
               "name": "Complex",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Complex"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Complex"
             }
           ]
         },
@@ -318,7 +318,7 @@ Response: {
           "nodes": [
             {
               "name": "Status",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Status"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Status"
             }
           ]
         },
@@ -330,7 +330,7 @@ Response: {
           "nodes": [
             {
               "name": "Result",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Result"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Result"
             }
           ]
         },
@@ -342,7 +342,7 @@ Response: {
           "nodes": [
             {
               "name": "Result",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Result"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Result"
             }
           ]
         },
@@ -354,7 +354,7 @@ Response: {
           "nodes": [
             {
               "name": "Result",
-              "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Result"
+              "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Result"
             }
           ]
         }
@@ -363,7 +363,7 @@ Response: {
   }
 }
 
-task 7, lines 128-171:
+task 7, lines 129-172:
 //# run-graphql
 Response: {
   "data": {
@@ -371,7 +371,7 @@ Response: {
       "module": {
         "status": {
           "name": "Status",
-          "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Status",
+          "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Status",
           "abilities": [
             "COPY",
             "DROP"
@@ -402,7 +402,7 @@ Response: {
         },
         "result": {
           "name": "Result",
-          "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Result",
+          "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Result",
           "abilities": [
             "DROP"
           ],
@@ -457,7 +457,7 @@ Response: {
         },
         "complex": {
           "name": "Complex",
-          "fullyQualifiedName": "0x1d362710202b5e6465d066c75260b9fe21ef2d3ca5a5a7114c001086f668d845::M::Complex",
+          "fullyQualifiedName": "0x44a18f6cb72a35d854e24f9af4cd92d58ef5e81dfd60ca58d1d083c7bad5bc6d::M::Complex",
           "abilities": [
             "STORE"
           ],

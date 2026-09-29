@@ -6,37 +6,37 @@ processed 8 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 6-25:
+task 1, lines 7-26:
 //# publish
 created: object(1,0)
 mutated: object(0,3)
 gas summary: computation_cost: 1000000, storage_cost: 5586000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 27:
+task 2, line 28:
 //# run Test::M1::create --sender A --args 0 @A
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2302800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 29:
+task 3, line 30:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, line 31:
+task 4, line 32:
 //# advance-epoch
 Epoch advanced: 1
 
-task 5, line 33:
+task 5, line 34:
 //# run Test::M1::create --sender B --args 1 @A
 created: object(5,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 2302800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 6, line 35:
+task 6, line 36:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 7, lines 37-62:
+task 7, lines 38-63:
 //# run-graphql
 Response: {
   "data": {
@@ -51,11 +51,11 @@ Response: {
         {
           "cursor": "KAE6BAgAEAI=",
           "node": {
-            "digest": "74XecJe2t2baP9fJgfxrBuc7YpX1Nrc7S38wwoYTxdLL",
+            "digest": "3TvcJU8uyRLjDv3jUqqWVa9GssWc9t6zzKuSzyLoupfw",
             "effects": {
               "checkpoint": {
                 "sequenceNumber": 1,
-                "digest": "Hvmxjb2HTew26wuPncqUmJRSVyLBZPrE8cdXcMxgxxuk"
+                "digest": "2x5HkJuNAX3csR9mzn7jFQhcBUcUEeFyZLGRaQLAtFXn"
               }
             }
           }
@@ -73,11 +73,11 @@ Response: {
         {
           "cursor": "KAE6BAgAEAU=",
           "node": {
-            "digest": "5LWtVeBUiTA87ugd6888N2ii7ZQiAprV3EvWmdYN4oRt",
+            "digest": "6DotyiErubiAyup7UtoqREVzqPTTynGw4oA8dwpzoqrM",
             "effects": {
               "checkpoint": {
                 "sequenceNumber": 3,
-                "digest": "BisL2sozvCg91KPNng7MbCfw6mdTXezLQMBXL1jdL7Tp"
+                "digest": "2E3hJ651uc8e2YC5wi4B5NzNTAdqHJ6RiiCtoekEcfpu"
               }
             }
           }

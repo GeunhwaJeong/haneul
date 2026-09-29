@@ -8,13 +8,13 @@ A: object(0,0)
 
 // Wrapped objects do show up in object changes.
 
-task 1, lines 8-26:
+task 1, lines 9-27:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 5852000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 28-30:
+task 2, lines 29-31:
 //# programmable --sender A --inputs @A
 //> 0: P0::M::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -22,7 +22,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 32-34:
+task 3, lines 33-35:
 //# programmable --sender A --inputs object(2,0) @A
 //> 0: P0::M::wrap(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -31,18 +31,36 @@ mutated: object(0,0)
 wrapped: object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2447200,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 4, line 36:
+task 4, line 37:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 38-42:
+task 5, lines 39-43:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 0,
   "result": {
-    "digest": "GYGsDM7sjoyoxXdkpv9X4dY2mQ3vvxagegQSSn4aA1Vw",
+    "digest": "BmVa6FT8CdbdQqPB9ky7p2aUw9LsnfzjzbpcAxyEJbY1",
     "objectChanges": [
+      {
+        "type": "created",
+        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
+        "owner": {
+          "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
+        },
+        "objectType": "0x8b89fb3cdd070ea855ad4f3e7219fb20548602de98377a5d354c3bac9d6e6fd3::M::O",
+        "objectId": "0x233670a375604ccf0502eaacdf90f536204b16c20613ed33a0689381fd1f609d",
+        "version": "3",
+        "digest": "BbLNBGAFFRGrRFh5BVSMTf5tjSfSg24RwMQLJXoicMik"
+      },
+      {
+        "type": "wrapped",
+        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
+        "objectType": "0x8b89fb3cdd070ea855ad4f3e7219fb20548602de98377a5d354c3bac9d6e6fd3::M::I",
+        "objectId": "0x702df4c7df9019a5fc178dc48c0fc2eacfb52601203dd040f6b186edc015a262",
+        "version": "3"
+      },
       {
         "type": "mutated",
         "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
@@ -50,28 +68,10 @@ Response: {
           "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
         },
         "objectType": "0x2::coin::Coin<0x2::haneul::HANEUL>",
-        "objectId": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+        "objectId": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
         "version": "3",
         "previousVersion": "2",
-        "digest": "4acGW9ssSnE6qQBdMFfCezjr7gVVax7D5P8Gd9JDGRpS"
-      },
-      {
-        "type": "wrapped",
-        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-        "objectType": "0xe0e8ff4a12d417c24565ba858103e9b2fb9dd36788684c13f31816adb3df2da0::M::I",
-        "objectId": "0xb892ec1f5cf3d3fed3fc4ce98b28192a41d425c6247b3628d5971b52a99fc27d",
-        "version": "3"
-      },
-      {
-        "type": "created",
-        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-        "owner": {
-          "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
-        },
-        "objectType": "0xe0e8ff4a12d417c24565ba858103e9b2fb9dd36788684c13f31816adb3df2da0::M::O",
-        "objectId": "0xef366edc0879b148443bf4783241cbd6d6928f721b9aab25565c094594ea98d6",
-        "version": "3",
-        "digest": "36dbMMn8uQBg4is6t1YaGABqkgWxByTidoaFQKQdwaYW"
+        "digest": "7jNWB9asdhBWJou8NZ5GqKNXCMEWeFeNJb2jNbweAD3u"
       }
     ],
     "timestampMs": "0",

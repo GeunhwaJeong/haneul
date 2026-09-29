@@ -11,13 +11,13 @@ A: object(0,0), B: object(0,1)
 // 3. ...limited
 // 4. ...limited, with a cursor
 
-task 1, lines 11-38:
+task 1, lines 12-39:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6984400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 40-42:
+task 2, lines 41-43:
 //# programmable --sender B --inputs @B
 //> 0: P::M::o1();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -25,7 +25,7 @@ created: object(2,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 44-48:
+task 3, lines 45-49:
 //# programmable --sender A --inputs @A
 //> 0: P::M::o1();
 //> 1: P::M::o2();
@@ -35,11 +35,11 @@ created: object(3,0), object(3,1), object(3,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 4636000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, line 50:
+task 4, line 51:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 52-54:
+task 5, lines 53-55:
 //# programmable --sender A --inputs @A
 //> 0: P::M::o1();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -47,11 +47,11 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 56:
+task 6, line 57:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 58-68:
+task 7, lines 59-69:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -60,35 +60,35 @@ Response: {
     "data": [
       {
         "data": {
-          "objectId": "0xb881c32d7605b2f62873678ddbb674b7a439726a75f1816d0038f55a520f5400",
+          "objectId": "0x3006dd214263f80b9b292e6c5a448c93dc47d4914322931dbce0799f16fb3451",
           "version": "2",
-          "digest": "2QCcyxo9CD29tRynvM8ELfBfkcwE7PDeuzDtYEvcoyWo",
-          "type": "0x7c559e496390f86c8f3034619838a3f87282ba990177d7dbcbf2ecc2d7fceb28::M::O1"
+          "digest": "2EtYvAtxEWtJWoCVAkNLjpG9mmrykMVQ5QXc7t7MFAeH",
+          "type": "0xdd45d500f613b3de318ac2a3002748b63262a07866483763ac60ab9a8b460819::M::O1"
         }
       },
       {
         "data": {
-          "objectId": "0xeacf40b257356c09b6b39cdb0207a5e39ad4d17723ffb5804e3af080e65702ea",
+          "objectId": "0x374cf60b983c931873d1f70916071fff506747b035c38cd1683958c2e5cdae91",
           "version": "3",
-          "digest": "GdZAh8heFCh8xeg5mZyvFDwGvgGfQLLCsBAqt38Ra9Kw",
-          "type": "0x7c559e496390f86c8f3034619838a3f87282ba990177d7dbcbf2ecc2d7fceb28::M::O1"
+          "digest": "6H2tJYLzsutX536eA3CoHjP7qVbbCjVJeNfgDR74dyi4",
+          "type": "0xdd45d500f613b3de318ac2a3002748b63262a07866483763ac60ab9a8b460819::M::O1"
         }
       },
       {
         "data": {
-          "objectId": "0xf77b07d70e8e10d8f90806770a2810410671248a27fb0832638fb9c5484c0a7e",
+          "objectId": "0x9496055e6e46fee4ed0f291e1dcd2ad36f4b683492d39670985d077762bb7af0",
           "version": "2",
-          "digest": "ByyNCcVP7P4vAxkLMx92ZfgCzbBmamcoTcPBeZMEVTQL",
-          "type": "0x7c559e496390f86c8f3034619838a3f87282ba990177d7dbcbf2ecc2d7fceb28::M::O2"
+          "digest": "3mL1K1QwkNAT86zXeFNnU13yj7d5YnS44SB6zTcoCd7S",
+          "type": "0xdd45d500f613b3de318ac2a3002748b63262a07866483763ac60ab9a8b460819::M::O2"
         }
       }
     ],
-    "nextCursor": "fQD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHnxVnkljkPhsjzA0YZg4o/hygrqZAXfX28vy7MLX/OsoAAAAAAAAAAFNAAAAAAAAAAJPMgAAAAAAAAAAAPd7B9cOjhDY+QgGdwooEEEGcSSKJ/sIMmOPucVITAp+",
+    "nextCursor": "fQD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHt1F1QD2E7PeMYrCowAnSLYyYqB4Zkg3Y6xgq5qLRggZAAAAAAAAAAFNAAAAAAAAAAJPMgAAAAAAAAAAAJSWBV5uRv7k7Q8pHh3NKtNvS2g0ktOWcJhdB3diu3rw",
     "hasNextPage": false
   }
 }
 
-task 8, lines 70-80:
+task 8, lines 71-81:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -97,19 +97,19 @@ Response: {
     "data": [
       {
         "data": {
-          "objectId": "0x726c6109ec54889d9fe0ad71aacd98d8db54872f5e45ee34847224fd29e255fc",
+          "objectId": "0x82c81b5c74bd136d7c013ce435ea584800af4179ef66c675a186cc4d2d933cfe",
           "version": "2",
-          "digest": "2fNZf4Pf7A7R2tL2fkpHg9XYctrJH6bKSGfZvMW5UVmr",
-          "type": "0x7c559e496390f86c8f3034619838a3f87282ba990177d7dbcbf2ecc2d7fceb28::N::O1"
+          "digest": "99W3L9zVCQYcCadMeVnVDu5rkqqqBoJCYWh2Wb44nbt1",
+          "type": "0xdd45d500f613b3de318ac2a3002748b63262a07866483763ac60ab9a8b460819::N::O1"
         }
       }
     ],
-    "nextCursor": "fQD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHnxVnkljkPhsjzA0YZg4o/hygrqZAXfX28vy7MLX/OsoAAAAAAAAAAFOAAAAAAAAAAJPMQAAAAAAAAAAAHJsYQnsVIidn+CtcarNmNjbVIcvXkXuNIRyJP0p4lX8",
+    "nextCursor": "fQD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHt1F1QD2E7PeMYrCowAnSLYyYqB4Zkg3Y6xgq5qLRggZAAAAAAAAAAFOAAAAAAAAAAJPMQAAAAAAAAAAAILIG1x0vRNtfAE85DXqWEgAr0F572bGdaGGzE0tkzz+",
     "hasNextPage": false
   }
 }
 
-task 9, lines 82-94:
+task 9, lines 83-95:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -118,14 +118,14 @@ Response: {
     "data": [
       {
         "data": {
-          "objectId": "0xb881c32d7605b2f62873678ddbb674b7a439726a75f1816d0038f55a520f5400",
+          "objectId": "0x3006dd214263f80b9b292e6c5a448c93dc47d4914322931dbce0799f16fb3451",
           "version": "2",
-          "digest": "2QCcyxo9CD29tRynvM8ELfBfkcwE7PDeuzDtYEvcoyWo",
-          "type": "0x7c559e496390f86c8f3034619838a3f87282ba990177d7dbcbf2ecc2d7fceb28::M::O1"
+          "digest": "2EtYvAtxEWtJWoCVAkNLjpG9mmrykMVQ5QXc7t7MFAeH",
+          "type": "0xdd45d500f613b3de318ac2a3002748b63262a07866483763ac60ab9a8b460819::M::O1"
         }
       }
     ],
-    "nextCursor": "fQD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHnxVnkljkPhsjzA0YZg4o/hygrqZAXfX28vy7MLX/OsoAAAAAAAAAAFNAAAAAAAAAAJPMQAAAAAAAAAAALiBwy12BbL2KHNnjdu2dLekOXJqdfGBbQA49VpSD1QA",
+    "nextCursor": "fQD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHt1F1QD2E7PeMYrCowAnSLYyYqB4Zkg3Y6xgq5qLRggZAAAAAAAAAAFNAAAAAAAAAAJPMQAAAAAAAAAAADAG3SFCY/gLmykubFpEjJPcR9SRQyKTHbzgeZ8W+zRR",
     "hasNextPage": true
   }
 }

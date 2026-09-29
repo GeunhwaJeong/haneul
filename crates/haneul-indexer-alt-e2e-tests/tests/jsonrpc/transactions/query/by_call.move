@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --accounts A --addresses P0=0x0 P1=0x0 --simulator
+//# init --protocol-version 115 --accounts A --addresses P0=0x0 P1=0x0 --simulator
 
 // 1. Pick transactions based on the package they have called into
 // 2. ...the module...

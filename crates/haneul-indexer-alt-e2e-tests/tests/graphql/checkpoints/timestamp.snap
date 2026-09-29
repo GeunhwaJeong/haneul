@@ -6,15 +6,15 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 2, line 8:
+task 2, line 9:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, line 12:
+task 4, line 13:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 5, lines 14-25:
+task 5, lines 15-26:
 //# run-graphql
 Response: {
   "data": {
@@ -47,7 +47,7 @@ Response: {
   }
 }
 
-task 6, lines 27-32:
+task 6, lines 28-33:
 //# run-graphql
 Response: {
   "data": {
@@ -55,7 +55,7 @@ Response: {
   }
 }
 
-task 7, lines 34-39:
+task 7, lines 35-40:
 //# run-graphql
 Response: {
   "data": {

@@ -9,7 +9,7 @@ A: object(0,0)
 // 1. Parent ID does not exist
 // 2. Parent ID exists, but the field does not
 
-task 1, lines 9-11:
+task 1, lines 10-12:
 //# programmable --sender A --inputs @A
 //> 0: haneul::bag::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -17,11 +17,11 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2287600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 13:
+task 2, line 14:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 15-22:
+task 3, lines 16-23:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -34,7 +34,7 @@ Response: {
   }
 }
 
-task 4, lines 24-31:
+task 4, lines 25-32:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -42,7 +42,7 @@ Response: {
   "result": {
     "error": {
       "code": "dynamicFieldNotFound",
-      "parent_object_id": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9"
+      "parent_object_id": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80"
     }
   }
 }

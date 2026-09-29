@@ -6,32 +6,32 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 1
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 12-27:
+task 3, lines 13-28:
 //# run-graphql
 Response: {
   "data": {
     "object": {
-      "objectBcs": "AAEBAgAAAAAAAAAosNgmeGrTdLnm552kotbI1fI8QTrrdvoLB+VjbRc6So9galAx2RABAAD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHiCT9Xh938NvFCTRvtEk+Bc6X1308522M7aKJk0h7Aqp+2ATDwAAAAAA",
+      "objectBcs": "AAEBAgAAAAAAAAAodkSLRZU174Puud3pN3VKRG0SO7ealO1EfZjWulg0fcBgalAx2RABAAD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHiBbVLNDtHIm1EldCtpWBKfpO3sS2G7j+rpxe6wWiR1UpmATDwAAAAAA",
       "asMoveObject": {
-        "objectBcs": "AAEBAgAAAAAAAAAosNgmeGrTdLnm552kotbI1fI8QTrrdvoLB+VjbRc6So9galAx2RABAAD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHiCT9Xh938NvFCTRvtEk+Bc6X1308522M7aKJk0h7Aqp+2ATDwAAAAAA",
-        "moveObjectBcs": "AQECAAAAAAAAACiw2CZ4atN0uebnnaSi1sjV8jxBOut2+gsH5WNtFzpKj2BqUDHZEAEA",
+        "objectBcs": "AAEBAgAAAAAAAAAodkSLRZU174Puud3pN3VKRG0SO7ealO1EfZjWulg0fcBgalAx2RABAAD8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHiBbVLNDtHIm1EldCtpWBKfpO3sS2G7j+rpxe6wWiR1UpmATDwAAAAAA",
+        "moveObjectBcs": "AQECAAAAAAAAACh2RItFlTXvg+653ek3dUpEbRI7t5qU7UR9mNa6WDR9wGBqUDHZEAEA",
         "contents": {
           "type": {
             "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
           },
           "json": {
-            "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+            "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
             "balance": "299999998012000"
           }
         }
@@ -40,7 +40,7 @@ Response: {
   }
 }
 
-task 4, lines 29-36:
+task 4, lines 30-37:
 //# run-graphql
 Response: {
   "data": {

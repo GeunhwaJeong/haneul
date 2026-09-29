@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --accounts A --addresses test=0x0 --simulator
+//# init --protocol-version 115 --accounts A --addresses test=0x0 --simulator
 
 // Parsing errors in the Display format will show up in the Display output, but
 // will not hide the rest of the object response.

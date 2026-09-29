@@ -6,7 +6,7 @@ processed 17 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-10:
+task 1, lines 7-11:
 //# programmable --sender A --inputs @A 42 43 44 45 46 47 48 49
 //> 0: SplitCoins(Gas, [Input(1), Input(2), Input(3), Input(4)]);
 //> 1: SplitCoins(Gas, [Input(5), Input(6), Input(7), Input(8)]);
@@ -16,11 +16,11 @@ created: object(1,0), object(1,1), object(1,2), object(1,3), object(1,4), object
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 8892000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 12:
+task 2, line 13:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 14-27:
+task 3, lines 15-28:
 //# run-graphql
 Response: {
   "data": {
@@ -36,55 +36,55 @@ Response: {
           {
             "cursor": "MA==",
             "node": {
-              "address": "0x66b82fe6f86342a4cf357748703008e23ef0f6c651c93a6a8cef7edb17d7a0bf"
+              "address": "0x4ee0986307fc088f50290c3bac8af5e2320fcd181520356874e707b7f41f7f5f"
             }
           },
           {
             "cursor": "MQ==",
             "node": {
-              "address": "0x7b76e63f01ded564fdf8779f845bb7250fe9741554e0e1dea1e6fe1f5ce87dd3"
+              "address": "0x587f3b072ea4c70cbdf07fd43a80358db4b7d85d02cd54d492ec7df5b2acb7e9"
             }
           },
           {
             "cursor": "Mg==",
             "node": {
-              "address": "0x8026cb3602104a05ed1be9838ecc60057323dc58747bd220b9e499ff1dfd3603"
+              "address": "0x681cb706284de2bf22e0900585d8867a9c9f8f7bb3ffb2e7012d23ecf3eb7bef"
             }
           },
           {
             "cursor": "Mw==",
             "node": {
-              "address": "0xaae7d85b2d56b19d236014a6ca7fdc06ca881a2d8bd4a3e26970599a6c7754dd"
+              "address": "0x699ba76a7dbe3ef0c297e5201a99185393e3937f01f24bc1dbe9cd0fc9c9766e"
             }
           },
           {
             "cursor": "NA==",
             "node": {
-              "address": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f"
+              "address": "0x6ba4b6d6be5f06ee7718436c1d5e3f2dba62e2832ed7671d38b08940d4a9d9d8"
             }
           },
           {
             "cursor": "NQ==",
             "node": {
-              "address": "0xda9e4c7e2f83aed80f4d8b6330f73fece2f52ee9bec1e979c6d0ce196176ceaf"
+              "address": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0"
             }
           },
           {
             "cursor": "Ng==",
             "node": {
-              "address": "0xe1b03d010d4b80af790f92170ac33773f13569c1e5e957bc9dc8bb252c920648"
+              "address": "0xa442b9c1516327256b3ead68b1617735c494183c13a95843b8914246c9f94818"
             }
           },
           {
             "cursor": "Nw==",
             "node": {
-              "address": "0xefbd8734cfb7e057c7e26cc8448db99f964555201232d1d5b7cb312bb1369d73"
+              "address": "0xbba74ee8ba68f96f228495bd43d323ad24fe3426d4a42ade7cade938e858fe37"
             }
           },
           {
             "cursor": "OA==",
             "node": {
-              "address": "0xfb364b26dad1e7d41ff24604bbbe962a87f7c03ff60c73c0fc3d90b92c644b75"
+              "address": "0xce798f97fe35c00ae4c50ec0f46ef7f93e9722e781f6491a546251f9ee9a4306"
             }
           }
         ]
@@ -93,7 +93,7 @@ Response: {
   }
 }
 
-task 4, lines 29-42:
+task 4, lines 30-43:
 //# run-graphql
 Response: {
   "data": {
@@ -109,19 +109,19 @@ Response: {
           {
             "cursor": "MA==",
             "node": {
-              "address": "0x66b82fe6f86342a4cf357748703008e23ef0f6c651c93a6a8cef7edb17d7a0bf"
+              "address": "0x4ee0986307fc088f50290c3bac8af5e2320fcd181520356874e707b7f41f7f5f"
             }
           },
           {
             "cursor": "MQ==",
             "node": {
-              "address": "0x7b76e63f01ded564fdf8779f845bb7250fe9741554e0e1dea1e6fe1f5ce87dd3"
+              "address": "0x587f3b072ea4c70cbdf07fd43a80358db4b7d85d02cd54d492ec7df5b2acb7e9"
             }
           },
           {
             "cursor": "Mg==",
             "node": {
-              "address": "0x8026cb3602104a05ed1be9838ecc60057323dc58747bd220b9e499ff1dfd3603"
+              "address": "0x681cb706284de2bf22e0900585d8867a9c9f8f7bb3ffb2e7012d23ecf3eb7bef"
             }
           }
         ]
@@ -130,7 +130,7 @@ Response: {
   }
 }
 
-task 5, lines 44-57:
+task 5, lines 45-58:
 //# run-graphql
 Response: {
   "data": {
@@ -146,19 +146,19 @@ Response: {
           {
             "cursor": "Ng==",
             "node": {
-              "address": "0xe1b03d010d4b80af790f92170ac33773f13569c1e5e957bc9dc8bb252c920648"
+              "address": "0xa442b9c1516327256b3ead68b1617735c494183c13a95843b8914246c9f94818"
             }
           },
           {
             "cursor": "Nw==",
             "node": {
-              "address": "0xefbd8734cfb7e057c7e26cc8448db99f964555201232d1d5b7cb312bb1369d73"
+              "address": "0xbba74ee8ba68f96f228495bd43d323ad24fe3426d4a42ade7cade938e858fe37"
             }
           },
           {
             "cursor": "OA==",
             "node": {
-              "address": "0xfb364b26dad1e7d41ff24604bbbe962a87f7c03ff60c73c0fc3d90b92c644b75"
+              "address": "0xce798f97fe35c00ae4c50ec0f46ef7f93e9722e781f6491a546251f9ee9a4306"
             }
           }
         ]
@@ -167,7 +167,7 @@ Response: {
   }
 }
 
-task 6, lines 59-72:
+task 6, lines 60-73:
 //# run-graphql --cursors 2
 Response: {
   "data": {
@@ -183,19 +183,19 @@ Response: {
           {
             "cursor": "Mw==",
             "node": {
-              "address": "0xaae7d85b2d56b19d236014a6ca7fdc06ca881a2d8bd4a3e26970599a6c7754dd"
+              "address": "0x699ba76a7dbe3ef0c297e5201a99185393e3937f01f24bc1dbe9cd0fc9c9766e"
             }
           },
           {
             "cursor": "NA==",
             "node": {
-              "address": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f"
+              "address": "0x6ba4b6d6be5f06ee7718436c1d5e3f2dba62e2832ed7671d38b08940d4a9d9d8"
             }
           },
           {
             "cursor": "NQ==",
             "node": {
-              "address": "0xda9e4c7e2f83aed80f4d8b6330f73fece2f52ee9bec1e979c6d0ce196176ceaf"
+              "address": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0"
             }
           }
         ]
@@ -204,7 +204,7 @@ Response: {
   }
 }
 
-task 7, lines 74-87:
+task 7, lines 75-88:
 //# run-graphql --cursors 2
 Response: {
   "data": {
@@ -220,19 +220,19 @@ Response: {
           {
             "cursor": "Ng==",
             "node": {
-              "address": "0xe1b03d010d4b80af790f92170ac33773f13569c1e5e957bc9dc8bb252c920648"
+              "address": "0xa442b9c1516327256b3ead68b1617735c494183c13a95843b8914246c9f94818"
             }
           },
           {
             "cursor": "Nw==",
             "node": {
-              "address": "0xefbd8734cfb7e057c7e26cc8448db99f964555201232d1d5b7cb312bb1369d73"
+              "address": "0xbba74ee8ba68f96f228495bd43d323ad24fe3426d4a42ade7cade938e858fe37"
             }
           },
           {
             "cursor": "OA==",
             "node": {
-              "address": "0xfb364b26dad1e7d41ff24604bbbe962a87f7c03ff60c73c0fc3d90b92c644b75"
+              "address": "0xce798f97fe35c00ae4c50ec0f46ef7f93e9722e781f6491a546251f9ee9a4306"
             }
           }
         ]
@@ -241,7 +241,7 @@ Response: {
   }
 }
 
-task 8, lines 89-102:
+task 8, lines 90-103:
 //# run-graphql --cursors 5
 Response: {
   "data": {
@@ -257,19 +257,19 @@ Response: {
           {
             "cursor": "Ng==",
             "node": {
-              "address": "0xe1b03d010d4b80af790f92170ac33773f13569c1e5e957bc9dc8bb252c920648"
+              "address": "0xa442b9c1516327256b3ead68b1617735c494183c13a95843b8914246c9f94818"
             }
           },
           {
             "cursor": "Nw==",
             "node": {
-              "address": "0xefbd8734cfb7e057c7e26cc8448db99f964555201232d1d5b7cb312bb1369d73"
+              "address": "0xbba74ee8ba68f96f228495bd43d323ad24fe3426d4a42ade7cade938e858fe37"
             }
           },
           {
             "cursor": "OA==",
             "node": {
-              "address": "0xfb364b26dad1e7d41ff24604bbbe962a87f7c03ff60c73c0fc3d90b92c644b75"
+              "address": "0xce798f97fe35c00ae4c50ec0f46ef7f93e9722e781f6491a546251f9ee9a4306"
             }
           }
         ]
@@ -278,7 +278,7 @@ Response: {
   }
 }
 
-task 9, lines 104-117:
+task 9, lines 105-118:
 //# run-graphql --cursors 5
 Response: {
   "data": {
@@ -294,19 +294,19 @@ Response: {
           {
             "cursor": "Ng==",
             "node": {
-              "address": "0xe1b03d010d4b80af790f92170ac33773f13569c1e5e957bc9dc8bb252c920648"
+              "address": "0xa442b9c1516327256b3ead68b1617735c494183c13a95843b8914246c9f94818"
             }
           },
           {
             "cursor": "Nw==",
             "node": {
-              "address": "0xefbd8734cfb7e057c7e26cc8448db99f964555201232d1d5b7cb312bb1369d73"
+              "address": "0xbba74ee8ba68f96f228495bd43d323ad24fe3426d4a42ade7cade938e858fe37"
             }
           },
           {
             "cursor": "OA==",
             "node": {
-              "address": "0xfb364b26dad1e7d41ff24604bbbe962a87f7c03ff60c73c0fc3d90b92c644b75"
+              "address": "0xce798f97fe35c00ae4c50ec0f46ef7f93e9722e781f6491a546251f9ee9a4306"
             }
           }
         ]
@@ -315,7 +315,7 @@ Response: {
   }
 }
 
-task 10, lines 119-132:
+task 10, lines 120-133:
 //# run-graphql --cursors 5
 Response: {
   "data": {
@@ -331,19 +331,19 @@ Response: {
           {
             "cursor": "Mg==",
             "node": {
-              "address": "0x8026cb3602104a05ed1be9838ecc60057323dc58747bd220b9e499ff1dfd3603"
+              "address": "0x681cb706284de2bf22e0900585d8867a9c9f8f7bb3ffb2e7012d23ecf3eb7bef"
             }
           },
           {
             "cursor": "Mw==",
             "node": {
-              "address": "0xaae7d85b2d56b19d236014a6ca7fdc06ca881a2d8bd4a3e26970599a6c7754dd"
+              "address": "0x699ba76a7dbe3ef0c297e5201a99185393e3937f01f24bc1dbe9cd0fc9c9766e"
             }
           },
           {
             "cursor": "NA==",
             "node": {
-              "address": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f"
+              "address": "0x6ba4b6d6be5f06ee7718436c1d5e3f2dba62e2832ed7671d38b08940d4a9d9d8"
             }
           }
         ]
@@ -352,7 +352,7 @@ Response: {
   }
 }
 
-task 11, lines 134-147:
+task 11, lines 135-148:
 //# run-graphql --cursors 5
 Response: {
   "data": {
@@ -368,19 +368,19 @@ Response: {
           {
             "cursor": "MA==",
             "node": {
-              "address": "0x66b82fe6f86342a4cf357748703008e23ef0f6c651c93a6a8cef7edb17d7a0bf"
+              "address": "0x4ee0986307fc088f50290c3bac8af5e2320fcd181520356874e707b7f41f7f5f"
             }
           },
           {
             "cursor": "MQ==",
             "node": {
-              "address": "0x7b76e63f01ded564fdf8779f845bb7250fe9741554e0e1dea1e6fe1f5ce87dd3"
+              "address": "0x587f3b072ea4c70cbdf07fd43a80358db4b7d85d02cd54d492ec7df5b2acb7e9"
             }
           },
           {
             "cursor": "Mg==",
             "node": {
-              "address": "0x8026cb3602104a05ed1be9838ecc60057323dc58747bd220b9e499ff1dfd3603"
+              "address": "0x681cb706284de2bf22e0900585d8867a9c9f8f7bb3ffb2e7012d23ecf3eb7bef"
             }
           }
         ]
@@ -389,7 +389,7 @@ Response: {
   }
 }
 
-task 12, lines 149-162:
+task 12, lines 150-163:
 //# run-graphql --cursors 2
 Response: {
   "data": {
@@ -405,13 +405,13 @@ Response: {
           {
             "cursor": "MA==",
             "node": {
-              "address": "0x66b82fe6f86342a4cf357748703008e23ef0f6c651c93a6a8cef7edb17d7a0bf"
+              "address": "0x4ee0986307fc088f50290c3bac8af5e2320fcd181520356874e707b7f41f7f5f"
             }
           },
           {
             "cursor": "MQ==",
             "node": {
-              "address": "0x7b76e63f01ded564fdf8779f845bb7250fe9741554e0e1dea1e6fe1f5ce87dd3"
+              "address": "0x587f3b072ea4c70cbdf07fd43a80358db4b7d85d02cd54d492ec7df5b2acb7e9"
             }
           }
         ]
@@ -420,7 +420,7 @@ Response: {
   }
 }
 
-task 13, lines 164-177:
+task 13, lines 165-178:
 //# run-graphql --cursors 2
 Response: {
   "data": {
@@ -436,13 +436,13 @@ Response: {
           {
             "cursor": "MA==",
             "node": {
-              "address": "0x66b82fe6f86342a4cf357748703008e23ef0f6c651c93a6a8cef7edb17d7a0bf"
+              "address": "0x4ee0986307fc088f50290c3bac8af5e2320fcd181520356874e707b7f41f7f5f"
             }
           },
           {
             "cursor": "MQ==",
             "node": {
-              "address": "0x7b76e63f01ded564fdf8779f845bb7250fe9741554e0e1dea1e6fe1f5ce87dd3"
+              "address": "0x587f3b072ea4c70cbdf07fd43a80358db4b7d85d02cd54d492ec7df5b2acb7e9"
             }
           }
         ]
@@ -451,7 +451,7 @@ Response: {
   }
 }
 
-task 14, lines 179-192:
+task 14, lines 180-193:
 //# run-graphql --cursors 2 6
 Response: {
   "data": {
@@ -467,19 +467,19 @@ Response: {
           {
             "cursor": "Mw==",
             "node": {
-              "address": "0xaae7d85b2d56b19d236014a6ca7fdc06ca881a2d8bd4a3e26970599a6c7754dd"
+              "address": "0x699ba76a7dbe3ef0c297e5201a99185393e3937f01f24bc1dbe9cd0fc9c9766e"
             }
           },
           {
             "cursor": "NA==",
             "node": {
-              "address": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f"
+              "address": "0x6ba4b6d6be5f06ee7718436c1d5e3f2dba62e2832ed7671d38b08940d4a9d9d8"
             }
           },
           {
             "cursor": "NQ==",
             "node": {
-              "address": "0xda9e4c7e2f83aed80f4d8b6330f73fece2f52ee9bec1e979c6d0ce196176ceaf"
+              "address": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0"
             }
           }
         ]
@@ -488,7 +488,7 @@ Response: {
   }
 }
 
-task 15, lines 194-207:
+task 15, lines 195-208:
 //# run-graphql --cursors 2 6
 Response: {
   "data": {
@@ -504,13 +504,13 @@ Response: {
           {
             "cursor": "Mw==",
             "node": {
-              "address": "0xaae7d85b2d56b19d236014a6ca7fdc06ca881a2d8bd4a3e26970599a6c7754dd"
+              "address": "0x699ba76a7dbe3ef0c297e5201a99185393e3937f01f24bc1dbe9cd0fc9c9766e"
             }
           },
           {
             "cursor": "NA==",
             "node": {
-              "address": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f"
+              "address": "0x6ba4b6d6be5f06ee7718436c1d5e3f2dba62e2832ed7671d38b08940d4a9d9d8"
             }
           }
         ]
@@ -519,7 +519,7 @@ Response: {
   }
 }
 
-task 16, lines 209-222:
+task 16, lines 210-223:
 //# run-graphql --cursors 2 6
 Response: {
   "data": {
@@ -535,13 +535,13 @@ Response: {
           {
             "cursor": "NA==",
             "node": {
-              "address": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f"
+              "address": "0x6ba4b6d6be5f06ee7718436c1d5e3f2dba62e2832ed7671d38b08940d4a9d9d8"
             }
           },
           {
             "cursor": "NQ==",
             "node": {
-              "address": "0xda9e4c7e2f83aed80f4d8b6330f73fece2f52ee9bec1e979c6d0ce196176ceaf"
+              "address": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0"
             }
           }
         ]

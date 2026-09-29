@@ -10,13 +10,13 @@ A: object(0,0)
 // 2. View the contents of an arbitrary object
 // 3. View the contents of a coin
 
-task 1, lines 10-19:
+task 1, lines 11-20:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 4628400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 21-23:
+task 2, lines 22-24:
 //# programmable --sender A --inputs @A
 //> 0: test::mod::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -24,7 +24,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2226800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 25-27:
+task 3, lines 26-28:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -32,11 +32,11 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 29:
+task 4, line 30:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 31-35:
+task 5, lines 32-36:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -44,27 +44,27 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0x0bc104d87766ca2c9bc0ad1bb464d6556645045c31e779a3bf061fefbd125960",
+      "objectId": "0xee670825f36ba01b91b62ac088f145e1b41ead52d8c48a77220f366b171f4730",
       "version": "1",
-      "digest": "APtiUsZMPTVsgZPeBXBwZzgyFp1vsyEqNXezRe2GAr5T",
+      "digest": "AXs1AZndiC4JeUwHnFeDcqs1mpC5p5BzxR3CTZ1YLqTV",
       "content": {
         "dataType": "package",
         "disassembled": {
-          "mod": "// Move bytecode v7\nmodule bc104d87766ca2c9bc0ad1bb464d6556645045c31e779a3bf061fefbd125960.mod {\nuse 0000000000000000000000000000000000000000000000000000000000000002::object;\nuse 0000000000000000000000000000000000000000000000000000000000000002::tx_context;\n\nstruct Foo has store, key {\n\tid: UID\n}\n\npublic new(Arg0: &mut TxContext): Foo {\nB0:\n\t0: MoveLoc[0](Arg0: &mut TxContext)\n\t1: Call object::new(&mut TxContext): UID\n\t2: Pack[0](Foo)\n\t3: Ret\n}\n\n}\n"
+          "mod": "// Move bytecode v7\nmodule ee670825f36ba01b91b62ac088f145e1b41ead52d8c48a77220f366b171f4730.mod {\nuse 0000000000000000000000000000000000000000000000000000000000000002::object;\nuse 0000000000000000000000000000000000000000000000000000000000000002::tx_context;\n\nstruct Foo has store, key {\n\tid: UID\n}\n\npublic new(Arg0: &mut TxContext): Foo {\nB0:\n\t0: MoveLoc[0](Arg0: &mut TxContext)\n\t1: Call object::new(&mut TxContext): UID\n\t2: Pack[0](Foo)\n\t3: Ret\n}\n\n}\n"
         }
       },
       "bcs": {
         "dataType": "package",
-        "id": "0x0bc104d87766ca2c9bc0ad1bb464d6556645045c31e779a3bf061fefbd125960",
+        "id": "0xee670825f36ba01b91b62ac088f145e1b41ead52d8c48a77220f366b171f4730",
         "version": 1,
         "moduleMap": {
-          "mod": "oRzrCwcAAAUIAQAGAgYMAxIKBRwLBycvCFZACpYBBgycAQ4ABAEGAQcAAAwAAQIEAAIBAgAABQABAAEFAAMAAQcIAgEIAAABCAEDRm9vCVR4Q29udGV4dANVSUQCaWQDbW9kA25ldwZvYmplY3QKdHhfY29udGV4dAvBBNh3Zsosm8CtG7Rk1lVmRQRcMed5o78GH++9EllgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAgEDCAEAAQAAAgQLABEBEgACAAA="
+          "mod": "oRzrCwcAAAUIAQAGAgYMAxIKBRwLBycvCFZACpYBBgycAQ4ABAEGAQcAAAwAAQIEAAIBAgAABQABAAEFAAMAAQcIAgEIAAABCAEDRm9vCVR4Q29udGV4dANVSUQCaWQDbW9kA25ldwZvYmplY3QKdHhfY29udGV4dO5nCCXza6AbkbYqwIjxReG0Hq1S2MSKdyIPNmsXH0cwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAgEDCAEAAQAAAgQLABEBEgACAAA="
         },
         "typeOriginTable": [
           {
             "module_name": "mod",
             "datatype_name": "Foo",
-            "package": "0x0bc104d87766ca2c9bc0ad1bb464d6556645045c31e779a3bf061fefbd125960"
+            "package": "0xee670825f36ba01b91b62ac088f145e1b41ead52d8c48a77220f366b171f4730"
           }
         ],
         "linkageTable": {
@@ -82,7 +82,7 @@ Response: {
   }
 }
 
-task 6, lines 37-41:
+task 6, lines 38-42:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -90,31 +90,31 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0x59ccb59bba7408c2869b04e6924a61ea19bdb87c722c5bc6b4ab913a50e0156d",
+      "objectId": "0x6098f4183141f2801b9c738cd564b3c0c0e7a5dadb40845a8e5f39c0847861bb",
       "version": "2",
-      "digest": "CqrUUiTNbUsndSXtr1k2Gw5bvEd5Sx63Yv7xa2d1u4oe",
+      "digest": "7pzufFaW8H5fDP64yrdcwx3YCkUPyNfQxj7g7wiAaVSN",
       "content": {
         "dataType": "moveObject",
-        "type": "0x0bc104d87766ca2c9bc0ad1bb464d6556645045c31e779a3bf061fefbd125960::mod::Foo",
+        "type": "0xee670825f36ba01b91b62ac088f145e1b41ead52d8c48a77220f366b171f4730::mod::Foo",
         "hasPublicTransfer": true,
         "fields": {
           "id": {
-            "id": "0x59ccb59bba7408c2869b04e6924a61ea19bdb87c722c5bc6b4ab913a50e0156d"
+            "id": "0x6098f4183141f2801b9c738cd564b3c0c0e7a5dadb40845a8e5f39c0847861bb"
           }
         }
       },
       "bcs": {
         "dataType": "moveObject",
-        "type": "0x0bc104d87766ca2c9bc0ad1bb464d6556645045c31e779a3bf061fefbd125960::mod::Foo",
+        "type": "0xee670825f36ba01b91b62ac088f145e1b41ead52d8c48a77220f366b171f4730::mod::Foo",
         "hasPublicTransfer": true,
         "version": 2,
-        "bcsBytes": "Wcy1m7p0CMKGmwTmkkph6hm9uHxyLFvGtKuROlDgFW0="
+        "bcsBytes": "YJj0GDFB8oAbnHOM1WSzwMDnpdrbQIRajl85wIR4Ybs="
       }
     }
   }
 }
 
-task 7, lines 43-47:
+task 7, lines 44-48:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -122,9 +122,9 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0x72f6883a16d38b0570ea2f96d6618848c15a560c841a1f73973fb36e11e7f5b6",
+      "objectId": "0x99744e1bcd703d4c33d746bbbc02342df089928d7f7ec019595de6a03aa3fbe4",
       "version": "3",
-      "digest": "C9hm5Nu224FYbq7wyds1qwFWwt2e7QkQN91nMadsKt91",
+      "digest": "8KJJAB8R5XVax2MxCb2MyHAy7JxYrFmhNR3cHVR7cYcP",
       "content": {
         "dataType": "moveObject",
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
@@ -132,7 +132,7 @@ Response: {
         "fields": {
           "balance": "42",
           "id": {
-            "id": "0x72f6883a16d38b0570ea2f96d6618848c15a560c841a1f73973fb36e11e7f5b6"
+            "id": "0x99744e1bcd703d4c33d746bbbc02342df089928d7f7ec019595de6a03aa3fbe4"
           }
         }
       },
@@ -141,7 +141,7 @@ Response: {
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
         "hasPublicTransfer": true,
         "version": 3,
-        "bcsBytes": "cvaIOhbTiwVw6i+W1mGISMFaVgyEGh9zlz+zbhHn9bYqAAAAAAAAAA=="
+        "bcsBytes": "mXROG81wPUwz10a7vAI0LfCJko1/fsAZWV3moDqj++QqAAAAAAAAAA=="
       }
     }
   }

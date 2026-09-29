@@ -6,7 +6,7 @@ processed 11 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-9:
+task 1, lines 7-10:
 // Create a simple transfer transaction (no AuthenticatorStateUpdate)
 //# programmable --sender A --inputs 1000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -15,34 +15,34 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 11-12:
+task 2, lines 12-13:
 // Create an AuthenticatorStateUpdate transaction with a single JWK
 //# authenticator-state-update --round 1 --jwk-iss https://accounts.google.com --authenticator-obj-initial-shared-version 111
 AuthenticatorStateUpdate executed at epoch 0 round 1
 
-task 3, line 14:
+task 3, line 15:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, line 16:
+task 4, line 17:
 //# advance-epoch
 Epoch advanced: 1
 
-task 5, lines 18-19:
+task 5, lines 19-20:
 // Create an AuthenticatorStateUpdate transaction with multiple JWKs
 //# authenticator-state-update --round 2 --jwk-iss https://accounts.google.com --jwk-iss https://login.microsoftonline.com
 AuthenticatorStateUpdate executed at epoch 1 round 2
 
-task 6, line 21:
+task 6, line 22:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 7, lines 23-51:
+task 7, lines 24-52:
 //# run-graphql
 Response: {
   "data": {
     "nonAuthenticatorTransaction": {
-      "digest": "DLiijQ4Jwm4yWE8X5pMCFi7NKUGdd36qXZKLXh5fSyqg",
+      "digest": "463DCUxCvruK3XQ47tdoYLsbstF4zJvWNYaqBeJU2aip",
       "kind": {
         "__typename": "ProgrammableTransaction"
       }
@@ -50,7 +50,7 @@ Response: {
   }
 }
 
-task 8, lines 53-89:
+task 8, lines 54-90:
 //# run-graphql
 Response: {
   "data": {
@@ -90,7 +90,7 @@ Response: {
   }
 }
 
-task 9, lines 91-127:
+task 9, lines 92-128:
 //# run-graphql
 Response: {
   "data": {
@@ -144,7 +144,7 @@ Response: {
   }
 }
 
-task 10, lines 129-181:
+task 10, lines 130-182:
 //# run-graphql
 Response: {
   "data": {

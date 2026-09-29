@@ -6,7 +6,7 @@ processed 16 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-14:
+task 1, lines 7-15:
 //# run-graphql
 Response: {
   "data": {
@@ -19,7 +19,7 @@ Response: {
   }
 }
 
-task 2, lines 16-18:
+task 2, lines 17-19:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -27,7 +27,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 20-22:
+task 3, lines 21-23:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -35,11 +35,11 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 24:
+task 4, line 25:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 26-34:
+task 5, lines 27-35:
 //# run-graphql
 Response: {
   "data": {
@@ -50,7 +50,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAE=",
             "node": {
-              "digest": "5iUmf7DhkKHzsVFoCdD241kkwpeBDBSnq7ThaayXcxk1",
+              "digest": "3L8wCaHRtKJEC6fVqGHBPMZoLUw5MHUy3kbdjs8P1CUQ",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 1,
@@ -64,7 +64,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAI=",
             "node": {
-              "digest": "HjDrg9zhZj1HHaMkrnC7XMt1q6XPojY6uxqqVGiswQQY",
+              "digest": "2yDQFdMx33zdkdxoyjGiXYHoTZXC9uMYVkKqgeRdXp5i",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 1,
@@ -95,7 +95,7 @@ Response: {
   }
 }
 
-task 6, lines 36-38:
+task 6, lines 37-39:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -103,7 +103,7 @@ created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 40-42:
+task 7, lines 41-43:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -111,11 +111,11 @@ created: object(7,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, line 44:
+task 8, line 45:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 9, lines 46-54:
+task 9, lines 47-55:
 //# run-graphql
 Response: {
   "data": {
@@ -126,7 +126,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAQ=",
             "node": {
-              "digest": "9a1KzAaEk6ZqUKZXg2hNJyMWtdkKEwReZoDSqRi9otjY",
+              "digest": "Hw9QektYGuRcYgzJS7v1ZQmUsXAZEqZrb5nqvvJvE95k",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 2,
@@ -140,7 +140,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAU=",
             "node": {
-              "digest": "Hnxj2axhuQBiVo7q68KTMJr6J5yduvxEfE7FNVEz5uv1",
+              "digest": "2QxF54i3FqKDnQuxoQqybqRoMztXGY3utGRJoyMXKDRs",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 2,
@@ -171,11 +171,11 @@ Response: {
   }
 }
 
-task 10, line 56:
+task 10, line 57:
 //# advance-epoch
 Epoch advanced: 1
 
-task 11, lines 58-60:
+task 11, lines 59-61:
 //# programmable --sender A --inputs 43 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -183,18 +183,18 @@ created: object(11,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 12, lines 62-64:
+task 12, lines 63-65:
 //# programmable --sender A --inputs 1
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 13, line 66:
+task 13, line 67:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 14, lines 68-82:
+task 14, lines 69-83:
 //# run-graphql
 Response: {
   "data": {
@@ -205,7 +205,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAg=",
             "node": {
-              "digest": "9mtg2vpK2YcgRuY4D1VbhHNv59Erg3zrTcPdS6VACTPi",
+              "digest": "idMq7oAKxzsUwUinEqL4qAz2XNsHdNNDCjh4ds27ZSZ",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 4,
@@ -219,7 +219,7 @@ Response: {
           {
             "cursor": "KAE6BAgAEAk=",
             "node": {
-              "digest": "5TAcpGD2KLrZZ71LqLPFimR8TU2d3ShSC1Z18BQP3ymA",
+              "digest": "5vjWGGM35heZ68iHcHJq8GJC79L1tQ3DbWdd7ZjcRtp3",
               "effects": {
                 "checkpoint": {
                   "sequenceNumber": 4,
@@ -256,6 +256,6 @@ Response: {
   }
 }
 
-task 15, line 84:
+task 15, line 85:
 //# create-checkpoint
 Checkpoint created: 5

@@ -14,14 +14,14 @@ A: object(0,0)
 // 3. Try to view the contents and Display of the new object -- the former will
 //    succeed while the latter will not.
 
-task 1, lines 14-45:
+task 1, lines 15-46:
 //# publish --sender A
-events: Event { package_id: test, transaction_module: Identifier("mod"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("DisplayCreated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [206, 191, 221, 64, 207, 20, 98, 100, 91, 244, 36, 78, 19, 2, 225, 220, 231, 227, 185, 98, 132, 181, 16, 109, 115, 39, 247, 113, 31, 30, 65, 152] }, Event { package_id: test, transaction_module: Identifier("mod"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("VersionUpdated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [206, 191, 221, 64, 207, 20, 98, 100, 91, 244, 36, 78, 19, 2, 225, 220, 231, 227, 185, 98, 132, 181, 16, 109, 115, 39, 247, 113, 31, 30, 65, 152, 1, 0, 1, 3, 98, 97, 114, 4, 123, 98, 97, 114] }
+events: Event { package_id: test, transaction_module: Identifier("mod"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("DisplayCreated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [168, 32, 222, 244, 172, 82, 135, 116, 44, 242, 99, 119, 178, 236, 215, 64, 81, 228, 54, 133, 89, 127, 75, 58, 183, 244, 35, 143, 184, 134, 216, 132] }, Event { package_id: test, transaction_module: Identifier("mod"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("VersionUpdated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [168, 32, 222, 244, 172, 82, 135, 116, 44, 242, 99, 119, 178, 236, 215, 64, 81, 228, 54, 133, 89, 127, 75, 58, 183, 244, 35, 143, 184, 134, 216, 132, 1, 0, 1, 3, 98, 97, 114, 4, 123, 98, 97, 114] }
 created: object(1,0), object(1,1), object(1,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 11818000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 47-49:
+task 2, lines 48-50:
 //# programmable --sender A --inputs 42 @A
 //> 0: test::mod::new(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -29,20 +29,20 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2287600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 51:
+task 3, line 52:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 53-57:
+task 4, lines 54-58:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 0,
   "result": {
     "data": {
-      "objectId": "0x36621a0d4935b4a024125efd464a2ade04ac3910d4632e0c922723975acb55bc",
+      "objectId": "0x3a51f6b949afc0d13d500890b677b0962773631a96bb83f261ab9e3b70e4d036",
       "version": "3",
-      "digest": "CcnWhkw7G5jPtoGEN4B4yhVsCrjs8Mo2mBv2etYs3pQq",
+      "digest": "FdmwAKq5Sj66E2nduacEN5GunXUmgF7qz52UDjWxZ3So",
       "display": {
         "data": null,
         "error": {
@@ -52,12 +52,12 @@ Response: {
       },
       "content": {
         "dataType": "moveObject",
-        "type": "0x336c83bd2974c7e7a5dc0dbf5410ab563b8de5f5d34adad8c95de0f271b97de1::mod::Foo",
+        "type": "0x9065069e799566959713f41e8338b4c73b1eab03f3bef67e4c383f0967dc3284::mod::Foo",
         "hasPublicTransfer": true,
         "fields": {
           "bar": "42",
           "id": {
-            "id": "0x36621a0d4935b4a024125efd464a2ade04ac3910d4632e0c922723975acb55bc"
+            "id": "0x3a51f6b949afc0d13d500890b677b0962773631a96bb83f261ab9e3b70e4d036"
           }
         }
       }

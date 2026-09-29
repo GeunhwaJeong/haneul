@@ -6,27 +6,27 @@ processed 12 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-34:
+task 1, lines 7-35:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 6384000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 36-37:
+task 2, lines 37-38:
 // Transaction that emits a single event
 //# run test::events_test::emit_event --sender A --args 42
 events: Event { package_id: test, transaction_module: Identifier("events_test"), sender: A, type_: StructTag { address: test, module: Identifier("events_test"), name: Identifier("TestEvent"), type_params: [] }, contents: [21, 72, 101, 108, 108, 111, 32, 102, 114, 111, 109, 32, 116, 101, 115, 116, 32, 101, 118, 101, 110, 116, 42, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 39-40:
+task 3, lines 40-41:
 // Transaction that emits multiple events
 //# run test::events_test::emit_multiple_events --sender A
 events: Event { package_id: test, transaction_module: Identifier("events_test"), sender: A, type_: StructTag { address: test, module: Identifier("events_test"), name: Identifier("TestEvent"), type_params: [] }, contents: [11, 70, 105, 114, 115, 116, 32, 101, 118, 101, 110, 116, 1, 0, 0, 0, 0, 0, 0, 0] }, Event { package_id: test, transaction_module: Identifier("events_test"), sender: A, type_: StructTag { address: test, module: Identifier("events_test"), name: Identifier("TestEvent"), type_params: [] }, contents: [12, 83, 101, 99, 111, 110, 100, 32, 101, 118, 101, 110, 116, 2, 0, 0, 0, 0, 0, 0, 0] }
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 42-45:
+task 4, lines 43-46:
 // Transaction with no events (transfer)
 //# programmable --sender A --inputs 100 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -35,11 +35,11 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, line 47:
+task 5, line 48:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 6, lines 49-78:
+task 6, lines 50-79:
 //# run-graphql
 Response: {
   "data": {
@@ -56,10 +56,10 @@ Response: {
             },
             "sequenceNumber": 0,
             "timestamp": "1970-01-01T00:00:00Z",
-            "eventBcs": "wvFSPAt9fKlU//h1TR7yY2+Gw86fZ0fLPpvV6vvglaoLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsLxUjwLfXypVP/4dU0e8mNvhsPOn2dHyz6b1er74JWqC2V2ZW50c190ZXN0CVRlc3RFdmVudAAeFUhlbGxvIGZyb20gdGVzdCBldmVudCoAAAAAAAAA",
+            "eventBcs": "ymUjPSs45ev3zuW/XyPrq7g9fwhgBwLc87kV9VGQi7wLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsplIz0rOOXr987lv18j66u4PX8IYAcC3PO5FfVRkIu8C2V2ZW50c190ZXN0CVRlc3RFdmVudAAeFUhlbGxvIGZyb20gdGVzdCBldmVudCoAAAAAAAAA",
             "contents": {
               "type": {
-                "repr": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa::events_test::TestEvent"
+                "repr": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc::events_test::TestEvent"
               },
               "json": {
                 "message": "Hello from test event",
@@ -67,11 +67,11 @@ Response: {
               }
             },
             "transaction": {
-              "digest": "9dzuxqKwRvUzSimzGETiSeAJtggb5xUDCXUD9cqtidHM"
+              "digest": "CCdKUJbRzuq2eWFG6cpL86e8DG3DipFw2XyXhzdTy5MF"
             },
             "transactionModule": {
               "package": {
-                "address": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa"
+                "address": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc"
               },
               "name": "events_test"
             }
@@ -82,7 +82,7 @@ Response: {
   }
 }
 
-task 7, lines 80-109:
+task 7, lines 81-110:
 //# run-graphql
 Response: {
   "data": {
@@ -99,10 +99,10 @@ Response: {
             },
             "sequenceNumber": 0,
             "timestamp": "1970-01-01T00:00:00Z",
-            "eventBcs": "wvFSPAt9fKlU//h1TR7yY2+Gw86fZ0fLPpvV6vvglaoLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsLxUjwLfXypVP/4dU0e8mNvhsPOn2dHyz6b1er74JWqC2V2ZW50c190ZXN0CVRlc3RFdmVudAAUC0ZpcnN0IGV2ZW50AQAAAAAAAAA=",
+            "eventBcs": "ymUjPSs45ev3zuW/XyPrq7g9fwhgBwLc87kV9VGQi7wLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsplIz0rOOXr987lv18j66u4PX8IYAcC3PO5FfVRkIu8C2V2ZW50c190ZXN0CVRlc3RFdmVudAAUC0ZpcnN0IGV2ZW50AQAAAAAAAAA=",
             "contents": {
               "type": {
-                "repr": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa::events_test::TestEvent"
+                "repr": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc::events_test::TestEvent"
               },
               "json": {
                 "message": "First event",
@@ -110,11 +110,11 @@ Response: {
               }
             },
             "transaction": {
-              "digest": "7gk9qqrmyTz3rF2vE17PWqJUHXMiV4xA9hizrSffjitq"
+              "digest": "2e8aqGR52hLsc3fzXkZ5hdjMeR9knKPW3bSw1bMwdaXw"
             },
             "transactionModule": {
               "package": {
-                "address": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa"
+                "address": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc"
               },
               "name": "events_test"
             }
@@ -125,10 +125,10 @@ Response: {
             },
             "sequenceNumber": 1,
             "timestamp": "1970-01-01T00:00:00Z",
-            "eventBcs": "wvFSPAt9fKlU//h1TR7yY2+Gw86fZ0fLPpvV6vvglaoLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsLxUjwLfXypVP/4dU0e8mNvhsPOn2dHyz6b1er74JWqC2V2ZW50c190ZXN0CVRlc3RFdmVudAAVDFNlY29uZCBldmVudAIAAAAAAAAA",
+            "eventBcs": "ymUjPSs45ev3zuW/XyPrq7g9fwhgBwLc87kV9VGQi7wLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsplIz0rOOXr987lv18j66u4PX8IYAcC3PO5FfVRkIu8C2V2ZW50c190ZXN0CVRlc3RFdmVudAAVDFNlY29uZCBldmVudAIAAAAAAAAA",
             "contents": {
               "type": {
-                "repr": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa::events_test::TestEvent"
+                "repr": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc::events_test::TestEvent"
               },
               "json": {
                 "message": "Second event",
@@ -136,11 +136,11 @@ Response: {
               }
             },
             "transaction": {
-              "digest": "7gk9qqrmyTz3rF2vE17PWqJUHXMiV4xA9hizrSffjitq"
+              "digest": "2e8aqGR52hLsc3fzXkZ5hdjMeR9knKPW3bSw1bMwdaXw"
             },
             "transactionModule": {
               "package": {
-                "address": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa"
+                "address": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc"
               },
               "name": "events_test"
             }
@@ -151,7 +151,7 @@ Response: {
   }
 }
 
-task 8, lines 111-140:
+task 8, lines 112-141:
 //# run-graphql
 Response: {
   "data": {
@@ -168,10 +168,10 @@ Response: {
             },
             "sequenceNumber": 0,
             "timestamp": "1970-01-01T00:00:00Z",
-            "eventBcs": "wvFSPAt9fKlU//h1TR7yY2+Gw86fZ0fLPpvV6vvglaoLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsLxUjwLfXypVP/4dU0e8mNvhsPOn2dHyz6b1er74JWqC2V2ZW50c190ZXN0CVRlc3RFdmVudAAUC0ZpcnN0IGV2ZW50AQAAAAAAAAA=",
+            "eventBcs": "ymUjPSs45ev3zuW/XyPrq7g9fwhgBwLc87kV9VGQi7wLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsplIz0rOOXr987lv18j66u4PX8IYAcC3PO5FfVRkIu8C2V2ZW50c190ZXN0CVRlc3RFdmVudAAUC0ZpcnN0IGV2ZW50AQAAAAAAAAA=",
             "contents": {
               "type": {
-                "repr": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa::events_test::TestEvent"
+                "repr": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc::events_test::TestEvent"
               },
               "json": {
                 "message": "First event",
@@ -179,11 +179,11 @@ Response: {
               }
             },
             "transaction": {
-              "digest": "7gk9qqrmyTz3rF2vE17PWqJUHXMiV4xA9hizrSffjitq"
+              "digest": "2e8aqGR52hLsc3fzXkZ5hdjMeR9knKPW3bSw1bMwdaXw"
             },
             "transactionModule": {
               "package": {
-                "address": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa"
+                "address": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc"
               },
               "name": "events_test"
             }
@@ -194,7 +194,7 @@ Response: {
   }
 }
 
-task 9, lines 142-171:
+task 9, lines 143-172:
 //# run-graphql
 Response: {
   "data": {
@@ -211,10 +211,10 @@ Response: {
             },
             "sequenceNumber": 1,
             "timestamp": "1970-01-01T00:00:00Z",
-            "eventBcs": "wvFSPAt9fKlU//h1TR7yY2+Gw86fZ0fLPpvV6vvglaoLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsLxUjwLfXypVP/4dU0e8mNvhsPOn2dHyz6b1er74JWqC2V2ZW50c190ZXN0CVRlc3RFdmVudAAVDFNlY29uZCBldmVudAIAAAAAAAAA",
+            "eventBcs": "ymUjPSs45ev3zuW/XyPrq7g9fwhgBwLc87kV9VGQi7wLZXZlbnRzX3Rlc3T8zJpCG7sTwaZqGqmPCtdQKe3pSFd3nGkVtE+UBouSHsplIz0rOOXr987lv18j66u4PX8IYAcC3PO5FfVRkIu8C2V2ZW50c190ZXN0CVRlc3RFdmVudAAVDFNlY29uZCBldmVudAIAAAAAAAAA",
             "contents": {
               "type": {
-                "repr": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa::events_test::TestEvent"
+                "repr": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc::events_test::TestEvent"
               },
               "json": {
                 "message": "Second event",
@@ -222,11 +222,11 @@ Response: {
               }
             },
             "transaction": {
-              "digest": "7gk9qqrmyTz3rF2vE17PWqJUHXMiV4xA9hizrSffjitq"
+              "digest": "2e8aqGR52hLsc3fzXkZ5hdjMeR9knKPW3bSw1bMwdaXw"
             },
             "transactionModule": {
               "package": {
-                "address": "0xc2f1523c0b7d7ca954fff8754d1ef2636f86c3ce9f6747cb3e9bd5eafbe095aa"
+                "address": "0xca65233d2b38e5ebf7cee5bf5f23ebabb83d7f08600702dcf3b915f551908bbc"
               },
               "name": "events_test"
             }
@@ -237,7 +237,7 @@ Response: {
   }
 }
 
-task 10, lines 173-202:
+task 10, lines 174-203:
 //# run-graphql
 Response: {
   "data": {
@@ -253,7 +253,7 @@ Response: {
   }
 }
 
-task 11, lines 204-217:
+task 11, lines 205-218:
 //# run-graphql --cursors 1000 2000
 Response: {
   "data": {

@@ -6,24 +6,24 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-15:
+task 1, lines 7-16:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 4970400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 17-18:
+task 2, lines 18-19:
 //# programmable --sender A --inputs @A
 //> P::M::new();
 created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 20:
+task 3, line 21:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 22-37:
+task 4, lines 23-38:
 //# run-graphql
 Response: {
   "data": {
@@ -45,7 +45,7 @@ Response: {
       "asMoveObject": {
         "contents": {
           "type": {
-            "repr": "0x953e5450cf0e9ceece19e77d7131dc89937adb40f1ac5ee16aaf9e4c5ec9b3bd::M::Foo",
+            "repr": "0x19b6e8578417f6004293696ac9f39ef7607cdb6afe3e3e2dc1ce212c105a0a44::M::Foo",
             "abilities": [
               "KEY"
             ]

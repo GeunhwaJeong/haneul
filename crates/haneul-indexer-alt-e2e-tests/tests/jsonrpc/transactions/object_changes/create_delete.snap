@@ -9,13 +9,13 @@ A: object(0,0)
 // Test creating and deleting an object. Both of these operations should show
 // up in object changes.
 
-task 1, lines 9-23:
+task 1, lines 10-24:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 4788000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 25-27:
+task 2, lines 26-28:
 //# programmable --sender A --inputs @A
 //> 0: P0::M::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -23,36 +23,25 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2196400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 29-30:
+task 3, lines 30-31:
 //# programmable --sender A --inputs object(2,0)
 //> 0: P0::M::delete(Input(0))
 mutated: object(0,0)
 deleted: object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 2174436, non_refundable_storage_fee: 21964
 
-task 4, line 32:
+task 4, line 33:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 34-38:
+task 5, lines 35-39:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 0,
   "result": {
-    "digest": "6Cr5KVF9bWDnKZV5f6X3uj7tHVBWvgzb1zMqeKZX5Tkp",
+    "digest": "Daj39WAg2k2fknVmqjZ4Eyu6FKAJ2VNe5ybQNBKUHYq6",
     "objectChanges": [
-      {
-        "type": "created",
-        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-        "owner": {
-          "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
-        },
-        "objectType": "0x3376a8209a89a133a491bacb345c6067f2132151b38ea14986fc91cc21c9c26a::M::O",
-        "objectId": "0x9ff1788c1c06353ce13b6882bde78106e90f04dcd8da90f1c5f7baeb196b9a77",
-        "version": "2",
-        "digest": "6EvAhpUhASnBeZsUYU7V5M9z9zUWAeBYfQYfDLMYTDEN"
-      },
       {
         "type": "mutated",
         "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
@@ -60,10 +49,21 @@ Response: {
           "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
         },
         "objectType": "0x2::coin::Coin<0x2::haneul::HANEUL>",
-        "objectId": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+        "objectId": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
         "version": "2",
         "previousVersion": "1",
-        "digest": "ApGZPTiNVKVBNtvG5LtComPTg8g9n7rNiY7368dRSjaG"
+        "digest": "KPny1NaojQHdEDRkdmPF3wVW7MB6izfpmF7sAMoNZeL"
+      },
+      {
+        "type": "created",
+        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
+        "owner": {
+          "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
+        },
+        "objectType": "0x27af6d013f7c50bd044c032389e698c083aaf8a7592d7b447747d86757483af7::M::O",
+        "objectId": "0xb99499689ef7e8042fdc296dd167492ffe72a496bbf5a4f3aa55d4ef4c06e9f2",
+        "version": "2",
+        "digest": "8JstaiJBRv2zsvacPcBeEgMwMQ7v46zKc5PnpUwbLjJP"
       }
     ],
     "timestampMs": "0",
@@ -71,21 +71,14 @@ Response: {
   }
 }
 
-task 6, lines 40-44:
+task 6, lines 41-45:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
-    "digest": "AwnqZMkQQbNheVUFF6prNXYt5y6vB8tRdo3DJ8CnKavP",
+    "digest": "2v3bUGmRqQxW2Lsd9QJNhbTfShkEtjKdH41ymK6t5P8g",
     "objectChanges": [
-      {
-        "type": "deleted",
-        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-        "objectType": "0x3376a8209a89a133a491bacb345c6067f2132151b38ea14986fc91cc21c9c26a::M::O",
-        "objectId": "0x9ff1788c1c06353ce13b6882bde78106e90f04dcd8da90f1c5f7baeb196b9a77",
-        "version": "3"
-      },
       {
         "type": "mutated",
         "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
@@ -93,10 +86,17 @@ Response: {
           "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
         },
         "objectType": "0x2::coin::Coin<0x2::haneul::HANEUL>",
-        "objectId": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+        "objectId": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
         "version": "3",
         "previousVersion": "2",
-        "digest": "JAcM5kPGTLcpqL9QK7kh2QFFmfKiiAjYQ4kgzt3w9BvP"
+        "digest": "4fwvshgHLx25ktKSnzsCrgfqfJkoeVpvJrw1gV6i4dtb"
+      },
+      {
+        "type": "deleted",
+        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
+        "objectType": "0x27af6d013f7c50bd044c032389e698c083aaf8a7592d7b447747d86757483af7::M::O",
+        "objectId": "0xb99499689ef7e8042fdc296dd167492ffe72a496bbf5a4f3aa55d4ef4c06e9f2",
+        "version": "3"
       }
     ],
     "timestampMs": "0",

@@ -8,7 +8,7 @@ processed 4 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 8-12:
+task 1, lines 9-13:
 // Send 1_000_000_000 from A to B's address balance
 //# programmable --sender A --inputs 1000000000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -18,11 +18,11 @@ mutated: object(0,0)
 accumulators_written: (object(1,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1000000000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 14:
+task 2, line 15:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 16-21:
+task 3, lines 17-22:
 // B should see the address balance coin in getCoins
 //# run-jsonrpc
 Response: {
@@ -32,22 +32,22 @@ Response: {
     "data": [
       {
         "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL",
-        "coinObjectId": "0x1588e1d224377ce4d157f1a7508118d75f456d3adad746fe26bc821f93a2d926",
+        "coinObjectId": "0x1021142299320d150c3486d1f3ebc991484d01613a1b26060b873d8ab7809c11",
         "version": "1",
-        "digest": "F8cET7r5Nsm2yzLmuKQhXtz8XqWdchcyVBd5UZeAmaVF",
+        "digest": "7Y7BehisBMMTz9egxjckNcmR8ZvSzc5EfUEYFRLcMSFy",
         "balance": "300000000000000",
-        "previousTransaction": "ETLPB5qn5mG6fpToK31ByaFZ9pbksnLw1r3L7bNiqMEw"
+        "previousTransaction": "Dhzd2BPXHXqhP5iPWYxNRZt7opFmRXbWywNtN3Ahmpzk"
       },
       {
         "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL",
-        "coinObjectId": "0xcc0b7425fc40ad4b4f34c205a7c2a665671752671f1acb7cb9a44bad9efac674",
+        "coinObjectId": "0xe8f9b25eba4c6265487cf7b7579e44fe310115209a5ccee86ec7744b2de8f370",
         "version": "2",
         "digest": "146BbRG1fzHxMjLNqaNNoWoGqPxyspJUzHJJdS3j9nE7",
         "balance": "1000000000",
-        "previousTransaction": "9zskrw67Two8tYyKskoBc4m1Lq6zJnMYeLMcVBuM2pE3"
+        "previousTransaction": "BwLo4po7io12UGvHw3UYhZU7jjcqNC4fQ6rzmf8MMkHY"
       }
     ],
-    "nextCursor": "zAEAp7AycDh4qnTDEmk1eJ/R1NfhEdWRGwkkfWljBhwxK1oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEY29pbgAAAAAAAAAEQ29pbgAAAAAAAAABAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAANzdWkAAAAAAAAAA1NVSQAAAAAAAAAAAf/////EZTX/zAt0JfxArUtPNMIFp8KmZWcXUmcfGst8uaRLrZ76xnQ=",
+    "nextCursor": "0gEAp7AycDh4qnTDEmk1eJ/R1NfhEdWRGwkkfWljBhwxK1oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEY29pbgAAAAAAAAAEQ29pbgAAAAAAAAABAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAZoYW5ldWwAAAAAAAAABkhBTkVVTAAAAAAAAAAAAf/////EZTX/6PmyXrpMYmVIfPe3V55E/jEBFSCaXM7obsd0Sy3o83A=",
     "hasNextPage": false
   }
 }

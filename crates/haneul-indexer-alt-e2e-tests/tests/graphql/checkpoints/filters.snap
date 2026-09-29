@@ -6,7 +6,7 @@ processed 14 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,66 +14,66 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 12-14:
+task 3, lines 13-15:
 //# programmable --sender A --inputs object(1,0) 1
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 4, lines 16-18:
+task 4, lines 17-19:
 //# programmable --sender A --inputs object(1,0) 2
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 5, line 20:
+task 5, line 21:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 6, line 22:
+task 6, line 23:
 //# advance-epoch
 Epoch advanced: 1
 
-task 7, lines 24-26:
+task 7, lines 25-27:
 //# programmable --sender A --inputs object(1,0) 1
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 8, lines 28-30:
+task 8, lines 29-31:
 //# programmable --sender A --inputs object(1,0) 2
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 9, line 32:
+task 9, line 33:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 10, lines 34-36:
+task 10, lines 35-37:
 //# programmable --sender A --inputs object(1,0) 3
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 11, line 38:
+task 11, line 39:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 12, line 40:
+task 12, line 41:
 //# create-checkpoint
 Checkpoint created: 6
 
-task 13, lines 42-108:
+task 13, lines 43-109:
 //# run-graphql
 Response: {
   "data": {
@@ -82,7 +82,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 0,
-            "digest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1",
+            "digest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN",
             "epoch": {
               "epochId": 0
             }
@@ -91,7 +91,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 1,
-            "digest": "BoBH11VX8XWeFMwzNKhBTjTf2mYTAftNcojzKV4aU1ZU",
+            "digest": "FCXVrG9SCXTfTAJ6Tkdf1LGqd7VpdNRBjR1YsR3GmVFd",
             "epoch": {
               "epochId": 0
             }
@@ -100,7 +100,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 2,
-            "digest": "5dEcYvtszVQqcQA58mm8cdArJ6gmy8rgTCU2t7JzmyMc",
+            "digest": "BiaM7DwuA13CEfpyZV7E1tdJS7ZQCfC6sTQGRq398iM5",
             "epoch": {
               "epochId": 0
             }
@@ -109,7 +109,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 3,
-            "digest": "9j1WumQLbgEm4dchTvzkHuTsLkF3S33GbpF7xFXM8aEr",
+            "digest": "CrEtsBek2xAW9RzXqKtN44YNuJYnrRBBMMWznMpUQ8Eh",
             "epoch": {
               "epochId": 0
             }
@@ -118,7 +118,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 4,
-            "digest": "3kmhM1f3jdtQLWjQMUryHQucDRczh1bVydA4xUUAjeKg",
+            "digest": "5FfcUZPZZRgyk9EnzteYsWbF6GvbT2j8sbcishJVrFXc",
             "epoch": {
               "epochId": 1
             }
@@ -127,7 +127,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 5,
-            "digest": "C4qj9CRECq76FqQ5kkRFB1tG1FK6RfZwMDGTCNhxkU4c",
+            "digest": "Kdt2caJmiW6XM6nhK3fREfPnYj9rbZg2XXRz53SJ1Ba",
             "epoch": {
               "epochId": 1
             }
@@ -136,7 +136,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 6,
-            "digest": "GFfGt49Vt23JDGYS6E1o91YRoEqAhJp2hMRHx492aK6A",
+            "digest": "3JLDyfhfSWtWLXs38Z7oBo794png3nZa8iiFrh9fR31P",
             "epoch": {
               "epochId": 1
             }
@@ -149,7 +149,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 2,
-            "digest": "5dEcYvtszVQqcQA58mm8cdArJ6gmy8rgTCU2t7JzmyMc",
+            "digest": "BiaM7DwuA13CEfpyZV7E1tdJS7ZQCfC6sTQGRq398iM5",
             "epoch": {
               "epochId": 0
             }
@@ -158,7 +158,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 3,
-            "digest": "9j1WumQLbgEm4dchTvzkHuTsLkF3S33GbpF7xFXM8aEr",
+            "digest": "CrEtsBek2xAW9RzXqKtN44YNuJYnrRBBMMWznMpUQ8Eh",
             "epoch": {
               "epochId": 0
             }
@@ -171,7 +171,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 0,
-            "digest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1",
+            "digest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN",
             "epoch": {
               "epochId": 0
             }
@@ -180,7 +180,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 1,
-            "digest": "BoBH11VX8XWeFMwzNKhBTjTf2mYTAftNcojzKV4aU1ZU",
+            "digest": "FCXVrG9SCXTfTAJ6Tkdf1LGqd7VpdNRBjR1YsR3GmVFd",
             "epoch": {
               "epochId": 0
             }
@@ -193,7 +193,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 4,
-            "digest": "3kmhM1f3jdtQLWjQMUryHQucDRczh1bVydA4xUUAjeKg",
+            "digest": "5FfcUZPZZRgyk9EnzteYsWbF6GvbT2j8sbcishJVrFXc",
             "epoch": {
               "epochId": 1
             }
@@ -206,7 +206,7 @@ Response: {
         {
           "node": {
             "sequenceNumber": 4,
-            "digest": "3kmhM1f3jdtQLWjQMUryHQucDRczh1bVydA4xUUAjeKg",
+            "digest": "5FfcUZPZZRgyk9EnzteYsWbF6GvbT2j8sbcishJVrFXc",
             "epoch": {
               "epochId": 1
             }

@@ -6,27 +6,27 @@ processed 6 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-13:
+task 1, lines 7-14:
 //# publish --upgradeable --sender A
 created: object(1,0), object(1,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5814000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 15:
+task 2, line 16:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 17-28:
+task 3, lines 18-29:
 //# upgrade --package P --upgrade-capability 1,1 --sender A
 created: object(3,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 6528400,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 4, line 30:
+task 4, line 31:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 5, lines 32-61:
+task 5, lines 33-62:
 //# run-graphql
 Response: {
   "data": {
@@ -35,17 +35,17 @@ Response: {
         "package": {
           "m": {
             "name": "M",
-            "fullyQualifiedName": "0x9b7af6b4bbc98bf30f2d6ce05a553b8bf1b7ee6845b3d3f948084c8be1fe0533::M",
+            "fullyQualifiedName": "0x28b4f6ba242c0eb2ff018bac8f3e88d6767cb72dd88b7769748a46c2f9cb405f::M",
             "fileFormatVersion": 7,
-            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFNA2Zvb5t69rS7yYvzDy1s4FpVO4vxt+5oRbPT+UgITIvh/gUzAAEAAAACBioAAAAAAAAAAgAA",
-            "disassembly": "// Move bytecode v7\nmodule 9b7af6b4bbc98bf30f2d6ce05a553b8bf1b7ee6845b3d3f948084c8be1fe0533.M {\n\npublic foo(): u64 {\nB0:\n\t0: LdU64(42)\n\t1: Ret\n}\n\n}\n"
+            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFNA2Zvbyi09rokLA6y/wGLrI8+iNZ2fLct2It3aXSKRsL5y0BfAAEAAAACBioAAAAAAAAAAgAA",
+            "disassembly": "// Move bytecode v7\nmodule 28b4f6ba242c0eb2ff018bac8f3e88d6767cb72dd88b7769748a46c2f9cb405f.M {\n\npublic foo(): u64 {\nB0:\n\t0: LdU64(42)\n\t1: Ret\n}\n\n}\n"
           },
           "n": {
             "name": "N",
-            "fullyQualifiedName": "0x9b7af6b4bbc98bf30f2d6ce05a553b8bf1b7ee6845b3d3f948084c8be1fe0533::N",
+            "fullyQualifiedName": "0x28b4f6ba242c0eb2ff018bac8f3e88d6767cb72dd88b7769748a46c2f9cb405f::N",
             "fileFormatVersion": 7,
-            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFOA2Jhcpt69rS7yYvzDy1s4FpVO4vxt+5oRbPT+UgITIvh/gUzAAEAAAACBisAAAAAAAAAAgAA",
-            "disassembly": "// Move bytecode v7\nmodule 9b7af6b4bbc98bf30f2d6ce05a553b8bf1b7ee6845b3d3f948084c8be1fe0533.N {\n\npublic bar(): u64 {\nB0:\n\t0: LdU64(43)\n\t1: Ret\n}\n\n}\n"
+            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFOA2Jhcii09rokLA6y/wGLrI8+iNZ2fLct2It3aXSKRsL5y0BfAAEAAAACBisAAAAAAAAAAgAA",
+            "disassembly": "// Move bytecode v7\nmodule 28b4f6ba242c0eb2ff018bac8f3e88d6767cb72dd88b7769748a46c2f9cb405f.N {\n\npublic bar(): u64 {\nB0:\n\t0: LdU64(43)\n\t1: Ret\n}\n\n}\n"
           },
           "o": null
         }
@@ -56,24 +56,24 @@ Response: {
         "package": {
           "m": {
             "name": "M",
-            "fullyQualifiedName": "0xb8556f73000443a6dff5997c99f2d0289f7a5b986054cadb81e9911f187ce108::M",
+            "fullyQualifiedName": "0x533425f7965bc690d70f773e630c1c0229867320991aa411c948b8c4084bac4d::M",
             "fileFormatVersion": 7,
-            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFNA2Zvb5t69rS7yYvzDy1s4FpVO4vxt+5oRbPT+UgITIvh/gUzAAEAAAACBioAAAAAAAAAAgAA",
-            "disassembly": "// Move bytecode v7\nmodule 9b7af6b4bbc98bf30f2d6ce05a553b8bf1b7ee6845b3d3f948084c8be1fe0533.M {\n\npublic foo(): u64 {\nB0:\n\t0: LdU64(42)\n\t1: Ret\n}\n\n}\n"
+            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFNA2Zvbyi09rokLA6y/wGLrI8+iNZ2fLct2It3aXSKRsL5y0BfAAEAAAACBioAAAAAAAAAAgAA",
+            "disassembly": "// Move bytecode v7\nmodule 28b4f6ba242c0eb2ff018bac8f3e88d6767cb72dd88b7769748a46c2f9cb405f.M {\n\npublic foo(): u64 {\nB0:\n\t0: LdU64(42)\n\t1: Ret\n}\n\n}\n"
           },
           "n": {
             "name": "N",
-            "fullyQualifiedName": "0xb8556f73000443a6dff5997c99f2d0289f7a5b986054cadb81e9911f187ce108::N",
+            "fullyQualifiedName": "0x533425f7965bc690d70f773e630c1c0229867320991aa411c948b8c4084bac4d::N",
             "fileFormatVersion": 7,
-            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFOA2Jhcpt69rS7yYvzDy1s4FpVO4vxt+5oRbPT+UgITIvh/gUzAAEAAAACBisAAAAAAAAAAgAA",
-            "disassembly": "// Move bytecode v7\nmodule 9b7af6b4bbc98bf30f2d6ce05a553b8bf1b7ee6845b3d3f948084c8be1fe0533.N {\n\npublic bar(): u64 {\nB0:\n\t0: LdU64(43)\n\t1: Ret\n}\n\n}\n"
+            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFOA2Jhcii09rokLA6y/wGLrI8+iNZ2fLct2It3aXSKRsL5y0BfAAEAAAACBisAAAAAAAAAAgAA",
+            "disassembly": "// Move bytecode v7\nmodule 28b4f6ba242c0eb2ff018bac8f3e88d6767cb72dd88b7769748a46c2f9cb405f.N {\n\npublic bar(): u64 {\nB0:\n\t0: LdU64(43)\n\t1: Ret\n}\n\n}\n"
           },
           "o": {
             "name": "O",
-            "fullyQualifiedName": "0xb8556f73000443a6dff5997c99f2d0289f7a5b986054cadb81e9911f187ce108::O",
+            "fullyQualifiedName": "0x533425f7965bc690d70f773e630c1c0229867320991aa411c948b8c4084bac4d::O",
             "fileFormatVersion": 7,
-            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFPA2Jhept69rS7yYvzDy1s4FpVO4vxt+5oRbPT+UgITIvh/gUzAAEAAAACBiwAAAAAAAAAAgAA",
-            "disassembly": "// Move bytecode v7\nmodule 9b7af6b4bbc98bf30f2d6ce05a553b8bf1b7ee6845b3d3f948084c8be1fe0533.O {\n\npublic baz(): u64 {\nB0:\n\t0: LdU64(44)\n\t1: Ret\n}\n\n}\n"
+            "bytes": "oRzrCwcAAAUGAQACAwIFBQcDBwoGCBAgDDARAAAAAQABAAABAwFPA2Jheii09rokLA6y/wGLrI8+iNZ2fLct2It3aXSKRsL5y0BfAAEAAAACBiwAAAAAAAAAAgAA",
+            "disassembly": "// Move bytecode v7\nmodule 28b4f6ba242c0eb2ff018bac8f3e88d6767cb72dd88b7769748a46c2f9cb405f.O {\n\npublic baz(): u64 {\nB0:\n\t0: LdU64(44)\n\t1: Ret\n}\n\n}\n"
           }
         }
       }

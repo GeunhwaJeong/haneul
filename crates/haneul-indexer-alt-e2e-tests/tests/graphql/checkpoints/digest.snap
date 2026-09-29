@@ -6,7 +6,7 @@ processed 11 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,82 +14,82 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 12-14:
+task 3, lines 13-15:
 //# programmable --sender A --inputs object(1,0) 1
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 4, lines 16-18:
+task 4, lines 17-19:
 //# programmable --sender A --inputs object(1,0) 2
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 5, line 20:
+task 5, line 21:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, line 24:
+task 7, line 25:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 8, lines 26-39:
+task 8, lines 27-40:
 //# run-graphql
 Response: {
   "data": {
     "c0": {
       "sequenceNumber": 0,
-      "digest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1",
+      "digest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN",
       "previousCheckpointDigest": null
     },
     "c1": {
       "sequenceNumber": 1,
-      "digest": "BoBH11VX8XWeFMwzNKhBTjTf2mYTAftNcojzKV4aU1ZU",
-      "previousCheckpointDigest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1"
+      "digest": "FCXVrG9SCXTfTAJ6Tkdf1LGqd7VpdNRBjR1YsR3GmVFd",
+      "previousCheckpointDigest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN"
     },
     "c2": {
       "sequenceNumber": 2,
-      "digest": "5dEcYvtszVQqcQA58mm8cdArJ6gmy8rgTCU2t7JzmyMc",
-      "previousCheckpointDigest": "BoBH11VX8XWeFMwzNKhBTjTf2mYTAftNcojzKV4aU1ZU"
+      "digest": "BiaM7DwuA13CEfpyZV7E1tdJS7ZQCfC6sTQGRq398iM5",
+      "previousCheckpointDigest": "FCXVrG9SCXTfTAJ6Tkdf1LGqd7VpdNRBjR1YsR3GmVFd"
     },
     "c3": {
       "sequenceNumber": 3,
-      "digest": "8FWhzmQZcNANJXDVDSzd7g3k88FGHzxD8bs3Xj2YgNro",
-      "previousCheckpointDigest": "5dEcYvtszVQqcQA58mm8cdArJ6gmy8rgTCU2t7JzmyMc"
+      "digest": "2mA5g2tJuWQHpmJHgMUttufvHESRzi8HszbgJfUXF36C",
+      "previousCheckpointDigest": "BiaM7DwuA13CEfpyZV7E1tdJS7ZQCfC6sTQGRq398iM5"
     },
     "multiGetCheckpoints": [
       {
         "sequenceNumber": 0,
-        "digest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1",
+        "digest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN",
         "previousCheckpointDigest": null
       },
       {
         "sequenceNumber": 1,
-        "digest": "BoBH11VX8XWeFMwzNKhBTjTf2mYTAftNcojzKV4aU1ZU",
-        "previousCheckpointDigest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1"
+        "digest": "FCXVrG9SCXTfTAJ6Tkdf1LGqd7VpdNRBjR1YsR3GmVFd",
+        "previousCheckpointDigest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN"
       },
       {
         "sequenceNumber": 2,
-        "digest": "5dEcYvtszVQqcQA58mm8cdArJ6gmy8rgTCU2t7JzmyMc",
-        "previousCheckpointDigest": "BoBH11VX8XWeFMwzNKhBTjTf2mYTAftNcojzKV4aU1ZU"
+        "digest": "BiaM7DwuA13CEfpyZV7E1tdJS7ZQCfC6sTQGRq398iM5",
+        "previousCheckpointDigest": "FCXVrG9SCXTfTAJ6Tkdf1LGqd7VpdNRBjR1YsR3GmVFd"
       },
       {
         "sequenceNumber": 3,
-        "digest": "8FWhzmQZcNANJXDVDSzd7g3k88FGHzxD8bs3Xj2YgNro",
-        "previousCheckpointDigest": "5dEcYvtszVQqcQA58mm8cdArJ6gmy8rgTCU2t7JzmyMc"
+        "digest": "2mA5g2tJuWQHpmJHgMUttufvHESRzi8HszbgJfUXF36C",
+        "previousCheckpointDigest": "BiaM7DwuA13CEfpyZV7E1tdJS7ZQCfC6sTQGRq398iM5"
       }
     ]
   }
 }
 
-task 9, lines 41-48:
+task 9, lines 42-49:
 //# run-graphql
 Response: {
   "data": {
@@ -97,20 +97,20 @@ Response: {
   }
 }
 
-task 10, lines 50-57:
+task 10, lines 51-58:
 //# run-graphql
 Response: {
   "data": {
     "multiGetCheckpoints": [
       {
         "sequenceNumber": 2,
-        "digest": "5dEcYvtszVQqcQA58mm8cdArJ6gmy8rgTCU2t7JzmyMc",
-        "previousCheckpointDigest": "BoBH11VX8XWeFMwzNKhBTjTf2mYTAftNcojzKV4aU1ZU"
+        "digest": "BiaM7DwuA13CEfpyZV7E1tdJS7ZQCfC6sTQGRq398iM5",
+        "previousCheckpointDigest": "FCXVrG9SCXTfTAJ6Tkdf1LGqd7VpdNRBjR1YsR3GmVFd"
       },
       null,
       {
         "sequenceNumber": 0,
-        "digest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1",
+        "digest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN",
         "previousCheckpointDigest": null
       },
       null

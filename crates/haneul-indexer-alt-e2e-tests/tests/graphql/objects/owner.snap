@@ -6,7 +6,7 @@ processed 13 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs @A
 //> 0: haneul::bag::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -14,14 +14,14 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2287600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 10-11:
+task 2, lines 11-12:
 //# programmable --sender A --inputs object(1,0) 1000
 //> 0: haneul::bag::add<u64, u64>(Input(0), Input(1), Input(1))
 created: object(2,0)
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 3754400,  storage_rebate: 2264724, non_refundable_storage_fee: 22876
 
-task 3, lines 13-15:
+task 3, lines 14-16:
 //# programmable --sender A --inputs 2000
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::transfer::public_share_object<haneul::coin::Coin<haneul::haneul::HANEUL>>(Result(0));
@@ -29,7 +29,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 17-19:
+task 4, lines 18-20:
 //# programmable --sender A --inputs 3000
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::transfer::public_freeze_object<haneul::coin::Coin<haneul::haneul::HANEUL>>(Result(0));
@@ -37,7 +37,7 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 21-24:
+task 5, lines 22-25:
 //# programmable --sender A --inputs 4000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::party::single_owner(Input(1));
@@ -46,22 +46,22 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 26:
+task 6, line 27:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 7, lines 28-29:
+task 7, lines 29-30:
 //# programmable --sender A --inputs object(1,0) 5000
 //> 0: haneul::bag::add<u64, u64>(Input(0), Input(1), Input(1))
 created: object(7,0)
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 3754400,  storage_rebate: 2264724, non_refundable_storage_fee: 22876
 
-task 8, line 31:
+task 8, line 32:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 9, lines 33-71:
+task 9, lines 34-72:
 //# run-graphql
 Response: {
   "data": {
@@ -77,7 +77,7 @@ Response: {
       "owner": {
         "__typename": "ObjectOwner",
         "address": {
-          "address": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9"
+          "address": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80"
         }
       }
     },
@@ -104,7 +104,7 @@ Response: {
   }
 }
 
-task 10, lines 73-103:
+task 10, lines 74-104:
 //# run-graphql
 Response: {
   "data": {
@@ -115,7 +115,7 @@ Response: {
             "asMoveObject": {
               "contents": {
                 "json": {
-                  "id": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9",
+                  "id": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80",
                   "size": "2"
                 }
               }
@@ -131,7 +131,7 @@ Response: {
             "asMoveObject": {
               "contents": {
                 "json": {
-                  "id": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9",
+                  "id": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80",
                   "size": "2"
                 }
               }
@@ -143,7 +143,7 @@ Response: {
   }
 }
 
-task 11, lines 105-120:
+task 11, lines 106-121:
 //# run-graphql
 Response: {
   "data": {
@@ -154,7 +154,7 @@ Response: {
             "asMoveObject": {
               "contents": {
                 "json": {
-                  "id": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9",
+                  "id": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80",
                   "size": "1"
                 }
               }
@@ -166,7 +166,7 @@ Response: {
   }
 }
 
-task 12, lines 122-138:
+task 12, lines 123-139:
 //# run-graphql
 Response: {
   "data": {
@@ -177,7 +177,7 @@ Response: {
             "asMoveObject": {
               "contents": {
                 "json": {
-                  "id": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9",
+                  "id": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80",
                   "size": "1"
                 }
               }

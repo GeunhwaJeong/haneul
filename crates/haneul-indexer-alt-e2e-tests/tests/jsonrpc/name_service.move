@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --simulator
+//# init --protocol-version 115 --simulator
 
 // Testing various input errors for the HaneulNS name resolution:
 // 1. Not enough labels (need at least two)

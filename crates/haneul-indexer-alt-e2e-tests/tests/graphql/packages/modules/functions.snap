@@ -6,17 +6,17 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-16:
+task 1, lines 7-17:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 4172400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 18:
+task 2, line 19:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 20-42:
+task 3, lines 21-43:
 //# run-graphql
 Response: {
   "data": {
@@ -24,7 +24,7 @@ Response: {
       "module": {
         "f": {
           "name": "f",
-          "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::f",
+          "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::f",
           "isEntry": false,
           "parameters": [],
           "return": [
@@ -40,7 +40,7 @@ Response: {
         },
         "g": {
           "name": "g",
-          "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::g",
+          "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::g",
           "isEntry": true,
           "parameters": [],
           "return": [
@@ -56,7 +56,7 @@ Response: {
         },
         "h": {
           "name": "h",
-          "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::h",
+          "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::h",
           "isEntry": false,
           "parameters": [
             {
@@ -106,7 +106,7 @@ Response: {
         },
         "i": {
           "name": "i",
-          "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::i",
+          "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::i",
           "isEntry": false,
           "parameters": [
             {
@@ -139,7 +139,7 @@ Response: {
   }
 }
 
-task 4, lines 44-72:
+task 4, lines 45-73:
 //# run-graphql --cursors "f" "i"
 Response: {
   "data": {
@@ -153,19 +153,19 @@ Response: {
           "nodes": [
             {
               "name": "f",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::f"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::f"
             },
             {
               "name": "g",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::g"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::g"
             },
             {
               "name": "h",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::h"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::h"
             },
             {
               "name": "i",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::i"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::i"
             }
           ]
         },
@@ -177,11 +177,11 @@ Response: {
           "nodes": [
             {
               "name": "f",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::f"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::f"
             },
             {
               "name": "g",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::g"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::g"
             }
           ]
         },
@@ -193,11 +193,11 @@ Response: {
           "nodes": [
             {
               "name": "h",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::h"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::h"
             },
             {
               "name": "i",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::i"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::i"
             }
           ]
         },
@@ -209,11 +209,11 @@ Response: {
           "nodes": [
             {
               "name": "f",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::f"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::f"
             },
             {
               "name": "g",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::g"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::g"
             }
           ]
         },
@@ -225,11 +225,11 @@ Response: {
           "nodes": [
             {
               "name": "h",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::h"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::h"
             },
             {
               "name": "i",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::i"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::i"
             }
           ]
         },
@@ -241,11 +241,11 @@ Response: {
           "nodes": [
             {
               "name": "g",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::g"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::g"
             },
             {
               "name": "h",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::h"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::h"
             }
           ]
         },
@@ -257,11 +257,11 @@ Response: {
           "nodes": [
             {
               "name": "g",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::g"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::g"
             },
             {
               "name": "h",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::h"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::h"
             }
           ]
         },
@@ -273,11 +273,11 @@ Response: {
           "nodes": [
             {
               "name": "g",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::g"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::g"
             },
             {
               "name": "h",
-              "fullyQualifiedName": "0x1fd398b7240e42f7ec829c60bf31510c472ced8dc41719a26cd582eb664485ce::M::h"
+              "fullyQualifiedName": "0x67584757360328c762c8b88089416c92630497a084e6c42714ae647786f19219::M::h"
             }
           ]
         }

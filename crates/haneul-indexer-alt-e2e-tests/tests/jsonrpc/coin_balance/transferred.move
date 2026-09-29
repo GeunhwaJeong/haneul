@@ -5,7 +5,7 @@
 // Transfer a Test::fake coin from A to B and verify that the balance is reflected under B and not
 // A.
 
-//# init --protocol-version 108 --addresses Test=0x0 --accounts A B --simulator
+//# init --protocol-version 115 --addresses Test=0x0 --accounts A B --simulator
 
 //# publish --sender A
 module Test::fake {

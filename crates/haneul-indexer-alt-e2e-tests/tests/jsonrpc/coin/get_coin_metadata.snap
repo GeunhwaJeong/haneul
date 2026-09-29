@@ -6,13 +6,13 @@ processed 19 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-70:
+task 1, lines 7-71:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2), object(1,3), object(1,4)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 22655600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 72:
+task 2, line 73:
 //# view-object 1,2
 Owner: Immutable
 Version: 2
@@ -95,7 +95,7 @@ Contents: haneul::coin::CoinMetadata<Test::fake::FAKE> {
     },
 }
 
-task 3, line 74:
+task 3, line 75:
 //# view-object 1,4
 Owner: Account Address ( A )
 Version: 2
@@ -178,7 +178,7 @@ Contents: haneul::coin::CoinMetadata<Test::real::REAL> {
     },
 }
 
-task 4, line 76:
+task 4, line 77:
 //# view-object 1,3
 Owner: Account Address ( A )
 Version: 2
@@ -193,11 +193,11 @@ Contents: haneul::coin::TreasuryCap<Test::real::REAL> {
     },
 }
 
-task 5, line 78:
+task 5, line 79:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 6, lines 80-84:
+task 6, lines 81-85:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -208,11 +208,11 @@ Response: {
     "symbol": "REAL",
     "description": "A coin that is real",
     "iconUrl": "https://real.com",
-    "id": "0x2cef583566e8952f16b80a645bb90318aaebc683c79e9ff01733fe533f201b7d"
+    "id": "0x2bbcc53ef7ac7b34325959022c982be5a3c9ca64766b1549960049c4b4bb31ce"
   }
 }
 
-task 7, lines 86-90:
+task 7, lines 87-91:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -223,11 +223,11 @@ Response: {
     "symbol": "FAKE",
     "description": "A coin that is fake",
     "iconUrl": "https://fake.com",
-    "id": "0x12d87dcf93977dc2aedf49c894dea2f55dadd2e91beb562f06eda007ecf79340"
+    "id": "0xec1c90479bf989ae4556243b4c62c72d0d9537669ac80719b1c56e5967ed6b3d"
   }
 }
 
-task 8, lines 92-96:
+task 8, lines 93-97:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -235,7 +235,7 @@ Response: {
   "result": null
 }
 
-task 9, lines 98-102:
+task 9, lines 99-103:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -246,17 +246,17 @@ Response: {
   }
 }
 
-task 10, lines 104-105:
+task 10, lines 105-106:
 //# programmable --sender A --inputs object(1,3) object(1,4)
 //> 0: Test::real::update_metadata_name(Input(0),Input(1));
 mutated: object(0,0), object(1,3), object(1,4)
 gas summary: computation_cost: 1000000, storage_cost: 4780400,  storage_rebate: 4702500, non_refundable_storage_fee: 47500
 
-task 11, line 107:
+task 11, line 108:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 12, lines 109-113:
+task 12, lines 110-114:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -267,20 +267,20 @@ Response: {
     "symbol": "REAL",
     "description": "A coin that is real",
     "iconUrl": "https://real.com",
-    "id": "0x2cef583566e8952f16b80a645bb90318aaebc683c79e9ff01733fe533f201b7d"
+    "id": "0x2bbcc53ef7ac7b34325959022c982be5a3c9ca64766b1549960049c4b4bb31ce"
   }
 }
 
-task 13, line 115:
+task 13, line 116:
 //# transfer-object 1,4 --sender A --recipient B
 mutated: object(0,0), object(1,4)
 gas summary: computation_cost: 1000000, storage_cost: 3078000,  storage_rebate: 3047220, non_refundable_storage_fee: 30780
 
-task 14, line 117:
+task 14, line 118:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 15, lines 119-123:
+task 15, lines 120-124:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -291,11 +291,11 @@ Response: {
     "symbol": "REAL",
     "description": "A coin that is real",
     "iconUrl": "https://real.com",
-    "id": "0x2cef583566e8952f16b80a645bb90318aaebc683c79e9ff01733fe533f201b7d"
+    "id": "0x2bbcc53ef7ac7b34325959022c982be5a3c9ca64766b1549960049c4b4bb31ce"
   }
 }
 
-task 16, lines 125-126:
+task 16, lines 126-127:
 //# programmable --sender B --inputs object(1,4)
 //> 0: Test::real::wrap_coin_metadata(Input(0));
 created: object(16,0)
@@ -303,11 +303,11 @@ mutated: object(0,1)
 wrapped: object(1,4)
 gas summary: computation_cost: 1000000, storage_cost: 2948800,  storage_rebate: 2069100, non_refundable_storage_fee: 20900
 
-task 17, line 128:
+task 17, line 129:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 18, lines 130-134:
+task 18, lines 131-135:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",

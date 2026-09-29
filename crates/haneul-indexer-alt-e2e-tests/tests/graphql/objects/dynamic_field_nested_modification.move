@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --accounts A --simulator --addresses P=0x0
+//# init --protocol-version 115 --accounts A --simulator --addresses P=0x0
 
 // When a nested dynamic field is modified, its root object is also modified,
 // but intermediate dynamic fields in the path are not, so it is not always

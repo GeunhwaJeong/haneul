@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --accounts A --simulator
+//# init --protocol-version 115 --accounts A --simulator
 
 // 1. Output all the checkpoints, for context
 // 2. Fetch transactions from an empty checkpoint

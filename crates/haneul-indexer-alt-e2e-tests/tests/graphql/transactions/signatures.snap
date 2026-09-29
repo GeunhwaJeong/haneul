@@ -6,7 +6,7 @@ processed 6 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 42 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,7 +14,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 10-12:
+task 2, lines 11-13:
 //# programmable --sender B --sponsor C --inputs 43 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -22,22 +22,22 @@ created: object(2,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 14:
+task 3, line 15:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 16-31:
+task 4, lines 17-32:
 //# run-graphql
 Response: {
   "data": {
     "singleSig": {
-      "digest": "CyAJhcCwLWKPgC5nSq3S6HdQXVVTpHQbPmvJ9vMAjucN",
+      "digest": "6f813nDdyWSTZPiZqLvuzqptoomZ4J9dRUtKeaLeT1H9",
       "signatures": [
         {
-          "signatureBytes": "AEUKV1e6cbL7ifRzinCYQRWPbNF13yHfKQmRsUFHKQeDEe9tz1UT2mWMgcfd3g5A6qGNAHEWYk0WCGLBAp/tCwF/UUY663bYjcm3XmNyULIgxJz1t5Z9vxfB+fp8WUoJKA==",
+          "signatureBytes": "AIs+Fp6GHWe+N5S2RK96aNq0svfzIsyX9ONGV97ClFt4oqdylW31Ilm71bm/iwLRPtsBfPS/kN7BMJEev+R2SQh/UUY663bYjcm3XmNyULIgxJz1t5Z9vxfB+fp8WUoJKA==",
           "scheme": {
             "__typename": "Ed25519Signature",
-            "signature": "RQpXV7pxsvuJ9HOKcJhBFY9s0XXfId8pCZGxQUcpB4MR723PVRPaZYyBx93eDkDqoY0AcRZiTRYIYsECn+0LAQ==",
+            "signature": "iz4WnoYdZ743lLZEr3po2rSy9/MizJf040ZX3sKUW3iip3KVbfUiWbvVub+LAtE+2wF89L+Q3sEwkR6/5HZJCA==",
             "publicKey": "f1FGOut22I3Jt15jclCyIMSc9beWfb8Xwfn6fFlKCSg="
           }
         }
@@ -46,26 +46,26 @@ Response: {
   }
 }
 
-task 5, lines 33-48:
+task 5, lines 34-49:
 //# run-graphql
 Response: {
   "data": {
     "multiSig": {
-      "digest": "4xPfyfwZpbSZmKQKzDCSstYyUsdw5r56DiMhv6qnjTHP",
+      "digest": "ARjaWuCALvZTBWP2nfR4Xwo9NpjKz4FCeha1UT4fYXnn",
       "signatures": [
         {
-          "signatureBytes": "AEtUv/bGJKipHDk0LZDr2weheFJVwx1mj7EF0FqKUwD3+HkGCG66iubZ1xMgIOjU7sv9SqyfmcBWnzkJDrOrEQ1jShJ/h11TzB1kNRDs/tZZYOUuR7hLdy4MWvdZMWHaqw==",
+          "signatureBytes": "ACjNa7VkDB3FZqhai8149XagoG316H6nRRVSRdMQa7bItBlpPGp3FhEDllTLTHij+Od5qgYU+SV0enBRJgjC+gxjShJ/h11TzB1kNRDs/tZZYOUuR7hLdy4MWvdZMWHaqw==",
           "scheme": {
             "__typename": "Ed25519Signature",
-            "signature": "S1S/9sYkqKkcOTQtkOvbB6F4UlXDHWaPsQXQWopTAPf4eQYIbrqK5tnXEyAg6NTuy/1KrJ+ZwFafOQkOs6sRDQ==",
+            "signature": "KM1rtWQMHcVmqFqLzXj1dqCgbfXofqdFFVJF0xBrtsi0GWk8ancWEQOWVMtMeKP453mqBhT5JXR6cFEmCML6DA==",
             "publicKey": "Y0oSf4ddU8wdZDUQ7P7WWWDlLke4S3cuDFr3WTFh2qs="
           }
         },
         {
-          "signatureBytes": "AGsnmMpRg7LZI+aMYfCBmuHCNiEQliIIF58Tnd3Amq2Jh6zu6iv9euQ6wvTw7rgLKC2bhJjVlh6TS4die7thzwWea9+AYO7cFrl2UiI8mqgOfdypWEBHOeWh8bAaRfXLzA==",
+          "signatureBytes": "ABJ7AM6q8x8/gF1viupL35Oxvj7E2q0Nk1igQ4/6EmHiPUWgwCjSHlG4dsv/vm2trLw2lG+C2i3R2DBLGhB0YQqea9+AYO7cFrl2UiI8mqgOfdypWEBHOeWh8bAaRfXLzA==",
           "scheme": {
             "__typename": "Ed25519Signature",
-            "signature": "ayeYylGDstkj5oxh8IGa4cI2IRCWIggXnxOd3cCarYmHrO7qK/165DrC9PDuuAsoLZuEmNWWHpNLh2J7u2HPBQ==",
+            "signature": "EnsAzqrzHz+AXW+K6kvfk7G+PsTarQ2TWKBDj/oSYeI9RaDAKNIeUbh2y/++ba2svDaUb4LaLdHYMEsaEHRhCg==",
             "publicKey": "nmvfgGDu3Ba5dlIiPJqoDn3cqVhARznlofGwGkX1y8w="
           }
         }

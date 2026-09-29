@@ -14,7 +14,7 @@ A: object(0,0), B: object(0,1)
 // 6. Show the details of an object version
 // 7. Show the details of a deleted object version
 
-task 1, lines 14-16:
+task 1, lines 15-17:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -22,25 +22,25 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 18-20:
+task 2, lines 19-21:
 //# programmable --sender A --inputs 43 object(1,0)
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: MergeCoins(Input(1), [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 3, lines 22-23:
+task 3, lines 23-24:
 //# programmable --sender A --inputs object(1,0)
 //> 0: MergeCoins(Gas, [Input(0)])
 mutated: object(0,0)
 deleted: object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 4, line 25:
+task 4, line 26:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 27-31:
+task 5, lines 28-32:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -48,13 +48,13 @@ Response: {
   "result": {
     "status": "VersionNotFound",
     "details": [
-      "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+      "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
       1
     ]
   }
 }
 
-task 6, lines 33-37:
+task 6, lines 34-38:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -62,14 +62,14 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+      "objectId": "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
       "version": "2",
-      "digest": "DUsCGumpLnJUEX9HhQfpD9HrYypJq9TBjXAnqmMh9jnG"
+      "digest": "DjdwPAYjKJePCQQ2Gvp4uuUhh6WdjuScaLsYRZJwYyG3"
     }
   }
 }
 
-task 7, lines 39-43:
+task 7, lines 40-44:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -77,14 +77,14 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+      "objectId": "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
       "version": "3",
-      "digest": "2eV1szfmstAJaP3DNUMfLQJfUiqNU1ao5dmWKs5BE2a8"
+      "digest": "ZHzpcMAXX7d6Dii6tUYQrq4KxNZneCvPNs9Vfsn61uH"
     }
   }
 }
 
-task 8, lines 45-49:
+task 8, lines 46-50:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -92,13 +92,13 @@ Response: {
   "result": {
     "status": "VersionNotFound",
     "details": [
-      "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+      "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
       4
     ]
   }
 }
 
-task 9, lines 51-64:
+task 9, lines 52-65:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -106,13 +106,13 @@ Response: {
   "result": {
     "status": "VersionNotFound",
     "details": [
-      "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+      "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
       1
     ]
   }
 }
 
-task 10, lines 66-79:
+task 10, lines 67-80:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -120,20 +120,20 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+      "objectId": "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
       "version": "2",
-      "digest": "DUsCGumpLnJUEX9HhQfpD9HrYypJq9TBjXAnqmMh9jnG",
+      "digest": "DjdwPAYjKJePCQQ2Gvp4uuUhh6WdjuScaLsYRZJwYyG3",
       "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
       "owner": {
         "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
       },
-      "previousTransaction": "5iUmf7DhkKHzsVFoCdD241kkwpeBDBSnq7ThaayXcxk1",
+      "previousTransaction": "3L8wCaHRtKJEC6fVqGHBPMZoLUw5MHUy3kbdjs8P1CUQ",
       "storageRebate": "988000"
     }
   }
 }
 
-task 11, lines 81-94:
+task 11, lines 82-95:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -141,7 +141,7 @@ Response: {
   "result": {
     "status": "VersionNotFound",
     "details": [
-      "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+      "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
       4
     ]
   }

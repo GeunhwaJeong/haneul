@@ -11,13 +11,13 @@ A: object(0,0), B: object(0,1)
 // 3. ...limited
 // 4. ...limited, with a cursor
 
-task 1, lines 11-20:
+task 1, lines 12-21:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 4704400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 22-24:
+task 2, lines 23-25:
 //# programmable --sender B --inputs @B
 //> 0: P::M::o1<u64>();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -25,7 +25,7 @@ created: object(2,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 26-30:
+task 3, lines 27-31:
 //# programmable --sender A --inputs @A
 //> 0: P::M::o1<u64>();
 //> 1: P::M::o1<u32>();
@@ -35,11 +35,11 @@ created: object(3,0), object(3,1), object(3,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 4658800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, line 32:
+task 4, line 33:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 34-36:
+task 5, lines 35-37:
 //# programmable --sender A --inputs @A
 //> 0: P::M::o1<u32>();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -47,11 +47,11 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 38:
+task 6, line 39:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 40-50:
+task 7, lines 41-51:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -60,27 +60,27 @@ Response: {
     "data": [
       {
         "data": {
-          "objectId": "0x0f1fa434347decc8fec1d4ad02a6af3022f2575048c33f4689177192ff389a12",
+          "objectId": "0x105950315d4273d4f01c5d2832f6004dfec446e2104718816091b2db94ffec17",
           "version": "2",
-          "digest": "8YrixqckbeswK6nWiXGrKcpCkEw5ZqydcRdsUHjM9CHa",
-          "type": "0x4d15742ad7108d7e9082f7557cf78e1385d85ff26bff0ff36215153cd3be2820::M::O1<u64>"
+          "digest": "CLM7SrkTzswxWWX7SdGWgNKvEHhtTdGi9CFfo4HUgdvo",
+          "type": "0xedd9b76352bee1f89cbd3ac6514661fa6079e2425ea9bad6fb55d4e3ac3b485e::M::O1<u64>"
         }
       },
       {
         "data": {
-          "objectId": "0x5516c4508d86fe63871efb61eb4e5d68f5cf8643bf08285c0cfeb8166188b857",
+          "objectId": "0x1220ca04f0d3abe7ef7f680d1c92868dcbdf6c2ff3f959d8f8a103c46b3ac34b",
           "version": "2",
-          "digest": "7YtJZEzBeH76FBUhpFGv4NaSuHyrYQ6o3dCakhRRTKTx",
-          "type": "0x4d15742ad7108d7e9082f7557cf78e1385d85ff26bff0ff36215153cd3be2820::M::O1<u64>"
+          "digest": "8EudsRmiMDjgj2XLv4CkMSsJVvW9f1VLRwwxfh3WLAzA",
+          "type": "0xedd9b76352bee1f89cbd3ac6514661fa6079e2425ea9bad6fb55d4e3ac3b485e::M::O1<u64>"
         }
       }
     ],
-    "nextCursor": "gQEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh5NFXQq1xCNfpCC91V8944Thdhf8mv/D/NiFRU8074oIAAAAAAAAAABTQAAAAAAAAACTzEAAAAAAAAAAQAAAAIAVRbEUI2G/mOHHvth605daPXPhkO/CChcDP64FmGIuFc=",
+    "nextCursor": "gQEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh7t2bdjUr7h+Jy9OsZRRmH6YHniQl6putb7VdTjrDtIXgAAAAAAAAABTQAAAAAAAAACTzEAAAAAAAAAAQAAAAIAEiDKBPDTq+fvf2gNHJKGjcvfbC/z+VnY+KEDxGs6w0s=",
     "hasNextPage": false
   }
 }
 
-task 8, lines 52-62:
+task 8, lines 53-63:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -89,27 +89,27 @@ Response: {
     "data": [
       {
         "data": {
-          "objectId": "0x5d0ac0452e9a03b61f051ea19187ff1c953a988f2be7c25846169996d3c230b0",
+          "objectId": "0x6961fb4e13fd0b01d1f16a1b5043173bf86c8e253410fecb197f9e3f2d33c7a6",
           "version": "3",
-          "digest": "9WKyfgw2CbBiuBFKkdepnk1mAipQyxZzvYeq3JAku3m5",
-          "type": "0x4d15742ad7108d7e9082f7557cf78e1385d85ff26bff0ff36215153cd3be2820::M::O1<u32>"
+          "digest": "BWwxtijQpSyodzndyJiBrYM8sKLABfJLTzzJU6an7H8x",
+          "type": "0xedd9b76352bee1f89cbd3ac6514661fa6079e2425ea9bad6fb55d4e3ac3b485e::M::O1<u32>"
         }
       },
       {
         "data": {
-          "objectId": "0xb6bf650e74f48dfbb88eff7a61ae5ccd5fbbce79e87a7f067405d12ac973ca10",
+          "objectId": "0xe01c46e474d7f81b59e46330e96d1abe551408428da4f958c8e286ff683abc85",
           "version": "2",
-          "digest": "EhXk5Rfwdgmqnyjj1qpfYtdCELiXLTh1vMovkAi4eC8U",
-          "type": "0x4d15742ad7108d7e9082f7557cf78e1385d85ff26bff0ff36215153cd3be2820::M::O1<u32>"
+          "digest": "9cWuCp1CqyCXgDHd6FeQYJXD6dkEwfteJF4dBKYJZXeJ",
+          "type": "0xedd9b76352bee1f89cbd3ac6514661fa6079e2425ea9bad6fb55d4e3ac3b485e::M::O1<u32>"
         }
       }
     ],
-    "nextCursor": "gQEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh5NFXQq1xCNfpCC91V8944Thdhf8mv/D/NiFRU8074oIAAAAAAAAAABTQAAAAAAAAACTzEAAAAAAAAAAQAAAAkAtr9lDnT0jfu4jv96Ya5czV+7znnoen8GdAXRKslzyhA=",
+    "nextCursor": "gQEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh7t2bdjUr7h+Jy9OsZRRmH6YHniQl6putb7VdTjrDtIXgAAAAAAAAABTQAAAAAAAAACTzEAAAAAAAAAAQAAAAkA4BxG5HTX+BtZ5GMw6W0avlUUCEKNpPlYyOKG/2g6vIU=",
     "hasNextPage": false
   }
 }
 
-task 9, lines 64-76:
+task 9, lines 65-77:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -118,14 +118,14 @@ Response: {
     "data": [
       {
         "data": {
-          "objectId": "0x5d0ac0452e9a03b61f051ea19187ff1c953a988f2be7c25846169996d3c230b0",
+          "objectId": "0x6961fb4e13fd0b01d1f16a1b5043173bf86c8e253410fecb197f9e3f2d33c7a6",
           "version": "3",
-          "digest": "9WKyfgw2CbBiuBFKkdepnk1mAipQyxZzvYeq3JAku3m5",
-          "type": "0x4d15742ad7108d7e9082f7557cf78e1385d85ff26bff0ff36215153cd3be2820::M::O1<u32>"
+          "digest": "BWwxtijQpSyodzndyJiBrYM8sKLABfJLTzzJU6an7H8x",
+          "type": "0xedd9b76352bee1f89cbd3ac6514661fa6079e2425ea9bad6fb55d4e3ac3b485e::M::O1<u32>"
         }
       }
     ],
-    "nextCursor": "gQEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh5NFXQq1xCNfpCC91V8944Thdhf8mv/D/NiFRU8074oIAAAAAAAAAABTQAAAAAAAAACTzEAAAAAAAAAAQAAAAkAXQrARS6aA7YfBR6hkYf/HJU6mI8r58JYRhaZltPCMLA=",
+    "nextCursor": "gQEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh7t2bdjUr7h+Jy9OsZRRmH6YHniQl6putb7VdTjrDtIXgAAAAAAAAABTQAAAAAAAAACTzEAAAAAAAAAAQAAAAkAaWH7ThP9CwHR8WobUEMXO/hsjiU0EP7LGX+ePy0zx6Y=",
     "hasNextPage": true
   }
 }

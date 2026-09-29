@@ -6,7 +6,7 @@ processed 13 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,41 +14,41 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, line 12:
+task 3, line 13:
 //# advance-epoch
 Epoch advanced: 1
 
-task 4, lines 14-16:
+task 4, lines 15-17:
 //# programmable --sender A --inputs object(1,0) 1
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 5, lines 18-20:
+task 5, lines 19-21:
 //# programmable --sender A --inputs object(1,0) 2
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 6, line 22:
+task 6, line 23:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 7, line 24:
+task 7, line 25:
 //# advance-epoch
 Epoch advanced: 2
 
-task 9, line 28:
+task 9, line 29:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 10, lines 30-53:
+task 10, lines 31-54:
 //# run-graphql
 Response: {
   "data": {
@@ -203,7 +203,7 @@ Response: {
   }
 }
 
-task 11, lines 55-68:
+task 11, lines 56-69:
 //# run-graphql
 Response: {
   "data": {
@@ -230,7 +230,7 @@ Response: {
   }
 }
 
-task 12, lines 71-81:
+task 12, lines 72-82:
 //# run-graphql
 Response: {
   "data": {

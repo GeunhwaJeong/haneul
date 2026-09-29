@@ -6,13 +6,13 @@ processed 5 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-21:
+task 1, lines 7-22:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5403600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 23-25:
+task 2, lines 24-26:
 //# programmable --sender A --inputs @A
 //> 0: test::mod::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -20,11 +20,11 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2857600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 27:
+task 3, line 28:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 29-40:
+task 4, lines 30-41:
 //# run-graphql
 Response: {
   "data": {
@@ -32,11 +32,11 @@ Response: {
       "asMoveObject": {
         "contents": {
           "json": {
-            "id": "0x3ccb9cdd4754869f2d45965aae056495d54a5a2fa94422fc8771e0738ec98933",
-            "tn": "vector<2f697244e5def7e2f8aa93815aaedf7c373c43392152c63254e2e6661e9d485b::mod::Foo>"
+            "id": "0x5c27b5185c58fe37e85d807e9c1d3c50146c59b8099cd3fed5f47c401ee235e6",
+            "tn": "vector<7da883da06641b44baec2b0ef472de676d4b70be253d537e45a1553e6b6a3c45::mod::Foo>"
           },
-          "typeAsJson": "vector<2f697244e5def7e2f8aa93815aaedf7c373c43392152c63254e2e6661e9d485b::mod::Foo>",
-          "typeAsStr": "vector<2f697244e5def7e2f8aa93815aaedf7c373c43392152c63254e2e6661e9d485b::mod::Foo>"
+          "typeAsJson": "vector<7da883da06641b44baec2b0ef472de676d4b70be253d537e45a1553e6b6a3c45::mod::Foo>",
+          "typeAsStr": "vector<7da883da06641b44baec2b0ef472de676d4b70be253d537e45a1553e6b6a3c45::mod::Foo>"
         }
       }
     }
