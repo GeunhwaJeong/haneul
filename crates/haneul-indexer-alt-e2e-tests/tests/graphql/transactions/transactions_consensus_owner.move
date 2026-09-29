@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --accounts A B C --simulator
+//# init --protocol-version 115 --accounts A B C --simulator
 
 // Create a consensus-owned (party) object owned by B, sent by A
 //# programmable --sender A --inputs 1000 @B

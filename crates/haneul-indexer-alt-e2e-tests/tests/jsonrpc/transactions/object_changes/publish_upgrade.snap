@@ -9,38 +9,40 @@ A: object(0,0)
 // Publishes and upgrades of user packages both show up as "Published" object
 // changes.
 
-task 1, lines 9-12:
+task 1, lines 10-13:
 //# publish --upgradeable --sender A
 created: object(1,0), object(1,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5084400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 14-21:
+task 2, lines 15-22:
 //# upgrade --package P0 --upgrade-capability 1,1 --sender A
 created: object(2,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 5783600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 3, line 23:
+task 3, line 24:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 25-29:
+task 4, lines 26-30:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 0,
   "result": {
-    "digest": "QHm9ncqT3nBqXMFL6eAhYvELjjicskDinsaDe8smiMG",
+    "digest": "8CkYnE6T8PwzYSvx4ayHgSfE4TnvxA4fZisr5a4KTTTB",
     "objectChanges": [
       {
-        "type": "published",
-        "packageId": "0x93a1075023a9be617bcc683b6caaad2656e89aa15fc874f89edef05757a11681",
-        "version": "1",
-        "digest": "9JEzo4bGXXrDJ9729txb7HfBFW9jVQerNFSoo6nqFraP",
-        "modules": [
-          "M"
-        ]
+        "type": "created",
+        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
+        "owner": {
+          "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
+        },
+        "objectType": "0x2::package::UpgradeCap",
+        "objectId": "0x016f3deeffcb6b639cb46b789fb0e771101560ff403155e8d8cfe6977da1d2d7",
+        "version": "2",
+        "digest": "7pFWDFxP48542bpmYkweP2sqq1cubSiqvzqSyQ1tzxDB"
       },
       {
         "type": "mutated",
@@ -49,21 +51,19 @@ Response: {
           "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
         },
         "objectType": "0x2::coin::Coin<0x2::haneul::HANEUL>",
-        "objectId": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+        "objectId": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
         "version": "2",
         "previousVersion": "1",
-        "digest": "ksx3qT6gfzk7hnLjmqxpLP5FFXC5sMQRA8YaXf9JwBR"
+        "digest": "Di28W5dyzweBYAzjCkGKNJpyLGNCcNj5F7LnnYFAsx5C"
       },
       {
-        "type": "created",
-        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-        "owner": {
-          "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
-        },
-        "objectType": "0x2::package::UpgradeCap",
-        "objectId": "0xc686538767f16fe7c05a66d353859dd98c91537fb7efdbf2c5ddedf85a540bb7",
-        "version": "2",
-        "digest": "AZS2bTpGDmjAPzgG5B8K8bxK63VhGrFzxYuovDmW7LbT"
+        "type": "published",
+        "packageId": "0xe2fe9dd203f3fdd3b5ae1e0ef5bd972733f0183de0009d215edfd7a5ca06177d",
+        "version": "1",
+        "digest": "2E6s4WkiDahAjN4NTJB7id3vxhA6ES78YsE4nmmsyrCV",
+        "modules": [
+          "M"
+        ]
       }
     ],
     "timestampMs": "0",
@@ -71,19 +71,31 @@ Response: {
   }
 }
 
-task 5, lines 31-35:
+task 5, lines 32-36:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
-    "digest": "FhP3iNk9s1R3uL2LStaWAaNdSH5rSw7tgGnYMa5ALM7D",
+    "digest": "AH3uC4icJqfHFNmMsxFkCPQpmdXXFhywpCztf5tTgkbP",
     "objectChanges": [
       {
+        "type": "mutated",
+        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
+        "owner": {
+          "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
+        },
+        "objectType": "0x2::package::UpgradeCap",
+        "objectId": "0x016f3deeffcb6b639cb46b789fb0e771101560ff403155e8d8cfe6977da1d2d7",
+        "version": "3",
+        "previousVersion": "2",
+        "digest": "F4qHYbzody2bNcNpzkydn1VLLaZYow1FZLpQpAoDsSW8"
+      },
+      {
         "type": "published",
-        "packageId": "0x9e535fc329fa1142fe6bbd63b5b9f3d634eca7e6465823592ffa84074d669e7d",
+        "packageId": "0x4b4d576e45489fbadd4b702fe35d496a086f02af3b53110508997746760bfcaf",
         "version": "2",
-        "digest": "9sE4ofUW4oUnPWZXrcNZFd4c4NVrbne7UsJp6WmNGgNo",
+        "digest": "5m9PoNbZ31gWAUxJxS2imGmeL7axqBavwibcqKhEZkE3",
         "modules": [
           "M",
           "N"
@@ -96,22 +108,10 @@ Response: {
           "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
         },
         "objectType": "0x2::coin::Coin<0x2::haneul::HANEUL>",
-        "objectId": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+        "objectId": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
         "version": "3",
         "previousVersion": "2",
-        "digest": "6QZi8RyCDbsad8Z8S9R4oukPFqjtiGo4RgM5oghpRshh"
-      },
-      {
-        "type": "mutated",
-        "sender": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-        "owner": {
-          "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
-        },
-        "objectType": "0x2::package::UpgradeCap",
-        "objectId": "0xc686538767f16fe7c05a66d353859dd98c91537fb7efdbf2c5ddedf85a540bb7",
-        "version": "3",
-        "previousVersion": "2",
-        "digest": "3CebStuF9ZVq7uE6rrKRpAnALvXjgHFXa2Hp8uURi7zG"
+        "digest": "FJJcsAHJNTkef7qPJkbtUBZvksQW57n8h7GkDJfS5dJG"
       }
     ],
     "timestampMs": "0",

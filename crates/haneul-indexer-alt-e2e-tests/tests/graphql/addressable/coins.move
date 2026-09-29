@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --addresses T=0x0 --accounts A B --simulator
+//# init --protocol-version 115 --addresses T=0x0 --accounts A B --simulator
 
 //# publish --sender A
 #[allow(deprecated_usage)]

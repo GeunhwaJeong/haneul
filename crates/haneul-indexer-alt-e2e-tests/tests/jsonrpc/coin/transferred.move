@@ -5,7 +5,7 @@
 // Transfer an object from A to B and verify that the coin is now included in the result of haneulx_getCoins
 // for B and not included in the result for A.
 
-//# init --protocol-version 108 --addresses Test=0x0 --accounts A B --simulator --consistent-range 2
+//# init --protocol-version 115 --addresses Test=0x0 --accounts A B --simulator --consistent-range 2
 
 //# programmable --sender A --inputs 12 @A
 //> 0: SplitCoins(Gas, [Input(0)]);

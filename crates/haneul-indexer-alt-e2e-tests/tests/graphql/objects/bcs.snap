@@ -6,13 +6,13 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-16:
+task 1, lines 7-17:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 4636000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 18-20:
+task 2, lines 19-21:
 //# programmable --sender A --inputs 42 @A
 //> 0: P::M::new(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -20,7 +20,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2257200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 22-24:
+task 3, lines 23-25:
 //# programmable --sender A --inputs 43 @A
 //> 0: P::M::new(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -28,7 +28,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2257200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 26:
+task 4, line 27:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 2
@@ -41,7 +41,7 @@ Contents: P::M::T {
     x: 42u64,
 }
 
-task 5, line 28:
+task 5, line 29:
 //# view-object 3,0
 Owner: Account Address ( A )
 Version: 3
@@ -54,26 +54,26 @@ Contents: P::M::T {
     x: 43u64,
 }
 
-task 6, line 30:
+task 6, line 31:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 7, lines 32-48:
+task 7, lines 33-49:
 //# run-graphql
 Response: {
   "data": {
     "a": {
-      "objectBcs": "AAAVRL7sFZ3YMxV5J4Axn/RG4UFxA+C4w869CiHRaY16BgFNAVQAAQIAAAAAAAAAKO7BMTtdFYvMy6C5Ph8pipN93I3NkFz2OocMX8wRsHFzKgAAAAAAAAAA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4g6qM/D4kfmx8cqE+g9bjPbzdLms24vur5cp+nh3AzoRnQXRMAAAAAAA=="
+      "objectBcs": "AAA6o71XCn1WzhTWDP0vyVO1HPJVMPSwwySMaNxdtb9OUgFNAVQAAQIAAAAAAAAAKNjUxD6mUIP0lg6zcuVZKBAx4fuS+HDHYMYU8WvE+c/7KgAAAAAAAAAA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4gnjhrXisT5N3RQc+/Wxms5P95NKj3HV1sRg+66qJdzaTQXRMAAAAAAA=="
     },
     "b": {
-      "objectBcs": "AAAVRL7sFZ3YMxV5J4Axn/RG4UFxA+C4w869CiHRaY16BgFNAVQAAQMAAAAAAAAAKGI0m9UsSeUCsPf6AQQ9FgbxTGApyIWpswfoZX91yXmSKwAAAAAAAAAA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4gWywblSEE43+Vy7Lm3sfugp2SXJ4FYtRW3TsHvVfpkTfQXRMAAAAAAA=="
+      "objectBcs": "AAA6o71XCn1WzhTWDP0vyVO1HPJVMPSwwySMaNxdtb9OUgFNAVQAAQMAAAAAAAAAKJBIks5ztcvxvF+y8BdwtYDn/q5zaU0sNywxLKr91267KwAAAAAAAAAA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4gEltg8rhwO5ui73AokHbq1wnjkFjGwr/BYGSez50X5NPQXRMAAAAAAA=="
     },
     "multiGetObjects": [
       {
-        "objectBcs": "AAAVRL7sFZ3YMxV5J4Axn/RG4UFxA+C4w869CiHRaY16BgFNAVQAAQIAAAAAAAAAKO7BMTtdFYvMy6C5Ph8pipN93I3NkFz2OocMX8wRsHFzKgAAAAAAAAAA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4g6qM/D4kfmx8cqE+g9bjPbzdLms24vur5cp+nh3AzoRnQXRMAAAAAAA=="
+        "objectBcs": "AAA6o71XCn1WzhTWDP0vyVO1HPJVMPSwwySMaNxdtb9OUgFNAVQAAQIAAAAAAAAAKNjUxD6mUIP0lg6zcuVZKBAx4fuS+HDHYMYU8WvE+c/7KgAAAAAAAAAA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4gnjhrXisT5N3RQc+/Wxms5P95NKj3HV1sRg+66qJdzaTQXRMAAAAAAA=="
       },
       {
-        "objectBcs": "AAAVRL7sFZ3YMxV5J4Axn/RG4UFxA+C4w869CiHRaY16BgFNAVQAAQMAAAAAAAAAKGI0m9UsSeUCsPf6AQQ9FgbxTGApyIWpswfoZX91yXmSKwAAAAAAAAAA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4gWywblSEE43+Vy7Lm3sfugp2SXJ4FYtRW3TsHvVfpkTfQXRMAAAAAAA=="
+        "objectBcs": "AAA6o71XCn1WzhTWDP0vyVO1HPJVMPSwwySMaNxdtb9OUgFNAVQAAQMAAAAAAAAAKJBIks5ztcvxvF+y8BdwtYDn/q5zaU0sNywxLKr91267KwAAAAAAAAAA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4gEltg8rhwO5ui73AokHbq1wnjkFjGwr/BYGSez50X5NPQXRMAAAAAAA=="
       }
     ]
   }

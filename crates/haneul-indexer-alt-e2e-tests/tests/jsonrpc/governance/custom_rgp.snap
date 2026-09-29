@@ -3,7 +3,7 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 2 tasks
 
-task 1, lines 6-10:
+task 1, lines 7-11:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",

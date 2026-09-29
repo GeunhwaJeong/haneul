@@ -6,13 +6,13 @@ processed 14 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-66:
+task 1, lines 7-67:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 11878800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 68-70:
+task 2, lines 69-71:
 //# programmable --sender A --inputs @A
 //> 0: test::mod::example();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -20,7 +20,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2401600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 72-74:
+task 3, lines 73-75:
 //# programmable --sender A --inputs @A
 //> 0: test::mod::versioned();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -28,7 +28,7 @@ created: object(3,0), object(3,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 4164800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 76-77:
+task 4, lines 77-78:
 //# programmable --sender A --inputs object(3,0)
 //> 0: test::mod::upgrade(Input(0))
 created: object(4,0)
@@ -36,25 +36,25 @@ mutated: object(0,0), object(3,0)
 deleted: object(3,1)
 gas summary: computation_cost: 1000000, storage_cost: 4172400,  storage_rebate: 4123152, non_refundable_storage_fee: 41648
 
-task 5, lines 79-80:
+task 5, lines 80-81:
 //# programmable --sender A --inputs object(2,0)
 //> 0: test::mod::add_df(Input(0))
 created: object(5,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 3876000,  storage_rebate: 2377584, non_refundable_storage_fee: 24016
 
-task 6, lines 82-83:
+task 6, lines 83-84:
 //# programmable --sender A --inputs object(2,0)
 //> 0: test::mod::add_dof(Input(0))
 created: object(6,0), object(6,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 6406800,  storage_rebate: 2377584, non_refundable_storage_fee: 24016
 
-task 7, line 85:
+task 7, line 86:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 8, lines 87-131:
+task 8, lines 88-132:
 //# run-graphql
 Response: {
   "data": {
@@ -62,10 +62,10 @@ Response: {
       "asMoveObject": {
         "contents": {
           "type": {
-            "repr": "0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Foo"
+            "repr": "0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Foo"
           },
           "json": {
-            "id": "0x8783ae50a921d857d1650b68be45d6aaaa46437027be5d7db4d327cee730556d",
+            "id": "0x03402f5b82ede05604b55e1ae5ad0d5153e172e16b8bdd2fe790989d48e780c5",
             "bar": [
               {
                 "@variant": "Baz",
@@ -87,7 +87,7 @@ Response: {
           },
           "bar": {
             "type": {
-              "repr": "vector<0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Bar>"
+              "repr": "vector<0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Bar>"
             },
             "json": [
               {
@@ -110,7 +110,7 @@ Response: {
           },
           "baz": {
             "type": {
-              "repr": "0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Bar"
+              "repr": "0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Bar"
             },
             "json": {
               "@variant": "Baz",
@@ -119,7 +119,7 @@ Response: {
           },
           "qux": {
             "type": {
-              "repr": "0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Bar"
+              "repr": "0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Bar"
             },
             "json": {
               "@variant": "Qux",
@@ -128,7 +128,7 @@ Response: {
           },
           "quySome": {
             "type": {
-              "repr": "0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Bar"
+              "repr": "0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Bar"
             },
             "json": {
               "@variant": "Quy",
@@ -137,7 +137,7 @@ Response: {
           },
           "quyNone": {
             "type": {
-              "repr": "0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Bar"
+              "repr": "0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Bar"
             },
             "json": {
               "@variant": "Quy",
@@ -170,10 +170,10 @@ Response: {
           },
           "dof": {
             "type": {
-              "repr": "0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Quz"
+              "repr": "0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Quz"
             },
             "json": {
-              "id": "0xe9609fb65109016ff4a11728f5af493f7d2a2a10886e2ebc15da8cfc03076bae",
+              "id": "0x7e73e0562f0d72af8df6eca4414891a4d9dfef83c378bda371392ce512df3fb9",
               "map": {
                 "contents": [
                   {
@@ -214,7 +214,7 @@ Response: {
   }
 }
 
-task 9, lines 133-153:
+task 9, lines 134-154:
 //# run-graphql
 Response: {
   "data": {
@@ -230,7 +230,7 @@ Response: {
             "contents": {
               "extract": {
                 "type": {
-                  "repr": "0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Bar"
+                  "repr": "0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Bar"
                 },
                 "json": {
                   "@variant": "Baz",
@@ -246,7 +246,7 @@ Response: {
             "contents": {
               "extract": {
                 "type": {
-                  "repr": "0x1ba708d9cdad56c6885d57ff3bad9582faf49848d5af41407b34a66131fa2b0b::mod::Bar"
+                  "repr": "0xeb7c6272b446a43ccc7874bb1c646229cbabf3065acce274da97fd2c19ab3046::mod::Bar"
                 },
                 "json": {
                   "@variant": "Qux",
@@ -261,7 +261,7 @@ Response: {
   }
 }
 
-task 10, lines 155-164:
+task 10, lines 156-165:
 //# run-graphql
 Response: {
   "data": {
@@ -295,7 +295,7 @@ Response: {
   ]
 }
 
-task 11, lines 166-175:
+task 11, lines 167-176:
 //# run-graphql
 Response: {
   "data": {
@@ -329,7 +329,7 @@ Response: {
   ]
 }
 
-task 12, lines 177-186:
+task 12, lines 178-187:
 //# run-graphql
 Response: {
   "data": {
@@ -363,7 +363,7 @@ Response: {
   ]
 }
 
-task 13, lines 188-197:
+task 13, lines 189-198:
 //# run-graphql
 Response: {
   "data": {

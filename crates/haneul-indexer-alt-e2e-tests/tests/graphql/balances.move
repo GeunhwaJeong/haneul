@@ -4,7 +4,7 @@
 
 // Simple e2e test of coin, address, and total balance queries.
 
-//# init --protocol-version 108 --accounts A B --addresses T=0x0 --simulator
+//# init --protocol-version 115 --accounts A B --addresses T=0x0 --simulator
 
 //# publish --sender A
 #[allow(deprecated_usage)]

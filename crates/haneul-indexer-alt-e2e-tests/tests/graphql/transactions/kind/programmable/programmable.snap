@@ -6,13 +6,13 @@ processed 6 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-27:
+task 1, lines 7-28:
 //# publish
 created: object(1,0), object(1,1)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 7258000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 29-32:
+task 2, lines 30-33:
 //# programmable --sender A --inputs object(1,1) 42 @B
 //> 0: test::simple::increment(Input(0));
 //> 1: test::simple::add(Input(0), Input(1));
@@ -20,16 +20,16 @@ task 2, lines 29-32:
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 2340800,  storage_rebate: 1339272, non_refundable_storage_fee: 13528
 
-task 3, line 34:
+task 3, line 35:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 36-77:
+task 4, lines 37-78:
 //# run-graphql
 Response: {
   "data": {
     "programmableTransaction": {
-      "digest": "Datb3mA9csBFkP5B6eBNq3uKZ6UH4kCisyW2Cqa2RB9V",
+      "digest": "7CrCt8K53QPixemMoSzcRHHo1kfn6oVuxJ3CaxsKvFbC",
       "kind": {
         "__typename": "ProgrammableTransaction",
         "inputs": {
@@ -62,7 +62,7 @@ Response: {
               "function": {
                 "module": {
                   "package": {
-                    "address": "0xe4f94a39ed987ce76a909b6922d4a0ceae390a8ced02fc1599906e0ca577da56"
+                    "address": "0xba05ed0d7e1f298d27a139fc4e5cdd0922623aa35d944d374ac0ce320f042ab3"
                   },
                   "name": "simple"
                 },
@@ -74,7 +74,7 @@ Response: {
               "function": {
                 "module": {
                   "package": {
-                    "address": "0xe4f94a39ed987ce76a909b6922d4a0ceae390a8ced02fc1599906e0ca577da56"
+                    "address": "0xba05ed0d7e1f298d27a139fc4e5cdd0922623aa35d944d374ac0ce320f042ab3"
                   },
                   "name": "simple"
                 },
@@ -91,12 +91,12 @@ Response: {
   }
 }
 
-task 5, lines 79-120:
+task 5, lines 80-121:
 //# run-graphql
 Response: {
   "data": {
     "paginationTest": {
-      "digest": "Datb3mA9csBFkP5B6eBNq3uKZ6UH4kCisyW2Cqa2RB9V",
+      "digest": "7CrCt8K53QPixemMoSzcRHHo1kfn6oVuxJ3CaxsKvFbC",
       "kind": {
         "__typename": "ProgrammableTransaction",
         "inputs": {
@@ -125,7 +125,7 @@ Response: {
               "function": {
                 "module": {
                   "package": {
-                    "address": "0xe4f94a39ed987ce76a909b6922d4a0ceae390a8ced02fc1599906e0ca577da56"
+                    "address": "0xba05ed0d7e1f298d27a139fc4e5cdd0922623aa35d944d374ac0ce320f042ab3"
                   },
                   "name": "simple"
                 },
@@ -137,7 +137,7 @@ Response: {
               "function": {
                 "module": {
                   "package": {
-                    "address": "0xe4f94a39ed987ce76a909b6922d4a0ceae390a8ced02fc1599906e0ca577da56"
+                    "address": "0xba05ed0d7e1f298d27a139fc4e5cdd0922623aa35d944d374ac0ce320f042ab3"
                   },
                   "name": "simple"
                 },

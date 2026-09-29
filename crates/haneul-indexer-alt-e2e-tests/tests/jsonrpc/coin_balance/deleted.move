@@ -6,7 +6,7 @@
 // value of the underlying coins. Create three coins and call get_balance on the Test::fake coin
 // type, expecting 600. After merging the coins, get_balance should return the same balance of 600.
 
-//# init --protocol-version 108 --addresses Test=0x0 --accounts A B --simulator
+//# init --protocol-version 115 --addresses Test=0x0 --accounts A B --simulator
 
 //# publish --sender A
 module Test::fake {

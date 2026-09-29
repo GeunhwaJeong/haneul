@@ -16,7 +16,7 @@ A: object(0,0)
 // 8. Unsupported filter
 // 9. Supplying response options
 
-task 1, lines 16-18:
+task 1, lines 17-19:
 //# programmable --sender A --inputs 12 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -24,7 +24,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 20-22:
+task 2, lines 21-23:
 //# programmable --sender A --inputs 34 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -32,7 +32,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 24-26:
+task 3, lines 25-27:
 //# programmable --sender A --inputs 56 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -40,7 +40,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 28-30:
+task 4, lines 29-31:
 //# programmable --sender A --inputs 78 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -48,7 +48,7 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 32-34:
+task 5, lines 33-35:
 //# programmable --sender A --inputs 90 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -56,11 +56,11 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, line 36:
+task 6, line 37:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 7, lines 38-42:
+task 7, lines 39-43:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -68,32 +68,32 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "85r5mfnut7T1NNBmbL7RpGMf9caJe5VEnpiCJxkz7eDE",
+        "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
         "timestampMs": "0",
         "checkpoint": "0"
       },
       {
-        "digest": "7BPZ2MKqvmQznwTbkrkPKegZ9Px8VUQftMnJ1CYDdZCe",
+        "digest": "BgMfu2996u3K97kksH5vBcXeVMAyX2tEC93Bk1CQCD5j",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "5kUwrwna9qrLbYxzbMMrP6KEiVhgFWq2Lu2VrxLFNem9",
+        "digest": "HBvPb5th3nucUiStweZkuzmy7Szsii173LQmMXFfWxY6",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "2megPN8PhG2pryGwqSWAiiMc3GAoFWugiUFUbxF4fiQZ",
+        "digest": "Ba2Bd1cLCibRmHTFvQ6ckaNsg6Kz7cxXptT6EWGpG5NW",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "FvUAw31nRwYo1LqfxyvBdtbsRqXxPiTPNmRExvAxRJ7c",
+        "digest": "91cmQPHPSmLDFA36hMwUXQ1W6k6c9Prt2ajhmhLFut4M",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "5BoY6JV1G6KUvXbn6mh2jzxgPATEEBR5tsXsw47Nxw2i",
+        "digest": "4LsQjajn7XNYXS54zdz8T9SRHswXBRXMG9qEKErZrxRa",
         "timestampMs": "0",
         "checkpoint": "1"
       },
@@ -108,7 +108,7 @@ Response: {
   }
 }
 
-task 8, lines 44-52:
+task 8, lines 45-53:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -116,17 +116,17 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "85r5mfnut7T1NNBmbL7RpGMf9caJe5VEnpiCJxkz7eDE",
+        "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
         "timestampMs": "0",
         "checkpoint": "0"
       },
       {
-        "digest": "7BPZ2MKqvmQznwTbkrkPKegZ9Px8VUQftMnJ1CYDdZCe",
+        "digest": "BgMfu2996u3K97kksH5vBcXeVMAyX2tEC93Bk1CQCD5j",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "5kUwrwna9qrLbYxzbMMrP6KEiVhgFWq2Lu2VrxLFNem9",
+        "digest": "HBvPb5th3nucUiStweZkuzmy7Szsii173LQmMXFfWxY6",
         "timestampMs": "0",
         "checkpoint": "1"
       }
@@ -136,7 +136,7 @@ Response: {
   }
 }
 
-task 9, lines 54-62:
+task 9, lines 55-63:
 //# run-jsonrpc --cursors 2
 Response: {
   "jsonrpc": "2.0",
@@ -144,17 +144,17 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "2megPN8PhG2pryGwqSWAiiMc3GAoFWugiUFUbxF4fiQZ",
+        "digest": "Ba2Bd1cLCibRmHTFvQ6ckaNsg6Kz7cxXptT6EWGpG5NW",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "FvUAw31nRwYo1LqfxyvBdtbsRqXxPiTPNmRExvAxRJ7c",
+        "digest": "91cmQPHPSmLDFA36hMwUXQ1W6k6c9Prt2ajhmhLFut4M",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "5BoY6JV1G6KUvXbn6mh2jzxgPATEEBR5tsXsw47Nxw2i",
+        "digest": "4LsQjajn7XNYXS54zdz8T9SRHswXBRXMG9qEKErZrxRa",
         "timestampMs": "0",
         "checkpoint": "1"
       }
@@ -164,7 +164,7 @@ Response: {
   }
 }
 
-task 10, lines 64-73:
+task 10, lines 65-74:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -177,32 +177,32 @@ Response: {
         "checkpoint": "1"
       },
       {
-        "digest": "5BoY6JV1G6KUvXbn6mh2jzxgPATEEBR5tsXsw47Nxw2i",
+        "digest": "4LsQjajn7XNYXS54zdz8T9SRHswXBRXMG9qEKErZrxRa",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "FvUAw31nRwYo1LqfxyvBdtbsRqXxPiTPNmRExvAxRJ7c",
+        "digest": "91cmQPHPSmLDFA36hMwUXQ1W6k6c9Prt2ajhmhLFut4M",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "2megPN8PhG2pryGwqSWAiiMc3GAoFWugiUFUbxF4fiQZ",
+        "digest": "Ba2Bd1cLCibRmHTFvQ6ckaNsg6Kz7cxXptT6EWGpG5NW",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "5kUwrwna9qrLbYxzbMMrP6KEiVhgFWq2Lu2VrxLFNem9",
+        "digest": "HBvPb5th3nucUiStweZkuzmy7Szsii173LQmMXFfWxY6",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "7BPZ2MKqvmQznwTbkrkPKegZ9Px8VUQftMnJ1CYDdZCe",
+        "digest": "BgMfu2996u3K97kksH5vBcXeVMAyX2tEC93Bk1CQCD5j",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "85r5mfnut7T1NNBmbL7RpGMf9caJe5VEnpiCJxkz7eDE",
+        "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
         "timestampMs": "0",
         "checkpoint": "0"
       }
@@ -212,7 +212,7 @@ Response: {
   }
 }
 
-task 11, lines 75-84:
+task 11, lines 76-85:
 //# run-jsonrpc --cursors 3
 Response: {
   "jsonrpc": "2.0",
@@ -220,12 +220,12 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "5kUwrwna9qrLbYxzbMMrP6KEiVhgFWq2Lu2VrxLFNem9",
+        "digest": "HBvPb5th3nucUiStweZkuzmy7Szsii173LQmMXFfWxY6",
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "7BPZ2MKqvmQznwTbkrkPKegZ9Px8VUQftMnJ1CYDdZCe",
+        "digest": "BgMfu2996u3K97kksH5vBcXeVMAyX2tEC93Bk1CQCD5j",
         "timestampMs": "0",
         "checkpoint": "1"
       }
@@ -235,7 +235,7 @@ Response: {
   }
 }
 
-task 12, lines 86-93:
+task 12, lines 87-94:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -246,7 +246,7 @@ Response: {
   }
 }
 
-task 13, lines 95-103:
+task 13, lines 96-104:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -257,7 +257,7 @@ Response: {
   }
 }
 
-task 14, lines 105-117:
+task 14, lines 106-118:
 //# run-jsonrpc --cursors 1
 Response: {
   "jsonrpc": "2.0",
@@ -265,7 +265,7 @@ Response: {
   "result": {
     "data": [
       {
-        "digest": "5kUwrwna9qrLbYxzbMMrP6KEiVhgFWq2Lu2VrxLFNem9",
+        "digest": "HBvPb5th3nucUiStweZkuzmy7Szsii173LQmMXFfWxY6",
         "transaction": {
           "data": {
             "messageVersion": "v1",
@@ -312,9 +312,9 @@ Response: {
             "gasData": {
               "payment": [
                 {
-                  "objectId": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                  "objectId": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                   "version": 2,
-                  "digest": "A5qnEjJ3wStHWEWTPZajJjEZQixjutFeG3cmF1jWupfY"
+                  "digest": "6DWkiYm6oFGT16b4v369nosendVtAd2Lbr6pL2getnn2"
                 }
               ],
               "owner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
@@ -323,14 +323,14 @@ Response: {
             }
           },
           "txSignatures": [
-            "AK1J3GGLJOpS7Qj/o/PLq59fidaNxCorvbpyOu+ChpInqV9iuI95KpWCQY0zWsKaKP6iud7pnVj3Lyue9woxHgV/UUY663bYjcm3XmNyULIgxJz1t5Z9vxfB+fp8WUoJKA=="
+            "AB1+pGev+YJqnOAOY3FGIA/Dnw/+edYdGK6tmE5GoVS5ZBhCuFN0THYtzppOsTTI4Ske33QGLdZR3pXBKyMbOAp/UUY663bYjcm3XmNyULIgxJz1t5Z9vxfB+fp8WUoJKA=="
           ]
         },
         "timestampMs": "0",
         "checkpoint": "1"
       },
       {
-        "digest": "2megPN8PhG2pryGwqSWAiiMc3GAoFWugiUFUbxF4fiQZ",
+        "digest": "Ba2Bd1cLCibRmHTFvQ6ckaNsg6Kz7cxXptT6EWGpG5NW",
         "transaction": {
           "data": {
             "messageVersion": "v1",
@@ -377,9 +377,9 @@ Response: {
             "gasData": {
               "payment": [
                 {
-                  "objectId": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                  "objectId": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                   "version": 3,
-                  "digest": "CAmoeDmTzPZySEdgRkTYAeagKCtcPdDYymfQrj6pnrsK"
+                  "digest": "4Ppa1ddUXemTnmcETbq38Ep7tCc5PEi3c4i9snrbUmqe"
                 }
               ],
               "owner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
@@ -388,7 +388,7 @@ Response: {
             }
           },
           "txSignatures": [
-            "AByHa3jZikIFJEq3vkj2i/LQGwsvDnE0ZldA6WNgJSTAk33XjfqeVdgV8zcHd3F3vcB5dbN0Uv1xWtePrlfd2gZ/UUY663bYjcm3XmNyULIgxJz1t5Z9vxfB+fp8WUoJKA=="
+            "ADyUjDFucG6atq59y8ujCZI2LbP91IRwoba6chYyOxmlbqxfG28faI8wLe0HgWbzSjGQnUELurSOVP+d7F01hgN/UUY663bYjcm3XmNyULIgxJz1t5Z9vxfB+fp8WUoJKA=="
           ]
         },
         "timestampMs": "0",

@@ -7,13 +7,13 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 1, lines 7-59:
+task 1, lines 8-60:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 13771200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 61-63:
+task 2, lines 62-64:
 //# programmable --sender A --inputs object(0xd) @A
 //> 0: test::mod::display(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -21,7 +21,7 @@ created: object(2,0), object(2,1), object(2,2)
 mutated: 0x000000000000000000000000000000000000000000000000000000000000000d, object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 10343600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 65-68:
+task 3, lines 66-69:
 //# programmable --sender A --inputs @A 42 true "hello" 43u8
 //> 0: std::option::some<haneul::object::ID>(Input(0));
 //> 1: test::mod::new(Input(1), Input(2), Input(3), Result(0), Input(4));
@@ -30,7 +30,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2599200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 70-73:
+task 4, lines 71-74:
 //# programmable --sender A --inputs @A 42 true "hello" 43u8
 //> 0: std::option::none<haneul::object::ID>();
 //> 1: test::mod::new(Input(1), Input(2), Input(3), Result(0), Input(4));
@@ -39,18 +39,18 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2356000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 75-76:
+task 5, lines 76-77:
 //# programmable --sender A --inputs object(4,0)
 //> 0: test::mod::add_df(Input(0))
 created: object(5,0)
 mutated: object(0,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 3792400,  storage_rebate: 2332440, non_refundable_storage_fee: 23560
 
-task 6, line 78:
+task 6, line 79:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 7, lines 80-90:
+task 7, lines 81-91:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -58,9 +58,9 @@ Response: {
   "result": [
     {
       "data": {
-        "objectId": "0xd3db63ee1f788c0234ed09f386d3272f5bca346a2ba423b763447b14259c6a03",
+        "objectId": "0x9927e56a1bc404bc0996e7128843ca5e7dafa18aa239abca801dde5160bce219",
         "version": "4",
-        "digest": "AoseeAGK5w1LZnnqjzrFnCAzKwz8bJepSroW4DtyVrQC",
+        "digest": "D2BxHb8aAfFZuHS1tgo2yBk9Xz9xr3cYW9aydh1bZF3x",
         "display": {
           "data": {
             "bar": "bar is 42!",
@@ -84,9 +84,9 @@ Response: {
     },
     {
       "data": {
-        "objectId": "0x09ec8fda6a123ee443ba9f885179a7b059eafce6b2355f61decfe0b1ab719741",
+        "objectId": "0x5b45b3931ce755fd1aca12151f08c5e76cce806de70f3bff3fefbda404472f90",
         "version": "6",
-        "digest": "BNMoCMM1QRdjbYWBEkVd1m1zdvvqZcxiJstQwRc5xEP8",
+        "digest": "CQeJ9LnrNR789K8wjzJwiKDXqwRxeJqBgN71DfRFuGJq",
         "display": {
           "data": {
             "bar": "bar is 42!",

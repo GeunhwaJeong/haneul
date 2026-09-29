@@ -6,7 +6,7 @@ processed 7 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-34:
+task 1, lines 7-35:
 //# run-graphql
 Response: {
   "data": {
@@ -128,23 +128,23 @@ Response: {
   }
 }
 
-task 2, lines 36-39:
+task 2, lines 37-40:
 //# publish --upgradeable --sender A
 created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5213600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 41-46:
+task 3, lines 42-47:
 //# upgrade --package P0 --upgrade-capability 2,1 --sender A
 created: object(3,0)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 6049600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 4, line 48:
+task 4, line 49:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 50-79:
+task 5, lines 51-80:
 //# run-graphql
 Response: {
   "data": {
@@ -157,7 +157,7 @@ Response: {
               "nodes": [
                 {
                   "name": "S",
-                  "fullyQualifiedName": "0x8890e72a1d0761cd36c9528e1f63a19481451dc14b910e3a9a8b9bf7a71b2ea4::M::S",
+                  "fullyQualifiedName": "0xc656ad99781f5e304913e43fad8620bfcad2d84687cd1df30cddcff0fad415a4::M::S",
                   "abilities": [
                     "COPY",
                     "DROP"
@@ -186,7 +186,7 @@ Response: {
               "nodes": [
                 {
                   "name": "S",
-                  "fullyQualifiedName": "0x84d4d04ab3c835cb44e7acf8006653cfb06e7649ff48a1b91ff2d8b7e9bb27af::M::S",
+                  "fullyQualifiedName": "0x256f97a555041334e2867a995f7747f80180592ea6c630e7c5dbfb94baf9bfc6::M::S",
                   "abilities": [
                     "COPY",
                     "DROP"
@@ -206,7 +206,7 @@ Response: {
                 },
                 {
                   "name": "T",
-                  "fullyQualifiedName": "0x84d4d04ab3c835cb44e7acf8006653cfb06e7649ff48a1b91ff2d8b7e9bb27af::M::T",
+                  "fullyQualifiedName": "0x256f97a555041334e2867a995f7747f80180592ea6c630e7c5dbfb94baf9bfc6::M::T",
                   "abilities": [],
                   "typeParameters": [
                     {
@@ -229,11 +229,11 @@ Response: {
                     {
                       "name": "s",
                       "type": {
-                        "repr": "0x8890e72a1d0761cd36c9528e1f63a19481451dc14b910e3a9a8b9bf7a71b2ea4::M::S",
+                        "repr": "0xc656ad99781f5e304913e43fad8620bfcad2d84687cd1df30cddcff0fad415a4::M::S",
                         "signature": {
                           "body": {
                             "datatype": {
-                              "package": "0x8890e72a1d0761cd36c9528e1f63a19481451dc14b910e3a9a8b9bf7a71b2ea4",
+                              "package": "0xc656ad99781f5e304913e43fad8620bfcad2d84687cd1df30cddcff0fad415a4",
                               "module": "M",
                               "type": "S",
                               "typeParameters": []
@@ -257,24 +257,24 @@ Response: {
                 },
                 {
                   "name": "V",
-                  "fullyQualifiedName": "0x84d4d04ab3c835cb44e7acf8006653cfb06e7649ff48a1b91ff2d8b7e9bb27af::M::V",
+                  "fullyQualifiedName": "0x256f97a555041334e2867a995f7747f80180592ea6c630e7c5dbfb94baf9bfc6::M::V",
                   "abilities": [],
                   "typeParameters": [],
                   "fields": [
                     {
                       "name": "t",
                       "type": {
-                        "repr": "0x8890e72a1d0761cd36c9528e1f63a19481451dc14b910e3a9a8b9bf7a71b2ea4::M::T<0x8890e72a1d0761cd36c9528e1f63a19481451dc14b910e3a9a8b9bf7a71b2ea4::M::S>",
+                        "repr": "0xc656ad99781f5e304913e43fad8620bfcad2d84687cd1df30cddcff0fad415a4::M::T<0xc656ad99781f5e304913e43fad8620bfcad2d84687cd1df30cddcff0fad415a4::M::S>",
                         "signature": {
                           "body": {
                             "datatype": {
-                              "package": "0x8890e72a1d0761cd36c9528e1f63a19481451dc14b910e3a9a8b9bf7a71b2ea4",
+                              "package": "0xc656ad99781f5e304913e43fad8620bfcad2d84687cd1df30cddcff0fad415a4",
                               "module": "M",
                               "type": "T",
                               "typeParameters": [
                                 {
                                   "datatype": {
-                                    "package": "0x8890e72a1d0761cd36c9528e1f63a19481451dc14b910e3a9a8b9bf7a71b2ea4",
+                                    "package": "0xc656ad99781f5e304913e43fad8620bfcad2d84687cd1df30cddcff0fad415a4",
                                     "module": "M",
                                     "type": "S",
                                     "typeParameters": []
@@ -297,7 +297,7 @@ Response: {
   }
 }
 
-task 6, lines 81-109:
+task 6, lines 82-110:
 //# run-graphql --cursors "Coin" "TreasuryCap"
 Response: {
   "data": {

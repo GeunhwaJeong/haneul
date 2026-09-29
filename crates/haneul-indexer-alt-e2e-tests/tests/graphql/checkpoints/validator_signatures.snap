@@ -6,7 +6,7 @@ processed 11 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,33 +14,33 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# advance-epoch
 Epoch advanced: 1
 
-task 3, line 12:
+task 3, line 13:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 4, lines 14-16:
+task 4, lines 15-17:
 //# programmable --sender A --inputs object(1,0) 1
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 5, lines 18-20:
+task 5, lines 19-21:
 //# programmable --sender A --inputs object(1,0) 2
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 7, line 24:
+task 7, line 25:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 8, lines 26-41:
+task 8, lines 27-42:
 //# run-graphql
 Response: {
   "data": {
@@ -50,7 +50,7 @@ Response: {
         "epoch": {
           "epochId": 0
         },
-        "signature": "opngWrNN1GAlo0T9hi0/PYUMHK4rucl+9WKijrKLXXjba1ZhvqFdSAAle4aMvE86",
+        "signature": "ow88Jdaji/7wfHDC+w4qTmA8OMnxi4bTyQM+XoG6NpmUu8y5fmKSP1BWfGWTk60m",
         "signersMap": [
           0
         ]
@@ -62,7 +62,7 @@ Response: {
         "epoch": {
           "epochId": 0
         },
-        "signature": "p4Crroh3F221BlTuOCEn47WwU5i09IzOZ17XS4Jcw/zIn6rx0vOn2EMkMibuBPFE",
+        "signature": "tfEYgbrGAsdxf4Fqsoa6hiQuZn9PCSTlYNmNuL8kd6Bn3Dr7MXDMF3BgzD9hABv4",
         "signersMap": [
           0
         ]
@@ -74,7 +74,7 @@ Response: {
         "epoch": {
           "epochId": 1
         },
-        "signature": "rW43x0QrHJ1rjEJGaLw79i50jTkeV8mg4GDqj4zfGR0gNLeSivNue59P7sqcbxmq",
+        "signature": "sNRY9YyBJd6RsYBr17dyeyD5NeJrq4+fbdsnH6j5sg3t5b3Q/oRmkZ+dknq9fvIz",
         "signersMap": [
           0
         ]
@@ -87,7 +87,7 @@ Response: {
           "epoch": {
             "epochId": 0
           },
-          "signature": "opngWrNN1GAlo0T9hi0/PYUMHK4rucl+9WKijrKLXXjba1ZhvqFdSAAle4aMvE86",
+          "signature": "ow88Jdaji/7wfHDC+w4qTmA8OMnxi4bTyQM+XoG6NpmUu8y5fmKSP1BWfGWTk60m",
           "signersMap": [
             0
           ]
@@ -99,7 +99,7 @@ Response: {
           "epoch": {
             "epochId": 0
           },
-          "signature": "p4Crroh3F221BlTuOCEn47WwU5i09IzOZ17XS4Jcw/zIn6rx0vOn2EMkMibuBPFE",
+          "signature": "tfEYgbrGAsdxf4Fqsoa6hiQuZn9PCSTlYNmNuL8kd6Bn3Dr7MXDMF3BgzD9hABv4",
           "signersMap": [
             0
           ]
@@ -111,7 +111,7 @@ Response: {
           "epoch": {
             "epochId": 1
           },
-          "signature": "rW43x0QrHJ1rjEJGaLw79i50jTkeV8mg4GDqj4zfGR0gNLeSivNue59P7sqcbxmq",
+          "signature": "sNRY9YyBJd6RsYBr17dyeyD5NeJrq4+fbdsnH6j5sg3t5b3Q/oRmkZ+dknq9fvIz",
           "signersMap": [
             0
           ]
@@ -121,7 +121,7 @@ Response: {
   }
 }
 
-task 9, lines 43-53:
+task 9, lines 44-54:
 //# run-graphql
 Response: {
   "data": {
@@ -129,7 +129,7 @@ Response: {
   }
 }
 
-task 10, lines 55-65:
+task 10, lines 56-66:
 //# run-graphql
 Response: {
   "data": {
@@ -140,7 +140,7 @@ Response: {
           "epoch": {
             "epochId": 1
           },
-          "signature": "rW43x0QrHJ1rjEJGaLw79i50jTkeV8mg4GDqj4zfGR0gNLeSivNue59P7sqcbxmq",
+          "signature": "sNRY9YyBJd6RsYBr17dyeyD5NeJrq4+fbdsnH6j5sg3t5b3Q/oRmkZ+dknq9fvIz",
           "signersMap": [
             0
           ]
@@ -153,7 +153,7 @@ Response: {
           "epoch": {
             "epochId": 0
           },
-          "signature": "opngWrNN1GAlo0T9hi0/PYUMHK4rucl+9WKijrKLXXjba1ZhvqFdSAAle4aMvE86",
+          "signature": "ow88Jdaji/7wfHDC+w4qTmA8OMnxi4bTyQM+XoG6NpmUu8y5fmKSP1BWfGWTk60m",
           "signersMap": [
             0
           ]

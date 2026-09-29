@@ -6,23 +6,23 @@ processed 5 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-11:
+task 1, lines 7-12:
 //# publish --sender A --upgradeable
 created: object(1,0), object(1,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5297200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 13-18:
+task 2, lines 14-19:
 //# upgrade --package test --upgrade-capability 1,1 --sender A
 created: object(2,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 5297200,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 3, line 20:
+task 3, line 21:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 22-47:
+task 4, lines 23-48:
 //# run-graphql
 Response: {
   "data": {
@@ -42,7 +42,7 @@ Response: {
                 "0x0000000000000000000000000000000000000000000000000000000000000001",
                 "0x0000000000000000000000000000000000000000000000000000000000000002"
               ],
-              "currentPackage": "0x73a3f5dcf6bb0a21b73b6689550fcce1ad86d6071c2e0ce070d9ceff7b9a7327",
+              "currentPackage": "0xa640dfe03df8ba5abc83541724f2d368542f4b90ab9d491120565a825d837481",
               "upgradeTicket": {
                 "__typename": "TxResult",
                 "cmd": 0,

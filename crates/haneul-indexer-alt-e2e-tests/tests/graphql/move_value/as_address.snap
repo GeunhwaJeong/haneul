@@ -6,17 +6,17 @@ processed 20 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-47:
+task 1, lines 7-48:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 8116800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 49:
+task 2, line 50:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 51-53:
+task 3, lines 52-54:
 //# programmable --sender A --inputs @A
 //> 0: test::mod::cap();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -24,7 +24,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2249600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 55-57:
+task 4, lines 56-58:
 //# programmable --sender A --inputs object(3,0) @A
 //> 0: test::mod::foo(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -32,55 +32,55 @@ created: object(4,0)
 mutated: object(0,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 3982400,  storage_rebate: 2227104, non_refundable_storage_fee: 22496
 
-task 5, lines 59-60:
+task 5, lines 60-61:
 //# programmable --sender A --inputs object(4,0) @A
 //> 0: test::mod::bag(Input(0))
 mutated: object(0,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 3024800,  storage_rebate: 2693592, non_refundable_storage_fee: 27208
 
-task 6, line 62:
+task 6, line 63:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 64-65:
+task 7, lines 65-66:
 //# programmable --sender A --inputs object(4,0) 1u64 200u64
 //> 0: test::mod::add(Input(0), Input(1), Input(2))
 created: object(7,0)
 mutated: object(0,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 4491600,  storage_rebate: 2994552, non_refundable_storage_fee: 30248
 
-task 8, line 67:
+task 8, line 68:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 9, lines 69-70:
+task 9, lines 70-71:
 //# programmable --sender A --inputs object(4,0) 3u64 400u64
 //> 0: test::mod::add(Input(0), Input(1), Input(2))
 created: object(9,0)
 mutated: object(0,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 4491600,  storage_rebate: 2994552, non_refundable_storage_fee: 30248
 
-task 10, line 72:
+task 10, line 73:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 11, lines 74-75:
+task 11, lines 75-76:
 //# programmable --sender A --inputs object(4,0) 3u64 4u64
 //> 0: test::mod::set(Input(0), Input(1), Input(2))
 mutated: object(0,0), object(4,0), object(9,0)
 gas summary: computation_cost: 1000000, storage_cost: 4491600,  storage_rebate: 4446684, non_refundable_storage_fee: 44916
 
-task 12, lines 77-78:
+task 12, lines 78-79:
 //# programmable --sender A --inputs object(4,0) 1u64 2u64
 //> 0: test::mod::set(Input(0), Input(1), Input(2))
 mutated: object(0,0), object(4,0), object(7,0)
 gas summary: computation_cost: 1000000, storage_cost: 4491600,  storage_rebate: 4446684, non_refundable_storage_fee: 44916
 
-task 13, line 80:
+task 13, line 81:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 14, lines 82-102:
+task 14, lines 83-103:
 //# run-graphql
 Response: {
   "data": {
@@ -97,7 +97,7 @@ Response: {
                         "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                       },
                       "json": {
-                        "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                        "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                         "balance": "299999977441288"
                       }
                     }
@@ -105,14 +105,14 @@ Response: {
                   {
                     "contents": {
                       "type": {
-                        "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
+                        "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                       },
                       "json": {
-                        "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                        "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                         "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                        "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                        "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                         "bag": {
-                          "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                          "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                           "size": "2"
                         }
                       }
@@ -121,10 +121,10 @@ Response: {
                   {
                     "contents": {
                       "type": {
-                        "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::FooCap"
+                        "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::FooCap"
                       },
                       "json": {
-                        "id": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7"
+                        "id": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46"
                       }
                     }
                   }
@@ -138,7 +138,7 @@ Response: {
   }
 }
 
-task 15, lines 104-138:
+task 15, lines 105-139:
 //# run-graphql
 Response: {
   "data": {
@@ -154,13 +154,6 @@ Response: {
                       "objectChanges": {
                         "nodes": [
                           {
-                            "idCreated": true,
-                            "inputState": null,
-                            "outputState": {
-                              "asMoveObject": null
-                            }
-                          },
-                          {
                             "idCreated": false,
                             "inputState": {
                               "asMoveObject": {
@@ -169,7 +162,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "300000000000000"
                                   }
                                 }
@@ -182,11 +175,18 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999990883200"
                                   }
                                 }
                               }
+                            }
+                          },
+                          {
+                            "idCreated": true,
+                            "inputState": null,
+                            "outputState": {
+                              "asMoveObject": null
                             }
                           }
                         ]
@@ -206,7 +206,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999990883200"
                                   }
                                 }
@@ -219,7 +219,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999988611720"
                                   }
                                 }
@@ -233,10 +233,10 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::FooCap"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::FooCap"
                                   },
                                   "json": {
-                                    "id": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7"
+                                    "id": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46"
                                   }
                                 }
                               }
@@ -259,7 +259,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999988611720"
                                   }
                                 }
@@ -272,7 +272,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999985856424"
                                   }
                                 }
@@ -280,34 +280,15 @@ Response: {
                             }
                           },
                           {
-                            "idCreated": true,
-                            "inputState": null,
-                            "outputState": {
-                              "asMoveObject": {
-                                "contents": {
-                                  "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
-                                  },
-                                  "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
-                                    "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
-                                    "bag": null
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          {
                             "idCreated": false,
                             "inputState": {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::FooCap"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::FooCap"
                                   },
                                   "json": {
-                                    "id": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7"
+                                    "id": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46"
                                   }
                                 }
                               }
@@ -316,10 +297,29 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::FooCap"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::FooCap"
                                   },
                                   "json": {
-                                    "id": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7"
+                                    "id": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "idCreated": true,
+                            "inputState": null,
+                            "outputState": {
+                              "asMoveObject": {
+                                "contents": {
+                                  "type": {
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
+                                  },
+                                  "json": {
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
+                                    "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
+                                    "bag": null
                                   }
                                 }
                               }
@@ -333,6 +333,35 @@ Response: {
                     "effects": {
                       "objectChanges": {
                         "nodes": [
+                          {
+                            "idCreated": false,
+                            "inputState": {
+                              "asMoveObject": {
+                                "contents": {
+                                  "type": {
+                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                  },
+                                  "json": {
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
+                                    "balance": "299999985856424"
+                                  }
+                                }
+                              }
+                            },
+                            "outputState": {
+                              "asMoveObject": {
+                                "contents": {
+                                  "type": {
+                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                  },
+                                  "json": {
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
+                                    "balance": "299999984525216"
+                                  }
+                                }
+                              }
+                            }
+                          },
                           {
                             "idCreated": true,
                             "inputState": null,
@@ -344,41 +373,12 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
-                                    "balance": "299999985856424"
-                                  }
-                                }
-                              }
-                            },
-                            "outputState": {
-                              "asMoveObject": {
-                                "contents": {
-                                  "type": {
-                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
-                                  },
-                                  "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
-                                    "balance": "299999984525216"
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          {
-                            "idCreated": false,
-                            "inputState": {
-                              "asMoveObject": {
-                                "contents": {
-                                  "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
-                                  },
-                                  "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": null
                                   }
                                 }
@@ -388,14 +388,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "0"
                                     }
                                   }
@@ -412,6 +412,35 @@ Response: {
                       "objectChanges": {
                         "nodes": [
                           {
+                            "idCreated": false,
+                            "inputState": {
+                              "asMoveObject": {
+                                "contents": {
+                                  "type": {
+                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                  },
+                                  "json": {
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
+                                    "balance": "299999984525216"
+                                  }
+                                }
+                              }
+                            },
+                            "outputState": {
+                              "asMoveObject": {
+                                "contents": {
+                                  "type": {
+                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                  },
+                                  "json": {
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
+                                    "balance": "299999982028168"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
                             "idCreated": true,
                             "inputState": null,
                             "outputState": {
@@ -421,7 +450,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::dynamic_field::Field<u64,u64>"
                                   },
                                   "json": {
-                                    "id": "0x7416853ee264f7bb69166a2c616a46b4712baadacf4bb4df070cc44b5fea1dc3",
+                                    "id": "0xb90dc31965065a2213eee7d9f1bf2f4c22937237900256fd294c31524cc7be53",
                                     "name": "1",
                                     "value": "200"
                                   }
@@ -435,43 +464,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
-                                    "balance": "299999984525216"
-                                  }
-                                }
-                              }
-                            },
-                            "outputState": {
-                              "asMoveObject": {
-                                "contents": {
-                                  "type": {
-                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
-                                  },
-                                  "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
-                                    "balance": "299999982028168"
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          {
-                            "idCreated": false,
-                            "inputState": {
-                              "asMoveObject": {
-                                "contents": {
-                                  "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
-                                  },
-                                  "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "0"
                                     }
                                   }
@@ -482,14 +482,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "1"
                                     }
                                   }
@@ -514,7 +514,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999982028168"
                                   }
                                 }
@@ -527,7 +527,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999979531120"
                                   }
                                 }
@@ -544,7 +544,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::dynamic_field::Field<u64,u64>"
                                   },
                                   "json": {
-                                    "id": "0xdccce68c8340417a430d44bab18807312f39ab83f311c78ded6da9881641272e",
+                                    "id": "0x8b53941ea2f1c2004a98fc96eabb5d65007606fc63564f30923b094566d904e9",
                                     "name": "3",
                                     "value": "400"
                                   }
@@ -558,14 +558,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "1"
                                     }
                                   }
@@ -576,14 +576,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "2"
                                     }
                                   }
@@ -608,7 +608,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999979531120"
                                   }
                                 }
@@ -621,7 +621,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                                     "balance": "299999978486204"
                                   }
                                 }
@@ -637,7 +637,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::dynamic_field::Field<u64,u64>"
                                   },
                                   "json": {
-                                    "id": "0xdccce68c8340417a430d44bab18807312f39ab83f311c78ded6da9881641272e",
+                                    "id": "0x8b53941ea2f1c2004a98fc96eabb5d65007606fc63564f30923b094566d904e9",
                                     "name": "3",
                                     "value": "400"
                                   }
@@ -651,7 +651,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::dynamic_field::Field<u64,u64>"
                                   },
                                   "json": {
-                                    "id": "0xdccce68c8340417a430d44bab18807312f39ab83f311c78ded6da9881641272e",
+                                    "id": "0x8b53941ea2f1c2004a98fc96eabb5d65007606fc63564f30923b094566d904e9",
                                     "name": "3",
                                     "value": "4"
                                   }
@@ -665,14 +665,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "2"
                                     }
                                   }
@@ -683,14 +683,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "2"
                                     }
                                   }
@@ -712,10 +712,39 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
+                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                  },
+                                  "json": {
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
+                                    "balance": "299999978486204"
+                                  }
+                                }
+                              }
+                            },
+                            "outputState": {
+                              "asMoveObject": {
+                                "contents": {
+                                  "type": {
+                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                  },
+                                  "json": {
+                                    "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
+                                    "balance": "299999977441288"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "idCreated": false,
+                            "inputState": {
+                              "asMoveObject": {
+                                "contents": {
+                                  "type": {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::dynamic_field::Field<u64,u64>"
                                   },
                                   "json": {
-                                    "id": "0x7416853ee264f7bb69166a2c616a46b4712baadacf4bb4df070cc44b5fea1dc3",
+                                    "id": "0xb90dc31965065a2213eee7d9f1bf2f4c22937237900256fd294c31524cc7be53",
                                     "name": "1",
                                     "value": "200"
                                   }
@@ -729,7 +758,7 @@ Response: {
                                     "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::dynamic_field::Field<u64,u64>"
                                   },
                                   "json": {
-                                    "id": "0x7416853ee264f7bb69166a2c616a46b4712baadacf4bb4df070cc44b5fea1dc3",
+                                    "id": "0xb90dc31965065a2213eee7d9f1bf2f4c22937237900256fd294c31524cc7be53",
                                     "name": "1",
                                     "value": "2"
                                   }
@@ -743,43 +772,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
-                                    "balance": "299999978486204"
-                                  }
-                                }
-                              }
-                            },
-                            "outputState": {
-                              "asMoveObject": {
-                                "contents": {
-                                  "type": {
-                                    "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
-                                  },
-                                  "json": {
-                                    "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
-                                    "balance": "299999977441288"
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          {
-                            "idCreated": false,
-                            "inputState": {
-                              "asMoveObject": {
-                                "contents": {
-                                  "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
-                                  },
-                                  "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "2"
                                     }
                                   }
@@ -790,14 +790,14 @@ Response: {
                               "asMoveObject": {
                                 "contents": {
                                   "type": {
-                                    "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::Foo"
+                                    "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::Foo"
                                   },
                                   "json": {
-                                    "id": "0xddb8c91c401c671dc643fda068b5fe2fc203283348759978584dd72c494a2c30",
+                                    "id": "0xfc98c48279f54da1f94838fc2dbcc1aecde5fe1cf55cd521b4557e999be0bebe",
                                     "creator": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e",
-                                    "cap": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7",
+                                    "cap": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46",
                                     "bag": {
-                                      "id": "0x748f7b30fe6a5b182855516fd131d6a660299585437a18e20e6f9e92f2f31ce1",
+                                      "id": "0x8f7459b8997a2d0a536fc753bce605855d4c9eefab1b481a56aed1602af94637",
                                       "size": "2"
                                     }
                                   }
@@ -819,7 +819,7 @@ Response: {
   }
 }
 
-task 16, lines 140-160:
+task 16, lines 141-161:
 //# run-graphql
 Response: {
   "data": {
@@ -832,10 +832,10 @@ Response: {
                 "asMoveObject": {
                   "contents": {
                     "type": {
-                      "repr": "0x40e99ad2f7ef895e6ab15680c406db87d3afb3acb1880a67958c692074755221::mod::FooCap"
+                      "repr": "0x778503cadd3e7eb1bf93edc2900bdf439561c3cc719b16973496e078b1c6d860::mod::FooCap"
                     },
                     "json": {
-                      "id": "0xeb1dff0d5886a2ae2238a9794543552736f35bb809841bea3729a76ca363fac7"
+                      "id": "0x821b9b64005271f9bb42dae043e30be004a57a8e8bc9179f0ac048faa6338b46"
                     }
                   }
                 }
@@ -848,7 +848,7 @@ Response: {
   }
 }
 
-task 17, lines 162-181:
+task 17, lines 163-182:
 //# run-graphql --cursors bcs(1u64)
 Response: {
   "data": {
@@ -873,7 +873,7 @@ Response: {
   }
 }
 
-task 18, lines 183-204:
+task 18, lines 184-205:
 //# run-graphql --cursors bcs(3u64)
 Response: {
   "data": {
@@ -970,7 +970,7 @@ Response: {
   }
 }
 
-task 19, lines 206-239:
+task 19, lines 207-240:
 //# run-graphql
 Response: {
   "data": {
@@ -984,18 +984,18 @@ Response: {
                   "nodes": [
                     {
                       "name": {
-                        "json": "1"
-                      },
-                      "value": {
-                        "json": "200"
-                      }
-                    },
-                    {
-                      "name": {
                         "json": "3"
                       },
                       "value": {
                         "json": "400"
+                      }
+                    },
+                    {
+                      "name": {
+                        "json": "1"
+                      },
+                      "value": {
+                        "json": "200"
                       }
                     }
                   ]
@@ -1006,18 +1006,18 @@ Response: {
                   "nodes": [
                     {
                       "name": {
-                        "json": "1"
-                      },
-                      "value": {
-                        "json": "2"
-                      }
-                    },
-                    {
-                      "name": {
                         "json": "3"
                       },
                       "value": {
                         "json": "4"
+                      }
+                    },
+                    {
+                      "name": {
+                        "json": "1"
+                      },
+                      "value": {
+                        "json": "2"
                       }
                     }
                   ]
@@ -1031,18 +1031,18 @@ Response: {
                 "nodes": [
                   {
                     "name": {
-                      "json": "1"
-                    },
-                    "value": {
-                      "json": "2"
-                    }
-                  },
-                  {
-                    "name": {
                       "json": "3"
                     },
                     "value": {
                       "json": "4"
+                    }
+                  },
+                  {
+                    "name": {
+                      "json": "1"
+                    },
+                    "value": {
+                      "json": "2"
                     }
                   }
                 ]

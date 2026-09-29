@@ -6,7 +6,7 @@ processed 10 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 100 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,35 +14,35 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 10-15:
+task 2, lines 11-16:
 //# publish
 created: object(2,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 3579600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 17:
+task 3, line 18:
 //# run test::gas_test::simple_function --sender A
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 19:
+task 4, line 20:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 6, line 24:
+task 6, line 25:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 26-43:
+task 7, lines 27-44:
 //# run-graphql
 Response: {
   "data": {
     "transferTransaction": {
       "gasEffects": {
         "gasObject": {
-          "address": "0xe115ae7ff9b56944fafef6fd015d510a2fd963b6d42ec8a6266409c0ea40fb36",
+          "address": "0xdef5dc23cc213da7a8fd0db8ae199cbba2fafebc5708d57433716f7439aa9328",
           "version": 2,
-          "digest": "De36UvKrpvdw1jtse1H68znGwYpghPSA6ALYgNpLCVke"
+          "digest": "7HWuWfG9FjaxSWtkinfGqa3PWZ3sEqzTwkNhasTET9wa"
         },
         "gasSummary": {
           "computationCost": 1000000,
@@ -55,16 +55,16 @@ Response: {
   }
 }
 
-task 8, lines 45-62:
+task 8, lines 46-63:
 //# run-graphql
 Response: {
   "data": {
     "functionCallTransaction": {
       "gasEffects": {
         "gasObject": {
-          "address": "0xe115ae7ff9b56944fafef6fd015d510a2fd963b6d42ec8a6266409c0ea40fb36",
+          "address": "0xdef5dc23cc213da7a8fd0db8ae199cbba2fafebc5708d57433716f7439aa9328",
           "version": 3,
-          "digest": "8c5T9j8ekFPRjcp5d5w1mzAWAZSsXq7yjfv87BYimDTM"
+          "digest": "H1hBGdvXEFgchTkKLSSFu7mRwDYLEzx9b4PA1v3a5C5m"
         },
         "gasSummary": {
           "computationCost": 1000000,
@@ -77,7 +77,7 @@ Response: {
   }
 }
 
-task 9, lines 64-81:
+task 9, lines 65-82:
 //# run-graphql
 Response: {
   "data": {

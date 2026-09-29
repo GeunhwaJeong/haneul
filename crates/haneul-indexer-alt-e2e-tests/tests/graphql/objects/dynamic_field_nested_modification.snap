@@ -10,13 +10,13 @@ A: object(0,0)
 // but intermediate dynamic fields in the path are not, so it is not always
 // safe to bound a dynamic field by the version of its immediate parent.
 
-task 1, lines 10-34:
+task 1, lines 11-35:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6308000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 36-38:
+task 2, lines 37-39:
 //# programmable --sender A --inputs @A
 //> 0: haneul::object_bag::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -24,7 +24,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2386400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 40-42:
+task 3, lines 41-43:
 //# programmable --sender A --inputs @A
 //> 0: haneul::object_bag::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -32,24 +32,24 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2386400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 44-45:
+task 4, lines 45-46:
 //# programmable --sender A --inputs object(2,0) object(3,0)
 //> 0: P::M::nest(Input(0), Input(1))
 created: object(4,0), object(4,1), object(4,2)
 mutated: object(0,0), object(2,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 9963600,  storage_rebate: 3746952, non_refundable_storage_fee: 37848
 
-task 5, lines 47-48:
+task 5, lines 48-49:
 //# programmable --sender A --inputs object(2,0)
 //> 0: P::M::poke(Input(0))
 mutated: object(0,0), object(2,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 3655600,  storage_rebate: 3619044, non_refundable_storage_fee: 36556
 
-task 6, line 50:
+task 6, line 51:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 7, lines 52-80:
+task 7, lines 53-81:
 //# run-graphql --cursors bcs(1u64) bcs(2u64)
 Response: {
   "data": {
@@ -80,7 +80,7 @@ Response: {
                     "version": 4,
                     "contents": {
                       "json": {
-                        "id": "0x6d4bb210351dcdcdb18ae437c4afbed9f07590f06f4f150c03f395c2847fe06b",
+                        "id": "0xb916c97299b49168d06fbf1e211eaa2001d63b9d6d6f5cc03605618c0c9fd369",
                         "c": "0"
                       }
                     }
@@ -109,7 +109,7 @@ Response: {
                     "version": 5,
                     "contents": {
                       "json": {
-                        "id": "0x6d4bb210351dcdcdb18ae437c4afbed9f07590f06f4f150c03f395c2847fe06b",
+                        "id": "0xb916c97299b49168d06fbf1e211eaa2001d63b9d6d6f5cc03605618c0c9fd369",
                         "c": "1"
                       }
                     }

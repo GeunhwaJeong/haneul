@@ -17,17 +17,17 @@ A: object(0,0)
 //  9. Attempting to get a function from a module that doesn't exist.
 // 10. Attempting to get a function that doesn't exist in its module.
 
-task 1, lines 17-28:
+task 1, lines 18-29:
 //# publish --upgradeable --sender A
 created: object(1,0), object(1,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 6368800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 30:
+task 2, line 31:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 32-36:
+task 3, lines 33-37:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -40,7 +40,7 @@ Response: {
       "U64",
       {
         "Struct": {
-          "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+          "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
           "module": "M",
           "name": "O",
           "typeArguments": []
@@ -49,7 +49,7 @@ Response: {
       {
         "MutableReference": {
           "Struct": {
-            "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+            "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
             "module": "M",
             "name": "O",
             "typeArguments": []
@@ -59,7 +59,7 @@ Response: {
       {
         "Vector": {
           "Struct": {
-            "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+            "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
             "module": "M",
             "name": "O",
             "typeArguments": []
@@ -72,7 +72,7 @@ Response: {
       {
         "Reference": {
           "Struct": {
-            "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+            "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
             "module": "M",
             "name": "O",
             "typeArguments": []
@@ -81,7 +81,7 @@ Response: {
       },
       {
         "Struct": {
-          "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+          "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
           "module": "M",
           "name": "O",
           "typeArguments": []
@@ -90,7 +90,7 @@ Response: {
       {
         "Vector": {
           "Struct": {
-            "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+            "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
             "module": "M",
             "name": "O",
             "typeArguments": []
@@ -101,7 +101,7 @@ Response: {
   }
 }
 
-task 4, lines 38-42:
+task 4, lines 39-43:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -117,17 +117,17 @@ Response: {
   }
 }
 
-task 5, lines 44-63:
+task 5, lines 45-64:
 //# upgrade --package P --sender A --upgrade-capability 1,1
 created: object(5,0)
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 7273200,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 6, line 65:
+task 6, line 66:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 67-71:
+task 7, lines 68-72:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -140,7 +140,7 @@ Response: {
       "U64",
       {
         "Struct": {
-          "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+          "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
           "module": "M",
           "name": "O",
           "typeArguments": []
@@ -149,7 +149,7 @@ Response: {
       {
         "MutableReference": {
           "Struct": {
-            "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+            "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
             "module": "M",
             "name": "O",
             "typeArguments": []
@@ -159,7 +159,7 @@ Response: {
       {
         "Vector": {
           "Struct": {
-            "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+            "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
             "module": "M",
             "name": "O",
             "typeArguments": []
@@ -172,7 +172,7 @@ Response: {
       {
         "Reference": {
           "Struct": {
-            "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+            "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
             "module": "M",
             "name": "O",
             "typeArguments": []
@@ -181,7 +181,7 @@ Response: {
       },
       {
         "Struct": {
-          "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+          "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
           "module": "M",
           "name": "O",
           "typeArguments": []
@@ -190,7 +190,7 @@ Response: {
       {
         "Vector": {
           "Struct": {
-            "address": "0xb31e94757641da605883e0588e4396c0ddf671785b99c6de5c314a952e97d944",
+            "address": "0xbacf826f6e8723958d21ac1fadbc4a9bf90e834d887516e6d4270c5a920a54ac",
             "module": "M",
             "name": "O",
             "typeArguments": []
@@ -201,7 +201,7 @@ Response: {
   }
 }
 
-task 8, lines 73-77:
+task 8, lines 74-78:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -216,7 +216,7 @@ Response: {
       {
         "Reference": {
           "Struct": {
-            "address": "0x18469e508d45317f901382ba3b5249d67977cb53e68209b34f775efa3eee2cda",
+            "address": "0x316c65a624238a9c4f43f758c6a4ad4286cf3e29891c6c563c6a5b12201d95c8",
             "module": "M",
             "name": "O2",
             "typeArguments": []
@@ -228,7 +228,7 @@ Response: {
   }
 }
 
-task 9, lines 79-83:
+task 9, lines 80-84:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -246,7 +246,7 @@ Response: {
   }
 }
 
-task 10, lines 85-89:
+task 10, lines 86-90:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -257,7 +257,7 @@ Response: {
   }
 }
 
-task 11, lines 91-95:
+task 11, lines 92-96:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -268,35 +268,35 @@ Response: {
   }
 }
 
-task 12, lines 97-101:
+task 12, lines 98-102:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 7,
   "error": {
     "code": -32602,
-    "message": "Invalid Params: Package not found: 0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f"
+    "message": "Invalid Params: Package not found: 0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0"
   }
 }
 
-task 13, lines 103-107:
+task 13, lines 104-108:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 8,
   "error": {
     "code": -32602,
-    "message": "Invalid Params: Module not found: 0x18469e508d45317f901382ba3b5249d67977cb53e68209b34f775efa3eee2cda::N"
+    "message": "Invalid Params: Module not found: 0x316c65a624238a9c4f43f758c6a4ad4286cf3e29891c6c563c6a5b12201d95c8::N"
   }
 }
 
-task 14, lines 109-113:
+task 14, lines 110-114:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 9,
   "error": {
     "code": -32602,
-    "message": "Invalid Params: Function not found: 0x18469e508d45317f901382ba3b5249d67977cb53e68209b34f775efa3eee2cda::M::qux"
+    "message": "Invalid Params: Function not found: 0x316c65a624238a9c4f43f758c6a4ad4286cf3e29891c6c563c6a5b12201d95c8::M::qux"
   }
 }

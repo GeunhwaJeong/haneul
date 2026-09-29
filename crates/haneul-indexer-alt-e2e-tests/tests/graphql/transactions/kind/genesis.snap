@@ -6,7 +6,7 @@ processed 8 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 42 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,29 +14,29 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 12-27:
+task 3, lines 13-28:
 //# run-graphql
 Response: {
   "data": {
     "nonGenesisTransaction": {
-      "digest": "DWjnPxbJEEPdhxFENBccBWw6Jp4GSt4YzcnVxLuTmAde",
+      "digest": "5TdduUvaZVhPoEoocuCBWXnVmcLAXzjtPCDcqqiSgBB6",
       "kind": {}
     }
   }
 }
 
-task 4, lines 29-48:
+task 4, lines 30-49:
 //# run-graphql
 Response: {
   "data": {
     "genesisTransaction": {
       "nodes": [
         {
-          "digest": "GKpM9uNhR96ZtkZk6QRLW8teqPb5JYcE5icGcJVBMNtV",
+          "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
           "kind": {
             "__typename": "GenesisTransaction",
             "objects": {
@@ -98,15 +98,19 @@ Response: {
                   "version": 1
                 },
                 {
-                  "address": "0x123e2f4619de917f6b1b886d84aabdeeffe08a4467752a4ae58f8d88e7666f2a",
+                  "address": "0x10c8a2067b7d3d222c36db69e4611e6c0f5d2170436e16d314404c24e4dcc2d1",
                   "version": 0
                 },
                 {
-                  "address": "0x1ae2c1a294270839e81d4bfa9c90889fede927fdef1ccfece1083e301f521552",
+                  "address": "0x4ad2b5d298e8602f7b9c6beb88df59532d754494e030ac1038d17e10d941f842",
                   "version": 0
                 },
                 {
-                  "address": "0x37cf3a6d7bfb547e9eaf95377bde64a81d8a954a38fcb37595663d5ab3c878c8",
+                  "address": "0x570aa5a0bfe86876b737cb255af31cd0d5a968c3ad6341631e6edfd808282d48",
+                  "version": 0
+                },
+                {
+                  "address": "0x64514845054051b173dc3b38305bf9d420e1d9f82ed8599bc502d5327329c521",
                   "version": 0
                 },
                 {
@@ -114,31 +118,27 @@ Response: {
                   "version": 0
                 },
                 {
-                  "address": "0x737aa8f345f5f8ae79fab666f720b71f19607ef80e90336109524c375f6dac5d",
+                  "address": "0x6d72b325d6cfe440bc15bd0a81b6f37307e68385a712275d552351d4be263f89",
                   "version": 0
                 },
                 {
-                  "address": "0x768a62c10c4f75e202b4377544c68efd6be89f9a10bee69fb6648962b016d653",
+                  "address": "0x92b26123c22d4a9c913dfb233dfc2844a8d5e0409aac546aa8436b343911ee86",
                   "version": 0
                 },
                 {
-                  "address": "0x7c9a6012a7d65af9b84cd75aeed3ca4786d616454f78b41177c757ea677d6d59",
+                  "address": "0x9e8d9e1f98e3e9d34177a8ee4b2c01ad6d9b3f9acbf2451b9c6489b974a3bed8",
                   "version": 0
                 },
                 {
-                  "address": "0x9ee6d05e9e9dfaf5ce0abb33c6dc97f37eee35de65eac62ddc30670e5ba8595e",
+                  "address": "0xa633c7f13d4da7b01ab802988e533e779a006d37a03114eab028387efe8a6cb3",
                   "version": 0
                 },
                 {
-                  "address": "0xb7d0fec617f45634ef747c9d3cb65fb368b6a2a6772b2819ec8257a3b7b0d771",
+                  "address": "0xaf872423f4dcd422db30810e6f30de513ddd4bf46beabc92d8c7c5a434fd9288",
                   "version": 0
                 },
                 {
-                  "address": "0xbae5470e01bf9dcbb59739712a26efc03044f659d32bdc9be81c2ceff3905b64",
-                  "version": 0
-                },
-                {
-                  "address": "0xbcde811682ab9251ca97ecf5cd08c9a5f51dd67146cbb002fffdfccd352c4b06",
+                  "address": "0xb8f3699b038821a8b9d34a2da7d0092e61768e0e4449b136b607d0aa8eb9989c",
                   "version": 0
                 },
                 {
@@ -146,11 +146,11 @@ Response: {
                   "version": 0
                 },
                 {
-                  "address": "0xe115ae7ff9b56944fafef6fd015d510a2fd963b6d42ec8a6266409c0ea40fb36",
+                  "address": "0xdef5dc23cc213da7a8fd0db8ae199cbba2fafebc5708d57433716f7439aa9328",
                   "version": 0
                 },
                 {
-                  "address": "0xe2d46870f9c26aec4ff92ac403b254c4b7c1cf39a4048ec038d647c5f95db239",
+                  "address": "0xff34d8477961df3d74475507e4132f09e150eb709a9a39f8ce5cab4e487efda6",
                   "version": 0
                 }
               ]
@@ -162,14 +162,14 @@ Response: {
   }
 }
 
-task 5, lines 50-86:
+task 5, lines 51-87:
 //# run-graphql
 Response: {
   "data": {
     "paginationTest": {
       "nodes": [
         {
-          "digest": "GKpM9uNhR96ZtkZk6QRLW8teqPb5JYcE5icGcJVBMNtV",
+          "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
           "kind": {
             "__typename": "GenesisTransaction",
             "objects": {
@@ -195,7 +195,7 @@ Response: {
     "backwardPaginationTest": {
       "nodes": [
         {
-          "digest": "GKpM9uNhR96ZtkZk6QRLW8teqPb5JYcE5icGcJVBMNtV",
+          "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
           "kind": {
             "__typename": "GenesisTransaction",
             "objects": {
@@ -205,11 +205,11 @@ Response: {
                   "version": 0
                 },
                 {
-                  "address": "0xe115ae7ff9b56944fafef6fd015d510a2fd963b6d42ec8a6266409c0ea40fb36",
+                  "address": "0xdef5dc23cc213da7a8fd0db8ae199cbba2fafebc5708d57433716f7439aa9328",
                   "version": 0
                 },
                 {
-                  "address": "0xe2d46870f9c26aec4ff92ac403b254c4b7c1cf39a4048ec038d647c5f95db239",
+                  "address": "0xff34d8477961df3d74475507e4132f09e150eb709a9a39f8ce5cab4e487efda6",
                   "version": 0
                 }
               ]
@@ -221,14 +221,14 @@ Response: {
   }
 }
 
-task 6, lines 89-117:
+task 6, lines 90-118:
 //# run-graphql --cursors 2
 Response: {
   "data": {
     "paginationAfterCursor": {
       "nodes": [
         {
-          "digest": "GKpM9uNhR96ZtkZk6QRLW8teqPb5JYcE5icGcJVBMNtV",
+          "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
           "kind": {
             "__typename": "GenesisTransaction",
             "objects": {
@@ -269,14 +269,14 @@ Response: {
   }
 }
 
-task 7, lines 119-147:
+task 7, lines 120-148:
 //# run-graphql --cursors 5
 Response: {
   "data": {
     "paginationBeforeCursor": {
       "nodes": [
         {
-          "digest": "GKpM9uNhR96ZtkZk6QRLW8teqPb5JYcE5icGcJVBMNtV",
+          "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
           "kind": {
             "__typename": "GenesisTransaction",
             "objects": {

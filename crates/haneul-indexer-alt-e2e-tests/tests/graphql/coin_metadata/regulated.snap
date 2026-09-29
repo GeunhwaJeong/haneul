@@ -6,17 +6,17 @@ processed 4 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-29:
+task 1, lines 7-30:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2), object(1,3), object(1,4)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 15154400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 31:
+task 2, line 32:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 33-52:
+task 3, lines 34-53:
 //# run-graphql
 Response: {
   "data": {
@@ -33,10 +33,10 @@ Response: {
       "denyCap": {
         "contents": {
           "type": {
-            "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::DenyCapV2<0x8a1f3fef2c66576121eb17b16c358915fb0a90c8e05a28a8017e7307b601c0c1::fake::FAKE>"
+            "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::DenyCapV2<0x8bf05691f26ebe35ff4cae2df36cfa6527c80aec2e9371fe340bf43336f886ee::fake::FAKE>"
           },
           "json": {
-            "id": "0x886f13e89be9bfaebe76a04e7e6a3f9c02052873e9c013ce5543f12b9b931ee3",
+            "id": "0x88ac481d0e4bd3eeae380f8c317b51e5285bc2f5156c7c50538878ba4562dc84",
             "allow_global_pause": false
           }
         }

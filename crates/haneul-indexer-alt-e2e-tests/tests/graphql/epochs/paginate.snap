@@ -6,31 +6,31 @@ processed 10 tasks
 init:
 A: object(0,0)
 
-task 2, line 8:
+task 2, line 9:
 //# advance-epoch
 Epoch advanced: 1
 
-task 4, line 12:
+task 4, line 13:
 //# advance-epoch
 Epoch advanced: 2
 
-task 5, line 14:
+task 5, line 15:
 //# advance-epoch
 Epoch advanced: 3
 
-task 6, line 16:
+task 6, line 17:
 //# advance-epoch
 Epoch advanced: 4
 
-task 7, line 18:
+task 7, line 19:
 //# advance-epoch
 Epoch advanced: 5
 
-task 8, line 20:
+task 8, line 21:
 //# advance-epoch
 Epoch advanced: 6
 
-task 9, lines 22-42:
+task 9, lines 23-43:
 //# run-graphql --cursors 0 5
 Response: {
   "data": {

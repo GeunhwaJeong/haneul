@@ -5,10 +5,10 @@ processed 2 tasks
 
 // Test of a basic GraphQL query.
 
-task 1, lines 8-11:
+task 1, lines 9-12:
 //# run-graphql
 Response: {
   "data": {
-    "chainIdentifier": "AJJrzdBUVuozHJxFdPbacjDcdVDk3yLnKvpRcQqVm8Mz"
+    "chainIdentifier": "3orHva99mM4UStkEyGQDwpBKbD19foUoKq1Fs2aHqbxx"
   }
 }

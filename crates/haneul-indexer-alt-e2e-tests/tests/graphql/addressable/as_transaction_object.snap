@@ -6,7 +6,7 @@ processed 12 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 1000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,11 +14,11 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 12-51:
+task 3, lines 13-52:
 //# run-graphql
 Response: {
   "data": {
@@ -27,7 +27,7 @@ Response: {
         "__typename": "ObjectChange",
         "idCreated": true,
         "outputState": {
-          "address": "0xb97536b48e93de1f9c1d06619490683304fdf3423dadd0e409bd99d116a1c80c"
+          "address": "0xd639068928620e2679d6a27649bf80d282fccb0cf75ee7f2fec499ad4d890ca6"
         }
       }
     },
@@ -36,7 +36,7 @@ Response: {
         "__typename": "ObjectChange",
         "idCreated": true,
         "outputState": {
-          "address": "0xb97536b48e93de1f9c1d06619490683304fdf3423dadd0e409bd99d116a1c80c"
+          "address": "0xd639068928620e2679d6a27649bf80d282fccb0cf75ee7f2fec499ad4d890ca6"
         }
       }
     },
@@ -49,17 +49,17 @@ Response: {
   }
 }
 
-task 4, lines 53-76:
+task 4, lines 54-77:
 //# publish
 created: object(4,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6680400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 5, line 78:
+task 5, line 79:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 6, lines 80-82:
+task 6, lines 81-83:
 //# programmable --sender A --inputs 7u64 @A
 //> 0: P::M::create_object(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1));
@@ -67,22 +67,22 @@ created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, line 84:
+task 7, line 85:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 8, lines 86-87:
+task 8, lines 87-88:
 //# programmable --sender A --inputs object(6,0) 99u64
 //> 0: P::M::mutate_and_emit(Input(0), Input(1));
-events: Event { package_id: P, transaction_module: Identifier("M"), sender: A, type_: StructTag { address: P, module: Identifier("M"), name: Identifier("TestAddressEvent"), type_params: [] }, contents: [62, 219, 117, 132, 227, 135, 32, 1, 102, 151, 41, 1, 101, 98, 132, 247, 88, 218, 211, 19, 164, 9, 23, 115, 161, 29, 20, 131, 114, 1, 203, 163] }
+events: Event { package_id: P, transaction_module: Identifier("M"), sender: A, type_: StructTag { address: P, module: Identifier("M"), name: Identifier("TestAddressEvent"), type_params: [] }, contents: [242, 7, 32, 155, 199, 87, 220, 206, 164, 234, 213, 169, 226, 156, 38, 247, 253, 79, 71, 62, 70, 255, 120, 50, 158, 89, 94, 255, 11, 157, 59, 179] }
 mutated: object(0,0), object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2302344, non_refundable_storage_fee: 23256
 
-task 9, line 89:
+task 9, line 90:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 10, lines 91-116:
+task 10, lines 92-117:
 //# run-graphql
 Response: {
   "data": {
@@ -99,7 +99,7 @@ Response: {
                       "asMoveObject": {
                         "contents": {
                           "json": {
-                            "id": "0x3edb7584e387200166972901656284f758dad313a4091773a11d14837201cba3",
+                            "id": "0xf207209bc757dccea4ead5a9e29c26f7fd4f473e46ff78329e595eff0b9d3bb3",
                             "value": "7"
                           }
                         }
@@ -109,7 +109,7 @@ Response: {
                       "asMoveObject": {
                         "contents": {
                           "json": {
-                            "id": "0x3edb7584e387200166972901656284f758dad313a4091773a11d14837201cba3",
+                            "id": "0xf207209bc757dccea4ead5a9e29c26f7fd4f473e46ff78329e595eff0b9d3bb3",
                             "value": "99"
                           }
                         }
@@ -126,7 +126,7 @@ Response: {
   }
 }
 
-task 11, lines 118-145:
+task 11, lines 119-146:
 //# run-graphql
 Response: {
   "data": {
@@ -144,7 +144,7 @@ Response: {
                         "asMoveObject": {
                           "contents": {
                             "json": {
-                              "id": "0x3edb7584e387200166972901656284f758dad313a4091773a11d14837201cba3",
+                              "id": "0xf207209bc757dccea4ead5a9e29c26f7fd4f473e46ff78329e595eff0b9d3bb3",
                               "value": "7"
                             }
                           }
@@ -154,7 +154,7 @@ Response: {
                         "asMoveObject": {
                           "contents": {
                             "json": {
-                              "id": "0x3edb7584e387200166972901656284f758dad313a4091773a11d14837201cba3",
+                              "id": "0xf207209bc757dccea4ead5a9e29c26f7fd4f473e46ff78329e595eff0b9d3bb3",
                               "value": "99"
                             }
                           }

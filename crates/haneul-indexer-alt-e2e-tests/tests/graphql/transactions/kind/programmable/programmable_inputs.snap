@@ -6,13 +6,13 @@ processed 16 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-46:
+task 1, lines 7-47:
 //# publish
 created: object(1,0), object(1,1)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 9036400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 48-51:
+task 2, lines 49-52:
 // Test 1: Pure input only - demonstrates Pure TransactionInput type
 //# programmable --sender A --inputs 42u64 @A
 //> 0: test::simple::new_coin(Input(0));
@@ -21,22 +21,22 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 53:
+task 3, line 54:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 55-57:
+task 4, lines 56-58:
 // Test 2: SharedInput only - demonstrates SharedInput TransactionInput type
 //# programmable --sender A --inputs object(1,1) 10
 //> 0: test::simple::add(Input(0), Input(1))
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 2340800,  storage_rebate: 2317392, non_refundable_storage_fee: 23408
 
-task 5, line 59:
+task 5, line 60:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 6, lines 61-64:
+task 6, lines 62-65:
 // Test 3: OwnedOrImmutable only - demonstrates OwnedOrImmutable TransactionInput type
 // Reuses the coin created in Test 1 (object(2,0))
 //# programmable --sender A --inputs object(2,0)
@@ -44,11 +44,11 @@ task 6, lines 61-64:
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 2294820, non_refundable_storage_fee: 23180
 
-task 7, line 66:
+task 7, line 67:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 8, lines 68-72:
+task 8, lines 69-73:
 // Test 4: Receiving only - demonstrates Receiving TransactionInput type
 //# programmable --sender A --inputs 200u64 @A
 // Setup: Create coin and transfer it to A's address for Receiving test
@@ -58,30 +58,30 @@ created: object(8,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 9, lines 74-76:
+task 9, lines 75-77:
 //# programmable --sender A --inputs object(8,0) @A
 // Setup: Transfer coin to A's address (creates a pending receive)
 //> 0: test::simple::transfer_coin_to_address(Input(0), Input(1))
 mutated: object(0,0), object(8,0)
 gas summary: computation_cost: 1000000, storage_cost: 2318000,  storage_rebate: 2294820, non_refundable_storage_fee: 23180
 
-task 10, lines 78-80:
+task 10, lines 79-81:
 //# programmable --sender A --inputs object(2,0) receiving(8,0) @A
 //> 0: test::simple::receive_coin(Input(0), Input(1));
 //> TransferObjects([Result(0)], Input(2))
 Error: Transaction Effects Status: Move Runtime Abort. Location: haneul::transfer::receive_impl (function index 15) at offset 0, Abort Code: 3
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("transfer") }, function: 15, instruction: 0, function_name: Some("receive_impl") }, 3), source: Some(VMError { major_status: ABORTED, sub_status: Some(3), message: None, exec_state: None, location: Module(ModuleId { address: haneul, name: Identifier("transfer") }), indices: [], offsets: [(FunctionDefinitionIndex(15), 0)] }), command: Some(0) } }
 
-task 11, line 82:
+task 11, line 83:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 12, lines 84-103:
+task 12, lines 85-104:
 //# run-graphql
 Response: {
   "data": {
     "pureInputTest": {
-      "digest": "CHptXRsAADVbbuYuvjhkvRTVN6bukFCTawaoCdXEHALj",
+      "digest": "YDADbXQG26Hgfcm4V7BrNjZUt5YPHkKhzRW9mvrnxuh",
       "kind": {
         "__typename": "ProgrammableTransaction",
         "inputs": {
@@ -101,19 +101,19 @@ Response: {
   }
 }
 
-task 13, lines 105-126:
+task 13, lines 106-127:
 //# run-graphql
 Response: {
   "data": {
     "sharedInputTest": {
-      "digest": "BgyVWkMb3V6Z5Ks2NLjJbrohJ2xGQ5xYKqU1husoUhk9",
+      "digest": "G24Dz41JwCyFyQmqJ1muvu628GgHPgT5b3xENY8mH1Q1",
       "kind": {
         "__typename": "ProgrammableTransaction",
         "inputs": {
           "nodes": [
             {
               "__typename": "SharedInput",
-              "address": "0x2fb770f5cd650d7db23a7a5af74c6d6e0a7227dad7431470fc4d054dc5ceeba4",
+              "address": "0x71ccb08c22ca778ab62974cd598dffb09eee8632d6b7e4bde5b9fcf0f396af06",
               "initialSharedVersion": 2,
               "mutable": true
             },
@@ -127,12 +127,12 @@ Response: {
   }
 }
 
-task 14, lines 128-151:
+task 14, lines 129-152:
 //# run-graphql
 Response: {
   "data": {
     "ownedOrImmutableTest": {
-      "digest": "CLWcCZBe21bfABbxTAXGMkHX7AmdafQn6bnxJMuxJrDD",
+      "digest": "T2ndfnaWmspJY4ithvJRVmfPJULro2TqJtVixWFPmLx",
       "kind": {
         "__typename": "ProgrammableTransaction",
         "inputs": {
@@ -140,9 +140,9 @@ Response: {
             {
               "__typename": "OwnedOrImmutable",
               "object": {
-                "address": "0x3e8068450e610053f4f65e29e414135a7652146c724148de35eb14c2e73f0b36",
+                "address": "0x77d23b2eabca03d365b0819607069c94d5e30969a582a93164f089a0125979a8",
                 "version": 2,
-                "digest": "FbFbpCEftUMJZJhuTh9Pou3b1SexCmuqrqb1utbHyCbC"
+                "digest": "A8sFcCZZVtyGBJLvEcnmriCMYuzxFZnMBY7HMoZKFtjj"
               }
             }
           ]
@@ -152,12 +152,12 @@ Response: {
   }
 }
 
-task 15, lines 153-176:
+task 15, lines 154-177:
 //# run-graphql
 Response: {
   "data": {
     "receivingInputTest": {
-      "digest": "GQG22XMrzZYrd2Gr5zeSXwyx237Y7L5SRfeQZ31ZdQoo",
+      "digest": "5YQKMDRmwv1hZC4oTpnQ9ZwUiWgYnRav5L6BXSM6MwGw",
       "kind": {
         "__typename": "ProgrammableTransaction",
         "inputs": {
@@ -168,9 +168,9 @@ Response: {
             {
               "__typename": "Receiving",
               "object": {
-                "address": "0xc7f1c5b162c28d835e635f9e1c10de45ae9362e9cbb02c34eb8bd1e1a4a86519",
+                "address": "0x03ff9c612b63f3409c8bb5a5ce53ef299a3950cbc653b7315649747611abdbfd",
                 "version": 6,
-                "digest": "9wDNw619rmt9pFy2cj5km7UpqrBAxLxY9H1vFNDzUbYS"
+                "digest": "FdXPt9sE6f8CfcPkwCapBBhzDdjihRV4e3Vm9knzHNAe"
               }
             },
             {

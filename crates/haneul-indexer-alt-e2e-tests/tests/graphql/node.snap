@@ -6,7 +6,7 @@ processed 13 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 1 @A
 //> SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -14,7 +14,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 10-12:
+task 2, lines 11-13:
 //# programmable --sender A --inputs @A
 //> haneul::bag::new();
 //> TransferObjects([Result(0)], Input(0))
@@ -22,18 +22,18 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2287600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 14-15:
+task 3, lines 15-16:
 //# programmable --sender A --inputs object(2,0) 42
 //> haneul::bag::add<u64, u64>(Input(0), Input(1), Input(1));
 created: object(3,0)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 3754400,  storage_rebate: 2264724, non_refundable_storage_fee: 22876
 
-task 4, line 17:
+task 4, line 18:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 19-35:
+task 5, lines 20-36:
 //# run-graphql --cursors bcs(0u8,@{A})
 Response: {
   "data": {
@@ -48,7 +48,7 @@ Response: {
                 "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::bag::Bag"
               },
               "json": {
-                "id": "0xb17a6f21d9b349dc43cc731bb1e268926e0cd9d95c95540bd81694a9f8a4122a",
+                "id": "0x4a69ae12fecf13f7704b1ac30ec28177c912411fdaaf1d98347b08bf0f454a11",
                 "size": "1"
               }
             }
@@ -59,7 +59,7 @@ Response: {
                 "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
               },
               "json": {
-                "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+                "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
                 "balance": "299999992224843"
               }
             }
@@ -70,7 +70,7 @@ Response: {
                 "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
               },
               "json": {
-                "id": "0xb8896b0b4f69f4d8beb78c26918743199ba8c847d381a0ae26a46ea647578101",
+                "id": "0x868a87980a71007554564c8aa1bcebb8d949be09ae0d47b37114168da40b915f",
                 "balance": "1"
               }
             }
@@ -81,24 +81,24 @@ Response: {
   }
 }
 
-task 6, lines 37-46:
+task 6, lines 38-47:
 //# run-graphql --cursors bcs(1u8,0)
 Response: {
   "data": {
     "node": {
       "id": "AQAAAAAAAAAA",
       "sequenceNumber": 0,
-      "digest": "CKjFRsvNLMhfTKYRc67g1tY5KjYkzrTRo9yu4rhW9nr1"
+      "digest": "3y1VCjdmikgugkHRmwgt9NdfknG12ciDT5SVCTC3KpdN"
     }
   }
 }
 
-task 7, lines 48-62:
+task 7, lines 49-63:
 //# run-graphql --cursors bcs(2u8,@{obj_3_0})
 Response: {
   "data": {
     "node": {
-      "id": "AobaTNgsXsZ7et/Zt0r1K9ZglWMIsusAqgPnSn8F7kwC",
+      "id": "AnXRmvqKi0e5CBxdqhA2/iVCsssIb6yN5x7qgwIRrUL8",
       "name": {
         "type": {
           "repr": "u64"
@@ -115,7 +115,7 @@ Response: {
   }
 }
 
-task 8, lines 64-73:
+task 8, lines 65-74:
 //# run-graphql --cursors bcs(4u8,0)
 Response: {
   "data": {
@@ -127,18 +127,18 @@ Response: {
   }
 }
 
-task 9, lines 75-86:
+task 9, lines 76-87:
 //# run-graphql --cursors bcs(5u8,@{obj_0_0})
 Response: {
   "data": {
     "node": {
-      "id": "BbDYJnhq03S55uedpKLWyNXyPEE663b6CwflY20XOkqP",
+      "id": "BXZEi0WVNe+D7rnd6Td1SkRtEju3mpTtRH2Y1rpYNH3A",
       "contents": {
         "type": {
           "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
         },
         "json": {
-          "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+          "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
           "balance": "299999992224843"
         }
       }
@@ -146,7 +146,7 @@ Response: {
   }
 }
 
-task 10, lines 88-113:
+task 10, lines 89-114:
 //# run-graphql --cursors bcs(7u8,0x2) bcs(8u8,0x2)
 Response: {
   "data": {
@@ -187,19 +187,19 @@ Response: {
   }
 }
 
-task 11, lines 115-128:
+task 11, lines 116-129:
 //# run-graphql --cursors bcs(8u8,@{obj_0_0})
 Response: {
   "data": {
     "node": {
-      "id": "CLDYJnhq03S55uedpKLWyNXyPEE663b6CwflY20XOkqP",
+      "id": "CHZEi0WVNe+D7rnd6Td1SkRtEju3mpTtRH2Y1rpYNH3A",
       "asMoveObject": {
         "contents": {
           "type": {
             "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
           },
           "json": {
-            "id": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+            "id": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
             "balance": "299999992224843"
           }
         }
@@ -208,13 +208,13 @@ Response: {
   }
 }
 
-task 12, lines 130-141:
+task 12, lines 131-142:
 //# run-graphql --cursors bcs(10u8,digest(@{digest_1}))
 Response: {
   "data": {
     "node": {
-      "id": "CiB5N6eerCfhgmAdi4CiK46J6H8M/77weZ4aCNfaJcY/UA==",
-      "digest": "9ABZ4a3uTspziirMPscrkYw99KhLjEKzFE5E6UXVUDCj",
+      "id": "CiDgEiwLzXn0icSCfjeVi2YXqjWpKs4ukdmMOsoInIj/SQ==",
+      "digest": "G5gPxKn4ugzRBGkFhU8J59UiA5MoGV1kcYXsEA1gh6YY",
       "effects": {
         "status": "SUCCESS"
       }

@@ -6,13 +6,13 @@ processed 9 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-23:
+task 1, lines 7-24:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 5563200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 25-29:
+task 2, lines 26-30:
 // Transaction 1: Create an object
 // Dependencies: publish transaction, system transactions
 //# programmable --sender A --inputs 100u64 @A
@@ -22,7 +22,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2432000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 31-34:
+task 3, lines 32-35:
 // Transaction 2: Use objects created in previous transactions
 // Dependencies: Transaction 1 (uses object(2,0)), system transactions
 //# programmable --sender A --inputs object(2,0)
@@ -30,18 +30,18 @@ task 3, lines 31-34:
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2432000,  storage_rebate: 2407680, non_refundable_storage_fee: 24320
 
-task 4, line 36:
+task 4, line 37:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 38-56:
+task 5, lines 39-57:
 //# run-graphql
 Response: {
   "data": {
     "genesisTransaction": {
       "nodes": [
         {
-          "digest": "GKpM9uNhR96ZtkZk6QRLW8teqPb5JYcE5icGcJVBMNtV",
+          "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
           "effects": {
             "dependencies": {
               "pageInfo": {
@@ -57,12 +57,12 @@ Response: {
   }
 }
 
-task 6, lines 58-75:
+task 6, lines 59-76:
 //# run-graphql
 Response: {
   "data": {
     "systemTransactionDependencies": {
-      "digest": "44jnCHLtVsG52pY6UJceYnroA9kAHMxUAbANoCYghJrB",
+      "digest": "83rE9BnZGvUrmTA6pN5CMEina8F9h982Afc3f7uz6tZ1",
       "dependencies": {
         "pageInfo": {
           "hasNextPage": false,
@@ -70,13 +70,13 @@ Response: {
         },
         "nodes": [
           {
-            "digest": "71e1L1eTWHdT9p7A4u5HP9Pp9E7xoTqrHAaWXZAoDAEg",
+            "digest": "BTAGNx49xuaFLD3nnrgnXyRkVBWdM2ASAV5JLjovn41u",
             "sender": {
               "address": "0xda83166d01afd7ddcf8af5f844f45aaa53f48548e5117c23f5a2978cfd422244"
             }
           },
           {
-            "digest": "GKpM9uNhR96ZtkZk6QRLW8teqPb5JYcE5icGcJVBMNtV",
+            "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
             "sender": null
           }
         ]
@@ -85,12 +85,12 @@ Response: {
   }
 }
 
-task 7, lines 77-101:
+task 7, lines 78-102:
 //# run-graphql
 Response: {
   "data": {
     "userTransactionDependencies": {
-      "digest": "AY4oqpmqrBiWd29Vu7gicCMt6npvmv89HJyHpjnhzN7A",
+      "digest": "AfAV3fu98KgbKb2bZX2ep6Myj8hd3C6y6APVwuN3AbFQ",
       "dependencies": {
         "pageInfo": {
           "hasNextPage": false,
@@ -98,7 +98,7 @@ Response: {
         },
         "nodes": [
           {
-            "digest": "44jnCHLtVsG52pY6UJceYnroA9kAHMxUAbANoCYghJrB",
+            "digest": "83rE9BnZGvUrmTA6pN5CMEina8F9h982Afc3f7uz6tZ1",
             "sender": {
               "address": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
             },
@@ -111,7 +111,7 @@ Response: {
             }
           },
           {
-            "digest": "71e1L1eTWHdT9p7A4u5HP9Pp9E7xoTqrHAaWXZAoDAEg",
+            "digest": "BTAGNx49xuaFLD3nnrgnXyRkVBWdM2ASAV5JLjovn41u",
             "sender": {
               "address": "0xda83166d01afd7ddcf8af5f844f45aaa53f48548e5117c23f5a2978cfd422244"
             },
@@ -129,12 +129,12 @@ Response: {
   }
 }
 
-task 8, lines 103-142:
+task 8, lines 104-143:
 //# run-graphql
 Response: {
   "data": {
     "paginationTest": {
-      "digest": "AY4oqpmqrBiWd29Vu7gicCMt6npvmv89HJyHpjnhzN7A",
+      "digest": "AfAV3fu98KgbKb2bZX2ep6Myj8hd3C6y6APVwuN3AbFQ",
       "dependencies": {
         "pageInfo": {
           "hasNextPage": true,
@@ -144,7 +144,7 @@ Response: {
           {
             "cursor": "MA==",
             "node": {
-              "digest": "44jnCHLtVsG52pY6UJceYnroA9kAHMxUAbANoCYghJrB",
+              "digest": "83rE9BnZGvUrmTA6pN5CMEina8F9h982Afc3f7uz6tZ1",
               "sender": {
                 "address": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
               }
@@ -154,7 +154,7 @@ Response: {
       }
     },
     "backwardPaginationTest": {
-      "digest": "AY4oqpmqrBiWd29Vu7gicCMt6npvmv89HJyHpjnhzN7A",
+      "digest": "AfAV3fu98KgbKb2bZX2ep6Myj8hd3C6y6APVwuN3AbFQ",
       "dependencies": {
         "pageInfo": {
           "hasNextPage": false,
@@ -164,7 +164,7 @@ Response: {
           {
             "cursor": "MQ==",
             "node": {
-              "digest": "71e1L1eTWHdT9p7A4u5HP9Pp9E7xoTqrHAaWXZAoDAEg",
+              "digest": "BTAGNx49xuaFLD3nnrgnXyRkVBWdM2ASAV5JLjovn41u",
               "sender": {
                 "address": "0xda83166d01afd7ddcf8af5f844f45aaa53f48548e5117c23f5a2978cfd422244"
               }

@@ -6,33 +6,33 @@ processed 7 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-7:
+task 1, lines 7-8:
 //# programmable --sender A --inputs @A
 //> 0: TransferObjects([Gas], Input(0))
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 9-10:
+task 2, lines 10-11:
 //# programmable --sender A --inputs @A
 //> 0: TransferObjects([Gas], Input(0))
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 12:
+task 3, line 13:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 14-15:
+task 4, lines 15-16:
 //# programmable --sender A --inputs @A
 //> 0: TransferObjects([Gas], Input(0))
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, line 17:
+task 5, line 18:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 6, lines 19-32:
+task 6, lines 20-33:
 //# run-graphql
 Response: {
   "data": {

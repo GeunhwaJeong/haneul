@@ -6,7 +6,7 @@ processed 23 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs @A
 //> 0: haneul::bag::new();
 //> TransferObjects([Result(0)], Input(0))
@@ -14,7 +14,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2287600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 10-12:
+task 2, lines 11-13:
 //# programmable --sender A --inputs @A
 //> 0: haneul::object_bag::new();
 //> TransferObjects([Result(0)], Input(0))
@@ -22,7 +22,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2386400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 14-16:
+task 3, lines 15-17:
 //# programmable --sender A --inputs 100 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -30,7 +30,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 18-20:
+task 4, lines 19-21:
 //# programmable --sender A --inputs 200 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -38,7 +38,7 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 22-24:
+task 5, lines 23-25:
 //# programmable --sender A --inputs 300 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> TransferObjects([Result(0)], Input(1))
@@ -46,54 +46,54 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 26-27:
+task 6, lines 27-28:
 //# programmable --sender A --inputs object(1,0) 42 999
 //> haneul::bag::add<u64, u64>(Input(0), Input(1), Input(2))
 created: object(6,0)
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 3754400,  storage_rebate: 2264724, non_refundable_storage_fee: 22876
 
-task 7, line 29:
+task 7, line 30:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 8, lines 31-32:
+task 8, lines 32-33:
 //# programmable --sender A --inputs object(1,0) 43 object(3,0)
 //> haneul::bag::add<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2))
 created: object(8,0)
 mutated: object(0,0), object(1,0)
 wrapped: object(3,0)
-gas summary: computation_cost: 1000000, storage_cost: 4643600,  storage_rebate: 3242844, non_refundable_storage_fee: 32756
+gas summary: computation_cost: 1000000, storage_cost: 4689200,  storage_rebate: 3242844, non_refundable_storage_fee: 32756
 
-task 9, lines 34-35:
+task 9, lines 35-36:
 //# programmable --sender A --inputs object(2,0) 44 object(4,0)
 //> haneul::object_bag::add<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2))
 created: object(9,0)
 mutated: object(0,0), object(2,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 5829200,  storage_rebate: 3340656, non_refundable_storage_fee: 33744
 
-task 10, line 37:
+task 10, line 38:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 11, lines 39-40:
+task 11, lines 40-41:
 //# programmable --sender A --inputs object(1,0) 45 object(5,0)
 //> haneul::bag::add<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2))
 created: object(11,0)
 mutated: object(0,0), object(1,0)
 wrapped: object(5,0)
-gas summary: computation_cost: 1000000, storage_cost: 4643600,  storage_rebate: 3242844, non_refundable_storage_fee: 32756
+gas summary: computation_cost: 1000000, storage_cost: 4689200,  storage_rebate: 3242844, non_refundable_storage_fee: 32756
 
-task 12, line 42:
+task 12, line 43:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 13, lines 44-68:
+task 13, lines 45-69:
 //# run-graphql --cursors bcs(42u64)
 Response: {
   "data": {
     "object": {
-      "address": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9",
+      "address": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80",
       "ser": {
         "name": {
           "type": {
@@ -156,12 +156,12 @@ Response: {
   }
 }
 
-task 14, lines 70-94:
+task 14, lines 71-95:
 //# run-graphql --cursors bcs(43u64)
 Response: {
   "data": {
     "object": {
-      "address": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9",
+      "address": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80",
       "ser": {
         "name": {
           "type": {
@@ -174,7 +174,7 @@ Response: {
             "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
           },
           "json": {
-            "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+            "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
             "balance": "100"
           }
         }
@@ -191,7 +191,7 @@ Response: {
             "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
           },
           "json": {
-            "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+            "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
             "balance": "100"
           }
         }
@@ -209,7 +209,7 @@ Response: {
               "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
             },
             "json": {
-              "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+              "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
               "balance": "100"
             }
           }
@@ -226,7 +226,7 @@ Response: {
               "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
             },
             "json": {
-              "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+              "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
               "balance": "100"
             }
           }
@@ -236,12 +236,12 @@ Response: {
   }
 }
 
-task 15, lines 96-125:
+task 15, lines 97-126:
 //# run-graphql --cursors bcs(44u64)
 Response: {
   "data": {
     "object": {
-      "address": "0x1b263c5c9a27dcd10a7307a52735249e7924ef608116d62c81b864302c776958",
+      "address": "0xbfaa08bc89daecf873ac58c2d38ae9ca47800f0b508964fd8079a345ea6e7a4b",
       "ser": {
         "name": {
           "type": {
@@ -250,14 +250,14 @@ Response: {
           "json": "44"
         },
         "value": {
-          "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+          "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
           "version": 9,
           "contents": {
             "type": {
               "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
             },
             "json": {
-              "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+              "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
               "balance": "200"
             }
           }
@@ -271,14 +271,14 @@ Response: {
           "json": "44"
         },
         "value": {
-          "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+          "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
           "version": 9,
           "contents": {
             "type": {
               "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
             },
             "json": {
-              "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+              "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
               "balance": "200"
             }
           }
@@ -293,14 +293,14 @@ Response: {
             "json": "44"
           },
           "value": {
-            "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+            "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
             "version": 9,
             "contents": {
               "type": {
                 "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
               },
               "json": {
-                "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+                "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
                 "balance": "200"
               }
             }
@@ -314,14 +314,14 @@ Response: {
             "json": "44"
           },
           "value": {
-            "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+            "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
             "version": 9,
             "contents": {
               "type": {
                 "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
               },
               "json": {
-                "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+                "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
                 "balance": "200"
               }
             }
@@ -332,7 +332,7 @@ Response: {
   }
 }
 
-task 16, lines 127-149:
+task 16, lines 128-150:
 //# run-graphql
 Response: {
   "data": {
@@ -340,7 +340,7 @@ Response: {
   }
 }
 
-task 17, lines 151-162:
+task 17, lines 152-163:
 //# run-graphql
 Response: {
   "data": {
@@ -351,7 +351,7 @@ Response: {
   }
 }
 
-task 18, lines 164-170:
+task 18, lines 165-171:
 //# run-graphql
 Response: {
   "data": {
@@ -359,12 +359,12 @@ Response: {
   }
 }
 
-task 19, lines 172-184:
+task 19, lines 173-185:
 //# run-graphql
 Response: {
   "data": {
     "object": {
-      "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+      "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
       "version": 9,
       "asMoveObject": {
         "contents": {
@@ -372,7 +372,7 @@ Response: {
             "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL>"
           },
           "json": {
-            "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+            "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
             "balance": "200"
           }
         }
@@ -381,7 +381,7 @@ Response: {
   }
 }
 
-task 20, lines 186-202:
+task 20, lines 187-203:
 //# run-graphql
 Response: {
   "data": {
@@ -405,7 +405,7 @@ Response: {
           },
           "value": {
             "json": {
-              "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+              "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
               "balance": "100"
             }
           }
@@ -430,7 +430,7 @@ Response: {
           },
           "value": {
             "json": {
-              "id": "0x78a1bfab6c6ae6bbd920160df823d76e353e1c77ce6cb900b3a25c4aa7ff8afb",
+              "id": "0x40cf2a46c02c6d8ad70f93b33b6d703b2a47c517b5b5b5ca9e19832f1705cf39",
               "balance": "300"
             }
           }
@@ -440,7 +440,7 @@ Response: {
   }
 }
 
-task 21, lines 204-234:
+task 21, lines 205-235:
 //# run-graphql --cursors bcs(42u64) bcs(43u64) bcs(45u64)
 Response: {
   "data": {
@@ -524,7 +524,7 @@ Response: {
             },
             "value": {
               "json": {
-                "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+                "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
                 "balance": "100"
               }
             }
@@ -544,7 +544,7 @@ Response: {
             },
             "value": {
               "json": {
-                "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+                "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
                 "balance": "100"
               }
             }
@@ -565,7 +565,7 @@ Response: {
               },
               "value": {
                 "json": {
-                  "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+                  "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
                   "balance": "100"
                 }
               }
@@ -585,7 +585,7 @@ Response: {
               },
               "value": {
                 "json": {
-                  "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+                  "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
                   "balance": "100"
                 }
               }
@@ -609,7 +609,7 @@ Response: {
             },
             "value": {
               "json": {
-                "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+                "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
                 "balance": "100"
               }
             }
@@ -620,7 +620,7 @@ Response: {
             },
             "value": {
               "json": {
-                "id": "0x78a1bfab6c6ae6bbd920160df823d76e353e1c77ce6cb900b3a25c4aa7ff8afb",
+                "id": "0x40cf2a46c02c6d8ad70f93b33b6d703b2a47c517b5b5b5ca9e19832f1705cf39",
                 "balance": "300"
               }
             }
@@ -639,7 +639,7 @@ Response: {
             },
             "value": {
               "json": {
-                "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+                "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
                 "balance": "100"
               }
             }
@@ -650,7 +650,7 @@ Response: {
             },
             "value": {
               "json": {
-                "id": "0x78a1bfab6c6ae6bbd920160df823d76e353e1c77ce6cb900b3a25c4aa7ff8afb",
+                "id": "0x40cf2a46c02c6d8ad70f93b33b6d703b2a47c517b5b5b5ca9e19832f1705cf39",
                 "balance": "300"
               }
             }
@@ -670,7 +670,7 @@ Response: {
               },
               "value": {
                 "json": {
-                  "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+                  "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
                   "balance": "100"
                 }
               }
@@ -681,7 +681,7 @@ Response: {
               },
               "value": {
                 "json": {
-                  "id": "0x78a1bfab6c6ae6bbd920160df823d76e353e1c77ce6cb900b3a25c4aa7ff8afb",
+                  "id": "0x40cf2a46c02c6d8ad70f93b33b6d703b2a47c517b5b5b5ca9e19832f1705cf39",
                   "balance": "300"
                 }
               }
@@ -700,7 +700,7 @@ Response: {
               },
               "value": {
                 "json": {
-                  "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+                  "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
                   "balance": "100"
                 }
               }
@@ -711,7 +711,7 @@ Response: {
               },
               "value": {
                 "json": {
-                  "id": "0x78a1bfab6c6ae6bbd920160df823d76e353e1c77ce6cb900b3a25c4aa7ff8afb",
+                  "id": "0x40cf2a46c02c6d8ad70f93b33b6d703b2a47c517b5b5b5ca9e19832f1705cf39",
                   "balance": "300"
                 }
               }
@@ -723,7 +723,7 @@ Response: {
   }
 }
 
-task 22, lines 236-260:
+task 22, lines 237-261:
 //# run-graphql --cursors bcs(42u64) bcs(43u64) bcs(45u64)
 Response: {
   "data": {
@@ -768,7 +768,7 @@ Response: {
         },
         "value": {
           "json": {
-            "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+            "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
             "balance": "100"
           }
         }
@@ -789,7 +789,7 @@ Response: {
           },
           "value": {
             "json": {
-              "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+              "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
               "balance": "100"
             }
           }
@@ -813,7 +813,7 @@ Response: {
         },
         "value": {
           "json": {
-            "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+            "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
             "balance": "100"
           }
         }
@@ -824,7 +824,7 @@ Response: {
         },
         "value": {
           "json": {
-            "id": "0x78a1bfab6c6ae6bbd920160df823d76e353e1c77ce6cb900b3a25c4aa7ff8afb",
+            "id": "0x40cf2a46c02c6d8ad70f93b33b6d703b2a47c517b5b5b5ca9e19832f1705cf39",
             "balance": "300"
           }
         }
@@ -844,7 +844,7 @@ Response: {
           },
           "value": {
             "json": {
-              "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+              "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
               "balance": "100"
             }
           }
@@ -855,7 +855,7 @@ Response: {
           },
           "value": {
             "json": {
-              "id": "0x78a1bfab6c6ae6bbd920160df823d76e353e1c77ce6cb900b3a25c4aa7ff8afb",
+              "id": "0x40cf2a46c02c6d8ad70f93b33b6d703b2a47c517b5b5b5ca9e19832f1705cf39",
               "balance": "300"
             }
           }

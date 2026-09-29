@@ -6,7 +6,7 @@ processed 4 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-8:
+task 1, lines 7-9:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -14,21 +14,21 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 10:
+task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 12-21:
+task 3, lines 13-22:
 //# run-graphql
 Response: {
   "data": {
     "object": {
       "previousTransaction": {
-        "digest": "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs"
+        "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe"
       }
     },
     "transaction": {
-      "digest": "66AZSNZxfPXuoPJ2XLMnSxPqqcSN1y1NZx9G69AEKnDs"
+      "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe"
     }
   }
 }

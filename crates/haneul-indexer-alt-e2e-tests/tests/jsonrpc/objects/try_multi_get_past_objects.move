@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --accounts A B --addresses test=0x0 --simulator
+//# init --protocol-version 115 --accounts A B --addresses test=0x0 --simulator
 
 // 1. Multi-get objects (with found object, with non-existent object, with deleted object)
 // 2. Multi-get objects with options

@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --addresses P0=0x0 P1=0x0 --simulator --accounts A
+//# init --protocol-version 115 --addresses P0=0x0 P1=0x0 --simulator --accounts A
 
 //# run-graphql
 { # Happy paths

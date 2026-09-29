@@ -6,13 +6,13 @@ processed 5 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 6-37:
+task 1, lines 7-38:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
-gas summary: computation_cost: 1000000, storage_cost: 6482800,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 6528400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 39-44:
+task 2, lines 40-45:
 //# programmable --sender A --inputs 42u64 1000u64 @A @B
 //> 0: test::move_call_test::create_test_object(Input(0));
 //> 1: test::move_call_test::get_object_value(Result(0));
@@ -23,11 +23,11 @@ created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 46:
+task 3, line 47:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 48-75:
+task 4, lines 49-76:
 //# run-graphql
 Response: {
   "data": {
@@ -39,7 +39,7 @@ Response: {
               "function": {
                 "module": {
                   "package": {
-                    "address": "0xcc6eb73d654a715964f5e1bb8e018782b7332ce8ab6a68d0f21d1943e9b7d265"
+                    "address": "0x01dcfaf5e2d140e0f11d5bb89b2537c29ed31d35a18b03a093ac4e45bba59a37"
                   },
                   "name": "move_call_test"
                 },
@@ -56,7 +56,7 @@ Response: {
               "function": {
                 "module": {
                   "package": {
-                    "address": "0xcc6eb73d654a715964f5e1bb8e018782b7332ce8ab6a68d0f21d1943e9b7d265"
+                    "address": "0x01dcfaf5e2d140e0f11d5bb89b2537c29ed31d35a18b03a093ac4e45bba59a37"
                   },
                   "name": "move_call_test"
                 },
@@ -74,7 +74,7 @@ Response: {
               "function": {
                 "module": {
                   "package": {
-                    "address": "0xcc6eb73d654a715964f5e1bb8e018782b7332ce8ab6a68d0f21d1943e9b7d265"
+                    "address": "0x01dcfaf5e2d140e0f11d5bb89b2537c29ed31d35a18b03a093ac4e45bba59a37"
                   },
                   "name": "move_call_test"
                 },
@@ -92,7 +92,7 @@ Response: {
               "function": {
                 "module": {
                   "package": {
-                    "address": "0xcc6eb73d654a715964f5e1bb8e018782b7332ce8ab6a68d0f21d1943e9b7d265"
+                    "address": "0x01dcfaf5e2d140e0f11d5bb89b2537c29ed31d35a18b03a093ac4e45bba59a37"
                   },
                   "name": "move_call_test"
                 },

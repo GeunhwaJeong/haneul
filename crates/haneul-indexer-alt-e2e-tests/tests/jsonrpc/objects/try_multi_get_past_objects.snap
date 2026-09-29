@@ -9,7 +9,7 @@ A: object(0,0), B: object(0,1)
 // 1. Multi-get objects (with found object, with non-existent object, with deleted object)
 // 2. Multi-get objects with options
 
-task 1, lines 9-11:
+task 1, lines 10-12:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -17,7 +17,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 13-15:
+task 2, lines 14-16:
 //# programmable --sender A --inputs 43 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -25,7 +25,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 17-19:
+task 3, lines 18-20:
 //# programmable --sender A --inputs 44
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::transfer::public_share_object<haneul::coin::Coin<haneul::haneul::HANEUL>>(Result(0))
@@ -33,7 +33,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 21-23:
+task 4, lines 22-24:
 //# programmable --sender A --inputs 45
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::transfer::public_freeze_object<haneul::coin::Coin<haneul::haneul::HANEUL>>(Result(0))
@@ -41,7 +41,7 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 25-27:
+task 5, lines 26-28:
 //# programmable --sender A --inputs @A
 //> 0: haneul::table::new<u64, u64>();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -49,25 +49,25 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 29-30:
+task 6, lines 30-31:
 //# programmable --sender A --inputs object(5,0) 46 47
 //> 0: haneul::table::add<u64, u64>(Input(0), Input(1), Input(2))
 created: object(6,0)
 mutated: object(0,0), object(5,0)
 gas summary: computation_cost: 1000000, storage_cost: 3800000,  storage_rebate: 2309868, non_refundable_storage_fee: 23332
 
-task 7, lines 32-33:
+task 7, lines 33-34:
 //# programmable --sender A --inputs object(5,0) 46
 //> 0: haneul::table::remove<u64, u64>(Input(0), Input(1))
 mutated: object(0,0), object(5,0)
 deleted: object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 3762000, non_refundable_storage_fee: 38000
 
-task 8, line 35:
+task 8, line 36:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 9, lines 37-52:
+task 9, lines 38-53:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -76,69 +76,69 @@ Response: {
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+        "objectId": "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
         "version": "2",
-        "digest": "DUsCGumpLnJUEX9HhQfpD9HrYypJq9TBjXAnqmMh9jnG"
+        "digest": "DjdwPAYjKJePCQQ2Gvp4uuUhh6WdjuScaLsYRZJwYyG3"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0xb0080f6bb05ec93de38001b6352d85bc90a05f96bf4bb14ef64b4dad22a687d3",
+        "objectId": "0xd1c6d6dd1c80406204a18242556169b405740a84012cbf181fdbe5d3c4f78688",
         "version": "3",
-        "digest": "Gn6NDFjgrpgc8nS7MV2sidZbMDTHE4chiuuCQouPsAab"
+        "digest": "Ga3R6Vrk7yJt1orxEBP1j2w4u8oK7eb4pkm6boyZXxJd"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0xc04e8cac453a633355f7fa9f0c3f856f9e4d0f7f0c4a61a1185fd62349c14c20",
+        "objectId": "0xf3d8cabbe2aaf63f82452bdcc9f2fe0d8da69ef1cb326faca07d596add29aed6",
         "version": "4",
-        "digest": "Gp7up1k5e1WdPKpV7dAiERGcxSc9V11Cxb2tvFcuAeYu"
+        "digest": "3Wg6nQ7nK7SrCHqM7bVGCqxJFAxm4VQhtgMP1w8zFxoL"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0xe43f06f936d9f52b3999c14f60daa630116be1fb67750d7a5d5da97e3ac3a9fc",
+        "objectId": "0xa8b4b21c71400aabf9c3908b5ad245c33e1e4996258408ca6ecf6887425dfa9e",
         "version": "5",
-        "digest": "6L4cbahowTqxkcW49yY4LxfCabVD5p8QZYKUMohVUVRE"
+        "digest": "AMbMtsa4Q78y7ib2fRE7mfWuPoBV5DC2Za9pzaUgezU5"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0xc987b8f272fca32c0494b44925bb98cf7a027bd817e0e2d56d8e6ca0d0a3b952",
+        "objectId": "0x76ecaee05603dc77fa462333132b03da372004b3d30c4d1720b917afa6ed616c",
         "version": "6",
-        "digest": "G63TDwtiMQuhh5kmX2iMMYKoFLb4hYYVoZfgnYCY6wVJ"
+        "digest": "J2uDcLhNyDanKTtSFYjUKo2SHxqXmdHYTtq4RNZVmwcK"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0x2cec6fbe57bc1c7a2fe7e6ce92929076c811ec3b12e4939f845eafd9cb5da3ee",
+        "objectId": "0xff6501fb51c6e0a9dbdd9effd901267001bc56476f3efddbc4202f2a29f66323",
         "version": "7",
-        "digest": "HvSg4kpbKBiEjT9MwDycCppLqqCmCywRLUigertmRxZM"
+        "digest": "5U1JhhxGtSHigzJHR1HBxTeGrorTCA8UXScuEs7AqrdW"
       }
     },
     {
       "status": "VersionNotFound",
       "details": [
-        "0x2cec6fbe57bc1c7a2fe7e6ce92929076c811ec3b12e4939f845eafd9cb5da3ee",
+        "0xff6501fb51c6e0a9dbdd9effd901267001bc56476f3efddbc4202f2a29f66323",
         8
       ]
     },
     {
       "status": "VersionNotFound",
       "details": [
-        "0x2cec6fbe57bc1c7a2fe7e6ce92929076c811ec3b12e4939f845eafd9cb5da3ee",
+        "0xff6501fb51c6e0a9dbdd9effd901267001bc56476f3efddbc4202f2a29f66323",
         9
       ]
     }
   ]
 }
 
-task 10, lines 54-75:
+task 10, lines 55-76:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -147,98 +147,98 @@ Response: {
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+        "objectId": "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
         "version": "2",
-        "digest": "DUsCGumpLnJUEX9HhQfpD9HrYypJq9TBjXAnqmMh9jnG",
+        "digest": "DjdwPAYjKJePCQQ2Gvp4uuUhh6WdjuScaLsYRZJwYyG3",
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
         "owner": {
           "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
         },
-        "previousTransaction": "5iUmf7DhkKHzsVFoCdD241kkwpeBDBSnq7ThaayXcxk1",
+        "previousTransaction": "3L8wCaHRtKJEC6fVqGHBPMZoLUw5MHUy3kbdjs8P1CUQ",
         "storageRebate": "988000"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0xb0080f6bb05ec93de38001b6352d85bc90a05f96bf4bb14ef64b4dad22a687d3",
+        "objectId": "0xd1c6d6dd1c80406204a18242556169b405740a84012cbf181fdbe5d3c4f78688",
         "version": "3",
-        "digest": "Gn6NDFjgrpgc8nS7MV2sidZbMDTHE4chiuuCQouPsAab",
+        "digest": "Ga3R6Vrk7yJt1orxEBP1j2w4u8oK7eb4pkm6boyZXxJd",
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
         "owner": {
           "AddressOwner": "0xa7b032703878aa74c3126935789fd1d4d7e111d5911b09247d6963061c312b5a"
         },
-        "previousTransaction": "EUkMmtQWqrQiZrjFkfHwc46CWX4b1wcfwXu346AEXZdU",
+        "previousTransaction": "7ap5AKASJr94mZakrgKk1Xo2PXyC1G7qML8AiQQaQUy1",
         "storageRebate": "988000"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0xc04e8cac453a633355f7fa9f0c3f856f9e4d0f7f0c4a61a1185fd62349c14c20",
+        "objectId": "0xf3d8cabbe2aaf63f82452bdcc9f2fe0d8da69ef1cb326faca07d596add29aed6",
         "version": "4",
-        "digest": "Gp7up1k5e1WdPKpV7dAiERGcxSc9V11Cxb2tvFcuAeYu",
+        "digest": "3Wg6nQ7nK7SrCHqM7bVGCqxJFAxm4VQhtgMP1w8zFxoL",
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
         "owner": {
           "Shared": {
             "initial_shared_version": 4
           }
         },
-        "previousTransaction": "4nZwNGKV23KXFoRRtHNMZwx6kboJaDehVVNqvbx13Sb9",
+        "previousTransaction": "5K8wzdf5RxSv1gDaF3NWJ9sCoJAMdsL4ZYx9p1hrBpNc",
         "storageRebate": "988000"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0xe43f06f936d9f52b3999c14f60daa630116be1fb67750d7a5d5da97e3ac3a9fc",
+        "objectId": "0xa8b4b21c71400aabf9c3908b5ad245c33e1e4996258408ca6ecf6887425dfa9e",
         "version": "5",
-        "digest": "6L4cbahowTqxkcW49yY4LxfCabVD5p8QZYKUMohVUVRE",
+        "digest": "AMbMtsa4Q78y7ib2fRE7mfWuPoBV5DC2Za9pzaUgezU5",
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
         "owner": "Immutable",
-        "previousTransaction": "8ebmA7QwMP1vN7judsX5xfkeDFX3cfBMi8udRvUpuAFR",
+        "previousTransaction": "AUK2NbjKxQrTnCW18nDHN3SvVnq6EJ2Bb1SdA6U3XFME",
         "storageRebate": "988000"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0xc987b8f272fca32c0494b44925bb98cf7a027bd817e0e2d56d8e6ca0d0a3b952",
+        "objectId": "0x76ecaee05603dc77fa462333132b03da372004b3d30c4d1720b917afa6ed616c",
         "version": "6",
-        "digest": "G63TDwtiMQuhh5kmX2iMMYKoFLb4hYYVoZfgnYCY6wVJ",
+        "digest": "J2uDcLhNyDanKTtSFYjUKo2SHxqXmdHYTtq4RNZVmwcK",
         "type": "0x2::table::Table<u64, u64>",
         "owner": {
           "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
         },
-        "previousTransaction": "EnLqG67Lp6NdKmFcfiGUCKp78ScF3jPruSfL5xb4wq49",
+        "previousTransaction": "BiGm2BjeyRw6Er6iwJwcstEHQDZQuqxnqhujRoJANFVx",
         "storageRebate": "1345200"
       }
     },
     {
       "status": "VersionFound",
       "details": {
-        "objectId": "0x2cec6fbe57bc1c7a2fe7e6ce92929076c811ec3b12e4939f845eafd9cb5da3ee",
+        "objectId": "0xff6501fb51c6e0a9dbdd9effd901267001bc56476f3efddbc4202f2a29f66323",
         "version": "7",
-        "digest": "HvSg4kpbKBiEjT9MwDycCppLqqCmCywRLUigertmRxZM",
+        "digest": "5U1JhhxGtSHigzJHR1HBxTeGrorTCA8UXScuEs7AqrdW",
         "type": "0x2::dynamic_field::Field<u64, u64>",
         "owner": {
-          "ObjectOwner": "0xc987b8f272fca32c0494b44925bb98cf7a027bd817e0e2d56d8e6ca0d0a3b952"
+          "ObjectOwner": "0x76ecaee05603dc77fa462333132b03da372004b3d30c4d1720b917afa6ed616c"
         },
-        "previousTransaction": "3vyZf6h3vjapJ2jpM7AmMNvqRTdT5ik43Lq3Rb5BFK1K",
+        "previousTransaction": "39GspY3zehEm47AvWqscYLsFz4zgXLvgjd5gdN27bt8H",
         "storageRebate": "1466800"
       }
     },
     {
       "status": "VersionNotFound",
       "details": [
-        "0x2cec6fbe57bc1c7a2fe7e6ce92929076c811ec3b12e4939f845eafd9cb5da3ee",
+        "0xff6501fb51c6e0a9dbdd9effd901267001bc56476f3efddbc4202f2a29f66323",
         8
       ]
     },
     {
       "status": "VersionNotFound",
       "details": [
-        "0x2cec6fbe57bc1c7a2fe7e6ce92929076c811ec3b12e4939f845eafd9cb5da3ee",
+        "0xff6501fb51c6e0a9dbdd9effd901267001bc56476f3efddbc4202f2a29f66323",
         9
       ]
     }

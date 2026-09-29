@@ -6,7 +6,7 @@
 // the address balance coin, because the protocol does not support that feature
 // yet.
 
-//# init --protocol-version 118 --addresses Test=0x0 --accounts A B --simulator
+//# init --protocol-version 116 --addresses Test=0x0 --accounts A B --simulator
 
 // Send 1_000_000_000 from A to B's address balance
 //# programmable --sender A --inputs 1000000000 @B

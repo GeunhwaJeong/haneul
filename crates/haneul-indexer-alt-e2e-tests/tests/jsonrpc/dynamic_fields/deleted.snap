@@ -11,7 +11,7 @@ A: object(0,0)
 // 3. Delete the dynamic field and look for it once again (should not return anything).
 // 4, 5, 6. The same again, but for dynamic object fields.
 
-task 1, lines 11-13:
+task 1, lines 12-14:
 //# programmable --sender A --inputs @A
 //> 0: haneul::bag::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -19,11 +19,11 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2287600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 15:
+task 2, line 16:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 17-21:
+task 3, lines 18-22:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -31,37 +31,37 @@ Response: {
   "result": {
     "error": {
       "code": "dynamicFieldNotFound",
-      "parent_object_id": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9"
+      "parent_object_id": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80"
     }
   }
 }
 
-task 4, lines 23-24:
+task 4, lines 24-25:
 //# programmable --sender A --inputs object(1,0) 42
 //> 0: haneul::bag::add<u64, u64>(Input(0), Input(1), Input(1))
 created: object(4,0)
 mutated: object(0,0), object(1,0)
 gas summary: computation_cost: 1000000, storage_cost: 3754400,  storage_rebate: 2264724, non_refundable_storage_fee: 22876
 
-task 5, line 26:
+task 5, line 27:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 6, lines 28-32:
+task 6, lines 29-33:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
     "data": {
-      "objectId": "0xf2602255829324a28802b2378fa1fd87b0ed8c0d2c7217406c61b20b44aac935",
+      "objectId": "0x650dbdd64f8a40052c8625cddf9245b0403280c07b580008beea21e0489f3342",
       "version": "3",
-      "digest": "257XNVW5DhRoVUDpdv5kPaQ2K1r1g4W1WwjC2QmgA8FS",
+      "digest": "Ff15PJHqFnpUMQnHnjkBv37JS3n6bVR9X3sQPC2djsLX",
       "type": "0x2::dynamic_field::Field<u64, u64>",
       "owner": {
-        "ObjectOwner": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9"
+        "ObjectOwner": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80"
       },
-      "previousTransaction": "3k5jfYeQyxqZXmkJSeE6NZaymLhBSLTDFZAnjBuumD5L",
+      "previousTransaction": "FHc2UeTCxTJ8YBJqFFZ594vh5VW6EGYGD8FJ4UcDiQpb",
       "storageRebate": "1466800",
       "content": {
         "dataType": "moveObject",
@@ -69,7 +69,7 @@ Response: {
         "hasPublicTransfer": false,
         "fields": {
           "id": {
-            "id": "0xf2602255829324a28802b2378fa1fd87b0ed8c0d2c7217406c61b20b44aac935"
+            "id": "0x650dbdd64f8a40052c8625cddf9245b0403280c07b580008beea21e0489f3342"
           },
           "name": "42",
           "value": "42"
@@ -79,18 +79,18 @@ Response: {
   }
 }
 
-task 7, lines 34-35:
+task 7, lines 35-36:
 //# programmable --sender A --inputs object(1,0) 42
 //> 0: haneul::bag::remove<u64, u64>(Input(0), Input(1))
 mutated: object(0,0), object(1,0)
 deleted: object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 2287600,  storage_rebate: 3716856, non_refundable_storage_fee: 37544
 
-task 8, line 37:
+task 8, line 38:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 9, lines 39-43:
+task 9, lines 40-44:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -98,12 +98,12 @@ Response: {
   "result": {
     "error": {
       "code": "dynamicFieldNotFound",
-      "parent_object_id": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9"
+      "parent_object_id": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80"
     }
   }
 }
 
-task 10, lines 45-47:
+task 10, lines 46-48:
 //# programmable --sender A --inputs @A
 //> 0: haneul::object_bag::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -111,11 +111,11 @@ created: object(10,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2386400,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 11, line 49:
+task 11, line 50:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 12, lines 51-55:
+task 12, lines 52-56:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -123,12 +123,12 @@ Response: {
   "result": {
     "error": {
       "code": "dynamicFieldNotFound",
-      "parent_object_id": "0xb7c776edc4001fae83e281c146c95ad3f43d6cb3af4d8223e2be20141f92685c"
+      "parent_object_id": "0x0f57589897de111efbdacdc9bdfccf310da534be69103010045bed259df38981"
     }
   }
 }
 
-task 13, lines 57-59:
+task 13, lines 58-60:
 //# programmable --sender A --inputs object(10,0) 43
 //> 0: SplitCoins(Gas, [Input(1)]);
 //> 1: haneul::object_bag::add<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1), Result(0))
@@ -136,25 +136,25 @@ created: object(13,0), object(13,1)
 mutated: object(0,0), object(10,0)
 gas summary: computation_cost: 1000000, storage_cost: 5829200,  storage_rebate: 2362536, non_refundable_storage_fee: 23864
 
-task 14, line 61:
+task 14, line 62:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 15, lines 63-67:
+task 15, lines 64-68:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 4,
   "result": {
     "data": {
-      "objectId": "0x5e116cda374de65eb933f1c039ae1af1dceeaffa040f1da498fffb1c4996070e",
+      "objectId": "0x3da8f2c4b54b31566ebef35fc6df0531b25d5fdf1af0774f35b6c1b36c2db5a3",
       "version": "6",
-      "digest": "7FLLuU61NSaKyQa1zdpwA6yHnDhLdrHMrSdDPW4qvwPR",
+      "digest": "ChmwCmkc31Xm7Dc3C4G4v4caDmv6MWiFuXqoyNZMsUZc",
       "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
       "owner": {
-        "ObjectOwner": "0x78360cc61d227e7576eb5a2cbd3bdf98cb66c54b4ac6a95c3188eda4ebf7a173"
+        "ObjectOwner": "0xaf20cda79f2c6937c5529fec59079d47338998913b019c1d2fe9e015eda3474e"
       },
-      "previousTransaction": "AjBpB6ZaGpuvpMfbJghqbysxUxChJPs5D6KUDar8dLYy",
+      "previousTransaction": "9nnsagNLAk9Vz3hJgZ6CpcJh74vs537Q84zRaXnCEFYt",
       "storageRebate": "988000",
       "content": {
         "dataType": "moveObject",
@@ -163,7 +163,7 @@ Response: {
         "fields": {
           "balance": "43",
           "id": {
-            "id": "0x5e116cda374de65eb933f1c039ae1af1dceeaffa040f1da498fffb1c4996070e"
+            "id": "0x3da8f2c4b54b31566ebef35fc6df0531b25d5fdf1af0774f35b6c1b36c2db5a3"
           }
         }
       }
@@ -171,7 +171,7 @@ Response: {
   }
 }
 
-task 16, lines 69-71:
+task 16, lines 70-72:
 //# programmable --sender A --inputs object(10,0) 43
 //> 0: haneul::object_bag::remove<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1));
 //> 1: MergeCoins(Gas, [Result(0)])
@@ -179,11 +179,11 @@ mutated: object(0,0), object(10,0)
 deleted: object(13,0), object(13,1)
 gas summary: computation_cost: 1000000, storage_cost: 2386400,  storage_rebate: 5770908, non_refundable_storage_fee: 58292
 
-task 17, line 73:
+task 17, line 74:
 //# create-checkpoint
 Checkpoint created: 6
 
-task 18, lines 75-79:
+task 18, lines 76-80:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -191,7 +191,7 @@ Response: {
   "result": {
     "error": {
       "code": "dynamicFieldNotFound",
-      "parent_object_id": "0xb7c776edc4001fae83e281c146c95ad3f43d6cb3af4d8223e2be20141f92685c"
+      "parent_object_id": "0x0f57589897de111efbdacdc9bdfccf310da534be69103010045bed259df38981"
     }
   }
 }

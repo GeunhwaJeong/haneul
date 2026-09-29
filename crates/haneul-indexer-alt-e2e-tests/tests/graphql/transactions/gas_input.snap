@@ -6,20 +6,20 @@ processed 13 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-23:
+task 1, lines 7-24:
 //# publish
 created: object(1,0), object(1,1)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6992000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 25-27:
+task 2, lines 26-28:
 // Digest 2: Basic transaction with single gas payment
 //# programmable --sender A --inputs object(1,1)
 //> 0: test::simple::increment(Input(0));
 mutated: object(0,0), object(1,1)
 gas summary: computation_cost: 1000000, storage_cost: 2340800,  storage_rebate: 1339272, non_refundable_storage_fee: 13528
 
-task 3, lines 29-33:
+task 3, lines 30-34:
 // Digest 3: Split gas coin into multiple pieces for later use as gas payments
 // This creates object(3,0) and object(3,1) which will be used in other digests
 //# programmable --sender A --inputs 500000000 300000000 @A
@@ -29,7 +29,7 @@ created: object(3,0), object(3,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 35-37:
+task 4, lines 36-38:
 // Digest 4: Use BOTH split coins from Digest 3 as multiple gas payments
 //# programmable --sender A --gas-payment object(3,0) --gas-payment object(3,1) --gas-budget 500000000 --inputs object(1,1)
 //> 0: test::simple::increment(Input(0));
@@ -37,15 +37,15 @@ mutated: object(1,1), object(3,0)
 deleted: object(3,1)
 gas summary: computation_cost: 1000000, storage_cost: 2340800,  storage_rebate: 3295512, non_refundable_storage_fee: 33288
 
-task 5, line 39:
+task 5, line 40:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 7, line 44:
+task 7, line 45:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 46-67:
+task 8, lines 47-68:
 //# run-graphql
 Response: {
   "data": {
@@ -63,7 +63,7 @@ Response: {
           },
           "nodes": [
             {
-              "address": "0xb0d826786ad374b9e6e79da4a2d6c8d5f23c413aeb76fa0b07e5636d173a4a8f",
+              "address": "0x76448b459535ef83eeb9dde937754a446d123bb79a94ed447d98d6ba58347dc0",
               "version": 1
             }
           ]
@@ -73,7 +73,7 @@ Response: {
   }
 }
 
-task 9, lines 69-90:
+task 9, lines 70-91:
 //# run-graphql
 Response: {
   "data": {
@@ -91,11 +91,11 @@ Response: {
           },
           "nodes": [
             {
-              "address": "0x7cdf1d63a451e8353460b1e434d2c1386da0e1c93a6159506beaae6aaba45c3c",
+              "address": "0x56ae86290a07d39561a962c59baa08f653d0ce4a0839b15e5306fe5ab94a3ae3",
               "version": 4
             },
             {
-              "address": "0xb6a494bd01ccb6649315305a2c6683d188bedb64eb42e3f1ba03dc05e750a6c0",
+              "address": "0xdab8e5a905f3e6af66aaeb97069f7e160636aa53b02e485ea6c8c54131a01dd5",
               "version": 4
             }
           ]
@@ -105,7 +105,7 @@ Response: {
   }
 }
 
-task 10, lines 93-110:
+task 10, lines 94-111:
 //# run-graphql
 Response: {
   "data": {
@@ -119,7 +119,7 @@ Response: {
           },
           "nodes": [
             {
-              "address": "0x7cdf1d63a451e8353460b1e434d2c1386da0e1c93a6159506beaae6aaba45c3c",
+              "address": "0x56ae86290a07d39561a962c59baa08f653d0ce4a0839b15e5306fe5ab94a3ae3",
               "version": 4
             }
           ]
@@ -129,7 +129,7 @@ Response: {
   }
 }
 
-task 11, lines 112-129:
+task 11, lines 113-130:
 //# run-graphql
 Response: {
   "data": {
@@ -143,7 +143,7 @@ Response: {
           },
           "nodes": [
             {
-              "address": "0xb6a494bd01ccb6649315305a2c6683d188bedb64eb42e3f1ba03dc05e750a6c0",
+              "address": "0xdab8e5a905f3e6af66aaeb97069f7e160636aa53b02e485ea6c8c54131a01dd5",
               "version": 4
             }
           ]
@@ -153,7 +153,7 @@ Response: {
   }
 }
 
-task 12, lines 131-152:
+task 12, lines 132-153:
 //# run-graphql
 Response: {
   "data": {

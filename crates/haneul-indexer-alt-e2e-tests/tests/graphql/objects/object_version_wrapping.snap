@@ -6,13 +6,13 @@ processed 9 tasks
 init:
 A: object(0,0)
 
-task 1, lines 7-26:
+task 1, lines 8-27:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
-gas summary: computation_cost: 1000000, storage_cost: 5426400,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 5472000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 28-30:
+task 2, lines 29-31:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -20,14 +20,14 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 32-34:
+task 3, lines 33-35:
 //# programmable --sender A --inputs object(2,0) 1
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 4, lines 36-38:
+task 4, lines 37-39:
 //# programmable --sender A --inputs object(2,0) @A
 //> 0: P::M::wrap(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -36,7 +36,7 @@ mutated: object(0,0)
 wrapped: object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2546000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 5, lines 40-42:
+task 5, lines 41-43:
 //# programmable --sender A --inputs object(4,0) @A
 //> 0: P::M::unwrap(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -45,18 +45,18 @@ unwrapped: object(2,0)
 deleted: object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 2520540, non_refundable_storage_fee: 25460
 
-task 6, lines 44-45:
+task 6, lines 45-46:
 //# programmable --sender A --inputs object(2,0)
 //> 0: MergeCoins(Gas, [Input(0)])
 mutated: object(0,0)
 deleted: object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 7, line 47:
+task 7, line 48:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 8, lines 49-64:
+task 8, lines 50-65:
 //# run-graphql
 Response: {
   "data": {
@@ -70,7 +70,7 @@ Response: {
           "asMoveObject": {
             "contents": {
               "json": {
-                "id": "0x0784e29887105bb93b79409602dca9cabd1f71e6444ff28cb9655ded125f4f41",
+                "id": "0x07dc2740bead1c5e356f2647afd5009bac646ba589c31f4f46368586851ac510",
                 "balance": "42"
               }
             }
@@ -81,7 +81,7 @@ Response: {
           "asMoveObject": {
             "contents": {
               "json": {
-                "id": "0x0784e29887105bb93b79409602dca9cabd1f71e6444ff28cb9655ded125f4f41",
+                "id": "0x07dc2740bead1c5e356f2647afd5009bac646ba589c31f4f46368586851ac510",
                 "balance": "41"
               }
             }
@@ -92,7 +92,7 @@ Response: {
           "asMoveObject": {
             "contents": {
               "json": {
-                "id": "0x0784e29887105bb93b79409602dca9cabd1f71e6444ff28cb9655ded125f4f41",
+                "id": "0x07dc2740bead1c5e356f2647afd5009bac646ba589c31f4f46368586851ac510",
                 "balance": "41"
               }
             }

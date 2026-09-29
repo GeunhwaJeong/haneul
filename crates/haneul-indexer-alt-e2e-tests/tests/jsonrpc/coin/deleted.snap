@@ -11,7 +11,7 @@ processed 10 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 11-13:
+task 1, lines 12-14:
 //# programmable --sender A --inputs 12 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -19,7 +19,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 15-17:
+task 2, lines 16-18:
 //# programmable --sender A --inputs 34 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -27,7 +27,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 19:
+task 3, line 20:
 //# view-object 1,0
 Owner: Account Address ( A )
 Version: 2
@@ -42,7 +42,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 4, line 21:
+task 4, line 22:
 //# view-object 2,0
 Owner: Account Address ( A )
 Version: 3
@@ -57,11 +57,11 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 5, line 23:
+task 5, line 24:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 6, lines 25-29:
+task 6, lines 26-30:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -70,46 +70,46 @@ Response: {
     "data": [
       {
         "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL",
-        "coinObjectId": "0xe115ae7ff9b56944fafef6fd015d510a2fd963b6d42ec8a6266409c0ea40fb36",
+        "coinObjectId": "0xdef5dc23cc213da7a8fd0db8ae199cbba2fafebc5708d57433716f7439aa9328",
         "version": "3",
-        "digest": "ESj6uwdzcJrEkaJNznBK6HA7BFCUtBD2H2g1h4EBrCU4",
+        "digest": "HN5cmNobrmg5iSUuxhw9TGQfhfASnk3XcPjk48RMGSD3",
         "balance": "299999995026074",
-        "previousTransaction": "FuWmoPb33svWFEWdVt1m5J7QiYnnbUkzWYRE6cnkYaNn"
+        "previousTransaction": "Cf8AAMErfXTJjqAqbhaAMxMnnvyBbDBCNZ3j7u2xLa4f"
       },
       {
         "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL",
-        "coinObjectId": "0xb4d0ee143e2ead7df9e2bd4015407da62d51d5b40957f1c6f17d9b60b25554e0",
+        "coinObjectId": "0xa73227404cea629a3b5c0a9e6db5f5e53ee41b96c95071300e6329874bd35c72",
         "version": "3",
-        "digest": "A7oWtwATY9XCRa29TWrW4BTPBQmyebZaVJuu7JxX5Ux9",
+        "digest": "CTXv3gMnkENehSbbwocdfbRHytTxo47MW26yd7gxA6cU",
         "balance": "34",
-        "previousTransaction": "FuWmoPb33svWFEWdVt1m5J7QiYnnbUkzWYRE6cnkYaNn"
+        "previousTransaction": "Cf8AAMErfXTJjqAqbhaAMxMnnvyBbDBCNZ3j7u2xLa4f"
       },
       {
         "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL",
-        "coinObjectId": "0x7269457a115e2c7087bad2d68b397fea3c67e1a3dbc89979a3c2cede686c3fde",
+        "coinObjectId": "0xc701ad320ce758e861c639f3ec82da3f74756c25278fcacc59d5737f8e95fcf6",
         "version": "2",
-        "digest": "7SdCsTs4M224qM431KM4X7Wfw8c469tz4FqJ6guMXsbs",
+        "digest": "A4ydkHvkLvTCwPK1jQWbCcQTh7bfLiHVBMdHB7wZfopr",
         "balance": "12",
-        "previousTransaction": "3i3mgwGD2hQhDncbqajHgjD2v5dGFoutjpUBeXzKa4WN"
+        "previousTransaction": "9tCVyZUyBebHcpTVBdTfYPngTU7CDgbnXMchQ11PGY6q"
       }
     ],
-    "nextCursor": "zAEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEY29pbgAAAAAAAAAEQ29pbgAAAAAAAAABAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAANzdWkAAAAAAAAAA1NVSQAAAAAAAAAAAf/////////zcmlFehFeLHCHutLWizl/6jxn4aPbyJl5o8LO3mhsP94=",
+    "nextCursor": "0gEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEY29pbgAAAAAAAAAEQ29pbgAAAAAAAAABAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAZoYW5ldWwAAAAAAAAABkhBTkVVTAAAAAAAAAAAAf/////////zxwGtMgznWOhhxjnz7ILaP3R1bCUnj8rMWdVzf46V/PY=",
     "hasNextPage": false
   }
 }
 
-task 7, lines 31-32:
+task 7, lines 32-33:
 //# programmable --sender A --inputs object(1,0) object(2,0)
 //> 0: MergeCoins(Input(0), [Input(1)]);
 mutated: object(0,0), object(1,0)
 deleted: object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 2934360, non_refundable_storage_fee: 29640
 
-task 8, line 34:
+task 8, line 35:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 9, lines 36-40:
+task 9, lines 37-41:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -118,22 +118,22 @@ Response: {
     "data": [
       {
         "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL",
-        "coinObjectId": "0xe115ae7ff9b56944fafef6fd015d510a2fd963b6d42ec8a6266409c0ea40fb36",
+        "coinObjectId": "0xdef5dc23cc213da7a8fd0db8ae199cbba2fafebc5708d57433716f7439aa9328",
         "version": "4",
-        "digest": "FFzrZocCSHQU7KmV1SzwtUCJbygwnykTTFtbBoUCx82B",
+        "digest": "BrxqeSxNFwcGyzKtXDc3wauF6nVqjBxx7ic9gd2sbkEJ",
         "balance": "299999994984434",
-        "previousTransaction": "BPL9zRN8B9t7GAcnwPMyY9JAdXXdtFwDuEKKATGksWTB"
+        "previousTransaction": "D7zSutovmhBXA2kgeqRzXePvxKjKwRdzMULo7A11C5Mk"
       },
       {
         "coinType": "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL",
-        "coinObjectId": "0x7269457a115e2c7087bad2d68b397fea3c67e1a3dbc89979a3c2cede686c3fde",
+        "coinObjectId": "0xc701ad320ce758e861c639f3ec82da3f74756c25278fcacc59d5737f8e95fcf6",
         "version": "4",
-        "digest": "7mHVTJLNFgQe9uXFe5Y5NnfAkZY6oB1jxwzMkM6kjy7V",
+        "digest": "9YEAj3tuvtea3L3U3uxDCnDvdy4qhJCjjRzBfgujMSBz",
         "balance": "46",
-        "previousTransaction": "BPL9zRN8B9t7GAcnwPMyY9JAdXXdtFwDuEKKATGksWTB"
+        "previousTransaction": "D7zSutovmhBXA2kgeqRzXePvxKjKwRdzMULo7A11C5Mk"
       }
     ],
-    "nextCursor": "zAEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEY29pbgAAAAAAAAAEQ29pbgAAAAAAAAABAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAANzdWkAAAAAAAAAA1NVSQAAAAAAAAAAAf/////////RcmlFehFeLHCHutLWizl/6jxn4aPbyJl5o8LO3mhsP94=",
+    "nextCursor": "0gEA/MyaQhu7E8GmahqpjwrXUCnt6UhXd5xpFbRPlAaLkh4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEY29pbgAAAAAAAAAEQ29pbgAAAAAAAAABAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAZoYW5ldWwAAAAAAAAABkhBTkVVTAAAAAAAAAAAAf/////////RxwGtMgznWOhhxjnz7ILaP3R1bCUnj8rMWdVzf46V/PY=",
     "hasNextPage": false
   }
 }

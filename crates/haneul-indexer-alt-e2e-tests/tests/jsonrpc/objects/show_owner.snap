@@ -12,7 +12,7 @@ A: object(0,0), B: object(0,1)
 // 4. ...frozen
 // 5. ...owned by an object
 
-task 1, lines 12-14:
+task 1, lines 13-15:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -20,7 +20,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 16-18:
+task 2, lines 17-19:
 //# programmable --sender A --inputs 43 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -28,7 +28,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 20-22:
+task 3, lines 21-23:
 //# programmable --sender A --inputs 44
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::transfer::public_share_object<haneul::coin::Coin<haneul::haneul::HANEUL>>(Result(0))
@@ -36,7 +36,7 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 24-26:
+task 4, lines 25-27:
 //# programmable --sender A --inputs 45
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::transfer::public_freeze_object<haneul::coin::Coin<haneul::haneul::HANEUL>>(Result(0))
@@ -44,7 +44,7 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 28-30:
+task 5, lines 29-31:
 //# programmable --sender A --inputs @A
 //> 0: haneul::table::new<u64, u64>();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -52,18 +52,18 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 32-33:
+task 6, lines 33-34:
 //# programmable --sender A --inputs object(5,0) 46 47
 //> 0: haneul::table::add<u64, u64>(Input(0), Input(1), Input(2))
 created: object(6,0)
 mutated: object(0,0), object(5,0)
 gas summary: computation_cost: 1000000, storage_cost: 3800000,  storage_rebate: 2309868, non_refundable_storage_fee: 23332
 
-task 7, line 35:
+task 7, line 36:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 8, lines 37-41:
+task 8, lines 38-42:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -71,9 +71,9 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0x2b45c877619aa19b093c8e436ff065ba8f882c04534721552d170bd3574f97c1",
+      "objectId": "0x0af567429d2c4e1917aa0b34055ac1cf8359e037d0d0301f836882990b27c703",
       "version": "2",
-      "digest": "DUsCGumpLnJUEX9HhQfpD9HrYypJq9TBjXAnqmMh9jnG",
+      "digest": "DjdwPAYjKJePCQQ2Gvp4uuUhh6WdjuScaLsYRZJwYyG3",
       "owner": {
         "AddressOwner": "0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e"
       }
@@ -81,7 +81,7 @@ Response: {
   }
 }
 
-task 9, lines 43-47:
+task 9, lines 44-48:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -89,9 +89,9 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0xb0080f6bb05ec93de38001b6352d85bc90a05f96bf4bb14ef64b4dad22a687d3",
+      "objectId": "0xd1c6d6dd1c80406204a18242556169b405740a84012cbf181fdbe5d3c4f78688",
       "version": "3",
-      "digest": "Gn6NDFjgrpgc8nS7MV2sidZbMDTHE4chiuuCQouPsAab",
+      "digest": "Ga3R6Vrk7yJt1orxEBP1j2w4u8oK7eb4pkm6boyZXxJd",
       "owner": {
         "AddressOwner": "0xa7b032703878aa74c3126935789fd1d4d7e111d5911b09247d6963061c312b5a"
       }
@@ -99,7 +99,7 @@ Response: {
   }
 }
 
-task 10, lines 49-53:
+task 10, lines 50-54:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -107,9 +107,9 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0xc04e8cac453a633355f7fa9f0c3f856f9e4d0f7f0c4a61a1185fd62349c14c20",
+      "objectId": "0xf3d8cabbe2aaf63f82452bdcc9f2fe0d8da69ef1cb326faca07d596add29aed6",
       "version": "4",
-      "digest": "Gp7up1k5e1WdPKpV7dAiERGcxSc9V11Cxb2tvFcuAeYu",
+      "digest": "3Wg6nQ7nK7SrCHqM7bVGCqxJFAxm4VQhtgMP1w8zFxoL",
       "owner": {
         "Shared": {
           "initial_shared_version": 4
@@ -119,7 +119,7 @@ Response: {
   }
 }
 
-task 11, lines 55-59:
+task 11, lines 56-60:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -127,15 +127,15 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0xe43f06f936d9f52b3999c14f60daa630116be1fb67750d7a5d5da97e3ac3a9fc",
+      "objectId": "0xa8b4b21c71400aabf9c3908b5ad245c33e1e4996258408ca6ecf6887425dfa9e",
       "version": "5",
-      "digest": "6L4cbahowTqxkcW49yY4LxfCabVD5p8QZYKUMohVUVRE",
+      "digest": "AMbMtsa4Q78y7ib2fRE7mfWuPoBV5DC2Za9pzaUgezU5",
       "owner": "Immutable"
     }
   }
 }
 
-task 12, lines 61-65:
+task 12, lines 62-66:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -143,11 +143,11 @@ Response: {
   "result": {
     "status": "VersionFound",
     "details": {
-      "objectId": "0x2cec6fbe57bc1c7a2fe7e6ce92929076c811ec3b12e4939f845eafd9cb5da3ee",
+      "objectId": "0xff6501fb51c6e0a9dbdd9effd901267001bc56476f3efddbc4202f2a29f66323",
       "version": "7",
-      "digest": "HvSg4kpbKBiEjT9MwDycCppLqqCmCywRLUigertmRxZM",
+      "digest": "5U1JhhxGtSHigzJHR1HBxTeGrorTCA8UXScuEs7AqrdW",
       "owner": {
-        "ObjectOwner": "0xc987b8f272fca32c0494b44925bb98cf7a027bd817e0e2d56d8e6ca0d0a3b952"
+        "ObjectOwner": "0x76ecaee05603dc77fa462333132b03da372004b3d30c4d1720b917afa6ed616c"
       }
     }
   }

@@ -6,7 +6,7 @@ processed 5 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 6-10:
+task 1, lines 7-11:
 // Create a consensus-owned (party) object owned by B, sent by A
 //# programmable --sender A --inputs 1000 @B
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -16,7 +16,7 @@ created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 12-15:
+task 2, lines 13-16:
 // Create a regular address-owned object sent to C by A
 //# programmable --sender A --inputs 2000 @C
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -25,11 +25,11 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 17:
+task 3, line 18:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 19-36:
+task 4, lines 20-37:
 //# run-graphql
 Response: {
   "data": {
@@ -38,13 +38,13 @@ Response: {
         {
           "cursor": "KAE6BAgAEAE=",
           "node": {
-            "digest": "BRt87zhiL5c9dFr38gjvhF3gmRh7iUYZUcfokRzVYSxo"
+            "digest": "G1skPEdHfxVBYe5i1zDP9GxxUHb1y4jXpKU3kpV7ej6B"
           }
         },
         {
           "cursor": "KAE6BAgAEAI=",
           "node": {
-            "digest": "7425XHh77rijYLf2ZktyFTcFn9ThZbLPcrenkGokkM6Q"
+            "digest": "z5WEx5U2Wpy3WfDvaxVM4pHVVcVMK3Li9QKvjjaC6S4"
           }
         }
       ]
@@ -54,7 +54,7 @@ Response: {
         {
           "cursor": "KAE6BAgAEAE=",
           "node": {
-            "digest": "BRt87zhiL5c9dFr38gjvhF3gmRh7iUYZUcfokRzVYSxo"
+            "digest": "G1skPEdHfxVBYe5i1zDP9GxxUHb1y4jXpKU3kpV7ej6B"
           }
         }
       ]
@@ -64,7 +64,7 @@ Response: {
         {
           "cursor": "KAE6BAgAEAI=",
           "node": {
-            "digest": "7425XHh77rijYLf2ZktyFTcFn9ThZbLPcrenkGokkM6Q"
+            "digest": "z5WEx5U2Wpy3WfDvaxVM4pHVVcVMK3Li9QKvjjaC6S4"
           }
         }
       ]

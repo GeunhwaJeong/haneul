@@ -12,14 +12,14 @@ A: object(0,0)
 // 4. Edit the Display format of the object.
 // 5. View the updated Display format of the object.
 
-task 1, lines 12-70:
+task 1, lines 13-71:
 //# publish --sender A
-events: Event { package_id: test, transaction_module: Identifier("mod"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("DisplayCreated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [6, 29, 223, 71, 222, 118, 197, 79, 145, 178, 105, 126, 105, 155, 137, 69, 87, 231, 120, 39, 196, 57, 47, 60, 200, 17, 139, 204, 65, 207, 250, 200] }, Event { package_id: test, transaction_module: Identifier("mod"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("VersionUpdated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [6, 29, 223, 71, 222, 118, 197, 79, 145, 178, 105, 126, 105, 155, 137, 69, 87, 231, 120, 39, 196, 57, 47, 60, 200, 17, 139, 204, 65, 207, 250, 200, 1, 0, 4, 3, 98, 97, 114, 17, 98, 97, 114, 32, 105, 115, 32, 123, 98, 97, 114, 46, 118, 97, 108, 125, 33, 3, 98, 97, 122, 21, 98, 97, 122, 32, 105, 115, 32, 123, 98, 97, 114, 46, 98, 97, 122, 46, 118, 97, 108, 125, 63, 3, 113, 117, 121, 25, 113, 117, 121, 32, 105, 115, 32, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 125, 46, 3, 113, 117, 95, 77, 120, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 118, 97, 108, 125, 41, 32, 121, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 118, 97, 108, 125, 41, 44, 32, 122, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 113, 117, 122, 46, 118, 97, 108, 125, 41, 63, 33] }
+events: Event { package_id: test, transaction_module: Identifier("mod"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("DisplayCreated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [48, 187, 147, 173, 177, 114, 209, 99, 239, 7, 248, 223, 65, 138, 139, 92, 29, 234, 236, 184, 11, 202, 224, 38, 127, 179, 58, 233, 217, 170, 232, 140] }, Event { package_id: test, transaction_module: Identifier("mod"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("VersionUpdated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [48, 187, 147, 173, 177, 114, 209, 99, 239, 7, 248, 223, 65, 138, 139, 92, 29, 234, 236, 184, 11, 202, 224, 38, 127, 179, 58, 233, 217, 170, 232, 140, 1, 0, 4, 3, 98, 97, 114, 17, 98, 97, 114, 32, 105, 115, 32, 123, 98, 97, 114, 46, 118, 97, 108, 125, 33, 3, 98, 97, 122, 21, 98, 97, 122, 32, 105, 115, 32, 123, 98, 97, 114, 46, 98, 97, 122, 46, 118, 97, 108, 125, 63, 3, 113, 117, 121, 25, 113, 117, 121, 32, 105, 115, 32, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 125, 46, 3, 113, 117, 95, 77, 120, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 118, 97, 108, 125, 41, 32, 121, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 118, 97, 108, 125, 41, 44, 32, 122, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 113, 117, 122, 46, 118, 97, 108, 125, 41, 63, 33] }
 created: object(1,0), object(1,1), object(1,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 17533200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 72-75:
+task 2, lines 73-76:
 //# programmable --sender A --inputs @A 42 true "hello" 43u8
 //> 0: std::option::some<haneul::object::ID>(Input(0));
 //> 1: test::mod::new(Input(1), Input(2), Input(3), Result(0), Input(4));
@@ -28,7 +28,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2599200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 77-80:
+task 3, lines 78-81:
 //# programmable --sender A --inputs @A 42 true "hello" 43u8
 //> 0: std::option::none<haneul::object::ID>();
 //> 1: test::mod::new(Input(1), Input(2), Input(3), Result(0), Input(4));
@@ -37,11 +37,11 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2356000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 82:
+task 4, line 83:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 84-99:
+task 5, lines 85-100:
 //# run-graphql
 Response: {
   "data": {
@@ -54,7 +54,7 @@ Response: {
                 "bar": "bar is 42!",
                 "baz": "baz is true?",
                 "qu_": "x(hello) y(0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e), z(43)?!",
-                "quy": "quy is \n  type: 0x51a0f5fa9bca18ed9917d29c0c046d5d8e1ce176cc8dfaab28dd394a16b458e9::mod::Quy\n  quz:   \n    type: 0x51a0f5fa9bca18ed9917d29c0c046d5d8e1ce176cc8dfaab28dd394a16b458e9::mod::Quz\n    val: 43\n  val: Some(Address(0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e))."
+                "quy": "quy is \n  type: 0xecf5667a02ba7b09644f58a3461f2268543e5e797b0ef0667f85040bb899a8f8::mod::Quy\n  quz:   \n    type: 0xecf5667a02ba7b09644f58a3461f2268543e5e797b0ef0667f85040bb899a8f8::mod::Quz\n    val: 43\n  val: Some(Address(0xfccc9a421bbb13c1a66a1aa98f0ad75029ede94857779c6915b44f94068b921e))."
               },
               "errors": null
             }
@@ -69,7 +69,7 @@ Response: {
                 "bar": "bar is 42!",
                 "baz": "baz is true?",
                 "qu_": "x(hello) y(), z(43)?!",
-                "quy": "quy is \n  type: 0x51a0f5fa9bca18ed9917d29c0c046d5d8e1ce176cc8dfaab28dd394a16b458e9::mod::Quy\n  quz:   \n    type: 0x51a0f5fa9bca18ed9917d29c0c046d5d8e1ce176cc8dfaab28dd394a16b458e9::mod::Quz\n    val: 43\n  val: None."
+                "quy": "quy is \n  type: 0xecf5667a02ba7b09644f58a3461f2268543e5e797b0ef0667f85040bb899a8f8::mod::Quy\n  quz:   \n    type: 0xecf5667a02ba7b09644f58a3461f2268543e5e797b0ef0667f85040bb899a8f8::mod::Quz\n    val: 43\n  val: None."
               },
               "errors": null
             }
@@ -80,19 +80,19 @@ Response: {
   }
 }
 
-task 6, lines 101-103:
+task 6, lines 102-104:
 //# programmable --sender A --inputs object(1,2) "quy" "{bar.baz.qux.quy.val}!"
 //> 0: haneul::display::edit<test::mod::Foo>(Input(0), Input(1), Input(2));
 //> 1: haneul::display::update_version<test::mod::Foo>(Input(0));
-events: Event { package_id: haneul, transaction_module: Identifier("display"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("VersionUpdated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [6, 29, 223, 71, 222, 118, 197, 79, 145, 178, 105, 126, 105, 155, 137, 69, 87, 231, 120, 39, 196, 57, 47, 60, 200, 17, 139, 204, 65, 207, 250, 200, 2, 0, 4, 3, 98, 97, 114, 17, 98, 97, 114, 32, 105, 115, 32, 123, 98, 97, 114, 46, 118, 97, 108, 125, 33, 3, 98, 97, 122, 21, 98, 97, 122, 32, 105, 115, 32, 123, 98, 97, 114, 46, 98, 97, 122, 46, 118, 97, 108, 125, 63, 3, 113, 117, 95, 77, 120, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 118, 97, 108, 125, 41, 32, 121, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 118, 97, 108, 125, 41, 44, 32, 122, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 113, 117, 122, 46, 118, 97, 108, 125, 41, 63, 33, 3, 113, 117, 121, 22, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 118, 97, 108, 125, 33] }
+events: Event { package_id: haneul, transaction_module: Identifier("display"), sender: A, type_: StructTag { address: haneul, module: Identifier("display"), name: Identifier("VersionUpdated"), type_params: [Struct(StructTag { address: test, module: Identifier("mod"), name: Identifier("Foo"), type_params: [] })] }, contents: [48, 187, 147, 173, 177, 114, 209, 99, 239, 7, 248, 223, 65, 138, 139, 92, 29, 234, 236, 184, 11, 202, 224, 38, 127, 179, 58, 233, 217, 170, 232, 140, 2, 0, 4, 3, 98, 97, 114, 17, 98, 97, 114, 32, 105, 115, 32, 123, 98, 97, 114, 46, 118, 97, 108, 125, 33, 3, 98, 97, 122, 21, 98, 97, 122, 32, 105, 115, 32, 123, 98, 97, 114, 46, 98, 97, 122, 46, 118, 97, 108, 125, 63, 3, 113, 117, 95, 77, 120, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 118, 97, 108, 125, 41, 32, 121, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 118, 97, 108, 125, 41, 44, 32, 122, 40, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 113, 117, 122, 46, 118, 97, 108, 125, 41, 63, 33, 3, 113, 117, 121, 22, 123, 98, 97, 114, 46, 98, 97, 122, 46, 113, 117, 120, 46, 113, 117, 121, 46, 118, 97, 108, 125, 33] }
 mutated: object(0,0), object(1,2)
 gas summary: computation_cost: 1000000, storage_cost: 3822800,  storage_rebate: 3807144, non_refundable_storage_fee: 38456
 
-task 7, line 105:
+task 7, line 106:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 107-122:
+task 8, lines 108-123:
 //# run-graphql
 Response: {
   "data": {

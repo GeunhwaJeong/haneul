@@ -9,13 +9,13 @@ A: object(0,0)
 // 1. Look for a dynamic field with a simple key
 // 2. Look for a dynamic field with a struct-based key
 
-task 1, lines 9-19:
+task 1, lines 10-20:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 3959600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 21-23:
+task 2, lines 22-24:
 //# programmable --sender A --inputs @A
 //> 0: haneul::bag::new();
 //> 1: TransferObjects([Result(0)], Input(0))
@@ -23,7 +23,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2287600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 25-28:
+task 3, lines 26-29:
 //# programmable --sender A --inputs object(2,0) 42 43u32 44 45 46
 //> 0: P::M::name(Input(1), Input(2));
 //> 1: haneul::bag::add<u64, u64>(Input(0), Input(3), Input(4));
@@ -32,25 +32,25 @@ created: object(3,0), object(3,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 5555600,  storage_rebate: 2264724, non_refundable_storage_fee: 22876
 
-task 4, line 30:
+task 4, line 31:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 32-36:
+task 5, lines 33-37:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 0,
   "result": {
     "data": {
-      "objectId": "0x19111706aeecb39f2feded4d065ac96a15de25822f1d37fdca1824908a28f3c9",
+      "objectId": "0x543acd4f82b13550a96e3ae6e860ca9c23744a8c46b1241c0fffa72bfa87ed5f",
       "version": "3",
-      "digest": "Gp3GPUwa5FRWPJLynkCkW83ckSo1WK5fm87xmceUKC99",
+      "digest": "Cihd1qUzdPU8tsR9eJneVPhRLnCceM8vgRhAyFHCF1J3",
       "type": "0x2::dynamic_field::Field<u64, u64>",
       "owner": {
-        "ObjectOwner": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9"
+        "ObjectOwner": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80"
       },
-      "previousTransaction": "CW4wZA8wueanU5MFpzaRq8KckycucsqJ2zC6629sM8Tu",
+      "previousTransaction": "AUKhiF5K1jQsA4nwXariPkfHPerRpsdfVxV1p5JEnBiS",
       "storageRebate": "1466800",
       "content": {
         "dataType": "moveObject",
@@ -58,7 +58,7 @@ Response: {
         "hasPublicTransfer": false,
         "fields": {
           "id": {
-            "id": "0x19111706aeecb39f2feded4d065ac96a15de25822f1d37fdca1824908a28f3c9"
+            "id": "0x543acd4f82b13550a96e3ae6e860ca9c23744a8c46b1241c0fffa72bfa87ed5f"
           },
           "name": "44",
           "value": "45"
@@ -68,32 +68,32 @@ Response: {
   }
 }
 
-task 6, lines 38-45:
+task 6, lines 39-46:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
     "data": {
-      "objectId": "0x52b7ba43aa44336f3d28bc85a4c748370a5ae9c2ff2e6cd26cb699c377fbbe4b",
+      "objectId": "0x3156e249c366ffd16ae9801839e078ec49a0b2b2dd3aeb6c06aca7967a56a3b5",
       "version": "3",
-      "digest": "2TedVqhXZfhYiZYH6RW1pESt7ckwSkybjfGKoXrbCk7g",
-      "type": "0x2::dynamic_field::Field<0x20ef6fa3d946336d58ee256e12b4f79c0f0325b09c8bf15d45fb7410c0fe1fcf::M::Name, u64>",
+      "digest": "EaHfCHHuu1J8QFjcePmfeKd4qHjHT2MtGQsK3ZMREqj9",
+      "type": "0x2::dynamic_field::Field<0x9892a024e30bcd8099c9fa86cfbda55caeecf694e99f706bf1fe5cd14e3fd2c1::M::Name, u64>",
       "owner": {
-        "ObjectOwner": "0xdf97ad0e9dad989fcd0dd28716c8c4fa1d755cdeed68ce7a324d640a52493de9"
+        "ObjectOwner": "0x8d40e6fb4878e87bfc74a214c745106a901b2b605826af56491e5aadc5470b80"
       },
-      "previousTransaction": "CW4wZA8wueanU5MFpzaRq8KckycucsqJ2zC6629sM8Tu",
+      "previousTransaction": "AUKhiF5K1jQsA4nwXariPkfHPerRpsdfVxV1p5JEnBiS",
       "storageRebate": "1801200",
       "content": {
         "dataType": "moveObject",
-        "type": "0x2::dynamic_field::Field<0x20ef6fa3d946336d58ee256e12b4f79c0f0325b09c8bf15d45fb7410c0fe1fcf::M::Name, u64>",
+        "type": "0x2::dynamic_field::Field<0x9892a024e30bcd8099c9fa86cfbda55caeecf694e99f706bf1fe5cd14e3fd2c1::M::Name, u64>",
         "hasPublicTransfer": false,
         "fields": {
           "id": {
-            "id": "0x52b7ba43aa44336f3d28bc85a4c748370a5ae9c2ff2e6cd26cb699c377fbbe4b"
+            "id": "0x3156e249c366ffd16ae9801839e078ec49a0b2b2dd3aeb6c06aca7967a56a3b5"
           },
           "name": {
-            "type": "0x20ef6fa3d946336d58ee256e12b4f79c0f0325b09c8bf15d45fb7410c0fe1fcf::M::Name",
+            "type": "0x9892a024e30bcd8099c9fa86cfbda55caeecf694e99f706bf1fe5cd14e3fd2c1::M::Name",
             "fields": {
               "x": "42",
               "y": 43

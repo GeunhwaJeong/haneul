@@ -1,20 +1,19 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 920
 ---
 processed 13 tasks
 
 init:
 A: object(0,0)
 
-task 1, lines 6-10:
+task 1, lines 7-11:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 0,
   "result": {
     "epoch": "0",
-    "protocolVersion": "108",
+    "protocolVersion": "115",
     "systemStateVersion": "1",
     "storageFundTotalObjectStorageRebates": "0",
     "storageFundNonRefundableBalance": "0",
@@ -62,13 +61,13 @@ Response: {
         "nextEpochPrimaryAddress": null,
         "nextEpochWorkerAddress": null,
         "votingPower": "10000",
-        "operationCapId": "0x51640d7cc42e1702888103df85d01150c246cf18d2432f6bd4b87a11d9926c78",
+        "operationCapId": "0x5b3b42466e3ffd7d7754efbe99725f8f6bbd5d42324874a427e3f4963bc7bc6d",
         "gasPrice": "1000",
         "commissionRate": "200",
         "nextEpochStake": "20000000000000000",
         "nextEpochGasPrice": "1000",
         "nextEpochCommissionRate": "200",
-        "stakingPoolId": "0xacda9295fa6077073b2adb7470ba058ffa7ce4487be411e2610d2c87f9ce3e96",
+        "stakingPoolId": "0x9dd4b586ded7cc4712a61d49be5a1acba395b8cd2d42c17604292867dabdfbd0",
         "stakingPoolActivationEpoch": "0",
         "stakingPoolDeactivationEpoch": null,
         "stakingPoolHaneulBalance": "20000000000000000",
@@ -77,46 +76,46 @@ Response: {
         "pendingStake": "0",
         "pendingTotalHaneulWithdraw": "0",
         "pendingPoolTokenWithdraw": "0",
-        "exchangeRatesId": "0xb62ff674c9c560439d7aab37e51691b3b0f311c17c2f9638c9375ad38cf35963",
+        "exchangeRatesId": "0xa0298128e8ca63ae3ab1edf0971c10c7d7922a27796a8e156d08e9eff6561f7a",
         "exchangeRatesSize": "1"
       }
     ],
-    "pendingActiveValidatorsId": "0x465c2a189dcbc4f7f150cf57d26d291f2897448b9bc01d43ba2e7115c75b35df",
+    "pendingActiveValidatorsId": "0xa1275d4147ea32f6f680e11f01c649e4ed361d74852a98bfabaf683768e39eee",
     "pendingActiveValidatorsSize": "0",
     "pendingRemovals": [],
-    "stakingPoolMappingsId": "0x4d02708f6850adfa71567c2eaff59aaa3ab59d40b3a3f27452eb7b2ca25e0e84",
+    "stakingPoolMappingsId": "0x54089ea8d45e30959f15c1c1261517a07516993b03661e568e5311df13bfe765",
     "stakingPoolMappingsSize": "1",
-    "inactivePoolsId": "0xa1c8458f15908b6f8cda2afab3679810d7895e143c5f5f27e55740d651dd5ad5",
+    "inactivePoolsId": "0x11ffd1d8a686e02297dc5bc6213f2975c67ccdea1bcf6d8eb1ec850e47b78764",
     "inactivePoolsSize": "0",
-    "validatorCandidatesId": "0x99ae8894b1f3265a97c22b01745fa08ed1c691783bdf2a1d8096bb63082a240c",
+    "validatorCandidatesId": "0xcbfb2e65b48002dc58313f7afadadb5332c173a4f526f36c3c57e15ec9d91e2e",
     "validatorCandidatesSize": "0",
     "atRiskValidators": [],
     "validatorReportRecords": []
   }
 }
 
-task 2, lines 12-14:
+task 2, lines 13-15:
 //# programmable --sender A --inputs 1000000000 object(0x5) @validator_0
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul_system::haneul_system::request_add_stake(Input(1), Result(0), Input(2))
-events: Event { package_id: haneul_system, transaction_module: Identifier("haneul_system"), sender: A, type_: StructTag { address: haneul_system, module: Identifier("validator"), name: Identifier("StakingRequestEvent"), type_params: [] }, contents: [172, 218, 146, 149, 250, 96, 119, 7, 59, 42, 219, 116, 112, 186, 5, 143, 250, 124, 228, 72, 123, 228, 17, 226, 97, 13, 44, 135, 249, 206, 62, 150, 218, 131, 22, 109, 1, 175, 215, 221, 207, 138, 245, 248, 68, 244, 90, 170, 83, 244, 133, 72, 229, 17, 124, 35, 245, 162, 151, 140, 253, 66, 34, 68, 252, 204, 154, 66, 27, 187, 19, 193, 166, 106, 26, 169, 143, 10, 215, 80, 41, 237, 233, 72, 87, 119, 156, 105, 21, 180, 79, 148, 6, 139, 146, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 202, 154, 59, 0, 0, 0, 0] }
+events: Event { package_id: haneul_system, transaction_module: Identifier("haneul_system"), sender: A, type_: StructTag { address: haneul_system, module: Identifier("validator"), name: Identifier("StakingRequestEvent"), type_params: [] }, contents: [157, 212, 181, 134, 222, 215, 204, 71, 18, 166, 29, 73, 190, 90, 26, 203, 163, 149, 184, 205, 45, 66, 193, 118, 4, 41, 40, 103, 218, 189, 251, 208, 218, 131, 22, 109, 1, 175, 215, 221, 207, 138, 245, 248, 68, 244, 90, 170, 83, 244, 133, 72, 229, 17, 124, 35, 245, 162, 151, 140, 253, 66, 34, 68, 252, 204, 154, 66, 27, 187, 19, 193, 166, 106, 26, 169, 143, 10, 215, 80, 41, 237, 233, 72, 87, 119, 156, 105, 21, 180, 79, 148, 6, 139, 146, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 202, 154, 59, 0, 0, 0, 0] }
 created: object(2,0), object(2,1)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000005, object(0,0)
 deleted: object(_)
-gas summary: computation_cost: 1000000, storage_cost: 15108800,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 15200000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, line 16:
+task 3, line 17:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 18-22:
+task 4, lines 19-23:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
     "epoch": "0",
-    "protocolVersion": "108",
+    "protocolVersion": "115",
     "systemStateVersion": "2",
     "storageFundTotalObjectStorageRebates": "0",
     "storageFundNonRefundableBalance": "0",
@@ -164,13 +163,13 @@ Response: {
         "nextEpochPrimaryAddress": null,
         "nextEpochWorkerAddress": null,
         "votingPower": "10000",
-        "operationCapId": "0x51640d7cc42e1702888103df85d01150c246cf18d2432f6bd4b87a11d9926c78",
+        "operationCapId": "0x5b3b42466e3ffd7d7754efbe99725f8f6bbd5d42324874a427e3f4963bc7bc6d",
         "gasPrice": "1000",
         "commissionRate": "200",
         "nextEpochStake": "20000001000000000",
         "nextEpochGasPrice": "1000",
         "nextEpochCommissionRate": "200",
-        "stakingPoolId": "0xacda9295fa6077073b2adb7470ba058ffa7ce4487be411e2610d2c87f9ce3e96",
+        "stakingPoolId": "0x9dd4b586ded7cc4712a61d49be5a1acba395b8cd2d42c17604292867dabdfbd0",
         "stakingPoolActivationEpoch": "0",
         "stakingPoolDeactivationEpoch": null,
         "stakingPoolHaneulBalance": "20000000000000000",
@@ -179,38 +178,38 @@ Response: {
         "pendingStake": "1000000000",
         "pendingTotalHaneulWithdraw": "0",
         "pendingPoolTokenWithdraw": "0",
-        "exchangeRatesId": "0xb62ff674c9c560439d7aab37e51691b3b0f311c17c2f9638c9375ad38cf35963",
+        "exchangeRatesId": "0xa0298128e8ca63ae3ab1edf0971c10c7d7922a27796a8e156d08e9eff6561f7a",
         "exchangeRatesSize": "1"
       }
     ],
-    "pendingActiveValidatorsId": "0x465c2a189dcbc4f7f150cf57d26d291f2897448b9bc01d43ba2e7115c75b35df",
+    "pendingActiveValidatorsId": "0xa1275d4147ea32f6f680e11f01c649e4ed361d74852a98bfabaf683768e39eee",
     "pendingActiveValidatorsSize": "0",
     "pendingRemovals": [],
-    "stakingPoolMappingsId": "0x4d02708f6850adfa71567c2eaff59aaa3ab59d40b3a3f27452eb7b2ca25e0e84",
+    "stakingPoolMappingsId": "0x54089ea8d45e30959f15c1c1261517a07516993b03661e568e5311df13bfe765",
     "stakingPoolMappingsSize": "1",
-    "inactivePoolsId": "0xa1c8458f15908b6f8cda2afab3679810d7895e143c5f5f27e55740d651dd5ad5",
+    "inactivePoolsId": "0x11ffd1d8a686e02297dc5bc6213f2975c67ccdea1bcf6d8eb1ec850e47b78764",
     "inactivePoolsSize": "0",
-    "validatorCandidatesId": "0x99ae8894b1f3265a97c22b01745fa08ed1c691783bdf2a1d8096bb63082a240c",
+    "validatorCandidatesId": "0xcbfb2e65b48002dc58313f7afadadb5332c173a4f526f36c3c57e15ec9d91e2e",
     "validatorCandidatesSize": "0",
     "atRiskValidators": [],
     "validatorReportRecords": []
   }
 }
 
-task 6, line 26:
+task 6, line 27:
 //# advance-epoch
 Epoch advanced: 1
 
-task 7, lines 28-32:
+task 7, lines 29-33:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 2,
   "result": {
     "epoch": "1",
-    "protocolVersion": "108",
+    "protocolVersion": "115",
     "systemStateVersion": "2",
-    "storageFundTotalObjectStorageRebates": "15108800",
+    "storageFundTotalObjectStorageRebates": "15200000",
     "storageFundNonRefundableBalance": "0",
     "referenceGasPrice": "1000",
     "safeMode": false,
@@ -256,13 +255,13 @@ Response: {
         "nextEpochPrimaryAddress": null,
         "nextEpochWorkerAddress": null,
         "votingPower": "10000",
-        "operationCapId": "0x51640d7cc42e1702888103df85d01150c246cf18d2432f6bd4b87a11d9926c78",
+        "operationCapId": "0x5b3b42466e3ffd7d7754efbe99725f8f6bbd5d42324874a427e3f4963bc7bc6d",
         "gasPrice": "1000",
         "commissionRate": "200",
         "nextEpochStake": "20000001001000000",
         "nextEpochGasPrice": "1000",
         "nextEpochCommissionRate": "200",
-        "stakingPoolId": "0xacda9295fa6077073b2adb7470ba058ffa7ce4487be411e2610d2c87f9ce3e96",
+        "stakingPoolId": "0x9dd4b586ded7cc4712a61d49be5a1acba395b8cd2d42c17604292867dabdfbd0",
         "stakingPoolActivationEpoch": "0",
         "stakingPoolDeactivationEpoch": null,
         "stakingPoolHaneulBalance": "20000001001000000",
@@ -271,47 +270,47 @@ Response: {
         "pendingStake": "0",
         "pendingTotalHaneulWithdraw": "0",
         "pendingPoolTokenWithdraw": "0",
-        "exchangeRatesId": "0xb62ff674c9c560439d7aab37e51691b3b0f311c17c2f9638c9375ad38cf35963",
+        "exchangeRatesId": "0xa0298128e8ca63ae3ab1edf0971c10c7d7922a27796a8e156d08e9eff6561f7a",
         "exchangeRatesSize": "2"
       }
     ],
-    "pendingActiveValidatorsId": "0x465c2a189dcbc4f7f150cf57d26d291f2897448b9bc01d43ba2e7115c75b35df",
+    "pendingActiveValidatorsId": "0xa1275d4147ea32f6f680e11f01c649e4ed361d74852a98bfabaf683768e39eee",
     "pendingActiveValidatorsSize": "0",
     "pendingRemovals": [],
-    "stakingPoolMappingsId": "0x4d02708f6850adfa71567c2eaff59aaa3ab59d40b3a3f27452eb7b2ca25e0e84",
+    "stakingPoolMappingsId": "0x54089ea8d45e30959f15c1c1261517a07516993b03661e568e5311df13bfe765",
     "stakingPoolMappingsSize": "1",
-    "inactivePoolsId": "0xa1c8458f15908b6f8cda2afab3679810d7895e143c5f5f27e55740d651dd5ad5",
+    "inactivePoolsId": "0x11ffd1d8a686e02297dc5bc6213f2975c67ccdea1bcf6d8eb1ec850e47b78764",
     "inactivePoolsSize": "0",
-    "validatorCandidatesId": "0x99ae8894b1f3265a97c22b01745fa08ed1c691783bdf2a1d8096bb63082a240c",
+    "validatorCandidatesId": "0xcbfb2e65b48002dc58313f7afadadb5332c173a4f526f36c3c57e15ec9d91e2e",
     "validatorCandidatesSize": "0",
     "atRiskValidators": [],
     "validatorReportRecords": []
   }
 }
 
-task 8, lines 34-35:
+task 8, lines 35-36:
 //# programmable --sender A --inputs object(0x5) object(2,0)
 //> 0: haneul_system::haneul_system::request_withdraw_stake(Input(0), Input(1))
-events: Event { package_id: haneul_system, transaction_module: Identifier("haneul_system"), sender: A, type_: StructTag { address: haneul_system, module: Identifier("validator"), name: Identifier("UnstakingRequestEvent"), type_params: [] }, contents: [172, 218, 146, 149, 250, 96, 119, 7, 59, 42, 219, 116, 112, 186, 5, 143, 250, 124, 228, 72, 123, 228, 17, 226, 97, 13, 44, 135, 249, 206, 62, 150, 218, 131, 22, 109, 1, 175, 215, 221, 207, 138, 245, 248, 68, 244, 90, 170, 83, 244, 133, 72, 229, 17, 124, 35, 245, 162, 151, 140, 253, 66, 34, 68, 252, 204, 154, 66, 27, 187, 19, 193, 166, 106, 26, 169, 143, 10, 215, 80, 41, 237, 233, 72, 87, 119, 156, 105, 21, 180, 79, 148, 6, 139, 146, 30, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 202, 154, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }
+events: Event { package_id: haneul_system, transaction_module: Identifier("haneul_system"), sender: A, type_: StructTag { address: haneul_system, module: Identifier("validator"), name: Identifier("UnstakingRequestEvent"), type_params: [] }, contents: [157, 212, 181, 134, 222, 215, 204, 71, 18, 166, 29, 73, 190, 90, 26, 203, 163, 149, 184, 205, 45, 66, 193, 118, 4, 41, 40, 103, 218, 189, 251, 208, 218, 131, 22, 109, 1, 175, 215, 221, 207, 138, 245, 248, 68, 244, 90, 170, 83, 244, 133, 72, 229, 17, 124, 35, 245, 162, 151, 140, 253, 66, 34, 68, 252, 204, 154, 66, 27, 187, 19, 193, 166, 106, 26, 169, 143, 10, 215, 80, 41, 237, 233, 72, 87, 119, 156, 105, 21, 180, 79, 148, 6, 139, 146, 30, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 202, 154, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }
 created: object(8,0)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000005, object(0,0), object(2,1)
 deleted: object(2,0)
-gas summary: computation_cost: 1000000, storage_cost: 14804800,  storage_rebate: 14957712, non_refundable_storage_fee: 151088
+gas summary: computation_cost: 1000000, storage_cost: 14896000,  storage_rebate: 15048000, non_refundable_storage_fee: 152000
 
-task 9, line 37:
+task 9, line 38:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 10, lines 39-43:
+task 10, lines 40-44:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 3,
   "result": {
     "epoch": "1",
-    "protocolVersion": "108",
+    "protocolVersion": "115",
     "systemStateVersion": "2",
-    "storageFundTotalObjectStorageRebates": "15108800",
+    "storageFundTotalObjectStorageRebates": "15200000",
     "storageFundNonRefundableBalance": "0",
     "referenceGasPrice": "1000",
     "safeMode": false,
@@ -357,13 +356,13 @@ Response: {
         "nextEpochPrimaryAddress": null,
         "nextEpochWorkerAddress": null,
         "votingPower": "10000",
-        "operationCapId": "0x51640d7cc42e1702888103df85d01150c246cf18d2432f6bd4b87a11d9926c78",
+        "operationCapId": "0x5b3b42466e3ffd7d7754efbe99725f8f6bbd5d42324874a427e3f4963bc7bc6d",
         "gasPrice": "1000",
         "commissionRate": "200",
         "nextEpochStake": "20000000001000000",
         "nextEpochGasPrice": "1000",
         "nextEpochCommissionRate": "200",
-        "stakingPoolId": "0xacda9295fa6077073b2adb7470ba058ffa7ce4487be411e2610d2c87f9ce3e96",
+        "stakingPoolId": "0x9dd4b586ded7cc4712a61d49be5a1acba395b8cd2d42c17604292867dabdfbd0",
         "stakingPoolActivationEpoch": "0",
         "stakingPoolDeactivationEpoch": null,
         "stakingPoolHaneulBalance": "20000001001000000",
@@ -372,39 +371,39 @@ Response: {
         "pendingStake": "0",
         "pendingTotalHaneulWithdraw": "1000000000",
         "pendingPoolTokenWithdraw": "999999999",
-        "exchangeRatesId": "0xb62ff674c9c560439d7aab37e51691b3b0f311c17c2f9638c9375ad38cf35963",
+        "exchangeRatesId": "0xa0298128e8ca63ae3ab1edf0971c10c7d7922a27796a8e156d08e9eff6561f7a",
         "exchangeRatesSize": "2"
       }
     ],
-    "pendingActiveValidatorsId": "0x465c2a189dcbc4f7f150cf57d26d291f2897448b9bc01d43ba2e7115c75b35df",
+    "pendingActiveValidatorsId": "0xa1275d4147ea32f6f680e11f01c649e4ed361d74852a98bfabaf683768e39eee",
     "pendingActiveValidatorsSize": "0",
     "pendingRemovals": [],
-    "stakingPoolMappingsId": "0x4d02708f6850adfa71567c2eaff59aaa3ab59d40b3a3f27452eb7b2ca25e0e84",
+    "stakingPoolMappingsId": "0x54089ea8d45e30959f15c1c1261517a07516993b03661e568e5311df13bfe765",
     "stakingPoolMappingsSize": "1",
-    "inactivePoolsId": "0xa1c8458f15908b6f8cda2afab3679810d7895e143c5f5f27e55740d651dd5ad5",
+    "inactivePoolsId": "0x11ffd1d8a686e02297dc5bc6213f2975c67ccdea1bcf6d8eb1ec850e47b78764",
     "inactivePoolsSize": "0",
-    "validatorCandidatesId": "0x99ae8894b1f3265a97c22b01745fa08ed1c691783bdf2a1d8096bb63082a240c",
+    "validatorCandidatesId": "0xcbfb2e65b48002dc58313f7afadadb5332c173a4f526f36c3c57e15ec9d91e2e",
     "validatorCandidatesSize": "0",
     "atRiskValidators": [],
     "validatorReportRecords": []
   }
 }
 
-task 11, line 45:
+task 11, line 46:
 //# advance-epoch
 Epoch advanced: 2
 
-task 12, lines 47-51:
+task 12, lines 48-52:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 4,
   "result": {
     "epoch": "2",
-    "protocolVersion": "108",
+    "protocolVersion": "115",
     "systemStateVersion": "2",
-    "storageFundTotalObjectStorageRebates": "14804800",
-    "storageFundNonRefundableBalance": "151088",
+    "storageFundTotalObjectStorageRebates": "14896000",
+    "storageFundNonRefundableBalance": "152000",
     "referenceGasPrice": "1000",
     "safeMode": false,
     "safeModeStorageRewards": "0",
@@ -449,13 +448,13 @@ Response: {
         "nextEpochPrimaryAddress": null,
         "nextEpochWorkerAddress": null,
         "votingPower": "10000",
-        "operationCapId": "0x51640d7cc42e1702888103df85d01150c246cf18d2432f6bd4b87a11d9926c78",
+        "operationCapId": "0x5b3b42466e3ffd7d7754efbe99725f8f6bbd5d42324874a427e3f4963bc7bc6d",
         "gasPrice": "1000",
         "commissionRate": "200",
         "nextEpochStake": "20000000002000000",
         "nextEpochGasPrice": "1000",
         "nextEpochCommissionRate": "200",
-        "stakingPoolId": "0xacda9295fa6077073b2adb7470ba058ffa7ce4487be411e2610d2c87f9ce3e96",
+        "stakingPoolId": "0x9dd4b586ded7cc4712a61d49be5a1acba395b8cd2d42c17604292867dabdfbd0",
         "stakingPoolActivationEpoch": "0",
         "stakingPoolDeactivationEpoch": null,
         "stakingPoolHaneulBalance": "20000000002000000",
@@ -464,18 +463,18 @@ Response: {
         "pendingStake": "0",
         "pendingTotalHaneulWithdraw": "0",
         "pendingPoolTokenWithdraw": "0",
-        "exchangeRatesId": "0xb62ff674c9c560439d7aab37e51691b3b0f311c17c2f9638c9375ad38cf35963",
+        "exchangeRatesId": "0xa0298128e8ca63ae3ab1edf0971c10c7d7922a27796a8e156d08e9eff6561f7a",
         "exchangeRatesSize": "3"
       }
     ],
-    "pendingActiveValidatorsId": "0x465c2a189dcbc4f7f150cf57d26d291f2897448b9bc01d43ba2e7115c75b35df",
+    "pendingActiveValidatorsId": "0xa1275d4147ea32f6f680e11f01c649e4ed361d74852a98bfabaf683768e39eee",
     "pendingActiveValidatorsSize": "0",
     "pendingRemovals": [],
-    "stakingPoolMappingsId": "0x4d02708f6850adfa71567c2eaff59aaa3ab59d40b3a3f27452eb7b2ca25e0e84",
+    "stakingPoolMappingsId": "0x54089ea8d45e30959f15c1c1261517a07516993b03661e568e5311df13bfe765",
     "stakingPoolMappingsSize": "1",
-    "inactivePoolsId": "0xa1c8458f15908b6f8cda2afab3679810d7895e143c5f5f27e55740d651dd5ad5",
+    "inactivePoolsId": "0x11ffd1d8a686e02297dc5bc6213f2975c67ccdea1bcf6d8eb1ec850e47b78764",
     "inactivePoolsSize": "0",
-    "validatorCandidatesId": "0x99ae8894b1f3265a97c22b01745fa08ed1c691783bdf2a1d8096bb63082a240c",
+    "validatorCandidatesId": "0xcbfb2e65b48002dc58313f7afadadb5332c173a4f526f36c3c57e15ec9d91e2e",
     "validatorCandidatesSize": "0",
     "atRiskValidators": [],
     "validatorReportRecords": []

@@ -15,15 +15,15 @@ A: object(0,0)
 // 7. Fetching a newly created package
 // 8. Fetching an upgraded package
 
-task 1, lines 15-17:
+task 1, lines 16-18:
 //# programmable --sender A --inputs @A
 //> 0: haneul::table::new<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>();
 //> 1: TransferObjects([Result(0)], Input(0))
 created: object(1,0)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 2979200,  storage_rebate: 0, non_refundable_storage_fee: 0
+gas summary: computation_cost: 1000000, storage_cost: 3024800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 19-21:
+task 2, lines 20-22:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -31,20 +31,20 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, line 23:
+task 3, line 24:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 25-29:
+task 4, lines 26-30:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 0,
   "result": {
     "data": {
-      "objectId": "0x8741e648d417dca772469df76b699b8fd5f5190f7f9b7b7493d37ebe95e2476a",
+      "objectId": "0x60d8fa3d029534fbbb9aa9e9a6b6422136e1bc4e3928dee5ed586ff4371fbdf0",
       "version": "3",
-      "digest": "2rSnsqTjMZ5D4QHj7HwGQFBvD1tDDZFbtqdTqAkL35EW",
+      "digest": "DWjdswQ2VYcHJWzrPXGm18WXmWrFYjn56cPjDCrhvFFo",
       "content": {
         "dataType": "moveObject",
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
@@ -52,7 +52,7 @@ Response: {
         "fields": {
           "balance": "42",
           "id": {
-            "id": "0x8741e648d417dca772469df76b699b8fd5f5190f7f9b7b7493d37ebe95e2476a"
+            "id": "0x60d8fa3d029534fbbb9aa9e9a6b6422136e1bc4e3928dee5ed586ff4371fbdf0"
           }
         }
       }
@@ -60,27 +60,27 @@ Response: {
   }
 }
 
-task 5, lines 31-33:
+task 5, lines 32-34:
 //# programmable --sender A --inputs object(2,0) 21
 //> 0: SplitCoins(Input(0), [Input(1)]);
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 6, line 35:
+task 6, line 36:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 37-41:
+task 7, lines 38-42:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
     "data": {
-      "objectId": "0x8741e648d417dca772469df76b699b8fd5f5190f7f9b7b7493d37ebe95e2476a",
+      "objectId": "0x60d8fa3d029534fbbb9aa9e9a6b6422136e1bc4e3928dee5ed586ff4371fbdf0",
       "version": "4",
-      "digest": "9T4abYAiqu5LnEK82JQN6GeuXw1M6JUSJgh1Gka1kD2w",
+      "digest": "BKXdQxeKbCB7rQtRx4GzhMzj2g1Po7QJYJM22FxbcK5g",
       "content": {
         "dataType": "moveObject",
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
@@ -88,7 +88,7 @@ Response: {
         "fields": {
           "balance": "21",
           "id": {
-            "id": "0x8741e648d417dca772469df76b699b8fd5f5190f7f9b7b7493d37ebe95e2476a"
+            "id": "0x60d8fa3d029534fbbb9aa9e9a6b6422136e1bc4e3928dee5ed586ff4371fbdf0"
           }
         }
       }
@@ -96,19 +96,19 @@ Response: {
   }
 }
 
-task 8, lines 43-44:
+task 8, lines 44-45:
 //# programmable --sender A --inputs object(1,0) 0 object(2,0)
 //> 0: haneul::table::add<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2));
 created: object(8,0)
 mutated: object(0,0), object(1,0)
 wrapped: object(2,0)
-gas summary: computation_cost: 1000000, storage_cost: 5335200,  storage_rebate: 3927528, non_refundable_storage_fee: 39672
+gas summary: computation_cost: 1000000, storage_cost: 5426400,  storage_rebate: 3972672, non_refundable_storage_fee: 40128
 
-task 9, line 46:
+task 9, line 47:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 10, lines 48-52:
+task 10, lines 49-53:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -116,34 +116,34 @@ Response: {
   "result": {
     "error": {
       "code": "notExists",
-      "object_id": "0x8741e648d417dca772469df76b699b8fd5f5190f7f9b7b7493d37ebe95e2476a"
+      "object_id": "0x60d8fa3d029534fbbb9aa9e9a6b6422136e1bc4e3928dee5ed586ff4371fbdf0"
     }
   }
 }
 
-task 11, lines 54-56:
+task 11, lines 55-57:
 //# programmable --sender A --inputs object(1,0) 0 @A
 //> 0: haneul::table::remove<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1));
 //> 1: TransferObjects([Result(0)], Input(2))
 mutated: object(0,0), object(1,0)
 unwrapped: object(2,0)
 deleted: object(8,0)
-gas summary: computation_cost: 1000000, storage_cost: 3967200,  storage_rebate: 5281848, non_refundable_storage_fee: 53352
+gas summary: computation_cost: 1000000, storage_cost: 4012800,  storage_rebate: 5372136, non_refundable_storage_fee: 54264
 
-task 12, line 58:
+task 12, line 59:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 13, lines 60-64:
+task 13, lines 61-65:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 3,
   "result": {
     "data": {
-      "objectId": "0x8741e648d417dca772469df76b699b8fd5f5190f7f9b7b7493d37ebe95e2476a",
+      "objectId": "0x60d8fa3d029534fbbb9aa9e9a6b6422136e1bc4e3928dee5ed586ff4371fbdf0",
       "version": "6",
-      "digest": "6UU5kSoavAQNcNNHdHt2gxu2bc4fJjyuZRw4ZBWcT3Lb",
+      "digest": "23A9VwhRjoAXPjBzZGGqKsnpbRN2ZC1WrqK33zwFZxXR",
       "content": {
         "dataType": "moveObject",
         "type": "0x2::coin::Coin<0x2::haneul::HANEUL>",
@@ -151,7 +151,7 @@ Response: {
         "fields": {
           "balance": "21",
           "id": {
-            "id": "0x8741e648d417dca772469df76b699b8fd5f5190f7f9b7b7493d37ebe95e2476a"
+            "id": "0x60d8fa3d029534fbbb9aa9e9a6b6422136e1bc4e3928dee5ed586ff4371fbdf0"
           }
         }
       }
@@ -159,18 +159,18 @@ Response: {
   }
 }
 
-task 14, lines 66-67:
+task 14, lines 67-68:
 //# programmable --sender A --inputs object(2,0)
 //> 0: MergeCoins(Gas, [Input(0)])
 mutated: object(0,0)
 deleted: object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 15, line 69:
+task 15, line 70:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 16, lines 71-75:
+task 16, lines 72-76:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -178,12 +178,12 @@ Response: {
   "result": {
     "error": {
       "code": "notExists",
-      "object_id": "0x8741e648d417dca772469df76b699b8fd5f5190f7f9b7b7493d37ebe95e2476a"
+      "object_id": "0x60d8fa3d029534fbbb9aa9e9a6b6422136e1bc4e3928dee5ed586ff4371fbdf0"
     }
   }
 }
 
-task 17, lines 77-81:
+task 17, lines 78-82:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
@@ -196,47 +196,47 @@ Response: {
   }
 }
 
-task 18, lines 83-86:
+task 18, lines 84-87:
 //# publish --sender A --upgradeable
 created: object(18,0), object(18,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5099600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 19, lines 88-91:
+task 19, lines 89-92:
 //# upgrade --sender A --package P --upgrade-capability 18,1
 created: object(19,0)
 mutated: object(0,0), object(18,1)
 gas summary: computation_cost: 1000000, storage_cost: 5099600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 20, line 93:
+task 20, line 94:
 //# create-checkpoint
 Checkpoint created: 6
 
-task 21, lines 95-99:
+task 21, lines 96-100:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 6,
   "result": {
     "data": {
-      "objectId": "0x5442be7dc3d47da97de8e9afc612c5336367e6cbdc13eda8407baf71ccbc51af",
+      "objectId": "0x29f4d2048d2316409bbaadfab178d5ec11d0538ad00d988ddd13589615fe63e8",
       "version": "1",
-      "digest": "KDrdEf4sMAD3iSwmUV4qNDD1R5UbXJEYjbQuJo3UMjA",
+      "digest": "6X8hjEXfv9rHL2vvku72Z2egSk8HxATY64pfi3vB3Rcq",
       "type": "package"
     }
   }
 }
 
-task 22, lines 101-105:
+task 22, lines 102-106:
 //# run-jsonrpc
 Response: {
   "jsonrpc": "2.0",
   "id": 7,
   "result": {
     "data": {
-      "objectId": "0x95d9c0fc3a8653a8a3d13d824533fbc2e0641a3795dcf94d864648ccb15a3241",
+      "objectId": "0xb24f12035a719bc7182391fa294866c41866414e7ede9db1d5b9a316786eb0cd",
       "version": "2",
-      "digest": "27WJhpnqpwfU5bXyRrk6n9L5ardyphN7ojayhYVLj7h8",
+      "digest": "E3QJAXfRedWDzwent2JXBZ4fe1vH3P6incS1VHGbjUj3",
       "type": "package"
     }
   }

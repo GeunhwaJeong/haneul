@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 108 --accounts A --simulator --addresses P0=0x0 P1=0x0
+//# init --protocol-version 115 --accounts A --simulator --addresses P0=0x0 P1=0x0
 
 // Paginating the owned objects of an object fetched at a specific version is
 // not supported, but we do support paginating the owned objects of an object
