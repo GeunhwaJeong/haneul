@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-//# init --protocol-version 48 --accounts A --addresses test=0x0 --simulator --file-format 6
+//# init --protocol-version 115 --accounts A --addresses test=0x0 --simulator --file-format 6
 
 //# publish --sender A --upgradeable
 module test::clever_error_post_v48 {
