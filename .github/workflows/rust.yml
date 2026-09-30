@@ -60,7 +60,7 @@ jobs:
       isRust: ${{ steps.diff.outputs.isRust }}
       isMove: ${{ steps.diff.outputs.isMove }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - name: Detect Changes
@@ -71,7 +71,7 @@ jobs:
     name: license-check
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - name: Run license check
@@ -93,7 +93,7 @@ jobs:
       HANEUL_SKIP_SIMTESTS: 1
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - uses: taiki-e/install-action@nextest
@@ -121,7 +121,7 @@ jobs:
     timeout-minutes: 10
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - uses: taiki-e/install-action@nextest
@@ -134,7 +134,7 @@ jobs:
     if: needs.diff.outputs.isRust == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - run: rustup component add clippy
@@ -154,7 +154,7 @@ jobs:
     if: needs.diff.outputs.isRust == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - run: rustup component add rustfmt
@@ -165,7 +165,7 @@ jobs:
     if: needs.diff.outputs.isRust == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - name: Check for committed *.snap.new files
@@ -186,7 +186,7 @@ jobs:
     if: needs.diff.outputs.isRust == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - uses: taiki-e/install-action@cargo-deny
@@ -198,7 +198,7 @@ jobs:
     if: needs.diff.outputs.isRust == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - uses: taiki-e/install-action@cargo-deny
@@ -210,7 +210,7 @@ jobs:
     if: needs.diff.outputs.isRust == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - name: Install cargo-hakari, and cache the binary
@@ -218,7 +218,7 @@ jobs:
         with:
           crate: cargo-hakari
           locked: true
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - name: Make cut

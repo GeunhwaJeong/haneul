@@ -58,7 +58,7 @@ jobs:
       isReleaseNotesEligible: ${{ steps.diff.outputs.isReleaseNotesEligible }}
       isMoveAutoFormatter: ${{ steps.diff.outputs.isMoveAutoFormatter }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
       - name: Detect Changes
         uses: './.github/actions/diffs'
         id: diff
@@ -68,7 +68,7 @@ jobs:
     if: needs.diff.outputs.isRust == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - run: rustup component add rustfmt
@@ -79,7 +79,7 @@ jobs:
     if: needs.diff.outputs.isRust == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
         with:
           ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
       - run: rustup component add clippy
@@ -102,7 +102,7 @@ jobs:
           - [ ubuntu-latest ]
       fail-fast: false
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
       - uses: taiki-e/install-action@nextest
       - name: Set Swap Space
         uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
@@ -135,7 +135,7 @@ jobs:
     if: needs.diff.outputs.isSolidity == 'true'
     runs-on: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # pin@v1.9.1
         with:
