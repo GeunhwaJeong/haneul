@@ -36,6 +36,7 @@ use haneul_config::node::{AuthorityOverloadConfig, StateDebugDumpConfig};
 use haneul_config::transaction_deny_config::TransactionDenyConfig;
 use haneul_execution::Executor;
 use haneul_protocol_config::PerObjectCongestionControlMode;
+use haneul_protocol_config::assert_reachable_gated;
 use haneul_types::accumulator_root::AccumulatorObjId;
 use haneul_types::accumulator_root::UnsettledObjectFundsRead;
 use haneul_types::base_types::SystemObjectVersions;
@@ -1261,7 +1262,7 @@ impl AuthorityState {
         // but the executed effects are pruned post consensus, leading to failures.
         let tx_digest = *transaction.digest();
         if epoch_store.is_recently_finalized(&tx_digest)
-            || epoch_store.transactions_executed_in_cur_epoch(&[tx_digest])?[0]
+            || epoch_store.transactions_executed_in_cur_epoch(&[tx_digest])[0]
         {
             assert_reachable!("transaction recently executed");
             return Ok(());
@@ -2118,7 +2119,8 @@ impl AuthorityState {
                     epoch_store,
                 )
             {
-                assert_reachable!("retry object withdraw later");
+                assert_reachable_gated!("retry object withdraw later", |pc| !pc
+                    .check_object_funds_withdraw_in_execution());
                 return ExecutionOutput::RetryLater;
             }
         } else {
@@ -2141,7 +2143,8 @@ impl AuthorityState {
                     if haneul_types::funds_accumulator::is_object_funds_insufficient_abort(
                         &failure.error,
                     ) {
-                        assert_reachable!("object funds insufficient in execution");
+                        assert_reachable_gated!("object funds insufficient in execution", |pc| pc
+                            .check_object_funds_withdraw_in_execution());
                         self.object_funds_checker_metrics
                             .in_execution_check_result
                             .with_label_values(&["insufficient"])

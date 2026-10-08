@@ -15,9 +15,9 @@ type PackageGraph<'p> = DiGraphMap<&'p str, ()>;
 struct Packages(HashMap<String, Package>);
 
 #[test]
-/// Make sure that all accesses to execution layer crates in the `haneul-node` and `haneul-replay` crates
-/// go via the `haneul-execution` crate (in other words, the `haneul-execution` crate dominates execution
-/// layer crates in the dependency graphs of `haneul-node` and `haneul-replay`).
+/// Make sure that all accesses to execution layer crates in the `haneul-node` and `haneul-replay-2`
+/// crates go via the `haneul-execution` crate (in other words, the `haneul-execution` crate dominates
+/// execution layer crates in the dependency graphs of `haneul-node` and `haneul-replay-2`).
 ///
 /// This helps ensures that execution that may be committed on-chain respects the execution version
 /// that is stated in the protocol config.
@@ -48,7 +48,7 @@ fn test_encapsulation() {
     // Capture problematic paths from roots to execution crates
     let mut examples = vec![];
 
-    for root in ["haneul-node", "haneul-replay"] {
+    for root in ["haneul-node", "haneul-replay-2"] {
         let mut graph = packages.graph(root);
 
         // If we can still create a path from `root` to an execution crate after removing these

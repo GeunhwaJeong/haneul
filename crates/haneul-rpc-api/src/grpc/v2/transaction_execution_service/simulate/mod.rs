@@ -221,8 +221,15 @@ pub fn simulate_transaction(
             restrict_transaction_proposers(service, &protocol_config, &mut transaction)?;
         }
 
+        // With gas selection off, a transaction without gas payment is simulated with a mock gas
+        // coin, unless it already pays for gas from address balance. Simulating such a
+        // transaction with a mock gas coin would charge storage for a coin that execution never
+        // writes, against a budget that `estimate_gas_budget_from_gas_cost` estimated without it.
+        let allow_mock_gas_coin = !(perform_gas_selection
+            || (checks.enabled()
+                && address_balance_pays_gas(service, &protocol_config, &transaction)));
         executor
-            .simulate_transaction(transaction.clone(), checks, !perform_gas_selection)
+            .simulate_transaction(transaction.clone(), checks, allow_mock_gas_coin)
             .map_err(simulation_error_to_rpc_error)?
     };
 
@@ -598,7 +605,6 @@ fn select_gas(
     use haneul_types::accumulator_root::AccumulatorValue;
     use haneul_types::balance::Balance;
     use haneul_types::base_types::SequenceNumber;
-    use haneul_types::coin_reservation::CoinReservationResolver;
     use haneul_types::coin_reservation::ParsedDigest;
     use haneul_types::coin_reservation::ParsedObjectRefWithdrawal;
     use haneul_types::gas_coin::GAS;
@@ -615,30 +621,7 @@ fn select_gas(
         .kind()
         .iter_commands()
         .any(Command::is_gas_coin_used);
-    let address_balance = reader
-        .lookup_address_balance(owner, GAS::type_())
-        .map(|balance| {
-            // Sum up the explicit HANEUL reservations (excluding the implicit gas payment) for the
-            // `owner` so that we can deduct that from the available address balance. We use the
-            // estimation variant to avoid double-counting: the gas budget is what we're trying to
-            // satisfy, not a pre-existing reservation.
-            let coin_resolver = CoinReservationResolver::new(reader.inner().clone());
-
-            let reserved_haneul = transaction
-                .process_funds_withdrawals_for_estimation(service.chain_id, &coin_resolver)
-                .ok()
-                .and_then(|withdrawals| {
-                    let haneul_type = Balance::type_tag(GAS::type_tag());
-                    let haneul_account_id =
-                        AccumulatorValue::get_field_id(owner, &haneul_type).ok()?;
-                    withdrawals
-                        .get(&haneul_account_id)
-                        .map(|(amount, _, _)| *amount)
-                })
-                .unwrap_or(0);
-
-            balance.saturating_sub(reserved_haneul)
-        });
+    let address_balance = address_balance_available_for_gas(service, transaction);
 
     // If the gas coin isn't used and there is sufficient address balance budget to satisfy the
     // required budget then we will use the `owner`s address balance to pay for gas. Otherwise we
@@ -769,6 +752,92 @@ fn select_gas(
             ),
         ))
     }
+}
+
+/// HANEUL in the gas owner's address balance that is left for gas after the transaction's explicit
+/// HANEUL withdrawals from that owner. `None` if the owner has no HANEUL address balance.
+fn address_balance_available_for_gas(
+    service: &RpcService,
+    transaction: &haneul_types::transaction::TransactionData,
+) -> Option<u64> {
+    use haneul_types::accumulator_root::AccumulatorValue;
+    use haneul_types::balance::Balance;
+    use haneul_types::coin_reservation::CoinReservationResolver;
+    use haneul_types::gas_coin::GAS;
+
+    let reader = &service.reader;
+    let owner = transaction.gas_data().owner;
+
+    reader
+        .lookup_address_balance(owner, GAS::type_())
+        .map(|balance| {
+            // Sum up the explicit HANEUL reservations (excluding the implicit gas payment) for the
+            // `owner` so that we can deduct that from the available address balance. We use the
+            // estimation variant to avoid double-counting: the gas budget is what we're trying to
+            // satisfy, not a pre-existing reservation.
+            let coin_resolver = CoinReservationResolver::new(reader.inner().clone());
+
+            let reserved_haneul = transaction
+                .process_funds_withdrawals_for_estimation(service.chain_id, &coin_resolver)
+                .ok()
+                .and_then(|withdrawals| {
+                    let haneul_type = Balance::type_tag(GAS::type_tag());
+                    let haneul_account_id =
+                        AccumulatorValue::get_field_id(owner, &haneul_type).ok()?;
+                    withdrawals
+                        .get(&haneul_account_id)
+                        .map(|(amount, _, _)| *amount)
+                })
+                .unwrap_or(0);
+
+            balance.saturating_sub(reserved_haneul)
+        })
+}
+
+/// Whether `transaction`, exactly as given, pays for gas from the gas owner's HANEUL address balance
+/// when executed: the gas payment is empty, `Argument::GasCoin` is unused, the available address
+/// balance covers the budget (the conditions under which `select_gas` picks address-balance gas),
+/// and the transaction is replay-protected without a gas coin.
+fn address_balance_pays_gas(
+    service: &RpcService,
+    protocol_config: &ProtocolConfig,
+    transaction: &haneul_types::transaction::TransactionData,
+) -> bool {
+    use haneul_types::transaction::Command;
+
+    protocol_config.enable_address_balance_gas_payments()
+        && transaction.is_gas_paid_from_address_balance()
+        && !transaction
+            .kind()
+            .iter_commands()
+            .any(Command::is_gas_coin_used)
+        && is_replay_protected_without_gas_coin(service, transaction)
+        && address_balance_available_for_gas(service, transaction)
+            .is_some_and(|balance| balance >= transaction.gas_data().budget)
+}
+
+/// Whether `transaction` passes the signing-time replay-protection check with no gas coin in its
+/// payment. Owned inputs are read at their latest version; a stale object reference fails signing
+/// regardless.
+fn is_replay_protected_without_gas_coin(
+    service: &RpcService,
+    transaction: &haneul_types::transaction::TransactionData,
+) -> bool {
+    // Lazy: objects are read only if the expiration doesn't already protect the transaction, and
+    // reading stops at the first replay-protected input.
+    let owned_inputs = transaction
+        .input_objects()
+        .unwrap_or_default()
+        .into_iter()
+        .filter_map(|kind| match kind {
+            InputObjectKind::ImmOrOwnedMoveObject((id, _, _)) => service
+                .reader
+                .inner()
+                .get_object(&id)
+                .map(|object| ObjectReadResult::new(kind, object.into())),
+            InputObjectKind::MovePackage(_) | InputObjectKind::SharedMoveObject { .. } => None,
+        });
+    transaction.has_replay_protection(owned_inputs)
 }
 
 /// Returns true if the simulate request is eligible for auto gas_price=0 handling.

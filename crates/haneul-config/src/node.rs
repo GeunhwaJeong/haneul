@@ -289,11 +289,11 @@ pub struct NodeConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub transaction_driver_config: Option<TransactionDriverConfig>,
 
-    /// When set, consensus pulls transactions directly from a validator-side pool
-    /// instead of the admission-queue drain thread pushing them. This takes
+    /// Consensus pulls transactions directly from a validator-side pool instead of
+    /// the admission-queue drain thread pushing them. Enabled by default; this takes
     /// precedence over `authority_overload_config.admission_queue_enabled`.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub consensus_transaction_pool: Option<ConsensusTransactionPoolConfig>,
+    #[serde(default)]
+    pub consensus_transaction_pool: ConsensusTransactionPoolConfig,
 
     /// Configuration for congestion tracker binary logging.
     /// When set, enables per-commit binary logs of congestion tracker state.
@@ -336,13 +336,26 @@ impl Default for TransactionDriverConfig {
     }
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct ConsensusTransactionPoolConfig {
+    /// Set false to fall back to the push-based admission queue.
+    #[serde(default = "bool_true")]
+    pub enabled: bool,
+
     /// Maximum queued user-lane entries. A soft bundle counts as one entry,
     /// matching the existing admission queue. Defaults to the consensus
     /// `max_pending_transactions` setting.
     pub max_pending_transactions: Option<usize>,
+}
+
+impl Default for ConsensusTransactionPoolConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            max_pending_transactions: None,
+        }
+    }
 }
 
 impl ConsensusTransactionPoolConfig {
@@ -525,6 +538,18 @@ pub struct ExecutionTimeObserverConfig {
     /// If unspecified, this will default to `false`.
     pub report_object_utilization_metric_with_full_id: Option<bool>,
 
+    /// Map from object ID to a human-readable name. Utilization of each listed object is
+    /// reported in the `epoch_execution_time_observer_tracked_object_utilization` metric,
+    /// labeled with both the full object ID and the name, regardless of whether the object
+    /// has ever been overutilized. This does not affect the bucketed per-object
+    /// utilization metric.
+    ///
+    /// Use this to precisely monitor a small number of known hot objects without enabling
+    /// `report_object_utilization_metric_with_full_id`.
+    ///
+    /// If unspecified, this will default to an empty map.
+    pub object_utilization_metric_tracked_ids: Option<BTreeMap<ObjectID, String>>,
+
     /// Unless target object utilization is exceeded by at least this amount, no observation
     /// will be shared with consensus.
     ///
@@ -601,6 +626,13 @@ impl ExecutionTimeObserverConfig {
     pub fn report_object_utilization_metric_with_full_id(&self) -> bool {
         self.report_object_utilization_metric_with_full_id
             .unwrap_or(false)
+    }
+
+    pub fn object_utilization_metric_tracked_ids(&self) -> impl Iterator<Item = (&ObjectID, &str)> {
+        self.object_utilization_metric_tracked_ids
+            .iter()
+            .flatten()
+            .map(|(id, name)| (id, name.as_str()))
     }
 
     pub fn observation_sharing_object_utilization_threshold(&self) -> Duration {
@@ -1579,8 +1611,8 @@ pub struct AuthorityOverloadConfig {
 
     // Enables use of a gas-price-based priority queue for load shedding of
     // transactions at admission time. If false, when consensus is saturated, transactions
-    // are rejected with TooManyTransactionsPendingConsensus. Ignored when
-    // `consensus_transaction_pool` is configured.
+    // are rejected with TooManyTransactionsPendingConsensus. Ignored unless
+    // `consensus_transaction_pool.enabled` is set false.
     #[serde(default = "default_admission_queue_enabled")]
     pub admission_queue_enabled: bool,
 
@@ -1920,12 +1952,15 @@ mod tests {
 
     use fastcrypto::traits::KeyPair;
     use haneul_keys::keypair_file::{write_authority_keypair_to_file, write_keypair_to_file};
+    use haneul_types::base_types::ObjectID;
     use haneul_types::crypto::{
         AuthorityKeyPair, HaneulKeyPair, NetworkKeyPair, get_key_pair_from_rng,
     };
     use rand::{SeedableRng, rngs::StdRng};
 
-    use super::{AuthorityStorePruningConfig, Genesis, StateArchiveConfig};
+    use super::{
+        AuthorityStorePruningConfig, ExecutionTimeObserverConfig, Genesis, StateArchiveConfig,
+    };
     use crate::NodeConfig;
 
     #[test]
@@ -1980,6 +2015,32 @@ mod tests {
         assert_eq!(
             round_tripped.rpc_store_bitmap_periodic_compaction_days,
             Some(17)
+        );
+    }
+
+    #[test]
+    fn execution_time_observer_config_tracked_ids() {
+        let omitted: ExecutionTimeObserverConfig = serde_yaml::from_str("{}").unwrap();
+        assert_eq!(omitted.object_utilization_metric_tracked_ids().count(), 0);
+
+        let yaml = r#"
+            object-utilization-metric-tracked-ids:
+              "0x0000000000000000000000000000000000000000000000000000000000000005": haneul-system-state
+              "0xe05dafb5133bcffb8d59f4e12465dc0e9faeaa05e3e342a08fe135800e3e4407": deepbook-haneul-usdc
+        "#;
+        let configured: ExecutionTimeObserverConfig = serde_yaml::from_str(yaml).unwrap();
+        let tracked: Vec<_> = configured.object_utilization_metric_tracked_ids().collect();
+        assert_eq!(tracked.len(), 2);
+        assert_eq!(
+            tracked[0],
+            (&ObjectID::from_single_byte(5), "haneul-system-state")
+        );
+
+        let serialized = serde_yaml::to_string(&configured).unwrap();
+        let round_tripped: ExecutionTimeObserverConfig = serde_yaml::from_str(&serialized).unwrap();
+        assert_eq!(
+            round_tripped.object_utilization_metric_tracked_ids,
+            configured.object_utilization_metric_tracked_ids
         );
     }
 

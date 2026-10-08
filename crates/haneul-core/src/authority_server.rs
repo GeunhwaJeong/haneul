@@ -704,6 +704,12 @@ impl ValidatorService {
         inflight_guard: &mut InflightTransactionsGuard,
     ) -> HaneulResult<(RawSubmitTxResponse, Weight)> {
         let epoch_store = state.load_epoch_store_one_call_per_task();
+        // A node leaving the committee keeps serving until reconfiguration shuts this server
+        // down, but it can no longer sequence transactions: a submission would wait for a
+        // consensus position until the epoch ends.
+        if !epoch_store.is_validator() {
+            return Err(HaneulErrorKind::ValidatorHaltedAtEpochEnd.into());
+        }
         let submit_type = SubmitTxType::try_from(request.submit_type).map_err(|e| {
             HaneulErrorKind::GrpcMessageDeserializeError {
                 type_info: "RawSubmitTxRequest.submit_type".to_string(),
@@ -1031,8 +1037,7 @@ impl ValidatorService {
                             _ => None,
                         })
                         .collect();
-                    let existing_locks =
-                        epoch_store.get_owned_object_locks_map(&owned_object_refs)?;
+                    let existing_locks = epoch_store.get_owned_object_locks_map(&owned_object_refs);
                     if let Err(error) = epoch_store.try_acquire_owned_object_locks_post_consensus(
                         &owned_object_refs,
                         tx_digest,

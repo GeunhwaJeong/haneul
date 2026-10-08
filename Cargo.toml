@@ -113,6 +113,7 @@ members = [
   "crates/haneul-field-count",
   "crates/haneul-field-count-derive",
   "crates/haneul-fork",
+  "crates/haneul-fork-e2e-tests",
   "crates/haneul-framework",
   "crates/haneul-framework-snapshot",
   "crates/haneul-framework-tests",
@@ -163,7 +164,6 @@ members = [
   "crates/haneul-protocol-config",
   "crates/haneul-protocol-config-macros",
   "crates/haneul-proxy",
-  "crates/haneul-replay",
   "crates/haneul-replay-2",
   "crates/haneul-rosetta",
   "crates/haneul-rpc-api",
@@ -229,7 +229,7 @@ members = [
 
 [workspace.package]
 # This version string will be inherited by haneul-core, haneul-faucet, haneul-node, haneul-tools, haneul-sdk, haneul-move-build, and haneul crates.
-version = "1.12.0"
+version = "1.13.0"
 authors = ["Geunhwa Jeong <jeonggh892@gmail.com>"]
 repository = "https://github.com/GeunhwaJeong/haneul"
 
@@ -424,7 +424,7 @@ haneul-config = { path = "crates/haneul-config" }
 haneul-consistent-store = { path = "crates/haneul-consistent-store" }
 haneul-core = { path = "crates/haneul-core" }
 haneul-cost = { path = "crates/haneul-cost" }
-haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "48cae861d5745a1bae0b28535e556cfe1c74d81e", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
+haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "86eb9a8afbb6b55d9ede7d72bb5980a468f73d1c", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
 haneul-data-ingestion-core = { path = "crates/haneul-data-ingestion-core" }
 haneul-data-store = { path = "crates/haneul-data-store" }
 haneul-display = { path = "crates/haneul-display" }
@@ -488,10 +488,9 @@ haneul-prompt = { path = "crates/haneul-prompt" }
 haneul-protocol-config = { path = "crates/haneul-protocol-config" }
 haneul-protocol-config-macros = { path = "crates/haneul-protocol-config-macros" }
 haneul-proxy = { path = "crates/haneul-proxy" }
-haneul-replay = { path = "crates/haneul-replay" }
 haneul-replay-2 = { path = "crates/haneul-replay-2" }
 haneul-rosetta = { path = "crates/haneul-rosetta" }
-haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "48cae861d5745a1bae0b28535e556cfe1c74d81e", features = [ "unstable" ] }
+haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "86eb9a8afbb6b55d9ede7d72bb5980a468f73d1c", features = [ "unstable" ] }
 
 ### Workspace Members ###
 haneul-rpc-api = { path = "crates/haneul-rpc-api" }
@@ -500,7 +499,7 @@ haneul-rpc-loadgen = { path = "crates/haneul-rpc-loadgen" }
 haneul-rpc-resolver = { path = "crates/haneul-rpc-resolver" }
 haneul-rpc-store = { path = "crates/haneul-rpc-store" }
 haneul-sdk = { path = "crates/haneul-sdk" }
-haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "48cae861d5745a1bae0b28535e556cfe1c74d81e", features = [ "hash", "serde" ] }
+haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "86eb9a8afbb6b55d9ede7d72bb5980a468f73d1c", features = [ "hash", "serde" ] }
 haneul-simulator = { path = "crates/haneul-simulator" }
 haneul-snapshot = { path = "crates/haneul-snapshot" }
 haneul-source-verification = { path = "crates/haneul-source-verification" }

@@ -17,7 +17,6 @@ use futures::future::join_all;
 use haneul_config::genesis::Genesis;
 use haneul_core::authority_client::AuthorityAPI;
 use haneul_protocol_config::Chain;
-use haneul_replay::{ReplayToolCommand, execute_replay_command};
 use haneul_rpc_api::Client;
 use haneul_types::gas_coin::GasCoin;
 use haneul_types::messages_consensus::ConsensusTransaction;
@@ -313,32 +312,6 @@ pub enum ToolCommand {
         /// Number of checkpoint files to read in parallel.
         #[clap(long = "concurrency", default_value = "16")]
         concurrency: usize,
-    },
-
-    #[clap(name = "replay")]
-    Replay {
-        #[arg(long = "rpc")]
-        rpc_url: Option<String>,
-        #[arg(long = "safety-checks")]
-        safety_checks: bool,
-        #[arg(long = "authority")]
-        use_authority: bool,
-        #[arg(
-            long = "cfg-path",
-            short,
-            help = "Path to the network config file. This should be specified when rpc_url is not present. \
-            If not specified we will use the default network config file at ~/.haneul-replay/network-config.yaml"
-        )]
-        cfg_path: Option<PathBuf>,
-        #[arg(
-            long,
-            help = "The name of the chain to replay from, could be one of: mainnet, testnet, devnet.\
-            When rpc_url is not specified, this is used to load the corresponding config from the network config file.\
-            If not specified, mainnet will be used by default"
-        )]
-        chain: Option<String>,
-        #[command(subcommand)]
-        cmd: ReplayToolCommand,
     },
 
     /// Interactive shell for navigating the validator database.
@@ -794,17 +767,6 @@ impl ToolCommand {
             } => {
                 let out = out.unwrap_or_else(|| ingestion_dir.join("epochs.json"));
                 generate_epochs_json(&ingestion_dir, &out, concurrency.max(1)).await?;
-            }
-            ToolCommand::Replay {
-                rpc_url,
-                safety_checks,
-                cmd,
-                use_authority,
-                cfg_path,
-                chain,
-            } => {
-                execute_replay_command(rpc_url, safety_checks, use_authority, cfg_path, chain, cmd)
-                    .await?;
             }
             ToolCommand::DbShell(args) => {
                 tokio::task::spawn_blocking(move || crate::db_shell::run(args)).await??;

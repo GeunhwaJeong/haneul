@@ -14,7 +14,6 @@ use prometheus::Registry;
 use rand::rngs::OsRng;
 use tracing::info;
 
-use haneul_protocol_config::Chain;
 use haneul_protocol_config::ProtocolVersion;
 use haneul_rpc_api::RpcService;
 use haneul_rpc_api::ServerVersion;
@@ -22,9 +21,6 @@ use haneul_rpc_api::subscription::SubscriptionService;
 use haneul_rpc_api::subscription::SubscriptionServiceHandle;
 use haneul_swarm_config::network_config::NetworkConfig;
 use haneul_swarm_config::network_config_builder::ConfigBuilder;
-use haneul_types::digests::ChainIdentifier;
-use haneul_types::digests::get_mainnet_chain_identifier;
-use haneul_types::digests::get_testnet_chain_identifier;
 use haneul_types::haneul_system_state::HaneulSystemState;
 use haneul_types::haneul_system_state::HaneulSystemStateTrait;
 use haneul_types::messages_checkpoint::CheckpointSequenceNumber;
@@ -119,17 +115,17 @@ pub async fn initialize(
 ) -> Result<(Context, SubscriptionServiceHandle)> {
     // 1. Prepare metadata and GraphQL, then open the RPC store before constructing ForkStore.
     let gql = GraphQLClient::new(node.clone(), version)?;
-    let chain_identifier = gql.chain();
     let local = MetadataStore::new(&node, forked_at_checkpoint, data_dir)?;
     let network_name = node.network_name();
     crate::seed::ensure_seed_policy(&local, &seed_input)?;
 
-    // 2. Fetch the startup checkpoint, open the RPC store using its chain identity,
-    //    then construct the ForkStore with the RPC store already attached.
+    // 2. Fetch the startup checkpoint, open the RPC store under the live network's chain
+    //    identity, then construct the ForkStore with the RPC store already attached. The fork
+    //    keeps that identity so the CLI and package management treat it as the same network.
     let (checkpoint, checkpoint_contents) = gql
         .get_checkpoint(Some(forked_at_checkpoint))?
         .ok_or_else(|| anyhow!("checkpoint {} not found", forked_at_checkpoint))?;
-    let rpc_chain_identifier = fork_chain_identifier(chain_identifier, &checkpoint);
+    let rpc_chain_identifier = gql.chain_identifier()?;
     let services = ServiceManager::open(
         local.root(),
         network_name.clone(),
@@ -204,14 +200,6 @@ pub async fn initialize(
     let context = Context::new(simulacrum, services, checkpoint_sender, &registry).await?;
 
     Ok((context, subscription_handle))
-}
-
-fn fork_chain_identifier(chain: Chain, checkpoint: &VerifiedCheckpoint) -> ChainIdentifier {
-    match chain {
-        Chain::Mainnet => get_mainnet_chain_identifier(),
-        Chain::Testnet => get_testnet_chain_identifier(),
-        Chain::Unknown => ChainIdentifier::from(*checkpoint.digest()),
-    }
 }
 
 /// Return the checkpoint the Simulacrum should build on, which is the highest locally persisted

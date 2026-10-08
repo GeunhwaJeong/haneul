@@ -715,9 +715,9 @@ fn test_address_balance_with_owned_inputs_allows_valid_during_expiration() {
     );
 }
 
-// Note: The test for stateless transactions requiring ValidDuring is now in
-// haneul-transaction-checks where we have access to actual object ownership.
-// See check_address_balance_replay_protection() in haneul-transaction-checks/src/lib.rs.
+// Note: The test for stateless transactions requiring ValidDuring lives in
+// haneul-transaction-checks, which has access to actual object ownership.
+// See check_replay_protection() in haneul-transaction-checks/src/lib.rs.
 
 #[test]
 fn test_address_balance_with_multiple_owned_inputs() {

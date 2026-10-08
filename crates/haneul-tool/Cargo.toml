@@ -50,7 +50,6 @@ haneul-core.workspace = true
 haneul-network.workspace = true
 haneul-snapshot.workspace = true
 haneul-protocol-config.workspace = true
-haneul-replay.workspace = true
 haneul-rpc-api.workspace = true
 haneul-storage.workspace = true
 haneul-types.workspace = true

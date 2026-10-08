@@ -6,7 +6,9 @@ use fastcrypto_zkp::bn254::zk_login::JwkId;
 use futures::future::join_all;
 use haneul_config::genesis::Genesis;
 use haneul_config::node::FundsWithdrawSchedulerType;
-use haneul_config::node::{AuthorityOverloadConfig, DBCheckpointConfig, RunWithRange};
+use haneul_config::node::{
+    AuthorityOverloadConfig, ConsensusTransactionPoolConfig, DBCheckpointConfig, RunWithRange,
+};
 use haneul_config::{Config, ExecutionCacheConfig, HANEUL_CLIENT_CONFIG, HANEUL_NETWORK_CONFIG};
 use haneul_config::{HANEUL_KEYSTORE_FILENAME, NodeConfig, PersistedConfig};
 use haneul_core::authority_aggregator::AuthorityAggregator;
@@ -953,8 +955,7 @@ impl TestCluster {
                     let checkpoint_seqs = state
                         .epoch_store_for_testing()
                         .transactions_executed_in_checkpoint_notify(digests.to_vec())
-                        .await
-                        .unwrap();
+                        .await;
 
                     // then wait until the highest of those checkpoints is executed on this node
                     let max_checkpoint_seq = checkpoint_seqs.into_iter().max().unwrap();
@@ -1230,6 +1231,7 @@ pub struct TestClusterBuilder {
     config_dir: Option<PathBuf>,
     default_jwks: bool,
     authority_overload_config: Option<AuthorityOverloadConfig>,
+    consensus_transaction_pool_config: Option<ConsensusTransactionPoolConfig>,
     execution_cache_config: Option<ExecutionCacheConfig>,
     data_ingestion_dir: Option<PathBuf>,
     fullnode_run_with_range: Option<RunWithRange>,
@@ -1279,6 +1281,7 @@ impl TestClusterBuilder {
             config_dir: None,
             default_jwks: false,
             authority_overload_config: None,
+            consensus_transaction_pool_config: None,
             execution_cache_config: None,
             data_ingestion_dir: None,
             fullnode_run_with_range: None,
@@ -1540,6 +1543,15 @@ impl TestClusterBuilder {
         self
     }
 
+    pub fn with_consensus_transaction_pool_config(
+        mut self,
+        config: ConsensusTransactionPoolConfig,
+    ) -> Self {
+        assert!(self.network_config.is_none());
+        self.consensus_transaction_pool_config = Some(config);
+        self
+    }
+
     pub fn with_execution_cache_config(mut self, config: ExecutionCacheConfig) -> Self {
         assert!(self.network_config.is_none());
         self.execution_cache_config = Some(config);
@@ -1740,6 +1752,10 @@ impl TestClusterBuilder {
 
         if let Some(authority_overload_config) = self.authority_overload_config.take() {
             builder = builder.with_authority_overload_config(authority_overload_config);
+        }
+
+        if let Some(config) = self.consensus_transaction_pool_config.take() {
+            builder = builder.with_consensus_transaction_pool_config(config);
         }
 
         if let Some(execution_cache_config) = self.execution_cache_config.take() {

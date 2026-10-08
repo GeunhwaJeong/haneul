@@ -25,7 +25,7 @@ impl TestCaseImpl for SharedCounterTest {
     async fn run(&self, ctx: &mut TestContext) -> Result<(), anyhow::Error> {
         info!("Testing shared object transactions.");
 
-        let haneul_objs = ctx.get_haneul_from_faucet(Some(1)).await;
+        let haneul_objs = ctx.get_haneul(Some(1)).await;
         assert!(!haneul_objs.is_empty());
 
         let wallet_context: &WalletContext = ctx.get_wallet();

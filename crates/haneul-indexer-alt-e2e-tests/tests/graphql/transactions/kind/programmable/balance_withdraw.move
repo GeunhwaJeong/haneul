@@ -7,7 +7,7 @@
 // as the transaction changed it, without an explicit digest. A plain sender
 // withdrawal has neither.
 
-//# init --accounts A B --simulator
+//# init --accounts A B --simulator --protocol-version 127
 
 //# programmable --sender A --inputs 5000 @A
 // Fund A's (the funder) address balance.

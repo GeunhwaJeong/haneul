@@ -343,15 +343,7 @@ impl RandomnessManager {
                 return None;
             }
         };
-        let tables = match epoch_store.tables() {
-            Ok(tables) => tables,
-            Err(_) => {
-                error!(
-                    "could not construct RandomnessManager: AuthorityPerEpochStore tables already gone"
-                );
-                return None;
-            }
-        };
+        let tables = epoch_store.tables();
         let protocol_config = epoch_store.protocol_config();
         epoch_store.metrics.epoch_random_beacon_dkg_failed.set(0);
         epoch_store
@@ -1049,7 +1041,7 @@ impl RandomnessReporter {
         if Some(round) > *highest_completed_round {
             *highest_completed_round = Some(round);
             epoch_store
-                .tables()?
+                .tables()
                 .randomness_highest_completed_round
                 .insert(&SINGLETON_KEY, &round)?;
             self.network_handle
@@ -1610,7 +1602,7 @@ mod tests {
             bcs::to_bytes(&expected_dkg_output).expect("DKG output serialization should not fail");
         let expected_public_key = expected_dkg_output.vss_pk.c0();
 
-        let tables = epoch_store.tables().unwrap();
+        let tables = epoch_store.tables();
         tables
             .dkg_output_v2
             .insert(&SINGLETON_KEY, &Some(expected_dkg_output))
