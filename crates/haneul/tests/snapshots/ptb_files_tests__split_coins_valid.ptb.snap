@@ -3,20 +3,20 @@ source: crates/haneul/tests/ptb_files_tests.rs
 expression: "results.join(\"\\n\")"
 ---
  === PREVIEW === 
-╭───────────────────────────────────────────────────────────────╮
-│ PTB Preview                                                   │
-├─────────────┬─────────────────────────────────────────────────┤
-│ command     │ values                                          │
-├─────────────┼─────────────────────────────────────────────────┤
-│ split-coins │ gas [0, 1, 2, 3]                                │
-│ assign      │ coins                                           │
+╭───────────────────────────────────────────────────────────────────────────╮
+│ PTB Preview                                                               │
+├─────────────┬─────────────────────────────────────────────────────────────┤
+│ command     │ values                                                      │
+├─────────────┼─────────────────────────────────────────────────────────────┤
+│ split-coins │ gas [0, 1, 2, 3]                                            │
+│ assign      │ coins                                                       │
 │ move-call   │ haneul::coin::destroy_zero<haneul::haneul::HANEUL> coins.0  │
-│ split-coins │ coins.1 [0, 0]                                  │
-│ assign      │ zcoins                                          │
+│ split-coins │ coins.1 [0, 0]                                              │
+│ assign      │ zcoins                                                      │
 │ move-call   │ haneul::coin::destroy_zero<haneul::haneul::HANEUL> zcoins.0 │
 │ move-call   │ haneul::coin::destroy_zero<haneul::haneul::HANEUL> zcoins.1 │
-│ merge-coins │ gas [coins.1, coins.2, coins.3]                 │
-╰─────────────┴─────────────────────────────────────────────────╯
+│ merge-coins │ gas [coins.1, coins.2, coins.3]                             │
+╰─────────────┴─────────────────────────────────────────────────────────────╯
  === BUILT PTB === 
 Input 0: Pure([0, 0, 0, 0, 0, 0, 0, 0])
 Input 1: Pure([1, 0, 0, 0, 0, 0, 0, 0])
