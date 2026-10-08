@@ -8,13 +8,13 @@ processed 6 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 8-42:
+task 1, lines 9-43:
 //# publish --sender A
 created: object(1,0), object(1,1), object(1,2)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 12167600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 44:
+task 2, line 45:
 //# view-object 1,1
 Owner: Account Address ( A )
 Version: 2
@@ -29,7 +29,7 @@ Contents: haneul::coin::TreasuryCap<T::test::TEST> {
     },
 }
 
-task 3, lines 46-48:
+task 3, lines 47-49:
 //# programmable --sender A --inputs object(1,1) 1000000u64 2000u64 @A
 //> T::test::mint_balance(Input(0), Input(1), Input(3));
 //> T::test::mint_coin(Input(0), Input(2), Input(3));
@@ -39,11 +39,11 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(3,1), A, haneul::balance::Balance<T::test::TEST>, Merge, 1000000)
 gas summary: computation_cost: 1000000, storage_cost: 4012800,  storage_rebate: 2663496, non_refundable_storage_fee: 26904
 
-task 4, line 50:
+task 4, line 51:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 52-84:
+task 5, lines 53-85:
 //# run-graphql
 Response: {
   "data": {
@@ -68,7 +68,7 @@ Response: {
           },
           {
             "coinType": {
-              "repr": "0xdb91759c4f4b950c448574d0f933cfd9b60f8f27b7dfe49a7ae89e14743e8fd1::test::TEST"
+              "repr": "0x6aba8813d27bf8e71620ca9b7d5533571bb8217771ebc3994b725bd6a22c05da::test::TEST"
             },
             "totalBalance": "1002000",
             "coinBalance": "2000",
@@ -80,7 +80,7 @@ Response: {
     "multiGetBalances": [
       {
         "coinType": {
-          "repr": "0xdb91759c4f4b950c448574d0f933cfd9b60f8f27b7dfe49a7ae89e14743e8fd1::test::TEST"
+          "repr": "0x6aba8813d27bf8e71620ca9b7d5533571bb8217771ebc3994b725bd6a22c05da::test::TEST"
         },
         "totalBalance": "0",
         "coinBalance": "0",
@@ -88,7 +88,7 @@ Response: {
       },
       {
         "coinType": {
-          "repr": "0xdb91759c4f4b950c448574d0f933cfd9b60f8f27b7dfe49a7ae89e14743e8fd1::test::TEST"
+          "repr": "0x6aba8813d27bf8e71620ca9b7d5533571bb8217771ebc3994b725bd6a22c05da::test::TEST"
         },
         "totalBalance": "1002000",
         "coinBalance": "2000",
@@ -96,7 +96,7 @@ Response: {
       },
       {
         "coinType": {
-          "repr": "0xdb91759c4f4b950c448574d0f933cfd9b60f8f27b7dfe49a7ae89e14743e8fd1::test::TEST"
+          "repr": "0x6aba8813d27bf8e71620ca9b7d5533571bb8217771ebc3994b725bd6a22c05da::test::TEST"
         },
         "totalBalance": "1002000",
         "coinBalance": "2000",

@@ -865,18 +865,18 @@ Response: {
   }
 }
 
-task 23, lines 262-264:
+task 23, lines 263-265:
 //# programmable --sender A --inputs object(1,0) 42u64 1000u64
 //> 0: haneul::bag::remove<u64, u64>(Input(0), Input(1));
 //> 1: haneul::bag::add<u64, u64>(Input(0), Input(1), Input(2));
 mutated: object(0,0), object(1,0), object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 3754400,  storage_rebate: 3716856, non_refundable_storage_fee: 37544
 
-task 24, line 266:
+task 24, line 267:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 25, lines 268-286:
+task 25, lines 269-287:
 //# run-graphql --cursors bcs(42u64)
 Response: {
   "data": {
@@ -887,7 +887,7 @@ Response: {
         },
         "value": {
           "json": {
-            "id": "0xc46b6eceeac93b04321eccf1e4528f96b02cf116ee2cdb594a1f9564334b09a7",
+            "id": "0x371c1d8ce4a37183829c9ff13d3fc9e41c0b89e6ed077eb4a0c2340f5ecfdaba",
             "balance": "100"
           }
         }
@@ -946,7 +946,7 @@ Response: {
   }
 }
 
-task 26, lines 288-292:
+task 26, lines 289-293:
 //# programmable --sender A --inputs object(2,0) 44u64 50u64
 //> 0: haneul::object_bag::remove<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1));
 //> 1: SplitCoins(Gas, [Input(2)]);
@@ -955,11 +955,11 @@ task 26, lines 288-292:
 mutated: object(0,0), object(2,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 3374400,  storage_rebate: 3340656, non_refundable_storage_fee: 33744
 
-task 27, line 294:
+task 27, line 295:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 28, lines 296-318:
+task 28, lines 297-319:
 //# run-graphql --cursors bcs(44u64)
 Response: {
   "data": {
@@ -969,10 +969,10 @@ Response: {
           "json": "44"
         },
         "value": {
-          "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+          "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
           "contents": {
             "json": {
-              "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+              "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
               "balance": "250"
             }
           }
@@ -983,10 +983,10 @@ Response: {
           "json": "44"
         },
         "value": {
-          "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+          "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
           "contents": {
             "json": {
-              "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+              "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
               "balance": "250"
             }
           }
@@ -999,10 +999,10 @@ Response: {
           "json": "44"
         },
         "value": {
-          "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+          "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
           "contents": {
             "json": {
-              "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+              "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
               "balance": "250"
             }
           }
@@ -1013,10 +1013,10 @@ Response: {
           "json": "44"
         },
         "value": {
-          "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+          "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
           "contents": {
             "json": {
-              "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+              "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
               "balance": "200"
             }
           }
@@ -1027,10 +1027,10 @@ Response: {
           "json": "44"
         },
         "value": {
-          "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+          "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
           "contents": {
             "json": {
-              "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+              "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
               "balance": "200"
             }
           }
@@ -1041,10 +1041,10 @@ Response: {
           "json": "44"
         },
         "value": {
-          "address": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+          "address": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
           "contents": {
             "json": {
-              "id": "0x026d2248cd86cc1048b935146c4e90de89cd8eb9a6860db863e471d6c94e0c63",
+              "id": "0x2f1d99656d0c87049a32aef06d9927eff352a66dcced3d4dc4852e38a5923356",
               "balance": "200"
             }
           }

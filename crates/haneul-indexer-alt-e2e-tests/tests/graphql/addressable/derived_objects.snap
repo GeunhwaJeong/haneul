@@ -6,13 +6,13 @@ processed 10 tasks
 init:
 A: object(0,0)
 
-task 1, lines 6-35:
+task 1, lines 7-36:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 6247200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 37-39:
+task 2, lines 38-40:
 //# programmable --sender A --inputs @A
 //> 0: test::derived::new();
 //> 1: TransferObjects([Result(0)], Input(0));
@@ -20,7 +20,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2280000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 3, lines 41-45:
+task 3, lines 42-46:
 //# programmable --sender A --inputs object(2,0) 7u64 8u64 9u64 @A
 //> 0: test::derived::claim(Input(0), Input(1));
 //> 1: test::derived::claim(Input(0), Input(2));
@@ -30,11 +30,11 @@ created: object(3,0), object(3,1), object(3,2), object(3,3), object(3,4), object
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 13976400,  storage_rebate: 2257200, non_refundable_storage_fee: 22800
 
-task 4, line 47:
+task 4, line 48:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 49-52:
+task 5, lines 50-53:
 //# programmable --sender A --inputs object(3,3) object(3,4) object(3,5) 70u64
 //> 0: test::derived::set_value(Input(0), Input(3));
 //> 1: test::derived::set_value(Input(1), Input(3));
@@ -42,40 +42,40 @@ task 5, lines 49-52:
 mutated: object(0,0), object(3,3), object(3,4), object(3,5)
 gas summary: computation_cost: 1000000, storage_cost: 5206000,  storage_rebate: 5153940, non_refundable_storage_fee: 52060
 
-task 6, line 54:
+task 6, line 55:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 7, lines 56-85:
+task 7, lines 57-86:
 //# run-graphql
 Response: {
   "data": {
     "address": {
       "seven": {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "70"
           }
         }
       },
       "eight": {
-        "address": "0xcb5ef49d6e3de9b6baa6b8dd88b116024106cc26e6ceb6a9771ce4ec026c0557",
+        "address": "0x63838cd0a8d8440f771047ee046ef6227e102a237eb5be4713347fa253ac65fc",
         "contents": {
           "json": {
-            "id": "0xcb5ef49d6e3de9b6baa6b8dd88b116024106cc26e6ceb6a9771ce4ec026c0557",
+            "id": "0x63838cd0a8d8440f771047ee046ef6227e102a237eb5be4713347fa253ac65fc",
             "key": "8",
             "value": "70"
           }
         }
       },
       "nine": {
-        "address": "0x21d444cbd778121f8940c73e0bca4c9167c99a06379fdc19381bd4481eb6871e",
+        "address": "0x05f315bc0b6d7cd9a8a17404f39945a3f0596500b64f310c1f04630de3c1615d",
         "contents": {
           "json": {
-            "id": "0x21d444cbd778121f8940c73e0bca4c9167c99a06379fdc19381bd4481eb6871e",
+            "id": "0x05f315bc0b6d7cd9a8a17404f39945a3f0596500b64f310c1f04630de3c1615d",
             "key": "9",
             "value": "70"
           }
@@ -84,30 +84,30 @@ Response: {
       "missing": null,
       "multiGetDerivedObjects": [
         {
-          "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+          "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
           "contents": {
             "json": {
-              "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
               "key": "7",
               "value": "70"
             }
           }
         },
         {
-          "address": "0xcb5ef49d6e3de9b6baa6b8dd88b116024106cc26e6ceb6a9771ce4ec026c0557",
+          "address": "0x63838cd0a8d8440f771047ee046ef6227e102a237eb5be4713347fa253ac65fc",
           "contents": {
             "json": {
-              "id": "0xcb5ef49d6e3de9b6baa6b8dd88b116024106cc26e6ceb6a9771ce4ec026c0557",
+              "id": "0x63838cd0a8d8440f771047ee046ef6227e102a237eb5be4713347fa253ac65fc",
               "key": "8",
               "value": "70"
             }
           }
         },
         {
-          "address": "0x21d444cbd778121f8940c73e0bca4c9167c99a06379fdc19381bd4481eb6871e",
+          "address": "0x05f315bc0b6d7cd9a8a17404f39945a3f0596500b64f310c1f04630de3c1615d",
           "contents": {
             "json": {
-              "id": "0x21d444cbd778121f8940c73e0bca4c9167c99a06379fdc19381bd4481eb6871e",
+              "id": "0x05f315bc0b6d7cd9a8a17404f39945a3f0596500b64f310c1f04630de3c1615d",
               "key": "9",
               "value": "70"
             }
@@ -115,30 +115,30 @@ Response: {
         },
         null,
         {
-          "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+          "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
           "contents": {
             "json": {
-              "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
               "key": "7",
               "value": "7"
             }
           }
         },
         {
-          "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+          "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
           "contents": {
             "json": {
-              "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
               "key": "7",
               "value": "7"
             }
           }
         },
         {
-          "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+          "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
           "contents": {
             "json": {
-              "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
               "key": "7",
               "value": "7"
             }
@@ -146,30 +146,30 @@ Response: {
         }
       ],
       "sevenAtCheckpoint": {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
         }
       },
       "sevenAtVersion": {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
         }
       },
       "sevenAtRootVersion": {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
@@ -179,46 +179,46 @@ Response: {
   }
 }
 
-task 8, lines 87-106:
+task 8, lines 88-107:
 //# run-graphql
 Response: {
   "data": {
     "object": {
       "latest": {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "70"
           }
         }
       },
       "atCheckpoint": {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
         }
       },
       "atVersion": {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
         }
       },
       "atRootVersion": {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
@@ -226,40 +226,40 @@ Response: {
       },
       "multiGetDerivedObjects": [
         {
-          "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+          "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
           "contents": {
             "json": {
-              "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
               "key": "7",
               "value": "70"
             }
           }
         },
         {
-          "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+          "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
           "contents": {
             "json": {
-              "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
               "key": "7",
               "value": "7"
             }
           }
         },
         {
-          "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+          "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
           "contents": {
             "json": {
-              "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
               "key": "7",
               "value": "7"
             }
           }
         },
         {
-          "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+          "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
           "contents": {
             "json": {
-              "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
               "key": "7",
               "value": "7"
             }
@@ -270,36 +270,36 @@ Response: {
   }
 }
 
-task 9, lines 108-126:
+task 9, lines 109-127:
 //# run-graphql --cursors bcs(8u64)
 Response: {
   "data": {
     "multiGetDerivedObjects": [
       {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "70"
           }
         }
       },
       {
-        "address": "0xcb5ef49d6e3de9b6baa6b8dd88b116024106cc26e6ceb6a9771ce4ec026c0557",
+        "address": "0x63838cd0a8d8440f771047ee046ef6227e102a237eb5be4713347fa253ac65fc",
         "contents": {
           "json": {
-            "id": "0xcb5ef49d6e3de9b6baa6b8dd88b116024106cc26e6ceb6a9771ce4ec026c0557",
+            "id": "0x63838cd0a8d8440f771047ee046ef6227e102a237eb5be4713347fa253ac65fc",
             "key": "8",
             "value": "70"
           }
         }
       },
       {
-        "address": "0x21d444cbd778121f8940c73e0bca4c9167c99a06379fdc19381bd4481eb6871e",
+        "address": "0x05f315bc0b6d7cd9a8a17404f39945a3f0596500b64f310c1f04630de3c1615d",
         "contents": {
           "json": {
-            "id": "0x21d444cbd778121f8940c73e0bca4c9167c99a06379fdc19381bd4481eb6871e",
+            "id": "0x05f315bc0b6d7cd9a8a17404f39945a3f0596500b64f310c1f04630de3c1615d",
             "key": "9",
             "value": "70"
           }
@@ -307,50 +307,50 @@ Response: {
       },
       null,
       {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "70"
           }
         }
       },
       {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "70"
           }
         }
       },
       {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
         }
       },
       {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
         }
       },
       {
-        "address": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+        "address": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
         "contents": {
           "json": {
-            "id": "0x31acd206f9b83d85cfa7c81828a1b402f3cfab683fd6c890bec035f53a9f1251",
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
             "key": "7",
             "value": "7"
           }
