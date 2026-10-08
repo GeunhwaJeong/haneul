@@ -521,6 +521,9 @@ where
                 }
             }
         }
+        // Nothing below needs the epoch store; release it so that a reconfiguration during the
+        // finality wait does not keep the previous epoch's store alive.
+        drop(epoch_store);
 
         // Add transaction to WAL log.
         let guard =
@@ -849,8 +852,7 @@ where
             let epoch_store = validator_state.load_epoch_store_one_call_per_task();
             epoch_store
                 .transactions_executed_in_checkpoint_notify(vec![tx_digest])
-                .await
-                .expect("db error waiting for transaction checkpointing");
+                .await;
         })
         .instrument(error_span!(
             "transaction_orchestrator::local_execution",

@@ -170,6 +170,12 @@ macro_rules! debug_fatal_no_invariant {
     }};
 }
 
+/// Asserts that this line is reached at least once during an antithesis run.
+///
+/// If the line sits behind a protocol feature flag, use
+/// `haneul_protocol_config::assert_reachable_gated!` instead. This macro registers with antithesis
+/// at compile time, so a site that is correctly dark under the run's chain configuration is
+/// still reported as never reached.
 #[macro_export]
 macro_rules! assert_reachable {
     () => {

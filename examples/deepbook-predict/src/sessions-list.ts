@@ -5,6 +5,7 @@
 // docs::#sessions-list
 import type { SessionGrant } from '@haneullabs/deepbook-v3/sessions';
 import { MAX_SESSIONS_PER_ACCOUNT, SessionsContract } from '@haneullabs/deepbook-v3/sessions';
+import { ObjectError } from '@haneullabs/haneul/client';
 import { Transaction } from '@haneullabs/haneul/transactions';
 import { client } from './client.js';
 import { sessions, wrapperId } from './sessions-authorize.js';
@@ -24,8 +25,9 @@ import { sessions, wrapperId } from './sessions-authorize.js';
 //    really holds no grants.
 //
 // The field does not exist until the first `authorize_session`, so a missing
-// object is an empty list rather than an error. Once attached it stays attached,
-// even after every grant is revoked.
+// object is an empty list rather than an error. Only a missing object: any other
+// failure rethrows, because a transport error says nothing about the grants.
+// Once attached the field stays attached, even after every grant is revoked.
 export async function listGrants(owner: string): Promise<SessionGrant[]> {
 	const fieldId = sessions.deriveSessionsFieldId(owner);
 
@@ -36,9 +38,10 @@ export async function listGrants(owner: string): Promise<SessionGrant[]> {
 			include: { content: true },
 		});
 		content = object.content;
-	} catch {
+	} catch (error) {
 		// No sessions data attached to this account yet.
-		return [];
+		if (error instanceof ObjectError && error.reason === 'notFound') return [];
+		throw error;
 	}
 	if (!content) return [];
 

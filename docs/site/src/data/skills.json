@@ -21,6 +21,41 @@
     "path": "composable-move-functions"
   },
   {
+    "slug": "deepbook-margin",
+    "title": "DeepBook Margin",
+    "description": "Build leveraged trading on DeepBook Margin: risk ratios, liquidation mechanics, and the MarginManager lifecycle.",
+    "category": "Onchain finance",
+    "path": "deepbook-margin"
+  },
+  {
+    "slug": "deepbook-move",
+    "title": "DeepBook Move",
+    "description": "Integrate DeepBook pools from Move: place orders onchain, create pools, and use flash loans.",
+    "category": "Onchain finance",
+    "path": "deepbook-move"
+  },
+  {
+    "slug": "deepbook-overview",
+    "title": "DeepBook Overview",
+    "description": "Understand DeepBook V3: architecture, integration models, contract addresses, and supported pools.",
+    "category": "Onchain finance",
+    "path": "deepbook-overview"
+  },
+  {
+    "slug": "deepbook-predict",
+    "title": "DeepBook Predict",
+    "description": "Build on DeepBook Predict, the expiry-based prediction market protocol. Testnet only.",
+    "category": "Onchain finance",
+    "path": "deepbook-predict"
+  },
+  {
+    "slug": "deepbook-sdk",
+    "title": "DeepBook SDK",
+    "description": "Trade on DeepBook from TypeScript with the @haneullabs/deepbook-v3 SDK: BalanceManager, orders, and swaps.",
+    "category": "Onchain finance",
+    "path": "deepbook-sdk"
+  },
+  {
     "slug": "frontend-apps",
     "title": "Frontend Apps",
     "description": "Build browser dApps with dApp Kit, from wallet connection to onchain queries and transaction execution.",
@@ -35,46 +70,18 @@
     "path": "generate-haneul-agent-config"
   },
   {
-    "slug": "haneul-cli",
-    "title": "Haneul CLI",
-    "description": "Understand Haneul networks, gas costs, epochs, and how the network operates at a high level.",
-    "category": "CLI",
-    "path": "haneul-cli"
-  },
-  {
-    "slug": "haneul-client",
-    "title": "Haneul Client",
-    "description": "Configure the Haneul client, manage addresses, switch networks, request faucet tokens, and check balances.",
-    "category": "CLI",
-    "path": "haneul-client"
-  },
-  {
-    "slug": "haneul-move",
-    "title": "Haneul Move",
-    "description": "Write and debug Move smart contracts covering abilities, init functions, one-time witnesses, upgrades, and custom coins.",
-    "category": "Move",
-    "path": "haneul-move"
-  },
-  {
-    "slug": "haneul-overview",
-    "title": "Haneul Overview",
-    "description": "Learn what Haneul is, how it compares to other chains, and which Haneul Stack primitives fit your use case.",
-    "category": "Get started",
-    "path": "haneul-overview"
-  },
-  {
-    "slug": "haneul-sdks",
-    "title": "Haneul SDKs",
-    "description": "Pick the right Haneul SDK for your language and wire it up: TypeScript, Rust, Python, Go, Dart, Kotlin, or Swift.",
-    "category": "Frontend and SDKs",
-    "path": "haneul-sdks"
-  },
-  {
     "slug": "haneul-install",
     "title": "Install Haneul",
     "description": "Install and manage Haneul CLI versions, toolchain components, and network-specific builds with haneulup.",
     "category": "Get started",
     "path": "haneul-install"
+  },
+  {
+    "slug": "kiosk",
+    "title": "Kiosk",
+    "description": "Trade NFTs and enforce transfer policies with Kiosk, including asset states, purchase flows, and Kiosk Apps.",
+    "category": "Onchain finance",
+    "path": "kiosk"
   },
   {
     "slug": "modern-move-syntax",
@@ -89,6 +96,13 @@
     "description": "Set up Move projects, configure Move.toml and MVR dependencies, and troubleshoot build errors.",
     "category": "Move",
     "path": "haneul-move-project"
+  },
+  {
+    "slug": "move-security",
+    "title": "Move Security",
+    "description": "Review Move code for vulnerabilities: access control, capability handling, invariants, and upgrade governance.",
+    "category": "Move",
+    "path": "move-security"
   },
   {
     "slug": "move-unit-testing",
@@ -112,6 +126,13 @@
     "path": "object-model"
   },
   {
+    "slug": "onchain-randomness",
+    "title": "Onchain Randomness",
+    "description": "Generate random values in Move with the Random object, and secure them against composition and PTB attacks.",
+    "category": "Move",
+    "path": "onchain-randomness"
+  },
+  {
     "slug": "ptbs",
     "title": "Programmable Transaction Blocks",
     "description": "Compose multiple Move calls into a single atomic transaction with gas handling and sponsorship support.",
@@ -124,6 +145,62 @@
     "description": "Publish and upgrade Move packages on any network, from localnet testing to multisig mainnet deploys.",
     "category": "Build and deploy",
     "path": "haneul-publish"
+  },
+  {
+    "slug": "haneul-bridge",
+    "title": "Haneul Bridge",
+    "description": "Move assets between Haneul and Ethereum over the native bridge: supported assets, the global limiter, and governance.",
+    "category": "Onchain finance",
+    "path": "haneul-bridge"
+  },
+  {
+    "slug": "haneul-client",
+    "title": "Haneul Client",
+    "description": "Configure the Haneul client, manage addresses, switch networks, request faucet tokens, and check balances.",
+    "category": "CLI",
+    "path": "haneul-client"
+  },
+  {
+    "slug": "haneul-for-ethereum",
+    "title": "Haneul for Ethereum Developers",
+    "description": "Map Solidity and EVM patterns onto Move and the Haneul object model when migrating from Ethereum.",
+    "category": "Get started",
+    "path": "haneul-for-ethereum"
+  },
+  {
+    "slug": "haneul-move",
+    "title": "Haneul Move",
+    "description": "Write and debug Move smart contracts covering abilities, init functions, one-time witnesses, upgrades, and custom coins.",
+    "category": "Move",
+    "path": "haneul-move"
+  },
+  {
+    "slug": "haneul-networks-gas",
+    "title": "Haneul Networks and Gas",
+    "description": "Understand Haneul network environments, gas costs, epochs, and how the network operates at a high level.",
+    "category": "Get started",
+    "path": "haneul-networks-gas"
+  },
+  {
+    "slug": "haneul-overview",
+    "title": "Haneul Overview",
+    "description": "Learn what Haneul is, how it compares to other chains, and which Haneul Stack primitives fit your use case.",
+    "category": "Get started",
+    "path": "haneul-overview"
+  },
+  {
+    "slug": "haneul-sdks",
+    "title": "Haneul SDKs",
+    "description": "Pick the right Haneul SDK for your language and wire it up: TypeScript, Rust, Python, Go, Dart, Kotlin, or Swift.",
+    "category": "Frontend and SDKs",
+    "path": "haneul-sdks"
+  },
+  {
+    "slug": "haneul-ts-sdk-backend",
+    "title": "TypeScript SDK for Backends",
+    "description": "Build backend services and agents on Haneul: keypairs, signing, sponsored transactions, executors, and cloud KMS.",
+    "category": "Frontend and SDKs",
+    "path": "haneul-ts-sdk-backend"
   },
   {
     "slug": "walrus-sites",
@@ -145,5 +222,12 @@
     "description": "Publish and update Walrus Sites using the site-builder CLI.",
     "category": "Frontend and SDKs",
     "path": "walrus-sites/publishing"
+  },
+  {
+    "slug": "zklogin",
+    "title": "zkLogin",
+    "description": "Integrate OAuth-based, wallet-less login: address derivation, session lifetime, proofs, and security properties.",
+    "category": "Frontend and SDKs",
+    "path": "zklogin"
   }
 ]

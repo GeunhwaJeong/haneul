@@ -7,6 +7,7 @@ use std::{
     sync::Arc,
 };
 
+use haneul_protocol_config::assert_reachable_gated;
 use haneul_types::{
     accumulator_root::{AccumulatorObjId, UnsettledObjectFundsRead},
     base_types::SequenceNumber,
@@ -14,7 +15,6 @@ use haneul_types::{
     effects::{TransactionEffects, TransactionEffectsAPI},
     transaction::{TransactionData, TransactionDataAPI},
 };
-use haneullabs_common::assert_reachable;
 use parking_lot::RwLock;
 
 use crate::accumulators::object_funds_checker::metrics::ObjectFundsCheckerMetrics;
@@ -147,7 +147,10 @@ impl UnsettledObjectWithdrawals {
             accumulator_running_max_withdraws,
         );
         self.record_unsettled_withdraws(updates, accumulator_version);
-        assert_reachable!("record unsettled object withdraws from in-execution check");
+        assert_reachable_gated!(
+            "record unsettled object withdraws from in-execution check",
+            |pc| pc.check_object_funds_withdraw_in_execution()
+        );
         self.metrics
             .in_execution_check_result
             .with_label_values(&["sufficient"])

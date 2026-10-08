@@ -1,8 +1,8 @@
 ---
 title: Configure a Haneul Client
 description: >-
-  The Haneul client configuration specifies which network to connect to and which
-  address to send transactions.
+  Configure the Haneul CLI client to connect to Testnet, Devnet, or a custom
+  network, and verify your setup is working.
 keywords:
   - haneul client
   - haneul configuration
@@ -45,11 +45,11 @@ questions:
   - 'How do I switch between Haneul Testnet, Devnet, and Mainnet?'
   - What is client.yaml and how do I edit it?
 answer: >-
-  The Haneul client configuration specifies which network to connect to and which
-  address to send transactions.
+  Configure the Haneul CLI client to connect to Testnet, Devnet, or a custom
+  network, and verify your setup is working.
 ---
 
-The Haneul client configuration specifies which network to connect to and which address to send transactions.
+The Haneul client configuration specifies which network to connect to and which address to send transactions. When you run `haneul client` for the first time, it generates a key pair, writes a `client.yaml` file to your local config directory, and sets Testnet as the active environment. You can switch networks, add custom RPC endpoints, and manage multiple environments using the `haneul client new-env` and `haneul client switch` subcommands.
 
 <Tabs className="tabsHeadingCentered--small">
 <TabItem value="prereq" label="Prerequisites">
@@ -104,7 +104,38 @@ The recovery phrase is not visible again once the CLI history disappears.
 
 :::
 
-## `client.yaml`
+## How do I switch between Haneul Testnet, Devnet, and Mainnet?
+
+Use `haneul client switch` to change the active network environment:
+
+```
+$ haneul client switch --env testnet
+```
+
+To list all configured environments and see which one is currently active, run:
+
+```
+$ haneul client envs
+```
+
+You see output similar to:
+
+```
+localnet => http://0.0.0.0:9000 (active)
+devnet => https://fullnode.devnet.haneul.io:443
+testnet => https://fullnode.testnet.haneul.io:443
+mainnet => https://fullnode.mainnet.haneul.io:443
+```
+
+To add a new environment, use `haneul client new-env`. For example, to add a custom RPC endpoint:
+
+```
+$ haneul client new-env --alias custom --rpc https://your-custom-rpc-url
+```
+
+After adding the environment, switch to it with `haneul client switch --env custom`.
+
+## What is client.yaml and how do I edit it?
 
 Your Haneul client is now configured. By default, Haneul stores this information in either the `~/.haneul/haneul_config/client.yaml` file (macOS/Linux) or `%USERPROFILE%\.haneul\haneul_config\client.yaml` file (Windows). You can store a `client.yaml` file in a different location, if preferred, and specify its location with the `--client.config` flag.
 

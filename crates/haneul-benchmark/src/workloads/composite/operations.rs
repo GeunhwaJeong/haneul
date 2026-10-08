@@ -15,10 +15,12 @@ use haneul_types::transaction::{
     Argument, CallArg, Command, FundsWithdrawalArg, ObjectArg, SharedObjectMutability,
 };
 use haneul_types::{
-    HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, HANEUL_FRAMEWORK_PACKAGE_ID,
-    HANEUL_RANDOMNESS_STATE_OBJECT_ID, Identifier,
+    HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, HANEUL_CLOCK_OBJECT_ID, HANEUL_CLOCK_OBJECT_SHARED_VERSION,
+    HANEUL_FRAMEWORK_PACKAGE_ID, HANEUL_RANDOMNESS_STATE_OBJECT_ID, Identifier,
+    MOVE_STDLIB_PACKAGE_ID,
 };
 use haneullabs_common::random::get_rng;
+use move_core_types::u256::U256;
 use rand::Rng;
 
 use super::AccountState;
@@ -32,6 +34,19 @@ pub enum InitRequirement {
     SeedTestCoinAddressBalance,
     EnableAddressAlias,
     CreateImmutableObject,
+    IssueAllowances,
+}
+
+/// (allowance id, initial shared version, funder) of an init-issued allowance.
+pub type AllowanceInfo = (ObjectID, SequenceNumber, HaneulAddress);
+
+/// The init-issued allowances a payload's sender spends from.
+#[derive(Debug, Clone, Copy)]
+pub struct PayloadAllowances {
+    /// Funded by the previous payload, so sender and funder differ.
+    pub neighbor: AllowanceInfo,
+    /// Funded by the sender itself.
+    pub own: AllowanceInfo,
 }
 
 pub const ALIAS_TX: &str = "alias_tx";
@@ -62,6 +77,8 @@ pub const ALL_OPERATIONS: &[OperationDescriptor] = &[
     AuthenticatedEventEmit::DESCRIPTOR,
     ImmutableObjectRead::DESCRIPTOR,
     CoinReservationWithdraw::DESCRIPTOR,
+    AllowanceWithdraw::DESCRIPTOR,
+    AllowanceSelfWithdraw::DESCRIPTOR,
 ];
 
 #[derive(Debug, Clone)]
@@ -74,6 +91,7 @@ pub enum ResourceRequest {
     AccumulatorRoot,
     ImmutableObject,
     CoinReservation,
+    Allowances,
 }
 
 #[derive(Debug, Clone, Default)]
@@ -93,6 +111,7 @@ pub struct OperationResources {
     pub immutable_object: Option<ObjectRef>,
     pub chain_identifier: Option<ChainIdentifier>,
     pub current_epoch: Option<EpochId>,
+    pub allowances: Option<PayloadAllowances>,
 }
 
 pub trait Operation: Send + Sync {
@@ -1173,6 +1192,185 @@ impl Operation for ImmutableObjectRead {
             Identifier::new("value").unwrap(),
             vec![],
             vec![obj_arg],
+        );
+    }
+}
+
+/// Spends `amount` through the allowance and returns it to the funder, keeping its balance level.
+fn add_allowance_spend_commands(
+    builder: &mut ProgrammableTransactionBuilder,
+    allowance_id: ObjectID,
+    initial_shared_version: SequenceNumber,
+    funder: HaneulAddress,
+    amount: u64,
+) {
+    let allowance_arg = builder
+        .obj(ObjectArg::SharedObject {
+            id: allowance_id,
+            initial_shared_version,
+            mutability: SharedObjectMutability::Mutable,
+        })
+        .unwrap();
+    let withdraw_arg = builder
+        .funds_withdrawal(FundsWithdrawalArg::balance_from_allowance(
+            amount,
+            GAS::type_tag(),
+            funder,
+            allowance_id,
+        ))
+        .unwrap();
+    let clock_arg = builder
+        .obj(ObjectArg::SharedObject {
+            id: HANEUL_CLOCK_OBJECT_ID,
+            initial_shared_version: HANEUL_CLOCK_OBJECT_SHARED_VERSION,
+            mutability: SharedObjectMutability::Immutable,
+        })
+        .unwrap();
+
+    let spent_balance = builder.programmable_move_call(
+        HANEUL_FRAMEWORK_PACKAGE_ID,
+        Identifier::new("allowance").unwrap(),
+        Identifier::new("balance_spend").unwrap(),
+        vec![GAS::type_tag()],
+        vec![allowance_arg, withdraw_arg, clock_arg],
+    );
+
+    let funder_arg = builder.pure(funder).unwrap();
+    builder.programmable_move_call(
+        HANEUL_FRAMEWORK_PACKAGE_ID,
+        Identifier::new("balance").unwrap(),
+        Identifier::new("send_funds").unwrap(),
+        vec![GAS::type_tag()],
+        vec![spent_balance, funder_arg],
+    );
+}
+
+fn allowance_spend_amount(address_balance_amount: u64) -> u64 {
+    if address_balance_amount > 0 {
+        address_balance_amount
+    } else {
+        get_rng().gen_range(100..1000)
+    }
+}
+
+/// Issues an `Allowance<Balance<HANEUL>>` funded by the tx sender for `spender`.
+/// The cap and expiration are effectively unlimited so spends never trip them.
+pub fn add_allowance_issue_commands(
+    builder: &mut ProgrammableTransactionBuilder,
+    spender: HaneulAddress,
+) {
+    let no_rate_limit = builder.programmable_move_call(
+        MOVE_STDLIB_PACKAGE_ID,
+        Identifier::new("option").unwrap(),
+        Identifier::new("none").unwrap(),
+        vec!["0x2::allowance::RateLimit".parse().unwrap()],
+        vec![],
+    );
+    let args = vec![
+        builder.pure("".to_string()).unwrap(),
+        builder.pure(spender).unwrap(),
+        builder.pure(Some(U256::from(u64::MAX))).unwrap(),
+        builder.pure(None::<u64>).unwrap(),
+        builder.pure(Some(u64::MAX)).unwrap(),
+        no_rate_limit,
+    ];
+    builder.programmable_move_call(
+        HANEUL_FRAMEWORK_PACKAGE_ID,
+        Identifier::new("allowance").unwrap(),
+        Identifier::new("new").unwrap(),
+        vec![Balance::type_tag(GAS::type_tag())],
+        args,
+    );
+}
+
+/// Spends from the neighbor's balance: sender and funder differ.
+pub struct AllowanceWithdraw;
+
+impl AllowanceWithdraw {
+    pub const NAME: &'static str = "allowance_withdraw";
+    pub const DESCRIPTOR: OperationDescriptor = OperationDescriptor {
+        name: Self::NAME,
+        factory: || Box::new(AllowanceWithdraw),
+    };
+}
+
+impl Operation for AllowanceWithdraw {
+    fn name(&self) -> &'static str {
+        Self::NAME
+    }
+
+    fn resource_requests(&self) -> Vec<ResourceRequest> {
+        vec![ResourceRequest::Allowances]
+    }
+
+    fn init_requirements(&self) -> Vec<InitRequirement> {
+        vec![
+            InitRequirement::SeedAddressBalance,
+            InitRequirement::IssueAllowances,
+        ]
+    }
+
+    fn apply(
+        &self,
+        builder: &mut ProgrammableTransactionBuilder,
+        resources: &OperationResources,
+        _account_state: &AccountState,
+    ) {
+        let (allowance_id, initial_shared_version, funder) = resources
+            .allowances
+            .expect("Allowances not resolved")
+            .neighbor;
+        add_allowance_spend_commands(
+            builder,
+            allowance_id,
+            initial_shared_version,
+            funder,
+            allowance_spend_amount(resources.address_balance_amount),
+        );
+    }
+}
+
+/// Spends from the sender's own balance through a self-issued allowance.
+pub struct AllowanceSelfWithdraw;
+
+impl AllowanceSelfWithdraw {
+    pub const NAME: &'static str = "allowance_self_withdraw";
+    pub const DESCRIPTOR: OperationDescriptor = OperationDescriptor {
+        name: Self::NAME,
+        factory: || Box::new(AllowanceSelfWithdraw),
+    };
+}
+
+impl Operation for AllowanceSelfWithdraw {
+    fn name(&self) -> &'static str {
+        Self::NAME
+    }
+
+    fn resource_requests(&self) -> Vec<ResourceRequest> {
+        vec![ResourceRequest::Allowances]
+    }
+
+    fn init_requirements(&self) -> Vec<InitRequirement> {
+        vec![
+            InitRequirement::SeedAddressBalance,
+            InitRequirement::IssueAllowances,
+        ]
+    }
+
+    fn apply(
+        &self,
+        builder: &mut ProgrammableTransactionBuilder,
+        resources: &OperationResources,
+        _account_state: &AccountState,
+    ) {
+        let (allowance_id, initial_shared_version, funder) =
+            resources.allowances.expect("Allowances not resolved").own;
+        add_allowance_spend_commands(
+            builder,
+            allowance_id,
+            initial_shared_version,
+            funder,
+            allowance_spend_amount(resources.address_balance_amount),
         );
     }
 }

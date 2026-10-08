@@ -28,9 +28,18 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use tracing::{info, warn};
 
+pub mod reachability;
+
+// Re-exported so that `assert_reachable_gated!` expands without requiring callers to depend on
+// the antithesis sdk or haneullabs-common directly.
+#[doc(hidden)]
+pub use antithesis_sdk::linkme;
+#[doc(hidden)]
+pub use haneullabs_common::assert_reachable_simtest;
+
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
-const MAX_PROTOCOL_VERSION: u64 = 127;
+const MAX_PROTOCOL_VERSION: u64 = 128;
 
 const TESTNET_USDC: &str =
     "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC";
@@ -387,6 +396,14 @@ const MAINNET_USDB: &str =
 //              Enable allowed_proposers on every chain, including mainnet and testnet.
 //              Validate PTB indices at signing time.
 //              Enable memory_safety_invariant_check_v2.
+// Version 128: Tracks upstream protocol version 138.
+//              Enable BumpOnly (gas model version 15).
+//              Enable check_object_funds_withdraw_in_execution on testnet.
+//              Disable effects transaction dependencies on devnet and testnet.
+//              Enable allowances on mainnet.
+//              Merge colliding deferred-transaction entries in the consensus handler
+//              instead of overwriting (which stranded the displaced transactions).
+//              Reduce the non-refundable storage fee from 1% to 0.01% on mainnet.
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -1270,6 +1287,16 @@ struct FeatureFlags {
     // If true, use the bitset implementation for PTB memory safety invariant check.
     #[serde(skip_serializing_if = "is_false")]
     memory_safety_invariant_check_v2: bool,
+
+    // Keep the effects wire representation, but stop collecting transaction dependencies.
+    #[serde(skip_serializing_if = "is_false")]
+    disable_effects_tx_dependencies: bool,
+
+    // If true, a deferred-transaction key collision in the consensus commit handler
+    // merges the colliding entries instead of overwriting the existing one, which
+    // silently dropped the displaced (finalized) transactions.
+    #[serde(skip_serializing_if = "is_false")]
+    merge_colliding_deferrals: bool,
 }
 
 fn is_false(b: &bool) -> bool {
@@ -4777,6 +4804,20 @@ impl ProtocolConfig {
 
                     cfg.feature_flags.validate_ptb_argument_indices = true;
                     cfg.feature_flags.memory_safety_invariant_check_v2 = true;
+                }
+                128 => {
+                    // v128 tracks upstream protocol version 138.
+                    cfg.gas_model_version = Some(15);
+                    cfg.feature_flags.enable_allowances = true;
+                    if chain != Chain::Mainnet {
+                        cfg.feature_flags.check_object_funds_withdraw_in_execution = true;
+                        cfg.feature_flags.disable_effects_tx_dependencies = true;
+                    }
+                    cfg.feature_flags.merge_colliding_deferrals = true;
+                    // Testnet already runs version 128, so it gets this change in version 129.
+                    if chain == Chain::Mainnet {
+                        cfg.storage_rebate_rate = Some(9999);
+                    }
                 }
                 // Use this template when making changes:
                 //

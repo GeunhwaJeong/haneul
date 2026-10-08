@@ -29,7 +29,7 @@ impl ObjectLocks {
         obj_ref: &ObjectRef,
         epoch_store: &AuthorityPerEpochStore,
     ) -> HaneulResult<Option<TransactionDigest>> {
-        epoch_store.tables()?.get_locked_transaction(obj_ref)
+        epoch_store.tables().get_locked_transaction(obj_ref)
     }
 
     pub(crate) fn clear(&self) {

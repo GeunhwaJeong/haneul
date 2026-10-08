@@ -94,7 +94,7 @@ You can now use Haneul CLI commands such as `haneul client ptb`,
 `haneul client publish`, `haneul client upgrade`, or other read/write commands against the forked network.
 
 > [!NOTE]
-> Use `--forking-mode` on transaction commands when you need to impersonate a
+> Use `--skip-signing` on transaction commands when you need to impersonate a
 > sender on the local fork. Note that this is not available yet for `haneul client ptb`, only for regular write commands.
 
 #### 5. Control checkpoint and time progression
@@ -111,13 +111,18 @@ haneul-fork status
 
 ## Impersonating Senders
 
-The Haneul CLI supports `--forking-mode` on transaction commands such as
-`haneul client upgrade`. This flag is only intended for local forked networks. It
-submits the transaction with an empty signature list, which tells the forked
-network to execute the transaction as the declared sender without requiring that
-sender's private key.
+The Haneul CLI supports `--skip-signing` on transaction commands such as
+`haneul client upgrade`, together with `--sender` to name the account to act as.
+This flag is only intended for local forked networks. It submits the transaction
+with an empty signature list, which tells the forked network to execute the
+transaction as the declared sender without requiring that sender's private key.
 
 Transactions with non-empty signatures still use normal signature verification.
+
+A fork reports the chain identifier of the network it was forked from, so the
+Haneul CLI and Move package management treat it as that network: a package
+published on the network can be upgraded on the fork from its existing
+`Published.toml` record.
 
 ## Forked Network vs Haneul CLI Local Network
 
@@ -182,3 +187,19 @@ builds it from the manifest by fetching the exact seeded object versions.
 - Objects deleted or wrapped after the fork point are no longer available through direct current-ID lookup, but exact historical versions remain readable when available.
 - If it forks at checkpoint X, you cannot depend on objects created after checkpoint X from the actual real network. You'll need to restart the network at that checkpoint or a later one.
 - Not recommended for parallel test execution since all transactions are executed sequentially on a single validator.
+
+## Testing
+
+End-to-end shell tests live in `crates/haneul-fork-e2e-tests/tests/shell_tests`. Each `.sh` script
+forks a localnet through the `haneul-fork` binary, drives the fork with `haneul client`, and has its
+combined output snapshotted next to it, so the scripts double as worked examples of the CLI flow.
+The harness builds `haneul` and `haneul-fork` itself and starts one localnet per script with
+`haneul start --force-regenesis --with-graphql --with-faucet` on ephemeral ports, which needs the
+PostgreSQL binaries (`initdb`, `postgres`, `pg_ctl`, `pg_isready`) on `PATH`. Each script then
+waits for the faucet, creates its client config, and funds it with `haneul client`.
+
+```bash
+cargo nextest run -p haneul-fork-e2e-tests --test shell_tests
+cargo nextest run -p haneul-fork-e2e-tests --test shell_tests -E 'test(/seeding/)'
+cargo insta test -p haneul-fork-e2e-tests --test shell_tests --review   # after changing a script
+```

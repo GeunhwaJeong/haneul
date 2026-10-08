@@ -27,6 +27,7 @@ use haneul_indexer_alt_reader::system_package_task::SystemPackageTaskArgs;
 use haneul_pg_db::DbArgs;
 use haneul_pg_db::temp::TempDb;
 use haneul_pg_db::temp::get_available_port;
+use haneul_protocol_config::ProtocolConfig;
 use haneul_test_transaction_builder::make_transfer_haneul_transaction;
 use haneul_types::base_types::HaneulAddress;
 use haneul_types::effects::TransactionEffectsAPI;
@@ -1279,6 +1280,12 @@ async fn test_simulate_transaction_with_gas_selection() {
 
 #[tokio::test]
 async fn test_simulate_transaction_effects_json() {
+    // Empty dependencies are omitted from effectsJson, so force the flag on to keep one snapshot
+    // across chain overrides.
+    let _guard = ProtocolConfig::apply_overrides_for_testing(|_, mut config| {
+        config.set_disable_effects_tx_dependencies_for_testing(true);
+        config
+    });
     let validator_cluster = TestClusterBuilder::new().build().await;
     let graphql_cluster = GraphQlTestCluster::new(&validator_cluster).await;
 
@@ -1329,13 +1336,10 @@ async fn test_simulate_transaction_effects_json() {
         ".**.eventsDigest" => "[digest]",
         ".**.inputDigest" => "[digest]",
         ".**.outputDigest" => "[digest]",
-        // Dependencies array contains digest strings
-        ".effects.effectsJson.dependencies[]" => "[digest]",
         // BCS values
         ".**.bcs.value" => "[bcs]",
         // Sort arrays that may have non-deterministic order
         ".effects.effectsJson.changedObjects" => insta::sorted_redaction(),
-        ".effects.effectsJson.dependencies" => insta::sorted_redaction(),
         ".effects.balanceChangesJson" => insta::sorted_redaction(),
     });
 }

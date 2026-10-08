@@ -75,8 +75,7 @@ pub async fn run_test(path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     let (_guard, _filter_handle) = telemetry_subscribers::TelemetryConfig::new()
         .with_env()
         .init();
-    run_test_impl::<HaneulTestAdapter>(path, Some(std::sync::Arc::new(PRE_COMPILED.clone())), None)
-        .await?;
+    run_test_impl::<HaneulTestAdapter>(path, Some(&PRE_COMPILED), None).await?;
     Ok(())
 }
 

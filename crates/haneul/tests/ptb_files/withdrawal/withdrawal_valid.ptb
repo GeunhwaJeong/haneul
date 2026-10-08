@@ -1,0 +1,6 @@
+# Copyright (c) Mysten Labs, Inc.
+# Modifications Copyright (c) 2026 Geunhwa Jeong
+# SPDX-License-Identifier: Apache-2.0
+
+--move-call 0x2::coin::redeem_funds <0x2::haneul::HANEUL> withdrawal(1000)
+--move-call 0x2::coin::redeem_funds <0x2::haneul::HANEUL> withdrawal<0x2::haneul::HANEUL>(2000)
