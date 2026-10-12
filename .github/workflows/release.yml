@@ -165,7 +165,7 @@ jobs:
           tar -cvzf ./tmp/haneul-${{ env.haneul_tag }}-${{ env.os_type }}.tgz -C ${{ env.TMP_BUILD_DIR }} .
 
       - name: Upload release artifacts for ${{ matrix.os }} platform
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # pin@v6.0.0
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # pin@v7.0.2
         with:
           name: haneul-binaries-${{ matrix.os }}
           if-no-files-found: error
