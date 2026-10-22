@@ -39,7 +39,7 @@ pub use haneullabs_common::assert_reachable_simtest;
 
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
-const MAX_PROTOCOL_VERSION: u64 = 128;
+const MAX_PROTOCOL_VERSION: u64 = 129;
 
 const TESTNET_USDC: &str =
     "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC";
@@ -77,7 +77,7 @@ const MAINNET_USDB: &str =
 //            hash module bytes individually before computing package digest.
 // Version 8: Disallow changing abilities and type constraints for type parameters in structs
 //            during upgrades.
-// Version 9: Limit the length of Move idenfitiers to 128.
+// Version 9: Limit the length of Move identifiers to 128.
 //            Disallow extraneous module bytes,
 //            advance_to_highest_supported_protocol_version,
 // Version 10:increase bytecode verifier `max_verifier_meter_ticks_per_function` and
@@ -404,6 +404,12 @@ const MAINNET_USDB: &str =
 //              Merge colliding deferred-transaction entries in the consensus handler
 //              instead of overwriting (which stranded the displaced transactions).
 //              Reduce the non-refundable storage fee from 1% to 0.01% on mainnet.
+// Version 129: Tracks upstream protocol version 139.
+//              Enable forwarding addresses on devnet.
+//              Enable ML-DSA-65 account signatures on devnet.
+//              Reduce the non-refundable storage fee from 1% to 0.01%.
+//              Allow random beacon DKG to complete after its timeout on devnet and testnet.
+//              Charge package inputs 1% of the per-byte object read cost.
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -797,6 +803,14 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     passkey_auth: bool,
 
+    // Enable ML-DSA-65 (FIPS 204) account signatures, standalone and as
+    // multisig members. Kept out of the generated accessors, and with them out
+    // of the protocol-config listings, until the scheme's RPC surface lands;
+    // `mldsa65_auth()` and its test setter are hand-written.
+    #[serde(skip_serializing_if = "is_false")]
+    #[skip_accessor]
+    mldsa65_auth: bool,
+
     // Use AuthorityCapabilitiesV2
     #[serde(skip_serializing_if = "is_false")]
     authority_capabilities_v2: bool,
@@ -1043,6 +1057,10 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     always_advance_dkg_to_resolution: bool,
 
+    // If true, keep DKG pending after its timeout so that it can complete later in the epoch.
+    #[serde(skip_serializing_if = "is_false")]
+    allow_dkg_completion_after_timeout: bool,
+
     // Enable coin registry protocol
     #[serde(skip_serializing_if = "is_false")]
     enable_coin_registry: bool,
@@ -1142,6 +1160,10 @@ struct FeatureFlags {
     // If true, create the forwarding address registry object in the change epoch transaction.
     #[serde(skip_serializing_if = "is_false")]
     create_forwarding_address_registry: bool,
+
+    // If true, resolve forwarding addresses through the forwarding address registry.
+    #[serde(skip_serializing_if = "is_false")]
+    enable_forwarding_addresses: bool,
 
     // Corrects signature-to-signer mapping in CheckpointContentsV2.
     // Deprecated: must always be set to `true`.
@@ -1685,6 +1707,10 @@ pub struct ProtocolConfig {
 
     // Per-byte cost of reading an object during transaction execution
     obj_access_cost_read_per_byte: Option<u64>,
+
+    // Cost per KiB (1,024 bytes) of reading a non-system package input. When unset, packages are
+    // charged `obj_access_cost_read_per_byte` like other input objects.
+    obj_access_cost_read_per_package_kb: Option<u64>,
 
     // Per-byte cost of writing an object during transaction execution
     obj_access_cost_mutate_per_byte: Option<u64>,
@@ -2327,6 +2353,15 @@ impl ProtocolConfig {
         self.feature_flags.consensus_transaction_ordering
     }
 
+    // Hand-written because the field is `#[skip_accessor]`; see FeatureFlags.
+    pub fn mldsa65_auth(&self) -> bool {
+        self.feature_flags.mldsa65_auth
+    }
+
+    pub fn set_mldsa65_auth_for_testing(&mut self, val: bool) {
+        self.feature_flags.mldsa65_auth = val;
+    }
+
     pub fn enable_jwk_consensus_updates(&self) -> bool {
         let ret = self.feature_flags.enable_jwk_consensus_updates;
         if ret {
@@ -2689,6 +2724,7 @@ impl ProtocolConfig {
             base_tx_cost_per_byte: Some(0),
             package_publish_cost_per_byte: Some(80),
             obj_access_cost_read_per_byte: Some(15),
+            obj_access_cost_read_per_package_kb: None,
             obj_access_cost_mutate_per_byte: Some(40),
             obj_access_cost_delete_per_byte: Some(40),
             obj_access_cost_verify_per_byte: Some(200),
@@ -4818,6 +4854,19 @@ impl ProtocolConfig {
                     if chain == Chain::Mainnet {
                         cfg.storage_rebate_rate = Some(9999);
                     }
+                }
+                129 => {
+                    // v129 tracks upstream protocol version 139.
+                    if chain != Chain::Mainnet && chain != Chain::Testnet {
+                        cfg.feature_flags.enable_forwarding_addresses = true;
+                        cfg.feature_flags.mldsa65_auth = true;
+                    }
+                    cfg.storage_rebate_rate = Some(9999);
+                    if chain != Chain::Mainnet {
+                        cfg.feature_flags.allow_dkg_completion_after_timeout = true;
+                    }
+                    // Validators cache packages, so reading one costs far less than reading an object.
+                    cfg.obj_access_cost_read_per_package_kb = Some(154);
                 }
                 // Use this template when making changes:
                 //

@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-// docs::#processordeps (see haneul/docs/content/guides/developer/advanced/custom-indexer.mdx)
+// docs::#processordeps (see https://docs.haneul.io/develop/accessing-data/custom-indexer/custom-indexers)
 use anyhow::Result;
 use std::sync::Arc;
 use haneul_indexer_alt_framework::pipeline::Processor;

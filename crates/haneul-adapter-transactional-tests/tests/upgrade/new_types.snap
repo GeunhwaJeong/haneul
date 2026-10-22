@@ -16,25 +16,25 @@ task 2, lines 22-34:
 //# upgrade --package Test_DepV1 --upgrade-capability 1,1 --sender A
 created: object(2,0)
 mutated: object(0,0), object(1,1)
-gas summary: computation_cost: 1000000, storage_cost: 7182000,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
+gas summary: computation_cost: 1000000, storage_cost: 7182000,  storage_rebate: 2621738, non_refundable_storage_fee: 262
 
 task 3, lines 37-48:
 //# publish --upgradeable --dependencies Test_DepV1 --sender A
 created: object(3,0), object(3,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6923600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6923600,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 4, lines 50-61:
 //# upgrade --package Test_V1 --upgrade-capability 3,1 --dependencies Test_DepV1 --sender A
 created: object(4,0)
 mutated: object(0,0), object(3,1)
-gas summary: computation_cost: 1000000, storage_cost: 6923600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
+gas summary: computation_cost: 1000000, storage_cost: 6923600,  storage_rebate: 2621738, non_refundable_storage_fee: 262
 
 task 5, lines 63-74:
 //# upgrade --package Test_V2 --upgrade-capability 3,1 --dependencies Test_DepV2 --sender A
 created: object(5,0)
 mutated: object(0,0), object(3,1)
-gas summary: computation_cost: 1000000, storage_cost: 6923600,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
+gas summary: computation_cost: 1000000, storage_cost: 6923600,  storage_rebate: 2621738, non_refundable_storage_fee: 262
 
 task 6, line 77:
 //# run Test_DepV1::DepM1::foo
@@ -68,13 +68,13 @@ task 9, lines 86-88:
 // call functions from two different versions of the same module modifying the same object
 //> Test_DepV1::DepM1::mod_obj(Input(0));
 mutated: object(0,0), object(6,0)
-gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2302344, non_refundable_storage_fee: 23256
+gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2325367, non_refundable_storage_fee: 233
 
 task 10, lines 90-91:
 //# programmable --sender A --inputs object(6,0)
 //> Test_DepV2::DepM1::mod_obj(Input(0));
 mutated: object(0,0), object(6,0)
-gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2302344, non_refundable_storage_fee: 23256
+gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2325367, non_refundable_storage_fee: 233
 
 task 11, line 93:
 //# view-object 6,0
@@ -96,13 +96,13 @@ task 12, lines 98-99:
 //# programmable --sender A --inputs object(6,0)
 //> Test_V1::M1::mod_dep_obj(Input(0));
 mutated: object(0,0), object(6,0)
-gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2302344, non_refundable_storage_fee: 23256
+gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2325367, non_refundable_storage_fee: 233
 
 task 13, lines 101-102:
 //# programmable --sender A --inputs object(6,0)
 //> Test_V2::M1::mod_dep_obj(Input(0));
 mutated: object(0,0), object(6,0)
-gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2302344, non_refundable_storage_fee: 23256
+gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2325367, non_refundable_storage_fee: 233
 
 task 14, line 104:
 //# view-object 6,0
@@ -124,13 +124,13 @@ task 15, lines 109-110:
 //# programmable --sender A --inputs object(6,0)
 //> Test_V2::M1::mod_dep_obj(Input(0));
 mutated: object(0,0), object(6,0)
-gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2302344, non_refundable_storage_fee: 23256
+gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2325367, non_refundable_storage_fee: 233
 
 task 16, lines 112-113:
 //# programmable --sender A --inputs object(6,0)
 //> Test_V3::M1::mod_dep_obj(Input(0));
 mutated: object(0,0), object(6,0)
-gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2302344, non_refundable_storage_fee: 23256
+gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2325367, non_refundable_storage_fee: 233
 
 task 17, line 115:
 //# view-object 6,0

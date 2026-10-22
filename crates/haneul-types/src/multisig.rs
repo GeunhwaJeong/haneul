@@ -21,6 +21,7 @@ use fastcrypto::{
     secp256r1::Secp256r1PublicKey,
     traits::{EncodeDecodeBase64, ToFromBytes, VerifyingKey},
 };
+use fastcrypto_pq::mldsa65::{MLDSA65PublicKey, MLDSA65Signature};
 use haneullabs_common::ZipDebugEqIteratorExt;
 use once_cell::sync::OnceCell;
 use schemars::JsonSchema;
@@ -145,6 +146,15 @@ impl AuthenticatorTrait for MultiSig {
             .into());
         }
 
+        // Gates membership, not just signing: an ML-DSA key in the committee
+        // is a BCS variant that older binaries cannot decode.
+        if self.multisig_pk.has_mldsa65_member() && !verify_params.accept_mldsa65_in_multisig {
+            return Err(HaneulErrorKind::InvalidSignature {
+                error: "ML-DSA-65 member not supported inside multisig".to_string(),
+            }
+            .into());
+        }
+
         let mut weight_sum: u16 = 0;
         let mut hasher = DefaultHash::default();
         bcs::serialize_into(&mut hasher, &value).expect("Message serialization should not fail");
@@ -234,6 +244,33 @@ impl AuthenticatorTrait for MultiSig {
                             .map_err(|_| HaneulErrorKind::InvalidSignature {
                                 error: "Invalid r1 signature bytes".to_string(),
                             })?,
+                    )
+                }
+                CompressedSignature::MLDSA65(s) => {
+                    if verify_params.additional_multisig_checks
+                        && !matches!(subsig_pubkey.scheme(), SignatureScheme::MLDSA65)
+                    {
+                        return Err(HaneulErrorKind::InvalidSignature {
+                            error: format!(
+                                "Invalid sig for pk={} address={:?} error=signature/pubkey type mismatch",
+                                subsig_pubkey.encode_base64(),
+                                HaneulAddress::from(subsig_pubkey)
+                            ),
+                        }.into());
+                    }
+                    let pk =
+                        MLDSA65PublicKey::from_bytes(subsig_pubkey.as_ref()).map_err(|_| {
+                            HaneulErrorKind::InvalidSignature {
+                                error: "Invalid mldsa65 pk bytes".to_string(),
+                            }
+                        })?;
+                    pk.verify(
+                        &digest,
+                        &MLDSA65Signature::from_bytes(&s.0).map_err(|_| {
+                            HaneulErrorKind::InvalidSignature {
+                                error: "Invalid mldsa65 signature bytes".to_string(),
+                            }
+                        })?,
                     )
                 }
                 CompressedSignature::ZkLogin(z) => {
@@ -451,6 +488,15 @@ impl MultiSig {
             .iter()
             .any(|s| matches!(s, CompressedSignature::ZkLogin(_)))
     }
+
+    /// Whether any committee key or signature is ML-DSA-65.
+    pub fn uses_mldsa65(&self) -> bool {
+        self.multisig_pk.has_mldsa65_member()
+            || self
+                .sigs
+                .iter()
+                .any(|s| matches!(s, CompressedSignature::MLDSA65(_)))
+    }
 }
 
 impl ToFromBytes for MultiSig {
@@ -555,6 +601,12 @@ impl MultiSigPublicKey {
 
     pub fn pubkeys(&self) -> &Vec<(PublicKey, WeightUnit)> {
         &self.pk_map
+    }
+
+    pub fn has_mldsa65_member(&self) -> bool {
+        self.pk_map
+            .iter()
+            .any(|(pk, _)| matches!(pk, PublicKey::MLDSA65(_)))
     }
 
     pub fn validate(&self) -> Result<MultiSigPublicKey, FastCryptoError> {

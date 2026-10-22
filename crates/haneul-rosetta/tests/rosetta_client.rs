@@ -130,6 +130,7 @@ impl RosettaClient {
         self.online_port
     }
 
+    #[allow(clippy::result_large_err)]
     pub async fn call<R: Serialize, T: DeserializeOwned>(
         &self,
         endpoint: RosettaEndpoint,
@@ -246,6 +247,41 @@ impl RosettaClient {
             .await;
         resps.submit = Some(submit);
         resps
+    }
+
+    /// Quote the gas budget for `operations` by running `/construction/preprocess` and
+    /// `/construction/metadata` with `estimate_only` set.
+    #[allow(dead_code, clippy::result_large_err)]
+    pub async fn estimate_gas(
+        &self,
+        operations: &Operations,
+    ) -> Result<ConstructionMetadataResponse, RosettaError> {
+        let network_identifier = NetworkIdentifier {
+            blockchain: "haneul".to_string(),
+            network: HaneulEnv::LocalNet,
+        };
+        let preprocess: ConstructionPreprocessResponse = self
+            .call(
+                RosettaEndpoint::Preprocess,
+                &ConstructionPreprocessRequest {
+                    network_identifier: network_identifier.clone(),
+                    operations: operations.clone(),
+                    metadata: Some(PreprocessMetadata {
+                        budget: None,
+                        estimate_only: true,
+                    }),
+                },
+            )
+            .await?;
+        self.call(
+            RosettaEndpoint::Metadata,
+            &ConstructionMetadataRequest {
+                network_identifier,
+                options: preprocess.options,
+                public_keys: vec![],
+            },
+        )
+        .await
     }
 
     #[allow(dead_code)]

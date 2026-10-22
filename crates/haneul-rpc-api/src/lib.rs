@@ -16,6 +16,7 @@ use tonic::server::NamedService;
 use tower::Service;
 
 pub mod client;
+mod client_protocol_version;
 mod config;
 mod error;
 pub mod grpc;
@@ -28,6 +29,7 @@ mod service;
 pub mod subscription;
 
 pub use client::Client;
+pub use client_protocol_version::{X_HANEUL_CLIENT_PROTOCOL_VERSION, client_protocol_version};
 pub use config::Config;
 pub use error::{
     CheckpointNotFoundError, ErrorDetails, ErrorReason, ObjectNotFoundError, Result, RpcError,

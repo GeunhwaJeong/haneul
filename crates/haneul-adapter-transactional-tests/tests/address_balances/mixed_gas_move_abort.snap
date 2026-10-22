@@ -65,6 +65,6 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
         },
     },
     balance: haneul::balance::Balance<haneul::haneul::HANEUL> {
-        value: 299900497002120u64,
+        value: 299900497011901u64,
     },
 }

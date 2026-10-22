@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Unified Haneul version bump script.
-# Updates Cargo.toml, openrpc.json, and snap.json, then runs cargo check.
+# Updates Cargo.toml and openrpc.json, then runs cargo check.
 #
 # This script handles file changes ONLY - git operations (commit, push, PR)
 # are the caller's responsibility (workflow or operator).
@@ -48,8 +48,7 @@ Options:
 
 Files updated:
   - Cargo.toml (workspace version)
-  - crates/haneul-open-rpc/spec/openrpc.json (API spec version)
-  - crates/haneul-open-rpc/tests/snapshots/generate_spec__openrpc.snap.json (snapshot)
+  - crates/haneul-indexer-alt-jsonrpc/openrpc.json (JSON-RPC spec version)
   - Cargo.lock (regenerated via cargo check)
 
 This script does NOT commit, push, or create PRs - the caller handles delivery.
@@ -148,23 +147,13 @@ sedi "s/^(version = \")[0-9]+\.[0-9]+\.[0-9]+(\"$)/\1${NEW_VERSION}\2/" Cargo.to
 echo -e "${GREEN}✓ Cargo.toml updated${NC}"
 
 # ── Update openrpc.json ──────────────────────────────────────────────
-OPENRPC_FILE="crates/haneul-open-rpc/spec/openrpc.json"
+OPENRPC_FILE="crates/haneul-indexer-alt-jsonrpc/openrpc.json"
 if [[ -f "$OPENRPC_FILE" ]]; then
   echo -e "${YELLOW}Updating openrpc.json...${NC}"
   sedi "s/(\"version\": \")([0-9]+\.[0-9]+\.[0-9]+)(\")/\1${NEW_VERSION}\3/" "$OPENRPC_FILE"
   echo -e "${GREEN}✓ openrpc.json updated${NC}"
 else
   echo -e "${YELLOW}Warning: $OPENRPC_FILE not found, skipping.${NC}"
-fi
-
-# ── Update snap.json ─────────────────────────────────────────────────
-SNAP_FILE="crates/haneul-open-rpc/tests/snapshots/generate_spec__openrpc.snap.json"
-if [[ -f "$SNAP_FILE" ]]; then
-  echo -e "${YELLOW}Updating snap.json...${NC}"
-  sedi "s/(\"version\": \")([0-9]+\.[0-9]+\.[0-9]+)(\")/\1${NEW_VERSION}\3/" "$SNAP_FILE"
-  echo -e "${GREEN}✓ snap.json updated${NC}"
-else
-  echo -e "${YELLOW}Warning: $SNAP_FILE not found, skipping.${NC}"
 fi
 
 # ── Cargo check ──────────────────────────────────────────────────────
@@ -183,6 +172,5 @@ echo "Files changed:"
 echo "  - Cargo.toml"
 echo "  - Cargo.lock"
 [[ -f "$OPENRPC_FILE" ]] && echo "  - $OPENRPC_FILE"
-[[ -f "$SNAP_FILE" ]] && echo "  - $SNAP_FILE"
 echo ""
 echo "NEW_VERSION=$NEW_VERSION"

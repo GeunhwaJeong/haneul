@@ -31,7 +31,7 @@ haneul-verifier = { path = "../../haneul-execution/latest/haneul-verifier", pack
 
 move-bytecode-verifier-meter.workspace = true
 move-cli.workspace = true
-move-package-alt-compilation.workspace = true
+move-package-compilation.workspace = true
 move-unit-test.workspace = true
 haneul-config.workspace = true
 tokio.workspace = true

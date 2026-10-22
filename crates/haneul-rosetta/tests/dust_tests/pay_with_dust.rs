@@ -622,6 +622,7 @@ async fn test_pay_with_many_small_coins_with_budget() -> Result<()> {
             keystore,
             Some(PreprocessMetadata {
                 budget: Some(budget),
+                estimate_only: false,
             }),
         )
         .await
@@ -1072,6 +1073,7 @@ async fn test_pay_with_many_small_coins_fail_insufficient_balance_with_budget() 
             keystore,
             Some(PreprocessMetadata {
                 budget: Some(budget as u64 + 1), // add 1 to fail
+                estimate_only: false,
             }),
         )
         .await;
@@ -1265,6 +1267,7 @@ async fn test_pay_with_many_small_coins_fail_insufficient_budget() -> Result<()>
             keystore,
             Some(PreprocessMetadata {
                 budget: Some(budget as u64),
+                estimate_only: false,
             }),
         )
         .await;

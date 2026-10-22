@@ -50,7 +50,7 @@ use move_core_types::{
     identifier::{IdentStr, Identifier},
 };
 use move_ir_types::location::{ByteIndex, Loc};
-use move_package_alt_compilation::compiled_package::CompiledUnitWithSource;
+use move_package_compilation::compiled_package::CompiledUnitWithSource;
 
 type Enum = normalized::Enum<normalized::RcIdentifier>;
 type Field = normalized::Field<normalized::RcIdentifier>;

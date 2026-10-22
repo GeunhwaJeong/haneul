@@ -8,7 +8,7 @@ use colored::Colorize;
 use haneul_package_alt::HaneulFlavor;
 use haneul_rpc_api::Client;
 use haneul_types::base_types::ObjectID;
-use move_package_alt::schema::{Environment, Publication};
+use move_package::schema::{Environment, Publication};
 use serde::Serialize;
 
 pub mod error;

@@ -845,7 +845,7 @@ impl Display for HaneulParsedData {
         match self {
             HaneulParsedData::MoveObject(o) => {
                 writeln!(writer, "{}: {}", "type".bold().bright_black(), o.type_)?;
-                write!(writer, "{}", &o.fields)?;
+                write!(writer, "{}", o.fields)?;
             }
             HaneulParsedData::Package(p) => {
                 write!(

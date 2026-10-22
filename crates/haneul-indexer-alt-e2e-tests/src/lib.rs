@@ -275,8 +275,11 @@ impl FullCluster {
             checkpoint.sequence_number,
             timeout,
         );
+        let kv_rpc = self
+            .offchain
+            .wait_for_kv_rpc(checkpoint.sequence_number, timeout);
 
-        try_join!(indexer, consistent_store, graphql, bigtable)
+        try_join!(indexer, consistent_store, graphql, bigtable, kv_rpc)
             .expect("Timed out waiting for off-chain services");
 
         checkpoint
@@ -381,6 +384,11 @@ impl FullCluster {
         timeout: Duration,
     ) -> Result<(), Elapsed> {
         self.offchain.wait_for_graphql(checkpoint, timeout).await
+    }
+
+    /// Waits until kv-rpc serves the given `checkpoint`, or the `timeout` is reached (an error).
+    pub async fn wait_for_kv_rpc(&self, checkpoint: u64, timeout: Duration) -> Result<(), Elapsed> {
+        self.offchain.wait_for_kv_rpc(checkpoint, timeout).await
     }
 }
 
@@ -798,6 +806,43 @@ impl OffchainCluster {
         .await
     }
 
+    /// Waits until kv-rpc's served height, which bounds every answer it gives, has reached the
+    /// given `checkpoint`, or the `timeout` is reached (an error). The height comes from
+    /// `GetServiceInfo`: a cached copy of the BigTable watermarks that kv-rpc refreshes in the
+    /// background, so it can trail them.
+    pub async fn wait_for_kv_rpc(&self, checkpoint: u64, timeout: Duration) -> Result<(), Elapsed> {
+        let url = self.kv_rpc_url().to_string();
+        tokio::time::timeout(timeout, async move {
+            let mut interval = interval(Duration::from_millis(200));
+            let mut client = None;
+            loop {
+                interval.tick().await;
+                if client.is_none() {
+                    client =
+                        rpc::v2::ledger_service_client::LedgerServiceClient::connect(url.clone())
+                            .await
+                            .ok();
+                }
+                let Some(client) = client.as_mut() else {
+                    continue;
+                };
+                if client
+                    .get_service_info(rpc::v2::GetServiceInfoRequest::default())
+                    .await
+                    .is_ok_and(|response| {
+                        response
+                            .into_inner()
+                            .checkpoint_height
+                            .is_some_and(|cp| cp >= checkpoint)
+                    })
+                {
+                    break;
+                }
+            }
+        })
+        .await
+    }
+
     /// Waits until every pipeline in `pipelines` has caught up to the given `checkpoint`, or the
     /// `timeout` is reached (an error).
     pub async fn wait_for_bigtable(
@@ -963,6 +1008,7 @@ async fn start_archival(
         None,
         kv_rpc_config.ledger_history(),
         kv_rpc_config.request_bigtable_concurrency(),
+        kv_rpc_config.monotonic_read_wait_timeout(),
         kv_rpc_config.stages(),
         kv_rpc_config.enable_list_apis(),
     )

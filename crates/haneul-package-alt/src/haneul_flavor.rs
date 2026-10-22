@@ -8,7 +8,7 @@ use anyhow::Context;
 use async_trait::async_trait;
 use indexmap::IndexMap;
 use move_compiler::editions::Edition;
-use move_package_alt::{
+use move_package::{
     MoveFlavor,
     schema::{
         EnvironmentID, EnvironmentName, GitSha, LockfileDependencyInfo, LockfileGitDepInfo,
@@ -234,7 +234,7 @@ impl MoveFlavor for HaneulFlavor {
         }
     }
 
-    fn is_system_address(&self, address: &move_package_alt::schema::OriginalID) -> bool {
+    fn is_system_address(&self, address: &move_package::schema::OriginalID) -> bool {
         is_system_package(address.0)
     }
 }

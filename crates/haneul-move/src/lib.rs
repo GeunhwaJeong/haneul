@@ -6,7 +6,7 @@ use clap::Parser;
 use haneul_package_alt::HaneulFlavor;
 use haneul_sdk::wallet_context::WalletContext;
 use move_cli::base::test::UnitTestResult;
-use move_package_alt_compilation::build_config::BuildConfig;
+use move_package_compilation::build_config::BuildConfig;
 use std::path::Path;
 
 pub mod build;

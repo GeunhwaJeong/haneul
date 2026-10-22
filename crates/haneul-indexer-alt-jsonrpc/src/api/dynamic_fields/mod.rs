@@ -6,8 +6,6 @@ use futures::future;
 use haneul_json_rpc_types::DynamicFieldInfo as DynamicFieldInfoResponse;
 use haneul_json_rpc_types::HaneulObjectResponse;
 use haneul_json_rpc_types::Page;
-use haneul_open_rpc::Module;
-use haneul_open_rpc_macros::open_rpc;
 use haneul_types::base_types::ObjectID;
 use haneul_types::dynamic_field::DynamicFieldName;
 use haneullabs_common::ZipDebugEqIteratorExt;
@@ -22,16 +20,15 @@ use crate::error::InternalContext;
 mod error;
 mod response;
 
-#[open_rpc(namespace = "haneulx", tag = "Dynamic Fields API")]
 #[rpc(server, namespace = "haneulx")]
 trait DynamicFieldsApi {
     /// Return the information from a dynamic field based on its parent ID and name.
     #[method(name = "getDynamicFieldObject")]
     async fn get_dynamic_field_object(
         &self,
-        /// The ID of the parent object
+        // The ID of the parent object
         parent_object_id: ObjectID,
-        /// The Name of the dynamic field
+        // The Name of the dynamic field
         name: DynamicFieldName,
     ) -> RpcResult<HaneulObjectResponse>;
 
@@ -45,11 +42,11 @@ trait DynamicFieldsApi {
     #[method(name = "getDynamicFields")]
     async fn get_dynamic_fields(
         &self,
-        /// The ID of the parent object
+        // The ID of the parent object
         parent_object_id: ObjectID,
-        /// Cursor to start paginating from.
+        // Cursor to start paginating from.
         cursor: Option<String>,
-        /// Maximum number of objects to return per page.
+        // Maximum number of objects to return per page.
         limit: Option<usize>,
     ) -> RpcResult<Page<DynamicFieldInfoResponse, String>>;
 }
@@ -103,10 +100,6 @@ impl DynamicFieldsApiServer for DynamicFields {
 }
 
 impl RpcModule for DynamicFields {
-    fn schema(&self) -> Module {
-        DynamicFieldsApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }

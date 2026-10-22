@@ -26,7 +26,9 @@ use haneul_types::execution_status::{ExecutionErrorKind, ExecutionStatus};
 use haneul_types::haneul_system_state::{AdvanceEpochParams, get_haneul_system_state_wrapper};
 use haneul_types::inner_temporary_store::InnerTemporaryStore;
 use haneul_types::object::Data;
-use haneul_types::storage::{BackingStore, DenyListResult, ObjectFundsResolver, PackageObject};
+use haneul_types::storage::{
+    BackingStore, DenyListResult, ImplicitSystemObjectResolver, PackageObject,
+};
 use haneul_types::transaction::{Command, GasData, TransactionKind, is_gasless_transaction};
 use haneul_types::{
     HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, HANEUL_DENY_LIST_OBJECT_ID,
@@ -1202,7 +1204,7 @@ impl RuntimeObjectResolver for TemporaryStore<'_> {
     }
 }
 
-impl ObjectFundsResolver for TemporaryStore<'_> {
+impl ImplicitSystemObjectResolver for TemporaryStore<'_> {
     /// Loads the object balance at the required version and subtracts withdrawals from the same
     /// checkpoint that have not settled yet.
     /// This function is expected never to fail; an error indicates an invariant violation.

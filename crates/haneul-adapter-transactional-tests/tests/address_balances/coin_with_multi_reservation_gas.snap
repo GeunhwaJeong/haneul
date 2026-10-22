@@ -57,7 +57,7 @@ task 5, lines 27-32:
 created: object(5,0)
 mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 1000000000)
-gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 6, line 34:
 //# create-checkpoint
@@ -82,6 +82,6 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
         },
     },
     balance: haneul::balance::Balance<haneul::haneul::HANEUL> {
-        value: 299900995914120u64,
+        value: 299900995923901u64,
     },
 }

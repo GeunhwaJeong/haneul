@@ -12,6 +12,7 @@ use haneul_types::utils::to_sender_signed_transaction;
 use super::shared_object_version_manager::AssignedVersions;
 use super::test_authority_builder::TestAuthorityBuilder;
 use super::*;
+use haneul_types::transaction_executor::{SimulateTransactionResult, TransactionChecks};
 
 #[cfg(test)]
 use super::shared_object_version_manager::Schedulable;
@@ -21,6 +22,34 @@ use haneul_types::transaction::TransactionKey;
 use haneullabs_common::ZipDebugEqIteratorExt;
 #[cfg(test)]
 use std::collections::HashMap;
+
+/// Simulate `transaction_kind` the way the removed dev-inspect API used to: the
+/// transaction is synthesized from the given gas parameters (defaulting to the
+/// reference gas price, the maximum gas budget, and the sender as sponsor), and
+/// a mock gas coin is injected when no gas payment is provided. Pass
+/// `TransactionChecks::Disabled` for the classic dev-inspect semantics.
+#[allow(clippy::too_many_arguments)]
+pub fn dev_inspect_for_testing(
+    state: &AuthorityState,
+    sender: HaneulAddress,
+    transaction_kind: TransactionKind,
+    gas_price: Option<u64>,
+    gas_budget: Option<u64>,
+    gas_sponsor: Option<HaneulAddress>,
+    gas_objects: Option<Vec<ObjectRef>>,
+    checks: TransactionChecks,
+) -> HaneulResult<SimulateTransactionResult> {
+    let epoch_store = state.epoch_store_for_testing();
+    let transaction = TransactionData::new_with_gas_coins_allow_sponsor(
+        transaction_kind,
+        sender,
+        gas_objects.unwrap_or_default(),
+        gas_budget.unwrap_or(epoch_store.protocol_config().max_tx_gas()),
+        gas_price.unwrap_or(epoch_store.reference_gas_price()),
+        gas_sponsor.unwrap_or(sender),
+    );
+    state.simulate_transaction(transaction, checks, /* allow_mock_gas_coin */ true)
+}
 
 // =============================================================================
 // MFP (Mysticeti Fast Path) Test Helpers
@@ -168,9 +197,6 @@ pub async fn submit_and_execute_with_error(
     let executable =
         VerifiedExecutableTransaction::new_from_consensus(verified_tx, epoch_store.epoch());
 
-    // This also assigns the accumulator root's version when accumulators are enabled, even if
-    // the transaction has no shared inputs. So we should always call this, whether or not there
-    // are shared objects present in the transaction.
     let versions = authority
         .epoch_store_for_testing()
         .assign_shared_object_versions_for_tests(
@@ -182,6 +208,13 @@ pub async fn submit_and_execute_with_error(
         .get(&executable.key())
         .cloned()
         .unwrap_or_else(AssignedVersions::empty);
+    // This executes directly, so it attaches the accumulator root version itself: the
+    // helper assigns none, and execution reads the root implicitly for object funds
+    // withdraws, even when the transaction has no shared inputs.
+    let assigned_versions = match authority.accumulator_version_for_testing() {
+        Some(version) => assigned_versions.with_accumulator_version_for_testing(version),
+        None => assigned_versions,
+    };
 
     // State accumulator for validation
     let state_acc =

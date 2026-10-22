@@ -16,14 +16,14 @@ task 2, line 42:
 //# run ex::m::mint
 created: object(2,0), object(2,1)
 mutated: object(0,2)
-gas summary: computation_cost: 1000000, storage_cost: 3442800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 3442800,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 3, lines 44-45:
 // Creates a party object using `public_party_transfer` on a struct with store
 //# run ex::m::create_party
 created: object(3,0)
 mutated: object(0,2)
-gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 4, lines 47-48:
 // This is the `Priv` object.
@@ -57,7 +57,7 @@ task 6, lines 53-56:
 //> 0: haneul::party::single_owner(Input(1));
 //> ex::m::priv_party(Input(0), Result(0))
 mutated: object(0,2), object(2,1)
-gas summary: computation_cost: 1000000, storage_cost: 2219200,  storage_rebate: 2197008, non_refundable_storage_fee: 22192
+gas summary: computation_cost: 1000000, storage_cost: 2219200,  storage_rebate: 2218978, non_refundable_storage_fee: 222
 
 task 7, line 58:
 //# view-object 2,1
@@ -77,7 +77,7 @@ task 8, lines 60-63:
 //> 0: haneul::party::single_owner(Input(1));
 //> ex::m::pub_party(Input(0), Result(0))
 mutated: object(0,2), object(2,0)
-gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 2189484, non_refundable_storage_fee: 22116
+gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 2211379, non_refundable_storage_fee: 221
 
 task 9, line 65:
 //# view-object 2,0
@@ -104,7 +104,7 @@ task 11, lines 72-75:
 //> 0: haneul::party::single_owner(Input(1));
 //> haneul::transfer::public_party_transfer<ex::m::Pub>(Input(0), Result(0))
 mutated: object(0,0), object(2,0)
-gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 1211364, non_refundable_storage_fee: 12236
+gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 1223478, non_refundable_storage_fee: 122
 
 task 12, line 77:
 //# view-object 2,0
@@ -124,7 +124,7 @@ task 13, lines 79-82:
 //> 0: haneul::party::single_owner(Input(1));
 //> haneul::transfer::public_party_transfer<ex::m::Pub>(Input(0), Result(0))
 mutated: object(0,0), object(2,0)
-gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 2189484, non_refundable_storage_fee: 22116
+gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 2211379, non_refundable_storage_fee: 221
 
 task 14, line 84:
 //# view-object 2,0
@@ -147,7 +147,7 @@ task 16, lines 89-90:
 // Transfers party object back to fastpath using transfer-object
 //# transfer-object 2,0 --sender B --recipient B
 mutated: object(0,1), object(2,0)
-gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 1211364, non_refundable_storage_fee: 12236
+gas summary: computation_cost: 1000000, storage_cost: 2211600,  storage_rebate: 1223478, non_refundable_storage_fee: 122
 
 task 17, line 92:
 //# view-object 2,0
@@ -172,7 +172,7 @@ task 19, lines 98-100:
 //# programmable --inputs object(2,1) @B --sender A
 //> ex::m::priv_fastpath(Input(0), Input(1));
 mutated: object(0,0), object(2,1)
-gas summary: computation_cost: 1000000, storage_cost: 2219200,  storage_rebate: 2197008, non_refundable_storage_fee: 22192
+gas summary: computation_cost: 1000000, storage_cost: 2219200,  storage_rebate: 2218978, non_refundable_storage_fee: 222
 
 task 20, line 102:
 //# view-object 2,1

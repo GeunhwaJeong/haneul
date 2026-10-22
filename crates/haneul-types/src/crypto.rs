@@ -36,6 +36,10 @@ pub use fastcrypto::traits::{
     AggregateAuthenticator, Authenticator, EncodeDecodeBase64, SigningKey, ToFromBytes,
     VerifyingKey,
 };
+use fastcrypto_pq::mldsa65::{
+    MLDSA65KeyPair, MLDSA65PublicKey, MLDSA65PublicKeyAsBytes, MLDSA65Signature,
+    MLDSA65SignatureAsBytes,
+};
 use fastcrypto_zkp::bn254::zk_login::ZkLoginInputs;
 use fastcrypto_zkp::zk_login_utils::Bn254FrElement;
 use rand::SeedableRng;
@@ -129,7 +133,7 @@ pub fn verify_proof_of_possession(
 //
 // * The following section defines the keypairs that are used by
 // * accounts to interact with Haneul.
-// * Currently we support eddsa and ecdsa on Haneul.
+// * Currently we support eddsa, ecdsa and ML-DSA-65 on Haneul.
 //
 
 #[allow(clippy::large_enum_variant)]
@@ -138,6 +142,7 @@ pub enum HaneulKeyPair {
     Ed25519(Ed25519KeyPair),
     Secp256k1(Secp256k1KeyPair),
     Secp256r1(Secp256r1KeyPair),
+    MLDSA65(MLDSA65KeyPair),
 }
 
 impl HaneulKeyPair {
@@ -146,6 +151,7 @@ impl HaneulKeyPair {
             HaneulKeyPair::Ed25519(kp) => PublicKey::Ed25519(kp.public().into()),
             HaneulKeyPair::Secp256k1(kp) => PublicKey::Secp256k1(kp.public().into()),
             HaneulKeyPair::Secp256r1(kp) => PublicKey::Secp256r1(kp.public().into()),
+            HaneulKeyPair::MLDSA65(kp) => PublicKey::MLDSA65(Box::new(kp.public().into())),
         }
     }
 
@@ -154,6 +160,7 @@ impl HaneulKeyPair {
             HaneulKeyPair::Ed25519(kp) => kp.copy().into(),
             HaneulKeyPair::Secp256k1(kp) => kp.copy().into(),
             HaneulKeyPair::Secp256r1(kp) => kp.copy().into(),
+            HaneulKeyPair::MLDSA65(kp) => kp.copy().into(),
         }
     }
 }
@@ -164,6 +171,7 @@ impl Signer<Signature> for HaneulKeyPair {
             HaneulKeyPair::Ed25519(kp) => kp.sign(msg),
             HaneulKeyPair::Secp256k1(kp) => kp.sign(msg),
             HaneulKeyPair::Secp256r1(kp) => kp.sign(msg),
+            HaneulKeyPair::MLDSA65(kp) => kp.sign(msg),
         }
     }
 }
@@ -193,6 +201,10 @@ impl HaneulKeyPair {
             HaneulKeyPair::Secp256r1(kp) => {
                 bytes.extend_from_slice(kp.as_bytes());
             }
+            // as_bytes is the 32-byte FIPS 204 seed, so the blob keeps the flag || privkey shape.
+            HaneulKeyPair::MLDSA65(kp) => {
+                bytes.extend_from_slice(kp.as_bytes());
+            }
         }
         bytes
     }
@@ -214,6 +226,10 @@ impl HaneulKeyPair {
                         bytes.get(1..).ok_or_else(|| eyre!("Invalid length"))?,
                     )?))
                 }
+                // Only the 32-byte seed is accepted; the expanded key is re-derived from it.
+                SignatureScheme::MLDSA65 => Ok(HaneulKeyPair::MLDSA65(MLDSA65KeyPair::from_bytes(
+                    bytes.get(1..).ok_or_else(|| eyre!("Invalid length"))?,
+                )?)),
                 _ => Err(eyre!("Invalid flag byte")),
             },
             _ => Err(eyre!("Invalid bytes")),
@@ -225,6 +241,7 @@ impl HaneulKeyPair {
             HaneulKeyPair::Ed25519(kp) => kp.as_bytes().to_vec(),
             HaneulKeyPair::Secp256k1(kp) => kp.as_bytes().to_vec(),
             HaneulKeyPair::Secp256r1(kp) => kp.as_bytes().to_vec(),
+            HaneulKeyPair::MLDSA65(kp) => kp.as_bytes().to_vec(),
         }
     }
 
@@ -268,6 +285,11 @@ pub enum PublicKey {
     Secp256r1(Secp256r1PublicKeyAsBytes),
     ZkLogin(ZkLoginPublicIdentifier),
     Passkey(Secp256r1PublicKeyAsBytes),
+    // Boxed because the 1,952-byte pk; Box is transparent to BCS.
+    // Schema-only skip (serde unaffected): keeps the generated openrpc spec
+    // unchanged, since deprecated JSON-RPC will never serve ML-DSA.
+    #[schemars(skip)]
+    MLDSA65(Box<MLDSA65PublicKeyAsBytes>),
 }
 
 /// A wrapper struct to retrofit in [enum PublicKey] for zkLogin.
@@ -338,6 +360,7 @@ impl AsRef<[u8]> for PublicKey {
             PublicKey::Secp256r1(pk) => &pk.0,
             PublicKey::ZkLogin(z) => &z.0,
             PublicKey::Passkey(pk) => &pk.0,
+            PublicKey::MLDSA65(pk) => &pk.0,
         }
     }
 }
@@ -375,6 +398,11 @@ impl EncodeDecodeBase64 for PublicKey {
                         FastCryptoError::InputLengthWrong(Secp256r1PublicKey::LENGTH + 1),
                     )?)?;
                     Ok(PublicKey::Passkey((&pk).into()))
+                } else if x == &SignatureScheme::MLDSA65.flag() {
+                    let pk = MLDSA65PublicKey::from_bytes(bytes.get(1..).ok_or(
+                        FastCryptoError::InputLengthWrong(MLDSA65PublicKey::LENGTH + 1),
+                    )?)?;
+                    Ok(PublicKey::MLDSA65(Box::new((&pk).into())))
                 } else {
                     Err(FastCryptoError::InvalidInput)
                 }
@@ -406,6 +434,9 @@ impl PublicKey {
             SignatureScheme::PasskeyAuthenticator => Ok(PublicKey::Passkey(
                 (&Secp256r1PublicKey::from_bytes(key_bytes)?).into(),
             )),
+            SignatureScheme::MLDSA65 => Ok(PublicKey::MLDSA65(Box::new(
+                (&MLDSA65PublicKey::from_bytes(key_bytes)?).into(),
+            ))),
             _ => Err(eyre!("Unsupported curve")),
         }
     }
@@ -417,6 +448,7 @@ impl PublicKey {
             PublicKey::Secp256r1(_) => Secp256r1HaneulSignature::SCHEME,
             PublicKey::ZkLogin(_) => SignatureScheme::ZkLoginAuthenticator,
             PublicKey::Passkey(_) => SignatureScheme::PasskeyAuthenticator,
+            PublicKey::MLDSA65(_) => MLDSA65HaneulSignature::SCHEME,
         }
     }
 
@@ -723,6 +755,9 @@ pub enum Signature {
     Ed25519HaneulSignature,
     Secp256k1HaneulSignature,
     Secp256r1HaneulSignature,
+    // Schema-only skip: see `PublicKey::MLDSA65`.
+    #[schemars(skip)]
+    MLDSA65HaneulSignature,
 }
 
 impl Serialize for Signature {
@@ -786,6 +821,7 @@ impl AsRef<[u8]> for Signature {
             Signature::Ed25519HaneulSignature(sig) => sig.as_ref(),
             Signature::Secp256k1HaneulSignature(sig) => sig.as_ref(),
             Signature::Secp256r1HaneulSignature(sig) => sig.as_ref(),
+            Signature::MLDSA65HaneulSignature(sig) => sig.as_ref(),
         }
     }
 }
@@ -795,6 +831,7 @@ impl AsMut<[u8]> for Signature {
             Signature::Ed25519HaneulSignature(sig) => sig.as_mut(),
             Signature::Secp256k1HaneulSignature(sig) => sig.as_mut(),
             Signature::Secp256r1HaneulSignature(sig) => sig.as_mut(),
+            Signature::MLDSA65HaneulSignature(sig) => sig.as_mut(),
         }
     }
 }
@@ -809,6 +846,8 @@ impl ToFromBytes for Signature {
                     Ok(<Secp256k1HaneulSignature as ToFromBytes>::from_bytes(bytes)?.into())
                 } else if x == &Secp256r1HaneulSignature::SCHEME.flag() {
                     Ok(<Secp256r1HaneulSignature as ToFromBytes>::from_bytes(bytes)?.into())
+                } else if x == &MLDSA65HaneulSignature::SCHEME.flag() {
+                    Ok(<MLDSA65HaneulSignature as ToFromBytes>::from_bytes(bytes)?.into())
                 } else {
                     Err(FastCryptoError::InvalidInput)
                 }
@@ -954,6 +993,84 @@ impl ToFromBytes for Secp256r1HaneulSignature {
 impl Signer<Signature> for Secp256r1KeyPair {
     fn sign(&self, msg: &[u8]) -> Signature {
         Secp256r1HaneulSignature::new(self, msg).into()
+    }
+}
+
+//
+// ML-DSA-65 Haneul Signature port
+//
+// Boxed: the 5,262-byte envelope would otherwise dominate every enum carrying a `Signature`.
+#[derive(Clone, Debug, JsonSchema, PartialEq, Eq, Hash)]
+pub struct MLDSA65HaneulSignature(
+    #[schemars(with = "Base64")] Box<[u8; MLDSA65PublicKey::LENGTH + MLDSA65Signature::LENGTH + 1]>,
+);
+
+impl AsRef<[u8]> for MLDSA65HaneulSignature {
+    fn as_ref(&self) -> &[u8] {
+        &self.0[..]
+    }
+}
+
+impl AsMut<[u8]> for MLDSA65HaneulSignature {
+    fn as_mut(&mut self) -> &mut [u8] {
+        &mut self.0[..]
+    }
+}
+
+impl Serialize for MLDSA65HaneulSignature {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        if serializer.is_human_readable() {
+            serializer.serialize_str(&Base64::encode(self.as_ref()))
+        } else {
+            serializer.serialize_bytes(self.as_ref())
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for MLDSA65HaneulSignature {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        use serde::de::Error;
+        let bytes = if deserializer.is_human_readable() {
+            let s = String::deserialize(deserializer)?;
+            Base64::decode(&s).map_err(|e| Error::custom(e.to_string()))?
+        } else {
+            Bytes::deserialize_as(deserializer)?
+        };
+        Self::from_bytes(&bytes).map_err(|e| Error::custom(e.to_string()))
+    }
+}
+
+impl HaneulSignatureInner for MLDSA65HaneulSignature {
+    type Sig = MLDSA65Signature;
+    type PubKey = MLDSA65PublicKey;
+    type KeyPair = MLDSA65KeyPair;
+    const LENGTH: usize = MLDSA65PublicKey::LENGTH + MLDSA65Signature::LENGTH + 1;
+}
+
+impl HaneulPublicKey for MLDSA65PublicKey {
+    const SIGNATURE_SCHEME: SignatureScheme = SignatureScheme::MLDSA65;
+}
+
+impl ToFromBytes for MLDSA65HaneulSignature {
+    fn from_bytes(bytes: &[u8]) -> Result<Self, FastCryptoError> {
+        if bytes.len() != Self::LENGTH {
+            return Err(FastCryptoError::InputLengthWrong(Self::LENGTH));
+        }
+        let mut sig_bytes = Box::new([0; Self::LENGTH]);
+        sig_bytes.copy_from_slice(bytes);
+        Ok(Self(sig_bytes))
+    }
+}
+
+impl Signer<Signature> for MLDSA65KeyPair {
+    fn sign(&self, msg: &[u8]) -> Signature {
+        MLDSA65HaneulSignature::new(self, msg).into()
     }
 }
 
@@ -1630,13 +1747,12 @@ impl<'a> VerificationObligation<'a> {
         .map_err(|e| {
             let message = format!(
                 "pks: {:?}, messages: {:?}, sigs: {:?}",
-                &self.public_keys,
+                self.public_keys,
                 self.messages
                     .iter()
                     .map(Base64::encode)
                     .collect::<Vec<String>>(),
-                &self
-                    .signatures
+                self.signatures
                     .iter()
                     .map(|s| Base64::encode(s.as_ref()))
                     .collect::<Vec<String>>()
@@ -1720,6 +1836,7 @@ pub enum SignatureScheme {
     MultiSig,
     ZkLoginAuthenticator,
     PasskeyAuthenticator,
+    MLDSA65,
 }
 
 impl SignatureScheme {
@@ -1732,6 +1849,7 @@ impl SignatureScheme {
             SignatureScheme::BLS12381 => 0x04, // This is currently not supported for user Haneul Address.
             SignatureScheme::ZkLoginAuthenticator => 0x05,
             SignatureScheme::PasskeyAuthenticator => 0x06,
+            SignatureScheme::MLDSA65 => 0x07,
         }
     }
 
@@ -1751,6 +1869,7 @@ impl SignatureScheme {
             0x04 => Ok(SignatureScheme::BLS12381),
             0x05 => Ok(SignatureScheme::ZkLoginAuthenticator),
             0x06 => Ok(SignatureScheme::PasskeyAuthenticator),
+            0x07 => Ok(SignatureScheme::MLDSA65),
             _ => Err(HaneulErrorKind::KeyConversionError("Invalid key scheme".to_string()).into()),
         }
     }
@@ -1763,6 +1882,9 @@ pub enum CompressedSignature {
     Secp256r1(Secp256r1SignatureAsBytes),
     ZkLogin(ZkLoginAuthenticatorAsBytes),
     Passkey(PasskeyAuthenticatorAsBytes),
+    // Boxed and schema-skipped for the same reasons as `PublicKey::MLDSA65`.
+    #[schemars(skip)]
+    MLDSA65(Box<MLDSA65SignatureAsBytes>),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, JsonSchema)]
@@ -1779,6 +1901,7 @@ impl AsRef<[u8]> for CompressedSignature {
             CompressedSignature::Secp256r1(sig) => &sig.0,
             CompressedSignature::ZkLogin(sig) => &sig.0,
             CompressedSignature::Passkey(sig) => &sig.0,
+            CompressedSignature::MLDSA65(sig) => &sig.0,
         }
     }
 }

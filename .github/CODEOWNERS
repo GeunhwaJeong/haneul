@@ -3,11 +3,11 @@
 /crates/haneul-keys/ @GeunhwaJeong
 /crates/haneul-protocol-config @GeunhwaJeong
 
-*.md @GeunhwaJeong
-*.mdx @GeunhwaJeong
-# Omit auto-generated changelogs and changesets from docs review:
-/.changeset/*.md
-CHANGELOG.md
+# The docs moved to HaneulLabs/haneul-docs. No .mdx pages remain here, and the .md
+# files left are crate READMEs, runbooks and design notes owned by the teams that
+# own the code beside them. The repo-wide *.md and *.mdx globs that used to live
+# here also made the docs owner the required reviewer on their own pull requests,
+# which GitHub treats as unsatisfiable.
 
 # When native functions change, so we can evaluate cost impact
 /crates/haneul-framework/src/natives/ @GeunhwaJeong

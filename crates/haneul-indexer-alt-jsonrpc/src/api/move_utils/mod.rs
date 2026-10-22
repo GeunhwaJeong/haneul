@@ -3,8 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use haneul_json_rpc_types::HaneulMoveNormalizedFunction;
-use haneul_open_rpc::Module;
-use haneul_open_rpc_macros::open_rpc;
 use haneul_types::base_types::ObjectID;
 use jsonrpsee::core::RpcResult;
 use jsonrpsee::proc_macros::rpc;
@@ -15,7 +13,6 @@ use crate::context::Context;
 mod error;
 mod response;
 
-#[open_rpc(namespace = "haneul", tag = "Move APIs")]
 #[rpc(server, namespace = "haneul")]
 trait MoveApi {
     #[method(name = "getNormalizedMoveFunction")]
@@ -43,10 +40,6 @@ impl MoveApiServer for MoveUtils {
 }
 
 impl RpcModule for MoveUtils {
-    fn schema(&self) -> Module {
-        MoveApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }

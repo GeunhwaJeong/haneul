@@ -979,9 +979,9 @@ impl CommitHandlerState {
             let randomness_manager = randomness_manager
                 .as_mut()
                 .expect("randomness manager should exist if randomness is enabled");
-            match randomness_manager.dkg_status() {
+            match randomness_manager.dkg_status_for_commit_round(commit_info.round) {
                 DkgStatus::Pending => None,
-                DkgStatus::Failed => {
+                DkgStatus::TimedOut => {
                     dkg_failed = true;
                     None
                 }
@@ -2312,15 +2312,14 @@ impl<C: CheckpointServiceNotify + Send + Sync> ConsensusHandler<C> {
             randomness_dkg_confirmations,
         );
 
-        // Keep advancing the DKG state machine until it is resolved, regardless of
-        // whether new messages/confirmations were processed this commit. Preserve
-        // the mainnet epoch fallback until the protocol flag is active everywhere.
-        let always_advance_dkg_to_resolution = (self
-            .epoch_store
-            .protocol_config()
-            .always_advance_dkg_to_resolution()
-            || (self.epoch_store.get_chain() == Chain::Mainnet
-                && self.epoch_store.epoch() >= 1143))
+        let protocol_config = self.epoch_store.protocol_config();
+        // Once timeout failure is derived per commit, merge and completion can only make progress
+        // when new consensus material arrives.
+        let always_advance_dkg_to_resolution = !protocol_config
+            .allow_dkg_completion_after_timeout()
+            && (protocol_config.always_advance_dkg_to_resolution()
+                || (self.epoch_store.get_chain() == Chain::Mainnet
+                    && self.epoch_store.epoch() >= 1143))
             && randomness_manager.dkg_status() == DkgStatus::Pending;
 
         if randomness_dkg_updates
@@ -4216,7 +4215,6 @@ mod tests {
 
         let state = TestAuthorityBuilder::new()
             .with_starting_objects(&all_objects)
-            .skip_genesis_owner_index()
             .build()
             .await;
         let epoch_store = state.epoch_store_for_testing();
@@ -4335,7 +4333,6 @@ mod tests {
 
         let state = TestAuthorityBuilder::new()
             .with_starting_objects(&[gas_object.clone(), owned_object.clone()])
-            .skip_genesis_owner_index()
             .build()
             .await;
         let epoch_store = state.epoch_store_for_testing();
@@ -4388,7 +4385,6 @@ mod tests {
 
         let state = TestAuthorityBuilder::new()
             .with_starting_objects(&[gas_object.clone(), owned_object.clone()])
-            .skip_genesis_owner_index()
             .build()
             .await;
         let epoch_store = state.epoch_store_for_testing();
@@ -4458,7 +4454,6 @@ mod tests {
 
         let state = TestAuthorityBuilder::new()
             .with_starting_objects(&[gas_object.clone(), owned_object.clone()])
-            .skip_genesis_owner_index()
             .build()
             .await;
         let epoch_store = state.epoch_store_for_testing();

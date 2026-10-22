@@ -74,19 +74,9 @@ yarn-error.log*
 .env
 checkpoints_dir/*
 light_client.yaml
-docs/content/references/haneul-api/haneul-graphql/*
-docs/content/references/framework/**
 docs/subtrees
 lcov.info
 
 .sparse
-docs/content/documentation.json
-.cache-external-docs/
 
 # Generated external docs (rebuilt at build time by fetch/transform scripts)
-docs/content/haneul-stack/seal/*.mdx
-!docs/content/haneul-stack/seal/haneul-stack-seal.mdx
-docs/content/haneul-stack/messaging/*.mdx
-!docs/content/haneul-stack/messaging/index.mdx
-!docs/content/haneul-stack/messaging/chat-app.mdx
-docs/site/static/haneul-stack/

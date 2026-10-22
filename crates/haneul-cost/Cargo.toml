@@ -26,4 +26,3 @@ haneul-swarm-config.workspace = true
 haneul-test-transaction-builder.workspace = true
 haneul-move-build.workspace = true
 move-disassembler.workspace = true
-haneul-json-rpc-types.workspace = true

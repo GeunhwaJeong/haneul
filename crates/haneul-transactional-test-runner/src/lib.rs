@@ -28,12 +28,9 @@ mod testing_imports {
     pub use super::test_adapter::{HaneulTestAdapter, PRE_COMPILED};
     pub use haneul_core::authority::AuthorityState;
     pub use haneul_core::authority::authority_per_epoch_store::CertLockGuard;
+    pub use haneul_core::authority::authority_test_utils::dev_inspect_for_testing;
     pub use haneul_core::authority::authority_test_utils::submit_and_execute_with_error;
     pub use haneul_core::authority::shared_object_version_manager::AssignedVersions;
-    pub use haneul_json_rpc::authority_state::StateRead;
-    pub use haneul_json_rpc_types::EventFilter;
-    pub use haneul_json_rpc_types::{DevInspectResults, DryRunTransactionBlockResponse};
-    pub use haneul_storage::key_value_store::TransactionKeyValueStore;
     pub use haneul_types::base_types::HaneulAddress;
     pub use haneul_types::base_types::ObjectID;
     pub use haneul_types::base_types::VersionNumber;
@@ -58,6 +55,8 @@ mod testing_imports {
     pub use haneul_types::transaction::Transaction;
     pub use haneul_types::transaction::TransactionKind;
     pub use haneul_types::transaction::{InputObjects, TransactionData};
+    pub use haneul_types::transaction_executor::SimulateTransactionResult;
+    pub use haneul_types::transaction_executor::TransactionChecks;
     pub use rand::rngs::StdRng;
     pub use simulacrum::AdvanceEpochConfig;
     pub use simulacrum::Simulacrum;
@@ -83,7 +82,6 @@ pub async fn run_test(path: &Path) -> Result<(), Box<dyn std::error::Error>> {
 pub struct ValidatorWithFullnode {
     pub validator: Arc<AuthorityState>,
     pub fullnode: Arc<AuthorityState>,
-    pub kv_store: Arc<TransactionKeyValueStore>,
     pending_effects: Vec<TransactionEffects>,
     next_checkpoint_seq: u64,
 }
@@ -128,14 +126,14 @@ pub trait TransactionalAdapter: Send + Sync + ReadStore {
     async fn dry_run_transaction_block(
         &self,
         transaction_block: TransactionData,
-    ) -> HaneulResult<DryRunTransactionBlockResponse>;
+    ) -> HaneulResult<SimulateTransactionResult>;
 
     async fn dev_inspect_transaction_block(
         &self,
         sender: HaneulAddress,
         transaction_kind: TransactionKind,
         gas_price: Option<u64>,
-    ) -> HaneulResult<DevInspectResults>;
+    ) -> HaneulResult<SimulateTransactionResult>;
 
     async fn query_tx_events_asc(
         &self,
@@ -206,11 +204,12 @@ impl TransactionalAdapter for ValidatorWithFullnode {
     async fn dry_run_transaction_block(
         &self,
         transaction_block: TransactionData,
-    ) -> HaneulResult<DryRunTransactionBlockResponse> {
-        self.fullnode
-            .dry_exec_transaction(transaction_block)
-            .await
-            .map(|result| result.0)
+    ) -> HaneulResult<SimulateTransactionResult> {
+        self.fullnode.simulate_transaction(
+            transaction_block,
+            TransactionChecks::Enabled,
+            /* allow_mock_gas_coin */ true,
+        )
     }
 
     async fn dev_inspect_transaction_block(
@@ -218,19 +217,17 @@ impl TransactionalAdapter for ValidatorWithFullnode {
         sender: HaneulAddress,
         transaction_kind: TransactionKind,
         gas_price: Option<u64>,
-    ) -> HaneulResult<DevInspectResults> {
-        self.fullnode
-            .dev_inspect_transaction_block(
-                sender,
-                transaction_kind,
-                gas_price,
-                None,
-                None,
-                None,
-                None,
-                None,
-            )
-            .await
+    ) -> HaneulResult<SimulateTransactionResult> {
+        dev_inspect_for_testing(
+            &self.fullnode,
+            sender,
+            transaction_kind,
+            gas_price,
+            None,
+            None,
+            None,
+            TransactionChecks::Disabled,
+        )
     }
 
     async fn query_tx_events_asc(
@@ -240,17 +237,11 @@ impl TransactionalAdapter for ValidatorWithFullnode {
     ) -> HaneulResult<Vec<Event>> {
         Ok(self
             .validator
-            .query_events(
-                &self.kv_store,
-                EventFilter::Transaction(*tx_digest),
-                None,
-                limit,
-                false,
-            )
-            .await
+            .get_transaction_events(tx_digest)
+            .map(|events| events.data)
             .unwrap_or_default()
             .into_iter()
-            .map(|haneul_event| haneul_event.into())
+            .take(limit)
             .collect())
     }
 
@@ -295,7 +286,7 @@ impl TransactionalAdapter for ValidatorWithFullnode {
     async fn get_active_validator_addresses(&self) -> HaneulResult<Vec<HaneulAddress>> {
         Ok(self
             .fullnode
-            .get_system_state()
+            .get_haneul_system_state_object_for_testing()
             .map_err(|e| {
                 HaneulErrorKind::HaneulSystemStateReadError(format!(
                     "Failed to get system state from fullnode: {}",
@@ -487,14 +478,14 @@ impl TransactionalAdapter for Simulacrum<StdRng, PersistedStore> {
         _sender: HaneulAddress,
         _transaction_kind: TransactionKind,
         _gas_price: Option<u64>,
-    ) -> HaneulResult<DevInspectResults> {
+    ) -> HaneulResult<SimulateTransactionResult> {
         unimplemented!("dev_inspect_transaction_block not supported in simulator mode")
     }
 
     async fn dry_run_transaction_block(
         &self,
         _transaction_block: TransactionData,
-    ) -> HaneulResult<DryRunTransactionBlockResponse> {
+    ) -> HaneulResult<SimulateTransactionResult> {
         unimplemented!("dry_run_transaction_block not supported in simulator mode")
     }
 

@@ -1979,17 +1979,23 @@ impl TransactionKind {
         )
     }
 
-    pub fn mutates_implicitly_read_system_object(&self) -> bool {
-        self.shared_input_objects()
-            .any(|obj| obj.may_mutate() && obj.id.is_implicitly_read_system_object())
-    }
-
     pub fn is_accumulator_barrier_settle_tx(&self) -> bool {
         matches!(self, TransactionKind::ProgrammableSystemTransaction(_))
             && self.shared_input_objects().any(|obj| {
                 obj.id == HANEUL_ACCUMULATOR_ROOT_OBJECT_ID
                     && obj.mutability == SharedObjectMutability::Mutable
             })
+    }
+
+    /// Whether this is any accumulator settlement transaction (a settlement chunk or
+    /// the barrier); every one declares the accumulator root object as a shared input.
+    pub fn is_accumulator_settle_tx(&self) -> bool {
+        if let TransactionKind::ProgrammableSystemTransaction(pt) = self {
+            pt.shared_input_objects()
+                .any(|obj| obj.id == HANEUL_ACCUMULATOR_ROOT_OBJECT_ID)
+        } else {
+            false
+        }
     }
 
     /// If this is an accumulator barrier settlement transaction, returns its
@@ -4108,6 +4114,18 @@ impl SenderSignedTransaction {
     }
 }
 
+/// Any ML-DSA-65 part of a multisig is a BCS variant older binaries cannot
+/// decode, so it stays out of blocks until the flag is on, even when only
+/// classical members signed.
+fn mldsa65_multisig_unsupported() -> HaneulError {
+    HaneulErrorKind::UserInputError {
+        error: UserInputError::Unsupported(
+            "ML-DSA-65 multisig members are not enabled on this network".to_string(),
+        ),
+    }
+    .into()
+}
+
 impl SenderSignedData {
     pub fn new(tx_data: TransactionData, tx_signatures: Vec<GenericSignature>) -> Self {
         Self(SizeOneVec::new(SenderSignedTransaction {
@@ -4205,7 +4223,7 @@ impl SenderSignedData {
     fn check_user_signature_protocol_compatibility(&self, config: &ProtocolConfig) -> HaneulResult {
         for sig in &self.inner().tx_signatures {
             match sig {
-                GenericSignature::MultiSig(_) => {
+                GenericSignature::MultiSig(multisig) => {
                     if !config.upgraded_multisig_supported() {
                         return Err(HaneulErrorKind::UserInputError {
                             error: UserInputError::Unsupported(
@@ -4213,6 +4231,9 @@ impl SenderSignedData {
                             ),
                         }
                         .into());
+                    }
+                    if multisig.uses_mldsa65() && !config.mldsa65_auth() {
+                        return Err(mldsa65_multisig_unsupported());
                     }
                 }
                 GenericSignature::ZkLoginAuthenticator(_) => {
@@ -4235,7 +4256,22 @@ impl SenderSignedData {
                         .into());
                     }
                 }
-                GenericSignature::Signature(_) | GenericSignature::MultiSigLegacy(_) => (),
+                GenericSignature::Signature(_) => {
+                    // Only ML-DSA-65 is gated; the classical schemes predate feature flags.
+                    if sig.is_mldsa65() && !config.mldsa65_auth() {
+                        return Err(HaneulErrorKind::UserInputError {
+                            error: UserInputError::Unsupported(
+                                "ML-DSA-65 signatures are not enabled on this network".to_string(),
+                            ),
+                        }
+                        .into());
+                    }
+                }
+                GenericSignature::MultiSigLegacy(multisig) => {
+                    if multisig.uses_mldsa65() && !config.mldsa65_auth() {
+                        return Err(mldsa65_multisig_unsupported());
+                    }
+                }
             }
         }
 
@@ -5642,7 +5678,7 @@ impl Display for CertifiedTransaction {
             "Signed Authorities Bitmap : {:?}",
             self.auth_sig().signers_map
         )?;
-        write!(writer, "{}", &self.data().intent_message().value.kind())?;
+        write!(writer, "{}", self.data().intent_message().value.kind())?;
         write!(f, "{}", writer)
     }
 }

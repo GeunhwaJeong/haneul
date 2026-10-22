@@ -26,6 +26,7 @@ use tap::Pipe;
 use tonic::Status;
 use tonic::metadata::MetadataMap;
 
+use haneul_protocol_config::ProtocolVersion;
 pub use haneul_rpc::client::HeadersInterceptor;
 pub use haneul_rpc::client::ResponseExt;
 
@@ -46,10 +47,19 @@ impl Client {
         T: TryInto<http::Uri>,
         T::Error: Into<BoxError>,
     {
-        haneul_rpc::Client::new(uri).map(Self)
+        haneul_rpc::Client::new(uri)
+            .map(Self)
+            .map(|client| client.with_headers(HeadersInterceptor::new()))
     }
 
-    pub fn with_headers(self, headers: HeadersInterceptor) -> Self {
+    /// Sets the headers sent with every request. `x-haneul-client-protocol-version` is always
+    /// included, since this client can decode everything up to this binary's max protocol version.
+    pub fn with_headers(self, mut headers: HeadersInterceptor) -> Self {
+        headers
+            .headers_mut()
+            .entry(crate::X_HANEUL_CLIENT_PROTOCOL_VERSION)
+            .expect("valid header name")
+            .or_insert(ProtocolVersion::MAX_ALLOWED.as_u64().into());
         Self(self.0.with_headers(headers))
     }
 

@@ -6,7 +6,6 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use async_trait::async_trait;
-use haneul_types::transaction_executor::ProposerSelector as _;
 use prometheus::Registry;
 
 use super::*;

@@ -72,6 +72,9 @@ pub struct NodeConfig {
     pub db_path: PathBuf,
     #[serde(default = "default_grpc_address")]
     pub network_address: Multiaddr,
+    /// The address the fullnode's HTTP server (gRPC and REST) listens on. The
+    /// key keeps its historical name from when the JSON-RPC service was also
+    /// served on this address, so that existing configs keep working.
     #[serde(default = "default_json_rpc_address")]
     pub json_rpc_address: SocketAddr,
 
@@ -91,36 +94,6 @@ pub struct NodeConfig {
     /// For validator nodes this is expected to be `None`
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fullnode_sync_mode: Option<FullNodeSyncMode>,
-
-    #[serde(default = "default_enable_index_processing")]
-    pub enable_index_processing: bool,
-
-    /// When true, post-processing (JSON-RPC indexing and event emission) runs
-    /// synchronously on the execution path instead of being spawned to a
-    /// background thread. This is the legacy behavior and can be used as a
-    /// rollback mechanism or for testing.
-    #[serde(default)]
-    pub sync_post_process_one_tx: bool,
-
-    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
-    pub remove_deprecated_tables: bool,
-
-    #[serde(default)]
-    /// Determines the jsonrpc server type as either:
-    /// - 'websocket' for a websocket based service (deprecated)
-    /// - 'http' for an http based service
-    /// - 'both' for both a websocket and http based service (deprecated)
-    pub jsonrpc_server_type: Option<ServerType>,
-
-    /// When true, the JSON-RPC HTTP service is not started. This only stops the
-    /// node from serving JSON-RPC requests; it is independent of JSON-RPC
-    /// indexing (see `enable_index_processing`), which continues to run. This
-    /// lets a node keep indexing while no longer exposing the JSON-RPC service,
-    /// and it does not affect the gRPC/REST service served on the same address.
-    /// Defaults to false so the service stays enabled unless explicitly turned
-    /// off.
-    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
-    pub disable_json_rpc: bool,
 
     #[serde(default)]
     pub grpc_load_shed: Option<bool>,
@@ -160,15 +133,6 @@ pub struct NodeConfig {
     #[serde(default)]
     pub expensive_safety_check_config: ExpensiveSafetyCheckConfig,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name_service_package_address: Option<HaneulAddress>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name_service_registry_id: Option<ObjectID>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name_service_reverse_registry_id: Option<ObjectID>,
-
     #[serde(default)]
     pub transaction_deny_config: TransactionDenyConfig,
 
@@ -193,15 +157,6 @@ pub struct NodeConfig {
 
     #[serde(default)]
     pub state_snapshot_write_config: StateSnapshotConfig,
-
-    #[serde(default)]
-    pub indexer_max_subscriptions: Option<usize>,
-
-    #[serde(default = "default_transaction_kv_store_config")]
-    pub transaction_kv_store_read_config: TransactionKeyValueStoreReadConfig,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub transaction_kv_store_write_config: Option<TransactionKeyValueStoreWriteConfig>,
 
     #[serde(default = "default_jwk_fetch_interval_seconds")]
     pub jwk_fetch_interval_seconds: u64,
@@ -877,41 +832,6 @@ impl ExecutionCacheConfig {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
-pub enum ServerType {
-    WebSocket,
-    Http,
-    Both,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "kebab-case")]
-pub struct TransactionKeyValueStoreReadConfig {
-    #[serde(default = "default_base_url")]
-    pub base_url: String,
-
-    #[serde(default = "default_cache_size")]
-    pub cache_size: u64,
-}
-
-impl Default for TransactionKeyValueStoreReadConfig {
-    fn default() -> Self {
-        Self {
-            base_url: default_base_url(),
-            cache_size: default_cache_size(),
-        }
-    }
-}
-
-fn default_base_url() -> String {
-    "https://transactions.haneul.io/".to_string()
-}
-
-fn default_cache_size() -> u64 {
-    100_000
-}
-
 fn default_jwk_fetch_interval_seconds() -> u64 {
     3600
 }
@@ -960,16 +880,8 @@ pub fn default_zklogin_oauth_providers() -> BTreeMap<Chain, BTreeSet<String>> {
     map
 }
 
-fn default_transaction_kv_store_config() -> TransactionKeyValueStoreReadConfig {
-    TransactionKeyValueStoreReadConfig::default()
-}
-
 fn default_authority_store_pruning_config() -> AuthorityStorePruningConfig {
     AuthorityStorePruningConfig::default()
-}
-
-pub fn default_enable_index_processing() -> bool {
-    true
 }
 
 fn default_grpc_address() -> Multiaddr {
@@ -1137,17 +1049,6 @@ impl NodeConfig {
             })
     }
 
-    pub fn jsonrpc_server_type(&self) -> ServerType {
-        self.jsonrpc_server_type.unwrap_or(ServerType::Http)
-    }
-
-    /// Whether the JSON-RPC HTTP service should be served. This gates only the
-    /// JSON-RPC endpoints; the gRPC/REST service and JSON-RPC indexing are
-    /// unaffected.
-    pub fn json_rpc_enabled(&self) -> bool {
-        !self.disable_json_rpc
-    }
-
     pub fn rpc(&self) -> Option<&crate::RpcConfig> {
         self.rpc.as_ref()
     }
@@ -1268,9 +1169,6 @@ pub struct ExpensiveSafetyCheckConfig {
     /// Disable state consistency check even when we are running in debug mode.
     #[serde(default)]
     force_disable_state_consistency_check: bool,
-
-    #[serde(default)]
-    enable_secondary_index_checks: bool,
     // TODO: Add more expensive checks here
 }
 
@@ -1282,14 +1180,6 @@ impl ExpensiveSafetyCheckConfig {
             force_disable_epoch_haneul_conservation_check: false,
             enable_state_consistency_check: true,
             force_disable_state_consistency_check: false,
-            enable_secondary_index_checks: false, // Disable by default for now
-        }
-    }
-
-    pub fn new_enable_all_with_secondary_index_checks() -> Self {
-        Self {
-            enable_secondary_index_checks: true,
-            ..Self::new_enable_all()
         }
     }
 
@@ -1300,7 +1190,6 @@ impl ExpensiveSafetyCheckConfig {
             force_disable_epoch_haneul_conservation_check: true,
             enable_state_consistency_check: false,
             force_disable_state_consistency_check: true,
-            enable_secondary_index_checks: false,
         }
     }
 
@@ -1324,10 +1213,6 @@ impl ExpensiveSafetyCheckConfig {
 
     pub fn enable_deep_per_tx_haneul_conservation_check(&self) -> bool {
         self.enable_deep_per_tx_haneul_conservation_check || cfg!(debug_assertions)
-    }
-
-    pub fn enable_secondary_index_checks(&self) -> bool {
-        self.enable_secondary_index_checks
     }
 }
 
@@ -1400,8 +1285,6 @@ pub struct AuthorityStorePruningConfig {
     pub killswitch_tombstone_pruning: bool,
     #[serde(default = "default_smoothing", skip_serializing_if = "is_true")]
     pub smooth: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub num_epochs_to_retain_for_indexes: Option<u64>,
 }
 
 fn default_num_latest_epoch_dbs_to_retain() -> usize {
@@ -1442,7 +1325,6 @@ impl Default for AuthorityStorePruningConfig {
             num_epochs_to_retain_for_checkpoints: if cfg!(msim) { Some(2) } else { None },
             killswitch_tombstone_pruning: false,
             smooth: true,
-            num_epochs_to_retain_for_indexes: None,
         }
     }
 }
@@ -1493,8 +1375,6 @@ pub struct DBCheckpointConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub object_store_config: Option<ObjectStoreConfig>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub perform_index_db_checkpoints_at_epoch_end: Option<bool>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub prune_and_compact_before_upload: Option<bool>,
 }
 
@@ -1539,17 +1419,6 @@ pub struct StateSnapshotConfig {
     /// and are intended to be kept indefinitely.
     #[serde(default)]
     pub archive_interval_epochs: u64,
-}
-
-#[derive(Default, Debug, Clone, Deserialize, Serialize)]
-#[serde(rename_all = "kebab-case")]
-pub struct TransactionKeyValueStoreWriteConfig {
-    pub aws_access_key_id: String,
-    pub aws_secret_access_key: String,
-    pub aws_region: String,
-    pub table_name: String,
-    pub bucket_name: String,
-    pub concurrency: usize,
 }
 
 /// Configuration for the threshold(s) at which we consider the system
@@ -1797,7 +1666,7 @@ impl KeyPairWithPath {
         let cell: OnceCell<Arc<HaneulKeyPair>> = OnceCell::new();
         // OK to unwrap panic because authority should not start without all keypairs loaded.
         cell.set(Arc::new(read_keypair_from_file(&path).unwrap_or_else(
-            |e| panic!("Invalid keypair file at path {:?}: {e}", &path),
+            |e| panic!("Invalid keypair file at path {:?}: {e}", path),
         )))
         .expect("Failed to set keypair");
         Self {
@@ -1859,7 +1728,7 @@ impl AuthorityKeyPairWithPath {
         // OK to unwrap panic because authority should not start without all keypairs loaded.
         cell.set(Arc::new(
             read_authority_keypair_from_file(&path)
-                .unwrap_or_else(|_| panic!("Invalid authority keypair file at path {:?}", &path)),
+                .unwrap_or_else(|_| panic!("Invalid authority keypair file at path {:?}", path)),
         ))
         .expect("Failed to set authority keypair");
         Self {
@@ -1876,7 +1745,7 @@ impl AuthorityKeyPairWithPath {
                     // OK to unwrap panic because authority should not start without all keypairs loaded.
                     Arc::new(
                         read_authority_keypair_from_file(path).unwrap_or_else(|_| {
-                            panic!("Invalid authority keypair file {:?}", &path)
+                            panic!("Invalid authority keypair file {:?}", path)
                         }),
                     )
                 }

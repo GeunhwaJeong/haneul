@@ -39,6 +39,7 @@ const MAX_ADDRESS_LENGTH: usize = 300;
 const MAX_PEERS_TO_SEND: usize = 200;
 const MAX_ADDRESSES_PER_PEER: usize = 2;
 
+#[allow(clippy::result_large_err)]
 mod generated {
     include!(concat!(env!("OUT_DIR"), "/haneul.Discovery.rs"));
 }

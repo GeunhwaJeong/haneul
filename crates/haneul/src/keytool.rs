@@ -105,6 +105,7 @@ pub enum KeyToolCommand {
         #[clap(long, default_value = "0")]
         cur_epoch: u64,
     },
+    // TODO: document mldsa65 for generate/import once its key derivation lands.
     /// Generate a new keypair with key scheme flag {ed25519 | secp256k1 | secp256r1}
     /// with optional derivation path, default to m/44'/8282'/0'/0'/0' for ed25519 or
     /// m/54'/8282'/0'/0/0 for secp256k1 or m/74'/8282'/0'/0/0 for secp256r1. Word
@@ -730,6 +731,7 @@ impl KeyToolCommand {
                             HaneulKeyPair::Ed25519(kp) => kp.encode_base64(),
                             HaneulKeyPair::Secp256k1(kp) => kp.encode_base64(),
                             HaneulKeyPair::Secp256r1(kp) => kp.encode_base64(),
+                            HaneulKeyPair::MLDSA65(kp) => kp.encode_base64(),
                         };
                         KeypairData {
                             account_keypair: keypair.encode_base64(),

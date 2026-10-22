@@ -4,7 +4,6 @@
 
 use super::authority_store_tables::AuthorityPerpetualTables;
 use crate::checkpoints::{CheckpointStore, CheckpointWatermark};
-use crate::jsonrpc_index::IndexStore;
 use anyhow::anyhow;
 use haneul_config::node::AuthorityStorePruningConfig;
 pub use haneul_rpc_store::RetractionCursors;
@@ -83,7 +82,6 @@ pub struct AuthorityStorePruningMetrics {
     pub num_pruned_objects: IntCounter,
     pub num_pruned_tombstones: IntCounter,
     pub last_pruned_effects_checkpoint: IntGauge,
-    pub last_pruned_indexes_transaction: IntGauge,
     pub num_epochs_to_retain_for_objects: IntGauge,
     pub num_epochs_to_retain_for_checkpoints: IntGauge,
     pub last_pruned_executed_tx_digests_epoch: IntGauge,
@@ -113,12 +111,6 @@ impl AuthorityStorePruningMetrics {
             last_pruned_effects_checkpoint: register_int_gauge_with_registry!(
                 "last_pruned_effects_checkpoint",
                 "Last pruned effects checkpoint",
-                registry
-            )
-            .unwrap(),
-            last_pruned_indexes_transaction: register_int_gauge_with_registry!(
-                "last_pruned_indexes_transaction",
-                "Last pruned indexes transaction",
                 registry
             )
             .unwrap(),
@@ -683,33 +675,6 @@ impl AuthorityStorePruner {
         Ok(())
     }
 
-    #[cfg(not(tidehunter))]
-    fn prune_indexes(
-        indexes: Option<&IndexStore>,
-        config: &AuthorityStorePruningConfig,
-        epoch_duration_ms: u64,
-        metrics: &AuthorityStorePruningMetrics,
-    ) -> anyhow::Result<()> {
-        if let (Some(mut epochs_to_retain), Some(indexes)) =
-            (config.num_epochs_to_retain_for_indexes, indexes)
-        {
-            if epochs_to_retain < 7 {
-                warn!("num_epochs_to_retain_for_indexes is too low. Reseting it to 7");
-                epochs_to_retain = 7;
-            }
-            let now = SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis();
-            if let Some(cut_time_ms) =
-                u64::try_from(now)?.checked_sub(epochs_to_retain * epoch_duration_ms)
-            {
-                let transaction_id = indexes.prune(cut_time_ms)?;
-                metrics
-                    .last_pruned_indexes_transaction
-                    .set(transaction_id as i64);
-            }
-        }
-        Ok(())
-    }
-
     /// Deletes `executed_transaction_digests` entries for every epoch <= current_epoch - 2.
     ///
     /// Only the current and previous epochs are ever read from this table
@@ -951,7 +916,6 @@ impl AuthorityStorePruner {
         perpetual_db: Arc<AuthorityPerpetualTables>,
         checkpoint_store: Arc<CheckpointStore>,
         rpc_store: Option<RpcStore>,
-        jsonrpc_index: Option<Arc<IndexStore>>,
         metrics: Arc<AuthorityStorePruningMetrics>,
         pruner_watermarks: Arc<PrunerWatermarks>,
     ) -> Sender<()> {
@@ -980,8 +944,6 @@ impl AuthorityStorePruner {
 
         #[cfg(tidehunter)]
         {
-            // Index pruning is only implemented for the rocksdb backend.
-            let _ = jsonrpc_index;
             // Object and checkpoint pruning (relocation) are only active when checkpoint
             // retention is configured. The executed-transaction-digest cleanup below runs
             // regardless, so the loop is always spawned.
@@ -1071,8 +1033,6 @@ impl AuthorityStorePruner {
                     tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
                 let mut checkpoints_prune_interval =
                     tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
-                let mut indexes_prune_interval =
-                    tokio::time::interval_at(Instant::now() + pruning_initial_delay, tick_duration);
                 // Not gated on any retention setting and without initial delay; see
                 // `prune_executed_tx_digests`.
                 let mut tx_digests_prune_interval =
@@ -1094,11 +1054,6 @@ impl AuthorityStorePruner {
                                 error!("Failed to prune checkpoints: {:?}", err);
                             }
                         },
-                        _ = indexes_prune_interval.tick(), if config.num_epochs_to_retain_for_indexes.is_some() => {
-                            if let Err(err) = Self::prune_indexes(jsonrpc_index.as_deref(), &config, epoch_duration_ms, &metrics) {
-                                error!("Failed to prune indexes: {:?}", err);
-                            }
-                        }
                         _ = &mut recv => break,
                     }
                 }
@@ -1126,7 +1081,6 @@ impl AuthorityStorePruner {
         perpetual_db: Arc<AuthorityPerpetualTables>,
         checkpoint_store: Arc<CheckpointStore>,
         rpc_store: Option<RpcStore>,
-        jsonrpc_index: Option<Arc<IndexStore>>,
         mut pruning_config: AuthorityStorePruningConfig,
         is_validator: bool,
         epoch_duration_ms: u64,
@@ -1173,7 +1127,6 @@ impl AuthorityStorePruner {
                 perpetual_db,
                 checkpoint_store,
                 rpc_store,
-                jsonrpc_index,
                 AuthorityStorePruningMetrics::new(registry),
                 pruner_watermarks,
             ),

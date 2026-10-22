@@ -746,9 +746,6 @@ pub enum HaneulErrorKind {
     #[error("Missing committee information for epoch {0}")]
     MissingCommitteeAtEpoch(EpochId),
 
-    #[error("Index store not available on this Fullnode.")]
-    IndexStoreNotAvailable,
-
     #[error("Failed to read dynamic field from table in the object store: {0}")]
     DynamicFieldReadError(String),
 

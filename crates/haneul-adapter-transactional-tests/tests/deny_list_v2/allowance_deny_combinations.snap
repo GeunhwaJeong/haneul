@@ -30,7 +30,7 @@ task 2, lines 63-70:
 mutated: object(0,0), object(1,5), object(1,10)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,0), B, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 1000), (object(2,1), B, haneul::balance::Balance<test::regulated_coin2::REGULATED_COIN2>, Merge, 1000), (object(2,2), C, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 1000), (object(2,3), D, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 1000)
-gas summary: computation_cost: 1000000, storage_cost: 3967200,  storage_rebate: 3927528, non_refundable_storage_fee: 39672
+gas summary: computation_cost: 1000000, storage_cost: 3967200,  storage_rebate: 3966803, non_refundable_storage_fee: 397
 
 task 3, line 72:
 //# create-checkpoint
@@ -52,7 +52,7 @@ task 5, lines 79-82:
 //> 1: haneul::allowance::new<haneul::balance::Balance<test::regulated_coin2::REGULATED_COIN2>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(5,0), object(5,1)
 mutated: object(0,1)
-gas summary: computation_cost: 1000000, storage_cost: 6764000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6764000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 6, lines 84-87:
 //# programmable --sender D --inputs b"" @C vector[1000u256] vector[] vector[99999999999999]
@@ -75,14 +75,14 @@ task 7, lines 91-96:
 mutated: object(0,2), object(4,0), object(6,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,0), B, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Split, 100), (object(2,2), C, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 200), (object(2,3), D, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Split, 100)
-gas summary: computation_cost: 1000000, storage_cost: 7584800,  storage_rebate: 6530832, non_refundable_storage_fee: 65968
+gas summary: computation_cost: 1000000, storage_cost: 7584800,  storage_rebate: 6596140, non_refundable_storage_fee: 660
 
 task 8, line 98:
 //# run haneul::coin::deny_list_v2_add --args object(0x403) object(1,3) @D --type-args test::regulated_coin1::REGULATED_COIN1 --sender A
-events: Event { package_id: haneul, transaction_module: Identifier("coin"), sender: A, type_: StructTag { address: haneul, module: Identifier("deny_list"), name: Identifier("PerTypeConfigCreated"), type_params: [] }, contents: [0, 0, 0, 0, 0, 0, 0, 0, 98, 54, 50, 53, 102, 101, 48, 102, 100, 51, 53, 50, 100, 100, 52, 55, 97, 97, 52, 99, 97, 99, 55, 98, 50, 55, 100, 55, 57, 57, 102, 57, 49, 52, 100, 98, 101, 98, 54, 53, 57, 48, 48, 54, 51, 53, 49, 51, 57, 51, 98, 54, 50, 52, 53, 100, 49, 53, 48, 51, 97, 56, 55, 48, 53, 58, 58, 114, 101, 103, 117, 108, 97, 116, 101, 100, 95, 99, 111, 105, 110, 49, 58, 58, 82, 69, 71, 85, 76, 65, 84, 69, 68, 95, 67, 79, 73, 78, 49, 40, 121, 113, 135, 121, 123, 23, 37, 92, 214, 228, 187, 62, 67, 59, 102, 132, 108, 205, 117, 174, 66, 23, 232, 94, 194, 211, 36, 236, 211, 69, 253] }
+events: Event { package_id: haneul, transaction_module: Identifier("coin"), sender: A, type_: StructTag { address: haneul, module: Identifier("deny_list"), name: Identifier("PerTypeConfigCreated"), type_params: [] }, contents: [0, 0, 0, 0, 0, 0, 0, 0, 98, 54, 50, 53, 102, 101, 48, 102, 100, 51, 53, 50, 100, 100, 52, 55, 97, 97, 52, 99, 97, 99, 55, 98, 50, 55, 100, 55, 57, 57, 102, 57, 49, 52, 100, 98, 101, 98, 54, 53, 57, 48, 48, 54, 51, 53, 49, 51, 57, 51, 98, 54, 50, 52, 53, 100, 49, 53, 48, 51, 97, 56, 55, 48, 53, 58, 58, 114, 101, 103, 117, 108, 97, 116, 101, 100, 95, 99, 111, 105, 110, 49, 58, 58, 82, 69, 71, 85, 76, 65, 84, 69, 68, 95, 67, 79, 73, 78, 49, 114, 202, 254, 228, 188, 177, 161, 14, 54, 239, 242, 44, 71, 4, 35, 217, 228, 44, 215, 238, 72, 8, 163, 6, 244, 117, 107, 93, 198, 186, 234, 37] }
 created: object(8,0), object(8,1), object(8,2)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
-gas summary: computation_cost: 1000000, storage_cost: 12220800,  storage_rebate: 2761308, non_refundable_storage_fee: 27892
+gas summary: computation_cost: 1000000, storage_cost: 12220800,  storage_rebate: 2788921, non_refundable_storage_fee: 279
 
 task 9, lines 100-105:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(4,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@D,object(6,0)) mutshared(4,0) mutshared(6,0) immshared(6) @C
@@ -101,22 +101,22 @@ task 10, lines 107-110:
 mutated: object(0,2), object(4,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,0), B, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Split, 100), (object(2,2), C, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4243536, non_refundable_storage_fee: 42864
+gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4285971, non_refundable_storage_fee: 429
 
 task 11, line 112:
 //# run haneul::coin::deny_list_v2_remove --args object(0x403) object(1,3) @D --type-args test::regulated_coin1::REGULATED_COIN1 --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
 deleted: object(8,1)
-gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6809220, non_refundable_storage_fee: 68780
+gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6877312, non_refundable_storage_fee: 688
 
 // === One funder, two coins, denied for one of them ===
 
 task 12, line 116:
 //# run haneul::coin::deny_list_v2_add --args object(0x403) object(1,8) @B --type-args test::regulated_coin2::REGULATED_COIN2 --sender A
-events: Event { package_id: haneul, transaction_module: Identifier("coin"), sender: A, type_: StructTag { address: haneul, module: Identifier("deny_list"), name: Identifier("PerTypeConfigCreated"), type_params: [] }, contents: [0, 0, 0, 0, 0, 0, 0, 0, 98, 54, 50, 53, 102, 101, 48, 102, 100, 51, 53, 50, 100, 100, 52, 55, 97, 97, 52, 99, 97, 99, 55, 98, 50, 55, 100, 55, 57, 57, 102, 57, 49, 52, 100, 98, 101, 98, 54, 53, 57, 48, 48, 54, 51, 53, 49, 51, 57, 51, 98, 54, 50, 52, 53, 100, 49, 53, 48, 51, 97, 56, 55, 48, 53, 58, 58, 114, 101, 103, 117, 108, 97, 116, 101, 100, 95, 99, 111, 105, 110, 50, 58, 58, 82, 69, 71, 85, 76, 65, 84, 69, 68, 95, 67, 79, 73, 78, 50, 201, 88, 75, 106, 13, 216, 31, 189, 168, 15, 251, 2, 116, 143, 31, 32, 207, 201, 154, 64, 39, 206, 162, 22, 249, 5, 11, 203, 141, 149, 82, 226] }
+events: Event { package_id: haneul, transaction_module: Identifier("coin"), sender: A, type_: StructTag { address: haneul, module: Identifier("deny_list"), name: Identifier("PerTypeConfigCreated"), type_params: [] }, contents: [0, 0, 0, 0, 0, 0, 0, 0, 98, 54, 50, 53, 102, 101, 48, 102, 100, 51, 53, 50, 100, 100, 52, 55, 97, 97, 52, 99, 97, 99, 55, 98, 50, 55, 100, 55, 57, 57, 102, 57, 49, 52, 100, 98, 101, 98, 54, 53, 57, 48, 48, 54, 51, 53, 49, 51, 57, 51, 98, 54, 50, 52, 53, 100, 49, 53, 48, 51, 97, 56, 55, 48, 53, 58, 58, 114, 101, 103, 117, 108, 97, 116, 101, 100, 95, 99, 111, 105, 110, 50, 58, 58, 82, 69, 71, 85, 76, 65, 84, 69, 68, 95, 67, 79, 73, 78, 50, 66, 233, 70, 102, 196, 20, 100, 103, 207, 230, 56, 168, 108, 1, 10, 55, 186, 98, 192, 3, 138, 190, 168, 237, 232, 178, 55, 54, 183, 149, 153, 34] }
 created: object(12,0), object(12,1), object(12,2)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,8)
-gas summary: computation_cost: 1000000, storage_cost: 12220800,  storage_rebate: 4371444, non_refundable_storage_fee: 44156
+gas summary: computation_cost: 1000000, storage_cost: 12220800,  storage_rebate: 4415158, non_refundable_storage_fee: 442
 
 task 13, lines 118-121:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(4,0)) mutshared(4,0) immshared(6) @C
@@ -126,7 +126,7 @@ task 13, lines 118-121:
 mutated: object(0,2), object(4,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,0), B, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Split, 100), (object(2,2), C, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4243536, non_refundable_storage_fee: 42864
+gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4285971, non_refundable_storage_fee: 429
 
 task 14, lines 123-128:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(4,0)) allowance_withdraw<haneul::balance::Balance<test::regulated_coin2::REGULATED_COIN2>>(100,@B,object(5,0)) mutshared(4,0) mutshared(5,0) immshared(6) @C
@@ -141,7 +141,7 @@ task 15, line 130:
 //# run haneul::coin::deny_list_v2_remove --args object(0x403) object(1,8) @B --type-args test::regulated_coin2::REGULATED_COIN2 --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,8)
 deleted: object(12,1)
-gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6809220, non_refundable_storage_fee: 68780
+gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6877312, non_refundable_storage_fee: 688
 
 // === Sender denied, funder clear ===
 
@@ -149,7 +149,7 @@ task 16, line 134:
 //# run haneul::coin::deny_list_v2_add --args object(0x403) object(1,3) @C --type-args test::regulated_coin1::REGULATED_COIN1 --sender A
 created: object(16,0)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
-gas summary: computation_cost: 1000000, storage_cost: 6878000,  storage_rebate: 4371444, non_refundable_storage_fee: 44156
+gas summary: computation_cost: 1000000, storage_cost: 6878000,  storage_rebate: 4415158, non_refundable_storage_fee: 442
 
 task 17, lines 136-139:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(4,0)) mutshared(4,0) immshared(6) @C
@@ -166,13 +166,13 @@ task 18, lines 141-144:
 mutated: object(0,2), object(5,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,1), B, haneul::balance::Balance<test::regulated_coin2::REGULATED_COIN2>, Split, 100), (object(18,0), C, haneul::balance::Balance<test::regulated_coin2::REGULATED_COIN2>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4243536, non_refundable_storage_fee: 42864
+gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4285971, non_refundable_storage_fee: 429
 
 task 19, line 146:
 //# run haneul::coin::deny_list_v2_remove --args object(0x403) object(1,3) @C --type-args test::regulated_coin1::REGULATED_COIN1 --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
 deleted: object(16,0)
-gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6809220, non_refundable_storage_fee: 68780
+gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6877312, non_refundable_storage_fee: 688
 
 // === Own withdrawal next to an allowance withdrawal ===
 
@@ -186,13 +186,13 @@ task 20, lines 150-155:
 mutated: object(0,2), object(4,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,0), B, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Split, 100), (object(2,2), C, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 0), (object(20,0), A, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4243536, non_refundable_storage_fee: 42864
+gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4285971, non_refundable_storage_fee: 429
 
 task 21, line 157:
 //# run haneul::coin::deny_list_v2_add --args object(0x403) object(1,3) @B --type-args test::regulated_coin1::REGULATED_COIN1 --sender A
 created: object(21,0)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
-gas summary: computation_cost: 1000000, storage_cost: 6878000,  storage_rebate: 4371444, non_refundable_storage_fee: 44156
+gas summary: computation_cost: 1000000, storage_cost: 6878000,  storage_rebate: 4415158, non_refundable_storage_fee: 442
 
 task 22, lines 159-164:
 //# programmable --sender C --inputs withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100) allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(4,0)) mutshared(4,0) immshared(6) @C @A
@@ -211,7 +211,7 @@ task 23, lines 166-169:
 mutated: object(0,2)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,2), C, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Split, 100), (object(20,0), A, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 // === Denied before the allowance exists ===
 
@@ -223,7 +223,7 @@ task 24, lines 173-177:
 //> 1: haneul::allowance::new<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(24,0), object(24,1)
 mutated: object(0,1)
-gas summary: computation_cost: 1000000, storage_cost: 6764000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6764000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 25, lines 179-182:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(24,0)) mutshared(24,0) immshared(6) @C
@@ -236,7 +236,7 @@ task 26, line 184:
 //# run haneul::coin::deny_list_v2_remove --args object(0x403) object(1,3) @B --type-args test::regulated_coin1::REGULATED_COIN1 --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
 deleted: object(21,0)
-gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6809220, non_refundable_storage_fee: 68780
+gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6877312, non_refundable_storage_fee: 688
 
 task 27, lines 186-189:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(24,0)) mutshared(24,0) immshared(6) @C
@@ -246,7 +246,7 @@ task 27, lines 186-189:
 mutated: object(0,2), object(24,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,0), B, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Split, 100), (object(2,2), C, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4243536, non_refundable_storage_fee: 42864
+gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4285971, non_refundable_storage_fee: 429
 
 // === Global pause ===
 
@@ -254,7 +254,7 @@ task 28, line 193:
 //# run haneul::coin::deny_list_v2_enable_global_pause --args object(0x403) object(1,3) --type-args test::regulated_coin1::REGULATED_COIN1 --sender A
 created: object(28,0)
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
-gas summary: computation_cost: 1000000, storage_cost: 6672800,  storage_rebate: 4371444, non_refundable_storage_fee: 44156
+gas summary: computation_cost: 1000000, storage_cost: 6672800,  storage_rebate: 4415158, non_refundable_storage_fee: 442
 
 task 29, lines 195-198:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(4,0)) mutshared(4,0) immshared(6) @C
@@ -271,13 +271,13 @@ task 30, lines 200-203:
 mutated: object(0,2), object(5,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,1), B, haneul::balance::Balance<test::regulated_coin2::REGULATED_COIN2>, Split, 100), (object(18,0), C, haneul::balance::Balance<test::regulated_coin2::REGULATED_COIN2>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4243536, non_refundable_storage_fee: 42864
+gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4285971, non_refundable_storage_fee: 429
 
 task 31, line 205:
 //# run haneul::coin::deny_list_v2_disable_global_pause --args object(0x403) object(1,3) --type-args test::regulated_coin1::REGULATED_COIN1 --sender A
 mutated: 0x0000000000000000000000000000000000000000000000000000000000000403, object(0,0), object(1,3)
 deleted: object(28,0)
-gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6606072, non_refundable_storage_fee: 66728
+gas summary: computation_cost: 1000000, storage_cost: 4415600,  storage_rebate: 6672133, non_refundable_storage_fee: 667
 
 task 32, lines 207-210:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>>(100,@B,object(4,0)) mutshared(4,0) immshared(6) @C
@@ -287,4 +287,4 @@ task 32, lines 207-210:
 mutated: object(0,2), object(4,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000403
 accumulators_written: (object(2,0), B, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Split, 100), (object(2,2), C, haneul::balance::Balance<test::regulated_coin1::REGULATED_COIN1>, Merge, 100)
-gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4243536, non_refundable_storage_fee: 42864
+gas summary: computation_cost: 1000000, storage_cost: 4286400,  storage_rebate: 4285971, non_refundable_storage_fee: 429

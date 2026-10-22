@@ -59,8 +59,7 @@ jobs:
           git add \
             Cargo.toml \
             Cargo.lock \
-            crates/haneul-open-rpc/spec/openrpc.json \
-            crates/haneul-open-rpc/tests/snapshots/generate_spec__openrpc.snap.json
+            crates/haneul-indexer-alt-jsonrpc/openrpc.json
           BODY="Haneul v${NEW_VERSION} Version Bump"
           git commit -m "$BODY"
           git push -u origin "$BRANCH"

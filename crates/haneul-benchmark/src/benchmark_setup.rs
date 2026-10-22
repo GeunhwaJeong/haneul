@@ -105,7 +105,7 @@ impl BenchmarkSetup {
             .ok_or_else(|| {
                 anyhow!(format!(
                     "Failed to find keypair at path: {}",
-                    &opts.keystore_path
+                    opts.keystore_path
                 ))
             })?;
 

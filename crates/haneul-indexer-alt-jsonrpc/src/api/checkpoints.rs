@@ -4,8 +4,6 @@
 
 use anyhow::Context as _;
 use haneul_json_rpc_types::Checkpoint;
-use haneul_open_rpc::Module;
-use haneul_open_rpc_macros::open_rpc;
 use haneul_types::haneul_serde::BigInt;
 use jsonrpsee::core::RpcResult;
 use jsonrpsee::proc_macros::rpc;
@@ -16,14 +14,13 @@ use crate::error::InternalContext;
 use crate::error::RpcError;
 use crate::error::invalid_params;
 
-#[open_rpc(namespace = "haneul", tag = "Checkpoints API")]
 #[rpc(server, namespace = "haneul")]
 trait CheckpointsApi {
     /// Return a checkpoint by its sequence number
     #[method(name = "getCheckpoint")]
     async fn get_checkpoint(
         &self,
-        /// Checkpoint sequence number.
+        // Checkpoint sequence number.
         seq: BigInt<u64>,
     ) -> RpcResult<Checkpoint>;
 }
@@ -47,10 +44,6 @@ impl CheckpointsApiServer for Checkpoints {
 }
 
 impl RpcModule for Checkpoints {
-    fn schema(&self) -> Module {
-        CheckpointsApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }

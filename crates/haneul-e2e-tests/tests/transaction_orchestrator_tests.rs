@@ -7,8 +7,6 @@ use haneul_core::test_utils::wait_for_tx;
 use haneul_core::transaction_driver::SubmitTransactionOptions;
 use haneul_core::transaction_orchestrator::TransactionOrchestrator;
 use haneul_macros::sim_test;
-use haneul_storage::key_value_store::TransactionKeyValueStore;
-use haneul_storage::key_value_store_metrics::KeyValueStoreMetrics;
 use haneul_test_transaction_builder::{
     batch_make_transfer_transactions, make_staking_transaction, make_transfer_haneul_transaction,
 };
@@ -21,7 +19,6 @@ use haneul_types::transaction_driver_types::{
     ExecuteTransactionRequestType, ExecuteTransactionRequestV3, ExecuteTransactionResponseV3,
     FinalizedEffects, IsTransactionExecutedLocally, TransactionSubmissionError,
 };
-use std::sync::Arc;
 use std::time::Duration;
 use test_cluster::TestClusterBuilder;
 use tokio::time::timeout;
@@ -82,18 +79,10 @@ async fn test_blocking_execution() -> Result<(), anyhow::Error> {
 
     assert!(executed_locally);
 
-    let metrics = KeyValueStoreMetrics::new_for_tests();
-    let kv_store = Arc::new(TransactionKeyValueStore::new(
-        "rocksdb",
-        metrics,
-        handle.state(),
-    ));
-
     assert!(
         handle
             .state()
-            .get_executed_transaction_and_effects(digest, kv_store)
-            .await
+            .get_executed_transaction_and_effects(digest)
             .is_ok()
     );
 

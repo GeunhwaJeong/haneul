@@ -1224,7 +1224,7 @@ fn invalid_phantom_use_error(
             "Phantom type parameter cannot be used as an argument to a non-phantom parameter"
         }
     };
-    let decl_msg = format!("'{}' declared here as phantom", &param.user_specified_name);
+    let decl_msg = format!("'{}' declared here as phantom", param.user_specified_name);
     context.add_diag(diag!(
         Declarations::InvalidPhantomUse,
         (ty_loc, msg),
@@ -2030,7 +2030,7 @@ fn exp(context: &mut Context, ne: Box<N::Exp>) -> Box<T::Exp> {
         }
         NE::UnaryExp(uop, nr) => {
             use UnaryOp_::*;
-            let msg = || format!("Invalid argument to '{}'", &uop);
+            let msg = || format!("Invalid argument to '{}'", uop);
             let er = exp(context, nr);
             let ty = match &uop.value {
                 Not => {
@@ -2192,7 +2192,7 @@ fn binop(
 ) -> Box<T::Exp> {
     use BinOp_::*;
     use T::UnannotatedExp_ as TE;
-    let msg = || format!("Incompatible arguments to '{}'", &bop);
+    let msg = || format!("Incompatible arguments to '{}'", bop);
     let (ty, operand_ty) = match &bop.value {
         Eq | Neq
             if context
@@ -2217,7 +2217,7 @@ fn binop(
                     let ability_msg = Some(format!(
                         "'{}' requires the '{}' ability as the value is consumed. Try \
                                  borrowing the values with '&' first.'",
-                        &bop,
+                        bop,
                         Ability_::Drop,
                     ));
                     context.add_ability_constraint(
@@ -2265,7 +2265,7 @@ fn binop(
             let ability_msg = Some(format!(
                 "'{}' requires the '{}' ability as the value is consumed. Try \
                          borrowing the values with '&' first.'",
-                &bop,
+                bop,
                 Ability_::Drop,
             ));
             context.add_ability_constraint(
@@ -2281,7 +2281,7 @@ fn binop(
         }
 
         And | Or => {
-            let msg = || format!("Invalid argument to '{}'", &bop);
+            let msg = || format!("Invalid argument to '{}'", bop);
             let lloc = el.exp.loc;
             subtype(context, lloc, msg, &el.ty, &Type_::bool(bop.loc));
             let rloc = er.exp.loc;
@@ -2304,7 +2304,7 @@ fn binop(
         }
 
         Shl | Shr => {
-            let msg = || format!("Invalid argument to '{}'", &bop);
+            let msg = || format!("Invalid argument to '{}'", bop);
             let u8ty = Type_::u8(er.exp.loc);
             subtype(context, er.exp.loc, msg, &er.ty, &u8ty);
             context.add_bits_constraint(el.exp.loc, bop.value.symbol(), el.ty.clone());
@@ -2640,7 +2640,7 @@ fn match_pattern_(
                 let msg = format!(
                     "Invalid pattern for '{}::{}'.\n All struct can only be \
                      matched in the module in which they are declared",
-                    &m, &struct_,
+                    m, struct_,
                 );
                 context.add_diag(diag!(TypeSafety::Visibility, (loc, msg)));
             }
@@ -3024,7 +3024,7 @@ fn lvalue(
                     subtype(
                         context,
                         loc,
-                        || format!("Invalid assignment to variable '{}'", &var.value.name),
+                        || format!("Invalid assignment to variable '{}'", var.value.name),
                         &ty,
                         &var_ty,
                     );
@@ -3174,7 +3174,7 @@ fn resolve_field(context: &mut Context, loc: Loc, ty: Type, field: &Field) -> Ty
                     let msg = format!(
                         "Invalid access of field '{}' on '{}::{}'. Fields can only be accessed on \
                          structs, not enums",
-                        field, &m, &n
+                        field, m, n
                     );
                     context.add_diag(diag!(TypeSafety::ExpectedSpecificType, (loc, msg)));
                     context.error_type(loc)
@@ -3233,7 +3233,7 @@ fn add_struct_field_types<T>(
             None => {
                 context.add_diag(diag!(
                     NameResolution::UnboundField,
-                    (loc, format!("Unbound field '{}' in '{}::{}'", &f, m, n))
+                    (loc, format!("Unbound field '{}' in '{}::{}'", f, m, n))
                 ));
                 context.error_type(f.loc())
             }
@@ -3286,7 +3286,7 @@ fn add_variant_field_types<T>(
                     NameResolution::UnboundField,
                     (
                         loc,
-                        format!("Unbound field '{}' in '{}::{}::{}'", &f, m, n, v)
+                        format!("Unbound field '{}' in '{}::{}::{}'", f, m, n, v)
                     )
                 ));
                 context.error_type(f.loc())
@@ -4262,7 +4262,7 @@ fn module_call_impl(
     let (arguments, arg_tys) = call_args(
         context,
         loc,
-        || format!("Invalid call of '{}::{}'", &m, &f),
+        || format!("Invalid call of '{}::{}'", m, f),
         Some(declared),
         parameters.len(),
         argloc,
@@ -4273,7 +4273,7 @@ fn module_call_impl(
         let msg = || {
             format!(
                 "Invalid call of '{}::{}'. Invalid argument for parameter '{}'",
-                &m, &f, &param.value.name
+                m, f, param.value.name
             )
         };
         subtype(context, loc, msg, &arg_ty, &param_ty);
@@ -4416,7 +4416,7 @@ fn builtin_call(
     let (arguments, arg_tys) = call_args(
         context,
         loc,
-        || format!("Invalid call of '{}'", &b_),
+        || format!("Invalid call of '{}'", b_),
         None,
         params_ty.len(),
         argloc,
@@ -4428,7 +4428,7 @@ fn builtin_call(
         let msg = || {
             format!(
                 "Invalid call of '{}'. Invalid argument for parameter '{}'",
-                &b_, idx
+                b_, idx
             )
         };
         subtype(context, loc, msg, &arg_ty, &param_ty);
@@ -4458,7 +4458,7 @@ fn syntax_call_return_ty(
     check_call_target(context, loc, None, macro_, declared, f);
     // Next we take our args in question and get their types.
     let arg_tys = {
-        let msg = || format!("Invalid call of '{}::{}'", &m, &f);
+        let msg = || format!("Invalid call of '{}::{}'", m, f);
         let arity = parameters.len();
         make_arg_types(context, loc, msg, Some(declared), arity, argloc, tys)
     };
@@ -4482,7 +4482,7 @@ fn syntax_call_return_ty(
         let msg = || {
             format!(
                 "Invalid call of '{}::{}'. Invalid argument for parameter '{}'",
-                &m, &f, &param.value.name
+                m, f, param.value.name
             )
         };
         valid &= subtype_opt(context, loc, msg, &arg_ty, &param_ty).is_some();
@@ -4748,7 +4748,7 @@ fn macro_call_impl(
     core::check_call_arity(
         context,
         loc,
-        || format!("Invalid call of '{}::{}'", &m, &f),
+        || format!("Invalid call of '{}::{}'", m, f),
         None,
         parameters.len(),
         argloc,
@@ -4773,7 +4773,7 @@ fn macro_call_impl(
                 let msg = || {
                     format!(
                         "Invalid call of '{}::{}'. Invalid argument for parameter '{}'",
-                        &m, &f, &param.value.name
+                        m, f, param.value.name
                     )
                 };
                 subtype(context, loc, msg, &e.ty, &param_ty);
@@ -4831,7 +4831,7 @@ fn expected_by_name_arg_type(
     let msg = || {
         format!(
             "Invalid call of '{}::{}'. Invalid argument for parameter '{}'",
-            m, &f, &param.value.name
+            m, f, param.value.name
         )
     };
     // We need to return the subtyped type to properly remove the `Anything` in the cases

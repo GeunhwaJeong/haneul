@@ -29,7 +29,7 @@ tempfile.workspace = true
 
 move-binary-format.workspace = true
 move-compiler.workspace = true
-move-package-alt-compilation.workspace = true
+move-package-compilation.workspace = true
 haneul-move-build.workspace = true
 haneul-package-alt.workspace = true
 haneul-config.workspace = true
