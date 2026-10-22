@@ -38,7 +38,7 @@ task 4, lines 22-25:
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(4,0), object(4,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6551200,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6551200,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 5, line 27:
 //# view-object 4,0
@@ -115,7 +115,7 @@ task 7, lines 31-34:
 mutated: object(0,1), object(4,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 400), (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 400)
-gas summary: computation_cost: 1000000, storage_cost: 4210400,  storage_rebate: 4168296, non_refundable_storage_fee: 42104
+gas summary: computation_cost: 1000000, storage_cost: 4210400,  storage_rebate: 4209979, non_refundable_storage_fee: 421
 
 task 8, lines 36-37:
 //# view-object 4,0
@@ -218,7 +218,7 @@ task 15, lines 63-66:
 //> 1: TransferObjects([Result(0)], Input(3));
 created: object(15,0)
 mutated: object(0,1), object(4,0)
-gas summary: computation_cost: 1000000, storage_cost: 5198400,  storage_rebate: 4168296, non_refundable_storage_fee: 42104
+gas summary: computation_cost: 1000000, storage_cost: 5198400,  storage_rebate: 4209979, non_refundable_storage_fee: 421
 
 task 16, lines 68-69:
 //# view-object 4,0

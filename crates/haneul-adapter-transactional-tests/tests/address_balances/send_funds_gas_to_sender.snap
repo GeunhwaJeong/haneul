@@ -29,7 +29,7 @@ task 2, lines 19-22:
 //> TransferObjects([Result(0)], Input(1))
 created: object(2,0)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 3, line 24:
 //# create-checkpoint
@@ -61,8 +61,8 @@ task 6, lines 30-34:
 //# programmable --sender A --gas-budget 500000000 --gas-payment withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500000000) --gas-payment object(2,0) --inputs @A
 //> haneul::coin::send_funds<haneul::haneul::HANEUL>(Gas, Input(0))
 deleted: object(2,0)
-accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 999978120)
-gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 999987901)
+gas summary: computation_cost: 1000000, storage_cost: 0,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 7, line 36:
 //# create-checkpoint
@@ -74,7 +74,7 @@ task 8, lines 38-42:
 // of the ephemeral coin to A's AB (Merge: full smashed value), the override-
 // driven debit (Split: full smashed value), and the final gas charge.
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
-100999978120
+100999987901
 
 task 9, line 44:
 //# view-object 2,0

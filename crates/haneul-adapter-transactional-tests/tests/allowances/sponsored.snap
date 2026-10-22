@@ -29,7 +29,7 @@ task 3, lines 17-20:
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(3,0), object(3,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6558800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6558800,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 4, lines 22-25:
 //# programmable --sender B --sponsor S --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(400,@A,object(3,0)) mutshared(3,0) immshared(6) @B
@@ -39,7 +39,7 @@ task 4, lines 22-25:
 mutated: object(0,2), object(3,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 400), (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 400)
-gas summary: computation_cost: 1000000, storage_cost: 4218000,  storage_rebate: 3197700, non_refundable_storage_fee: 32300
+gas summary: computation_cost: 1000000, storage_cost: 4218000,  storage_rebate: 3229677, non_refundable_storage_fee: 323
 
 task 5, lines 27-30:
 //# programmable --sender S --inputs 3000 @S
@@ -48,7 +48,7 @@ task 5, lines 27-30:
 //> 1: haneul::coin::send_funds<haneul::haneul::HANEUL>(Result(0), Input(1));
 mutated: object(0,2)
 accumulators_written: (object(5,0), S, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 3000)
-gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 6, line 32:
 //# create-checkpoint
@@ -61,7 +61,7 @@ task 7, lines 34-37:
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(7,0), object(7,1)
 mutated: object(0,2)
-gas summary: computation_cost: 1000000, storage_cost: 6596800,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6596800,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 8, lines 39-43:
 //# programmable --sender B --sponsor S --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500,@S,object(7,0)) mutshared(7,0) immshared(6) @B
@@ -72,7 +72,7 @@ task 8, lines 39-43:
 mutated: object(0,2), object(7,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006
 accumulators_written: (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 500), (object(5,0), S, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 500)
-gas summary: computation_cost: 1000000, storage_cost: 4256000,  storage_rebate: 4213440, non_refundable_storage_fee: 42560
+gas summary: computation_cost: 1000000, storage_cost: 4256000,  storage_rebate: 4255574, non_refundable_storage_fee: 426
 
 task 9, lines 45-46:
 //# view-object 3,0

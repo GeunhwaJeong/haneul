@@ -24,13 +24,13 @@ task 3, lines 63-64:
 //# programmable --sender A
 //> test::m::x3()
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 4, lines 66-67:
 //# programmable --sender A
 //> test::m::x4()
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 5, lines 69-70:
 //# programmable --sender A

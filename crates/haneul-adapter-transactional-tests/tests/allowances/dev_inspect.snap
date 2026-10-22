@@ -40,7 +40,7 @@ task 4, lines 24-27:
 //> 1: haneul::allowance::new<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1), Input(2), Input(3), Input(4), Result(0));
 created: object(4,0), object(4,1)
 mutated: object(0,0)
-gas summary: computation_cost: 1000000, storage_cost: 6543600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
+gas summary: computation_cost: 1000000, storage_cost: 6543600,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
 task 5, lines 29-32:
 //# programmable --sender B --dev-inspect --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(400,@A,object(4,0)) mutshared(4,0) immshared(6) @B
@@ -49,7 +49,7 @@ task 5, lines 29-32:
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(3));
 mutated: object(_), object(4,0)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 400), (object(2,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 400)
-gas summary: computation_cost: 500000, storage_cost: 4202800,  storage_rebate: 3182652, non_refundable_storage_fee: 32148
+gas summary: computation_cost: 500000, storage_cost: 4202800,  storage_rebate: 3214479, non_refundable_storage_fee: 321
 
 task 6, lines 34-38:
 //# programmable --sender B --dev-inspect --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(400,@B,object(4,0)) mutshared(4,0) immshared(6) @B
