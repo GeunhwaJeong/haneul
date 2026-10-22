@@ -682,7 +682,7 @@ impl Db {
     /// faster wipe would `drop_cf` each column family and recreate it,
     /// which unlinks SSTs in O(file count). Recreating the CFs requires
     /// their schema-defined merge operators and compaction filters,
-    /// which are not available from an open `Db`. Worth purhaneulng with
+    /// which are not available from an open `Db`. Worth pursuing with
     /// a schema-specific reopen path if the wipe-then-restore path
     /// proves slow on large databases.
     pub fn clear_all(&self) -> Result<(), Error> {

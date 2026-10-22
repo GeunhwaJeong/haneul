@@ -26,6 +26,10 @@ ignore = [
     "RUSTSEC-2023-0071",
     # allow yaml-rust being unmaintained
     "RUSTSEC-2024-0320",
+    # unsafe-libyaml is unmaintained with no maintained release. It is reached only
+    # through serde_yaml 0.9 in haneul-metric-checker, which parses the operator's
+    # own config file, not network input.
+    "RUSTSEC-2024-0449",
     # allow unmaintained proc-macro-error used in transitive dependencies
     "RUSTSEC-2024-0370",
     # allow unmaintained instant crate used in transitive dependencies (backoff, cached, fastrand, parking_lot_*)
@@ -77,6 +81,10 @@ ignore = [
     # or if bulletproofs releases a zeroize-based replacement. Upstream proposal:
     # https://github.com/zkcrypto/bulletproofs/pull/17
     "RUSTSEC-2026-0283",
+    # webpki-roots bundled distrusted emSign roots, fixed in 1.0.10. The remaining 0.26.11 (via
+    # tokio-tungstenite 0.26 and ureq 2) only re-exports webpki-roots 1.x, locked at 1.0.10, so it
+    # has the fix; the advisory just doesn't list 0.26.11 as patched.
+    "RUSTSEC-2026-0381",
 ]
 # Threshold for security vulnerabilities, any vulnerability with a CVSS score
 # lower than the range specified will be ignored. Note that ignored advisories
