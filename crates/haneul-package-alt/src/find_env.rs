@@ -9,7 +9,7 @@ use haneul_sdk::digests::chain_ids_match;
 use haneul_sdk::wallet_context::WalletContext;
 use indexmap::IndexMap;
 use move_compiler::format_oxford_list;
-use move_package_alt::{
+use move_package::{
     RootPackage,
     schema::{Environment, EnvironmentID, EnvironmentName},
 };

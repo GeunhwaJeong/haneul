@@ -4,7 +4,7 @@
 
 use clap::Parser;
 use haneul_package_alt::HaneulFlavor;
-use move_package_alt::{
+use move_package::{
     cache_package,
     schema::{Environment, ManifestDependencyInfo},
 };

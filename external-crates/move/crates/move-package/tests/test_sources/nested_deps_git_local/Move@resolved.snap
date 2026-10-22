@@ -1,4 +1,0 @@
----
-source: crates/move-package/tests/test_runner.rs
----
-Failed to resolve dependencies for package 'NestedDeps': Fetching 'MoveNursery': Failed to reset to latest Git state '5d8a867' for package 'MoveNursery', to skip set --skip-fetch-latest-git-deps | Exit status: exit status: 128

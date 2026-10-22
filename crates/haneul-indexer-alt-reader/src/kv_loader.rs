@@ -35,6 +35,7 @@ use crate::ledger_grpc_reader::LedgerGrpcArgs;
 use crate::ledger_grpc_reader::LedgerGrpcReader;
 use crate::ledger_grpc_reader::MAX_BATCH_GET_OBJECTS;
 use crate::ledger_grpc_reader::MAX_BATCH_GET_TRANSACTIONS;
+use crate::monotonic_read::CheckpointFloor;
 use crate::objects::VersionedObjectKey;
 use crate::transactions::ProtoEffectsKey;
 use crate::transactions::TransactionKey;
@@ -102,13 +103,16 @@ impl KvArgs {
     /// `LedgerGrpcReader`'s batch-chunking size below `MAX_BATCH_GET_TRANSACTIONS`/
     /// `MAX_BATCH_GET_OBJECTS`, never raise it above — a larger value would just be
     /// rejected by the ledger gRPC/KV-RPC service, so it's clamped rather
-    /// than passed through.
+    /// than passed through. Requests are spread over `num_connections` HTTP/2 connections, and
+    /// ask for a view at least as new as `min_checkpoint` when it is set.
     pub async fn ledger_grpc_reader(
         &self,
         prefix: Option<&str>,
         registry: &Registry,
         max_batch_get_transactions: Option<usize>,
         max_batch_get_objects: Option<usize>,
+        num_connections: usize,
+        min_checkpoint: Option<CheckpointFloor>,
     ) -> anyhow::Result<Option<LedgerGrpcReader>> {
         let Some(ledger_grpc_url) = self.ledger_grpc_url.as_ref() else {
             return Ok(None);
@@ -117,7 +121,10 @@ impl KvArgs {
         Ok(Some(
             LedgerGrpcReader::new(
                 ledger_grpc_url.clone(),
-                self.ledger_grpc_args(),
+                LedgerGrpcArgs {
+                    ledger_grpc_num_connections: num_connections,
+                    ..self.ledger_grpc_args()
+                },
                 prefix,
                 registry,
                 max_batch_get_transactions
@@ -126,6 +133,7 @@ impl KvArgs {
                 max_batch_get_objects
                     .unwrap_or(MAX_BATCH_GET_OBJECTS)
                     .min(MAX_BATCH_GET_OBJECTS),
+                min_checkpoint,
             )
             .await?,
         ))
@@ -133,11 +141,14 @@ impl KvArgs {
 
     /// Construct a streaming list reader when the operator has opted in via
     /// `enable_list_apis` AND a ledger gRPC URL is configured. Returns `None`
-    /// otherwise. Reuses the same channel settings as the v2 `ledger_grpc_reader`.
+    /// otherwise. Spreads its requests over `num_connections` HTTP/2 connections, and asks for a
+    /// view at least as new as `min_checkpoint` when it is set.
     pub async fn alpha_ledger_grpc_reader(
         &self,
         prefix: Option<&str>,
         registry: &Registry,
+        num_connections: usize,
+        min_checkpoint: Option<CheckpointFloor>,
     ) -> anyhow::Result<Option<AlphaLedgerGrpcReader>> {
         if !self.enable_list_apis.unwrap_or(false) {
             return Ok(None);
@@ -149,9 +160,13 @@ impl KvArgs {
         Ok(Some(
             AlphaLedgerGrpcReader::new(
                 ledger_grpc_url.clone(),
-                self.ledger_grpc_args(),
+                LedgerGrpcArgs {
+                    ledger_grpc_num_connections: num_connections,
+                    ..self.ledger_grpc_args()
+                },
                 prefix,
                 registry,
+                min_checkpoint,
             )
             .await?,
         ))

@@ -27,9 +27,9 @@ use move_core_types::{
     account_address::AccountAddress,
     language_storage::{ModuleId, StructTag},
 };
-use move_package_alt::{MoveFlavor, RootPackage, schema::Environment};
-use move_package_alt_compilation::compiled_package::CompiledPackage as MoveCompiledPackage;
-use move_package_alt_compilation::{
+use move_package::{MoveFlavor, RootPackage, schema::Environment};
+use move_package_compilation::compiled_package::CompiledPackage as MoveCompiledPackage;
+use move_package_compilation::{
     build_config::BuildConfig as MoveBuildConfig, build_plan::BuildPlan,
 };
 use move_symbol_pool::Symbol;
@@ -105,7 +105,7 @@ impl BuildConfig {
             default_flavor: Some(move_compiler::editions::Flavor::Haneul),
             install_dir: Some(install_dir),
             silence_warnings: true,
-            lint_flag: move_package_alt_compilation::lint_flag::LintFlag::LEVEL_NONE,
+            lint_flag: move_package_compilation::lint_flag::LintFlag::LEVEL_NONE,
             ..MoveBuildConfig::default()
         };
         BuildConfig {

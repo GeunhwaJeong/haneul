@@ -2,8 +2,6 @@
 resolver = "2"
 
 exclude = [
-  "examples/tic-tac-toe/cli",
-  "examples/regulated-coin/rust-client",
   "examples/custom-indexer/rust",
   "examples/rust/basic-haneul-indexer",
   "examples/rust/clickhouse-haneul-indexer",
@@ -43,8 +41,7 @@ exclude = [
   "external-crates/move/crates/move-ir-types",
   "external-crates/move/crates/move-model-2",
   "external-crates/move/crates/move-package",
-  "external-crates/move/crates/move-package-alt",
-  "external-crates/move/crates/move-package-alt-compilation",
+  "external-crates/move/crates/move-package-compilation",
   "external-crates/move/crates/move-proc-macros",
   "external-crates/move/crates/move-regex-borrow-graph",
   "external-crates/move/crates/move-stackless-bytecode-2",
@@ -134,9 +131,6 @@ members = [
   "crates/haneul-indexer-alt-schema",
   "crates/haneul-inverted-index",
   "crates/haneul-json",
-  "crates/haneul-json-rpc",
-  "crates/haneul-json-rpc-api",
-  "crates/haneul-json-rpc-tests",
   "crates/haneul-json-rpc-types",
   "crates/haneul-keys",
   "crates/haneul-kv-rpc",
@@ -151,8 +145,6 @@ members = [
   "crates/haneul-name-service",
   "crates/haneul-network",
   "crates/haneul-node",
-  "crates/haneul-open-rpc",
-  "crates/haneul-open-rpc-macros",
   "crates/haneul-oracle",
   "crates/haneul-package-alt",
   "crates/haneul-package-dump",
@@ -169,7 +161,6 @@ members = [
   "crates/haneul-rpc-api",
   "crates/haneul-rpc-benchmark",
   "crates/haneul-rpc-cursor",
-  "crates/haneul-rpc-loadgen",
   "crates/haneul-rpc-resolver",
   "crates/haneul-rpc-store",
   "crates/haneul-sdk",
@@ -229,7 +220,7 @@ members = [
 
 [workspace.package]
 # This version string will be inherited by haneul-core, haneul-faucet, haneul-node, haneul-tools, haneul-sdk, haneul-move-build, and haneul crates.
-version = "1.13.0"
+version = "1.14.0"
 authors = ["Geunhwa Jeong <jeonggh892@gmail.com>"]
 repository = "https://github.com/GeunhwaJeong/haneul"
 
@@ -306,6 +297,7 @@ anemo-tower = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "68adc3
 antithesis_sdk = "0.2.5"
 anyhow = "1.0.71"
 arc-swap = { version = "1.5.1", features = ["serde"] }
+argon2 = { version = "0.6.0", default-features = false }
 arrow = "57.3"
 arrow-array = "57.3"
 assert_cmd = "2.0.6"
@@ -396,12 +388,13 @@ either = "1.8.0"
 enum_dispatch = "^0.3"
 expect-test = "1.4.0"
 eyre = "0.6.8"
-fastcrypto = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "076bf5ad8cea140dc7cf5c5861c24a36acdf64ce" }
-fastcrypto-tbls = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "076bf5ad8cea140dc7cf5c5861c24a36acdf64ce" }
-fastcrypto-vdf = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "076bf5ad8cea140dc7cf5c5861c24a36acdf64ce", features = [
+fastcrypto = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430" }
+fastcrypto-pq = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430" }
+fastcrypto-tbls = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430" }
+fastcrypto-vdf = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430", features = [
   "experimental",
 ] }
-fastcrypto-zkp = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "076bf5ad8cea140dc7cf5c5861c24a36acdf64ce", package = "fastcrypto-zkp" }
+fastcrypto-zkp = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430", package = "fastcrypto-zkp" }
 fdlimit = "0.2.1"
 flate2 = "1.0.28"
 fs_extra = "1.3.0"
@@ -424,7 +417,7 @@ haneul-config = { path = "crates/haneul-config" }
 haneul-consistent-store = { path = "crates/haneul-consistent-store" }
 haneul-core = { path = "crates/haneul-core" }
 haneul-cost = { path = "crates/haneul-cost" }
-haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "86eb9a8afbb6b55d9ede7d72bb5980a468f73d1c", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin" ] }
+haneul-crypto = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "05dd490d6729f0c336cb8fe2c4cd0eaea92dca2e", features = [ "ed25519", "secp256r1", "secp256k1", "passkey", "zklogin", "mldsa65" ] }
 haneul-data-ingestion-core = { path = "crates/haneul-data-ingestion-core" }
 haneul-data-store = { path = "crates/haneul-data-store" }
 haneul-display = { path = "crates/haneul-display" }
@@ -460,8 +453,6 @@ haneul-indexer-alt-reader = { path = "crates/haneul-indexer-alt-reader" }
 haneul-indexer-alt-schema = { path = "crates/haneul-indexer-alt-schema" }
 haneul-inverted-index = { path = "crates/haneul-inverted-index" }
 haneul-json = { path = "crates/haneul-json" }
-haneul-json-rpc = { path = "crates/haneul-json-rpc" }
-haneul-json-rpc-api = { path = "crates/haneul-json-rpc-api" }
 haneul-json-rpc-types = { path = "crates/haneul-json-rpc-types" }
 haneul-keys = { path = "crates/haneul-keys" }
 haneul-kv-rpc = { path = "crates/haneul-kv-rpc" }
@@ -476,8 +467,6 @@ haneul-move-lsp = { path = "crates/haneul-move-lsp" }
 haneul-name-service = { path = "crates/haneul-name-service" }
 haneul-network = { path = "crates/haneul-network" }
 haneul-node = { path = "crates/haneul-node" }
-haneul-open-rpc = { path = "crates/haneul-open-rpc" }
-haneul-open-rpc-macros = { path = "crates/haneul-open-rpc-macros" }
 haneul-package-alt = { path = "crates/haneul-package-alt" }
 haneul-package-dump = { path = "crates/haneul-package-dump" }
 haneul-package-management = { path = "crates/haneul-package-management" }
@@ -490,16 +479,15 @@ haneul-protocol-config-macros = { path = "crates/haneul-protocol-config-macros" 
 haneul-proxy = { path = "crates/haneul-proxy" }
 haneul-replay-2 = { path = "crates/haneul-replay-2" }
 haneul-rosetta = { path = "crates/haneul-rosetta" }
-haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "86eb9a8afbb6b55d9ede7d72bb5980a468f73d1c", features = [ "unstable" ] }
+haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "05dd490d6729f0c336cb8fe2c4cd0eaea92dca2e", features = [ "unstable" ] }
 
 ### Workspace Members ###
 haneul-rpc-api = { path = "crates/haneul-rpc-api" }
 haneul-rpc-cursor = { path = "crates/haneul-rpc-cursor" }
-haneul-rpc-loadgen = { path = "crates/haneul-rpc-loadgen" }
 haneul-rpc-resolver = { path = "crates/haneul-rpc-resolver" }
 haneul-rpc-store = { path = "crates/haneul-rpc-store" }
 haneul-sdk = { path = "crates/haneul-sdk" }
-haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "86eb9a8afbb6b55d9ede7d72bb5980a468f73d1c", features = [ "hash", "serde" ] }
+haneul-sdk-types = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev = "05dd490d6729f0c336cb8fe2c4cd0eaea92dca2e", features = [ "hash", "serde" ] }
 haneul-simulator = { path = "crates/haneul-simulator" }
 haneul-snapshot = { path = "crates/haneul-snapshot" }
 haneul-source-verification = { path = "crates/haneul-source-verification" }
@@ -582,8 +570,7 @@ move-core-types = { path = "external-crates/move/crates/move-core-types" }
 move-disassembler = { path = "external-crates/move/crates/move-disassembler" }
 move-ir-types = { path = "external-crates/move/crates/move-ir-types" }
 move-package = { path = "external-crates/move/crates/move-package" }
-move-package-alt = { path = "external-crates/move/crates/move-package-alt" }
-move-package-alt-compilation = { path = "external-crates/move/crates/move-package-alt-compilation" }
+move-package-compilation = { path = "external-crates/move/crates/move-package-compilation" }
 move-stackless-bytecode-2 = { path = "external-crates/move/crates/move-stackless-bytecode-2" }
 move-symbol-pool = { path = "external-crates/move/crates/move-symbol-pool" }
 move-trace-format = { path = "external-crates/move/crates/move-trace-format" }
@@ -770,7 +757,6 @@ unescape = "0.1.0"
 ureq = "2.9.1"
 url = "2.3.1"
 uuid = { version = "1.1.2", features = ["v4", "fast-rng"] }
-versions = "4.1.0"
 walkdir = "2.5.0"
 webpki = { version = "0.103.10", package = "rustls-webpki", features = [
   "alloc",
@@ -788,6 +774,10 @@ zstd = "0.13.2"
 async-graphql = { git = "https://github.com/GeunhwaJeong/async-graphql", branch = "v7.0.1-react-18-graphiql-4" }
 async-graphql-axum = { git = "https://github.com/GeunhwaJeong/async-graphql", branch = "v7.0.1-react-18-graphiql-4" }
 async-graphql-value = { git = "https://github.com/GeunhwaJeong/async-graphql", branch = "v7.0.1-react-18-graphiql-4" }
+# h2 master plus hyperium/h2#983 (clients ignore frames on streams they reset and forgot), kept on
+# a fork branch so the commit stays fetchable while the PR is in review; remove once an h2 release
+# includes it.
+h2 = { git = "https://github.com/GeunhwaJeong/h2", rev = "44260b15da7d6cf15c241295a2d27917c157f4c8" }
 
 # The simulator (`msim`) declares its tokio fork and async-task from their
 # original hosts. Redirect those two git sources to the maintained mirrors so

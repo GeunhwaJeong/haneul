@@ -19,7 +19,7 @@ diverse, inclusive, and healthy community.
 
 ## More information
 
-See the central [Haneul Code of Conduct](https://github.com/GeunhwaJeong/haneul/blob/main/docs/content/references/contribute/code-of-conduct.mdx) for
+See the central [Haneul Code of Conduct](https://docs.haneul.io/references/contribute/code-of-conduct) for
 full details.
 
 Our Code of Conduct is adapted from the

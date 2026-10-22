@@ -88,7 +88,6 @@ haneul-framework.workspace = true
 haneul-swarm-config.workspace = true
 haneul-genesis-builder.workspace = true
 haneul-indexer-alt-framework = { workspace = true, default-features = false }
-haneul-json-rpc-types.workspace = true
 haneul-macros.workspace = true
 haneul-network.workspace = true
 haneul-protocol-config.workspace = true

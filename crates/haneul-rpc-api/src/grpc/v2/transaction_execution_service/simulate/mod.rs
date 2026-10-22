@@ -6,7 +6,9 @@ use crate::ErrorReason;
 use crate::Result;
 use crate::RpcError;
 use crate::RpcService;
+use crate::error::InsufficientGasBalanceError;
 use haneul_protocol_config::ProtocolConfig;
+use haneul_protocol_config::ProtocolVersion;
 use haneul_rpc::field::FieldMaskTree;
 use haneul_rpc::field::FieldMaskUtil;
 use haneul_rpc::merge::Merge;
@@ -44,6 +46,7 @@ const GAS_COIN_SIZE_BYTES: u64 = 40;
 pub fn simulate_transaction(
     service: &RpcService,
     request: SimulateTransactionRequest,
+    client_protocol_version: Option<ProtocolVersion>,
 ) -> Result<SimulateTransactionResponse> {
     let executor = service
         .executor
@@ -87,6 +90,8 @@ pub fn simulate_transaction(
 
         (system_state.reference_gas_price, protocol_config)
     };
+    let offer_allowed_proposers =
+        can_offer_allowed_proposers(&protocol_config, client_protocol_version);
 
     // Try to parse out a fully-formed transaction. If one wasn't provided then we will attempt to
     // perform transaction resolution.
@@ -135,7 +140,7 @@ pub fn simulate_transaction(
                 gasless_tx.gas_data_mut().budget = 0;
                 // All gasless txns must carry an epoch-scoped validity window for replay
                 // protection.
-                configure_transaction_validity(service, &protocol_config, &mut gasless_tx)?;
+                configure_transaction_validity(service, offer_allowed_proposers, &mut gasless_tx)?;
 
                 let simulation_result = executor
                     .simulate_transaction(gasless_tx.clone(), checks, false)
@@ -165,7 +170,7 @@ pub fn simulate_transaction(
             // selection picks the coins).
             let budget_was_estimated = request.transaction().gas_payment().budget.is_none()
                 && request.transaction().bcs_opt().is_none();
-            if budget_was_estimated {
+            let estimation_failure = if budget_was_estimated {
                 let mut estimation_transaction = transaction.clone();
                 estimation_transaction.gas_data_mut().payment = Vec::new();
                 estimation_transaction.gas_data_mut().budget = protocol_config.max_tx_gas();
@@ -201,10 +206,17 @@ pub fn simulate_transaction(
                     ));
                 }
                 transaction.gas_data_mut().budget = estimate;
-            }
+
+                match simulation_result.effects.status() {
+                    ExecutionStatus::Success => None,
+                    ExecutionStatus::Failure(failure) => Some(failure.clone()),
+                }
+            } else {
+                None
+            };
 
             if transaction.gas_data().payment.is_empty() {
-                select_gas(
+                let gas_selection = select_gas(
                     service,
                     &mut transaction,
                     // Only adjust the budget for actually-selected coins when we just
@@ -212,13 +224,24 @@ pub fn simulate_transaction(
                     // taken as-is.
                     budget_was_estimated.then_some(reference_gas_price),
                     &protocol_config,
+                    offer_allowed_proposers,
                 )?;
+                if let Err(insufficient_balance) = gas_selection {
+                    // Clients use the insufficient-gas error as a funding quote, which only makes
+                    // sense for a transaction that succeeded in its estimation run. For one that
+                    // failed, report the execution failure instead; its kind tells the caller what
+                    // to fix.
+                    return Err(match estimation_failure {
+                        Some(failure) => simulation_failure_error(service, failure),
+                        None => insufficient_balance.into(),
+                    });
+                }
             }
 
             // Coin-paid transactions get a proposer restriction too, so that nobody else can
             // amplify them into consensus. A no-op on the address-balance paths, which already
             // set their expiration above.
-            restrict_transaction_proposers(service, &protocol_config, &mut transaction)?;
+            restrict_transaction_proposers(service, offer_allowed_proposers, &mut transaction)?;
         }
 
         // With gas selection off, a transaction without gas payment is simulated with a mock gas
@@ -499,7 +522,7 @@ const MAX_ALLOWED_PROPOSERS: usize = MAX_UNPAID_ALLOWED_PROPOSERS as usize;
 /// transaction to them, so that nobody else can amplify it into consensus.
 fn configure_transaction_validity(
     service: &RpcService,
-    protocol_config: &ProtocolConfig,
+    offer_allowed_proposers: bool,
     transaction: &mut haneul_types::transaction::TransactionData,
 ) -> Result<()> {
     // Early return if the caller already chose an expiration with a validity window.
@@ -517,7 +540,7 @@ fn configure_transaction_validity(
     let nonce = rand::random();
 
     *transaction.expiration_mut() =
-        match select_allowed_proposers(service, protocol_config, current_epoch) {
+        match select_allowed_proposers(service, offer_allowed_proposers, current_epoch) {
             Some(allowed_proposers) => TransactionExpiration::Validity {
                 min_epoch,
                 max_epoch,
@@ -547,7 +570,7 @@ fn configure_transaction_validity(
 /// otherwise the transaction is returned exactly as resolved.
 fn restrict_transaction_proposers(
     service: &RpcService,
-    protocol_config: &ProtocolConfig,
+    offer_allowed_proposers: bool,
     transaction: &mut haneul_types::transaction::TransactionData,
 ) -> Result<()> {
     if !matches!(transaction.expiration(), TransactionExpiration::None) {
@@ -555,7 +578,8 @@ fn restrict_transaction_proposers(
     }
 
     let current_epoch = service.reader.inner().get_latest_checkpoint()?.epoch();
-    let Some(allowed_proposers) = select_allowed_proposers(service, protocol_config, current_epoch)
+    let Some(allowed_proposers) =
+        select_allowed_proposers(service, offer_allowed_proposers, current_epoch)
     else {
         return Ok(());
     };
@@ -572,21 +596,39 @@ fn restrict_transaction_proposers(
     Ok(())
 }
 
+/// The first protocol version at which every binary defines `TransactionExpiration::Validity`.
+/// Earlier versions include 125, whose release binary lacks it.
+const FIRST_PROTOCOL_VERSION_WITH_VALIDITY: u64 = 126;
+
+/// Whether simulate may restrict the transaction it returns to a set of allowed proposers.
+///
+/// The network must accept the `Validity` variant at all — otherwise validity_check would reject
+/// the very transaction simulate just handed back — and the client must be able to decode it,
+/// which it can if its protocol version defines the variant, whether or not that version enables
+/// it. Clients that don't report a version are assumed not to.
+fn can_offer_allowed_proposers(
+    protocol_config: &ProtocolConfig,
+    client_protocol_version: Option<ProtocolVersion>,
+) -> bool {
+    protocol_config.allowed_proposers()
+        && client_protocol_version
+            .is_some_and(|v| v.as_u64() >= FIRST_PROTOCOL_VERSION_WITH_VALIDITY)
+}
+
 /// The proposer set this node would restrict a transaction to, if one can be formed.
 ///
-/// Only offered where the network accepts the `Validity` variant at all — otherwise
-/// validity_check would reject the very transaction simulate just handed back. `None` on nodes
-/// without a transaction driver, or before the driver has observed validator latencies.
+/// `None` unless `offer_allowed_proposers`, on nodes without a transaction driver, or before the
+/// driver has observed validator latencies.
 ///
 /// Proposer sets are resolved against the committee of the epoch they name, so one selected now
 /// is only usable while this epoch lasts; a set naming any other epoch is not emitted, and the
 /// transaction simply stays unrestricted rather than becoming unproposable.
 fn select_allowed_proposers(
     service: &RpcService,
-    protocol_config: &ProtocolConfig,
+    offer_allowed_proposers: bool,
     current_epoch: u64,
 ) -> Option<AllowedProposers> {
-    if !protocol_config.allowed_proposers() {
+    if !offer_allowed_proposers {
         return None;
     }
     service
@@ -596,12 +638,15 @@ fn select_allowed_proposers(
         .filter(|allowed| allowed.epoch == current_epoch)
 }
 
+/// Selects gas payment for `transaction`. The outer error reports failures while reading or
+/// preparing gas payment; the inner error reports that the gas owner's funds can't cover the budget.
 fn select_gas(
     service: &RpcService,
     transaction: &mut haneul_types::transaction::TransactionData,
     incremental_loading_rgp: Option<u64>,
     protocol_config: &ProtocolConfig,
-) -> Result<()> {
+    offer_allowed_proposers: bool,
+) -> Result<Result<(), InsufficientGasBalanceError>> {
     use haneul_types::accumulator_root::AccumulatorValue;
     use haneul_types::balance::Balance;
     use haneul_types::base_types::SequenceNumber;
@@ -626,7 +671,7 @@ fn select_gas(
     // If the gas coin isn't used and there is sufficient address balance budget to satisfy the
     // required budget then we will use the `owner`s address balance to pay for gas. Otherwise we
     // fallback to doing coin selection
-    let selected_gas_value = if !gas_coin_used
+    let (selected_gas_value, coin_balance) = if !gas_coin_used
         && let Some(address_balance) = address_balance
         && address_balance >= budget
     {
@@ -635,10 +680,10 @@ fn select_gas(
         transaction.gas_data_mut().payment.clear();
 
         if matches!(transaction.expiration(), TransactionExpiration::None) {
-            configure_transaction_validity(service, protocol_config, transaction)?;
+            configure_transaction_validity(service, offer_allowed_proposers, transaction)?;
         }
 
-        budget
+        (budget, 0)
     } else {
         let input_objects = transaction
             .input_objects()
@@ -670,14 +715,16 @@ fn select_gas(
             .take(protocol_config.max_gas_payment_objects() as usize);
 
         let mut selected_gas = vec![];
-        let mut selected_gas_value = 0;
+        let mut coin_balance = 0;
 
         for maybe_coin in gas_coins {
             let (object_ref, value) =
                 maybe_coin.map_err(|e| RpcError::new(tonic::Code::Internal, e.to_string()))?;
             selected_gas.push(object_ref);
-            selected_gas_value += value;
+            coin_balance += value;
         }
+
+        let mut selected_gas_value = coin_balance;
 
         // When GasCoin is used and there's address balance, prepend a coin reservation
         // to make all HANEUL in the account available (coins + address balance)
@@ -709,13 +756,13 @@ fn select_gas(
             selected_gas_value += ab_value;
 
             if matches!(transaction.expiration(), TransactionExpiration::None) {
-                configure_transaction_validity(service, protocol_config, transaction)?;
+                configure_transaction_validity(service, offer_allowed_proposers, transaction)?;
             }
         }
 
         transaction.gas_data_mut().payment = selected_gas;
 
-        selected_gas_value
+        (selected_gas_value, coin_balance)
     };
 
     // When the caller asked us to top up the budget for the loading cost of the just-picked
@@ -741,17 +788,65 @@ fn select_gas(
     };
 
     if selected_gas_value >= final_budget {
-        Ok(())
+        Ok(Ok(()))
     } else {
-        Err(RpcError::new(
-            tonic::Code::InvalidArgument,
-            format!(
-                "Unable to perform gas selection due to insufficient HANEUL \
-                balance (in address balance or coins) for account {owner} \
-                to satisfy required budget {final_budget}."
-            ),
-        ))
+        Ok(Err(InsufficientGasBalanceError::new(
+            owner,
+            final_budget,
+            coin_balance,
+            address_balance.unwrap_or(0),
+        )))
     }
+}
+
+/// The error returned for a transaction that fails during simulation. The message names the
+/// failure and, when known, the command that raised it. The details carry a
+/// `TRANSACTION_EXECUTION_FAILED` `ErrorInfo`, whose metadata holds the failure's `kind`
+/// (`ExecutionErrorKind` name) and failing `command` index (empty when unknown), followed by the
+/// `ExecutionError` that a simulation of the same transaction reports in `effects.status.error`.
+fn simulation_failure_error(service: &RpcService, failure: ExecutionFailure) -> RpcError {
+    use crate::ErrorDetails;
+    use haneul_rpc::proto::google::rpc::ErrorInfo;
+    use haneul_rpc::proto::haneul::rpc::v2::TransactionEffects;
+
+    let mut message = format!("Transaction fails in simulation: {}", failure.error);
+    if let Some(command) = failure.command {
+        message.push_str(&format!(" in command {command}"));
+    }
+
+    // Render the failure exactly as simulation effects do, including clever error rendering of
+    // Move aborts.
+    let mut effects = TransactionEffects::default();
+    effects.status = Some(ExecutionStatus::Failure(failure).into());
+    service.render_clever_error(&mut effects);
+    let execution_error = effects
+        .status
+        .and_then(|status| status.error)
+        .expect("a failed execution status carries an error");
+
+    let metadata = [
+        ("kind", execution_error.kind().as_str_name().to_owned()),
+        (
+            "command",
+            execution_error
+                .command
+                .map(|command| command.to_string())
+                .unwrap_or_default(),
+        ),
+    ]
+    .into_iter()
+    .map(|(key, metadata_value)| (key.to_owned(), metadata_value))
+    .collect();
+    let error_info = ErrorInfo::default()
+        .with_reason(ErrorReason::TransactionExecutionFailed.as_str_name())
+        .with_domain(ErrorReason::DOMAIN)
+        .with_metadata(metadata);
+
+    RpcError::new(tonic::Code::InvalidArgument, message).with_details(
+        ErrorDetails::new()
+            .with_error_info(error_info)
+            .with_execution_error(execution_error),
+    )
 }
 
 /// HANEUL in the gas owner's address balance that is left for gas after the transaction's explicit
@@ -972,5 +1067,24 @@ mod tests {
         let status = simulation_error_to_rpc_error(error).into_status_proto();
 
         assert_eq!(status.code, tonic::Code::Internal as i32);
+    }
+
+    #[test]
+    fn allowed_proposers_offered_only_to_clients_that_can_decode_them() {
+        use haneul_protocol_config::Chain;
+
+        let v = ProtocolVersion::new;
+        let offer = |chain, network: u64, client: Option<u64>| {
+            let config = ProtocolConfig::get_for_version(v(network), chain);
+            can_offer_allowed_proposers(&config, client.map(v))
+        };
+
+        assert!(!offer(Chain::Mainnet, 128, None));
+        assert!(!offer(Chain::Mainnet, 128, Some(125)));
+        // 126 defines `Validity` even though mainnet only enables it at 127.
+        assert!(offer(Chain::Mainnet, 128, Some(126)));
+        assert!(offer(Chain::Mainnet, 128, Some(u64::MAX)));
+        // Never offered where the network doesn't accept it.
+        assert!(!offer(Chain::Mainnet, 126, Some(128)));
     }
 }

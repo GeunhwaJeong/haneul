@@ -53,11 +53,7 @@ haneul-core.workspace = true
 haneul-framework.workspace = true
 haneul-protocol-config.workspace = true
 haneul-types.workspace = true
-haneul-json-rpc-types.workspace = true
-haneul-json-rpc.workspace = true
-haneul-json-rpc-api.workspace = true
 haneul-framework-snapshot.workspace = true
-haneul-storage.workspace = true
 typed-store.workspace = true
 
 [[bin]]

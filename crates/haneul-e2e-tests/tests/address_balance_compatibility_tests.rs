@@ -2,6 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
+use haneul_core::authority::authority_test_utils::dev_inspect_for_testing;
 use haneul_macros::*;
 use haneul_simulator::has_mainnet_protocol_config_override;
 use haneul_test_transaction_builder::{FundSource, TestTransactionBuilder};
@@ -15,6 +16,7 @@ use haneul_types::{
         Argument, CallArg, Command, GasData, ObjectArg, TransactionData, TransactionDataAPI,
         TransactionDataV1, TransactionExpiration, TransactionKind,
     },
+    transaction_executor::TransactionChecks,
 };
 use move_core_types::ident_str;
 use test_cluster::addr_balance_test_env::{
@@ -2180,7 +2182,9 @@ async fn test_fake_coin_reservation_dry_run_does_not_panic() {
         .fullnode_handle
         .haneul_node
         .with(|node| node.state().clone());
-    let join = tokio::task::spawn(async move { state.dry_exec_transaction(tx_data).await });
+    let join = tokio::task::spawn(async move {
+        state.simulate_transaction(tx_data, TransactionChecks::Enabled, true)
+    });
 
     match join.await {
         Ok(Ok(_)) => panic!("dry-run with fake coin reservation should have errored"),
@@ -2223,18 +2227,16 @@ async fn test_fake_coin_reservation_dev_inspect_does_not_panic() {
         .haneul_node
         .with(|node| node.state().clone());
     let join = tokio::task::spawn(async move {
-        state
-            .dev_inspect_transaction_block(
-                sender,
-                tx_kind,
-                None,
-                None,
-                None,
-                None,
-                None,
-                /* skip_checks */ Some(true),
-            )
-            .await
+        dev_inspect_for_testing(
+            &state,
+            sender,
+            tx_kind,
+            None,
+            None,
+            None,
+            None,
+            TransactionChecks::Disabled,
+        )
     });
 
     match join.await {
@@ -2288,7 +2290,9 @@ async fn test_fake_coin_reservation_dry_run_safe_when_flag_disabled() {
         .fullnode_handle
         .haneul_node
         .with(|node| node.state().clone());
-    let join = tokio::task::spawn(async move { state.dry_exec_transaction(tx_data).await });
+    let join = tokio::task::spawn(async move {
+        state.simulate_transaction(tx_data, TransactionChecks::Enabled, true)
+    });
 
     match join.await {
         Ok(Ok(_)) => panic!("dry-run with fake coin reservation should have errored"),
@@ -2331,18 +2335,16 @@ async fn test_fake_coin_reservation_dev_inspect_safe_when_flag_disabled() {
         .haneul_node
         .with(|node| node.state().clone());
     let join = tokio::task::spawn(async move {
-        state
-            .dev_inspect_transaction_block(
-                sender,
-                tx_kind,
-                None,
-                None,
-                None,
-                None,
-                None,
-                /* skip_checks */ Some(true),
-            )
-            .await
+        dev_inspect_for_testing(
+            &state,
+            sender,
+            tx_kind,
+            None,
+            None,
+            None,
+            None,
+            TransactionChecks::Disabled,
+        )
     });
 
     match join.await {

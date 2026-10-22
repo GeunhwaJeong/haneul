@@ -7,6 +7,7 @@ use anyhow::anyhow;
 use async_graphql::dataloader::DataLoader;
 use futures::future::try_join_all;
 use haneul_rpc::Client;
+use haneul_rpc::client::HeadersInterceptor;
 use haneul_rpc::field::FieldMaskUtil;
 use haneul_rpc::proto::haneul::rpc::v2 as proto;
 use haneul_sdk_types::Address;
@@ -15,10 +16,14 @@ use haneul_types::transaction::Transaction;
 use haneul_types::transaction::TransactionData;
 use prometheus::Registry;
 use prost_types::FieldMask;
+use tonic::metadata::Ascii;
+use tonic::metadata::MetadataValue;
 use tracing::instrument;
 use url::Url;
 
 use crate::metrics::GrpcMetricsLayer;
+
+pub const X_HANEUL_CLIENT_PROTOCOL_VERSION: &str = "x-haneul-client-protocol-version";
 
 // Programmable transaction validation requires the command count to be strictly less than the
 // protocol's 1,024-command limit.
@@ -73,6 +78,16 @@ impl FullnodeClient {
             ));
 
         Ok(Some(Self { client }))
+    }
+
+    /// Forward the caller's protocol version on requests made by this client clone.
+    pub fn with_client_protocol_version(mut self, version: MetadataValue<Ascii>) -> Self {
+        let mut headers = HeadersInterceptor::new();
+        headers
+            .headers_mut()
+            .insert(X_HANEUL_CLIENT_PROTOCOL_VERSION, version);
+        self.client = self.client.with_headers(headers);
+        self
     }
 
     pub fn as_data_loader(&self) -> DataLoader<Self> {

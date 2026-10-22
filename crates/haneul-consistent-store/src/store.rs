@@ -351,7 +351,6 @@ impl<S: Send + Sync> SequentialConnection for Connection<'_, S> {}
 #[cfg(test)]
 mod tests {
     use haneul_indexer_alt_framework_store_traits::Connection as _;
-    use haneul_indexer_alt_framework_store_traits::Store as _;
     use scoped_futures::ScopedFutureExt;
     use tempfile::TempDir;
 

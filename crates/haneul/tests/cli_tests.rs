@@ -35,7 +35,7 @@ use haneul_types::transaction::{
     TransactionKind,
 };
 use move_bytecode_verifier_meter::Scope;
-use move_package_alt_compilation::build_config::BuildConfig as MoveBuildConfig;
+use move_package_compilation::build_config::BuildConfig as MoveBuildConfig;
 use serde_json::json;
 use tokio::time::sleep;
 
@@ -68,7 +68,7 @@ use haneul_types::move_package::{MovePackage, UpgradeInfo};
 use haneul_types::{base_types::ObjectID, crypto::get_key_pair, gas_coin::GasCoin};
 use haneullabs_common::random_util::TempDir;
 use haneullabs_common::tempdir;
-use move_package_alt::schema::{Environment, ParsedPublishedFile};
+use move_package::schema::{Environment, ParsedPublishedFile};
 use std::fs::OpenOptions;
 use std::path::Path;
 use std::{fs, io};

@@ -57,10 +57,9 @@ fn test_protocol_overrides_2() {
 mod sim_only_tests {
 
     use super::*;
-    use fastcrypto::encoding::Base64;
+    use haneul_core::authority::authority_test_utils::dev_inspect_for_testing;
     use haneul_core::authority::framework_injection;
     use haneul_framework::BuiltInFramework;
-    use haneul_json_rpc_api::WriteApiClient;
     use haneul_macros::*;
     use haneul_move_build::{BuildConfig, CompiledPackage};
     use haneul_protocol_config::Chain;
@@ -79,6 +78,7 @@ mod sim_only_tests {
         CallArg, Command, ObjectArg, ProgrammableMoveCall, ProgrammableTransaction,
         TEST_ONLY_GAS_UNIT_FOR_GENERIC, TransactionData,
     };
+    use haneul_types::transaction_executor::TransactionChecks;
     use haneul_types::{
         HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, HANEUL_AUTHENTICATOR_STATE_OBJECT_ID,
         HANEUL_CLOCK_OBJECT_ID, HANEUL_RANDOMNESS_STATE_OBJECT_ID, HANEUL_SYSTEM_STATE_OBJECT_ID,
@@ -598,7 +598,6 @@ mod sim_only_tests {
     }
 
     async fn dev_inspect_call(cluster: &TestCluster, call: ProgrammableMoveCall) -> u64 {
-        let client = cluster.rpc_client();
         let sender = cluster.get_address_0();
 
         let pt = {
@@ -608,21 +607,23 @@ mod sim_only_tests {
         };
         let txn = TransactionKind::programmable(pt);
 
-        let response = client
-            .dev_inspect_transaction_block(
-                sender,
-                Base64::from_bytes(&bcs::to_bytes(&txn).unwrap()),
-                /* gas_price */ None,
-                /* epoch_id */ None,
-                /* additional_args */ None,
-            )
-            .await
-            .unwrap();
+        let response = dev_inspect_for_testing(
+            &cluster.fullnode_handle.haneul_node.state(),
+            sender,
+            txn,
+            None,
+            None,
+            None,
+            None,
+            TransactionChecks::Disabled,
+        )
+        .unwrap();
 
-        let results = response.results.unwrap();
-        let return_ = &results.first().unwrap().return_values.first().unwrap().0;
+        let results = response.execution_result.unwrap();
+        let (_, return_values) = results.first().unwrap();
+        let (return_, _) = return_values.first().unwrap();
 
-        bcs::from_bytes(&return_).unwrap()
+        bcs::from_bytes(return_).unwrap()
     }
 
     async fn execute_creating(

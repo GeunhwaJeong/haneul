@@ -28,7 +28,6 @@ use backoff::ExponentialBackoff;
 use futures::Stream;
 use haneul_indexer_alt_reader::alpha_ledger_grpc_reader::AlphaLedgerGrpcReader;
 use haneul_indexer_alt_reader::alpha_ledger_grpc_reader::StreamPage;
-use haneul_rpc_cursor::CursorKind;
 use haneul_rpc_cursor::CursorToken;
 use tokio::sync::broadcast;
 use tokio::sync::watch;
@@ -135,7 +134,7 @@ pub(super) fn subscribe<S: Subscribable>(
     broadcast: Arc<SubscriptionBroadcast>,
     caches: Arc<StreamedCaches>,
     resolver_limits: haneul_package_resolver::Limits,
-    watermarks_rx: watch::Receiver<Arc<Watermarks>>,
+    mut watermarks_rx: watch::Receiver<Arc<Watermarks>>,
     filter: S::Filter,
     after: Option<S::Cursor>,
     after_checkpoint: Option<u64>,
@@ -188,7 +187,20 @@ where
 
         // Phase 1: scan toward the tip, pinning the live receiver near it. `after` and/or
         // `afterCheckpoint` resume the backfill; neither means live-only.
-        if after.is_some() || after_checkpoint.is_some() {
+        if let Some(resume_checkpoint) = start_from {
+            // The resume point can be ahead of this server's watermarks (a cursor minted from the
+            // live stream, or by a more caught-up server). Waiting for them to reach it raises the
+            // ledger readers' monotonic-read floor past it, so no replica scans from a view behind
+            // the resume point. `scan_page` then waits for each page's end cursor the same way,
+            // keeping the floor at or above every later resume cursor.
+            if let Err(e) =
+                wait_for_pipelines_catching_up_at(resume_checkpoint, &mut watermarks_rx).await
+            {
+                guard.terminate(SubscriptionTerminationReason::BackfillError);
+                yield Err(e.into());
+                return;
+            }
+
             let checkpoint_lo = after_checkpoint.map_or(0, |cp| cp.saturating_add(1));
             let scan = backfill::<S>(
                 reader,
@@ -236,7 +248,11 @@ where
                     }
                 }
             }
-            last_checkpoint = handoff;
+            // Floor the live delivery boundary at the resume point. The handoff pins at this
+            // replica's streamed tip, which can sit below the resume point (a client resuming from a
+            // cursor minted by a more caught-up replica behind a load balancer), and delivering at or
+            // below the resume point would replay checkpoints the client asked to skip.
+            last_checkpoint = handoff.max(start_from);
         }
 
         // Phase 2: follow live from `handoff + 1` (a fresh receiver if there was no backfill).
@@ -316,14 +332,12 @@ fn backfill<S: Subscribable>(
     }
 }
 
-/// The highest checkpoint fully scanned as of `token`: its own checkpoint for a `Boundary`, one less
-/// for an `Item` (whose checkpoint may still hold later matches).
+/// The highest checkpoint fully scanned as of `token`: the one before its checkpoint. A `Boundary`
+/// is the position the next ascending scan resumes at, so its own checkpoint has not been scanned
+/// (a range's terminal boundary is its exclusive end), and an `Item`'s checkpoint may still hold
+/// later matches.
 fn covered_checkpoint(token: &CursorToken) -> u64 {
-    let checkpoint = token.position.checkpoint();
-    match token.kind {
-        CursorKind::Boundary => checkpoint,
-        CursorKind::Item => checkpoint.saturating_sub(1),
-    }
+    token.position.checkpoint().saturating_sub(1)
 }
 
 /// Follow the live broadcast from `last_checkpoint + 1`, delivering matching items. Drops the

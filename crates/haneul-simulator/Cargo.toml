@@ -10,8 +10,8 @@ edition = "2024"
 workspace = true
 
 [dependencies]
-move-package-alt.workspace = true
-move-package-alt-compilation.workspace = true
+move-package.workspace = true
+move-package-compilation.workspace = true
 haneullabs-network.workspace = true
 haneul-framework.workspace = true
 haneul-move-build.workspace = true

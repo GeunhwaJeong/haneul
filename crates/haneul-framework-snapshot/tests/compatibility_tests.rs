@@ -7,7 +7,7 @@ mod compatibility_tests {
     use haneul_framework_snapshot::{load_bytecode_snapshot, load_bytecode_snapshot_manifest};
     use haneul_package_alt::{HaneulFlavor, testnet_environment};
     use haneul_protocol_config::{Chain, ProtocolConfig, ProtocolVersion};
-    use move_package_alt::PackageLoader;
+    use move_package::PackageLoader;
     use std::collections::BTreeMap;
     use std::path::Path;
 

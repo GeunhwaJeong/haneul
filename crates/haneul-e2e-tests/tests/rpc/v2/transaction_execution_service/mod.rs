@@ -19,6 +19,7 @@ use haneul_types::transaction::TransactionDataAPI;
 use prost_types::FieldMask;
 use test_cluster::TestClusterBuilder;
 
+mod mldsa65;
 mod resolve;
 
 #[sim_test]

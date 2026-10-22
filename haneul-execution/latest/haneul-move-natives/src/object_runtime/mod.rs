@@ -29,7 +29,7 @@ use haneul_types::{
     metrics::ExecutionMetrics,
     move_package::MovePackage,
     object::{MoveObject, Owner},
-    storage::{ObjectFundsResolver, ObjectFundsSufficiency, RuntimeObjectResolver},
+    storage::{ImplicitSystemObjectResolver, ObjectFundsSufficiency, RuntimeObjectResolver},
 };
 use indexmap::map::IndexMap;
 use indexmap::set::IndexSet;
@@ -140,7 +140,7 @@ pub(crate) struct ObjectRuntimeState {
 #[derive(Tid)]
 pub struct ObjectRuntime<'a> {
     child_object_store: ChildObjectStore<'a>,
-    object_funds_resolver: &'a dyn ObjectFundsResolver,
+    system_object_resolver: &'a dyn ImplicitSystemObjectResolver,
     // inventories for test scenario
     pub(crate) test_inventories: TestInventories,
     // the internal state
@@ -189,7 +189,7 @@ impl ObjectFundsAvailable {
 impl<'a> ObjectRuntime<'a> {
     pub fn new(
         object_resolver: &'a dyn RuntimeObjectResolver,
-        object_funds_resolver: &'a dyn ObjectFundsResolver,
+        system_object_resolver: &'a dyn ImplicitSystemObjectResolver,
         input_objects: BTreeMap<ObjectID, InputObject>,
         is_metered: bool,
         protocol_config: &'a ProtocolConfig,
@@ -225,7 +225,7 @@ impl<'a> ObjectRuntime<'a> {
                 metrics.clone(),
                 epoch_id,
             ),
-            object_funds_resolver,
+            system_object_resolver,
             test_inventories: TestInventories::new(),
             state: ObjectRuntimeState {
                 input_objects: input_object_owners,
@@ -264,7 +264,7 @@ impl<'a> ObjectRuntime<'a> {
             .or_insert_with(ObjectFundsAvailable::init);
         if entry.needs_store_read(amount) {
             let settled_available = match self
-                .object_funds_resolver
+                .system_object_resolver
                 .object_available_balance(owner, type_)
             {
                 Ok(balance) => balance,

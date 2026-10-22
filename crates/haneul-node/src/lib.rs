@@ -51,8 +51,6 @@ use std::time::Duration;
 
 use haneul_core::global_state_hasher::GlobalStateHashMetrics;
 use haneul_core::storage::RestReadStore;
-use haneul_json_rpc::bridge_api::BridgeReadApi;
-use haneul_json_rpc_api::JsonRpcMetrics;
 use haneul_network::randomness;
 use haneul_rpc_api::ServerVersion;
 use haneul_rpc_api::subscription::SubscriptionService;
@@ -114,7 +112,6 @@ use haneul_core::epoch::consensus_store_pruner::ConsensusStorePruner;
 use haneul_core::epoch::epoch_metrics::EpochMetrics;
 use haneul_core::epoch::reconfiguration::ReconfigurationInitiator;
 use haneul_core::global_state_hasher::GlobalStateHasher;
-use haneul_core::jsonrpc_index::IndexStore;
 use haneul_core::module_cache_metrics::ResolverMetrics;
 use haneul_core::overload_monitor::overload_monitor;
 use haneul_core::rpc_store_embed::EmbeddedRpcStore;
@@ -126,14 +123,6 @@ use haneul_core::{
     authority::{AuthorityState, AuthorityStore},
     authority_client::NetworkAuthorityClient,
 };
-use haneul_json_rpc::JsonRpcServerBuilder;
-use haneul_json_rpc::coin_api::CoinReadApi;
-use haneul_json_rpc::governance_api::GovernanceReadApi;
-use haneul_json_rpc::indexer_api::IndexerApi;
-use haneul_json_rpc::move_utils::MoveUtils;
-use haneul_json_rpc::read_api::ReadApi;
-use haneul_json_rpc::transaction_builder_api::TransactionBuilderApi;
-use haneul_json_rpc::transaction_execution_api::TransactionExecutionApi;
 use haneul_macros::fail_point;
 use haneul_macros::{fail_point_arg, fail_point_async, replay_log};
 use haneul_network::api::ValidatorServer;
@@ -141,13 +130,8 @@ use haneul_network::discovery;
 use haneul_network::endpoint_manager::EndpointManager;
 use haneul_network::state_sync;
 use haneul_network::validator::server::ServerBuilder;
-use haneul_protocol_config::{Chain, ProtocolConfig, ProtocolVersion};
+use haneul_protocol_config::{ProtocolConfig, ProtocolVersion};
 use haneul_snapshot::uploader::StateSnapshotUploader;
-use haneul_storage::{
-    http_key_value_store::HttpKVStore,
-    key_value_store::{FallbackTransactionKVStore, TransactionKeyValueStore},
-    key_value_store_metrics::KeyValueStoreMetrics,
-};
 use haneul_types::base_types::{AuthorityName, EpochId};
 use haneul_types::committee::Committee;
 use haneul_types::crypto::KeypairTraits;
@@ -277,7 +261,7 @@ pub struct HaneulNode {
     config: NodeConfig,
     validator_components: Mutex<Option<ValidatorComponents>>,
 
-    /// The http servers responsible for serving RPC traffic (gRPC and JSON-RPC)
+    /// The http servers responsible for serving RPC traffic.
     #[allow(unused)]
     http_servers: HttpServers,
 
@@ -728,19 +712,12 @@ impl HaneulNode {
             checkpoint_store.clone(),
         );
 
-        let index_store = if node_role.is_fullnode() && config.enable_index_processing {
-            info!("creating jsonrpc index store");
-            Some(Arc::new(IndexStore::new(
-                config.db_path().join("indexes"),
-                &prometheus_registry,
-                epoch_store
-                    .protocol_config()
-                    .max_move_identifier_len_as_option(),
-                config.remove_deprecated_tables,
-            )))
-        } else {
-            None
-        };
+        if node_role.is_fullnode() {
+            // Fullnodes upgraded from a version that still ran the legacy
+            // index backends may have their now-dead on-disk directories
+            // lying around; remove them so they stop wasting disk.
+            remove_legacy_index_stores(&config.db_path());
+        }
 
         let chain_identifier = epoch_store.get_chain_identifier();
 
@@ -752,10 +729,6 @@ impl HaneulNode {
         let mut embedded_rpc_store =
             if node_role.is_fullnode() && config.rpc().is_some_and(|rpc| rpc.enable_indexing()) {
                 info!("creating embedded rpc-store");
-                // The embedded `haneul-rpc-store` replaced the legacy `rpc-index`
-                // backend; remove its now-dead on-disk directory if a prior
-                // version left one behind.
-                remove_legacy_rpc_index_store(&config.db_path());
                 // The tip indexer pulls checkpoints from the node's local
                 // checkpoint / perpetual stores via a dedicated read handle.
                 let ingestion_source = RocksDbStore::new(
@@ -859,11 +832,9 @@ impl HaneulNode {
             cache_traits.clone(),
             epoch_store.clone(),
             committee_store.clone(),
-            index_store.clone(),
             embedded_rpc_store.as_ref().map(|embedded| embedded.store()),
             checkpoint_store.clone(),
             &prometheus_registry,
-            genesis.objects(),
             &db_checkpoint_config,
             config.clone(),
             chain_identifier,
@@ -2918,151 +2889,30 @@ fn update_peer_addresses(
     }
 }
 
-fn build_kv_store(
-    state: &Arc<AuthorityState>,
-    config: &NodeConfig,
-    registry: &Registry,
-) -> Result<Arc<TransactionKeyValueStore>> {
-    let metrics = KeyValueStoreMetrics::new(registry);
-    let db_store = TransactionKeyValueStore::new("rocksdb", metrics.clone(), state.clone());
+/// On-disk directories of index backends that no longer exist: `rpc-index`
+/// was the `RpcIndexStore` that the embedded `haneul-rpc-store` replaced, and
+/// `indexes` was the `IndexStore` behind the removed JSON-RPC service.
+const LEGACY_INDEX_STORE_DIRS: [&str; 2] = ["rpc-index", "indexes"];
 
-    let base_url = &config.transaction_kv_store_read_config.base_url;
-
-    if base_url.is_empty() {
-        info!("no http kv store url provided, using local db only");
-        return Ok(Arc::new(db_store));
-    }
-
-    let base_url: url::Url = base_url.parse().tap_err(|e| {
-        error!(
-            "failed to parse config.transaction_kv_store_config.base_url ({:?}) as url: {}",
-            base_url, e
-        )
-    })?;
-
-    let network_str = match state.get_chain_identifier().chain() {
-        Chain::Mainnet => "/mainnet",
-        _ => {
-            info!("using local db only for kv store");
-            return Ok(Arc::new(db_store));
-        }
-    };
-
-    let base_url = base_url.join(network_str)?.to_string();
-    let http_store = HttpKVStore::new_kv(
-        &base_url,
-        config.transaction_kv_store_read_config.cache_size,
-        metrics.clone(),
-    )?;
-    info!("using local key-value store with fallback to http key-value store");
-    Ok(Arc::new(FallbackTransactionKVStore::new_kv(
-        db_store,
-        http_store,
-        metrics,
-        "json_rpc_fallback",
-    )))
-}
-
-async fn build_json_rpc_router(
-    state: &Arc<AuthorityState>,
-    transaction_orchestrator: &Option<Arc<TransactionOrchestrator<NetworkAuthorityClient>>>,
-    config: &NodeConfig,
-    prometheus_registry: &Registry,
-) -> Result<axum::Router> {
-    let traffic_controller = state.traffic_controller.clone();
-    let mut server = JsonRpcServerBuilder::new(
-        env!("CARGO_PKG_VERSION"),
-        prometheus_registry,
-        traffic_controller,
-        config.policy_config.clone(),
-    );
-
-    let kv_store = build_kv_store(state, config, prometheus_registry)?;
-
-    let metrics = Arc::new(JsonRpcMetrics::new(prometheus_registry));
-    server.register_module(ReadApi::new(
-        state.clone(),
-        kv_store.clone(),
-        metrics.clone(),
-    ))?;
-    server.register_module(CoinReadApi::new(
-        state.clone(),
-        kv_store.clone(),
-        metrics.clone(),
-    ))?;
-
-    // if run_with_range is enabled we want to prevent any transactions
-    // run_with_range = None is normal operating conditions
-    if config.run_with_range.is_none() {
-        server.register_module(TransactionBuilderApi::new(state.clone()))?;
-    }
-    server.register_module(GovernanceReadApi::new(state.clone(), metrics.clone()))?;
-    server.register_module(BridgeReadApi::new(state.clone(), metrics.clone()))?;
-
-    if let Some(transaction_orchestrator) = transaction_orchestrator {
-        server.register_module(TransactionExecutionApi::new(
-            state.clone(),
-            transaction_orchestrator.clone(),
-            metrics.clone(),
-        ))?;
-    }
-
-    let name_service_config =
-        if let (Some(package_address), Some(registry_id), Some(reverse_registry_id)) = (
-            config.name_service_package_address,
-            config.name_service_registry_id,
-            config.name_service_reverse_registry_id,
-        ) {
-            haneul_name_service::NameServiceConfig::new(
-                package_address,
-                registry_id,
-                reverse_registry_id,
-            )
-        } else {
-            match state.get_chain_identifier().chain() {
-                Chain::Mainnet => haneul_name_service::NameServiceConfig::mainnet(),
-                Chain::Testnet => haneul_name_service::NameServiceConfig::testnet(),
-                Chain::Unknown => haneul_name_service::NameServiceConfig::default(),
-            }
-        };
-
-    server.register_module(IndexerApi::new(
-        state.clone(),
-        ReadApi::new(state.clone(), kv_store.clone(), metrics.clone()),
-        kv_store,
-        name_service_config,
-        metrics,
-        config.indexer_max_subscriptions,
-    ))?;
-    server.register_module(MoveUtils::new(state.clone()))?;
-
-    let server_type = config.jsonrpc_server_type();
-
-    Ok(server.to_router(server_type).await?)
-}
-
-/// Remove the on-disk directory of the legacy `rpc-index` backend.
+/// Remove the on-disk directories of the legacy index backends.
 ///
-/// The embedded `haneul-rpc-store` replaced the `RpcIndexStore` backend, which
-/// wrote to `<db_path>/rpc-index`; that data is now dead. Remove it on startup
-/// so a node upgraded from an older version does not leave it lingering and
-/// wasting disk. Best-effort: a node that never ran the legacy backend has
-/// nothing to remove, and a failure to remove stale data must not block
-/// startup.
-fn remove_legacy_rpc_index_store(db_path: &Path) {
-    let legacy_dir = db_path.join("rpc-index");
-    match std::fs::remove_dir_all(&legacy_dir) {
-        Ok(()) => info!(
-            "removed legacy rpc-index directory {}",
-            legacy_dir.display()
-        ),
-        // The common case: the node never ran the legacy backend, or it was
-        // already cleaned up on a prior startup.
-        Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
-        Err(e) => warn!(
-            "failed to remove legacy rpc-index directory {}: {e:?}",
-            legacy_dir.display()
-        ),
+/// Their data is dead, so remove it on startup so a node upgraded from an
+/// older version does not leave it lingering and wasting disk. Best-effort: a
+/// node that never ran a legacy backend has nothing to remove, and a failure
+/// to remove stale data must not block startup.
+fn remove_legacy_index_stores(db_path: &Path) {
+    for dir in LEGACY_INDEX_STORE_DIRS {
+        let legacy_dir = db_path.join(dir);
+        match std::fs::remove_dir_all(&legacy_dir) {
+            Ok(()) => info!("removed legacy {dir} directory {}", legacy_dir.display()),
+            // The common case: the node never ran the legacy backend, or it
+            // was already cleaned up on a prior startup.
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+            Err(e) => warn!(
+                "failed to remove legacy {dir} directory {}: {e:?}",
+                legacy_dir.display()
+            ),
+        }
     }
 }
 
@@ -3085,25 +2935,6 @@ async fn build_http_servers(
     }
 
     info!("starting rpc service with config: {:?}", config.rpc);
-
-    let mut router = axum::Router::new();
-
-    // The JSON-RPC service can be disabled independently of the gRPC/REST
-    // service and of JSON-RPC indexing, so that a node can keep indexing
-    // without exposing the JSON-RPC endpoints.
-    if config.json_rpc_enabled() {
-        router = router.merge(
-            build_json_rpc_router(
-                &state,
-                transaction_orchestrator,
-                config,
-                prometheus_registry,
-            )
-            .await?,
-        );
-    } else {
-        info!("json-rpc service is disabled");
-    }
 
     // When the embedded rpc-store is active, gate checkpoint delivery on the
     // index so a client that waits for a checkpoint can immediately read its
@@ -3181,7 +3012,7 @@ async fn build_http_servers(
                 .expose_headers(tower_http::cors::Any),
         );
 
-    router = router.merge(rpc_router).layer(layers);
+    let router = rpc_router.layer(layers);
 
     // On top of haneul-http's hardened defaults (bounded concurrent streams;
     // transport keepalives stay disabled by default), bound connection
@@ -3375,29 +3206,33 @@ mod tests {
         );
     }
 
-    // A present legacy `rpc-index` directory is removed, while its siblings
-    // (notably the still-used jsonrpc `indexes` store) are left untouched, and a
+    // Present legacy `rpc-index` and `indexes` directories are removed, while
+    // their siblings (such as the perpetual `store`) are left untouched, and a
     // missing directory is a no-op.
     #[test]
-    fn removes_only_the_legacy_rpc_index_directory() {
+    fn removes_only_the_legacy_index_directories() {
         let db = tempfile::tempdir().unwrap();
-        let legacy = db.path().join("rpc-index");
-        let sibling = db.path().join("indexes");
-        std::fs::create_dir(&legacy).unwrap();
-        std::fs::create_dir(&sibling).unwrap();
-        std::fs::write(legacy.join("CURRENT"), b"stale").unwrap();
+        let rpc_index = db.path().join("rpc-index");
+        let indexes = db.path().join("indexes");
+        let sibling = db.path().join("store");
+        for dir in [&rpc_index, &indexes, &sibling] {
+            std::fs::create_dir(dir).unwrap();
+            std::fs::write(dir.join("CURRENT"), b"stale").unwrap();
+        }
 
-        remove_legacy_rpc_index_store(db.path());
+        remove_legacy_index_stores(db.path());
         assert!(
-            !legacy.exists(),
+            !rpc_index.exists(),
             "legacy rpc-index directory should be gone"
         );
+        assert!(!indexes.exists(), "legacy indexes directory should be gone");
         assert!(sibling.exists(), "sibling stores must be left untouched");
 
         // Idempotent: a second run (nothing to remove) does not error or touch
         // the siblings.
-        remove_legacy_rpc_index_store(db.path());
-        assert!(!legacy.exists());
+        remove_legacy_index_stores(db.path());
+        assert!(!rpc_index.exists());
+        assert!(!indexes.exists());
         assert!(sibling.exists());
     }
 

@@ -295,6 +295,10 @@ pub fn examine_key(path: &PathBuf, is_validator_key: bool) -> Result<(), anyhow:
             println!("Secp256r1 key:");
             kp.public().as_bytes().to_vec()
         }
+        HaneulKeyPair::MLDSA65(kp) => {
+            println!("ML-DSA-65 key:");
+            kp.public().as_bytes().to_vec()
+        }
     };
     println!("Corresponding Haneul address: {:?}", haneul_address);
     println!("Corresponding PublicKey: {:?}", Hex::encode(pubkey));

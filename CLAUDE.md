@@ -78,7 +78,7 @@ haneul/
 │   ├── haneul-node/                       # Validator node implementation
 │   ├── haneul-framework/                  # Move system packages & stdlib
 │   ├── haneul-types/                      # Core type definitions
-│   ├── haneul-json-rpc/                   # JSON-RPC API server
+│   ├── haneul-indexer-alt-jsonrpc/        # JSON-RPC API server
 │   ├── haneul-indexer-alt-graphql/        # GraphQL API server
 │   └── haneul-indexer-alt/                # Blockchain data indexer
 ├── consensus/                          # Consensus mechanism (Mysticeti)

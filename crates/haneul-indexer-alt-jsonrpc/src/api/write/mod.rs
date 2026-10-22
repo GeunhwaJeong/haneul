@@ -16,8 +16,6 @@ use haneul_json_rpc_types::DevInspectResults;
 use haneul_json_rpc_types::DryRunTransactionBlockResponse;
 use haneul_json_rpc_types::HaneulTransactionBlockResponse;
 use haneul_json_rpc_types::HaneulTransactionBlockResponseOptions;
-use haneul_open_rpc::Module;
-use haneul_open_rpc_macros::open_rpc;
 use haneul_rpc::field::FieldMaskUtil;
 use haneul_rpc::proto::haneul::rpc::v2 as proto;
 use haneul_types::base_types::HaneulAddress;
@@ -36,7 +34,6 @@ use crate::context::Context;
 use crate::error::RpcError;
 use crate::error::invalid_params;
 
-#[open_rpc(namespace = "haneul", tag = "Write API")]
 #[rpc(server, client, namespace = "haneul")]
 pub trait WriteApi {
     /// Execute the transaction with options to show different information in the response. The only
@@ -45,13 +42,13 @@ pub trait WriteApi {
     #[method(name = "executeTransactionBlock")]
     async fn execute_transaction_block(
         &self,
-        /// BCS serialized transaction data bytes without its type tag, as base-64 encoded string.
+        // BCS serialized transaction data bytes without its type tag, as base-64 encoded string.
         tx_bytes: Base64,
-        /// A list of signatures (`flag || signature || pubkey` bytes, as base-64 encoded string). Signature is committed to the intent message of the transaction data, as base-64 encoded string.
+        // A list of signatures (`flag || signature || pubkey` bytes, as base-64 encoded string). Signature is committed to the intent message of the transaction data, as base-64 encoded string.
         signatures: Vec<Base64>,
-        /// options for specifying the content to be returned
+        // options for specifying the content to be returned
         options: Option<HaneulTransactionBlockResponseOptions>,
-        /// The request type, derived from `HaneulTransactionBlockResponseOptions` if None
+        // The request type, derived from `HaneulTransactionBlockResponseOptions` if None
         request_type: Option<ExecuteTransactionRequestType>,
     ) -> RpcResult<HaneulTransactionBlockResponse>;
 
@@ -62,13 +59,13 @@ pub trait WriteApi {
     async fn dev_inspect_transaction_block(
         &self,
         sender_address: HaneulAddress,
-        /// BCS encoded TransactionKind (as opposed to TransactionData, which includes gasBudget and gasPrice).
+        // BCS encoded TransactionKind (as opposed to TransactionData, which includes gasBudget and gasPrice).
         tx_bytes: Base64,
-        /// Gas is not charged, but gas usage is still calculated. Default to use reference gas price.
+        // Gas is not charged, but gas usage is still calculated. Default to use reference gas price.
         gas_price: Option<BigInt<u64>>,
-        /// The epoch to perform the call. Will be set from the system state object if not provided.
+        // The epoch to perform the call. Will be set from the system state object if not provided.
         epoch: Option<BigInt<u64>>,
-        /// Additional arguments including gas_budget, gas_objects, gas_sponsor and skip_checks.
+        // Additional arguments including gas_budget, gas_objects, gas_sponsor and skip_checks.
         additional_args: Option<DevInspectArgs>,
     ) -> RpcResult<DevInspectResults>;
 
@@ -148,10 +145,6 @@ impl WriteApiServer for Write {
 }
 
 impl RpcModule for Write {
-    fn schema(&self) -> Module {
-        WriteApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }

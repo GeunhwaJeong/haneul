@@ -16,7 +16,6 @@ consensus-config.workspace = true
 fastcrypto-zkp.workspace = true
 futures.workspace = true
 tracing.workspace = true
-jsonrpsee.workspace = true
 tokio = { workspace = true, features = ["full", "tracing", "test-util"] }
 tonic.workspace = true
 rand.workspace = true
@@ -25,7 +24,6 @@ haneul-core.workspace = true
 haneullabs-common.workspace = true
 haneul-framework.workspace = true
 haneul-swarm-config.workspace = true
-haneul-json-rpc-types.workspace = true
 haneul-node.workspace = true
 haneul-protocol-config.workspace = true
 haneul-swarm.workspace = true

@@ -2475,6 +2475,7 @@ mod tests {
             redeem_token_amount: None,
             redeem_plan: None,
             bind_epoch: None,
+            estimate_only: false,
         };
         let parsed_data = ops.into_internal()?.try_into_data(metadata)?;
         assert_eq!(data, parsed_data);
@@ -2521,6 +2522,7 @@ mod tests {
             redeem_token_amount: None,
             redeem_plan: None,
             bind_epoch: None,
+            estimate_only: false,
         };
         let parsed_data = ops.clone().into_internal()?.try_into_data(metadata)?;
 

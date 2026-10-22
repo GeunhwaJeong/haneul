@@ -8,7 +8,7 @@
 use std::{fmt::Debug, path::PathBuf, sync::Arc};
 
 use haneul_core::authority::AuthorityState;
-use haneul_core::authority::authority_test_utils::submit_and_execute;
+use haneul_core::authority::authority_test_utils::{dev_inspect_for_testing, submit_and_execute};
 use haneul_core::authority::test_authority_builder::TestAuthorityBuilder;
 use haneul_move_build::BuildConfig;
 use haneul_types::base_types::{HaneulAddress, ObjectID, ObjectRef};
@@ -18,6 +18,7 @@ use haneul_types::error::HaneulError;
 use haneul_types::execution_status::{ExecutionErrorKind, ExecutionFailure, ExecutionStatus};
 use haneul_types::object::Object;
 use haneul_types::transaction::{Transaction, TransactionData, TransactionKind};
+use haneul_types::transaction_executor::TransactionChecks;
 use haneul_types::utils::to_sender_signed_transaction;
 use tokio::runtime::Runtime;
 
@@ -167,8 +168,8 @@ impl Executor {
     }
 
     pub fn dry_run_transaction(&self, tx_data: TransactionData) -> Result<(), HaneulError> {
-        self.rt
-            .block_on(self.state.dry_exec_transaction(tx_data))
+        self.state
+            .simulate_transaction(tx_data, TransactionChecks::Enabled, true)
             .map(|_| ())
     }
 
@@ -182,17 +183,21 @@ impl Executor {
         gas_objects: Option<Vec<ObjectRef>>,
         skip_checks: Option<bool>,
     ) -> Result<(), HaneulError> {
-        self.rt
-            .block_on(self.state.dev_inspect_transaction_block(
-                sender,
-                kind,
-                gas_price,
-                gas_budget,
-                gas_sponsor,
-                gas_objects,
-                None,
-                skip_checks,
-            ))
-            .map(|_| ())
+        let checks = if skip_checks.unwrap_or(true) {
+            TransactionChecks::Disabled
+        } else {
+            TransactionChecks::Enabled
+        };
+        dev_inspect_for_testing(
+            &self.state,
+            sender,
+            kind,
+            gas_price,
+            gas_budget,
+            gas_sponsor,
+            gas_objects,
+            checks,
+        )
+        .map(|_| ())
     }
 }

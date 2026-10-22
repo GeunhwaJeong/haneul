@@ -1,8 +1,0 @@
-documentation.json
-references/awesome-haneul.mdx
-references/awesome-haneul/
-references/awesome-haneul-gaming.mdx
-references/awesome-haneul-gaming/
-haneul-stack/messaging/*.mdx
-!haneul-stack/messaging/index.mdx
-!haneul-stack/messaging/chat-app.mdx

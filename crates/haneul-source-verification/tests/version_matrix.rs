@@ -53,8 +53,8 @@ use haneul_package_alt::HaneulFlavor;
 use haneul_sdk::wallet_context::WalletContext;
 use haneul_source_verification::{ToolchainSource, ensure_binary, verify_source};
 use insta_cmd::get_cargo_bin;
-use move_package_alt::read_publication;
-use move_package_alt::schema::Environment;
+use move_package::read_publication;
+use move_package::schema::Environment;
 use test_cluster::TestClusterBuilder;
 
 /// Curated versions for the nightly matrix, spanning both package-system eras. v1.63 is where

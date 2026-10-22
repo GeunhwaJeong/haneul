@@ -23,19 +23,19 @@ use tracing::{debug, info, warn};
 
 /// static map of method names to the index of their cursor parameter
 static METHOD_CURSOR_POSITIONS: phf::Map<&'static str, usize> = phf_map! {
-    // based on function headers in crates/haneul-json-rpc-api/src/indexer.rs
+    // based on function headers in the `haneulx` indexer JSON-RPC methods
     "haneulx_getOwnedObjects" => 2,
     "haneulx_queryTransactionBlocks" => 1,
-    // based on function headers in crates/haneul-json-rpc-api/src/coin.rs
+    // based on function headers in the `haneulx` coin JSON-RPC methods
     "haneulx_getCoins" => 2,
     "haneulx_getAllCoins" => 1,
 };
 
 static METHOD_LENGTHS: phf::Map<&'static str, usize> = phf_map! {
-    // based on function headers in crates/haneul-json-rpc-api/src/indexer.rs
+    // based on function headers in the `haneulx` indexer JSON-RPC methods
     "haneulx_getOwnedObjects" => 4,
     "haneulx_queryTransactionBlocks" => 4,
-    // based on function headers in crates/haneul-json-rpc-api/src/coin.rs
+    // based on function headers in the `haneulx` coin JSON-RPC methods
     "haneulx_getCoins" => 4,
     "haneulx_getAllCoins" => 3,
 };

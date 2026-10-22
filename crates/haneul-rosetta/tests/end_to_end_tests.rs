@@ -7,8 +7,10 @@ use haneul_keys::keystore::AccountKeystore;
 use haneul_rosetta::CoinMetadataCache;
 use haneul_rosetta::operations::Operations;
 use haneul_rosetta::types::{
-    AccountBalanceRequest, AccountBalanceResponse, AccountIdentifier, Currency, HaneulEnv,
-    NetworkIdentifier, SubAccount, SubAccountType,
+    AccountBalanceRequest, AccountBalanceResponse, AccountIdentifier, ConstructionMetadataRequest,
+    ConstructionMetadataResponse, ConstructionPayloadsRequest, ConstructionPayloadsResponse,
+    ConstructionPreprocessRequest, ConstructionPreprocessResponse, Currency, HaneulEnv,
+    NetworkIdentifier, PreprocessMetadata, SubAccount, SubAccountType,
 };
 use haneul_rosetta::types::{Currencies, OperationType, TransactionIdentifierResponse};
 use haneul_rpc::client::Client as GrpcClient;
@@ -41,7 +43,8 @@ use haneul_types::utils::to_sender_signed_transaction;
 use haneul_types::{HANEUL_SYSTEM_PACKAGE_ID, Identifier};
 use test_cluster::TestClusterBuilder;
 use test_utils::{
-    execute_transaction, get_all_coins, get_object_ref, get_random_haneul, wait_for_transaction,
+    execute_transaction, get_all_coins, get_haneul_balance, get_object_ref, get_random_haneul,
+    send_all_haneul_coins, send_haneul_coin, wait_for_transaction,
 };
 
 use crate::rosetta_client::RosettaEndpoint;
@@ -560,6 +563,289 @@ async fn test_withdraw_stake() {
 
     assert_eq!(1, response.balances.len());
     assert_eq!(0, response.balances[0].value);
+}
+
+#[tokio::test]
+async fn test_withdraw_stake_estimate_only() {
+    let test_cluster = TestClusterBuilder::new()
+        .with_epoch_duration_ms(60000)
+        .build()
+        .await;
+    let staker = test_cluster.get_address_1();
+    let funder = test_cluster.get_address_0();
+    let keystore = &test_cluster.wallet.config.keystore;
+
+    let mut client = GrpcClient::new(test_cluster.rpc_url()).unwrap();
+    let (rosetta_client, _handle) = start_rosetta_test_server(client.clone()).await;
+
+    let validator = first_validator(&mut client).await;
+    stake_via_rosetta(
+        &rosetta_client,
+        &mut client,
+        keystore,
+        staker,
+        validator,
+        1_000_000_000,
+    )
+    .await;
+
+    // Trigger epoch change so the stake becomes active and withdrawable.
+    test_cluster.trigger_reconfiguration().await;
+
+    // Leave the staker holding only its StakedHaneul: no HANEUL coins and no HANEUL address balance.
+    send_all_haneul_coins(&mut client, keystore, staker, funder)
+        .await
+        .unwrap();
+    assert_eq!(0, get_haneul_balance(&mut client, staker).await);
+
+    let ops: Operations = serde_json::from_value(json!(
+        [{
+            "operation_identifier":{"index":0},
+            "type":"WithdrawStake",
+            "account": { "address" : staker.to_string() }
+        }]
+    ))
+    .unwrap();
+
+    // An estimate-only quote succeeds for the unfunded staker and carries the required budget.
+    let quote = rosetta_client
+        .estimate_gas(&ops)
+        .await
+        .expect("estimate_only metadata must succeed for an account without HANEUL");
+    assert!(quote.metadata.estimate_only);
+    assert!(quote.metadata.gas_coins.is_empty());
+    let fee = quote.metadata.budget;
+    assert!(fee > 0);
+    assert_eq!(i128::from(fee), quote.suggested_fee[0].value);
+
+    // An estimate-only quote cannot be turned into a signable transaction.
+    let payloads_error = rosetta_client
+        .call::<_, ConstructionPayloadsResponse>(
+            RosettaEndpoint::Payloads,
+            &ConstructionPayloadsRequest {
+                network_identifier: NetworkIdentifier {
+                    blockchain: "haneul".to_string(),
+                    network: HaneulEnv::LocalNet,
+                },
+                operations: ops.clone(),
+                metadata: Some(quote.metadata),
+                public_keys: vec![],
+            },
+        )
+        .await
+        .expect_err("payloads must reject estimate_only metadata");
+    assert_eq!(
+        2, payloads_error.code,
+        "Unexpected payloads error: {payloads_error:?}"
+    );
+    let payloads_details = payloads_error
+        .details
+        .as_ref()
+        .expect("payloads error must carry details");
+    assert!(
+        payloads_details["error"]
+            .as_str()
+            .unwrap()
+            .contains("estimate_only"),
+        "Unexpected payloads error: {payloads_error:?}"
+    );
+
+    // `estimate_only` quotes the budget the fullnode estimates, so preprocess and metadata reject
+    // it alongside a caller-supplied budget.
+    let network_identifier = NetworkIdentifier {
+        blockchain: "haneul".to_string(),
+        network: HaneulEnv::LocalNet,
+    };
+    // Every field of a preprocess response is optional, so `call` would read an error body as an
+    // empty response. Read the raw body and require a Rosetta error instead.
+    let preprocess_body: serde_json::Value = rosetta_client
+        .call(
+            RosettaEndpoint::Preprocess,
+            &ConstructionPreprocessRequest {
+                network_identifier: network_identifier.clone(),
+                operations: ops.clone(),
+                metadata: Some(PreprocessMetadata {
+                    budget: Some(fee),
+                    estimate_only: true,
+                }),
+            },
+        )
+        .await
+        .unwrap();
+    let preprocess_error: rosetta_client::RosettaError =
+        serde_json::from_value(preprocess_body.clone()).unwrap_or_else(|_| {
+            panic!("preprocess must reject estimate_only with a budget, got {preprocess_body}")
+        });
+    assert_eq!(
+        2, preprocess_error.code,
+        "Unexpected preprocess error: {preprocess_error:?}"
+    );
+
+    let mut options = rosetta_client
+        .call::<_, ConstructionPreprocessResponse>(
+            RosettaEndpoint::Preprocess,
+            &ConstructionPreprocessRequest {
+                network_identifier: network_identifier.clone(),
+                operations: ops.clone(),
+                metadata: Some(PreprocessMetadata {
+                    budget: None,
+                    estimate_only: true,
+                }),
+            },
+        )
+        .await
+        .unwrap()
+        .options
+        .unwrap();
+    options.budget = Some(fee);
+    let metadata_error = rosetta_client
+        .call::<_, ConstructionMetadataResponse>(
+            RosettaEndpoint::Metadata,
+            &ConstructionMetadataRequest {
+                network_identifier,
+                options: Some(options),
+                public_keys: vec![],
+            },
+        )
+        .await
+        .expect_err("metadata must reject estimate_only with a budget");
+    assert_eq!(
+        2, metadata_error.code,
+        "Unexpected metadata error: {metadata_error:?}"
+    );
+
+    // Without estimate_only, metadata fails for the unfunded staker.
+    let error = rosetta_client
+        .rosetta_flow(&ops, keystore, None)
+        .await
+        .metadata
+        .unwrap()
+        .expect_err("metadata must fail for an account without HANEUL");
+    assert_eq!(16, error.code, "Unexpected metadata error: {error:?}");
+    let details = error
+        .details
+        .as_ref()
+        .expect("gas selection error must carry details");
+    assert!(
+        details["error"]
+            .as_str()
+            .unwrap()
+            .contains("Unable to perform gas selection"),
+        "Unexpected metadata error: {error:?}"
+    );
+    // The error carries the same budget as the quote, plus the balances gas selection saw.
+    assert_eq!(
+        Some(fee.to_string().as_str()),
+        details["required_budget"].as_str()
+    );
+    assert_eq!(Some("0"), details["coin_balance"].as_str());
+    assert_eq!(Some("0"), details["address_balance"].as_str());
+
+    // With no other HANEUL, a single coin worth the quoted fee pays exactly the quoted budget.
+    send_haneul_coin(&mut client, keystore, funder, staker, fee)
+        .await
+        .unwrap();
+
+    let flow = rosetta_client.rosetta_flow(&ops, keystore, None).await;
+    assert_eq!(fee, flow.metadata.unwrap().unwrap().metadata.budget);
+    assert_submitted_transaction_succeeded(&mut client, &flow.submit.unwrap().unwrap()).await;
+}
+
+/// A staker holding a dust HANEUL coin gets a quote for that coin alone. Prefunding a new coin adds
+/// that coin's loading cost to the budget, which the dust coin covers, so a new coin worth the whole
+/// quote pays for the withdrawal.
+#[tokio::test]
+async fn test_withdraw_stake_estimate_only_with_dust_coin() {
+    // More than the cost of loading one more gas coin (1000 gas units at the reference gas price),
+    // and less than the budget of a withdrawal.
+    const DUST_COIN_VALUE: u64 = 2_000_000;
+
+    let test_cluster = TestClusterBuilder::new()
+        .with_epoch_duration_ms(60000)
+        .build()
+        .await;
+    let staker = test_cluster.get_address_1();
+    let funder = test_cluster.get_address_0();
+    let keystore = &test_cluster.wallet.config.keystore;
+
+    let mut client = GrpcClient::new(test_cluster.rpc_url()).unwrap();
+    let (rosetta_client, _handle) = start_rosetta_test_server(client.clone()).await;
+
+    let validator = first_validator(&mut client).await;
+    stake_via_rosetta(
+        &rosetta_client,
+        &mut client,
+        keystore,
+        staker,
+        validator,
+        1_000_000_000,
+    )
+    .await;
+    test_cluster.trigger_reconfiguration().await;
+
+    // Leave the staker holding its StakedHaneul and a single dust coin.
+    send_all_haneul_coins(&mut client, keystore, staker, funder)
+        .await
+        .unwrap();
+    send_haneul_coin(&mut client, keystore, funder, staker, DUST_COIN_VALUE)
+        .await
+        .unwrap();
+
+    let ops: Operations = serde_json::from_value(json!(
+        [{
+            "operation_identifier":{"index":0},
+            "type":"WithdrawStake",
+            "account": { "address" : staker.to_string() }
+        }]
+    ))
+    .unwrap();
+
+    let quote = rosetta_client
+        .estimate_gas(&ops)
+        .await
+        .expect("estimate_only metadata must succeed for an account that can't pay for gas");
+    assert!(quote.metadata.gas_coins.is_empty());
+    let fee = quote.metadata.budget;
+
+    send_haneul_coin(&mut client, keystore, funder, staker, fee)
+        .await
+        .unwrap();
+
+    // Paying with two coins needs more than the quote, which covered the dust coin alone, so a
+    // new coin worth only the quote minus the dust coin would not have been enough.
+    let flow = rosetta_client.rosetta_flow(&ops, keystore, None).await;
+    let budget = flow.metadata.unwrap().unwrap().metadata.budget;
+    assert!(
+        budget > fee,
+        "budget {budget} should exceed the quote {fee}"
+    );
+    assert_submitted_transaction_succeeded(&mut client, &flow.submit.unwrap().unwrap()).await;
+}
+
+/// Wait for the transaction Rosetta submitted and assert that it executed successfully.
+async fn assert_submitted_transaction_succeeded(
+    client: &mut GrpcClient,
+    response: &TransactionIdentifierResponse,
+) {
+    let digest = response.transaction_identifier.hash.to_string();
+    wait_for_transaction(client, &digest).await.unwrap();
+
+    let request = GetTransactionRequest::default()
+        .with_digest(digest)
+        .with_read_mask(FieldMask::from_paths(["effects"]));
+    let transaction = client
+        .ledger_client()
+        .get_transaction(request)
+        .await
+        .unwrap()
+        .into_inner()
+        .transaction
+        .expect("Response transaction should not be empty");
+    assert!(
+        transaction.effects().status().success(),
+        "Transaction failed: {:?}",
+        transaction.effects().status().error()
+    );
 }
 
 #[tokio::test]
@@ -3608,26 +3894,6 @@ async fn count_fss_objects(client: &mut GrpcClient, owner: HaneulAddress) -> (us
         }
     }
     (objects.len(), total_value)
-}
-
-async fn get_haneul_balance(client: &mut GrpcClient, address: HaneulAddress) -> u64 {
-    use haneul_rpc::proto::haneul::rpc::v2::GetBalanceRequest;
-
-    let request = GetBalanceRequest::default()
-        .with_owner(address.to_string())
-        .with_coin_type(
-            "0x0000000000000000000000000000000000000000000000000000000000000002::haneul::HANEUL"
-                .to_string(),
-        );
-    client
-        .state_client()
-        .get_balance(request)
-        .await
-        .unwrap()
-        .into_inner()
-        .balance
-        .and_then(|b| b.balance)
-        .unwrap_or(0)
 }
 
 #[tokio::test]

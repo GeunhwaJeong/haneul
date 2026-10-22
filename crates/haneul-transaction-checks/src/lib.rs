@@ -25,7 +25,8 @@ mod checked {
         HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID,
         HANEUL_BRIDGE_OBJECT_ID, HANEUL_CLOCK_OBJECT_ID, HANEUL_COIN_REGISTRY_OBJECT_ID,
         HANEUL_DENY_LIST_OBJECT_ID, HANEUL_DISPLAY_REGISTRY_OBJECT_ID,
-        HANEUL_RANDOMNESS_STATE_OBJECT_ID, HANEUL_SYSTEM_STATE_OBJECT_ID,
+        HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID, HANEUL_RANDOMNESS_STATE_OBJECT_ID,
+        HANEUL_SYSTEM_STATE_OBJECT_ID,
     };
     use haneul_types::{
         base_types::{HaneulAddress, SequenceNumber},
@@ -485,6 +486,7 @@ mod checked {
                         input_object_kind,
                         object,
                         system_transaction,
+                        protocol_config,
                     )?;
                 }
                 // We skip checking a removed consensus object because it no longer exists.
@@ -503,6 +505,7 @@ mod checked {
         object_kind: InputObjectKind,
         object: &Object,
         system_transaction: bool,
+        protocol_config: &ProtocolConfig,
     ) -> UserInputResult {
         // Defense-in-depth: Owner::Party is not yet supported.
         if matches!(object.owner, Owner::Party { .. }) {
@@ -599,6 +602,8 @@ mod checked {
 
                     match (object_id, mutability) {
                         // System objects that can be taken mutably
+                        (HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID, _)
+                            if protocol_config.enable_forwarding_addresses() => (),
                         (HANEUL_SYSTEM_STATE_OBJECT_ID, _)
                         | (HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID, _)
                         | (HANEUL_COIN_REGISTRY_OBJECT_ID, _)

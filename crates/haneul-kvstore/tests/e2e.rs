@@ -22,6 +22,7 @@ use haneul_indexer_alt_framework::ingestion::IngestionConfig;
 use haneul_indexer_alt_framework::ingestion::ingestion_client::IngestionClientArgs;
 use haneul_indexer_alt_framework::ingestion::streaming_client::StreamingClientArgs;
 use haneul_indexer_alt_framework::pipeline::CommitterConfig;
+use haneul_inverted_index::WatermarkPacing;
 use haneul_inverted_index::Watermarked;
 use haneul_inverted_index::eval_bitmap_query_stream;
 use haneul_keys::keystore::AccountKeystore;
@@ -151,6 +152,10 @@ fn bitmap_query_stream(
         direction,
         u64::MAX,
         haneul_inverted_index::SkipPolicy::DRAIN_ONLY,
+        WatermarkPacing {
+            min_buckets: u64::MAX,
+            emit_held_at_end: false,
+        },
         |_| {},
     );
     use futures::TryStreamExt;

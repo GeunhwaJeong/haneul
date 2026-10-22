@@ -6,8 +6,6 @@ use futures::future;
 use haneul_json_rpc_types::HaneulTransactionBlockResponse;
 use haneul_json_rpc_types::HaneulTransactionBlockResponseOptions;
 use haneul_json_rpc_types::Page;
-use haneul_open_rpc::Module;
-use haneul_open_rpc_macros::open_rpc;
 use haneul_types::digests::TransactionDigest;
 use haneullabs_common::ZipDebugEqIteratorExt;
 use jsonrpsee::core::RpcResult;
@@ -25,21 +23,19 @@ mod error;
 mod filter;
 mod response;
 
-#[open_rpc(namespace = "haneul", tag = "Transactions API")]
 #[rpc(server, namespace = "haneul")]
 trait TransactionsApi {
     /// Fetch a transaction by its transaction digest.
     #[method(name = "getTransactionBlock")]
     async fn get_transaction_block(
         &self,
-        /// The digest of the queried transaction.
+        // The digest of the queried transaction.
         digest: TransactionDigest,
-        /// Options controlling the output format.
+        // Options controlling the output format.
         options: Option<HaneulTransactionBlockResponseOptions>,
     ) -> RpcResult<HaneulTransactionBlockResponse>;
 }
 
-#[open_rpc(namespace = "haneulx", tag = "Query Transactions API")]
 #[rpc(server, namespace = "haneulx")]
 trait QueryTransactionsApi {
     /// Query transactions based on their properties (sender, affected addresses, function calls,
@@ -56,13 +52,13 @@ trait QueryTransactionsApi {
     #[method(name = "queryTransactionBlocks")]
     async fn query_transaction_blocks(
         &self,
-        /// The query criteria, and the output options.
+        // The query criteria, and the output options.
         query: HaneulTransactionBlockResponseQuery,
-        /// Cursor to start paginating from.
+        // Cursor to start paginating from.
         cursor: Option<String>,
-        /// Maximum number of transactions to return per page.
+        // Maximum number of transactions to return per page.
         limit: Option<usize>,
-        /// Order of results, defaulting to ascending order (false), by sequence on-chain.
+        // Order of results, defaulting to ascending order (false), by sequence on-chain.
         descending_order: Option<bool>,
     ) -> RpcResult<Page<HaneulTransactionBlockResponse, String>>;
 }
@@ -163,20 +159,12 @@ impl QueryTransactionsApiServer for QueryTransactions {
 }
 
 impl RpcModule for Transactions {
-    fn schema(&self) -> Module {
-        TransactionsApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }
 }
 
 impl RpcModule for QueryTransactions {
-    fn schema(&self) -> Module {
-        QueryTransactionsApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }

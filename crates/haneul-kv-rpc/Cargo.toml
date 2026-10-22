@@ -20,6 +20,7 @@ bytes.workspace = true
 clap.workspace = true
 dashmap.workspace = true
 futures.workspace = true
+http.workspace = true
 move-core-types.workspace = true
 haneullabs-common.workspace = true
 haneullabs-metrics.workspace = true
@@ -45,6 +46,7 @@ telemetry-subscribers.workspace = true
 tokio.workspace = true
 toml.workspace = true
 tonic.workspace = true
+tower.workspace = true
 tonic-prost.workspace = true
 tonic-reflection.workspace = true
 prost.workspace = true
@@ -53,6 +55,8 @@ tracing.workspace = true
 [dev-dependencies]
 # Builds synthetic package objects for the MovePackageService tests.
 move-binary-format.workspace = true
+# Builds bitmap index rows for the List resume tests.
+roaring.workspace = true
 # `test-util` powers `#[tokio::test(start_paused = true)]` in the limiter tests.
 tokio = { workspace = true, features = ["test-util"] }
 # Enables the in-memory mock BigTable server for the real-stage resolver tests.

@@ -1595,6 +1595,7 @@ mod tests {
             &self,
             _peer: crate::network::PeerId,
             _highest_round_per_authority: Vec<Round>,
+            _filter: crate::network::BlockStreamFilter,
             _timeout: Duration,
         ) -> ConsensusResult<crate::network::ObserverBlockStream> {
             unimplemented!("stream_blocks not implemented in mock")

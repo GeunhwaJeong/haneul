@@ -9,6 +9,7 @@ use haneul_types::executable_transaction::VerifiedExecutableTransaction;
 use prometheus::IntGauge;
 use tokio::time::Instant;
 
+pub(crate) mod causal_admission;
 pub(crate) mod execution_scheduler_impl;
 pub(crate) mod funds_withdraw_scheduler;
 mod overload_tracker;

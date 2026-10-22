@@ -221,6 +221,7 @@ async fn main() -> Result<()> {
         config.pool_config(),
         config.ledger_history(),
         config.request_bigtable_concurrency(),
+        config.monotonic_read_wait_timeout(),
         config.stages(),
         config.enable_list_apis(),
     )

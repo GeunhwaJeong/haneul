@@ -3,8 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use haneul_json_rpc_types::Page as PageResponse;
-use haneul_open_rpc::Module;
-use haneul_open_rpc_macros::open_rpc;
 use haneul_types::base_types::HaneulAddress;
 use jsonrpsee::core::RpcResult;
 use jsonrpsee::proc_macros::rpc;
@@ -17,14 +15,13 @@ use crate::error::InternalContext as _;
 mod error;
 mod response;
 
-#[open_rpc(namespace = "haneulx", tag = "Name Service API")]
 #[rpc(server, namespace = "haneulx")]
 trait NameServiceApi {
     /// Resolve a HaneulNS name to its address
     #[method(name = "resolveNameServiceAddress")]
     async fn resolve_name_service_address(
         &self,
-        /// The name to resolve
+        // The name to resolve
         name: String,
     ) -> RpcResult<Option<HaneulAddress>>;
 
@@ -34,11 +31,11 @@ trait NameServiceApi {
     #[method(name = "resolveNameServiceNames")]
     async fn resolve_name_service_names(
         &self,
-        /// The address to resolve
+        // The address to resolve
         address: HaneulAddress,
-        /// Unused pagination cursor
+        // Unused pagination cursor
         cursor: Option<String>,
-        /// Unused pagination limit
+        // Unused pagination limit
         limit: Option<usize>,
     ) -> RpcResult<PageResponse<String, String>>;
 }
@@ -75,10 +72,6 @@ impl NameServiceApiServer for NameService {
 }
 
 impl RpcModule for NameService {
-    fn schema(&self) -> Module {
-        NameServiceApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }

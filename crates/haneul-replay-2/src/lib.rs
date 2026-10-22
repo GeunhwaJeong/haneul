@@ -18,7 +18,7 @@ use haneul_data_store::{
 use haneul_json_rpc_types::HaneulTransactionBlockEffects;
 use haneul_types::effects::TransactionEffects;
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
-use move_package_alt::schema::EnvironmentName;
+use move_package::schema::EnvironmentName;
 use serde::Deserialize;
 use similar::{ChangeTag, TextDiff};
 use std::{

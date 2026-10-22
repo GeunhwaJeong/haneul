@@ -18,7 +18,10 @@ use haneul_types::transaction::{Argument, Command, ObjectArg, ProgrammableTransa
 use move_core_types::identifier::Identifier;
 use move_core_types::language_storage::TypeTag;
 
-use crate::{Currency, errors::Error};
+use crate::{
+    Currency,
+    errors::{Error, insufficient_gas_balance},
+};
 
 use super::{
     MAX_COMMAND_ARGS, TransactionObjectData, TryConstructTransaction, simulate_transaction,
@@ -144,9 +147,12 @@ impl TryConstructTransaction for PayCoin {
                     bind_epoch: None,
                 });
             }
-            // Priced fallback (gasless ineligible) or an unexpected dry-run failure: fall through
-            // to the smash path. Only transport errors propagate.
+            // Fall through to the smash path when gasless is ineligible (priced simulate), the
+            // probe's dry run fails, or the probe fails gas selection because the account lacks
+            // the HANEUL to pay for it (the priced path then reports the budget of the transaction
+            // actually sent). Other errors, such as transport failures, propagate.
             Ok(_) | Err(Error::TransactionDryRunError(_)) => {}
+            Err(e) if insufficient_gas_balance(&e).is_some() => {}
             Err(e) => return Err(e),
         }
 

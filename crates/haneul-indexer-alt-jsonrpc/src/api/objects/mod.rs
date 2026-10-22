@@ -9,8 +9,6 @@ use haneul_json_rpc_types::HaneulObjectDataOptions;
 use haneul_json_rpc_types::HaneulObjectResponse;
 use haneul_json_rpc_types::HaneulPastObjectResponse;
 use haneul_json_rpc_types::Page;
-use haneul_open_rpc::Module;
-use haneul_open_rpc_macros::open_rpc;
 use haneul_types::base_types::HaneulAddress;
 use haneul_types::base_types::ObjectID;
 use haneul_types::base_types::SequenceNumber;
@@ -28,16 +26,15 @@ mod error;
 pub(crate) mod filter;
 pub(crate) mod response;
 
-#[open_rpc(namespace = "haneul", tag = "Objects API")]
 #[rpc(server, namespace = "haneul")]
 trait ObjectsApi {
     /// Return the object information for the latest version of an object.
     #[method(name = "getObject")]
     async fn get_object(
         &self,
-        /// The ID of the queried obect
+        // The ID of the queried obect
         object_id: ObjectID,
-        /// Options for specifying the content to be returned
+        // Options for specifying the content to be returned
         options: Option<HaneulObjectDataOptions>,
     ) -> RpcResult<HaneulObjectResponse>;
 
@@ -45,9 +42,9 @@ trait ObjectsApi {
     #[method(name = "multiGetObjects")]
     async fn multi_get_objects(
         &self,
-        /// the IDs of the queried objects
+        // the IDs of the queried objects
         object_ids: Vec<ObjectID>,
-        /// Options for specifying the content to be returned
+        // Options for specifying the content to be returned
         options: Option<HaneulObjectDataOptions>,
     ) -> RpcResult<Vec<HaneulObjectResponse>>;
 
@@ -59,11 +56,11 @@ trait ObjectsApi {
     #[method(name = "tryGetPastObject")]
     async fn try_get_past_object(
         &self,
-        /// The ID of the queried object
+        // The ID of the queried object
         object_id: ObjectID,
-        /// The version of the queried object.
+        // The version of the queried object.
         version: SequenceNumber,
-        /// Options for specifying the content to be returned
+        // Options for specifying the content to be returned
         options: Option<HaneulObjectDataOptions>,
     ) -> RpcResult<HaneulPastObjectResponse>;
 
@@ -75,14 +72,13 @@ trait ObjectsApi {
     #[method(name = "tryMultiGetPastObjects")]
     async fn try_multi_get_past_objects(
         &self,
-        /// A vector of object and versions to be queried
+        // A vector of object and versions to be queried
         past_objects: Vec<HaneulGetPastObjectRequest>,
-        /// Options for specifying the content to be returned
+        // Options for specifying the content to be returned
         options: Option<HaneulObjectDataOptions>,
     ) -> RpcResult<Vec<HaneulPastObjectResponse>>;
 }
 
-#[open_rpc(namespace = "haneulx", tag = "Query Objects API")]
 #[rpc(server, namespace = "haneulx")]
 trait QueryObjectsApi {
     /// Query objects by their owner's address. Returns a paginated list of objects.
@@ -101,13 +97,13 @@ trait QueryObjectsApi {
     #[method(name = "getOwnedObjects")]
     async fn get_owned_objects(
         &self,
-        /// The owner's address.
+        // The owner's address.
         address: HaneulAddress,
-        /// Additional querying criteria for the object.
+        // Additional querying criteria for the object.
         query: Option<HaneulObjectResponseQuery>,
-        /// Cursor to start paginating from.
+        // Cursor to start paginating from.
         cursor: Option<String>,
-        /// Maximum number of objects to return per page.
+        // Maximum number of objects to return per page.
         limit: Option<usize>,
     ) -> RpcResult<Page<HaneulObjectResponse, String>>;
 }
@@ -258,20 +254,12 @@ impl QueryObjectsApiServer for QueryObjects {
 }
 
 impl RpcModule for Objects {
-    fn schema(&self) -> Module {
-        ObjectsApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }
 }
 
 impl RpcModule for QueryObjects {
-    fn schema(&self) -> Module {
-        QueryObjectsApiOpenRpc::module_doc()
-    }
-
     fn into_impl(self) -> jsonrpsee::RpcModule<Self> {
         self.into_rpc()
     }

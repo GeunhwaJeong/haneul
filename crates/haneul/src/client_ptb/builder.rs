@@ -42,7 +42,7 @@ use move_core_types::{
         types::{ParsedDatatype, ParsedType},
     },
 };
-use move_package_alt_compilation::build_config::BuildConfig as MoveBuildConfig;
+use move_package_compilation::build_config::BuildConfig as MoveBuildConfig;
 use std::{collections::BTreeMap, path::Path};
 
 use super::{

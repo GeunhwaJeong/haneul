@@ -40,7 +40,7 @@ async fn main() {
         .with_env();
 
     if !args.quiet {
-        builder = builder.with_user_info_target("move_package_alt");
+        builder = builder.with_user_info_target("move_package");
     }
 
     let _guard = builder.init();

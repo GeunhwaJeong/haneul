@@ -108,7 +108,7 @@ pub(super) fn collector<H: Handler>(
             tokio::select! {
                 biased;
 
-                // docs::#collector (see docs/content/guides/developer/advanced/custom-indexer.mdx)
+                // docs::#collector (see https://docs.haneul.io/develop/accessing-data/custom-indexer/custom-indexers)
                 Some(mut indexed) = rx.recv(), if pending_rows < max_pending_rows => {
                     let reader_lo = reader_lo_atomic.load(Ordering::Relaxed);
 

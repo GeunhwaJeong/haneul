@@ -68,6 +68,8 @@ pub fn sim_test(args: TokenStream, item: TokenStream) -> TokenStream {
             #[::haneul_simulator::sim_test(crate = "haneul_simulator", #(#args),*)]
             #ignore
             #sig {
+                ::haneul_simulator::telemetry_subscribers::init_for_testing();
+
                 async fn body_fn() #return_type { #body }
 
                 let timeout_secs: u64 = std::env::var("HANEUL_SIM_TEST_TIMEOUT_SECS")

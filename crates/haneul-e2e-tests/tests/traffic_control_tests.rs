@@ -2,27 +2,22 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-#![allow(deprecated)]
-
 //! NB: Most tests in this module expect real network connections and interactions, thus
 //! they should nearly all be tokio::test rather than simtest.
 
 use core::panic;
-use fastcrypto::encoding::Base64;
 use haneul_core::authority_client::AuthorityAPI;
 use haneul_core::authority_client::make_network_authority_clients_with_network_config;
 use haneul_core::traffic_controller::{
     TrafficController, TrafficSim, nodefw_test_server::NodeFwTestServer,
-};
-use haneul_json_rpc_types::{
-    HaneulTransactionBlockEffectsAPI, HaneulTransactionBlockResponse,
-    HaneulTransactionBlockResponseOptions,
 };
 use haneul_macros::sim_test;
 use haneul_network::default_haneullabs_network_config;
 use haneul_protocol_config::ProtocolConfig;
 use haneul_swarm_config::network_config_builder::ConfigBuilder;
 use haneul_test_transaction_builder::batch_make_transfer_transactions;
+use haneul_types::digests::TransactionDigest;
+use haneul_types::effects::TransactionEffectsAPI;
 use haneul_types::gas_coin::GAS;
 use haneul_types::traffic_control::TrafficControlReconfigParams;
 use haneul_types::{
@@ -38,9 +33,7 @@ use haneul_types::{
         FundsWithdrawalArg, GasData, TransactionData, TransactionDataV1, TransactionExpiration,
         TransactionKind, add_gasless_token_for_testing,
     },
-    transaction_driver_types::ExecuteTransactionRequestType,
 };
-use jsonrpsee::{core::client::ClientT, rpc_params};
 use move_core_types::identifier::Identifier;
 use std::fs::File;
 use std::num::NonZeroUsize;
@@ -73,26 +66,6 @@ async fn test_validator_traffic_control_noop() -> Result<(), anyhow::Error> {
 }
 
 #[tokio::test]
-async fn test_fullnode_traffic_control_noop() -> Result<(), anyhow::Error> {
-    telemetry_subscribers::init_for_testing();
-    let policy_config = PolicyConfig {
-        connection_blocklist_ttl_sec: 1,
-        proxy_blocklist_ttl_sec: 5,
-        // This should never be invoked when set as an error policy
-        // as we are not sending requests that error
-        error_policy_type: PolicyType::TestPanicOnInvocation,
-        spam_sample_rate: Weight::one(),
-        dry_run: false,
-        ..Default::default()
-    };
-    let test_cluster = TestClusterBuilder::new()
-        .with_fullnode_policy_config(Some(policy_config))
-        .build()
-        .await;
-    assert_traffic_control_ok(test_cluster).await
-}
-
-#[tokio::test]
 async fn test_validator_traffic_control_ok() -> Result<(), anyhow::Error> {
     telemetry_subscribers::init_for_testing();
     let policy_config = PolicyConfig {
@@ -115,27 +88,6 @@ async fn test_validator_traffic_control_ok() -> Result<(), anyhow::Error> {
         .build()
         .await;
 
-    assert_traffic_control_ok(test_cluster).await
-}
-
-#[tokio::test]
-async fn test_fullnode_traffic_control_ok() -> Result<(), anyhow::Error> {
-    telemetry_subscribers::init_for_testing();
-    let policy_config = PolicyConfig {
-        connection_blocklist_ttl_sec: 1,
-        proxy_blocklist_ttl_sec: 5,
-        spam_policy_type: PolicyType::TestNConnIP(10),
-        // This should never be invoked when set as an error policy
-        // as we are not sending requests that error
-        error_policy_type: PolicyType::TestPanicOnInvocation,
-        spam_sample_rate: Weight::one(),
-        dry_run: false,
-        ..Default::default()
-    };
-    let test_cluster = TestClusterBuilder::new()
-        .with_fullnode_policy_config(Some(policy_config))
-        .build()
-        .await;
     assert_traffic_control_ok(test_cluster).await
 }
 
@@ -164,70 +116,6 @@ async fn test_validator_traffic_control_dry_run() -> Result<(), anyhow::Error> {
         .await;
 
     assert_validator_traffic_control_dry_run(test_cluster, n as usize).await
-}
-
-#[tokio::test]
-async fn test_fullnode_traffic_control_dry_run() -> Result<(), anyhow::Error> {
-    telemetry_subscribers::init_for_testing();
-    let txn_count = 15;
-    let policy_config = PolicyConfig {
-        connection_blocklist_ttl_sec: 1,
-        proxy_blocklist_ttl_sec: 5,
-        spam_policy_type: PolicyType::TestNConnIP(txn_count - 1),
-        spam_sample_rate: Weight::one(),
-        // This should never be invoked when set as an error policy
-        // as we are not sending requests that error
-        error_policy_type: PolicyType::TestPanicOnInvocation,
-        dry_run: true,
-        ..Default::default()
-    };
-    let test_cluster = TestClusterBuilder::new()
-        .with_fullnode_policy_config(Some(policy_config))
-        .build()
-        .await;
-
-    let context = test_cluster.wallet;
-    let jsonrpc_client = &test_cluster.fullnode_handle.rpc_client;
-    let mut txns = batch_make_transfer_transactions(&context, txn_count as usize).await;
-    assert!(
-        txns.len() >= txn_count as usize,
-        "Expect at least {} txns. Do we generate enough gas objects during genesis?",
-        txn_count,
-    );
-
-    let txn = txns.swap_remove(0);
-    let tx_digest = txn.digest();
-    let (tx_bytes, signatures) = txn.to_tx_bytes_and_signatures();
-    let params = rpc_params![
-        tx_bytes,
-        signatures,
-        HaneulTransactionBlockResponseOptions::new(),
-        ExecuteTransactionRequestType::WaitForLocalExecution
-    ];
-
-    let response: HaneulTransactionBlockResponse = jsonrpc_client
-        .request("haneul_executeTransactionBlock", params.clone())
-        .await
-        .unwrap();
-    let HaneulTransactionBlockResponse {
-        digest,
-        confirmed_local_execution,
-        ..
-    } = response;
-    assert_eq!(&digest, tx_digest);
-    assert!(confirmed_local_execution.unwrap());
-
-    // it should take no more than 4 requests to be added to the blocklist
-    for _ in 0..txn_count {
-        let response: Result<HaneulTransactionBlockResponse, _> = jsonrpc_client
-            .request("haneul_getTransactionBlock", rpc_params![*tx_digest])
-            .await;
-        assert!(
-            response.is_ok(),
-            "Expected request to succeed in dry-run mode"
-        );
-    }
-    Ok(())
 }
 
 #[tokio::test]
@@ -351,133 +239,6 @@ async fn test_validator_traffic_control_error_blocked_with_policy_reconfig()
 }
 
 #[tokio::test]
-async fn test_fullnode_traffic_control_spam_blocked() -> Result<(), anyhow::Error> {
-    telemetry_subscribers::init_for_testing();
-    let txn_count = 15;
-    let policy_config = PolicyConfig {
-        connection_blocklist_ttl_sec: 3,
-        // Test that any N requests will cause an IP to be added to the blocklist.
-        spam_policy_type: PolicyType::TestNConnIP(txn_count - 1),
-        spam_sample_rate: Weight::one(),
-        dry_run: false,
-        ..Default::default()
-    };
-    let test_cluster = TestClusterBuilder::new()
-        .with_fullnode_policy_config(Some(policy_config))
-        .build()
-        .await;
-
-    let context = test_cluster.wallet;
-    let jsonrpc_client = &test_cluster.fullnode_handle.rpc_client;
-
-    let mut txns = batch_make_transfer_transactions(&context, txn_count as usize).await;
-    assert!(
-        txns.len() >= txn_count as usize,
-        "Expect at least {} txns. Do we generate enough gas objects during genesis?",
-        txn_count,
-    );
-
-    let txn = txns.swap_remove(0);
-    let tx_digest = txn.digest();
-    let (tx_bytes, signatures) = txn.to_tx_bytes_and_signatures();
-    let params = rpc_params![
-        tx_bytes,
-        signatures,
-        HaneulTransactionBlockResponseOptions::new(),
-        ExecuteTransactionRequestType::WaitForLocalExecution
-    ];
-
-    let response: HaneulTransactionBlockResponse = jsonrpc_client
-        .request("haneul_executeTransactionBlock", params.clone())
-        .await
-        .unwrap();
-    let HaneulTransactionBlockResponse {
-        digest,
-        confirmed_local_execution,
-        ..
-    } = response;
-    assert_eq!(&digest, tx_digest);
-    assert!(confirmed_local_execution.unwrap());
-
-    // it should take no more than 4 requests to be added to the blocklist
-    for _ in 0..txn_count {
-        let response: Result<HaneulTransactionBlockResponse, _> = jsonrpc_client
-            .request("haneul_getTransactionBlock", rpc_params![*tx_digest])
-            .await;
-        if let Err(err) = response {
-            // TODO: fix validator blocking error handling such that the error message
-            // is not misleading. The full error message currently is the following:
-            //  Transaction execution failed due to issues with transaction inputs, please
-            //  review the errors and try again: Too many requests.
-            assert!(
-                err.to_string().contains("Too many requests"),
-                "Error not due to spam policy"
-            );
-            return Ok(());
-        }
-    }
-    panic!("Expected spam policy to trigger within {txn_count} requests");
-}
-
-#[tokio::test]
-async fn test_fullnode_traffic_control_error_blocked() -> Result<(), anyhow::Error> {
-    telemetry_subscribers::init_for_testing();
-    let txn_count = 5;
-    let policy_config = PolicyConfig {
-        connection_blocklist_ttl_sec: 3,
-        error_policy_type: PolicyType::TestNConnIP(txn_count - 1),
-        dry_run: false,
-        ..Default::default()
-    };
-    let test_cluster = TestClusterBuilder::new()
-        .with_fullnode_policy_config(Some(policy_config))
-        .build()
-        .await;
-
-    let jsonrpc_client = &test_cluster.fullnode_handle.rpc_client;
-    let context = test_cluster.wallet;
-
-    let mut txns = batch_make_transfer_transactions(&context, txn_count as usize).await;
-    assert!(
-        txns.len() >= txn_count as usize,
-        "Expect at least {} txns. Do we generate enough gas objects during genesis?",
-        txn_count,
-    );
-
-    // it should take no more than 4 requests to be added to the blocklist
-    for _ in 0..txn_count {
-        let txn = txns.swap_remove(0);
-        let tx_digest = txn.digest();
-        let (tx_bytes, _signatures) = txn.to_tx_bytes_and_signatures();
-        // create invalid (empty) client signature
-        let signatures: Vec<Base64> = vec![];
-        let params = rpc_params![
-            tx_bytes,
-            signatures,
-            HaneulTransactionBlockResponseOptions::new(),
-            ExecuteTransactionRequestType::WaitForLocalExecution
-        ];
-        let response: Result<HaneulTransactionBlockResponse, _> = jsonrpc_client
-            .request("haneul_executeTransactionBlock", params.clone())
-            .await;
-        if let Err(err) = response {
-            if err.to_string().contains("Too many requests") {
-                return Ok(());
-            }
-        } else {
-            let HaneulTransactionBlockResponse {
-                digest,
-                confirmed_local_execution,
-                ..
-            } = response.unwrap();
-            assert_eq!(&digest, tx_digest);
-            assert!(confirmed_local_execution.unwrap());
-        }
-    }
-    panic!("Expected spam policy to trigger within {txn_count} requests");
-}
-
-#[tokio::test]
 async fn test_validator_traffic_control_error_delegated() -> Result<(), anyhow::Error> {
     telemetry_subscribers::init_for_testing();
     let n = 5;
@@ -539,87 +300,6 @@ async fn test_validator_traffic_control_error_delegated() -> Result<(), anyhow::
         {
             return Ok(());
         }
-    }
-    let fw_blocklist = server.list_addresses_rpc().await;
-    assert!(
-        !fw_blocklist.is_empty(),
-        "Expected blocklist to be non-empty"
-    );
-    server.stop().await;
-    Ok(())
-}
-
-#[tokio::test]
-async fn test_fullnode_traffic_control_spam_delegated() -> Result<(), anyhow::Error> {
-    telemetry_subscribers::init_for_testing();
-    let txn_count = 10;
-    let port = 65001;
-    let policy_config = PolicyConfig {
-        connection_blocklist_ttl_sec: 120,
-        proxy_blocklist_ttl_sec: 120,
-        // Test that any N - 1 requests will cause an IP to be added to the blocklist.
-        spam_policy_type: PolicyType::TestNConnIP(txn_count - 1),
-        spam_sample_rate: Weight::one(),
-        dry_run: false,
-        ..Default::default()
-    };
-    // enable remote firewall delegation
-    let firewall_config = RemoteFirewallConfig {
-        remote_fw_url: format!("http://127.0.0.1:{}", port),
-        delegate_spam_blocking: true,
-        delegate_error_blocking: false,
-        destination_port: 9000,
-        drain_path: tempfile::tempdir().unwrap().keep().join("drain"),
-        drain_timeout_secs: 10,
-    };
-    let test_cluster = TestClusterBuilder::new()
-        .with_fullnode_policy_config(Some(policy_config))
-        .with_fullnode_fw_config(Some(firewall_config.clone()))
-        .build()
-        .await;
-
-    // start test firewall server
-    let mut server = NodeFwTestServer::new();
-    server.start(port).await;
-    // await for the server to start
-    tokio::time::sleep(tokio::time::Duration::from_secs(3)).await;
-    let context = test_cluster.wallet;
-    let jsonrpc_client = &test_cluster.fullnode_handle.rpc_client;
-    let mut txns = batch_make_transfer_transactions(&context, txn_count as usize).await;
-    assert!(
-        txns.len() >= txn_count as usize,
-        "Expect at least {} txns. Do we generate enough gas objects during genesis?",
-        txn_count,
-    );
-
-    let txn = txns.swap_remove(0);
-    let tx_digest = txn.digest();
-    let (tx_bytes, signatures) = txn.to_tx_bytes_and_signatures();
-    let params = rpc_params![
-        tx_bytes,
-        signatures,
-        HaneulTransactionBlockResponseOptions::new(),
-        ExecuteTransactionRequestType::WaitForLocalExecution
-    ];
-
-    // it should take no more than 4 requests to be added to the blocklist
-    let response: HaneulTransactionBlockResponse = jsonrpc_client
-        .request("haneul_executeTransactionBlock", params.clone())
-        .await
-        .unwrap();
-    let HaneulTransactionBlockResponse {
-        digest,
-        confirmed_local_execution,
-        ..
-    } = response;
-    assert_eq!(&digest, tx_digest);
-    assert!(confirmed_local_execution.unwrap());
-
-    for _ in 0..txn_count {
-        let response: Result<HaneulTransactionBlockResponse, _> = jsonrpc_client
-            .request("haneul_getTransactionBlock", rpc_params![*tx_digest])
-            .await;
-        assert!(response.is_ok(), "Expected request to succeed");
     }
     let fw_blocklist = server.list_addresses_rpc().await;
     assert!(
@@ -845,10 +525,18 @@ async fn test_traffic_sketch_allowlist_mode() {
     assert!(metrics.num_requests < expected_requests + 200);
 }
 
+/// The effects returned by `execute_transaction` come from the validators; the
+/// rpc fullnode only serves the transaction itself once it has executed the
+/// checkpoint that includes it, so a read issued straight after execution can
+/// still miss.
+async fn wait_for_transaction_readable(test_cluster: &TestCluster, digest: &TransactionDigest) {
+    test_cluster.wait_for_tx_settlement(&[*digest]).await;
+}
+
 async fn assert_traffic_control_ok(mut test_cluster: TestCluster) -> Result<(), anyhow::Error> {
     telemetry_subscribers::init_for_testing();
     let context = &mut test_cluster.wallet;
-    let jsonrpc_client = &test_cluster.fullnode_handle.rpc_client;
+    let mut grpc_client = test_cluster.fullnode_handle.grpc_client.clone();
 
     let txn_count = 4;
     let mut txns = batch_make_transfer_transactions(context, txn_count).await;
@@ -861,78 +549,23 @@ async fn assert_traffic_control_ok(mut test_cluster: TestCluster) -> Result<(), 
     let txn = txns.swap_remove(0);
     let tx_digest = txn.digest();
 
-    // Test request with ExecuteTransactionRequestType::WaitForLocalExecution
-    let (tx_bytes, signatures) = txn.to_tx_bytes_and_signatures();
-    let params = rpc_params![
-        tx_bytes,
-        signatures,
-        HaneulTransactionBlockResponseOptions::new(),
-        ExecuteTransactionRequestType::WaitForLocalExecution
-    ];
-    let response: HaneulTransactionBlockResponse = jsonrpc_client
-        .request("haneul_executeTransactionBlock", params)
-        .await
-        .unwrap();
+    let executed = grpc_client.execute_transaction(&txn).await.unwrap();
+    assert_eq!(executed.effects.transaction_digest(), tx_digest);
 
-    let HaneulTransactionBlockResponse {
-        digest,
-        confirmed_local_execution,
-        ..
-    } = response;
-    assert_eq!(&digest, tx_digest);
-    assert!(confirmed_local_execution.unwrap());
+    wait_for_transaction_readable(&test_cluster, tx_digest).await;
+    let fetched = grpc_client.get_transaction(tx_digest).await.unwrap();
+    assert_eq!(fetched.effects.transaction_digest(), tx_digest);
 
-    let _response: HaneulTransactionBlockResponse = jsonrpc_client
-        .request("haneul_getTransactionBlock", rpc_params![*tx_digest])
-        .await
-        .unwrap();
+    // Executing the same transaction again returns its finalized effects.
+    let executed = grpc_client.execute_transaction(&txn).await.unwrap();
+    assert_eq!(executed.effects.transaction_digest(), tx_digest);
 
-    // Test request with ExecuteTransactionRequestType::WaitForEffectsCert
-    // Use the same txn which should return local finalized effects
-    let (tx_bytes, signatures) = txn.to_tx_bytes_and_signatures();
-    let params = rpc_params![
-        tx_bytes,
-        signatures,
-        HaneulTransactionBlockResponseOptions::new().with_effects(),
-        ExecuteTransactionRequestType::WaitForEffectsCert
-    ];
-    let response: HaneulTransactionBlockResponse = jsonrpc_client
-        .request("haneul_executeTransactionBlock", params)
-        .await
-        .unwrap();
-
-    let HaneulTransactionBlockResponse {
-        effects,
-        confirmed_local_execution,
-        ..
-    } = response;
-    assert_eq!(effects.unwrap().transaction_digest(), tx_digest);
-    assert!(confirmed_local_execution.unwrap());
-
-    // Test request with ExecuteTransactionRequestType::WaitForEffectsCert
-    // Use a different txn to avoid the case where the txn effects are already cached locally
+    // Use a different txn to avoid the case where the txn effects are already cached locally.
     let txn = txns.swap_remove(0);
     let tx_digest = txn.digest();
 
-    let (tx_bytes, signatures) = txn.to_tx_bytes_and_signatures();
-    let params = rpc_params![
-        tx_bytes,
-        signatures,
-        HaneulTransactionBlockResponseOptions::new().with_effects(),
-        ExecuteTransactionRequestType::WaitForEffectsCert
-    ];
-    let response: HaneulTransactionBlockResponse = jsonrpc_client
-        .request("haneul_executeTransactionBlock", params)
-        .await
-        .unwrap();
-
-    let HaneulTransactionBlockResponse {
-        effects,
-        confirmed_local_execution,
-        ..
-    } = response;
-    assert_eq!(effects.unwrap().transaction_digest(), tx_digest);
-    assert!(!confirmed_local_execution.unwrap());
+    let executed = grpc_client.execute_transaction(&txn).await.unwrap();
+    assert_eq!(executed.effects.transaction_digest(), tx_digest);
 
     Ok(())
 }
@@ -945,7 +578,7 @@ async fn assert_validator_traffic_control_dry_run(
     txn_count: usize,
 ) -> Result<(), anyhow::Error> {
     let context = &mut test_cluster.wallet;
-    let jsonrpc_client = &test_cluster.fullnode_handle.rpc_client;
+    let mut grpc_client = test_cluster.fullnode_handle.grpc_client.clone();
     let mut txns = batch_make_transfer_transactions(context, txn_count).await;
     assert!(
         txns.len() >= txn_count,
@@ -955,31 +588,15 @@ async fn assert_validator_traffic_control_dry_run(
 
     let txn = txns.swap_remove(0);
     let tx_digest = txn.digest();
-    let (tx_bytes, signatures) = txn.to_tx_bytes_and_signatures();
-    let params = rpc_params![
-        tx_bytes,
-        signatures,
-        HaneulTransactionBlockResponseOptions::new(),
-        ExecuteTransactionRequestType::WaitForLocalExecution
-    ];
 
-    let response: HaneulTransactionBlockResponse = jsonrpc_client
-        .request("haneul_executeTransactionBlock", params.clone())
-        .await
-        .unwrap();
-    let HaneulTransactionBlockResponse {
-        digest,
-        confirmed_local_execution,
-        ..
-    } = response;
-    assert_eq!(&digest, tx_digest);
-    assert!(confirmed_local_execution.unwrap());
+    let executed = grpc_client.execute_transaction(&txn).await.unwrap();
+    assert_eq!(executed.effects.transaction_digest(), tx_digest);
+
+    wait_for_transaction_readable(&test_cluster, tx_digest).await;
 
     // it should take no more than 4 requests to be added to the blocklist
     for _ in 0..txn_count {
-        let response: Result<HaneulTransactionBlockResponse, _> = jsonrpc_client
-            .request("haneul_getTransactionBlock", rpc_params![*tx_digest])
-            .await;
+        let response = grpc_client.get_transaction(tx_digest).await;
         assert!(
             response.is_ok(),
             "Expected request to succeed in dry-run mode"

@@ -51,7 +51,7 @@ UPDATE=1 cargo nextest run -p haneul-framework --test build-system-packages
 "${INSTA[@]}" \
     -p haneul-protocol-config \
     -p haneul-swarm-config \
-    -p haneul-open-rpc \
+    \
     -p haneul-types
 "${INSTA[@]}" -p haneul-core -- snapshot_tests
 "${INSTA[@]}" -p haneul-indexer-alt-graphql -- test_schema_sdl_export
