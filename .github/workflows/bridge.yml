@@ -109,7 +109,7 @@ jobs:
         with:
           swap-size-gb: 10
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # pin@v1.9.1
+        uses: foundry-rs/foundry-toolchain@dba66c27052e63476d886f22216e119ba7e615bf # pin@v1.9.2
         with:
           version: nightly-fdfaafd629faa2eea3362a8370eef7c1f8074710
       - name: Install Foundry Dependencies
@@ -137,7 +137,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # pin@v1.9.1
+        uses: foundry-rs/foundry-toolchain@dba66c27052e63476d886f22216e119ba7e615bf # pin@v1.9.2
         with:
           version: nightly-fdfaafd629faa2eea3362a8370eef7c1f8074710
       - name: Install Foundry Dependencies
