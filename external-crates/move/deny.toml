@@ -62,6 +62,9 @@ ignore = [
     # `im` crate. Unmaintained-only advisory, no unsoundness. Revisit if imbl
     # drops its bitmaps dependency.
     "RUSTSEC-2026-0247",
+    # `pin-utils` is unmaintained, with no maintained release to move to. It comes in
+    # transitively through futures-util. Remove once that dependency drops it.
+    "RUSTSEC-2026-0441",
 ]
 # Threshold for security vulnerabilities, any vulnerability with a CVSS score
 # lower than the range specified will be ignored. Note that ignored advisories
