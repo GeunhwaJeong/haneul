@@ -5,8 +5,9 @@ processed 2 tasks
 
 task 0, lines 5-38:
 //# publish
-Error: Transaction Effects Status: Haneul Move Bytecode Verification Error. Please run the Haneul Move Verifier for more information.
-Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: HaneulMoveVerificationError, source: Some("PartialVMError with status UNKNOWN_VERIFICATION_ERROR with sub status 1 and message Invalid object creation in _::test::test. Object created without a newly created UID. The UID must come directly from `haneul::object::new`, or `haneul::derived_object::claim`. For tests, it can also come from `haneul::test_scenario::new_object`"), command: Some(0) } }
+created: object(1,0)
+mutated: object(0,0)
+gas summary: computation_cost: 1000000, storage_cost: 5882400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
 task 1, lines 40-63:
 //# publish

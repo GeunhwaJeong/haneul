@@ -1,5 +1,6 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+assertion_line: 977
 ---
 processed 5 tasks
 
@@ -36,13 +37,13 @@ Response: {
     "sentByA": {
       "edges": [
         {
-          "cursor": "KAE6BAgAEAE=",
+          "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
           "node": {
             "digest": "G1skPEdHfxVBYe5i1zDP9GxxUHb1y4jXpKU3kpV7ej6B"
           }
         },
         {
-          "cursor": "KAE6BAgAEAI=",
+          "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
           "node": {
             "digest": "z5WEx5U2Wpy3WfDvaxVM4pHVVcVMK3Li9QKvjjaC6S4"
           }
@@ -52,7 +53,7 @@ Response: {
     "affectedB": {
       "edges": [
         {
-          "cursor": "KAE6BAgAEAE=",
+          "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
           "node": {
             "digest": "G1skPEdHfxVBYe5i1zDP9GxxUHb1y4jXpKU3kpV7ej6B"
           }
@@ -62,7 +63,7 @@ Response: {
     "affectedC": {
       "edges": [
         {
-          "cursor": "KAE6BAgAEAI=",
+          "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
           "node": {
             "digest": "z5WEx5U2Wpy3WfDvaxVM4pHVVcVMK3Li9QKvjjaC6S4"
           }

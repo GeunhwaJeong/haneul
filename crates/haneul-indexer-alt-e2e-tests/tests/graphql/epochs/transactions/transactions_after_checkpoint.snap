@@ -1,5 +1,6 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+assertion_line: 977
 ---
 processed 16 tasks
 
@@ -48,7 +49,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAE=",
+            "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
             "node": {
               "digest": "3L8wCaHRtKJEC6fVqGHBPMZoLUw5MHUy3kbdjs8P1CUQ",
               "effects": {
@@ -62,7 +63,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAI=",
+            "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
             "node": {
               "digest": "2yDQFdMx33zdkdxoyjGiXYHoTZXC9uMYVkKqgeRdXp5i",
               "effects": {
@@ -76,7 +77,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAM=",
+            "cursor": "AAABDigBOgQIARADSgQIARACAQABAAAAAAAAAAIAAAAAAAAA",
             "node": {
               "digest": "FnRLaJFCiQDLmx8HEJsaNfLAnGX1TULDnuLWBhDrLACm",
               "effects": {
@@ -124,7 +125,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAQ=",
+            "cursor": "AAABDCgBOgQIAhAESgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
             "node": {
               "digest": "Hw9QektYGuRcYgzJS7v1ZQmUsXAZEqZrb5nqvvJvE95k",
               "effects": {
@@ -138,7 +139,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAU=",
+            "cursor": "AAABDigBOgQIAhAFSgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
             "node": {
               "digest": "2QxF54i3FqKDnQuxoQqybqRoMztXGY3utGRJoyMXKDRs",
               "effects": {
@@ -152,7 +153,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAY=",
+            "cursor": "AAABDigBOgQIAhAGSgQIAhACAQACAAAAAAAAAAIAAAAAAAAA",
             "node": {
               "digest": "2iEZQGAgJYgzmcNC2eLrbNejeTJHJxY4Xy4yKj7R3D8g",
               "effects": {
@@ -203,7 +204,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAg=",
+            "cursor": "AAABDCgBOgQIBBAISgIIBAEABAAAAAAAAAAAAAAAAAAAAA==",
             "node": {
               "digest": "idMq7oAKxzsUwUinEqL4qAz2XNsHdNNDCjh4ds27ZSZ",
               "effects": {
@@ -217,7 +218,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAk=",
+            "cursor": "AAABDigBOgQIBBAJSgQIBBABAQAEAAAAAAAAAAEAAAAAAAAA",
             "node": {
               "digest": "5vjWGGM35heZ68iHcHJq8GJC79L1tQ3DbWdd7ZjcRtp3",
               "effects": {
@@ -231,7 +232,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAo=",
+            "cursor": "AAABDigBOgQIBBAKSgQIBBACAQAEAAAAAAAAAAIAAAAAAAAA",
             "node": {
               "digest": "9Jgpen4tvpn3ZjDhQyZoykZG2VF4bmJ2uZsjV9jWbACU",
               "effects": {

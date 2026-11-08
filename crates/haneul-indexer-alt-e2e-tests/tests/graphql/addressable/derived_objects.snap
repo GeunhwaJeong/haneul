@@ -1,7 +1,8 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+assertion_line: 977
 ---
-processed 10 tasks
+processed 11 tasks
 
 init:
 A: object(0,0)
@@ -270,7 +271,95 @@ Response: {
   }
 }
 
-task 9, lines 109-127:
+task 9, lines 109-125:
+//# run-graphql
+Response: {
+  "data": {
+    "root": [
+      {
+        "contents": {
+          "json": {
+            "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
+            "key": "7",
+            "value": "70"
+          }
+        }
+      },
+      null,
+      null,
+      {
+        "contents": {
+          "json": {
+            "id": "0x63838cd0a8d8440f771047ee046ef6227e102a237eb5be4713347fa253ac65fc",
+            "key": "8",
+            "value": "70"
+          }
+        }
+      }
+    ],
+    "address": {
+      "nested": [
+        {
+          "contents": {
+            "json": {
+              "id": "0x0d8ba598d49939d46be7b0acdddc81c226335418c88d8980acdd7f92ca1e419e",
+              "key": "7",
+              "value": "70"
+            }
+          }
+        },
+        null,
+        null,
+        {
+          "contents": {
+            "json": {
+              "id": "0x63838cd0a8d8440f771047ee046ef6227e102a237eb5be4713347fa253ac65fc",
+              "key": "8",
+              "value": "70"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "errors": [
+    {
+      "message": "Literal error: Unexpected '{' at byte offset 0, expected one of 'b', 'false', 'true', 'x', '@', '$', an identifier, a decimal number, a hexadecimal number, or a string",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "root",
+        1
+      ],
+      "extensions": {
+        "code": "BAD_USER_INPUT"
+      }
+    },
+    {
+      "message": "Literal error: Unexpected '{' at byte offset 0, expected one of 'b', 'false', 'true', 'x', '@', '$', an identifier, a decimal number, a hexadecimal number, or a string",
+      "locations": [
+        {
+          "line": 9,
+          "column": 5
+        }
+      ],
+      "path": [
+        "address",
+        "nested",
+        1
+      ],
+      "extensions": {
+        "code": "BAD_USER_INPUT"
+      }
+    }
+  ]
+}
+
+task 10, lines 127-145:
 //# run-graphql --cursors bcs(8u64)
 Response: {
   "data": {
