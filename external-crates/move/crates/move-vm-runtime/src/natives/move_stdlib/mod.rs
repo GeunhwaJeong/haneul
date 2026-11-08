@@ -36,7 +36,7 @@ impl GasParameters {
             bcs: bcs::GasParameters {
                 to_bytes: bcs::ToBytesGasParameters {
                     per_byte_serialized: 0.into(),
-                    legacy_min_output_size: 0.into(),
+                    legacy_min_output_size: 0,
                     failure: 0.into(),
                 },
             },
@@ -52,12 +52,12 @@ impl GasParameters {
                 sha2_256: hash::Sha2_256GasParameters {
                     base: 0.into(),
                     per_byte: 0.into(),
-                    legacy_min_input_len: 0.into(),
+                    legacy_min_input_len: 0,
                 },
                 sha3_256: hash::Sha3_256GasParameters {
                     base: 0.into(),
                     per_byte: 0.into(),
-                    legacy_min_input_len: 0.into(),
+                    legacy_min_input_len: 0,
                 },
             },
             type_name: type_name::GasParameters {
@@ -97,6 +97,20 @@ impl GasParameters {
                 pop_back: vector::PopBackGasParameters { base: 0.into() },
                 destroy_empty: vector::DestroyEmptyGasParameters { base: 0.into() },
                 swap: vector::SwapGasParameters { base: 0.into() },
+                reverse: vector::ReverseGasParameters {
+                    base: 0.into(),
+                    per_elem: 0.into(),
+                },
+                keep_range: vector::KeepRangeGasParameters {
+                    base: 0.into(),
+                    per_dropped_elem: 0.into(),
+                    per_moved_elem: 0.into(),
+                },
+                copy_range: vector::CopyRangeGasParameters { base: 0.into() },
+                replace_range: vector::ReplaceRangeGasParameters {
+                    base: 0.into(),
+                    per_elem: 0.into(),
+                },
             },
             #[cfg(feature = "testing")]
             unit_test: unit_test::GasParameters {

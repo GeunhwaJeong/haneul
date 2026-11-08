@@ -107,6 +107,16 @@ impl SubscriptionTestCluster {
         cluster
     }
 
+    /// Same as `new_with_ledger_history()`, but lowers the server's live-progress threshold to
+    /// `unmatched` checkpoints, so a subscription that opts in with `progress: true` observes live
+    /// progress without waiting out the default run.
+    pub async fn new_with_ledger_history_and_progress_threshold(unmatched: u64) -> Self {
+        let mut config = GraphQlConfig::default();
+        config.subscription.unmatched_checkpoints_before_progress = unmatched;
+        let (cluster, _controller) = Self::new_inner(false, true, config).await;
+        cluster
+    }
+
     /// Same as `new()`, but caps per-subscriber delivery at `budget` output nodes per second so tests
     /// can observe the reactive throttle pacing payloads.
     pub async fn new_with_throttle_budget(budget: u32) -> Self {
@@ -193,11 +203,6 @@ impl SubscriptionTestCluster {
         // directly so `disconnect_all()` cannot interfere with gap-recovery reads.
         let kv_args = KvArgs {
             ledger_grpc_url: Some(rpc_url.parse().unwrap()),
-            // The alpha ledger reader (v2alpha `list_transactions` / `list_events`) is a hard
-            // dependency of the streaming feature, so it is always configured. Whether a backfill
-            // scan returns data is a separate concern, gated by ledger-history indexing on the
-            // validator (`ledger_history`).
-            enable_list_apis: Some(true),
             ..Default::default()
         };
 
@@ -274,13 +279,41 @@ impl SubscriptionTestCluster {
             .expect("Failed to read validator checkpoint tip")
     }
 
+    /// The validator's latest checkpoint and its `network_total_transactions`.
+    pub fn validator_tip_and_total_transactions(&self) -> (u64, u64) {
+        let checkpoint = self
+            .validator
+            .fullnode_handle
+            .haneul_node
+            .state()
+            .get_checkpoint_store()
+            .get_highest_executed_checkpoint()
+            .expect("Failed to read validator checkpoint tip")
+            .expect("no checkpoint executed");
+        (
+            *checkpoint.sequence_number(),
+            checkpoint.network_total_transactions,
+        )
+    }
+
+    /// Wait until the validator has executed more than `total` transactions, for at most `limit`.
+    pub async fn wait_for_total_transactions_past(&self, total: u64, limit: Duration) {
+        tokio::time::timeout(limit, async {
+            while self.validator_tip_and_total_transactions().1 <= total {
+                tokio::time::sleep(Duration::from_millis(100)).await;
+            }
+        })
+        .await
+        .unwrap_or_else(|_| panic!("the chain did not pass transaction {total} within {limit:?}"));
+    }
+
     /// Subscribe and return a stream of GraphQL payloads.
     /// Use `tokio_stream::StreamExt` methods (`next`, `take`, `collect`, etc.) to consume.
     pub async fn subscribe(
         &self,
         query: &str,
     ) -> std::pin::Pin<Box<dyn tokio_stream::Stream<Item = Value> + Send>> {
-        self.post_subscription(query, None).await
+        self.subscribe_with_variables(query, None).await
     }
 
     /// Like `subscribe`, but binds GraphQL variables (e.g. `json!({"sender": "0x..."})`).

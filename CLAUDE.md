@@ -78,12 +78,10 @@ haneul/
 │   ├── haneul-node/                       # Validator node implementation
 │   ├── haneul-framework/                  # Move system packages & stdlib
 │   ├── haneul-types/                      # Core type definitions
-│   ├── haneul-indexer-alt-jsonrpc/        # JSON-RPC API server
 │   ├── haneul-indexer-alt-graphql/        # GraphQL API server
 │   └── haneul-indexer-alt/                # Blockchain data indexer
 ├── consensus/                          # Consensus mechanism (Mysticeti)
 ├── haneul-execution/                      # Move execution layer with versions
-├── dapps/                              # Frontend applications
 └── external-crates/                    # Move compiler and VM
 ```
 
@@ -150,6 +148,12 @@ Note in the PR description which downstream consumers were updated.
 ### Raising a PR:
 
 When opening or updating a PR in this repo, always invoke the `/send-pr` skill. PR titles and commit subjects follow the path-prefixed format described in `AGENTS.md`.
+
+### Prose (including code comments)
+
+1. Prose should almost always be sentances that have a noun and a verb.
+2. Adjectives should be used only when they are necessary for correct meaning.
+3. Do not use analogies or metaphors.
 
 ### Comment Writing Guidelines
 

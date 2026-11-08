@@ -811,6 +811,7 @@ mod tests {
 
     #[async_trait]
     impl ValidatorNetworkClient for FakeNetworkClient {
+        #[cfg(not(msim))]
         async fn send_block(
             &self,
             _peer: AuthorityIndex,

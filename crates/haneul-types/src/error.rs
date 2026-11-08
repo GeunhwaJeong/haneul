@@ -842,6 +842,13 @@ pub enum HaneulErrorKind {
 
     #[error("Transaction {digest} has been recently submitted to this validator.")]
     TransactionSubmitted { digest: TransactionDigest },
+
+    // Appended last: errors travel BCS-encoded in RPC status details, and older clients
+    // must keep decoding every earlier variant.
+    #[error(
+        "This validator is outside the transaction's staggered-submission proposer set; submit to one of its proposers."
+    )]
+    StaggeredSubmissionNotProposer,
 }
 
 #[repr(u64)]
@@ -868,6 +875,7 @@ pub enum VMMemoryLimitExceededSubStatusCode {
     OBJECT_RUNTIME_STORE_LIMIT_EXCEEDED = 6,
     TOTAL_EVENT_SIZE_LIMIT_EXCEEDED = 7,
     SCRATCH_SIZE_LIMIT_EXCEEDED = 8,
+    ACCUMULATOR_EVENT_COUNT_LIMIT_EXCEEDED = 9,
 }
 
 pub type HaneulResult<T = ()> = Result<T, HaneulError>;
@@ -1068,6 +1076,9 @@ impl HaneulErrorKind {
             HaneulErrorKind::TransactionRejectedDueToOutbiddingDuringCongestion { .. } => true,
             HaneulErrorKind::ValidatorOverloadedRetryAfter { .. } => true,
 
+            // Retriable at another validator: one of the transaction's proposers.
+            HaneulErrorKind::StaggeredSubmissionNotProposer => true,
+
             // The transaction is already being processed by consensus, so a fresh
             // submission is pointless. The client should retry by waiting for effects
             // rather than resubmitting.
@@ -1174,6 +1185,10 @@ impl HaneulErrorKind {
             }
 
             HaneulErrorKind::TimeoutError => ErrorCategory::Unavailable,
+
+            // Not a fault of the validator: the client simply asked a non-proposer. It
+            // retries at the next target without backoff, like any aborted submission.
+            HaneulErrorKind::StaggeredSubmissionNotProposer => ErrorCategory::Aborted,
 
             // Other variants are assumed to be retriable with new transaction submissions.
             _ => ErrorCategory::Aborted,

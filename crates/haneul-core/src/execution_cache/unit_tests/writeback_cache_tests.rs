@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use haneul_framework::BuiltInFramework;
+use haneul_macros::sim_test;
 use haneul_test_transaction_builder::TestTransactionBuilder;
 use haneul_types::{
     base_types::{FullObjectRef, HaneulAddress, random_object_ref},
@@ -816,7 +817,7 @@ async fn test_lt_or_eq_with_cached_tombstone() {
     .await;
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_write_transaction_outputs_is_sync() {
     telemetry_subscribers::init_for_testing();
     Scenario::iterate(|mut s| async move {
@@ -1164,7 +1165,7 @@ async fn test_transaction_cache_race() {
 // reader observes (live object at V, tombstone at V+1, root at V). The consistent
 // read must cap the account read at the root version instead of reading the latest
 // account tombstone.
-#[tokio::test]
+#[sim_test]
 async fn test_get_consistent_latest_account_amount_race_with_pending_settlement() {
     use crate::accumulators::funds_read::AccountFundsRead;
     use haneul_types::{

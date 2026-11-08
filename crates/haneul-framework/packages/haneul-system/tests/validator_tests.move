@@ -10,7 +10,9 @@ use haneul::balance;
 use haneul::url;
 use haneul_system::staking_pool::StakedHaneul;
 use haneul_system::test_runner;
+use haneul_system::validator::{Self, Validator};
 use haneul_system::validator_builder;
+use haneul_system::validator_preset;
 
 const DEFAULT_STAKE: u64 = 10;
 
@@ -312,7 +314,7 @@ fun validator_update_metadata_invalid_network_key() {
     let ctx = &mut tx_context::dummy();
     let mut validator = validator_builder::preset(0).build(ctx);
 
-    validator.update_next_epoch_network_pubkey(x"beef");
+    validator.update_next_epoch_network_pubkey(b"pubkey");
 
     abort
 }
@@ -322,7 +324,7 @@ fun validator_update_metadata_invalid_worker_key() {
     let ctx = &mut tx_context::dummy();
     let mut validator = validator_builder::preset(0).build(ctx);
 
-    validator.update_next_epoch_worker_pubkey(x"beef");
+    validator.update_next_epoch_worker_pubkey(b"pubkey");
 
     abort
 }
@@ -484,4 +486,73 @@ fun validator_update_image_url_too_long() {
     validator.update_image_url(vector::tabulate!(257, |_| 0));
 
     abort
+}
+
+#[test]
+fun validator_new_with_valid_protocol_pubkey() {
+    let ctx = &mut tx_context::dummy();
+    let validator = new_with_protocol_pubkey(validator_builder::valid_protocol_pubkey(), ctx);
+
+    assert_eq!(*validator.protocol_pubkey_bytes(), validator_builder::valid_protocol_pubkey());
+    assert_eq!(validator.protocol_pubkey_bytes().length(), 96);
+
+    destroy(validator);
+}
+
+#[test, expected_failure(abort_code = haneul_system::validator::EInvalidProtocolPubKeyLength)]
+fun validator_new_protocol_pubkey_incorrect_length() {
+    let ctx = &mut tx_context::dummy();
+    let _validator = new_with_protocol_pubkey(vector::tabulate!(97, |_| 0), ctx);
+
+    abort
+}
+
+#[test, expected_failure(abort_code = haneul_system::validator::EInvalidProtocolPubKeyLength)]
+fun validator_update_metadata_invalid_protocol_pubkey_length() {
+    let ctx = &mut tx_context::dummy();
+    let mut validator = validator_builder::preset(0).build(ctx);
+
+    validator.update_next_epoch_protocol_pubkey(
+        b"pubkey",
+        validator_builder::valid_proof_of_possession(),
+    );
+
+    abort
+}
+
+#[test, expected_failure(abort_code = haneul_system::validator::EInvalidProtocolPubKeyLength)]
+fun validator_update_candidate_metadata_invalid_protocol_pubkey_length() {
+    let ctx = &mut tx_context::dummy();
+    let mut validator = validator_builder::preset(0).build(ctx);
+
+    validator.update_candidate_protocol_pubkey(
+        b"pubkey",
+        validator_builder::valid_proof_of_possession(),
+    );
+
+    abort
+}
+
+/// Build a validator through `validator::new`, using preset 0 for every field except the
+/// protocol pubkey.
+fun new_with_protocol_pubkey(protocol_pubkey_bytes: vector<u8>, ctx: &mut TxContext): Validator {
+    let preset = validator_preset::preset(0);
+    validator::new(
+        preset.account_address(),
+        protocol_pubkey_bytes,
+        preset.network_pubkey_bytes(),
+        preset.worker_pubkey_bytes(),
+        preset.proof_of_possession(),
+        preset.name(),
+        preset.description(),
+        preset.image_url(),
+        preset.project_url(),
+        preset.net_address(),
+        preset.p2p_address(),
+        preset.primary_address(),
+        preset.worker_address(),
+        1, // gas_price
+        0, // commission_rate
+        ctx,
+    )
 }

@@ -281,6 +281,9 @@ pub trait ObjectCacheRead: Send + Sync {
                 InputKey::Package { id } => Either::Right((idx, id)),
             });
 
+        // A consensus input can share (id, version) with an object written on a different stream
+        // after its own stream ended. Only an object with the same full ID satisfies it; otherwise
+        // it must wait for its stream-ended marker.
         let (consensus_keys, fastpath_keys): (Vec<_>, Vec<_>) = (0..move_object_keys.len())
             .partition(|i| matches!(move_object_keys[*i].1.0, FullObjectID::Consensus(_)));
         let object_key = |i: &usize| {

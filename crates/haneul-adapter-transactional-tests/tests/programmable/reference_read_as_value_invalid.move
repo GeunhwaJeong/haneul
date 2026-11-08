@@ -2,8 +2,8 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-// Without `allow_references_in_ptbs`, a Move call may not return a reference, so the `Read`
-// argument is never reached.
+// Flag-on version of reference_read_as_value_invalid_v139: the Move call may return a
+// reference, so the `Read` argument is reached.
 
 //# init --addresses test=0x0 --accounts A
 

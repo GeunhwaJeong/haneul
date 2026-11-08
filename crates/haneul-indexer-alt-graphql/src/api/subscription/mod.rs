@@ -5,9 +5,11 @@
 use std::sync::Arc;
 
 use async_graphql::Context;
+use async_graphql::SimpleObject;
 use async_graphql::connection::Edge;
 use async_graphql::connection::EmptyFields;
-use haneul_indexer_alt_reader::alpha_ledger_grpc_reader::AlphaLedgerGrpcReader;
+use futures::Stream;
+use haneul_indexer_alt_reader::ledger_grpc_reader::LedgerGrpcReader;
 use tokio::sync::watch;
 
 use crate::api::scalars::uint53::UInt53;
@@ -47,6 +49,34 @@ pub(crate) enum Error {
 #[derive(Default)]
 pub struct Subscription;
 
+/// One payload of the `transactions` subscription: a matching transaction, or progress.
+#[derive(SimpleObject)]
+pub(crate) struct TransactionSubscriptionEdge {
+    /// Pass as `after` to resume the subscription after this payload.
+    cursor: String,
+
+    /// The matching transaction, or `null` for progress.
+    ///
+    /// A payload whose `node` is `null` and that has no `errors` is progress: every match before its cursor has been delivered, so save the cursor and resume `after` it to skip the range already scanned.
+    ///
+    /// A payload whose `node` is `null` and that has `errors` is a match that failed to resolve. Do not save its cursor: treat the payload as an error and resume from the previous cursor.
+    node: Option<Transaction>,
+}
+
+/// One payload of the `events` subscription: a matching event, or progress.
+#[derive(SimpleObject)]
+pub(crate) struct EventSubscriptionEdge {
+    /// Pass as `after` to resume the subscription after this payload.
+    cursor: String,
+
+    /// The matching event, or `null` for progress.
+    ///
+    /// A payload whose `node` is `null` and that has no `errors` is progress: every match before its cursor has been delivered, so save the cursor and resume `after` it to skip the range already scanned.
+    ///
+    /// A payload whose `node` is `null` and that has `errors` is a match that failed to resolve. Do not save its cursor: treat the payload as an error and resume from the previous cursor.
+    node: Option<Event>,
+}
+
 #[async_graphql::Subscription]
 impl Subscription {
     /// Subscribe to checkpoints as they are finalized.
@@ -67,10 +97,13 @@ impl Subscription {
         let limits: &Limits = ctx.data()?;
         let config: &SubscriptionConfig = ctx.data()?;
         let broadcast: &Arc<SubscriptionBroadcast> = ctx.data()?;
-        let reader: &AlphaLedgerGrpcReader = ctx.data()?;
+        let reader: &LedgerGrpcReader = ctx.data()?;
         let watermarks_rx: &watch::Receiver<Arc<Watermarks>> = ctx.data()?;
         let subscriber_limit: &SubscriberLimit = ctx.data()?;
 
+        // The checkpoints feed does not opt into progress: every checkpoint is itself a match, so
+        // there is no match-less stretch to signal. Passing `false` keeps every payload a non-null
+        // node.
         subscribe::<Checkpoint>(
             reader.clone(),
             broadcast.clone(),
@@ -80,6 +113,7 @@ impl Subscription {
             (),
             after,
             after_checkpoint.map(u64::from),
+            false,
             subscriber_limit.clone(),
             config.clone(),
         )
@@ -91,21 +125,22 @@ impl Subscription {
     ///
     /// Each matching transaction is yielded individually as an edge, ordered by checkpoint and then by position within the checkpoint. Each edge carries a cursor for resumption.
     ///
+    /// Set `progress` to true to also receive progress payloads (a `null` node carrying only a cursor) during stretches that match nothing, so the resume cursor advances without waiting for a match. It defaults to false, where only matching transactions are delivered. Live progress is paced by the server and can be turned off there, so a live-only subscription may receive none.
+    ///
     /// This subscription is not yet available for use.
     async fn transactions(
         &self,
         ctx: &Context<'_>,
         filter: Option<TransactionFilter>,
         after: Option<CTransaction>,
-    ) -> Result<
-        impl futures::Stream<Item = Result<Edge<String, Transaction, EmptyFields>, RpcError>>,
-        RpcError<Error>,
-    > {
+        #[graphql(default)] progress: bool,
+    ) -> Result<impl Stream<Item = Result<TransactionSubscriptionEdge, RpcError>>, RpcError<Error>>
+    {
         let caches: &Arc<StreamedCaches> = ctx.data()?;
         let limits: &Limits = ctx.data()?;
         let config: &SubscriptionConfig = ctx.data()?;
         let broadcast: &Arc<SubscriptionBroadcast> = ctx.data()?;
-        let reader: &AlphaLedgerGrpcReader = ctx.data()?;
+        let reader: &LedgerGrpcReader = ctx.data()?;
         let watermarks_rx: &watch::Receiver<Arc<Watermarks>> = ctx.data()?;
         let subscriber_limit: &SubscriberLimit = ctx.data()?;
 
@@ -124,6 +159,7 @@ impl Subscription {
             filter,
             after,
             after_checkpoint,
+            progress,
             subscriber_limit.clone(),
             config.clone(),
         )
@@ -135,21 +171,21 @@ impl Subscription {
     ///
     /// Each matching event is yielded individually as an edge, ordered by checkpoint, then by transaction position within the checkpoint, then by position within the transaction. Each edge carries a cursor for resumption.
     ///
+    /// Set `progress` to true to also receive progress payloads (a `null` node carrying only a cursor) during stretches that match nothing, so the resume cursor advances without waiting for a match. It defaults to false, where only matching events are delivered. Live progress is paced by the server and can be turned off there, so a live-only subscription may receive none.
+    ///
     /// This subscription is not yet available for use.
     async fn events(
         &self,
         ctx: &Context<'_>,
         filter: Option<EventFilter>,
         after: Option<CEvent>,
-    ) -> Result<
-        impl futures::Stream<Item = Result<Edge<String, Event, EmptyFields>, RpcError>>,
-        RpcError<Error>,
-    > {
+        #[graphql(default)] progress: bool,
+    ) -> Result<impl Stream<Item = Result<EventSubscriptionEdge, RpcError>>, RpcError<Error>> {
         let caches: &Arc<StreamedCaches> = ctx.data()?;
         let limits: &Limits = ctx.data()?;
         let config: &SubscriptionConfig = ctx.data()?;
         let broadcast: &Arc<SubscriptionBroadcast> = ctx.data()?;
-        let reader: &AlphaLedgerGrpcReader = ctx.data()?;
+        let reader: &LedgerGrpcReader = ctx.data()?;
         let watermarks_rx: &watch::Receiver<Arc<Watermarks>> = ctx.data()?;
         let subscriber_limit: &SubscriberLimit = ctx.data()?;
 
@@ -168,6 +204,7 @@ impl Subscription {
             filter,
             after,
             after_checkpoint,
+            progress,
             subscriber_limit.clone(),
             config.clone(),
         )

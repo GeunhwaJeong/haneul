@@ -19,7 +19,6 @@ use crate::{
 };
 use haneul_protocol_config::ProtocolConfig;
 use move_core_types::{
-    account_address::AccountAddress,
     ident_str,
     identifier::IdentStr,
     language_storage::{StructTag, TypeTag},
@@ -28,6 +27,7 @@ use move_core_types::{
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
 pub const ACCUMULATOR_ROOT_MODULE: &IdentStr = ident_str!("accumulator");
+pub const ACCUMULATOR_ROOT_STRUCT: &IdentStr = ident_str!("AccumulatorRoot");
 pub const ACCUMULATOR_METADATA_MODULE: &IdentStr = ident_str!("accumulator_metadata");
 pub const ACCUMULATOR_SETTLEMENT_MODULE: &IdentStr = ident_str!("accumulator_settlement");
 pub const ACCUMULATOR_SETTLEMENT_EVENT_STREAM_HEAD: &IdentStr = ident_str!("EventStreamHead");
@@ -38,18 +38,6 @@ pub const ACCUMULATOR_ROOT_SETTLEMENT_SETTLE_EVENTS_FUNC: &IdentStr = ident_str!
 
 const ACCUMULATOR_KEY_TYPE: &IdentStr = ident_str!("Key");
 const ACCUMULATOR_U128_TYPE: &IdentStr = ident_str!("U128");
-
-pub const SETTLEMENT_MAX_TYPE_INSTANTIATION_NODES: u64 = 512;
-
-pub fn is_settle_u128_call(
-    module_address: &AccountAddress,
-    module: &IdentStr,
-    function: &IdentStr,
-) -> bool {
-    *module_address == HANEUL_FRAMEWORK_ADDRESS
-        && module == ACCUMULATOR_SETTLEMENT_MODULE
-        && function == ACCUMULATOR_ROOT_SETTLE_U128_FUNC
-}
 
 pub fn check_accumulator_type_bounds(config: &ProtocolConfig, ty: &TypeTag) -> bool {
     match config.max_accumulator_type_nodes_as_option() {
@@ -423,6 +411,17 @@ impl Default for EventStreamHead {
     }
 }
 
+impl MoveTypeTagTrait for EventStreamHead {
+    fn get_type_tag() -> TypeTag {
+        TypeTag::Struct(Box::new(StructTag {
+            address: HANEUL_FRAMEWORK_ADDRESS,
+            module: ACCUMULATOR_SETTLEMENT_MODULE.to_owned(),
+            name: ACCUMULATOR_SETTLEMENT_EVENT_STREAM_HEAD.to_owned(),
+            type_params: vec![],
+        }))
+    }
+}
+
 impl EventStreamHead {
     pub fn new() -> Self {
         Self {
@@ -447,15 +446,7 @@ impl EventStreamHead {
 
 pub fn derive_event_stream_head_object_id(stream_id: HaneulAddress) -> HaneulResult<ObjectID> {
     let key = AccumulatorKey { owner: stream_id };
-
-    let value_type_tag = TypeTag::Struct(Box::new(StructTag {
-        address: HANEUL_FRAMEWORK_ADDRESS,
-        module: ACCUMULATOR_SETTLEMENT_MODULE.to_owned(),
-        name: ACCUMULATOR_SETTLEMENT_EVENT_STREAM_HEAD.to_owned(),
-        type_params: vec![],
-    }));
-
-    let key_type_tag = AccumulatorKey::get_type_tag(&[value_type_tag]);
+    let key_type_tag = AccumulatorKey::get_type_tag(&[EventStreamHead::get_type_tag()]);
 
     DynamicFieldKey(HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, key, key_type_tag)
         .into_unbounded_id()

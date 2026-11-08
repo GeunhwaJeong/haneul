@@ -2,6 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
+use haneul_macros::sim_test;
 use std::num::NonZeroUsize;
 use std::sync::Arc;
 use std::time::Duration;
@@ -133,7 +134,7 @@ fn protocol_config_with_double_spend_deferral() -> ProtocolConfig {
 /// Detection + metrics fire regardless of the deferral feature flag: two transactions
 /// in the same commit compete for the same owned object, the winner is scheduled (since
 /// deferral is disabled here) and the contention is recorded through the metrics.
-#[tokio::test]
+#[sim_test]
 async fn test_double_spend_detection_emits_metrics() {
     telemetry_subscribers::init_for_testing();
 
@@ -205,7 +206,7 @@ async fn test_double_spend_detection_emits_metrics() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_duplicate_winner_preserves_first_author_attribution() {
     telemetry_subscribers::init_for_testing();
 
@@ -271,7 +272,7 @@ async fn test_duplicate_winner_preserves_first_author_attribution() {
 /// The second is dropped (failed lock).
 /// Verifying: only the prologue transaction is scheduled in the first commit;
 /// the winner is deferred and scheduled in the second commit.
-#[tokio::test]
+#[sim_test]
 async fn test_double_spend_winner_deferred() {
     telemetry_subscribers::init_for_testing();
 
@@ -298,7 +299,7 @@ async fn test_double_spend_winner_deferred() {
 
 /// Same setup but with the feature flag disabled.
 /// The winner should NOT be deferred - it should be scheduled immediately.
-#[tokio::test]
+#[sim_test]
 async fn test_double_spend_no_deferral_when_disabled() {
     telemetry_subscribers::init_for_testing();
 
@@ -323,7 +324,7 @@ async fn test_double_spend_no_deferral_when_disabled() {
 
 /// When max deferral rounds is 0 and the feature is enabled, the winner should NOT
 /// be deferred (exceeds the deferral limit) and should be scheduled immediately.
-#[tokio::test]
+#[sim_test]
 async fn test_double_spend_not_deferred_when_max_rounds_zero() {
     telemetry_subscribers::init_for_testing();
 
@@ -349,7 +350,7 @@ async fn test_double_spend_not_deferred_when_max_rounds_zero() {
 
 /// When only one transaction uses an owned object and there's no contention,
 /// no deferral should happen even with the feature enabled.
-#[tokio::test]
+#[sim_test]
 async fn test_no_deferral_without_contention() {
     telemetry_subscribers::init_for_testing();
 
@@ -367,7 +368,7 @@ async fn test_no_deferral_without_contention() {
 
 /// Three transactions compete for the same owned object. The first wins and gets
 /// deferred. The other two are dropped. In round 2, the deferred winner is scheduled.
-#[tokio::test]
+#[sim_test]
 async fn test_double_spend_multiple_contestants() {
     telemetry_subscribers::init_for_testing();
 

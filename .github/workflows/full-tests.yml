@@ -84,7 +84,40 @@ jobs:
           swap-size-gb: 10
       - name: cargo test
         run: |
-          cargo nextest run --profile ci --cargo-quiet -E '!package(haneul-bridge) and !package(haneul-bridge-indexer)'
+          cargo nextest run --profile ci --cargo-quiet -E '!package(haneul-bridge) and !package(haneul-bridge-indexer) and !package(haneul-fork-e2e-tests)'
+      # Ensure there are no uncommitted changes in the repo after running tests
+      - run: scripts/changed-files.sh
+        shell: bash
+
+  # haneul-fork-e2e-tests runs on its own, because each of its shell tests starts a
+  # full local network and a fork.
+  test-haneul-fork:
+    timeout-minutes: 45
+    runs-on: [ ubuntu-24.04 ]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+        with:
+          ref: ${{ github.event.inputs.haneul_repo_ref || github.ref }}
+      - uses: taiki-e/install-action@nextest
+      - uses: taiki-e/install-action@protoc
+      - name: Add postgres to PATH
+        shell: bash
+        run: |
+          pg_bin=$(ls -d /usr/lib/postgresql/*/bin 2>/dev/null | head -1)
+          [ -n "$pg_bin" ] || { echo "ERROR: no postgres bin dir found under /usr/lib/postgresql"; exit 1; }
+          echo "$pg_bin" >> "$GITHUB_PATH"
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@fc79b3f67fa8a838184ce84a674ca12238d2c761 # pin@master
+        with:
+          swap-size-gb: 10
+      - name: Build haneul and haneul-fork binaries
+        run: |
+          # The test harness runs this same build from inside the first test, where a cold build
+          # would count against that test's slow-timeout. Building here first leaves it a no-op.
+          cargo build --package haneul --bin haneul --package haneul-fork --bin haneul-fork
+      - name: cargo test (haneul-fork e2e)
+        run: |
+          cargo nextest run --profile ci --cargo-quiet -p haneul-fork-e2e-tests
       # Ensure there are no uncommitted changes in the repo after running tests
       - run: scripts/changed-files.sh
         shell: bash

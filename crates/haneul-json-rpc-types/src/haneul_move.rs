@@ -25,7 +25,9 @@ use std::hash::Hash;
 use tracing::warn;
 
 use haneul_types::base_types::{HaneulAddress, ObjectID};
+use haneul_types::error::{HaneulErrorKind, HaneulResult};
 use haneul_types::execution_status::MoveLocation;
+use haneul_types::gas_coin::GasCoin;
 use haneul_types::haneul_serde::HaneulStructTag;
 
 pub type HaneulMoveTypeParameterIndex = u16;
@@ -757,6 +759,55 @@ impl From<MoveStruct> for HaneulMoveStruct {
                 .map(|(id, value)| (id.into_string(), value.into()))
                 .collect(),
         }
+    }
+}
+
+impl TryFrom<&HaneulMoveStruct> for GasCoin {
+    type Error = anyhow::Error;
+    fn try_from(move_struct: &HaneulMoveStruct) -> Result<Self, Self::Error> {
+        match move_struct {
+            HaneulMoveStruct::WithFields(fields)
+            | HaneulMoveStruct::WithTypes { type_: _, fields } => {
+                if let Some(HaneulMoveValue::String(balance)) = fields.get("balance")
+                    && let Ok(balance) = balance.parse::<u64>()
+                    && let Some(HaneulMoveValue::UID { id }) = fields.get("id")
+                {
+                    return Ok(GasCoin::new(*id, balance));
+                }
+            }
+            _ => {}
+        }
+        Err(anyhow::anyhow!("Struct is not a gas coin: {move_struct:?}"))
+    }
+}
+
+/// Split an event's payload into its type and its fields rendered as JSON.
+/// Events always carry a struct or an enum variant at the top level; every
+/// other `MoveValue` shape is rejected rather than rendered.
+pub fn type_and_fields_from_move_event_data(
+    event_data: MoveValue,
+) -> HaneulResult<(StructTag, Value)> {
+    match event_data.into() {
+        HaneulMoveValue::Struct(move_struct) => match &move_struct {
+            HaneulMoveStruct::WithTypes { type_, .. } => {
+                Ok((type_.clone(), move_struct.clone().to_json_value()))
+            }
+            _ => Err(HaneulErrorKind::ObjectDeserializationError {
+                error: "Found non-type HaneulMoveStruct in MoveValue event".to_string(),
+            }
+            .into()),
+        },
+        HaneulMoveValue::Variant(v) => Ok((v.type_.clone(), v.clone().to_json_value())),
+        HaneulMoveValue::Vector(_)
+        | HaneulMoveValue::Number(_)
+        | HaneulMoveValue::Bool(_)
+        | HaneulMoveValue::Address(_)
+        | HaneulMoveValue::String(_)
+        | HaneulMoveValue::UID { .. }
+        | HaneulMoveValue::Option(_) => Err(HaneulErrorKind::ObjectDeserializationError {
+            error: "Invalid MoveValue event type -- this should not be possible".to_string(),
+        }
+        .into()),
     }
 }
 

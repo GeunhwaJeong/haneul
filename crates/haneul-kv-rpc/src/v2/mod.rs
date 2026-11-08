@@ -17,6 +17,7 @@ use haneul_types::digests::{ChainIdentifier, CheckpointDigest};
 use tonic::codegen::BoxStream;
 
 use crate::KvRpcServer;
+use crate::WatermarkSource;
 use crate::operation::OperationSpec;
 
 pub(crate) mod get_checkpoint;
@@ -42,16 +43,26 @@ impl LedgerService for KvRpcServer {
                 return Ok(tonic::Response::new(cached_info.clone()));
             }
         }
-        // If no cache available, fetch directly and update cache
-        get_service_info(
-            self.client.clone(),
-            self.chain_id,
-            self.server_version.clone(),
-            &self.service_info_watermark_pipelines,
-        )
-        .await
-        .map(tonic::Response::new)
-        .map_err(Into::into)
+        // Before the cache is first filled, a replica that polls Bigtable reads the watermark rows
+        // directly. A replica that follows indexer streams has no answer until they report every
+        // served pipeline. An indexer's first response already holds every pipeline it runs,
+        // starting from the stored watermark rows it read at startup, so this lasts until the
+        // first response arrives, and the replica's `/health` reports it not ready until then.
+        match &self.watermark_source {
+            WatermarkSource::Bigtable => get_service_info(
+                self.client.clone(),
+                self.chain_id,
+                self.server_version.clone(),
+                &self.service_info_watermark_pipelines,
+            )
+            .await
+            .map(tonic::Response::new)
+            .map_err(Into::into),
+            WatermarkSource::IndexerStreams(_) => Err(tonic::Status::unavailable(
+                "served checkpoint not known yet: the indexer watermark streams have not reported \
+                 every served pipeline",
+            )),
+        }
     }
 
     async fn get_object(
@@ -153,7 +164,6 @@ impl LedgerService for KvRpcServer {
         &self,
         request: tonic::Request<ListCheckpointsRequest>,
     ) -> Result<tonic::Response<BoxStream<ListCheckpointsResponse>>, tonic::Status> {
-        self.check_list_apis_enabled()?;
         self.serve_query_stream(
             OperationSpec::new(
                 "list_checkpoints",
@@ -169,7 +179,6 @@ impl LedgerService for KvRpcServer {
         &self,
         request: tonic::Request<ListTransactionsRequest>,
     ) -> Result<tonic::Response<BoxStream<ListTransactionsResponse>>, tonic::Status> {
-        self.check_list_apis_enabled()?;
         self.serve_query_stream(
             OperationSpec::new(
                 "list_transactions",
@@ -185,7 +194,6 @@ impl LedgerService for KvRpcServer {
         &self,
         request: tonic::Request<ListEventsRequest>,
     ) -> Result<tonic::Response<BoxStream<ListEventsResponse>>, tonic::Status> {
-        self.check_list_apis_enabled()?;
         self.serve_query_stream(
             OperationSpec::new("list_events", self.ledger_history.list_events().timeout),
             request,
@@ -210,16 +218,34 @@ pub(crate) async fn get_service_info(
     let Some(checkpoint_hi_inclusive) = wm.checkpoint_hi_inclusive else {
         return Err(CheckpointNotFoundError::sequence_number(0).into());
     };
+    Ok(service_info(
+        chain_id,
+        server_version.as_ref(),
+        wm.epoch_hi_inclusive,
+        checkpoint_hi_inclusive,
+        wm.timestamp_ms_hi_inclusive,
+    ))
+}
+
+/// The `GetServiceInfo` answer of a replica that serves every checkpoint up to
+/// `checkpoint_height`, which belongs to `epoch` and has consensus timestamp `timestamp_ms`.
+pub(crate) fn service_info(
+    chain_id: ChainIdentifier,
+    server_version: Option<&ServerVersion>,
+    epoch: u64,
+    checkpoint_height: u64,
+    timestamp_ms: u64,
+) -> GetServiceInfoResponse {
     let mut message = GetServiceInfoResponse::default();
     message.chain_id = Some(CheckpointDigest::new(*chain_id.as_bytes()).base58_encode());
     message.chain = Some(chain_id.chain().as_str().into());
-    message.epoch = Some(wm.epoch_hi_inclusive);
-    message.checkpoint_height = Some(checkpoint_hi_inclusive);
-    message.timestamp = Some(timestamp_ms_to_proto(wm.timestamp_ms_hi_inclusive));
+    message.epoch = Some(epoch);
+    message.checkpoint_height = Some(checkpoint_height);
+    message.timestamp = Some(timestamp_ms_to_proto(timestamp_ms));
     message.lowest_available_checkpoint = Some(0);
     message.lowest_available_checkpoint_objects = Some(0);
-    message.server = server_version.as_ref().map(ToString::to_string);
-    Ok(message)
+    message.server = server_version.map(ToString::to_string);
+    message
 }
 
 #[cfg(test)]
@@ -230,9 +256,18 @@ pub(crate) mod test_utils {
     use haneul_kvstore::testing::MockBigtableServer;
     use haneul_package_resolver::PackageStore;
     use haneul_package_resolver::Resolver;
+    use haneul_rpc::proto::haneul::rpc::v2::EventFilter;
+    use haneul_rpc::proto::haneul::rpc::v2::EventLiteral;
+    use haneul_rpc::proto::haneul::rpc::v2::EventTerm;
     use haneul_rpc::proto::haneul::rpc::v2::ExecutedTransaction;
     use haneul_rpc::proto::haneul::rpc::v2::Ordering;
     use haneul_rpc::proto::haneul::rpc::v2::QueryOptions;
+    use haneul_rpc::proto::haneul::rpc::v2::SenderFilter;
+    use haneul_rpc::proto::haneul::rpc::v2::TransactionFilter;
+    use haneul_rpc::proto::haneul::rpc::v2::TransactionLiteral;
+    use haneul_rpc::proto::haneul::rpc::v2::TransactionTerm;
+    use haneul_rpc::proto::haneul::rpc::v2::event_literal;
+    use haneul_rpc::proto::haneul::rpc::v2::transaction_literal;
     use haneul_types::balance_change::derive_balance_changes_2;
     use haneul_types::full_checkpoint_content::Checkpoint;
     use haneul_types::storage::{ObjectKey, get_transaction_object_set};
@@ -424,6 +459,35 @@ pub(crate) mod test_utils {
         options.limit = Some(10);
         options.ordering = Some(Ordering::Ascending as i32);
         options
+    }
+
+    /// A sender predicate whose address does not parse, so no filter holding it compiles.
+    fn unparseable_sender() -> SenderFilter {
+        let mut sender = SenderFilter::default();
+        sender.address = Some("0xnot-an-address".to_owned());
+        sender
+    }
+
+    /// A transaction filter the server rejects with `InvalidArgument` (see [`unparseable_sender`]).
+    pub(super) fn unparseable_transaction_filter() -> TransactionFilter {
+        let mut literal = TransactionLiteral::default();
+        literal.predicate = Some(transaction_literal::Predicate::Sender(unparseable_sender()));
+        let mut term = TransactionTerm::default();
+        term.literals = vec![literal];
+        let mut filter = TransactionFilter::default();
+        filter.terms = vec![term];
+        filter
+    }
+
+    /// An event filter the server rejects with `InvalidArgument` (see [`unparseable_sender`]).
+    pub(super) fn unparseable_event_filter() -> EventFilter {
+        let mut literal = EventLiteral::default();
+        literal.predicate = Some(event_literal::Predicate::Sender(unparseable_sender()));
+        let mut term = EventTerm::default();
+        term.literals = vec![literal];
+        let mut filter = EventFilter::default();
+        filter.terms = vec![term];
+        filter
     }
 
     pub(super) async fn query_context(

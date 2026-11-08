@@ -8,7 +8,7 @@ use haneul_types::gas_model::{
 };
 use move_binary_format::errors::PartialVMResult;
 use move_core_types::{
-    gas_algebra::{AbstractMemorySize, InternalGas, NumArgs, NumBytes},
+    gas_algebra::{AbstractMemorySize, InternalGas},
     language_storage::ModuleId,
 };
 use move_vm_types::{
@@ -142,7 +142,7 @@ impl GasMeter for HaneulGasMeter<'_> {
         _module_id: &ModuleId,
         _func_name: &str,
         args: impl ExactSizeIterator<Item = impl ValueView>,
-        _num_locals: NumArgs,
+        _num_locals: u64,
     ) -> PartialVMResult<()> {
         // We will have to perform this many pops for the call.
         let pops = args.len() as u64;
@@ -160,7 +160,7 @@ impl GasMeter for HaneulGasMeter<'_> {
         _func_name: &str,
         _ty_args: impl ExactSizeIterator<Item = impl TypeView>,
         args: impl ExactSizeIterator<Item = impl ValueView>,
-        _num_locals: NumArgs,
+        _num_locals: u64,
     ) -> PartialVMResult<()> {
         // We have to perform this many pops from the operand stack for this function call.
         let pops = args.len() as u64;
@@ -173,9 +173,9 @@ impl GasMeter for HaneulGasMeter<'_> {
         self.0.charge(1, 0, pops, 0, stack_reduction_size.into())
     }
 
-    fn charge_ld_const(&mut self, size: NumBytes) -> PartialVMResult<()> {
+    fn charge_ld_const(&mut self, size: u64) -> PartialVMResult<()> {
         // Charge for the load from the locals onto the stack.
-        self.0.charge(1, 1, 0, u64::from(size), 0)
+        self.0.charge(1, 1, 0, size, 0)
     }
 
     fn charge_ld_const_after_deserialization(
@@ -335,11 +335,11 @@ impl GasMeter for HaneulGasMeter<'_> {
     fn charge_vec_unpack(
         &mut self,
         _ty: impl TypeView,
-        expect_num_elements: NumArgs,
+        expect_num_elements: u64,
         _elems: impl ExactSizeIterator<Item = impl ValueView>,
     ) -> PartialVMResult<()> {
         // Charge for the pushes
-        let pushes = u64::from(expect_num_elements);
+        let pushes = expect_num_elements;
         // The stack size stays pretty much the same modulo the additional vector size
         self.0.charge(1, pushes, 1, 0, VEC_SIZE.into())
     }

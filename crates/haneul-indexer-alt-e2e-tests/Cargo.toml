@@ -46,7 +46,6 @@ haneul-indexer-alt-consistent-api.workspace = true
 haneul-indexer-alt-consistent-store.workspace = true
 haneul-indexer-alt-framework = { workspace = true, features = ["postgres", "cluster"] }
 haneul-indexer-alt-graphql.workspace = true
-haneul-indexer-alt-jsonrpc.workspace = true
 haneul-indexer-alt-reader.workspace = true
 haneul-indexer-alt-schema.workspace = true
 haneul-pg-db.workspace = true
@@ -74,7 +73,6 @@ p256.workspace = true
 passkey-authenticator.workspace = true
 passkey-client.workspace = true
 passkey-types.workspace = true
-jsonrpsee.workspace = true
 telemetry-subscribers.workspace = true
 async-stream.workspace = true
 bytes.workspace = true
@@ -84,8 +82,9 @@ futures.workspace = true
 
 haneul-field-count.workspace = true
 haneul-framework.workspace = true
-haneul-json-rpc-types.workspace = true
+haneul-keys.workspace = true
 haneul-macros.workspace = true
+haneul-name-service.workspace = true
 haneul-rpc-cursor.workspace = true
 haneul-sdk.workspace = true
 haneul-swarm-config.workspace = true

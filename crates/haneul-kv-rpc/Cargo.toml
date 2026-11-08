@@ -34,6 +34,7 @@ serde.workspace = true
 serde_json.workspace = true
 serde_yaml.workspace = true
 haneul-futures.workspace = true
+haneul-indexer-alt-framework-store-traits.workspace = true
 haneul-inverted-index.workspace = true
 haneul-kvstore.workspace = true
 haneul-package-resolver.workspace = true

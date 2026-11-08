@@ -79,6 +79,28 @@ impl StateReader {
     }
 
     #[tracing::instrument(skip(self))]
+    pub fn get_address_aliases(
+        &self,
+        address: haneul_types::base_types::HaneulAddress,
+    ) -> Result<Option<haneul_types::address_alias::AddressAliases>> {
+        let object_id = haneul_types::address_alias::address_aliases_object_id(address)
+            .map_err(StorageError::custom)?;
+
+        let Some(object) = self.inner.get_object(&object_id) else {
+            return Ok(None);
+        };
+
+        let move_object = object
+            .data
+            .try_as_move()
+            .ok_or_else(|| StorageError::custom("address aliases object is not a Move object"))?;
+
+        bcs::from_bytes(move_object.contents())
+            .map(Some)
+            .map_err(StorageError::custom)
+    }
+
+    #[tracing::instrument(skip(self))]
     pub fn get_transaction(
         &self,
         digest: haneul_sdk_types::Digest,

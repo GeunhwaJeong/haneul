@@ -2,6 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
+use haneul_macros::sim_test;
 use std::collections::HashSet;
 use std::num::NonZeroUsize;
 use std::sync::{
@@ -240,7 +241,7 @@ impl ConsensusClient for BlockingConsensusClient {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_success() {
     let test_context = TestContext::new().await;
 
@@ -263,7 +264,7 @@ async fn test_submit_transaction_success() {
     };
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_duplicate_submission_suppressed_within_window() {
     // `execute = false` so the duplicate reaches the recent-submission check rather than being
     // short-circuited by the executed-effects path.
@@ -303,7 +304,7 @@ async fn test_duplicate_submission_suppressed_within_window() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_concurrent_duplicate_submission_rejected_as_inflight() {
     let consensus_client = BlockingConsensusClient::new();
     let mut first_submit_seen = consensus_client.subscribe_first_submit();
@@ -361,7 +362,7 @@ async fn test_concurrent_duplicate_submission_rejected_as_inflight() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_ping_request() {
     let test_context = TestContext::new().await;
 
@@ -416,7 +417,7 @@ async fn test_submit_ping_request() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_invalid_transaction() {
     let test_context = TestContext::new().await;
 
@@ -438,7 +439,7 @@ async fn test_submit_transaction_invalid_transaction() {
 }
 
 // test transaction submission after already executed.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_already_executed() {
     let test_context = TestContext::new().await;
 
@@ -482,7 +483,7 @@ async fn test_submit_transaction_already_executed() {
 
 // Test that the already-executed fast path refuses to report effects that contradict
 // effects the validator previously signed for the same transaction.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_refuses_contradicting_previously_signed() {
     let test_context = TestContext::new().await;
 
@@ -536,7 +537,7 @@ async fn test_submit_transaction_refuses_contradicting_previously_signed() {
 
 // Test that a transaction already processed by consensus this epoch but not yet executed
 // (e.g. deferred) is suppressed rather than resubmitted to consensus.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_consensus_message_processed() {
     let test_context = TestContext::new().await;
 
@@ -574,7 +575,7 @@ async fn test_submit_transaction_consensus_message_processed() {
 // longer live (e.g. a dropped owned-object conflict loser after the winner executed)
 // returns the concrete, non-retriable validation error instead of the generic,
 // retriable TransactionProcessing suppression.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_consensus_message_processed_with_stale_inputs() {
     let test_context = TestContext::new().await;
     let epoch_store = test_context.state.epoch_store_for_testing();
@@ -638,7 +639,7 @@ async fn test_submit_transaction_consensus_message_processed_with_stale_inputs()
 // by a different transaction (a dropped conflict loser whose winner has not executed
 // yet, so version validation alone still passes) returns the terminal
 // ObjectLockConflict instead of the retriable TransactionProcessing suppression.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_consensus_message_processed_with_lock_conflict() {
     let test_context = TestContext::new().await;
     let epoch_store = test_context.state.epoch_store_for_testing();
@@ -673,7 +674,7 @@ async fn test_submit_transaction_consensus_message_processed_with_lock_conflict(
     };
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_wrong_epoch() {
     let test_context = TestContext::new().await;
     test_context.state.reconfigure_for_testing().await;
@@ -703,7 +704,7 @@ async fn test_submit_transaction_wrong_epoch() {
 
 /// A transaction that does not name this validator among its proposers must be rejected at
 /// admission rather than submitted to consensus.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_disallowed_proposer() {
     const COMMITTEE_SIZE: u32 = 4;
     let test_context = TestContext::new_with_committee_size_and_adapter(
@@ -764,7 +765,7 @@ async fn test_submit_transaction_disallowed_proposer() {
     assert!(response.is_ok(), "{response:?}");
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_signature_verification_failure() {
     let test_context = TestContext::new().await;
 
@@ -788,7 +789,7 @@ async fn test_submit_transaction_signature_verification_failure() {
     assert!(response.is_err());
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_transaction_gas_object_validation() {
     let test_context = TestContext::new().await;
 
@@ -819,7 +820,7 @@ async fn test_submit_transaction_gas_object_validation() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_batched_transactions() {
     let test_context = TestContext::new().await;
 
@@ -877,7 +878,7 @@ async fn test_submit_batched_transactions() {
 
 // A repeated transaction in a plain batch rejects only the repeated index with
 // `RepeatedTransactions`; the first occurrence is still submitted.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_batched_transactions_with_repeated_transaction() {
     let test_context = TestContext::new().await;
 
@@ -923,7 +924,7 @@ async fn test_submit_batched_transactions_with_repeated_transaction() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_batched_transactions_with_already_executed() {
     let test_context = TestContext::new().await;
 
@@ -999,7 +1000,7 @@ async fn test_submit_batched_transactions_with_already_executed() {
 // whole request. The already-processing transaction is reported per-tx as
 // `Rejected { TransactionProcessing }` (a retriable rejection), while the rest of the batch still
 // returns its consensus position.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_batched_transactions_with_already_processing() {
     let test_context = TestContext::new().await;
     let epoch_store = test_context.state.epoch_store_for_testing();
@@ -1068,7 +1069,7 @@ async fn test_submit_batched_transactions_with_already_processing() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_soft_bundle_transactions() {
     let test_context = TestContext::new().await;
 
@@ -1124,7 +1125,7 @@ async fn test_submit_soft_bundle_transactions() {
 }
 
 // A soft bundle that repeats the same transaction is rejected outright.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_soft_bundle_with_repeated_transaction() {
     let test_context = TestContext::new().await;
 
@@ -1158,7 +1159,7 @@ async fn test_submit_soft_bundle_with_repeated_transaction() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_soft_bundle_transactions_with_already_executed() {
     let test_context = TestContext::new().await;
 
@@ -1230,7 +1231,7 @@ async fn test_submit_soft_bundle_transactions_with_already_executed() {
 // Test that a transaction already processed by consensus (but not executed) is removed from a
 // soft bundle before submission, while the remaining transactions in the bundle are still
 // submitted to consensus.
-#[tokio::test]
+#[sim_test]
 async fn test_submit_soft_bundle_transactions_with_consensus_message_processed() {
     let test_context = TestContext::new().await;
 
@@ -1290,7 +1291,7 @@ async fn test_submit_soft_bundle_transactions_with_consensus_message_processed()
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_submit_oversized_transaction() {
     use haneul_types::base_types::dbg_addr;
     use haneul_types::programmable_transaction_builder::ProgrammableTransactionBuilder;
@@ -1351,7 +1352,7 @@ async fn test_submit_oversized_transaction() {
 // A batch containing a transaction that was already submitted (and is now in the recent-submission
 // window) rejects only that index with `TransactionSubmitted`, while a fresh transaction in the
 // same batch is still submitted.
-#[tokio::test]
+#[sim_test]
 async fn test_batch_with_recently_processed_duplicate_rejects_only_that_index() {
     // `execute = false` so the prior submission is suppressed via the recent-submission window
     // rather than short-circuited by the executed-effects path.
@@ -1436,7 +1437,7 @@ async fn test_batch_with_recently_processed_duplicate_rejects_only_that_index() 
 // Same per-index dedup inside an atomic soft bundle: a previously-submitted member is rejected
 // with `TransactionSubmitted` while the fresh member is still submitted. Confirms the dedup is
 // req_type-agnostic (the per-tx loop sets `results[idx]` regardless of submit type).
-#[tokio::test]
+#[sim_test]
 async fn test_soft_bundle_with_recently_processed_duplicate_rejects_only_that_index() {
     let test_context = TestContext::new_with_consensus(
         false,
@@ -1519,7 +1520,7 @@ async fn test_soft_bundle_with_recently_processed_duplicate_rejects_only_that_in
 // `TransactionProcessing` error, whether it detects it when the transaction is inserted or when
 // the proposer skips it. Both must surface as a per-transaction rejection, leaving the rest of
 // the batch — and the request as a whole — unaffected.
-#[tokio::test]
+#[sim_test]
 async fn test_pool_mode_reports_processed_transactions_per_transaction() {
     telemetry_subscribers::init_for_testing();
     let (sender, keypair) = get_account_key_pair();

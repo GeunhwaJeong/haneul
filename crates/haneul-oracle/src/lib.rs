@@ -566,7 +566,8 @@ impl OnChainDataUploader {
             {
                 Ok(response) => return Ok(response),
                 Err(err) => {
-                    // jsonrpsee translate every HaneulError into jsonrpsee::core::Error, so we need to further distinguish
+                    // The client flattens every HaneulError into an opaque error, so the
+                    // message is all there is to distinguish the causes by.
                     if err.to_string().contains(NON_RECOVERABLE_ERROR_MSG) {
                         let stale_obj_error = STALE_OBJ_ERROR.get_or_init(|| {
                             String::from(

@@ -5,7 +5,7 @@ Description=Haneul Node
 User=haneul
 WorkingDirectory=/opt/haneul/
 Environment=RUST_BACKTRACE=1
-Environment=RUST_LOG=info,haneul_core=debug,consensus=debug,jsonrpsee=error
+Environment=RUST_LOG=info,haneul_core=debug,consensus=debug
 ExecStart=/opt/haneul/bin/haneul-node --config-path /opt/haneul/config/validator.yaml
 Restart=always
 

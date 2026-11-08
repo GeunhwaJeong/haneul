@@ -7,14 +7,10 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 pub use balance_changes::*;
-pub use haneul_checkpoint::*;
 pub use haneul_coin::*;
 pub use haneul_event::*;
-pub use haneul_extended::*;
-pub use haneul_governance::*;
 pub use haneul_move::*;
 pub use haneul_object::*;
-pub use haneul_protocol::*;
 pub use haneul_transaction::*;
 use haneul_types::base_types::ObjectID;
 pub use object_changes::*;
@@ -26,14 +22,10 @@ mod rpc_types_tests;
 
 mod balance_changes;
 mod displays;
-mod haneul_checkpoint;
 mod haneul_coin;
 mod haneul_event;
-mod haneul_extended;
-mod haneul_governance;
 mod haneul_move;
 mod haneul_object;
-mod haneul_protocol;
 mod haneul_transaction;
 mod object_changes;
 

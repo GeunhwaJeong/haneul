@@ -99,4 +99,6 @@ fn get_haneul_package_dir() -> PathBuf {
 datatest_stable::harness!(test_shell_snapshot, TEST_DIR, TEST_PATTERN);
 
 #[cfg(msim)]
-fn main() {}
+fn main() {
+    let _ = (test_shell_snapshot, TEST_DIR, TEST_PATTERN);
+}

@@ -382,6 +382,7 @@ async fn run_backtest<S: CommitRows>(
         indexer_args,
         ingestion_client,
         None,
+        None,
         IngestionConfig::default(),
         None,
         &registry,

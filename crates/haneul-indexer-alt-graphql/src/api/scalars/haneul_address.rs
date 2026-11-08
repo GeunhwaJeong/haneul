@@ -55,10 +55,6 @@ impl ScalarType for HaneulAddress {
 
 impl HaneulAddress {
     pub(crate) const ZERO: Self = Self([0u8; HANEUL_ADDRESS_LENGTH]);
-
-    pub(crate) fn to_inner(self) -> [u8; HANEUL_ADDRESS_LENGTH] {
-        self.0
-    }
 }
 
 impl FromStr for HaneulAddress {

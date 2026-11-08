@@ -203,6 +203,13 @@ pub struct NodeConfig {
     #[serde(default)]
     pub enable_simulate_allowed_proposers: bool,
 
+    /// Lets an operator disable staggered submission on this node. The
+    /// `staggered_submission_signal` protocol flag controls the network-wide rollout.
+    /// Staggering runs only when both are enabled. When this is false, the signal is
+    /// still computed and logged but never turns staggering on.
+    #[serde(default = "bool_true")]
+    pub enable_staggered_submission_signal: bool,
+
     #[serde(default)]
     pub verifier_signing_config: VerifierSigningConfig,
 
@@ -302,6 +309,17 @@ pub struct ConsensusTransactionPoolConfig {
     /// matching the existing admission queue. Defaults to the consensus
     /// `max_pending_transactions` setting.
     pub max_pending_transactions: Option<usize>,
+
+    /// Set false to disable the rate limit on proposed user transaction bytes.
+    #[serde(default = "bool_true")]
+    pub rate_limit_user_bytes: bool,
+
+    /// Rate limit on serialized user transaction bytes this validator proposes,
+    /// as a token bucket that holds one second of budget or one full block,
+    /// whichever is larger. System transactions are not limited. Defaults to
+    /// two maximum-size blocks per second (`max_transactions_in_block_bytes`).
+    /// Must be greater than zero.
+    pub max_user_bytes_per_second: Option<u64>,
 }
 
 impl Default for ConsensusTransactionPoolConfig {
@@ -309,6 +327,8 @@ impl Default for ConsensusTransactionPoolConfig {
         Self {
             enabled: true,
             max_pending_transactions: None,
+            rate_limit_user_bytes: true,
+            max_user_bytes_per_second: None,
         }
     }
 }
@@ -317,6 +337,13 @@ impl ConsensusTransactionPoolConfig {
     pub fn max_pending_transactions(&self, consensus_config: &ConsensusConfig) -> usize {
         self.max_pending_transactions
             .unwrap_or_else(|| consensus_config.max_pending_transactions())
+    }
+
+    pub fn max_user_bytes_per_second(&self, max_transactions_in_block_bytes: u64) -> Option<u64> {
+        self.rate_limit_user_bytes.then(|| {
+            self.max_user_bytes_per_second
+                .unwrap_or(max_transactions_in_block_bytes.saturating_mul(2))
+        })
     }
 }
 

@@ -13,6 +13,7 @@ use fastcrypto::ed25519::Ed25519KeyPair;
 use fastcrypto::traits::KeyPair;
 use haneul_config::certificate_deny_config::CertificateDenyConfigBuilder;
 use haneul_config::transaction_deny_config::{TransactionDenyConfig, TransactionDenyConfigBuilder};
+use haneul_macros::sim_test;
 use haneul_swarm_config::genesis_config::{AccountConfig, DEFAULT_GAS_AMOUNT};
 use haneul_swarm_config::network_config::NetworkConfig;
 use haneul_test_transaction_builder::TestTransactionBuilder;
@@ -174,7 +175,7 @@ fn assert_denied<T: std::fmt::Debug>(result: &HaneulResult<T>) {
     ));
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_user_transaction_disabled() {
     let (network_config, state) = setup_test(
         TransactionDenyConfigBuilder::new()
@@ -210,7 +211,7 @@ fn submit_gasless_with_account(
     state.handle_vote_transaction(&epoch_store, verified_tx)
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_gasless_transaction_disabled() {
     let (network_config, state) = setup_test(
         TransactionDenyConfigBuilder::new()
@@ -223,7 +224,7 @@ async fn test_gasless_transaction_disabled() {
     assert!(transfer_with_account(&accounts[0], &accounts[0], &state).is_ok());
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_zklogin_transaction_disabled() {
     let (_, state) = setup_test(
         TransactionDenyConfigBuilder::new()
@@ -244,7 +245,7 @@ async fn test_zklogin_transaction_disabled() {
     assert_denied(&process_zklogin_tx(tx1, &state1));
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_object_denied() {
     // We need to create the authority state once to get one of the gas coin object IDs.
     let (network_config, state) = setup_test(TransactionDenyConfigBuilder::new().build()).await;
@@ -262,7 +263,7 @@ async fn test_object_denied() {
     assert_denied(&transfer_with_account(&accounts[0], &accounts[0], &state));
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_signer_denied() {
     // We need to create the authority state once to get one of the account addresses.
     let (network_config, state) = setup_test(TransactionDenyConfigBuilder::new().build()).await;
@@ -284,7 +285,7 @@ async fn test_signer_denied() {
     assert_denied(&transfer_with_account(&accounts[2], &accounts[1], &state));
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_shared_object_transaction_disabled() {
     let (network_config, state) = setup_test(
         TransactionDenyConfigBuilder::new()
@@ -486,7 +487,7 @@ async fn test_package_denied() {
     assert!(result.is_ok());
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_certificate_deny() {
     let (network_config, state) = setup_test(TransactionDenyConfig::default()).await;
     let (sender, key, gas_objects) = get_accounts_and_coins(&network_config).pop().unwrap();
@@ -533,7 +534,7 @@ async fn test_certificate_deny() {
 /// Test that the address deny list also checks the actual signing key's address,
 /// not just the declared sender/sponsor. With address aliases, the actual signer
 /// may differ from the declared sender, so both must be checked.
-#[tokio::test]
+#[sim_test]
 async fn test_actual_signer_denied_via_alias() {
     let (network_config, state) = setup_test(TransactionDenyConfigBuilder::new().build()).await;
     let accounts = get_accounts_and_coins(&network_config);
@@ -579,7 +580,7 @@ async fn test_actual_signer_denied_via_alias() {
 }
 
 /// Verify that when the actual signer is NOT denied, the transaction passes.
-#[tokio::test]
+#[sim_test]
 async fn test_non_denied_actual_signer_allowed() {
     let (network_config, state) = setup_test(TransactionDenyConfigBuilder::new().build()).await;
     let accounts = get_accounts_and_coins(&network_config);
@@ -620,7 +621,7 @@ async fn test_non_denied_actual_signer_allowed() {
 }
 
 // Dynamic transaction checks of the above
-#[tokio::test]
+#[sim_test]
 async fn test_user_transaction_disabled_dynamic_check() {
     let program = include_str!("data/dynamic_checks/reject_all.star");
     let (network_config, state) = setup_test(
@@ -634,7 +635,7 @@ async fn test_user_transaction_disabled_dynamic_check() {
     assert_denied(&transfer_with_account(&accounts[0], &accounts[0], &state));
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_object_denied_dynamic_check() {
     // We need to create the authority state once to get one of the gas coin object IDs.
     let (network_config, state) = setup_test(TransactionDenyConfigBuilder::new().build()).await;
@@ -655,7 +656,7 @@ async fn test_object_denied_dynamic_check() {
     assert_denied(&transfer_with_account(&accounts[0], &accounts[0], &state));
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_shared_object_transaction_disabled_dynamic_check() {
     let program = include_str!("data/dynamic_checks/shared_object_disabled.star");
     let (network_config, state) = setup_test(
@@ -864,7 +865,7 @@ async fn test_package_denied_dynamic_check() {
     assert!(result.is_ok());
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_dev_inspect_disabled() {
     use haneul_types::crypto::get_authority_key_pair;
 

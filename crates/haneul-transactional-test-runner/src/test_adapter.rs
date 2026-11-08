@@ -8,7 +8,7 @@ use crate::offchain_state::OffchainStateReader;
 use crate::simulator_persisted_store::PersistedStore;
 use crate::{TransactionalAdapter, ValidatorWithFullnode, cursor};
 use crate::{args::*, programmable_transaction_test_parser::parser::ParsedCommand};
-use anyhow::{Context, anyhow, bail};
+use anyhow::{anyhow, bail};
 use async_trait::async_trait;
 use bimap::btree::BiBTreeMap;
 use criterion::Criterion;
@@ -105,8 +105,6 @@ use move_transactional_test_runner::{
 };
 use move_vm_runtime::dev_utils::vm_arguments::ValueFrame;
 use rand::{Rng, SeedableRng, rngs::StdRng};
-use serde::Deserialize;
-use serde_json::Value;
 use simulacrum::SimulatorStore;
 use std::borrow::Cow;
 use std::collections::HashSet;
@@ -422,6 +420,15 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
             )>,
         >,
         _path: &Path,
+        tasks: &[TaskInput<
+            TaskCommand<
+                Self::ExtraInitArgs,
+                Self::ExtraPublishArgs,
+                Self::ExtraValueArgs,
+                Self::ExtraRunArgs,
+                Self::Subcommand,
+            >,
+        >],
     ) -> (Self, Option<String>) {
         let rng = StdRng::from_seed(RNG_SEED);
         let pre_compiled_deps =
@@ -473,12 +480,14 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
             )
             .await
         } else {
+            let with_fullnode = tasks.iter().any(|task| needs_fullnode(&task.command));
             init_val_fullnode_executor(
                 rng,
                 account_names,
                 additional_mapping,
                 &protocol_config,
                 reference_gas_price,
+                with_fullnode,
             )
             .await
         };
@@ -796,54 +805,6 @@ impl MoveTestAdapter<'_> for HaneulTestAdapter {
                 output.push(format!("Response: {}", resp.response_body));
 
                 Ok(Some(output.join("\n")))
-            }
-            HaneulSubcommand::RunJsonRpc(RunJsonRpcCommand {
-                show_headers,
-                cursors,
-            }) => {
-                let file = data.ok_or_else(|| anyhow::anyhow!("Missing JSON-RPC query"))?;
-                let contents = std::fs::read_to_string(file.path())?;
-
-                let offchain_reader = self
-                    .offchain_reader
-                    .as_ref()
-                    .ok_or_else(|| anyhow::anyhow!("Offchain reader not set"))?;
-
-                let highest_checkpoint = self.executor.get_latest_checkpoint_sequence_number()?;
-                offchain_reader
-                    .wait_for_checkpoint_catchup(highest_checkpoint, Duration::from_secs(60))
-                    .await;
-
-                let interpolated =
-                    self.interpolate_query(&contents, &cursors, highest_checkpoint)?;
-
-                #[derive(Deserialize)]
-                struct Query {
-                    method: String,
-                    params: Value,
-                }
-
-                let query: Query = serde_json::from_str(&interpolated)
-                    .context("Failed to parse JSON-RPC query")?;
-
-                let resp = offchain_reader
-                    .execute_jsonrpc(query.method, query.params)
-                    .await?;
-
-                let mut output = String::new();
-
-                if show_headers {
-                    let headers_map: BTreeMap<_, _> = resp
-                        .http_headers
-                        .into_iter()
-                        .flatten()
-                        .filter_map(|(h, v)| Some((h?.to_string(), v)))
-                        .collect();
-                    write!(&mut output, "Headers: {headers_map:#?}\n\n").unwrap();
-                }
-
-                write!(&mut output, "Response: {}", resp.response_body).unwrap();
-                Ok(Some(output))
             }
             HaneulSubcommand::GaslessAllowToken(GaslessAllowTokenCommand {
                 token_type,
@@ -2822,11 +2783,45 @@ pub static PRE_COMPILED: LazyLock<Arc<PreCompiledProgramInfo>> = LazyLock::new(|
     }
 });
 
+/// Commands run for dry-run/dev-inspect send the transaction to a fullnode, rather than the
+/// validator itself. As such, we need to set up a fullnode only in the case that the test has
+/// those commands.
+fn needs_fullnode(
+    command: &TaskCommand<
+        HaneulInitArgs,
+        HaneulPublishArgs,
+        HaneulExtraValueArgs,
+        HaneulRunArgs,
+        HaneulSubcommand<HaneulExtraValueArgs, HaneulRunArgs>,
+    >,
+) -> bool {
+    match command {
+        TaskCommand::Publish(_, HaneulPublishArgs { dry_run, .. })
+        | TaskCommand::PublishAndCall(_, HaneulPublishArgs { dry_run, .. }) => *dry_run,
+        TaskCommand::Subcommand(HaneulSubcommand::ProgrammableTransaction(
+            ProgrammableTransactionCommand {
+                dev_inspect,
+                dry_run,
+                ..
+            },
+        )) => *dev_inspect || *dry_run,
+        TaskCommand::Subcommand(HaneulSubcommand::UpgradePackage(UpgradePackageCommand {
+            dry_run,
+            ..
+        })) => *dry_run,
+        TaskCommand::Init(_, _)
+        | TaskCommand::PrintBytecode(_)
+        | TaskCommand::Run(_, _)
+        | TaskCommand::Subcommand(_) => false,
+    }
+}
+
 async fn create_validator_fullnode(
     protocol_config: &ProtocolConfig,
     objects: &[Object],
     reference_gas_price: Option<u64>,
-) -> (Arc<AuthorityState>, Arc<AuthorityState>) {
+    with_fullnode: bool,
+) -> (Arc<AuthorityState>, Option<Arc<AuthorityState>>) {
     // Build network config once and share it between validator and fullnode
     let network_config = {
         let mut builder =
@@ -2857,17 +2852,26 @@ async fn create_validator_fullnode(
         })
     };
     let validator = build_node(None);
-    let fullnode = build_node(Some(get_authority_key_pair().1));
-    tokio::try_join!(validator, fullnode).expect("authority setup task panicked")
+    if with_fullnode {
+        let fullnode = build_node(Some(get_authority_key_pair().1));
+        let (validator, fullnode) =
+            tokio::try_join!(validator, fullnode).expect("authority setup task panicked");
+        (validator, Some(fullnode))
+    } else {
+        let validator = validator.await.expect("authority setup task panicked");
+        (validator, None)
+    }
 }
 
 async fn create_val_fullnode_executor(
     protocol_config: &ProtocolConfig,
     objects: &[Object],
     reference_gas_price: Option<u64>,
+    with_fullnode: bool,
 ) -> ValidatorWithFullnode {
     let (validator, fullnode) =
-        create_validator_fullnode(protocol_config, objects, reference_gas_price).await;
+        create_validator_fullnode(protocol_config, objects, reference_gas_price, with_fullnode)
+            .await;
 
     ValidatorWithFullnode {
         validator,
@@ -2894,6 +2898,7 @@ async fn init_val_fullnode_executor(
     additional_mapping: BTreeMap<String, NumericalAddress>,
     protocol_config: &ProtocolConfig,
     reference_gas_price: Option<u64>,
+    with_fullnode: bool,
 ) -> (
     Box<dyn TransactionalAdapter>,
     AccountSetup,
@@ -2934,7 +2939,13 @@ async fn init_val_fullnode_executor(
     let default_account = mk_account();
 
     let executor = Box::new(
-        create_val_fullnode_executor(protocol_config, &objects, reference_gas_price).await,
+        create_val_fullnode_executor(
+            protocol_config,
+            &objects,
+            reference_gas_price,
+            with_fullnode,
+        )
+        .await,
     );
 
     update_named_address_mapping(

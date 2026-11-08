@@ -23,6 +23,7 @@ pub mod checkpoints;
 pub mod checkpoints_by_digest;
 pub mod epochs;
 pub mod event_bitmap_index;
+pub mod object_versions_by_checkpoint;
 pub mod objects;
 pub mod packages;
 pub mod packages_by_checkpoint;

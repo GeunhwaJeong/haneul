@@ -7,7 +7,7 @@ use move_core_types::identifier::Identifier;
 use move_core_types::language_storage::{StructTag, TypeTag};
 use serde::{Deserialize, Serialize};
 
-use crate::base_types::{HaneulAddress, SequenceNumber};
+use crate::base_types::{HaneulAddress, ObjectID, SequenceNumber};
 use crate::collection_types::VecSet;
 use crate::error::{HaneulErrorKind, HaneulResult};
 use crate::object::Owner;
@@ -35,10 +35,8 @@ pub fn get_address_alias_state_obj_initial_shared_version(
         }))
 }
 
-pub fn get_address_aliases_from_store(
-    object_store: &dyn ObjectStore,
-    address: HaneulAddress,
-) -> HaneulResult<Option<(AddressAliases, SequenceNumber)>> {
+/// Derive the ObjectID at which to find the AddressAliases object for the given address.
+pub fn address_aliases_object_id(address: HaneulAddress) -> Result<ObjectID, bcs::Error> {
     let alias_key_type = TypeTag::Struct(Box::new(StructTag {
         address: HANEUL_FRAMEWORK_ADDRESS,
         module: Identifier::new("address_alias").unwrap(),
@@ -47,11 +45,18 @@ pub fn get_address_aliases_from_store(
     }));
 
     let key_bytes = bcs::to_bytes(&address).unwrap();
-    let Ok(address_aliases_id) = derived_object::derive_object_id(
+    derived_object::derive_object_id(
         HaneulAddress::from(HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID),
         &alias_key_type,
         &key_bytes,
-    ) else {
+    )
+}
+
+pub fn get_address_aliases_from_store(
+    object_store: &dyn ObjectStore,
+    address: HaneulAddress,
+) -> HaneulResult<Option<(AddressAliases, SequenceNumber)>> {
+    let Ok(address_aliases_id) = address_aliases_object_id(address) else {
         debug_fatal!("failed to compute derived object id for alias state");
         return Err(HaneulErrorKind::Unknown(
             "failed to compute derived object id for alias state".to_string(),

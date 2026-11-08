@@ -657,6 +657,7 @@ impl HaneulNode {
             cache_metrics,
             signature_verifier_metrics,
             &config.expensive_safety_check_config,
+            &config,
             (chain_id, chain),
             highest_executed_checkpoint,
             previous_epoch_last_checkpoint,
@@ -1624,6 +1625,10 @@ impl HaneulNode {
 
         info!("Starting consensus manager asynchronously");
 
+        // Subscribe before starting consensus so that the replay waiter cannot miss the
+        // one-shot consumer monitor broadcast if consensus starts immediately.
+        let replay_waiter = consensus_manager.replay_waiter();
+
         // Spawn consensus startup asynchronously to avoid blocking other components
         tokio::spawn({
             let config = config.clone();
@@ -1647,8 +1652,6 @@ impl HaneulNode {
                     .await;
             }
         });
-        let replay_waiter = consensus_manager.replay_waiter();
-
         info!("Spawning checkpoint service");
         let replay_waiter = if std::env::var("DISABLE_REPLAY_WAITER").is_ok() {
             None
@@ -2040,6 +2043,10 @@ impl HaneulNode {
             }
 
             let stop_condition = checkpoint_executor.run_epoch(run_with_range).await;
+
+            if stop_condition == StopReason::RuntimeShutdown {
+                return Ok(());
+            }
 
             if stop_condition == StopReason::RunWithRangeCondition {
                 HaneulNode::shutdown(&self).await;

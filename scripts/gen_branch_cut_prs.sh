@@ -93,7 +93,7 @@ if PR_OUTPUT=$(gh pr create \
   --base main \
   --head "$BRANCH" \
   --title "$BODY" \
-  --reviewer "ebmifa,pei-haneullabs,tharbert" \
+  --reviewer "ebmifa,tharbert" \
   --body "$BODY" 2>&1); then
 
   # Extract PR URL from output
