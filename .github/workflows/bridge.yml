@@ -50,7 +50,7 @@ env:
 
 jobs:
   diff:
-    runs-on: [ ubuntu-latest ]
+    runs-on: [ ubuntu-24.04 ]
     outputs:
       isRust: ${{ steps.diff.outputs.isRust }}
       isMove: ${{ steps.diff.outputs.isMove }}
@@ -66,7 +66,7 @@ jobs:
   rustfmt:
     needs: diff
     if: needs.diff.outputs.isRust == 'true'
-    runs-on: [ ubuntu-latest ]
+    runs-on: [ ubuntu-24.04 ]
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
         with:
@@ -77,7 +77,7 @@ jobs:
   clippy:
     needs: diff
     if: needs.diff.outputs.isRust == 'true'
-    runs-on: [ ubuntu-latest ]
+    runs-on: [ ubuntu-24.04 ]
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
         with:
@@ -99,7 +99,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - [ ubuntu-latest ]
+          - [ ubuntu-24.04 ]
       fail-fast: false
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
@@ -133,7 +133,7 @@ jobs:
     name: bridge-evm-tests
     needs: diff
     if: needs.diff.outputs.isSolidity == 'true'
-    runs-on: [ ubuntu-latest ]
+    runs-on: [ ubuntu-24.04 ]
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
       - name: Install Foundry

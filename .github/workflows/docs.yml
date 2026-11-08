@@ -6,7 +6,7 @@ on:
 
 jobs:
   diff:
-    runs-on: [ubuntu-latest]
+    runs-on: [ubuntu-24.04]
     outputs:
       isDoc: ${{ steps.diff.outputs.isDoc }}
       isOldDoc: ${{ steps.diff.outputs.isOldDoc }}
@@ -21,7 +21,7 @@ jobs:
     name: Notify Slack if examples directory changed
     needs: diff
     if: needs.diff.outputs.isExamples == 'true' && github.event_name == 'pull_request'
-    runs-on: [ubuntu-latest]
+    runs-on: [ubuntu-24.04]
     
     steps:
       - name: Dispatch to haneul-operations for notification

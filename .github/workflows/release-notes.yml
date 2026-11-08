@@ -21,7 +21,7 @@ jobs:
   diff:
     name: Determine PR eligibility for ${{ github.event.pull_request.number }}
     if: github.event.pull_request.number != ''
-    runs-on: [ ubuntu-latest ]
+    runs-on: [ ubuntu-24.04 ]
     outputs:
       isReleaseNotesEligible: ${{ steps.diff.outputs.isReleaseNotesEligible }}
       isReleaseNotesScript: ${{ steps.diff.outputs.isReleaseNotesScript }}
@@ -37,7 +37,7 @@ jobs:
     name: Test release_notes.py
     needs: diff
     if: needs.diff.outputs.isReleaseNotesScript == 'true'
-    runs-on: [ ubuntu-latest ]
+    runs-on: [ ubuntu-24.04 ]
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
         with:
@@ -56,7 +56,7 @@ jobs:
     name: Validate Release Notes in ${{ github.event.pull_request.number }}
     needs: diff
     if: needs.diff.outputs.isReleaseNotesEligible == 'true' && github.event.pull_request.number != ''
-    runs-on: [ ubuntu-latest ]
+    runs-on: [ ubuntu-24.04 ]
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
         with:

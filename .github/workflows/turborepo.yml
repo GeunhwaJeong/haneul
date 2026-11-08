@@ -6,7 +6,7 @@ on:
 jobs:
   audit:
     name: pnpm audit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
@@ -20,7 +20,7 @@ jobs:
 
   build:
     name: Lint, Build, and Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: haneul-typescript-aws-kms-test-env
     env:
       E2E_AWS_KMS_TEST_ENABLE: "false"
