@@ -175,7 +175,7 @@ title: Module `haneul_system::validator`
 <code><a href="../haneul_system/validator.md#haneul_system_validator_worker_pubkey_bytes">worker_pubkey_bytes</a>: vector&lt;u8&gt;</code>
 </dt>
 <dd>
- The public key bytes correstponding to the Narwhal Worker
+ The public key bytes corresponding to the Narwhal Worker
 </dd>
 <dt>
 <code><a href="../haneul_system/validator.md#haneul_system_validator_proof_of_possession">proof_of_possession</a>: vector&lt;u8&gt;</code>
@@ -857,6 +857,7 @@ Max gas price a validator can set is 100K GEUNHWA.
     );
     <b>assert</b>!(<a href="../haneul_system/validator.md#haneul_system_validator_commission_rate">commission_rate</a> &lt;= <a href="../haneul_system/validator.md#haneul_system_validator_MAX_COMMISSION_RATE">MAX_COMMISSION_RATE</a>, <a href="../haneul_system/validator.md#haneul_system_validator_ECommissionRateTooHigh">ECommissionRateTooHigh</a>);
     <b>assert</b>!(<a href="../haneul_system/validator.md#haneul_system_validator_gas_price">gas_price</a> &lt; <a href="../haneul_system/validator.md#haneul_system_validator_MAX_VALIDATOR_GAS_PRICE">MAX_VALIDATOR_GAS_PRICE</a>, <a href="../haneul_system/validator.md#haneul_system_validator_EGasPriceHigherThanThreshold">EGasPriceHigherThanThreshold</a>);
+    <b>assert</b>!(<a href="../haneul_system/validator.md#haneul_system_validator_protocol_pubkey_bytes">protocol_pubkey_bytes</a>.length() == 96, <a href="../haneul_system/validator.md#haneul_system_validator_EInvalidProtocolPubKeyLength">EInvalidProtocolPubKeyLength</a>);
     <b>let</b> <a href="../haneul_system/validator.md#haneul_system_validator_metadata">metadata</a> = <a href="../haneul_system/validator.md#haneul_system_validator_new_metadata">new_metadata</a>(
         <a href="../haneul_system/validator.md#haneul_system_validator_haneul_address">haneul_address</a>,
         <a href="../haneul_system/validator.md#haneul_system_validator_protocol_pubkey_bytes">protocol_pubkey_bytes</a>,
