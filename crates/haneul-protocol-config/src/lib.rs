@@ -39,7 +39,7 @@ pub use haneullabs_common::assert_reachable_simtest;
 
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
-const MAX_PROTOCOL_VERSION: u64 = 129;
+const MAX_PROTOCOL_VERSION: u64 = 131;
 
 const TESTNET_USDC: &str =
     "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC";
@@ -410,6 +410,17 @@ const MAINNET_USDB: &str =
 //              Reduce the non-refundable storage fee from 1% to 0.01%.
 //              Allow random beacon DKG to complete after its timeout on devnet and testnet.
 //              Charge package inputs 1% of the per-byte object read cost.
+// Version 130: Tracks upstream protocol version 140.
+//              Add native vector bulk operations (keep_range, copy_range, replace_range
+//              and reverse) and their gas costs.
+//              Shuffle the block order within each round of a consensus commit on devnet.
+//              Disable the ID leak verifier.
+//              Enable check_object_funds_withdraw_in_execution on mainnet.
+//              Disable effects transaction dependencies on mainnet.
+//              Add the staggered-submission duplication signal thresholds.
+// Version 131: Tracks upstream protocol version 141.
+//              Refine the transaction effects size estimate.
+//              Limit the number of accumulator events per transaction.
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -804,12 +815,13 @@ struct FeatureFlags {
     passkey_auth: bool,
 
     // Enable ML-DSA-65 (FIPS 204) account signatures, standalone and as
-    // multisig members. Kept out of the generated accessors, and with them out
-    // of the protocol-config listings, until the scheme's RPC surface lands;
-    // `mldsa65_auth()` and its test setter are hand-written.
+    // multisig members.
     #[serde(skip_serializing_if = "is_false")]
-    #[skip_accessor]
     mldsa65_auth: bool,
+
+    // Use the refined transaction effects size estimate.
+    #[serde(skip_serializing_if = "is_false")]
+    complete_effects_size_estimate: bool,
 
     // Use AuthorityCapabilitiesV2
     #[serde(skip_serializing_if = "is_false")]
@@ -1230,6 +1242,15 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     allowed_proposers: bool,
 
+    // If true, validators turn on staggered submission when commits show too many
+    // duplicate copies of transactions without allowed proposers. Requires
+    // `allowed_proposers`. This flag coordinates the rollout across validators.
+    // `NodeConfig::enable_staggered_submission_signal` lets an operator disable it on
+    // one node. Staggering runs only when both are enabled.
+    #[serde(skip_serializing_if = "is_false")]
+    #[skip_protocol_config_accessor]
+    staggered_submission_signal: bool,
+
     #[serde(skip_serializing_if = "is_false")]
     randomize_checkpoint_tx_limit_in_tests: bool,
 
@@ -1319,6 +1340,17 @@ struct FeatureFlags {
     // silently dropped the displaced (finalized) transactions.
     #[serde(skip_serializing_if = "is_false")]
     merge_colliding_deferrals: bool,
+
+    // If true, consensus orders the blocks of each committed sub-dag within a round by a hash
+    // seeded from the leader block's digest, instead of by authority index. Rounds stay in
+    // ascending order, and transactions within a block keep their relative order.
+    #[serde(skip_serializing_if = "is_false")]
+    shuffle_consensus_commit_blocks: bool,
+
+    // If true, skip the Haneul ID leak verifier, allowing an existing `UID` to be used as an objects
+    // id.
+    #[serde(skip_serializing_if = "is_false")]
+    disable_id_leak_verifier: bool,
 }
 
 fn is_false(b: &bool) -> bool {
@@ -1620,6 +1652,11 @@ pub struct ProtocolConfig {
 
     /// Maximum number of Move events that a single transaction can emit. Enforced by the VM during execution.
     max_num_event_emit: Option<u64>,
+
+    /// Maximum number of accumulator events that a single transaction can emit. Enforced by the
+    /// adapter during execution. Each emitted event counts, before events on the same accumulator
+    /// are merged. There is no limit when unset.
+    max_num_accumulator_events: Option<u64>,
 
     /// Maximum number of new IDs that a single transaction can create. Enforced by the VM during execution.
     max_num_new_move_object_ids: Option<u64>,
@@ -2100,6 +2137,14 @@ pub struct ProtocolConfig {
     vector_pop_back_base_cost: Option<u64>,
     vector_destroy_empty_base_cost: Option<u64>,
     vector_swap_base_cost: Option<u64>,
+    vector_reverse_base_cost: Option<u64>,
+    vector_reverse_per_elem_cost: Option<u64>,
+    vector_keep_range_base_cost: Option<u64>,
+    vector_keep_range_per_dropped_elem_cost: Option<u64>,
+    vector_keep_range_per_moved_elem_cost: Option<u64>,
+    vector_copy_range_base_cost: Option<u64>,
+    vector_replace_range_base_cost: Option<u64>,
+    vector_replace_range_per_elem_cost: Option<u64>,
     debug_print_base_cost: Option<u64>,
     debug_print_stack_trace_base_cost: Option<u64>,
 
@@ -2214,6 +2259,21 @@ pub struct ProtocolConfig {
     /// SIP-45: K in the formula `amplification_factor = max(0, gas_price / reference_gas_price - K)`.
     /// This is the threshold for activating consensus amplification.
     sip_45_consensus_amplification_threshold: Option<u64>,
+
+    /// Number of recent commits the staggered-submission signal looks at. It compares
+    /// excess copies of transactions without allowed proposers to unique user transactions.
+    staggered_submission_signal_window_commits: Option<u64>,
+    /// Average excess copies per commit in the window needed before the signal turns on.
+    staggered_submission_signal_min_excess_copies_per_commit: Option<u64>,
+    /// Number of commits the ratio must stay below a band's exit ratio before the
+    /// signal drops to a lower band.
+    staggered_submission_signal_exit_dwell_commits: Option<u64>,
+    /// Ratios to enter and exit each band, in basis points (bps) of the window's unique
+    /// user transactions. Band 1 delays submissions up to 1.6s and band 2 up to 4.8s.
+    staggered_submission_signal_band1_enter_ratio_bps: Option<u64>,
+    staggered_submission_signal_band1_exit_ratio_bps: Option<u64>,
+    staggered_submission_signal_band2_enter_ratio_bps: Option<u64>,
+    staggered_submission_signal_band2_exit_ratio_bps: Option<u64>,
 
     /// DEPRECATED: this was an ephemeral feature flag only used in per-epoch tables, which has now
     /// been deployed everywhere.
@@ -2353,20 +2413,21 @@ impl ProtocolConfig {
         self.feature_flags.consensus_transaction_ordering
     }
 
-    // Hand-written because the field is `#[skip_accessor]`; see FeatureFlags.
-    pub fn mldsa65_auth(&self) -> bool {
-        self.feature_flags.mldsa65_auth
-    }
-
-    pub fn set_mldsa65_auth_for_testing(&mut self, val: bool) {
-        self.feature_flags.mldsa65_auth = val;
-    }
-
     pub fn enable_jwk_consensus_updates(&self) -> bool {
         let ret = self.feature_flags.enable_jwk_consensus_updates;
         if ret {
             // jwk updates required end-of-epoch transactions
             assert!(self.feature_flags.end_of_epoch_transaction_supported);
+        }
+        ret
+    }
+
+    pub fn staggered_submission_signal(&self) -> bool {
+        let ret = self.feature_flags.staggered_submission_signal;
+        if ret {
+            // The signal staggers transactions without allowed proposers. That
+            // distinction only exists when allowed_proposers is enabled.
+            assert!(self.feature_flags.allowed_proposers);
         }
         ret
     }
@@ -2698,6 +2759,7 @@ impl ProtocolConfig {
             max_fields_in_struct: Some(32),
             max_dependency_depth: Some(100),
             max_num_event_emit: Some(256),
+            max_num_accumulator_events: None,
             max_num_new_move_object_ids: Some(2048),
             max_num_new_move_object_ids_system_tx: Some(2048 * 16),
             max_num_deleted_move_object_ids: Some(2048),
@@ -3037,6 +3099,14 @@ impl ProtocolConfig {
             vector_pop_back_base_cost: None,
             vector_destroy_empty_base_cost: None,
             vector_swap_base_cost: None,
+            vector_reverse_base_cost: None,
+            vector_reverse_per_elem_cost: None,
+            vector_keep_range_base_cost: None,
+            vector_keep_range_per_dropped_elem_cost: None,
+            vector_keep_range_per_moved_elem_cost: None,
+            vector_copy_range_base_cost: None,
+            vector_replace_range_base_cost: None,
+            vector_replace_range_per_elem_cost: None,
             debug_print_base_cost: None,
             debug_print_stack_trace_base_cost: None,
 
@@ -3113,6 +3183,13 @@ impl ProtocolConfig {
             gas_budget_based_txn_cost_absolute_cap_commit_count: None,
 
             sip_45_consensus_amplification_threshold: None,
+            staggered_submission_signal_window_commits: None,
+            staggered_submission_signal_min_excess_copies_per_commit: None,
+            staggered_submission_signal_exit_dwell_commits: None,
+            staggered_submission_signal_band1_enter_ratio_bps: None,
+            staggered_submission_signal_band1_exit_ratio_bps: None,
+            staggered_submission_signal_band2_enter_ratio_bps: None,
+            staggered_submission_signal_band2_exit_ratio_bps: None,
 
             use_object_per_epoch_marker_table_v2: None,
 
@@ -4868,6 +4945,41 @@ impl ProtocolConfig {
                     // Validators cache packages, so reading one costs far less than reading an object.
                     cfg.obj_access_cost_read_per_package_kb = Some(154);
                 }
+                130 => {
+                    // v130 tracks upstream protocol version 140.
+                    // Signal thresholds are set on every chain. They take effect only
+                    // where `staggered_submission_signal` is enabled.
+                    cfg.staggered_submission_signal_window_commits = Some(300);
+                    cfg.staggered_submission_signal_min_excess_copies_per_commit = Some(2);
+                    cfg.staggered_submission_signal_exit_dwell_commits = Some(6000);
+                    cfg.staggered_submission_signal_band1_enter_ratio_bps = Some(1000);
+                    cfg.staggered_submission_signal_band1_exit_ratio_bps = Some(500);
+                    cfg.staggered_submission_signal_band2_enter_ratio_bps = Some(5000);
+                    cfg.staggered_submission_signal_band2_exit_ratio_bps = Some(2500);
+
+                    cfg.vector_reverse_base_cost = Some(52);
+                    cfg.vector_reverse_per_elem_cost = Some(8);
+                    cfg.vector_keep_range_base_cost = Some(52);
+                    cfg.vector_keep_range_per_dropped_elem_cost = Some(1);
+                    cfg.vector_keep_range_per_moved_elem_cost = Some(8);
+                    cfg.vector_copy_range_base_cost = Some(52);
+                    cfg.vector_replace_range_base_cost = Some(52);
+                    cfg.vector_replace_range_per_elem_cost = Some(8);
+
+                    if chain != Chain::Mainnet && chain != Chain::Testnet {
+                        cfg.feature_flags.shuffle_consensus_commit_blocks = true;
+                    }
+
+                    cfg.feature_flags.allow_references_in_ptbs = true;
+                    cfg.feature_flags.disable_id_leak_verifier = true;
+                    cfg.feature_flags.check_object_funds_withdraw_in_execution = true;
+                    cfg.feature_flags.disable_effects_tx_dependencies = true;
+                }
+                131 => {
+                    // v131 tracks upstream protocol version 141.
+                    cfg.feature_flags.complete_effects_size_estimate = true;
+                    cfg.max_num_accumulator_events = Some(1024);
+                }
                 // Use this template when making changes:
                 //
                 //     // modify an existing constant.
@@ -4979,6 +5091,7 @@ impl ProtocolConfig {
                 .map(|limit| limit as u128),
             deprecate_global_storage_ops,
             disable_entry_point_signature_check: self.disable_entry_point_signature_check(),
+            disable_id_leak_verifier: self.disable_id_leak_verifier(),
             switch_to_regex_reference_safety: false,
             framework_tx_context_mut_restrictions: self.framework_tx_context_mut_restrictions(),
             disallow_jump_orphans: self.disallow_jump_orphans(),
@@ -5327,6 +5440,46 @@ mod test {
             prot.max_arguments(),
             prot.max_arguments_as_option().unwrap()
         );
+    }
+
+    #[test]
+    fn vector_bulk_native_gas_costs_start_at_version_130() {
+        for chain in [Chain::Unknown, Chain::Mainnet, Chain::Testnet] {
+            let before = ProtocolConfig::get_for_version(ProtocolVersion::new(129), chain);
+            assert_eq!(before.vector_reverse_base_cost_as_option(), None);
+            assert_eq!(before.vector_reverse_per_elem_cost_as_option(), None);
+            assert_eq!(before.vector_keep_range_base_cost_as_option(), None);
+            assert_eq!(
+                before.vector_keep_range_per_dropped_elem_cost_as_option(),
+                None
+            );
+            assert_eq!(
+                before.vector_keep_range_per_moved_elem_cost_as_option(),
+                None
+            );
+            assert_eq!(before.vector_copy_range_base_cost_as_option(), None);
+            assert_eq!(before.vector_replace_range_base_cost_as_option(), None);
+            assert_eq!(before.vector_replace_range_per_elem_cost_as_option(), None);
+
+            let active = ProtocolConfig::get_for_version(ProtocolVersion::new(130), chain);
+            assert_eq!(active.vector_reverse_base_cost_as_option(), Some(52));
+            assert_eq!(active.vector_reverse_per_elem_cost_as_option(), Some(8));
+            assert_eq!(active.vector_keep_range_base_cost_as_option(), Some(52));
+            assert_eq!(
+                active.vector_keep_range_per_dropped_elem_cost_as_option(),
+                Some(1)
+            );
+            assert_eq!(
+                active.vector_keep_range_per_moved_elem_cost_as_option(),
+                Some(8)
+            );
+            assert_eq!(active.vector_copy_range_base_cost_as_option(), Some(52));
+            assert_eq!(active.vector_replace_range_base_cost_as_option(), Some(52));
+            assert_eq!(
+                active.vector_replace_range_per_elem_cost_as_option(),
+                Some(8)
+            );
+        }
     }
 
     #[test]
