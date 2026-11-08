@@ -9,7 +9,6 @@ use async_graphql::Context;
 use async_graphql::Interface;
 use async_graphql::Object;
 use async_graphql::connection::Connection;
-use futures::future::try_join_all;
 use haneul_types::dynamic_field::DynamicFieldType;
 use haneul_types::object::MoveObject as NativeMoveObject;
 use tokio::sync::OnceCell;
@@ -89,13 +88,13 @@ pub(crate) struct MoveObject {
     field(
         name = "multi_get_dynamic_fields",
         arg(name = "keys", ty = "Vec<DynamicFieldName>"),
-        ty = "Result<Vec<Option<DynamicField>>, RpcError<object::Error>>",
+        ty = "Result<Vec<Option<Result<DynamicField, RpcError<dynamic_field::Error>>>>, RpcError>",
         desc = "Access dynamic fields on an object using their types and BCS-encoded names.\n\nReturns a list of dynamic fields that is guaranteed to be the same length as `keys`. If a dynamic field in `keys` could not be found in the store, its corresponding entry in the result will be `null`.",
     ),
     field(
         name = "multi_get_dynamic_object_fields",
         arg(name = "keys", ty = "Vec<DynamicFieldName>"),
-        ty = "Result<Vec<Option<DynamicField>>, RpcError<object::Error>>",
+        ty = "Result<Vec<Option<Result<DynamicField, RpcError<dynamic_field::Error>>>>, RpcError>",
         desc = "Access dynamic object fields on an object using their types and BCS-encoded names.\n\nReturns a list of dynamic object fields that is guaranteed to be the same length as `keys`. If a dynamic object field in `keys` could not be found in the store, its corresponding entry in the result will be `null`.",
     ),
     field(
@@ -369,7 +368,7 @@ impl MoveObject {
         &self,
         ctx: &Context<'_>,
         keys: Vec<DerivedObjectKey>,
-    ) -> Result<Vec<Option<MoveObject>>, RpcError<dynamic_field::Error>> {
+    ) -> Result<Vec<Option<Result<MoveObject, RpcError<dynamic_field::Error>>>>, RpcError> {
         self.super_.multi_get_derived_objects(ctx, keys).await
     }
 
@@ -380,18 +379,8 @@ impl MoveObject {
         &self,
         ctx: &Context<'_>,
         keys: Vec<DynamicFieldName>,
-    ) -> Result<Vec<Option<DynamicField>>, RpcError<dynamic_field::Error>> {
-        let scope = &self.super_.super_.scope;
-        try_join_all(keys.into_iter().map(|key| {
-            DynamicField::by_name(
-                ctx,
-                scope.clone(),
-                self.super_.super_.address.into(),
-                DynamicFieldType::DynamicField,
-                key,
-            )
-        }))
-        .await
+    ) -> Result<Vec<Option<Result<DynamicField, RpcError<dynamic_field::Error>>>>, RpcError> {
+        self.super_.multi_get_dynamic_fields(ctx, keys).await
     }
 
     /// Fetch balances keyed by coin types (e.g. `0x2::haneul::HANEUL`) owned by this address.
@@ -412,18 +401,8 @@ impl MoveObject {
         &self,
         ctx: &Context<'_>,
         keys: Vec<DynamicFieldName>,
-    ) -> Result<Vec<Option<DynamicField>>, RpcError<dynamic_field::Error>> {
-        let scope = &self.super_.super_.scope;
-        try_join_all(keys.into_iter().map(|key| {
-            DynamicField::by_name(
-                ctx,
-                scope.clone(),
-                self.super_.super_.address.into(),
-                DynamicFieldType::DynamicObject,
-                key,
-            )
-        }))
-        .await
+    ) -> Result<Vec<Option<Result<DynamicField, RpcError<dynamic_field::Error>>>>, RpcError> {
+        self.super_.multi_get_dynamic_object_fields(ctx, keys).await
     }
 
     /// The Base64-encoded BCS serialize of this object, as a `MoveObject`.

@@ -2,7 +2,6 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-pub mod alpha_ledger_grpc_reader;
 pub mod checkpoints;
 pub mod consistent_reader;
 pub mod cp_sequence_numbers;

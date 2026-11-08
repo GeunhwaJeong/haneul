@@ -6,6 +6,7 @@ use crate::authority::AuthorityState;
 use crate::authority::authority_tests::submit_and_execute_with_options;
 use crate::authority::move_integration_tests::build_and_try_publish_test_package;
 use crate::authority::test_authority_builder::TestAuthorityBuilder;
+use haneul_macros::sim_test;
 use haneul_protocol_config::{Chain, ProtocolConfig, ProtocolVersion};
 use haneul_test_transaction_builder::{FundSource, TestTransactionBuilder};
 use haneul_types::base_types::{HaneulAddress, ObjectID, ObjectRef, dbg_addr};
@@ -30,7 +31,7 @@ use std::sync::Arc;
 
 // Test that a regulated coin can be created and all the necessary objects are created with the right types.
 // Make sure that these types can be converted to Rust types.
-#[tokio::test]
+#[sim_test]
 async fn test_regulated_coin_v1_creation() {
     let env = new_authority_and_publish("coin_deny_list_v1").await;
 
@@ -80,7 +81,7 @@ async fn test_regulated_coin_v1_creation() {
 
 // Test that a v2 regulated coin can be created and all the necessary objects are created with the right types.
 // Also test that we could create the deny list config for the coin and all types can be loaded in Rust.
-#[tokio::test]
+#[sim_test]
 async fn test_regulated_coin_v2_types() {
     let env = new_authority_and_publish("coin_deny_list_v2").await;
 
@@ -216,7 +217,7 @@ async fn test_regulated_coin_v2_types() {
 
 // Test that a denied address cannot sign a transaction that withdraws regulated coin funds
 // using the funds withdrawal argument in programmable transactions.
-#[tokio::test]
+#[sim_test]
 async fn test_regulated_coin_v2_funds_withdraw_deny() {
     telemetry_subscribers::init_for_testing();
     let env = new_authority_and_publish("coin_deny_list_v2").await;

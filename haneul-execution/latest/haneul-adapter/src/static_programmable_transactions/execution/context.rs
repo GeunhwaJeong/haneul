@@ -28,9 +28,7 @@ use haneul_protocol_config::ProtocolConfig;
 use haneul_types::{
     Identifier, TypeTag,
     accumulator_event::AccumulatorEvent,
-    accumulator_root::{
-        self, AccumulatorObjId, SETTLEMENT_MAX_TYPE_INSTANTIATION_NODES, is_settle_u128_call,
-    },
+    accumulator_root::{self, AccumulatorObjId},
     balance::Balance,
     base_types::{
         HaneulAddress, MoveObjectType, ObjectID, RESOLVED_ASCII_STR, RESOLVED_UTF8_STR,
@@ -985,12 +983,6 @@ where
                         .map_err(|e| self.env.convert_linked_vm_error(e, &function.linkage))
                 })
                 .collect::<Result<Vec<_>, Mode::Error>>()?;
-            let max_type_nodes = is_settle_u128_call(
-                function.original_mid.address(),
-                function.original_mid.name(),
-                &function.name,
-            )
-            .then_some(SETTLEMENT_MAX_TYPE_INSTANTIATION_NODES);
             let result = self.execute_function_bypass_visibility_with_vm(
                 vm,
                 &function.original_mid,
@@ -999,7 +991,6 @@ where
                 args,
                 &function.linkage,
                 trace_builder_opt,
-                max_type_nodes,
             )?;
             self.take_user_events(
                 vm,
@@ -1021,18 +1012,16 @@ where
         args: Vec<CtxValue>,
         linkage: &ExecutableLinkage,
         tracer: &mut Option<MoveTraceBuilder>,
-        max_type_nodes: Option<u64>,
     ) -> Result<Vec<CtxValue>, Mode::Error> {
         let gas_status = self.gas_charger.move_gas_status_mut();
         let values = vm
-            .execute_function_bypass_visibility_with_max_type_nodes(
+            .execute_function_bypass_visibility(
                 original_mid,
                 function_name,
                 ty_args,
                 args.into_iter().map(|v| v.0.into()).collect(),
                 &mut HaneulGasMeter(gas_status),
                 tracer.as_mut(),
-                max_type_nodes,
             )
             .map_err(|e| self.env.convert_linked_vm_error(e, linkage))?;
         Ok(values.into_iter().map(|v| CtxValue(v.into())).collect())
@@ -1269,7 +1258,6 @@ where
                 args,
                 linkage,
                 trace_builder_opt,
-                None,
             )?;
             trace_utils::trace_move_call_end(trace_builder_opt);
 

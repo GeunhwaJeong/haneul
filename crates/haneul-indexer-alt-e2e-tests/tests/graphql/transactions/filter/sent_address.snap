@@ -1,5 +1,6 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+assertion_line: 977
 ---
 processed 8 tasks
 
@@ -42,14 +43,14 @@ Response: {
   "data": {
     "transactionsA": {
       "pageInfo": {
-        "startCursor": "KAE6BAgAEAI=",
-        "endCursor": "KAE6BAgAEAI=",
+        "startCursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+        "endCursor": "AAABDCgCOgQIBBAHSgIIBAEBBAAAAAAAAAAAAAAAAAAAAA==",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "KAE6BAgAEAI=",
+          "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
           "node": {
             "digest": "3TvcJU8uyRLjDv3jUqqWVa9GssWc9t6zzKuSzyLoupfw",
             "effects": {
@@ -64,14 +65,14 @@ Response: {
     },
     "transactionsB": {
       "pageInfo": {
-        "startCursor": "KAE6BAgAEAU=",
-        "endCursor": "KAE6BAgAEAU=",
+        "startCursor": "AAABDCgBOgQIAxAFSgIIAwEAAwAAAAAAAAAAAAAAAAAAAA==",
+        "endCursor": "AAABDCgCOgQIBBAHSgIIBAEBBAAAAAAAAAAAAAAAAAAAAA==",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "KAE6BAgAEAU=",
+          "cursor": "AAABDCgBOgQIAxAFSgIIAwEAAwAAAAAAAAAAAAAAAAAAAA==",
           "node": {
             "digest": "6DotyiErubiAyup7UtoqREVzqPTTynGw4oA8dwpzoqrM",
             "effects": {

@@ -7,15 +7,19 @@ use crate::checkpoints::CheckpointStore;
 use crate::epoch::committee_store::CommitteeStore;
 use crate::execution_cache::ExecutionCacheTraitPointers;
 use haneul_rpc_store::RpcStoreReader;
+use haneul_types::base_types::ExecutionData;
+use haneul_types::base_types::ExecutionDigests;
 use haneul_types::base_types::HaneulAddress;
 use haneul_types::base_types::ObjectID;
 use haneul_types::base_types::SequenceNumber;
 use haneul_types::base_types::TransactionDigest;
+use haneul_types::base_types::VerifiedExecutionData;
 use haneul_types::committee::Committee;
 use haneul_types::committee::EpochId;
 use haneul_types::effects::{TransactionEffects, TransactionEvents};
 use haneul_types::error::{HaneulErrorKind, HaneulResult};
 use haneul_types::full_checkpoint_content::ObjectSet;
+use haneul_types::messages_checkpoint::CheckpointContents;
 use haneul_types::messages_checkpoint::CheckpointContentsDigest;
 use haneul_types::messages_checkpoint::CheckpointDigest;
 use haneul_types::messages_checkpoint::CheckpointSequenceNumber;
@@ -258,6 +262,16 @@ impl ReadStore for RocksDbStore {
             .multi_get_executed_effects(digests)
     }
 
+    fn get_execution_data(&self, digests: &ExecutionDigests) -> Option<ExecutionData> {
+        let reader = &self.cache_traits.transaction_cache_reader;
+        let transaction = reader.get_transaction_block(&digests.transaction)?;
+        let effects = reader.get_effects(&digests.effects)?;
+        Some(ExecutionData::new(
+            (*transaction).clone().into_inner(),
+            effects,
+        ))
+    }
+
     fn get_events(&self, digest: &TransactionDigest) -> Option<TransactionEvents> {
         self.cache_traits
             .transaction_cache_reader
@@ -410,6 +424,33 @@ impl WriteStore for RocksDbStore {
             .multi_insert_transaction_and_effects(contents.transactions());
         self.checkpoint_store
             .insert_verified_checkpoint_contents(checkpoint, contents)
+            .map_err(Into::into)
+    }
+
+    fn insert_transactions_and_effects(
+        &self,
+        data: &[VerifiedExecutionData],
+    ) -> Result<(), haneul_types::storage::error::Error> {
+        self.cache_traits
+            .state_sync_store
+            .multi_insert_transaction_and_effects(data);
+        Ok(())
+    }
+
+    fn insert_checkpoint_contents_digests(
+        &self,
+        checkpoint: &VerifiedCheckpoint,
+        contents: CheckpointContents,
+    ) -> Result<(), haneul_types::storage::error::Error> {
+        debug_assert!(
+            contents
+                .iter()
+                .all(|digests| self.get_execution_data(digests).is_some()),
+            "checkpoint {} contents inserted before its transactions and effects",
+            checkpoint.sequence_number()
+        );
+        self.checkpoint_store
+            .insert_checkpoint_contents_digests(checkpoint, &contents)
             .map_err(Into::into)
     }
 

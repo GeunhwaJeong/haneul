@@ -65,6 +65,7 @@ haneul-keys.workspace = true
 haneul-light-client.workspace = true
 haneul-rpc-api.workspace = true
 haneul-rpc.workspace = true
+haneul-rpc-cursor.workspace = true
 consensus-config.workspace = true
 shared-crypto.workspace = true
 haneul-sdk-types.workspace = true

@@ -249,7 +249,7 @@ async fn test_user_sends_genesis_transaction() {
     .await;
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_user_sends_consensus_commit_prologue() {
     test_user_sends_system_transaction_impl(TransactionKind::ConsensusCommitPrologue(
         ConsensusCommitPrologue {
@@ -261,7 +261,7 @@ async fn test_user_sends_consensus_commit_prologue() {
     .await;
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_user_sends_consensus_commit_prologue_v2() {
     test_user_sends_system_transaction_impl(TransactionKind::ConsensusCommitPrologueV2(
         ConsensusCommitPrologueV2 {
@@ -274,7 +274,7 @@ async fn test_user_sends_consensus_commit_prologue_v2() {
     .await;
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_user_sends_consensus_commit_prologue_v3() {
     test_user_sends_system_transaction_impl(TransactionKind::ConsensusCommitPrologueV3(
         ConsensusCommitPrologueV3 {
@@ -290,7 +290,7 @@ async fn test_user_sends_consensus_commit_prologue_v3() {
     .await;
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_user_sends_change_epoch_transaction() {
     test_user_sends_system_transaction_impl(TransactionKind::ChangeEpoch(ChangeEpoch {
         epoch: 0,
@@ -305,7 +305,7 @@ async fn test_user_sends_change_epoch_transaction() {
     .await;
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_user_sends_end_of_epoch_transaction() {
     test_user_sends_system_transaction_impl(TransactionKind::EndOfEpochTransaction(vec![])).await;
 }
@@ -328,7 +328,7 @@ async fn test_user_sends_system_transaction_impl(transaction_kind: TransactionKi
     .await;
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_sender_is_not_consensus_v2_owner() {
     telemetry_subscribers::init_for_testing();
 
@@ -1130,7 +1130,7 @@ async fn sign_with_zklogin_inside_multisig(
     tx
 }
 
-#[tokio::test]
+#[sim_test]
 async fn zklogin_txn_fail_if_missing_jwk() {
     telemetry_subscribers::init_for_testing();
 
@@ -1202,7 +1202,7 @@ async fn zklogin_txn_fail_if_missing_jwk() {
     execute_transaction_assert_err(authority_state, txn1, object_ids).await;
 }
 
-#[tokio::test]
+#[sim_test]
 async fn zk_multisig_test() {
     telemetry_subscribers::init_for_testing();
 
@@ -1383,7 +1383,7 @@ fn test_gas_payment_limit_check() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_shared_object_v2_denied() {
     // Create test setup with sender and gas objects
     let (sender, keypair): (_, AccountKeyPair) = get_key_pair();

@@ -20,6 +20,7 @@ use crate::test_utils::{make_transfer_object_move_transaction, make_transfer_obj
 use crate::unit_test_utils::{
     init_local_authorities, init_local_authorities_with_overload_thresholds,
 };
+use haneul_macros::sim_test;
 use haneul_protocol_config::ProtocolConfig;
 use haneullabs_common::ZipDebugEqIteratorExt;
 
@@ -352,7 +353,7 @@ async fn execute_shared_on_first_three_authorities(
     (executable, effects)
 }
 
-#[tokio::test(flavor = "current_thread", start_paused = true)]
+#[sim_test]
 async fn test_execution_with_dependencies() {
     telemetry_subscribers::init_for_testing();
 
@@ -526,7 +527,7 @@ fn create_executable_for_test(
     create_executable_transaction(authority_clients, txn)
 }
 
-#[tokio::test(flavor = "current_thread", start_paused = true)]
+#[sim_test]
 async fn test_per_object_overload() {
     telemetry_subscribers::init_for_testing();
 
@@ -650,7 +651,7 @@ async fn test_per_object_overload() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_txn_age_overload() {
     telemetry_subscribers::init_for_testing();
 
@@ -769,7 +770,7 @@ async fn test_txn_age_overload() {
 }
 
 // Tests that when validator is in load shedding mode, it can pushback txn validation correctly.
-#[tokio::test]
+#[sim_test]
 async fn test_authority_txn_validation_pushback() {
     telemetry_subscribers::init_for_testing();
 

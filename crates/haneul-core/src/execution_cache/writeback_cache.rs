@@ -1727,6 +1727,8 @@ impl ObjectCacheRead for WritebackCache {
                     true
                 } else {
                     match key {
+                        // See multi_input_objects_available: a consensus input is not satisfied
+                        // by an object at the same version on a different stream.
                         InputKey::VersionedObject { id, version } => {
                             match self.get_object_by_key_cache_only(&id.id(), *version) {
                                 CacheResult::Hit(object) => {
@@ -2455,12 +2457,6 @@ impl GlobalStateHashStore for WritebackCache {
         epoch: EpochId,
     ) -> HaneulResult<Option<(CheckpointSequenceNumber, GlobalStateHash)>> {
         self.store.get_root_state_hash_for_epoch(epoch)
-    }
-
-    fn get_root_state_hash_for_highest_epoch(
-        &self,
-    ) -> HaneulResult<Option<(EpochId, (CheckpointSequenceNumber, GlobalStateHash))>> {
-        self.store.get_root_state_hash_for_highest_epoch()
     }
 
     fn insert_state_hash_for_epoch(

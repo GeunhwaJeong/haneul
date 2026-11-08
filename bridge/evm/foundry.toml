@@ -14,6 +14,7 @@ extra_output = ["storageLayout"]
 fs_permissions = [{ access = "read", path = "/"}]
 gas_reports = ["HaneulBridge"]
 ffi = true
+allow_internal_expect_revert = true
 
 [fmt] 
 line_length = 100

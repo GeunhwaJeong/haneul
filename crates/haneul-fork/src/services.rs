@@ -244,6 +244,7 @@ impl ServiceManager {
             },
             ingestion_client,
             None,
+            None,
             haneul_rpc_store::ConsistencyConfig::default(),
             None,
             IngestionConfig::default(),

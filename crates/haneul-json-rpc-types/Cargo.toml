@@ -21,7 +21,6 @@ itertools.workspace = true
 nonempty.workspace = true
 tracing.workspace = true
 bcs.workspace = true
-haneul-protocol-config.workspace = true
 haneul-macros.workspace = true
 haneul-enum-compat-util.workspace = true
 enum_dispatch.workspace = true
@@ -32,8 +31,6 @@ move-binary-format.workspace = true
 move-command-line-common.workspace = true
 move-core-types.workspace = true
 move-bytecode-utils.workspace = true
-move-disassembler.workspace = true
-move-ir-types.workspace = true
 
 haneullabs-common.workspace = true
 haneullabs-metrics.workspace = true

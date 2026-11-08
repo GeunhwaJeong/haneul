@@ -58,8 +58,7 @@ jobs:
           git checkout -b "$BRANCH"
           git add \
             Cargo.toml \
-            Cargo.lock \
-            crates/haneul-indexer-alt-jsonrpc/openrpc.json
+            Cargo.lock
           BODY="Haneul v${NEW_VERSION} Version Bump"
           git commit -m "$BODY"
           git push -u origin "$BRANCH"

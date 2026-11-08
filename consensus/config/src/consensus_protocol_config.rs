@@ -35,6 +35,9 @@ pub struct ConsensusProtocolConfig {
     leader_schedule_window_size: u32,
     /// Number of commit indices that use the same Mysticeti v3 leader schedule.
     leader_schedule_update_interval: u32,
+    /// Whether the linearizer orders each committed sub-dag's blocks within a round by a hash
+    /// seeded from the leader digest, instead of by authority index.
+    shuffle_commit_blocks: bool,
 }
 
 impl Default for ConsensusProtocolConfig {
@@ -53,6 +56,8 @@ impl Default for ConsensusProtocolConfig {
             enable_v3: false,
             leader_schedule_window_size: 600,
             leader_schedule_update_interval: 60,
+
+            shuffle_commit_blocks: false,
         }
     }
 }
@@ -72,6 +77,7 @@ impl ConsensusProtocolConfig {
         enable_v3: bool,
         leader_schedule_window_size: u32,
         leader_schedule_update_interval: u32,
+        shuffle_commit_blocks: bool,
     ) -> Self {
         Self {
             protocol_version,
@@ -87,6 +93,7 @@ impl ConsensusProtocolConfig {
             enable_v3,
             leader_schedule_window_size,
             leader_schedule_update_interval,
+            shuffle_commit_blocks,
         }
     }
 
@@ -107,6 +114,8 @@ impl ConsensusProtocolConfig {
             enable_v3: false,
             leader_schedule_window_size: 600,
             leader_schedule_update_interval: 60,
+
+            shuffle_commit_blocks: true,
         }
     }
 
@@ -167,6 +176,10 @@ impl ConsensusProtocolConfig {
         self.leader_schedule_update_interval.max(1)
     }
 
+    pub fn shuffle_commit_blocks(&self) -> bool {
+        self.shuffle_commit_blocks
+    }
+
     // Test setter methods
 
     pub fn set_gc_depth_for_testing(&mut self, val: u32) {
@@ -211,5 +224,9 @@ impl ConsensusProtocolConfig {
 
     pub fn set_leader_schedule_update_interval_for_testing(&mut self, val: u32) {
         self.leader_schedule_update_interval = val;
+    }
+
+    pub fn set_shuffle_commit_blocks_for_testing(&mut self, val: bool) {
+        self.shuffle_commit_blocks = val;
     }
 }

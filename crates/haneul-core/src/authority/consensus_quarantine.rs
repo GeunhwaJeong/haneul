@@ -1072,6 +1072,7 @@ impl ConsensusOutputQuarantine {
 mod tests {
     use super::*;
     use crate::authority::test_authority_builder::TestAuthorityBuilder;
+    use haneul_macros::sim_test;
     use haneul_types::base_types::ExecutionDigests;
     use haneul_types::gas::GasCostSummary;
     use haneul_types::messages_checkpoint::CheckpointContents;
@@ -1113,7 +1114,7 @@ mod tests {
         }
     }
 
-    #[tokio::test]
+    #[sim_test]
     async fn test_drain_boundary_prevents_premature_commit() {
         let state = TestAuthorityBuilder::new().build().await;
         let epoch_store = state.epoch_store_for_testing();
@@ -1151,7 +1152,7 @@ mod tests {
         assert_eq!(quarantine.output_queue_len_for_testing(), 2);
     }
 
-    #[tokio::test]
+    #[sim_test]
     async fn test_drain_boundary_commits_at_safe_point() {
         let state = TestAuthorityBuilder::new().build().await;
         let epoch_store = state.epoch_store_for_testing();

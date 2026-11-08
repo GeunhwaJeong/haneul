@@ -7,9 +7,11 @@ use std::time::Duration;
 
 use anyhow::Context as _;
 use anyhow::ensure;
+use fastcrypto::encoding::Base64;
+use fastcrypto::encoding::Encoding;
 use haneul_indexer_alt_graphql::config::RpcConfig;
-use haneul_indexer_alt_jsonrpc::config::NameServiceConfig;
 use haneul_move_build::BuildConfig;
+use haneul_name_service::NameServiceConfig;
 use haneul_types::base_types::HaneulAddress;
 use haneul_types::base_types::ObjectID;
 use haneul_types::effects::TransactionEffectsAPI;
@@ -127,6 +129,75 @@ async fn test_resolve_domain() {
 
     assert_resolved!(target, c.resolve_address("@foo").await.unwrap());
     assert_reverse!("foo.haneul", c.resolve_name(target).await.unwrap());
+}
+
+/// Contents must describe the NameRecord value, not its enclosing dynamic field.
+#[tokio::test]
+async fn test_name_record_contents() {
+    let mut c = HaneulNSCluster::new().await;
+    let nft = ObjectID::random();
+    let target = HaneulAddress::random_for_testing_only();
+    c.add_domain(nft, &["haneul", "foo"], Some(target), 1000)
+        .await
+        .expect("Failed to add domain");
+    c.cluster.create_checkpoint().await;
+
+    let resp = c
+        .query(
+            r#"
+            query($address: HaneulAddress!) {
+                nameRecord(name: "foo.haneul") {
+                    contents { type { repr } json bcs }
+                }
+                address(address: $address) {
+                    defaultNameRecord {
+                        contents { type { repr } json bcs }
+                    }
+                }
+            }
+            "#,
+            json!({ "address": target.to_string() }),
+        )
+        .await
+        .unwrap();
+
+    assert!(
+        resp["errors"].is_null(),
+        "Unexpected GraphQL errors: {resp:#?}"
+    );
+    let contents = &resp["data"]["nameRecord"]["contents"];
+    assert_eq!(
+        contents,
+        &resp["data"]["address"]["defaultNameRecord"]["contents"]
+    );
+    assert_eq!(
+        contents["type"]["repr"],
+        format!("{}::name_record::NameRecord", c.config.package_address)
+    );
+    assert_eq!(
+        contents["json"],
+        json!({
+            "nft_id": nft.to_string(),
+            "expiration_timestamp_ms": "1000",
+            "target_address": target.to_string(),
+            "data": { "contents": [{
+                "key": "avatar",
+                "value": "https://example.com/avatar.png",
+            }] },
+        })
+    );
+    // The mock record has the same BCS layout as the real HaneulNS record.
+    let bytes = Base64::decode(contents["bcs"].as_str().unwrap()).unwrap();
+    let record: haneul_name_service::NameRecord = bcs::from_bytes(&bytes).unwrap();
+    assert_eq!(record.nft_id.bytes, nft);
+    assert_eq!(record.expiration_timestamp_ms, 1000);
+    assert_eq!(record.target_address, Some(target));
+    assert_eq!(record.data.contents.len(), 1);
+    assert_eq!(record.data.contents[0].key, "avatar");
+    assert_eq!(
+        record.data.contents[0].value,
+        "https://example.com/avatar.png"
+    );
 }
 
 /// If a domain name exists but has no target, we can't resolve it, but it's not an error.
@@ -468,7 +539,7 @@ impl HaneulNSCluster {
         builder
             .move_call(
                 package_address,
-                ident_str!("haneulns").to_owned(),
+                ident_str!("name_record").to_owned(),
                 ident_str!("share_forward_registry").to_owned(),
                 vec![],
                 vec![],
@@ -499,7 +570,7 @@ impl HaneulNSCluster {
         builder
             .move_call(
                 package_address,
-                ident_str!("haneulns").to_owned(),
+                ident_str!("name_record").to_owned(),
                 ident_str!("share_reverse_registry").to_owned(),
                 vec![],
                 vec![],
@@ -532,7 +603,6 @@ impl HaneulNSCluster {
             reverse_registry_id,
         };
 
-        // Note: We need to configure both JSON-RPC and GraphQL with the same name service config
         let graphql_config = RpcConfig {
             name_service: config.clone(),
             ..Default::default()
@@ -587,7 +657,7 @@ impl HaneulNSCluster {
 
         builder.programmable_move_call(
             self.config.package_address.into(),
-            ident_str!("haneulns").to_owned(),
+            ident_str!("name_record").to_owned(),
             ident_str!("add_domain").to_owned(),
             vec![],
             vec![

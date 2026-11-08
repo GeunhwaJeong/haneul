@@ -17,7 +17,7 @@ use haneul_protocol_config::assert_reachable_gated;
 use haneul_types::base_types::AuthorityName;
 use haneul_types::committee::{Committee, EpochId, StakeUnit};
 use haneul_types::crypto::{AuthorityKeyPair, RandomnessRound};
-use haneul_types::error::{HaneulErrorKind, HaneulResult};
+use haneul_types::error::{HaneulError, HaneulErrorKind, HaneulResult};
 use haneul_types::haneul_system_state::epoch_start_haneul_system_state::EpochStartSystemStateTrait;
 use haneul_types::messages_consensus::{
     ConsensusTransaction, Round, TimestampMs, VersionedDkgConfirmation, VersionedDkgMessage,
@@ -281,6 +281,22 @@ impl DkgRole {
                 observer.complete(&raw_messages, &confirmations)
             }
         }
+    }
+}
+
+/// Error from advancing DKG. Runtime shutdown is a separate variant so that a cancelled blocking
+/// task is never handled like a failed DKG step.
+#[derive(Debug)]
+pub(crate) enum AdvanceDkgError {
+    Haneul(HaneulError),
+    /// The runtime is shutting down and cancelled DKG message processing. The commit being
+    /// processed must be abandoned without persisting its output.
+    RuntimeShutdown,
+}
+
+impl From<HaneulError> for AdvanceDkgError {
+    fn from(e: HaneulError) -> Self {
+        Self::Haneul(e)
     }
 }
 
@@ -668,7 +684,7 @@ impl RandomnessManager {
         &mut self,
         consensus_output: &mut ConsensusCommitOutput,
         round: Round,
-    ) -> HaneulResult {
+    ) -> Result<(), AdvanceDkgError> {
         let epoch_store = self.epoch_store()?;
 
         self.try_merge_messages(consensus_output, &epoch_store)
@@ -701,7 +717,7 @@ impl RandomnessManager {
         &mut self,
         consensus_output: &mut ConsensusCommitOutput,
         epoch_store: &Arc<AuthorityPerEpochStore>,
-    ) -> HaneulResult {
+    ) -> Result<(), AdvanceDkgError> {
         if self.dkg_output.initialized() || self.used_messages.initialized() {
             return Ok(());
         }
@@ -711,7 +727,14 @@ impl RandomnessManager {
             .into_values()
             .collect();
         while let Some(res) = handles.next().await {
-            if let Ok(Some(processed)) = res {
+            let processed = match res {
+                Ok(processed) => processed,
+                Err(e) if e.is_panic() => std::panic::resume_unwind(e.into_panic()),
+                // Only runtime shutdown cancels the task. Treating it like an invalid message
+                // would persist DKG state that is missing this message.
+                Err(_) => return Err(AdvanceDkgError::RuntimeShutdown),
+            };
+            if let Some(processed) = processed {
                 self.processed_messages
                     .insert(processed.sender(), processed.clone());
                 consensus_output.insert_dkg_processed_message(processed);
@@ -1185,14 +1208,31 @@ mod tests {
     use fastcrypto::groups::bls12381;
     use fastcrypto::serde_helpers::ToFromByteArray;
     use fastcrypto_tbls::{mocked_dkg, nodes};
+    use haneul_macros::sim_test;
     use haneul_protocol_config::ProtocolConfig;
     use haneul_protocol_config::{Chain, ProtocolVersion};
     use haneul_types::{base_types::AuthorityName, messages_consensus::ConsensusTransactionKind};
     use std::num::NonZeroUsize;
     use tokio::sync::mpsc;
+    use tokio::sync::mpsc::error::TrySendError;
     use typed_store::Map;
 
     use arc_swap::Guard;
+
+    /// Forwards a mock consensus submission to the test channel.
+    ///
+    /// The consensus adapter submits from a spawned task. Under the simulator that task can run
+    /// after the test body has returned and dropped the `DkgTestSetup` that owns the receiver.
+    /// The test has nothing left to assert at that point, so a closed channel is not a failure.
+    fn forward_submission(
+        tx_consensus: &mpsc::Sender<Vec<ConsensusTransaction>>,
+        transactions: &[ConsensusTransaction],
+    ) {
+        match tx_consensus.try_send(transactions.to_vec()) {
+            Ok(()) | Err(TrySendError::Closed(_)) => {}
+            Err(TrySendError::Full(_)) => panic!("test consensus channel is full"),
+        }
+    }
 
     /// Test harness that sets up validators (and optionally an observer) with mock consensus,
     /// ready for DKG message exchange.
@@ -1234,7 +1274,7 @@ mod tests {
                 mock_consensus_client
                     .expect_submit()
                     .withf(move |transactions: &[ConsensusTransaction], _epoch_store| {
-                        tx_consensus.try_send(transactions.to_vec()).unwrap();
+                        forward_submission(&tx_consensus, transactions);
                         true
                     })
                     .returning(|_, _| {
@@ -1321,7 +1361,7 @@ mod tests {
             mock_consensus_client
                 .expect_submit()
                 .withf(move |transactions: &[ConsensusTransaction], _epoch_store| {
-                    tx_consensus.try_send(transactions.to_vec()).unwrap();
+                    forward_submission(&tx_consensus, transactions);
                     true
                 })
                 .returning(|_, _| {
@@ -1504,7 +1544,7 @@ mod tests {
         }
     }
 
-    #[tokio::test]
+    #[sim_test]
     async fn test_dkg_expiration() {
         telemetry_subscribers::init_for_testing();
 
@@ -1635,7 +1675,7 @@ mod tests {
         }
     }
 
-    #[tokio::test]
+    #[sim_test]
     async fn test_dkg_status_for_commit_round() {
         telemetry_subscribers::init_for_testing();
 
@@ -1804,7 +1844,7 @@ mod tests {
         assert!(role.unwrap().is_party());
     }
 
-    #[tokio::test]
+    #[sim_test]
     async fn test_randomness_manager_crash_recovery_v1() {
         telemetry_subscribers::init_for_testing();
 

@@ -180,6 +180,7 @@ fn to_consensus_protocol_config(config: &ProtocolConfig) -> ConsensusProtocolCon
         /* enable_v3 */ false,
         /* leader_schedule_window_size */ 300,
         /* leader_schedule_update_interval */ 12,
+        config.shuffle_consensus_commit_blocks(),
     )
 }
 
@@ -311,6 +312,11 @@ impl ConsensusManager {
             let pool = Arc::new(ConsensusTransactionPool::new(
                 epoch_store.clone(),
                 config.max_pending_transactions(&self.consensus_config),
+                config.max_user_bytes_per_second(
+                    epoch_store
+                        .protocol_config()
+                        .max_transactions_in_block_bytes(),
+                ),
                 context.metrics().clone(),
                 context.adapter_metrics().clone(),
             ));

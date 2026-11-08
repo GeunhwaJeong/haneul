@@ -16,6 +16,9 @@ use haneul_rpc::proto::haneul::rpc::v2::TransactionFilter as GrpcTransactionFilt
 use haneul_rpc::proto::haneul::rpc::v2::TransactionLiteral;
 use haneul_rpc::proto::haneul::rpc::v2::TransactionTerm;
 use haneul_rpc::proto::haneul::rpc::v2::transaction_literal::Predicate;
+use haneul_types::balance::Balance;
+use haneul_types::effects::AccumulatorValue;
+use haneul_types::effects::TransactionEffectsAPI;
 use haneul_types::transaction::TransactionDataAPI;
 
 use crate::api::scalars::fq_name_filter::FqNameFilter;
@@ -135,38 +138,6 @@ impl TransactionFilter {
         true
     }
 
-    /// The active filters in TransactionFilter. Used to find the pipelines that are available to serve queries with these filters applied.
-    pub(crate) fn active_filters(&self) -> Vec<String> {
-        let mut filters = vec![];
-
-        if self.affected_address.is_some() {
-            filters.push("affectedAddress".to_string());
-        }
-        if self.sent_address.is_some() {
-            filters.push("sentAddress".to_string());
-        }
-        if self.kind.is_some() {
-            filters.push("kind".to_string());
-        }
-        if self.function.is_some() {
-            filters.push("function".to_string());
-        }
-        if self.affected_object.is_some() {
-            filters.push("affectedObject".to_string());
-        }
-        if self.at_checkpoint.is_some() {
-            filters.push("atCheckpoint".to_string());
-        }
-        if self.after_checkpoint.is_some() {
-            filters.push("afterCheckpoint".to_string());
-        }
-        if self.before_checkpoint.is_some() {
-            filters.push("beforeCheckpoint".to_string());
-        }
-
-        filters
-    }
-
     pub(crate) fn to_grpc_filter(&self) -> Option<GrpcTransactionFilter> {
         let mut literals = Vec::new();
 
@@ -237,19 +208,22 @@ impl TransactionFilter {
             return false;
         }
 
-        // TODO: Verify consistency with the indexed path (tx_affected_addresses).
-        // The indexed path includes sender, gas payer, and recipients from
-        // all_changed_objects(). Confirm this matches for sponsored transactions
-        // and edge cases (deleted/wrapped object owners).
+        // An address is affected if it sent or sponsored the transaction, owns one of its
+        // changed objects, or had its address balance changed by it.
         if let Some(affected_address) = &self.affected_address {
             let in_changed_objects = effects.all_changed_objects().iter().any(|(_, owner, _)| {
                 owner
                     .get_address_owner_address()
                     .is_ok_and(|addr| HaneulAddress::from(addr) == *affected_address)
             });
+            let in_balance_changes = effects.accumulator_events().iter().any(|event| {
+                Balance::is_balance_type(&event.write.address.ty)
+                    && matches!(&event.write.value, AccumulatorValue::Integer(_))
+                    && HaneulAddress::from(event.write.address.address) == *affected_address
+            });
             let is_sender = HaneulAddress::from(data.sender()) == *affected_address;
             let is_payer = HaneulAddress::from(data.gas_data().owner) == *affected_address;
-            if !in_changed_objects && !is_sender && !is_payer {
+            if !in_changed_objects && !in_balance_changes && !is_sender && !is_payer {
                 return false;
             }
         }
@@ -341,6 +315,14 @@ fn move_call_predicate(function: &FqNameFilter) -> Predicate {
 
 #[cfg(test)]
 mod tests {
+    use haneul_indexer_alt_reader::kv_loader::ExecutedTransactionData;
+    use haneul_types::accumulator_event::AccumulatorEvent;
+    use haneul_types::base_types::HaneulAddress as NativeHaneulAddress;
+    use haneul_types::effects::TestEffectsBuilder;
+    use haneul_types::gas_coin::GAS;
+    use haneul_types::test_checkpoint_data_builder::TestCheckpointBuilder;
+    use haneul_types::transaction::SenderSignedData;
+
     use super::*;
 
     fn addr(s: &str) -> HaneulAddress {
@@ -554,5 +536,48 @@ mod tests {
         assert_eq!(literals.len(), 2);
         assert_sender_literal(&literals[0], true, &sender.to_string());
         assert_sender_literal(&literals[1], false, &HaneulAddress::ZERO.to_string());
+    }
+
+    #[test]
+    fn affected_address_matches_address_balance_change() {
+        let recipient = TestCheckpointBuilder::derive_address(2);
+        let checkpoint = TestCheckpointBuilder::new(0)
+            .start_transaction(1)
+            .finish_transaction()
+            .build_checkpoint();
+        let tx = &checkpoint.transactions[0];
+        let signed = SenderSignedData::new(tx.transaction.clone(), tx.signatures.clone());
+        let balance_change = AccumulatorEvent::from_balance_change(
+            recipient,
+            Balance::type_tag(GAS::type_tag()),
+            100,
+        )
+        .unwrap();
+        let effects = TestEffectsBuilder::new(&signed)
+            .with_accumulator_events([balance_change])
+            .build();
+        let contents = TransactionContents::ExecutedTransaction(ExecutedTransactionData {
+            effects: Box::new(effects),
+            events: vec![],
+            transaction_data: Box::new(tx.transaction.clone()),
+            signatures: vec![],
+            balance_changes: vec![],
+            proto_effects: None,
+            proto_transaction: None,
+            timestamp_ms: None,
+            cp_sequence_number: None,
+        });
+
+        let affects = |address: NativeHaneulAddress| {
+            TransactionFilter {
+                affected_address: Some(address.into()),
+                ..Default::default()
+            }
+            .matches(&contents)
+        };
+
+        // The recipient owns no changed object; only its address balance changes.
+        assert!(affects(recipient));
+        assert!(!affects(TestCheckpointBuilder::derive_address(3)));
     }
 }

@@ -2,7 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-// attempt to return a reference from a function
+// return a reference from a function in dry-run
 
 //# init --addresses test=0x0 --accounts A
 

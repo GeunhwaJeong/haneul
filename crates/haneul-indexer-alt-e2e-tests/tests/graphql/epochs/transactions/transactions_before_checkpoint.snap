@@ -1,5 +1,6 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+assertion_line: 977
 ---
 processed 14 tasks
 
@@ -60,7 +61,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAA=",
+            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
               "effects": {
@@ -110,7 +111,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAM=",
+            "cursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
             "node": {
               "digest": "G9LnZPWSaz2BJnz35TPsAkPet8ZCLjaZzvURwZTkAisx",
               "effects": {
@@ -124,7 +125,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAQ=",
+            "cursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
             "node": {
               "digest": "7pqgYEwgN1qNK7sTwZvELngS4nAibeM4wGrgJp9mgCaX",
               "effects": {
@@ -138,7 +139,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAU=",
+            "cursor": "AAABDigBOgQIAhAFSgQIAhACAQACAAAAAAAAAAIAAAAAAAAA",
             "node": {
               "digest": "5QdTEu1h7fuRih364SecoELKZ8BQvetNyZHhrGV8YF2i",
               "effects": {

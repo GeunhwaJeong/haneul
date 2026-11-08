@@ -1,0 +1,94 @@
+---
+source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+---
+processed 9 tasks
+
+// Tests repacking an object that holds HANEUL into a different type, splitting the HANEUL out as a coin.
+
+init:
+A: object(0,0)
+
+task 1, lines 9-37:
+//# publish
+created: object(1,0)
+mutated: object(0,1)
+gas summary: computation_cost: 1000000, storage_cost: 7858400,  storage_rebate: 0, non_refundable_storage_fee: 0
+
+task 2, lines 39-41:
+//# programmable --inputs 1000 --sender A
+//> 0: SplitCoins(Gas, [Input(0)]);
+//> ex::m::deposit(Result(0))
+created: object(2,0)
+mutated: object(0,0)
+gas summary: computation_cost: 1000000, storage_cost: 2257200,  storage_rebate: 0, non_refundable_storage_fee: 0
+
+task 3, line 43:
+//# view-object 2,0
+Owner: Account Address ( A )
+Version: 2
+Contents: ex::m::A {
+    id: haneul::object::UID {
+        id: haneul::object::ID {
+            bytes: fake(2,0),
+        },
+    },
+    balance: haneul::balance::Balance<haneul::haneul::HANEUL> {
+        value: 1000u64,
+    },
+}
+
+task 4, line 45:
+//# run ex::m::a_to_b --args object(2,0) --sender A
+mutated: object(0,0), object(2,0)
+gas summary: computation_cost: 1000000, storage_cost: 2257200,  storage_rebate: 2256974, non_refundable_storage_fee: 226
+
+task 5, line 47:
+//# view-object 2,0
+Owner: Account Address ( A )
+Version: 3
+Contents: ex::m::B {
+    id: haneul::object::UID {
+        id: haneul::object::ID {
+            bytes: fake(2,0),
+        },
+    },
+    balance: haneul::balance::Balance<haneul::haneul::HANEUL> {
+        value: 1000u64,
+    },
+}
+
+task 6, line 49:
+//# run ex::m::b_to_a_split --args object(2,0) 400 --sender A
+created: object(6,0)
+mutated: object(0,0), object(2,0)
+gas summary: computation_cost: 1000000, storage_cost: 3245200,  storage_rebate: 2256974, non_refundable_storage_fee: 226
+
+task 7, line 51:
+//# view-object 2,0
+Owner: Account Address ( A )
+Version: 4
+Contents: ex::m::A {
+    id: haneul::object::UID {
+        id: haneul::object::ID {
+            bytes: fake(2,0),
+        },
+    },
+    balance: haneul::balance::Balance<haneul::haneul::HANEUL> {
+        value: 600u64,
+    },
+}
+
+task 8, line 53:
+//# view-object 6,0
+Owner: Account Address ( A )
+Version: 4
+Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
+    id: haneul::object::UID {
+        id: haneul::object::ID {
+            bytes: fake(6,0),
+        },
+    },
+    balance: haneul::balance::Balance<haneul::haneul::HANEUL> {
+        value: 400u64,
+    },
+}

@@ -17,13 +17,25 @@ use haneul_indexer_alt_framework::ingestion::ingestion_client::IngestionClientAr
 use haneul_indexer_alt_graphql::config::RpcConfig as GraphQlConfig;
 use haneul_indexer_alt_graphql::config::ZkLoginConfig;
 use haneul_indexer_alt_graphql::config::ZkLoginEnv;
+use haneul_keys::keystore::AccountKeystore;
 use haneul_swarm_config::genesis_config::AccountConfig;
+use haneul_types::HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID;
+use haneul_types::HANEUL_FRAMEWORK_PACKAGE_ID;
+use haneul_types::address_alias::get_address_alias_state_obj_initial_shared_version;
 use haneul_types::base_types::HaneulAddress;
+use haneul_types::base_types::ObjectID;
+use haneul_types::base_types::SequenceNumber;
 use haneul_types::crypto::HaneulKeyPair;
 use haneul_types::crypto::Signature;
+use haneul_types::effects::TransactionEffects;
+use haneul_types::effects::TransactionEffectsAPI;
 use haneul_types::multisig::MultiSig;
 use haneul_types::multisig::MultiSigPublicKey;
+use haneul_types::object::Owner;
 use haneul_types::signature::GenericSignature;
+use haneul_types::transaction::CallArg;
+use haneul_types::transaction::ObjectArg;
+use haneul_types::transaction::SharedObjectMutability;
 use haneul_types::utils::load_test_vectors;
 use haneul_types::zk_login_authenticator::ZkLoginAuthenticator;
 use insta::assert_debug_snapshot;
@@ -42,15 +54,26 @@ const SCOPE_PERSONAL_MESSAGE: &str = "PERSONAL_MESSAGE";
 const SCOPE_TRANSACTION_DATA: &str = "TRANSACTION_DATA";
 
 const QUERY: &str = r#"
-query ($message: Base64!, $signature: Base64!, $scope: IntentScope!, $author: HaneulAddress!) {
-    verifySignature(message: $message, signature: $signature, intentScope: $scope, author: $author) {
+query (
+    $message: Base64!,
+    $signature: Base64!,
+    $scope: IntentScope!,
+    $author: HaneulAddress!,
+    $checkAddressAliases: Boolean,
+) {
+    verifySignature(
+        message: $message,
+        signature: $signature,
+        intentScope: $scope,
+        author: $author,
+        checkAddressAliases: $checkAddressAliases,
+    ) {
         success
     }
 }
 "#;
 
 struct FullCluster {
-    #[allow(unused)]
     onchain: TestCluster,
     offchain: OffchainCluster,
     #[allow(unused)]
@@ -127,6 +150,18 @@ impl FullCluster {
         scope: &str,
         author: HaneulAddress,
     ) -> anyhow::Result<serde_json::Value> {
+        self.verify_with_aliases(message, signature, scope, author, None)
+            .await
+    }
+
+    async fn verify_with_aliases(
+        &self,
+        message: Vec<u8>,
+        signature: Vec<u8>,
+        scope: &str,
+        author: HaneulAddress,
+        check_address_aliases: Option<bool>,
+    ) -> anyhow::Result<serde_json::Value> {
         let client = reqwest::Client::new();
         let url = self.offchain.graphql_url();
 
@@ -135,6 +170,7 @@ impl FullCluster {
             "signature": Base64::encode(signature),
             "scope": scope,
             "author": author.to_string(),
+            "checkAddressAliases": check_address_aliases,
         });
 
         let response: serde_json::Value = client
@@ -160,6 +196,56 @@ impl FullCluster {
             .pointer("/data/verifySignature")
             .cloned()
             .with_context(|| format!("missing data.verifySignature in {response:#?}"))
+    }
+
+    async fn call_address_alias(
+        &self,
+        sender: HaneulAddress,
+        function: &'static str,
+        object: (ObjectID, SequenceNumber),
+        args: Vec<CallArg>,
+    ) -> TransactionEffects {
+        let mut call_args = vec![CallArg::Object(ObjectArg::SharedObject {
+            id: object.0,
+            initial_shared_version: object.1,
+            mutability: SharedObjectMutability::Mutable,
+        })];
+        call_args.extend(args);
+
+        let tx_data = self
+            .onchain
+            .test_transaction_builder_with_sender(sender)
+            .await
+            .move_call(
+                HANEUL_FRAMEWORK_PACKAGE_ID,
+                "address_alias",
+                function,
+                call_args,
+            )
+            .build();
+        let effects = self
+            .onchain
+            .sign_and_execute_transaction(&tx_data)
+            .await
+            .effects;
+
+        // After settlement, the latest checkpoint includes the transaction.
+        self.onchain
+            .wait_for_tx_settlement(&[*effects.transaction_digest()])
+            .await;
+        let checkpoint = self
+            .onchain
+            .fullnode_handle
+            .haneul_node
+            .state()
+            .get_latest_checkpoint_sequence_number()
+            .unwrap();
+        self.offchain
+            .wait_for_graphql(checkpoint, Duration::from_secs(30))
+            .await
+            .unwrap();
+
+        effects
     }
 }
 
@@ -317,8 +403,8 @@ async fn test_mldsa65_personal_message() {
     "###);
 }
 
-/// A hybrid committee is only accepted when the chain enables ML-DSA-65
-/// multisig members, which the test cluster's protocol version does.
+/// Local verification accepts supported hybrid committees independently of the chain's
+/// protocol activation rules.
 #[tokio::test]
 async fn test_multisig_with_mldsa65_member_personal_message() {
     let cluster = FullCluster::new().await.unwrap();
@@ -613,4 +699,98 @@ async fn test_wrong_intent_scope() {
         .unwrap_err();
 
     assert_debug_snapshot!(result, @r###""[\"Failed to deserialize TransactionData from bytes\"]""###);
+}
+
+/// Walks one address through its alias lifecycle in a single test, because each cluster needs an
+/// epoch change before it can verify signatures.
+#[tokio::test]
+async fn test_address_aliases_personal_message() {
+    let cluster = FullCluster::new().await.unwrap();
+
+    let addresses = cluster.onchain.get_addresses();
+    let (owner, delegate) = (addresses[0], addresses[1]);
+    let keystore = &cluster.onchain.wallet.config.keystore;
+    let (message, owner_sig, _) =
+        sign_personal_message(keystore.export(&owner).unwrap(), b"Hello, World!");
+    let (_, delegate_sig, _) =
+        sign_personal_message(keystore.export(&delegate).unwrap(), b"Hello, World!");
+
+    let verify = |signature: &Vec<u8>, check_address_aliases: Option<bool>| {
+        cluster.verify_with_aliases(
+            message.clone(),
+            signature.clone(),
+            SCOPE_PERSONAL_MESSAGE,
+            owner,
+            check_address_aliases,
+        )
+    };
+
+    verify(&owner_sig, Some(true)).await.unwrap();
+    let error = verify(&delegate_sig, Some(true)).await.unwrap_err();
+    assert!(error.to_string().contains("is not an alias of"), "{error}");
+
+    let alias_state_version = cluster.onchain.fullnode_handle.haneul_node.with(|node| {
+        get_address_alias_state_obj_initial_shared_version(node.state().get_object_store().as_ref())
+            .unwrap()
+            .expect("address alias state object should exist")
+    });
+    let effects = cluster
+        .call_address_alias(
+            owner,
+            "enable",
+            (HANEUL_ADDRESS_ALIAS_STATE_OBJECT_ID, alias_state_version),
+            vec![],
+        )
+        .await;
+    let ((aliases_id, aliases_version, _), _) = effects
+        .created()
+        .into_iter()
+        .find(|(_, owner)| matches!(owner, Owner::ConsensusAddressOwner { .. }))
+        .expect("AddressAliases object should be created");
+    let aliases = (aliases_id, aliases_version);
+    cluster
+        .call_address_alias(
+            owner,
+            "add",
+            aliases,
+            vec![CallArg::Pure(bcs::to_bytes(&delegate).unwrap())],
+        )
+        .await;
+
+    verify(&delegate_sig, Some(true)).await.unwrap();
+    verify(&owner_sig, Some(true)).await.unwrap();
+
+    for check_address_aliases in [None, Some(false)] {
+        let error = verify(&delegate_sig, check_address_aliases)
+            .await
+            .unwrap_err();
+        assert!(error.to_string().contains("Incorrect signer"), "{error}");
+    }
+
+    // An alias match doesn't skip verifying the signature itself.
+    let error = cluster
+        .verify_with_aliases(
+            b"Goodbye".to_vec(),
+            delegate_sig.clone(),
+            SCOPE_PERSONAL_MESSAGE,
+            owner,
+            Some(true),
+        )
+        .await
+        .unwrap_err();
+    assert!(error.to_string().contains("Verification failed"), "{error}");
+
+    cluster
+        .call_address_alias(
+            owner,
+            "remove",
+            aliases,
+            vec![CallArg::Pure(bcs::to_bytes(&owner).unwrap())],
+        )
+        .await;
+
+    let error = verify(&owner_sig, Some(true)).await.unwrap_err();
+    assert!(error.to_string().contains("is not an alias of"), "{error}");
+    verify(&owner_sig, None).await.unwrap();
+    verify(&delegate_sig, Some(true)).await.unwrap();
 }

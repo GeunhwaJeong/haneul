@@ -2,6 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
+use haneul_macros::sim_test;
 use std::collections::BTreeMap;
 use std::sync::Arc;
 use std::time::Duration;
@@ -209,7 +210,7 @@ impl TestEnv {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_withdraw_schedule_e2e() {
     telemetry_subscribers::init_for_testing();
     let mut test_env = create_test_env(BTreeMap::from([(GAS::type_tag(), 1000)])).await;

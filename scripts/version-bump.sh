@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Unified Haneul version bump script.
-# Updates Cargo.toml and openrpc.json, then runs cargo check.
+# Updates Cargo.toml, then runs cargo check.
 #
 # This script handles file changes ONLY - git operations (commit, push, PR)
 # are the caller's responsibility (workflow or operator).
@@ -48,7 +48,6 @@ Options:
 
 Files updated:
   - Cargo.toml (workspace version)
-  - crates/haneul-indexer-alt-jsonrpc/openrpc.json (JSON-RPC spec version)
   - Cargo.lock (regenerated via cargo check)
 
 This script does NOT commit, push, or create PRs - the caller handles delivery.
@@ -146,16 +145,6 @@ echo -e "${YELLOW}Updating Cargo.toml...${NC}"
 sedi "s/^(version = \")[0-9]+\.[0-9]+\.[0-9]+(\"$)/\1${NEW_VERSION}\2/" Cargo.toml
 echo -e "${GREEN}✓ Cargo.toml updated${NC}"
 
-# ── Update openrpc.json ──────────────────────────────────────────────
-OPENRPC_FILE="crates/haneul-indexer-alt-jsonrpc/openrpc.json"
-if [[ -f "$OPENRPC_FILE" ]]; then
-  echo -e "${YELLOW}Updating openrpc.json...${NC}"
-  sedi "s/(\"version\": \")([0-9]+\.[0-9]+\.[0-9]+)(\")/\1${NEW_VERSION}\3/" "$OPENRPC_FILE"
-  echo -e "${GREEN}✓ openrpc.json updated${NC}"
-else
-  echo -e "${YELLOW}Warning: $OPENRPC_FILE not found, skipping.${NC}"
-fi
-
 # ── Cargo check ──────────────────────────────────────────────────────
 echo -e "${YELLOW}Running cargo check (regenerates Cargo.lock)...${NC}"
 if ! cargo check; then
@@ -171,6 +160,5 @@ echo ""
 echo "Files changed:"
 echo "  - Cargo.toml"
 echo "  - Cargo.lock"
-[[ -f "$OPENRPC_FILE" ]] && echo "  - $OPENRPC_FILE"
 echo ""
 echo "NEW_VERSION=$NEW_VERSION"

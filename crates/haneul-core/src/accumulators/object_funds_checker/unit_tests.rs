@@ -4,6 +4,7 @@
 
 //! Unit tests for the implementation of the object funds withdraw scheduler.
 
+use haneul_macros::sim_test;
 use std::{collections::BTreeMap, sync::Arc, time::Duration};
 
 use haneul_test_transaction_builder::TestTransactionBuilder;
@@ -395,7 +396,7 @@ async fn test_commit() {
     assert!(checker.unsettled().is_empty());
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_should_commit_early_exits() {
     let checker = ObjectFundsCheckerDEPRECATED::new_for_testing(
         SequenceNumber::from_u64(0),
@@ -454,7 +455,7 @@ async fn test_should_commit_early_exits() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_should_commit_ignores_zero_net_withdraws() {
     // A zero-amount withdraw emits a single Split(0) accumulator event, which survives
     // effects folding as a Split but creates no running max entry. It must be skipped

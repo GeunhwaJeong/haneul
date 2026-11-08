@@ -2,6 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
+use haneul_macros::sim_test;
 use std::{
     collections::{BTreeSet, HashSet},
     sync::Arc,
@@ -312,7 +313,7 @@ fn get_parent_and_child(
     (parent, child.clone())
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_transfer() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -369,7 +370,7 @@ async fn test_tto_transfer() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_intersection_input_and_receiving_objects() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -540,7 +541,7 @@ async fn test_tto_invalid_receiving_arguments() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_unused_receiver() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -596,7 +597,7 @@ async fn test_tto_unused_receiver() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_pass_receiving_by_refs() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -660,7 +661,7 @@ async fn test_tto_pass_receiving_by_refs() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_delete() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -712,7 +713,7 @@ async fn test_tto_delete() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_wrap() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -765,7 +766,7 @@ async fn test_tto_wrap() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_unwrap_transfer() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -827,7 +828,7 @@ async fn test_tto_unwrap_transfer() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_unwrap_delete() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -883,7 +884,7 @@ async fn test_tto_unwrap_delete() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_unwrap_add_as_dynamic_field() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner
@@ -1067,7 +1068,7 @@ fn assert_effects_equivalent(ef1: &TransactionEffects, ef2: &TransactionEffects)
     assert_eq!(ef1.dependencies().len(), ef2.dependencies().len());
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_not_locked() {
     for aggressive_pruning_enabled in [true, false] {
         // The transaction effects for the valid and invalid transactions should be the same regardless
@@ -1089,7 +1090,7 @@ async fn test_tto_not_locked() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_valid_dependencies() {
     for disable_effects_tx_dependencies in [false, true] {
         transfer_test_runner! {
@@ -1203,7 +1204,7 @@ async fn test_tto_valid_dependencies() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_valid_dependencies_delete_on_receive() {
     transfer_test_runner! {gas_objects: 3, |mut runner: TestRunner| async move {
         let effects = runner
@@ -1299,7 +1300,7 @@ async fn test_tto_valid_dependencies_delete_on_receive() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_dependencies_dont_receive() {
     transfer_test_runner! {gas_objects: 3, |mut runner: TestRunner| async move {
         let effects = runner
@@ -1397,7 +1398,7 @@ async fn test_tto_dependencies_dont_receive() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_dependencies_dont_receive_but_abort() {
     transfer_test_runner! {gas_objects: 3, |mut runner: TestRunner| async move {
         let effects = runner
@@ -1493,7 +1494,7 @@ async fn test_tto_dependencies_dont_receive_but_abort() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_dependencies_receive_and_abort() {
     for disable_effects_tx_dependencies in [false, true] {
         transfer_test_runner! {
@@ -1601,7 +1602,7 @@ async fn test_tto_dependencies_receive_and_abort() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_tto_dependencies_receive_and_type_mismatch() {
     for disable_effects_tx_dependencies in [false, true] {
         transfer_test_runner! {
@@ -1716,7 +1717,7 @@ async fn test_tto_dependencies_receive_and_type_mismatch() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn receive_and_dof_interleave() {
     for disable_effects_tx_dependencies in [false, true] {
         transfer_test_runner! {
@@ -1812,7 +1813,7 @@ async fn receive_and_dof_interleave() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_have_deleted_owned_object() {
     transfer_test_runner! { |mut runner: TestRunner| async move {
         let effects = runner

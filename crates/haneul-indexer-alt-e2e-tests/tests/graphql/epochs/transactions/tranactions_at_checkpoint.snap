@@ -1,5 +1,6 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+assertion_line: 977
 ---
 processed 9 tasks
 
@@ -57,7 +58,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAA=",
+            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
               "effects": {
@@ -71,7 +72,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAE=",
+            "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
             "node": {
               "digest": "CNoqJw7gBs5UuB9LKVpicrrbYQDmoTMswooLqMTYGxHM",
               "effects": {
@@ -92,7 +93,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAA=",
+            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
               "effects": {
@@ -119,7 +120,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAI=",
+            "cursor": "AAABDCgBOgQIAhACSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
             "node": {
               "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
               "effects": {
@@ -133,7 +134,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAM=",
+            "cursor": "AAABDigBOgQIAhADSgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
             "node": {
               "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
               "effects": {
@@ -154,7 +155,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "KAE6BAgAEAI=",
+            "cursor": "AAABDCgBOgQIAhACSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
             "node": {
               "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
               "effects": {
@@ -168,7 +169,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAM=",
+            "cursor": "AAABDigBOgQIAhADSgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
             "node": {
               "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
               "effects": {
@@ -182,7 +183,7 @@ Response: {
             }
           },
           {
-            "cursor": "KAE6BAgAEAQ=",
+            "cursor": "AAABDigBOgQIAhAESgQIAhACAQACAAAAAAAAAAIAAAAAAAAA",
             "node": {
               "digest": "5QdTEu1h7fuRih364SecoELKZ8BQvetNyZHhrGV8YF2i",
               "effects": {

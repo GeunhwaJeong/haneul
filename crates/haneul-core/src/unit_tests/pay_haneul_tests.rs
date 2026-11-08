@@ -5,6 +5,7 @@
 use crate::authority::AuthorityState;
 use crate::authority::authority_tests::{init_state_with_committee, submit_and_execute};
 use crate::authority::test_authority_builder::TestAuthorityBuilder;
+use haneul_macros::sim_test;
 use haneul_types::base_types::{HaneulAddress, ObjectID, ObjectRef};
 use haneul_types::crypto::AccountKeyPair;
 use haneul_types::effects::{SignedTransactionEffects, TransactionEffectsAPI};
@@ -19,7 +20,7 @@ use haneul_types::{base_types::dbg_addr, crypto::get_key_pair, error::HaneulErro
 use std::collections::HashMap;
 use std::sync::Arc;
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_haneul_failure_empty_recipients() {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let coin_id = ObjectID::random();
@@ -36,7 +37,7 @@ async fn test_pay_haneul_failure_empty_recipients() {
     assert!(effects.created().is_empty());
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_haneul_failure_insufficient_gas_balance_one_input_coin() {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let coin1 = Object::with_id_owner_gas_for_testing(ObjectID::random(), sender, 2000);
@@ -62,7 +63,7 @@ async fn test_pay_haneul_failure_insufficient_gas_balance_one_input_coin() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_haneul_failure_insufficient_total_balance_one_input_coin() {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let coin1 = Object::with_id_owner_gas_for_testing(ObjectID::random(), sender, 500100);
@@ -88,7 +89,7 @@ async fn test_pay_haneul_failure_insufficient_total_balance_one_input_coin() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_haneul_failure_insufficient_gas_balance_multiple_input_coins() {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let coin1 = Object::with_id_owner_gas_for_testing(ObjectID::random(), sender, 800);
@@ -115,7 +116,7 @@ async fn test_pay_haneul_failure_insufficient_gas_balance_multiple_input_coins()
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_haneul_failure_insufficient_total_balance_multiple_input_coins() {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let coin1 = Object::with_id_owner_gas_for_testing(ObjectID::random(), sender, 204000);
@@ -141,7 +142,7 @@ async fn test_pay_haneul_failure_insufficient_total_balance_multiple_input_coins
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_haneul_success_one_input_coin() -> anyhow::Result<()> {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let object_id = ObjectID::random();
@@ -206,7 +207,7 @@ async fn test_pay_haneul_success_one_input_coin() -> anyhow::Result<()> {
     Ok(())
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_haneul_success_multiple_input_coins() -> anyhow::Result<()> {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let object_id1 = ObjectID::random();
@@ -269,7 +270,7 @@ async fn test_pay_haneul_success_multiple_input_coins() -> anyhow::Result<()> {
     Ok(())
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_all_haneul_failure_insufficient_gas_one_input_coin() {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let coin1 = Object::with_id_owner_gas_for_testing(ObjectID::random(), sender, 1800);
@@ -286,7 +287,7 @@ async fn test_pay_all_haneul_failure_insufficient_gas_one_input_coin() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_all_haneul_failure_insufficient_gas_budget_multiple_input_coins() {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let coin1 = Object::with_id_owner_gas_for_testing(ObjectID::random(), sender, 1000);
@@ -304,7 +305,7 @@ async fn test_pay_all_haneul_failure_insufficient_gas_budget_multiple_input_coin
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_all_haneul_success_one_input_coin() -> anyhow::Result<()> {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let object_id = ObjectID::random();
@@ -330,7 +331,7 @@ async fn test_pay_all_haneul_success_one_input_coin() -> anyhow::Result<()> {
     Ok(())
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_pay_all_haneul_success_multiple_input_coins() -> anyhow::Result<()> {
     let (sender, sender_key): (_, AccountKeyPair) = get_key_pair();
     let object_id1 = ObjectID::random();

@@ -2,6 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
+use haneul_macros::sim_test;
 use std::fmt;
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -293,7 +294,7 @@ fn assert_simulate_err(
 // Tests
 // =============================================================================
 
-#[tokio::test]
+#[sim_test]
 async fn test_simulate_transaction_returns_objects_with_real_gas() {
     let env = setup_test_env().await;
     let data = build_transfer(&env, TEST_GAS_BUDGET, env.rgp);
@@ -320,7 +321,7 @@ async fn test_simulate_transaction_returns_objects_with_real_gas() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_simulate_transaction_without_payment_fails_without_mock_gas() {
     let env = setup_test_env().await;
     let mut no_payment = build_transfer(&env, TEST_GAS_BUDGET, env.rgp);
@@ -342,7 +343,7 @@ async fn test_simulate_transaction_without_payment_fails_without_mock_gas() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_simulate_transaction_with_mock_gas_returns_mock_object() {
     let env = setup_test_env().await;
     let mut no_payment = build_transfer(&env, TEST_GAS_BUDGET, env.rgp);
@@ -401,7 +402,7 @@ async fn test_simulate_transaction_returns_events_when_effects_have_event_digest
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_simulate_transaction_preserves_command_outputs() {
     let env = setup_test_env().await;
     let recipient = HaneulAddress::random_for_testing_only();
@@ -447,7 +448,7 @@ fn assert_gas_coin_output(actual_value: &[u8], actual_type: &TypeTag) {
     let _: GasCoin = bcs::from_bytes(actual_value).unwrap();
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_simulate_transaction_guard_errors() {
     let env = setup_test_env().await;
     let data = build_transfer(&env, TEST_GAS_BUDGET, env.rgp);
@@ -490,7 +491,7 @@ async fn test_simulate_transaction_guard_errors() {
     );
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_simulate_transaction_dev_inspect_disabled_guard() {
     let (sender, _sender_key): (_, AccountKeyPair) = get_key_pair();
     let gas_object =
@@ -546,7 +547,7 @@ async fn test_simulate_transaction_dev_inspect_disabled_guard() {
     assert!(enabled.effects.status().is_ok());
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_simple_transfer_gas_all_paths() {
     let env = setup_test_env().await;
     let data = build_transfer(&env, TEST_GAS_BUDGET, env.rgp);
@@ -554,7 +555,7 @@ async fn test_simple_transfer_gas_all_paths() {
     assert_all_equal(&results);
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_bad_gas_budget_all_paths() {
     let env = setup_test_env().await;
     let protocol_config = ProtocolConfig::get_for_max_version_UNSAFE();
@@ -569,7 +570,7 @@ async fn test_bad_gas_budget_all_paths() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_bad_gas_price_all_paths() {
     let env = setup_test_env().await;
     let protocol_config = ProtocolConfig::get_for_max_version_UNSAFE();
@@ -583,7 +584,7 @@ async fn test_bad_gas_price_all_paths() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_bad_gas_payment_all_paths() {
     let env = setup_test_env().await;
 
@@ -786,7 +787,7 @@ async fn test_bad_gas_payment_all_paths() {
     }
 }
 
-#[tokio::test]
+#[sim_test]
 async fn test_gas_coin_smash_with_pure_arg() {
     let env = setup_test_env().await;
 

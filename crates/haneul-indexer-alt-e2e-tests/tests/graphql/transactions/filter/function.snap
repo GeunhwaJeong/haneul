@@ -1,5 +1,6 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
+assertion_line: 977
 ---
 processed 9 tasks
 
@@ -50,14 +51,14 @@ Response: {
   "data": {
     "package_P1": {
       "pageInfo": {
-        "startCursor": "KAE6BAgAEAM=",
-        "endCursor": "KAE6BAgAEAY=",
+        "startCursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+        "endCursor": "AAABDCgCOgQIAxAISgIIAwEBAwAAAAAAAAAAAAAAAAAAAA==",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "KAE6BAgAEAM=",
+          "cursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
           "node": {
             "digest": "AEvqpuWoBBAdoYA885UmKMzpu6rP4K39Wf7xhkWjTZ7f",
             "effects": {
@@ -69,7 +70,7 @@ Response: {
           }
         },
         {
-          "cursor": "KAE6BAgAEAQ=",
+          "cursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
           "node": {
             "digest": "3unDi5DPufwXibrWGrsPmtwo5YhAgceXxZy3ykC2PZi1",
             "effects": {
@@ -81,7 +82,7 @@ Response: {
           }
         },
         {
-          "cursor": "KAE6BAgAEAU=",
+          "cursor": "AAABDigBOgQIAhAFSgQIAhACAQACAAAAAAAAAAIAAAAAAAAA",
           "node": {
             "digest": "CSneXRNJDPEJZbkEBxExANKwcw7qdLj3z8UTke3eJ6Fm",
             "effects": {
@@ -93,7 +94,7 @@ Response: {
           }
         },
         {
-          "cursor": "KAE6BAgAEAY=",
+          "cursor": "AAABDigBOgQIAhAGSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
           "node": {
             "digest": "Hv3DehFU2DJepv6RKdZVjULVYdtWuqDR55YJhYEB6HhU",
             "effects": {
@@ -108,14 +109,14 @@ Response: {
     },
     "package_module_P1M1": {
       "pageInfo": {
-        "startCursor": "KAE6BAgAEAM=",
-        "endCursor": "KAE6BAgAEAY=",
+        "startCursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+        "endCursor": "AAABDCgCOgQIAxAISgIIAwEBAwAAAAAAAAAAAAAAAAAAAA==",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "KAE6BAgAEAM=",
+          "cursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
           "node": {
             "digest": "AEvqpuWoBBAdoYA885UmKMzpu6rP4K39Wf7xhkWjTZ7f",
             "effects": {
@@ -127,7 +128,7 @@ Response: {
           }
         },
         {
-          "cursor": "KAE6BAgAEAQ=",
+          "cursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
           "node": {
             "digest": "3unDi5DPufwXibrWGrsPmtwo5YhAgceXxZy3ykC2PZi1",
             "effects": {
@@ -139,7 +140,7 @@ Response: {
           }
         },
         {
-          "cursor": "KAE6BAgAEAY=",
+          "cursor": "AAABDigBOgQIAhAGSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
           "node": {
             "digest": "Hv3DehFU2DJepv6RKdZVjULVYdtWuqDR55YJhYEB6HhU",
             "effects": {
@@ -154,14 +155,14 @@ Response: {
     },
     "package_module_member_P1M1f2": {
       "pageInfo": {
-        "startCursor": "KAE6BAgAEAQ=",
-        "endCursor": "KAE6BAgAEAQ=",
+        "startCursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
+        "endCursor": "AAABDCgCOgQIAxAISgIIAwEBAwAAAAAAAAAAAAAAAAAAAA==",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "KAE6BAgAEAQ=",
+          "cursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
           "node": {
             "digest": "3unDi5DPufwXibrWGrsPmtwo5YhAgceXxZy3ykC2PZi1",
             "effects": {
@@ -176,14 +177,14 @@ Response: {
     },
     "package_P1_sentAddress_B": {
       "pageInfo": {
-        "startCursor": "KAE6BAgAEAY=",
-        "endCursor": "KAE6BAgAEAY=",
+        "startCursor": "AAABDigBOgQIAhAGSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
+        "endCursor": "AAABDCgCOgQIAxAISgIIAwEBAwAAAAAAAAAAAAAAAAAAAA==",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "KAE6BAgAEAY=",
+          "cursor": "AAABDigBOgQIAhAGSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
           "node": {
             "digest": "Hv3DehFU2DJepv6RKdZVjULVYdtWuqDR55YJhYEB6HhU",
             "effects": {

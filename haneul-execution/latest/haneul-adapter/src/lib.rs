@@ -5,6 +5,7 @@
 #[macro_use]
 extern crate haneul_types;
 
+mod accumulator_settlement;
 pub mod adapter;
 pub mod data_store;
 pub mod error;
