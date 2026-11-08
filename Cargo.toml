@@ -298,8 +298,8 @@ antithesis_sdk = "0.2.5"
 anyhow = "1.0.71"
 arc-swap = { version = "1.5.1", features = ["serde"] }
 argon2 = { version = "0.6.0", default-features = false }
-arrow = "57.3"
-arrow-array = "57.3"
+arrow = "59.3"
+arrow-array = "59.3"
 assert_cmd = "2.0.6"
 async-graphql = "=7.0.1"
 async-graphql-axum = "=7.0.1"
@@ -579,8 +579,8 @@ move-transactional-test-runner = { path = "external-crates/move/crates/move-tran
 move-unit-test = { path = "external-crates/move/crates/move-unit-test" }
 move-vm-config = { path = "external-crates/move/crates/move-vm-config" }
 move-vm-profiler = { path = "external-crates/move/crates/move-vm-profiler" }
-msim = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "6b8e1e8cdce408e73d46538773fc85a56c082db7", package = "msim" }
-msim-macros = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "6b8e1e8cdce408e73d46538773fc85a56c082db7", package = "msim-macros" }
+msim = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "5110cb5afdb4e1298cdb06f190365bd78b1acf2c", package = "msim" }
+msim-macros = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "5110cb5afdb4e1298cdb06f190365bd78b1acf2c", package = "msim-macros" }
 multiaddr = "0.18.2"
 nexlint = { git = "https://github.com/GeunhwaJeong/nexlint.git", rev = "7ce56bd591242a57660ed05f14ca2483c37d895b" }
 nexlint-lints = { git = "https://github.com/GeunhwaJeong/nexlint.git", rev = "7ce56bd591242a57660ed05f14ca2483c37d895b" }
@@ -605,7 +605,7 @@ p384 = { version = "0.13.0", default-features = false, features = [
   "sha384",
 ] }
 parking_lot = { version = "0.12.3", features = ["arc_lock"] }
-parquet = "57.3"
+parquet = "59.3"
 passkey-authenticator = { version = "0.4.0" }
 passkey-client = { version = "0.4.0" }
 passkey-types = { version = "0.4.0" }
@@ -698,7 +698,7 @@ tikv-jemallocator = { version = "^0.5", features = [
   "disable_initial_exec_tls",
 ] }
 tiny-bip39 = "1.0.0"
-tokio = "=1.52.1"
+tokio = "=1.54.1"
 tokio-rustls = { version = "0.26", default-features = false, features = [
   "tls12",
   "ring",
@@ -784,8 +784,8 @@ h2 = { git = "https://github.com/GeunhwaJeong/h2", rev = "44260b15da7d6cf15c2412
 # that simtest and deterministic builds fetch everything from one org. The
 # revisions are unchanged, so the resolved code is byte-identical.
 [patch."https://github.com/MystenLabs/tokio-msim-fork.git"]
-real_tokio = { git = "https://github.com/GeunhwaJeong/tokio-msim-fork.git", rev = "e8ce7593bfbfbbd7c7ee8671faecb062a8966b2d" }
-tokio-util = { git = "https://github.com/GeunhwaJeong/tokio-msim-fork.git", rev = "e8ce7593bfbfbbd7c7ee8671faecb062a8966b2d" }
+real_tokio = { git = "https://github.com/GeunhwaJeong/tokio-msim-fork.git", rev = "e17da0621796211fb005b56b620ee209cd44e23e" }
+tokio-util = { git = "https://github.com/GeunhwaJeong/tokio-msim-fork.git", rev = "e17da0621796211fb005b56b620ee209cd44e23e" }
 
 [patch."https://github.com/mystenmark/async-task"]
 async-task = { git = "https://github.com/GeunhwaJeong/async-task", rev = "4e45b26e11126b191701b9b2ce5e2346b8d7682f" }

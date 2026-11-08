@@ -7,7 +7,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/labeler@9fd24f1f9d6ceb64ba34d181b329ee72f99978a0
       with:
@@ -15,7 +15,7 @@ jobs:
 
   notify-prs:
     name: Dispatch workflow to notify slack channel on PRs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: ${{ github.event.action == 'opened' }}
     steps:
       - name: Dispatch github-issues-external-prs-monitor in GeunhwaJeong/haneul-operations

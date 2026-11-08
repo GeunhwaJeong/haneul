@@ -14,7 +14,7 @@ env:
 jobs:
   tree-sitter:
     name: Tree Sitter - run tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: external-crates/move/tooling/tree-sitter
@@ -26,7 +26,7 @@ jobs:
 
   prettier-move:
     name: Move Formatter - check formatting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         working-directory:

@@ -9,7 +9,7 @@ permissions:
 jobs:
   notify-release-branch-push:
     name: Notify on release branch changes
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Get two most recent release branches
         id: check-branch

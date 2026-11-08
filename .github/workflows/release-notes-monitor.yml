@@ -15,7 +15,7 @@ jobs:
       matrix: ${{ steps.get-pr-list.outputs.matrix }}
       new_commit_hash: ${{ steps.get-pr-list.outputs.new_commit_hash }}
       haneul_version: ${{ steps.get-pr-list.outputs.haneul_version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout haneul repo main branch
@@ -61,7 +61,7 @@ jobs:
     name: Processing PR
     needs: [ get-list-of-prs ]
     if: ${{ needs.get-list-of-prs.outputs.matrix != '[]' && needs.get-list-of-prs.outputs.matrix != '' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
          pr: ${{ fromJson(needs.get-list-of-prs.outputs.matrix) }}
@@ -132,7 +132,7 @@ jobs:
     name: Update last processed commit
     needs: [ get-list-of-prs, process-prs ]
     if: ${{ always() && needs.get-list-of-prs.result == 'success' && (needs.process-prs.result == 'success' || needs.process-prs.result == 'skipped') }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - name: Update RELEASE_NOTES_LAST_COMMIT variable
       env:

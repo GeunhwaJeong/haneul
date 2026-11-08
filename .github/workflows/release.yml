@@ -50,7 +50,7 @@ jobs:
       matrix:
         os:
           [
-            ubuntu-latest, # ubuntu-x86_64
+            ubuntu-24.04, # ubuntu-x86_64
             ubuntu-24.04-arm, # ubuntu-aarch64
             macos-latest # macos-arm64
           ]
