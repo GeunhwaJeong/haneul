@@ -127,6 +127,16 @@ fn test_gap_version() {
         system_packages_for_protocol(127.into()).unwrap(),
         system_packages_for_protocol(126.into()).unwrap(),
     );
+    // version 130 upgrades move-stdlib, the Haneul framework and the system package
+    // and gets its own entry, and version 131 (config-only) falls back to it.
+    assert_ne!(
+        system_packages_for_protocol(130.into()).unwrap(),
+        system_packages_for_protocol(129.into()).unwrap(),
+    );
+    assert_eq!(
+        system_packages_for_protocol(131.into()).unwrap(),
+        system_packages_for_protocol(130.into()).unwrap(),
+    );
 }
 
 #[test]
