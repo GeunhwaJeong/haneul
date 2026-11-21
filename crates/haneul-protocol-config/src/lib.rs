@@ -19,8 +19,8 @@ use haneul_protocol_config_macros::{
 };
 use haneullabs_common::in_integration_test;
 use move_binary_format::{
-    binary_config::{BinaryConfig, TableConfig},
-    file_format_common::VERSION_1,
+    binary_config::{BinaryConfig, BinaryFormatLimitsProfile, TableConfig},
+    file_format_common::*,
 };
 use move_core_types::account_address::AccountAddress;
 use move_vm_config::verifier::VerifierConfig;
@@ -39,7 +39,7 @@ pub use haneullabs_common::assert_reachable_simtest;
 
 /// The minimum and maximum protocol versions supported by this build.
 const MIN_PROTOCOL_VERSION: u64 = 1;
-const MAX_PROTOCOL_VERSION: u64 = 131;
+const MAX_PROTOCOL_VERSION: u64 = 132;
 
 const TESTNET_USDC: &str =
     "0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29::usdc::USDC";
@@ -421,6 +421,14 @@ const MAINNET_USDB: &str =
 // Version 131: Tracks upstream protocol version 141.
 //              Refine the transaction effects size estimate.
 //              Limit the number of accumulator events per transaction.
+// Version 132: Tracks upstream protocol version 142.
+//              Abort with EInvalidVerifyingKey in groth16::verify_groth16_proof when the
+//              prepared verifying key length does not match the number of public inputs.
+//              Add `haneul::clock::borrow`, which references the Clock without a Clock input.
+//              Add the `object::is_shared_input_impl` native and its cost.
+//              Reject an overflowing x-coordinate in `secp256r1_ecrecover`.
+//              Configure explicit Move binary format encoding limits.
+//              Enable defer_owned_object_double_spend on all networks.
 
 #[derive(Copy, Clone, Debug, Hash, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ProtocolVersion(u64);
@@ -818,6 +826,10 @@ struct FeatureFlags {
     // multisig members.
     #[serde(skip_serializing_if = "is_false")]
     mldsa65_auth: bool,
+
+    // Reject an overflowing x-coordinate r + n in `secp256r1_ecrecover` instead of wrapping it.
+    #[serde(skip_serializing_if = "is_false")]
+    secp256r1_ecrecover_checks_x_below_p: bool,
 
     // Use the refined transaction effects size estimate.
     #[serde(skip_serializing_if = "is_false")]
@@ -1292,6 +1304,12 @@ struct FeatureFlags {
     #[serde(skip_serializing_if = "is_false")]
     limit_groth16_pvk_inputs: bool,
 
+    // If true, groth16::verify_groth16_proof checks that the prepared verifying key has the
+    // length implied by the number of public inputs, and aborts with EInvalidVerifyingKey if it
+    // does not.
+    #[serde(skip_serializing_if = "is_false")]
+    check_groth16_pvk_length: bool,
+
     // If true, the funds-accumulator address-balance change invariant
     // (`TemporaryStore::check_address_balance_changes`) is enforced as a consensus check —
     // violations abort the tx via the conservation-recovery flow. When false, the check still
@@ -1581,6 +1599,10 @@ pub struct ProtocolConfig {
     binary_enum_def_instantiations: Option<u16>,
     binary_variant_handles: Option<u16>,
     binary_variant_instantiation_handles: Option<u16>,
+
+    /// Move binary format limits profile.
+    #[skip_accessor]
+    binary_format_limits_profile: Option<BinaryFormatLimitsProfile>,
 
     /// Maximum size of the `contents` part of an object, in bytes. Enforced by the Haneul adapter when effects are produced.
     max_move_object_size: Option<u64>,
@@ -1909,6 +1931,8 @@ pub struct ProtocolConfig {
     // Cost params for the Move native function
     // `record_new_uid_from_hash(parent: address, bytes: address)`
     object_record_new_uid_from_hash_cost_base: Option<u64>,
+    // Cost params for the Move native function `is_shared_input_impl(id: address): bool`
+    object_is_shared_input_cost_base: Option<u64>,
 
     // Transfer
     // Cost params for the Move native function `transfer_impl<T: key>(obj: T, recipient: address)`
@@ -1938,6 +1962,10 @@ pub struct ProtocolConfig {
     tx_context_gas_budget_cost_base: Option<u64>,
     tx_context_ids_created_cost_base: Option<u64>,
     tx_context_replace_cost_base: Option<u64>,
+
+    // `clock` module
+    // Cost params for the Move native function `native_borrow(): &Clock`
+    clock_borrow_cost_base: Option<u64>,
 
     // Types
     // Cost params for the Move native function `is_one_time_witness<T: drop>(_: &T): bool`
@@ -2737,6 +2765,7 @@ impl ProtocolConfig {
             binary_enum_def_instantiations: None,
             binary_variant_handles: None,
             binary_variant_instantiation_handles: None,
+            binary_format_limits_profile: None,
             max_move_object_size: Some(250 * 1024),
             max_move_package_size: Some(100 * 1024),
             max_publish_or_upgrade_per_ptb: None,
@@ -2880,6 +2909,9 @@ impl ProtocolConfig {
             // Cost params for the Move native function
             // `record_new_uid_from_hash(parent: address, bytes: address)`. Introduced in v131.
             object_record_new_uid_from_hash_cost_base: None,
+            // Cost params for the Move native function `is_shared_input_impl(id: address): bool`.
+            // Introduced in v132.
+            object_is_shared_input_cost_base: None,
 
             // `transfer` module
             // Cost params for the Move native function `transfer_impl<T: key>(obj: T, recipient: address)`
@@ -2907,6 +2939,9 @@ impl ProtocolConfig {
             tx_context_gas_budget_cost_base: None,
             tx_context_ids_created_cost_base: None,
             tx_context_replace_cost_base: None,
+
+            // `clock` module
+            clock_borrow_cost_base: None,
 
             // `types` module
             // Cost params for the Move native function `is_one_time_witness<T: drop>(_: &T): bool`
@@ -4980,6 +5015,15 @@ impl ProtocolConfig {
                     cfg.feature_flags.complete_effects_size_estimate = true;
                     cfg.max_num_accumulator_events = Some(1024);
                 }
+                132 => {
+                    // v132 tracks upstream protocol version 142.
+                    cfg.clock_borrow_cost_base = Some(52);
+                    cfg.feature_flags.check_groth16_pvk_length = true;
+                    cfg.object_is_shared_input_cost_base = Some(52);
+                    cfg.feature_flags.secp256r1_ecrecover_checks_x_below_p = true;
+                    cfg.binary_format_limits_profile = Some(BinaryFormatLimitsProfile::V1);
+                    cfg.feature_flags.defer_owned_object_double_spend = true;
+                }
                 // Use this template when making changes:
                 //
                 //     // modify an existing constant.
@@ -5143,7 +5187,16 @@ impl ProtocolConfig {
                     .binary_variant_instantiation_handles_as_option()
                     .unwrap_or(u16::MAX),
             },
+            self.binary_format_limits(),
         )
+    }
+
+    pub fn binary_format_limits(
+        &self,
+    ) -> &'static move_binary_format::binary_config::BinaryFormatLimits {
+        self.binary_format_limits_profile
+            .unwrap_or(BinaryFormatLimitsProfile::LEGACY)
+            .limits()
     }
 
     /// Override one or more settings in the config, for testing.
@@ -5430,6 +5483,21 @@ mod test {
                 );
             }
         }
+    }
+
+    #[test]
+    fn binary_format_limits_profile_matches_protocol_version() {
+        let v131 = ProtocolConfig::get_for_version(ProtocolVersion::new(131), Chain::Unknown);
+        assert_eq!(
+            v131.binary_format_limits(),
+            BinaryFormatLimitsProfile::LEGACY.limits()
+        );
+
+        let v132 = ProtocolConfig::get_for_version(ProtocolVersion::new(132), Chain::Unknown);
+        assert_eq!(
+            v132.binary_format_limits(),
+            BinaryFormatLimitsProfile::V1.limits()
+        );
     }
 
     #[test]
