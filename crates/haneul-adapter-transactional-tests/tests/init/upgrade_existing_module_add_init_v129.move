@@ -6,6 +6,7 @@
 
 //# publish --upgradeable --sender A
 module v0::a {
+
 }
 
 //# view-object 1,0

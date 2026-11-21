@@ -59,6 +59,7 @@ wiremock.workspace = true
 dashmap.workspace = true
 
 haneul-indexer-alt-framework-store-traits = { workspace = true, features = ["testing"] }
+haneul-indexer-alt-object-store.workspace = true
 haneul-synthetic-ingestion.workspace = true
 
 [features]

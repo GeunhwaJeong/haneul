@@ -28,6 +28,7 @@
 //! answered `Unavailable`, and [`crate::Health`] reports the replica not ready.
 
 use std::collections::HashMap;
+use std::sync::Arc;
 use std::time::Duration;
 
 use anyhow::Context as _;
@@ -129,7 +130,7 @@ async fn publish_service_info(
                     watermark.timestamp_ms_hi_inclusive,
                 );
                 server.metrics.observe_served_service_info(&info);
-                server.cache.send_replace(Some(info));
+                server.cache.send_replace(Some(Arc::new(info)));
             }
             Some(_) => {}
             None if !missing.is_empty()
@@ -176,26 +177,27 @@ mod tests {
     use std::time::Duration;
 
     use haneul_kvstore::BigTableClient;
+    use haneul_kvstore::BitmapSchema;
     use haneul_kvstore::EPOCH_END_PIPELINE;
     use haneul_kvstore::OBJECTS_PIPELINE;
-    use haneul_kvstore::WatermarkV1;
     use haneul_kvstore::rpc::RpcService;
     use haneul_kvstore::rpc::proto::v1alpha::watermark_service_server::WatermarkServiceServer;
     use haneul_kvstore::rpc::watermark_service::WatermarkService;
     use haneul_kvstore::testing::MockBigtableServer;
-    use haneul_rpc::proto::haneul::rpc::v2::GetServiceInfoRequest;
     use haneul_rpc::proto::haneul::rpc::v2::GetServiceInfoResponse;
-    use haneul_rpc::proto::haneul::rpc::v2::ledger_service_server::LedgerService;
     use haneul_rpc_api::proto::timestamp_ms_to_proto;
     use tokio::time::sleep;
     use tokio::time::timeout;
 
     use super::*;
     use crate::KvRpcConfig;
-    use crate::LedgerHistoryConfig;
     use crate::ServerConfig;
     use crate::StagesConfig;
+    use crate::served_height::ServedHeight;
     use crate::service_info_watermark_pipelines;
+    use crate::tests::get_service_info;
+    use crate::tests::seed_watermarks;
+    use crate::tests::v2_ledger_history;
     use crate::tests::watermark_reads;
 
     /// Covers subscribing to an indexer that restarted, which waits out the follower's 2 s
@@ -218,7 +220,7 @@ mod tests {
     /// A watermark for every pipeline a replica serves, at the checkpoint `checkpoint` picks for
     /// it.
     fn served_watermarks(checkpoint: impl Fn(&str) -> u64) -> HashMap<String, CommitterWatermark> {
-        service_info_watermark_pipelines()
+        service_info_watermark_pipelines(BitmapSchema::V2)
             .iter()
             .map(|&pipeline| (pipeline.to_string(), watermark(checkpoint(pipeline))))
             .collect()
@@ -274,7 +276,7 @@ mod tests {
             bigtable.to_string(),
             "test".to_string(),
             None,
-            LedgerHistoryConfig::default(),
+            v2_ledger_history(),
             KvRpcConfig::default().request_bigtable_concurrency(),
             KvRpcConfig::default().monotonic_read_wait_timeout(),
             StagesConfig::default(),
@@ -288,32 +290,6 @@ mod tests {
             .await
             .expect("start kv-rpc server");
         (server, service)
-    }
-
-    /// Write a watermark row at `checkpoint` for every served pipeline to the mock Bigtable at
-    /// `bigtable`.
-    async fn write_bigtable_watermarks(bigtable: SocketAddr, checkpoint: u64) {
-        let mut client = BigTableClient::new_local(bigtable.to_string(), "test".to_string())
-            .await
-            .expect("connect to mock Bigtable");
-        for pipeline in service_info_watermark_pipelines() {
-            client
-                .create_pipeline_watermark_if_absent(
-                    pipeline,
-                    &WatermarkV1 {
-                        epoch_hi_inclusive: checkpoint / 10,
-                        checkpoint_hi_inclusive: Some(checkpoint),
-                        tx_hi: 0,
-                        timestamp_ms_hi_inclusive: checkpoint * 1_000,
-                        reader_lo: 0,
-                        pruner_hi: 0,
-                        pruner_timestamp_ms: 0,
-                        bucket_start_cp: None,
-                    },
-                )
-                .await
-                .expect("write watermark row");
-        }
     }
 
     async fn wait_for_served_checkpoint(
@@ -330,7 +306,7 @@ mod tests {
         .await
         .unwrap_or_else(|_| panic!("served checkpoint never reached {checkpoint}"))
         .expect("service info sender dropped");
-        info.clone().unwrap()
+        GetServiceInfoResponse::clone(info.as_ref().unwrap())
     }
 
     fn cached_checkpoint(server: &KvRpcServer) -> Option<u64> {
@@ -339,17 +315,6 @@ mod tests {
             .borrow()
             .as_ref()
             .and_then(|info| info.checkpoint_height)
-    }
-
-    async fn get_service_info(
-        server: &KvRpcServer,
-    ) -> Result<GetServiceInfoResponse, tonic::Status> {
-        LedgerService::get_service_info(
-            server,
-            tonic::Request::new(GetServiceInfoRequest::default()),
-        )
-        .await
-        .map(tonic::Response::into_inner)
     }
 
     #[test]
@@ -414,7 +379,10 @@ mod tests {
         let mock = MockBigtableServer::new();
         let (bigtable, _mock_server) = mock.start().await.expect("start mock Bigtable");
         // Bigtable's watermark rows alone would let the replica serve checkpoint 50.
-        write_bigtable_watermarks(bigtable, 50).await;
+        let mut client = BigTableClient::new_local(bigtable.to_string(), "test".to_string())
+            .await
+            .expect("connect to mock Bigtable");
+        seed_watermarks(&mut client, |_| 50).await;
         mock.clear_read_rows_calls().await;
 
         // The only indexer has not advanced the epoch end pipeline since it started.
@@ -426,7 +394,8 @@ mod tests {
 
         sleep(QUIET_PERIOD).await;
         assert_eq!(cached_checkpoint(&server), None);
-        let error = tonic::Status::from(server.served_height().unwrap_err());
+        let error =
+            tonic::Status::from(ServedHeight::of(&server.admitted_request(())).unwrap_err());
         assert_eq!(error.code(), tonic::Code::Unavailable);
         let error = get_service_info(&server).await.unwrap_err();
         assert_eq!(error.code(), tonic::Code::Unavailable);

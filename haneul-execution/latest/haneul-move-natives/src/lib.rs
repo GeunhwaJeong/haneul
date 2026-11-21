@@ -4,6 +4,7 @@
 
 use self::{
     address::{AddressFromBytesCostParams, AddressFromU256CostParams, AddressToU256CostParams},
+    clock::ClockBorrowCostParams,
     config::ConfigReadSettingImplCostParams,
     crypto::{bls12381, ecdsa_k1, ecdsa_r1, ecvrf, ed25519, groth16, hash, hmac},
     crypto::{
@@ -28,7 +29,9 @@ use self::{
         DynamicFieldHashTypeAndKeyCostParams, DynamicFieldRemoveChildObjectCostParams,
     },
     event::EventEmitCostParams,
-    object::{BorrowUidCostParams, DeleteImplCostParams, RecordNewIdCostParams},
+    object::{
+        BorrowUidCostParams, DeleteImplCostParams, IsSharedInputCostParams, RecordNewIdCostParams,
+    },
     package::PackageVersioningOriginalPackageIdImplCostParams,
     scratch::{
         ScratchAddCostParams, ScratchExistsCostParams, ScratchExistsWithTypeCostParams,
@@ -85,6 +88,7 @@ use transfer::TransferReceiveObjectInternalCostParams;
 
 mod accumulator;
 mod address;
+mod clock;
 mod config;
 mod crypto;
 mod dynamic_field;
@@ -112,6 +116,9 @@ pub struct NativesCostTable {
     pub address_from_bytes_cost_params: AddressFromBytesCostParams,
     pub address_to_u256_cost_params: AddressToU256CostParams,
     pub address_from_u256_cost_params: AddressFromU256CostParams,
+
+    // Clock: cost params for the Move native function `native_borrow(): &Clock`
+    pub clock_borrow_cost_params: ClockBorrowCostParams,
 
     // Config
     pub config_read_setting_impl_cost_params: ConfigReadSettingImplCostParams,
@@ -147,6 +154,7 @@ pub struct NativesCostTable {
     pub borrow_uid_cost_params: BorrowUidCostParams,
     pub delete_impl_cost_params: DeleteImplCostParams,
     pub record_new_id_cost_params: RecordNewIdCostParams,
+    pub is_shared_input_cost_params: IsSharedInputCostParams,
 
     // Transfer
     pub transfer_transfer_internal_cost_params: TransferInternalCostParams,
@@ -244,6 +252,11 @@ impl NativesCostTable {
                 address_from_u256_cost_base: protocol_config.address_from_u256_cost_base().into(),
             },
 
+            clock_borrow_cost_params: ClockBorrowCostParams {
+                clock_borrow_cost_base: protocol_config
+                    .clock_borrow_cost_base_as_option()
+                    .map(Into::into),
+            },
             config_read_setting_impl_cost_params: ConfigReadSettingImplCostParams {
                 config_read_setting_impl_cost_base: protocol_config
                     .config_read_setting_impl_cost_base_as_option()
@@ -403,6 +416,11 @@ impl NativesCostTable {
                     .into(),
                 object_record_new_uid_from_hash_cost_base: protocol_config
                     .object_record_new_uid_from_hash_cost_base_as_option()
+                    .map(Into::into),
+            },
+            is_shared_input_cost_params: IsSharedInputCostParams {
+                object_is_shared_input_cost_base: protocol_config
+                    .object_is_shared_input_cost_base_as_option()
                     .map(Into::into),
             },
 
@@ -1063,6 +1081,12 @@ pub fn all_natives(silent: bool, protocol_config: &ProtocolConfig) -> NativeFunc
             "hash_type_and_key",
             make_native!(dynamic_field::hash_type_and_key),
         ),
+        ("clock", "native_borrow", make_native!(clock::borrow)),
+        (
+            "clock",
+            "native_set_timestamp_ms_for_testing",
+            make_native!(clock::set_timestamp_ms_for_testing),
+        ),
         (
             "config",
             "read_setting_impl",
@@ -1243,6 +1267,11 @@ pub fn all_natives(silent: bool, protocol_config: &ProtocolConfig) -> NativeFunc
             "object",
             "record_new_uid_from_hash",
             make_native!(object::record_new_uid_from_hash),
+        ),
+        (
+            "object",
+            "is_shared_input_impl",
+            make_native!(object::is_shared_input_impl),
         ),
         (
             "test_scenario",

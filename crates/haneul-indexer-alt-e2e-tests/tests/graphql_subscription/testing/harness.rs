@@ -59,8 +59,8 @@ pub struct SubscriptionTestCluster {
 
 impl SubscriptionTestCluster {
     /// Set up a full streaming subscription test environment:
-    /// validator + postgres DB + kv_packages indexer + GraphQL service.
-    /// Waits for kv_packages to index the genesis checkpoint so subscriptions are ready.
+    /// validator + postgres DB + indexer + GraphQL service.
+    /// Waits for the indexer to process the genesis checkpoint before starting GraphQL.
     pub async fn new() -> Self {
         let (cluster, _controller) = Self::new_inner(false, false, GraphQlConfig::default()).await;
         cluster
@@ -277,34 +277,6 @@ impl SubscriptionTestCluster {
             .state()
             .get_latest_checkpoint_sequence_number()
             .expect("Failed to read validator checkpoint tip")
-    }
-
-    /// The validator's latest checkpoint and its `network_total_transactions`.
-    pub fn validator_tip_and_total_transactions(&self) -> (u64, u64) {
-        let checkpoint = self
-            .validator
-            .fullnode_handle
-            .haneul_node
-            .state()
-            .get_checkpoint_store()
-            .get_highest_executed_checkpoint()
-            .expect("Failed to read validator checkpoint tip")
-            .expect("no checkpoint executed");
-        (
-            *checkpoint.sequence_number(),
-            checkpoint.network_total_transactions,
-        )
-    }
-
-    /// Wait until the validator has executed more than `total` transactions, for at most `limit`.
-    pub async fn wait_for_total_transactions_past(&self, total: u64, limit: Duration) {
-        tokio::time::timeout(limit, async {
-            while self.validator_tip_and_total_transactions().1 <= total {
-                tokio::time::sleep(Duration::from_millis(100)).await;
-            }
-        })
-        .await
-        .unwrap_or_else(|_| panic!("the chain did not pass transaction {total} within {limit:?}"));
     }
 
     /// Subscribe and return a stream of GraphQL payloads.

@@ -8,20 +8,22 @@
 //# init --addresses test=0x0 --accounts A
 
 //# publish
-module test::m1 {
-    use haneul::coin::Coin;
-    use haneul::haneul::HANEUL;
+module test::m1;
 
-    public struct R has key, store { id: UID }
-    public fun r(ctx: &mut TxContext): R { R { id: object::new(ctx) } }
+use haneul::coin::Coin;
+use haneul::haneul::HANEUL;
 
-    public fun v(): u64 { 100 }
+public struct R has key, store { id: UID }
 
-    public entry fun clean(_: &mut R, _extra_arg: u64) {}
-    entry fun priv(_: &mut R) { }
+public fun r(ctx: &mut TxContext): R { R { id: object::new(ctx) } }
 
-    entry fun coin(_: &mut Coin<HANEUL>) {}
-}
+public fun v(): u64 { 100 }
+
+public entry fun clean(_: &mut R, _extra_arg: u64) {}
+
+entry fun priv(_: &mut R) {}
+
+entry fun coin(_: &mut Coin<HANEUL>) {}
 
 //# programmable --sender A --inputs @A
 //> 0: test::m1::r();

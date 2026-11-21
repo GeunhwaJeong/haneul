@@ -411,9 +411,9 @@ impl CheckpointStreamTask {
 
     /// Index packages from the checkpoint into the streaming store, signal eviction,
     /// then process and broadcast. Indexing exposes the checkpoint's packages to
-    /// subscribers immediately, ahead of `kv_packages`. Recovered checkpoints from
-    /// `recover_gap` skip this step because the gate already waits for both
-    /// `ledger_grpc` and `kv_packages` to catch up.
+    /// subscribers immediately, ahead of the ledger gRPC service's indexing. Recovered
+    /// checkpoints from `recover_gap` skip this step because the gate already waits
+    /// for every pipeline, including `ledger_grpc`, to catch up.
     fn index_and_broadcast(&self, checkpoint: ProtoCheckpoint, seq: u64) -> anyhow::Result<()> {
         // Index this checkpoint's packages and transactions into the streaming caches so subscribers
         // resolve them (e.g. `Object.previousTransaction`) while the checkpoint is ahead of the
@@ -509,7 +509,6 @@ pub(crate) fn process_checkpoint(
 
     let timestamp_ms = summary.timestamp_ms;
     let cp_sequence_number = sequence_number;
-    let tx_lo = summary.network_total_transactions - checkpoint.transactions.len() as u64;
     let checkpoint_objects = deserialize_checkpoint_objects(&checkpoint)?;
 
     // Seed the checkpoint-wide execution-objects map with every existing object version
@@ -522,13 +521,12 @@ pub(crate) fn process_checkpoint(
             .collect();
 
     let mut transactions = Vec::with_capacity(checkpoint.transactions.len());
-    for (i, proto) in checkpoint.transactions.iter().enumerate() {
+    for proto in &checkpoint.transactions {
         add_tombstones(&mut execution_objects, proto)?;
         transactions.push(process_transaction(
             proto,
             timestamp_ms,
             cp_sequence_number,
-            tx_lo + i as u64,
         )?);
     }
 
@@ -545,11 +543,9 @@ fn process_transaction(
     proto: &ProtoExecutedTransaction,
     timestamp_ms: u64,
     cp_sequence_number: u64,
-    tx_sequence_number: u64,
 ) -> anyhow::Result<ProcessedTransaction> {
     let contents = hydrate_executed_transaction(proto, timestamp_ms, cp_sequence_number)?;
     Ok(ProcessedTransaction {
-        tx_sequence_number,
         contents: Arc::new(contents),
     })
 }

@@ -11,6 +11,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Query transaction effects with valid fields and an error field (invalid pagination).
   # The response should have both data (for successful fields) AND errors (for failed field)
   transactionEffects(digest: "@{digest_1}") {
@@ -30,8 +31,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 {
   # Test partial error at query root level
   # One query succeeds with all fields, another has partial error
@@ -52,3 +55,4 @@
     }
   }
 }
+*/

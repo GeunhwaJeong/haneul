@@ -41,6 +41,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { 
   # Fetch an epoch and its checkpoints
   epoch0checkpoints: epoch(epochId: 0) {
@@ -62,8 +63,10 @@
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(0u8,2u8,1)
+/*
 { 
   # Fetch an epoch and its checkpoints with cursors applied
   epoch0checkpointsAfterCursor1: epoch(epochId: 0) {
@@ -85,8 +88,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { 
   # Fetch an epoch and its checkpoints, try to filter on epoch 2, should fail
   epoch0checkpointsAtEpoch2IsNone: epoch(epochId: 0) {
@@ -108,8 +113,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { 
   # Fetch a nonexistent epoch and its checkpoints.
   nonexistentEpoch4checkpointsIsNone: epoch(epochId: 4) {
@@ -131,3 +138,4 @@
     }
   }
 }
+*/

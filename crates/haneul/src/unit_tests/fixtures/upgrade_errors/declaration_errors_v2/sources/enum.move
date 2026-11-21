@@ -2,7 +2,6 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-module upgrades::enum_ {
-    //public enum EnumToBeRemoved {}
-}
+module upgrades::enum_;
 
+//public enum EnumToBeRemoved {}

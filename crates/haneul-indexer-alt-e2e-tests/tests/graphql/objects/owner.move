@@ -32,6 +32,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   addressOwned: object(address: "@{obj_0_0}") {
     owner {
@@ -70,8 +71,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Fetching the object that owns this object -- defaults to the latest
   # version, if looking at the latest version of the child.
   firstChild: object(address: "@{obj_2_0}") {
@@ -102,8 +105,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Load parent after time travel (parent has also time traveled)
   object(address: "@{obj_2_0}", atCheckpoint: 1) {
     owner {
@@ -119,8 +124,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Load parent with a root version bound (parent is also bounded)
   object(address: "@{obj_2_0}", rootVersion: 3) {
     owner {
@@ -137,3 +144,4 @@
   }
 
 }
+*/

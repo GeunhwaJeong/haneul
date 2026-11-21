@@ -8,7 +8,7 @@
 //# init --addresses a=0x0 --accounts A
 
 //# publish
-module a::m {
+module a::m;
 
 use haneul::dynamic_field::{add, remove};
 
@@ -24,9 +24,6 @@ entry fun t1(ctx: &mut TxContext) {
 
 entry fun t2(obj: &mut Obj) {
     remove<u64, u8>(&mut obj.id, 0);
-}
-
-
 }
 
 //# run a::m::t1 --sender A

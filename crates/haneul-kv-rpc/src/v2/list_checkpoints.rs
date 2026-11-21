@@ -13,7 +13,6 @@ use futures::stream;
 use futures::stream::BoxStream;
 use haneul_inverted_index::ScanDirection;
 use haneul_inverted_index::ScanStop;
-use haneul_kvstore::BitmapIndexSpec;
 use haneul_kvstore::CheckpointData;
 use haneul_kvstore::tables;
 use haneul_rpc::field::FieldMask;
@@ -27,7 +26,7 @@ use haneul_rpc::proto::haneul::rpc::v2::QueryEndReason;
 use haneul_rpc::proto::haneul::rpc::v2::Watermark;
 use haneul_rpc_api::ErrorReason;
 use haneul_rpc_api::RpcError;
-use haneul_rpc_api::ledger_history::ledger_point::LedgerPoint;
+use haneul_rpc_api::ledger_history::cursor::Position;
 use haneul_rpc_api::ledger_history::query_options::LedgerWindow;
 use haneul_rpc_api::ledger_history::query_options::QueryOptions;
 use haneul_rpc_api::ledger_history::query_options::ResolvedCheckpointRange;
@@ -41,7 +40,6 @@ use haneul_rpc_api::ledger_history::watermark::boundary_cursor_cp;
 use haneul_rpc_api::ledger_history::watermark::boundary_watermark;
 use haneul_rpc_api::ledger_history::watermark::item_watermark;
 use haneul_rpc_api::proto::google::rpc::bad_request::FieldViolation;
-use haneul_rpc_cursor::Position;
 use prost::Message;
 use tracing::Instrument;
 use tracing::debug_span;
@@ -184,12 +182,13 @@ pub(crate) async fn list_checkpoints(
     // keyspace directly, bounded by limit_items.
     let cp_data_stream: BoxStream<'static, Result<Watermarked<(u64, CheckpointData)>, ScanStop>> =
         if let Some(query) = filter_query {
-            let scan_budget = ctx.scan_budget(BitmapIndexSpec::tx());
+            let spec = ctx.tx_bitmap_spec();
+            let scan_budget = ctx.ledger_history().bitmap_bucket_budget_tx();
             let tx_range = client.checkpoint_to_tx_range(cp_range.clone()).await?;
             let tx_seq_stream = client.eval_bitmap_query_stream(
                 query,
                 tx_range,
-                BitmapIndexSpec::tx(),
+                spec,
                 direction,
                 scan_budget,
                 ctx.bitmap_skip_policy(),
@@ -366,7 +365,6 @@ fn drive_rendered_checkpoints(
                         Position::Checkpoints {
                             checkpoint: item_checkpoint,
                         },
-                        LedgerPoint::checkpoint_start(item_checkpoint),
                         direction,
                         covered_checkpoint_bound,
                     );
@@ -398,7 +396,6 @@ fn drive_rendered_checkpoints(
                     let watermark = checkpoint_frontier_watermark(
                         frontier.checkpoint,
                         entry_checkpoint,
-                        direction,
                         &options,
                         &mut covered_checkpoint_bound,
                     );
@@ -416,7 +413,6 @@ fn drive_rendered_checkpoints(
                     let response = terminal_response_from_scan_stop(
                         stop,
                         &options,
-                        direction,
                         entry_checkpoint,
                         &mut covered_checkpoint_bound,
                     )?;
@@ -453,10 +449,10 @@ fn drive_rendered_checkpoints(
 fn checkpoint_frontier_watermark(
     checkpoint_at_frontier: u64,
     entry_checkpoint: u64,
-    direction: ScanDirection,
     options: &QueryOptions,
     covered_checkpoint_bound: &mut Option<u64>,
 ) -> Watermark {
+    let direction = options.scan_direction();
     let resume_checkpoint = boundary_cursor_cp(checkpoint_at_frontier, direction);
     let resume_checkpoint = clamp_cp_frontier_past_last(
         Some(resume_checkpoint),
@@ -474,7 +470,6 @@ fn checkpoint_frontier_watermark(
         Position::Checkpoints {
             checkpoint: resume_checkpoint,
         },
-        LedgerPoint::checkpoint_start(resume_checkpoint),
         *covered_checkpoint_bound,
     )
 }
@@ -482,31 +477,14 @@ fn checkpoint_frontier_watermark(
 fn terminal_response_from_scan_stop(
     stop: ResolvedScanStop<u64>,
     options: &QueryOptions,
-    direction: ScanDirection,
     entry_checkpoint: u64,
     covered_checkpoint_bound: &mut Option<u64>,
 ) -> Result<ListCheckpointsResponse, RpcError> {
-    let (position, frontier) = stop.into_scan_limit()?;
-    let checkpoint_at_frontier = frontier
-        .map(|frontier| frontier.checkpoint)
-        .or_else(|| {
-            ((direction.is_ascending() && position == 0)
-                || (!direction.is_ascending() && position == u64::MAX))
-                .then_some(position)
-        })
-        .ok_or_else(|| {
-            RpcError::new(
-                tonic::Code::Internal,
-                format!(
-                    "checkpoint scan frontier transaction {position} has no checkpoint mapping"
-                ),
-            )
-        })?;
+    let (_, frontier) = stop.into_scan_limit()?;
     let terminal = ScanTerminal::ScanLimit {
         watermark: checkpoint_frontier_watermark(
-            checkpoint_at_frontier,
+            frontier.checkpoint,
             entry_checkpoint,
-            direction,
             options,
             covered_checkpoint_bound,
         ),
@@ -672,7 +650,7 @@ fn resolve_cp_range(
     let ledger = LedgerWindow::checkpoints(&range, start_checkpoint, end_checkpoint);
     let window = ScanWindow::whole_checkpoints(range, ledger);
     let resolved = ResolvedScan::<u64>::resolve(cp_range, window.clone(), options)?;
-    let range_end = resolved.range_end(&window, options, |_, checkpoint| Position::Checkpoints {
+    let range_end = resolved.range_end(&window, options, |checkpoint, _| Position::Checkpoints {
         checkpoint,
     });
     Ok((resolved, range_end))
@@ -715,12 +693,11 @@ fn clamp_cp_frontier_past_last(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use haneul_rpc_api::ledger_history::ledger_point::TerminalLedgerPosition;
+    use haneul_rpc_api::ledger_history::cursor::CursorToken;
+    use haneul_rpc_api::ledger_history::cursor::LedgerPoint;
     use haneul_rpc_api::ledger_history::query_options::RangeExhaustion;
-    use haneul_rpc_cursor::CursorToken;
     use haneullabs_common::ZipDebugEqIteratorExt;
 
-    use crate::pipeline::PlacedFrontier;
     use crate::v2::test_utils::{
         LIST_PIPELINE_METRICS, ascending_options, assert_list_metric_absent, list_counter,
         list_histogram, query_context, query_context_with_registry, unparseable_transaction_filter,
@@ -800,7 +777,7 @@ mod tests {
             RangeEnd {
                 exhaustion: RangeExhaustion::CheckpointBound,
                 position: Position::Checkpoints { checkpoint: 10 },
-                ledger: TerminalLedgerPosition::known(LedgerPoint::checkpoint_start(10)),
+                cursor_position: LedgerPoint::checkpoint_start(10),
                 natural_end_claim: Some(9),
             },
             7,
@@ -835,7 +812,7 @@ mod tests {
                 watermark.cursor_position,
                 Some(
                     LedgerPoint::checkpoint_start(checkpoint + 1)
-                        .to_proto(&Position::Checkpoints { checkpoint })
+                        .to_ledger_position(&Position::Checkpoints { checkpoint })
                 )
             );
             if index < 2 {
@@ -912,7 +889,7 @@ mod tests {
         let start = Position::Checkpoints { checkpoint: 0 };
         assert_eq!(
             watermark.cursor_position,
-            Some(LedgerPoint::checkpoint_start(0).to_proto(&start))
+            Some(LedgerPoint::checkpoint_start(0).to_ledger_position(&start))
         );
         let families = registry.gather();
         for name in LIST_PIPELINE_METRICS {
@@ -974,7 +951,7 @@ mod tests {
         let start = Position::Checkpoints { checkpoint: 0 };
         assert_eq!(
             watermark.cursor_position,
-            Some(LedgerPoint::checkpoint_start(0).to_proto(&start))
+            Some(LedgerPoint::checkpoint_start(0).to_ledger_position(&start))
         );
         assert_eq!(
             response.end.as_ref().and_then(|end| end.reason),
@@ -984,32 +961,30 @@ mod tests {
 
     #[test]
     fn scan_limit_terminal_frames_use_checkpoint_domain_in_both_directions() {
+        // Frontiers are transaction-lane points; the checkpoint cursor reads only their checkpoint.
+        let placed_in = |checkpoint| LedgerPoint::transaction(checkpoint, 7);
         for (
             direction,
             entry_checkpoint,
-            position,
-            checkpoint,
+            frontier,
             initial_proof,
             expected_cursor,
             expected_proof,
         ) in [
-            (ScanDirection::Ascending, 0, 0, None, None, 0, None),
-            (
-                ScanDirection::Descending,
-                u64::MAX,
-                u64::MAX,
-                None,
-                None,
-                u64::MAX,
-                None,
-            ),
-            (ScanDirection::Ascending, 10, 50, Some(10), None, 10, None),
-            (ScanDirection::Descending, 10, 50, Some(10), None, 11, None),
             (
                 ScanDirection::Ascending,
                 0,
-                50,
-                Some(10),
+                LedgerPoint::GENESIS,
+                None,
+                0,
+                None,
+            ),
+            (ScanDirection::Ascending, 10, placed_in(10), None, 10, None),
+            (ScanDirection::Descending, 10, placed_in(10), None, 11, None),
+            (
+                ScanDirection::Ascending,
+                0,
+                placed_in(10),
                 Some(5),
                 10,
                 Some(9),
@@ -1017,8 +992,7 @@ mod tests {
             (
                 ScanDirection::Descending,
                 u64::MAX,
-                50,
-                Some(10),
+                placed_in(10),
                 Some(20),
                 11,
                 Some(11),
@@ -1026,8 +1000,7 @@ mod tests {
             (
                 ScanDirection::Ascending,
                 0,
-                50,
-                Some(10),
+                placed_in(10),
                 Some(15),
                 16,
                 Some(15),
@@ -1035,8 +1008,7 @@ mod tests {
             (
                 ScanDirection::Descending,
                 u64::MAX,
-                50,
-                Some(10),
+                placed_in(10),
                 Some(5),
                 5,
                 Some(5),
@@ -1050,15 +1022,13 @@ mod tests {
             let options =
                 QueryOptions::checkpoints_from_proto(Some(&proto_options), 10, 100).unwrap();
             let mut covered = initial_proof;
-            // A transaction-lane point, which the checkpoint cursor never uses.
-            let frontier = checkpoint.map(|checkpoint| PlacedFrontier {
-                checkpoint,
-                point: LedgerPoint::transaction(checkpoint, 7),
-            });
             let response = terminal_response_from_scan_stop(
-                ResolvedScanStop::ScanLimit { position, frontier },
+                // A checkpoint terminal takes its cursor from the frontier's checkpoint alone.
+                ResolvedScanStop::ScanLimit {
+                    position: 0,
+                    frontier,
+                },
                 &options,
-                direction,
                 entry_checkpoint,
                 &mut covered,
             )
@@ -1079,7 +1049,7 @@ mod tests {
             );
             assert_eq!(
                 watermark.cursor_position,
-                Some(LedgerPoint::checkpoint_start(expected_cursor).to_proto(&cursor)),
+                Some(LedgerPoint::checkpoint_start(expected_cursor).to_ledger_position(&cursor)),
                 "a checkpoint cursor's coordinate is its own ledger point"
             );
             assert_eq!(
@@ -1090,41 +1060,6 @@ mod tests {
                 covered, expected_proof,
                 "accumulated checkpoint proof must match the emitted watermark"
             );
-        }
-    }
-
-    #[test]
-    fn scan_limit_terminal_rejects_missing_non_edge_checkpoint_mapping() {
-        for (direction, position) in [
-            (ScanDirection::Ascending, 1),
-            (ScanDirection::Descending, u64::MAX - 1),
-        ] {
-            let mut proto_options = ascending_options();
-            if !direction.is_ascending() {
-                proto_options.ordering =
-                    Some(haneul_rpc::proto::haneul::rpc::v2::Ordering::Descending as i32);
-            }
-            let options =
-                QueryOptions::checkpoints_from_proto(Some(&proto_options), 10, 100).unwrap();
-            let mut covered = None;
-            let entry_checkpoint = if direction.is_ascending() {
-                0
-            } else {
-                u64::MAX
-            };
-            let error = terminal_response_from_scan_stop(
-                ResolvedScanStop::ScanLimit {
-                    position,
-                    frontier: None,
-                },
-                &options,
-                direction,
-                entry_checkpoint,
-                &mut covered,
-            )
-            .expect_err("only numeric-edge frontiers may omit a checkpoint mapping");
-
-            assert_eq!(error.into_status_proto().code, tonic::Code::Internal as i32);
         }
     }
 
@@ -1141,14 +1076,9 @@ mod tests {
         ] {
             let mut covered = None;
             let entry_checkpoint = 0;
-            let error = terminal_response_from_scan_stop(
-                stop,
-                &options,
-                ScanDirection::Ascending,
-                entry_checkpoint,
-                &mut covered,
-            )
-            .expect_err("fault/cancellation must not produce a QueryEnd response");
+            let error =
+                terminal_response_from_scan_stop(stop, &options, entry_checkpoint, &mut covered)
+                    .expect_err("fault/cancellation must not produce a QueryEnd response");
             assert_eq!(error.into_status_proto().code, expected_code as i32);
         }
     }

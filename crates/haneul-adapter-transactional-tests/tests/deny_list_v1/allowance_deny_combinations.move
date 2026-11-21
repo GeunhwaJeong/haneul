@@ -23,7 +23,7 @@ module test::regulated_coin1 {
             b"REGULATED_COIN",
             b"A new regulated coin",
             option::none(),
-            ctx
+            ctx,
         );
         let coin = coin::mint(&mut treasury_cap, 10000, ctx);
         transfer::public_transfer(coin, tx_context::sender(ctx));
@@ -47,7 +47,7 @@ module test::regulated_coin2 {
             b"REGULATED_COIN",
             b"A new regulated coin",
             option::none(),
-            ctx
+            ctx,
         );
         let coin = coin::mint(&mut treasury_cap, 10000, ctx);
         transfer::public_transfer(coin, tx_context::sender(ctx));

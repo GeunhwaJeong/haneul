@@ -12,7 +12,7 @@ module std::ascii {
 #[allow(unused_field)]
 module std::option {
     public struct Option<Element> has copy, drop, store {
-        vec: vector<Element>
+        vec: vector<Element>,
     }
 }
 

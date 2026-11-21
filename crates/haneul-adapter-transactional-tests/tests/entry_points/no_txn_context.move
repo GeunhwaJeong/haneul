@@ -5,22 +5,22 @@
 //# init --addresses Test=0x0 --accounts A
 
 //# publish
-module Test::M {
-    public struct Obj has key {
-        id: haneul::object::UID,
-        value: u64
-    }
+module Test::M;
 
-    public entry fun mint(ctx: &mut TxContext) {
-        haneul::transfer::transfer(
-            Obj { id: haneul::object::new(ctx), value: 0 },
-            tx_context::sender(ctx),
-        )
-    }
+public struct Obj has key {
+    id: haneul::object::UID,
+    value: u64,
+}
 
-    public entry fun incr(obj: &mut Obj) {
-        obj.value = obj.value + 1
-    }
+public entry fun mint(ctx: &mut TxContext) {
+    haneul::transfer::transfer(
+        Obj { id: haneul::object::new(ctx), value: 0 },
+        tx_context::sender(ctx),
+    )
+}
+
+public entry fun incr(obj: &mut Obj) {
+    obj.value = obj.value + 1
 }
 
 //# run Test::M::mint --sender A

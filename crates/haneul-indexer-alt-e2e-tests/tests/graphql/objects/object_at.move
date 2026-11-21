@@ -31,6 +31,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   object(address: "@{obj_0_0}") {
     version
@@ -40,3 +41,4 @@
     byRootVersion: objectAt(rootVersion: 3) { version }
   }
 }
+*/

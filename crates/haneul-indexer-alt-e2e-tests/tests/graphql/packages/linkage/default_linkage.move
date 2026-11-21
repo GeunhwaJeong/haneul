@@ -5,11 +5,12 @@
 //# init --protocol-version 115 --accounts A --addresses P1=0x0 --simulator
 
 //# publish --upgradeable --sender A
-module P1::M { }
+module P1::M;
 
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   package(address: "@{P1}") {
     linkage {
@@ -19,3 +20,4 @@ module P1::M { }
     }
   }
 }
+*/

@@ -4,9 +4,8 @@
 
 module coin::b_coin;
 
-use haneul::coin::{Self, TreasuryCap};
 use haneul::balance;
-
+use haneul::coin::{Self, TreasuryCap};
 
 public struct B_COIN has drop {}
 

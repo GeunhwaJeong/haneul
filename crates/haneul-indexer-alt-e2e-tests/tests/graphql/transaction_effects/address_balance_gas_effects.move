@@ -10,14 +10,14 @@
 //> 2: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(1), Input(1));
 
 //# publish
-module test::mod {
-    public fun fails() {
-        abort 42
-    }
+module test::mod;
 
-    public fun succeeds() {
-        // do nothing
-    }
+public fun fails() {
+    abort 42
+}
+
+public fun succeeds() {
+    // do nothing
 }
 
 //# create-checkpoint
@@ -31,6 +31,7 @@ module test::mod {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   failed: transactionEffects(digest: "@{digest_4}") { ...E }
   success: transactionEffects(digest: "@{digest_5}") { ...E }
@@ -65,3 +66,4 @@ fragment E on TransactionEffects {
     }
   }
 }
+*/

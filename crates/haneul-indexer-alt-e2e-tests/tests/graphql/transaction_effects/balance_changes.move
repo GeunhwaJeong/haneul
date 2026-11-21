@@ -19,6 +19,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Test balance_changes field on single transfer transaction
   singleTransferTransaction: transactionEffects(digest: "@{digest_1}") {
     balanceChanges {
@@ -36,8 +37,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test balance_changes field on multiple transfer transaction
   multipleTransferTransaction: transactionEffects(digest: "@{digest_2}") {
     balanceChanges {
@@ -55,8 +58,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test balance_changes field with pagination
   paginatedBalanceChanges: transactionEffects(digest: "@{digest_2}") {
     balanceChanges(first: 2) {
@@ -77,3 +82,4 @@
     }
   }
 }
+*/

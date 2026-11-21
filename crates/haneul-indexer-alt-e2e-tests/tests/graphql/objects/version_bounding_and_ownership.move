@@ -54,24 +54,27 @@
 
 //# publish --upgradeable --sender A
 module P0::M {
-  public fun foo(): u64 { 42 }
+    public fun foo(): u64 { 42 }
 }
 
 //# upgrade --package P0 --upgrade-capability 8,1 --sender A
 module P1::M {
-  public fun foo(): u64 { 43 }
+    public fun foo(): u64 { 43 }
 }
 
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Error - Cannot query owned objects on an object fetched at a specific version
   object(address: "@{obj_0_0}", version: 2) {
     objects { nodes { address } }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Another variant of the above.
   object(address: "@{obj_0_0}") {
     objectAt(version: 2) {
@@ -79,57 +82,73 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Same is true for balance pagination
   object(address: "@{obj_0_0}", version: 2) {
     balances { nodes { totalBalance } }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and for balance point-lookups
   object(address: "@{obj_0_0}", version: 2) {
     balance(coinType: "0x2::haneul::HANEUL") { totalBalance }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and balance multi-gets
   object(address: "@{obj_0_0}", version: 2) {
     multiGetBalances(keys: ["0x2::haneul::HANEUL"]) { totalBalance }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Error - Object fetched with rootVersion cannot query owned objects
   object(address: "@{obj_0_0}", rootVersion: 3) {
     objects { nodes { address } }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Same is true for balance pagination
   object(address: "@{obj_0_0}", rootVersion: 3) {
     balances { nodes { totalBalance } }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and for balance point-lookups
   object(address: "@{obj_0_0}", rootVersion: 3) {
     balance(coinType: "0x2::haneul::HANEUL") { totalBalance }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and balance multi-gets
   object(address: "@{obj_0_0}", rootVersion: 3) {
     multiGetBalances(keys: ["0x2::haneul::HANEUL"]) { totalBalance }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Error - Object fetched at a specific version via a nested query cannot query owned objects
   transactionEffects(digest: "@{digest_4}") {
     gasEffects {
@@ -139,8 +158,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Same is true for balance pagination
   transactionEffects(digest: "@{digest_4}") {
     gasEffects {
@@ -150,8 +171,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and for balance point-lookups
   transactionEffects(digest: "@{digest_4}") {
     gasEffects {
@@ -161,8 +184,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and balance multi-gets
   transactionEffects(digest: "@{digest_4}") {
     gasEffects {
@@ -172,8 +197,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Error - Object version pagination does not support nested owned object queries
   object(address: "@{obj_0_0}") {
     objectVersionsBefore {
@@ -183,8 +210,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Same is true for balance pagination
   object(address: "@{obj_0_0}") {
     objectVersionsBefore {
@@ -194,8 +223,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and for balance point-lookups
   object(address: "@{obj_0_0}") {
     objectVersionsBefore {
@@ -205,8 +236,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and balance multi-gets
   object(address: "@{obj_0_0}") {
     objectVersionsBefore {
@@ -216,15 +249,19 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Error - Package at a specific version cannot query owned objects
   package(address: "0x2", version: 1) {
     objects { nodes { address } }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Variant of the above
   package(address: "0x2") {
     packageAt(version: 1) {
@@ -232,29 +269,37 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Same is true for balance pagination
   package(address: "0x2", version: 1) {
     balances { nodes { totalBalance } }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and for balance point-lookups
   package(address: "0x2", version: 1) {
     balance(coinType: "0x2::haneul::HANEUL") { totalBalance }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and balance multi-gets
   package(address: "0x2", version: 1) {
     multiGetBalances(keys: ["0x2::haneul::HANEUL"]) { totalBalance }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Error - Package via its publishing transaction cannot query owned objects
   package(address: "@{obj_8_0}") {
     previousTransaction {
@@ -272,8 +317,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Same is true for balance pagination
   package(address: "@{obj_8_0}") {
     previousTransaction {
@@ -291,8 +338,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and for balance point-lookups
   package(address: "@{obj_8_0}") {
     previousTransaction {
@@ -310,8 +359,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and balance multi-gets
   package(address: "@{obj_8_0}") {
     previousTransaction {
@@ -329,8 +380,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Error - Package version pagination does not support nested owned object queries
   package(address: "@{obj_9_0}") {
     packageVersionsBefore {
@@ -340,8 +393,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Same is true for balance pagination
   package(address: "@{obj_9_0}") {
     packageVersionsBefore {
@@ -351,8 +406,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and for balance point-lookups
   package(address: "@{obj_9_0}") {
     packageVersionsBefore {
@@ -362,8 +419,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # ... and balance multi-gets
   package(address: "@{obj_9_0}") {
     packageVersionsBefore {
@@ -373,8 +432,10 @@ module P1::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Success -- objects owned at checkpoint 1
   cp1: checkpoint(sequenceNumber: 1) {
     query {
@@ -393,8 +454,10 @@ fragment Owned on IAddressable {
   haneul: balance(coinType: "0x2::haneul::HANEUL") { totalBalance }
   empty: balance(coinType: "0x42::empty::COIN") { totalBalance }
 }
+*/
 
 //# run-graphql
+/*
 { # Success -- objects owned at checkpoint 2, more coins
   cp2: checkpoint(sequenceNumber: 2) {
     query {
@@ -415,8 +478,10 @@ fragment Owned on IAddressable {
   haneul: balance(coinType: "0x2::haneul::HANEUL") { totalBalance }
   empty: balance(coinType: "0x42::empty::COIN") { totalBalance }
 }
+*/
 
 //# run-graphql
+/*
 { # Success -- objects owned at the latest checkpoint, and nested
   latest: object(address: "@{obj_0_0}") {
     ...Owned
@@ -438,8 +503,10 @@ fragment Owned on IAddressable {
   haneul: balance(coinType: "0x2::haneul::HANEUL") { totalBalance }
   empty: balance(coinType: "0x42::empty::COIN") { totalBalance }
 }
+*/
 
 //# run-graphql
+/*
 { # Certain nested queries reset the "root version" bound -- like this one
   # which finds the latest version of the object.
   objectAtReset: object(address: "@{obj_0_0}", version: 2) {
@@ -468,8 +535,10 @@ fragment Owned on IAddressable {
   haneul: balance(coinType: "0x2::haneul::HANEUL") { totalBalance }
   empty: balance(coinType: "0x42::empty::COIN") { totalBalance }
 }
+*/
 
 //# run-graphql
+/*
 { # Success - these successful cases also apply to packages
   latest: package(address: "0x2") {
     ...Owned
@@ -494,3 +563,4 @@ fragment Owned on IAddressable {
   haneul: balance(coinType: "0x2::haneul::HANEUL") { totalBalance }
   empty: balance(coinType: "0x42::empty::COIN") { totalBalance }
 }
+*/

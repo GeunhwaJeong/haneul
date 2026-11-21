@@ -10,7 +10,9 @@
 module test::m;
 
 entry fun no_ty_args() {}
+
 entry fun one_ty_arg<T>() {}
+
 entry fun two_ty_args<T, U>() {}
 
 // non-generic function called with type args

@@ -2,7 +2,7 @@
     "name": "@haneullabs/prettier-plugin-move",
     "author": "Haneul Labs <build@haneul-labs.com>",
     "description": "Move Plugin for Prettier",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",

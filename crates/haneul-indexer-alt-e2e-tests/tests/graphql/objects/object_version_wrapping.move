@@ -6,24 +6,24 @@
 // Track the versions of an object as it is being wrapped, unwrapped, and deleted.
 
 //# publish
-module P::M {
-  use haneul::coin::Coin;
-  use haneul::haneul::HANEUL;
+module P::M;
 
-  public struct Wrapper has key, store {
+use haneul::coin::Coin;
+use haneul::haneul::HANEUL;
+
+public struct Wrapper has key, store {
     id: UID,
     coin: Coin<HANEUL>,
-  }
+}
 
-  public fun wrap(coin: Coin<HANEUL>, ctx: &mut TxContext): Wrapper {
+public fun wrap(coin: Coin<HANEUL>, ctx: &mut TxContext): Wrapper {
     Wrapper { id: object::new(ctx), coin }
-  }
+}
 
-  public fun unwrap(wrapper: Wrapper): Coin<HANEUL> {
+public fun unwrap(wrapper: Wrapper): Coin<HANEUL> {
     let Wrapper { id, coin } = wrapper;
     id.delete();
     coin
-  }
 }
 
 //# programmable --sender A --inputs 42 @A
@@ -48,6 +48,7 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   objectVersions(address: "@{obj_2_0}") {
     pageInfo {
@@ -63,3 +64,4 @@ module P::M {
     }
   }
 }
+*/

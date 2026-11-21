@@ -42,7 +42,6 @@ use haneul_rpc::proto::haneul::rpc::v2::SubscribeTransactionsResponse;
 use haneul_rpc::proto::haneul::rpc::v2::TransactionFilter;
 use haneul_rpc::proto::haneul::rpc::v2::Watermark;
 use haneul_rpc::proto::haneul::rpc::v2::subscription_service_server::SubscriptionService;
-use haneul_rpc_cursor::Position;
 use haneul_types::balance_change::derive_balance_changes_2;
 use haneul_types::effects::TransactionEffectsAPI;
 use haneullabs_common::ZipDebugEqIteratorExt;
@@ -51,9 +50,10 @@ use tonic::codegen::BoxStream;
 
 use crate::RpcError;
 use crate::RpcService;
+use crate::ledger_history::cursor::LedgerPoint;
+use crate::ledger_history::cursor::Position;
 use crate::ledger_history::filter::event_filter_to_query;
 use crate::ledger_history::filter::transaction_filter_to_query;
-use crate::ledger_history::ledger_point::LedgerPoint;
 use crate::ledger_history::query_options::QueryOptions;
 use crate::ledger_history::watermark::advance_covered_bound_before_checkpoint;
 use crate::ledger_history::watermark::boundary_watermark;
@@ -330,10 +330,9 @@ fn transaction_item_watermark(
 ) -> Watermark {
     item_watermark(
         Position::Transactions {
-            checkpoint: cp,
             tx_seq: tx_lo + transaction_index,
+            public_position: LedgerPoint::transaction(cp, transaction_index),
         },
-        LedgerPoint::transaction(cp, transaction_index),
         ScanDirection::Ascending,
         boundary,
     )
@@ -350,11 +349,10 @@ fn event_item_watermark(
 ) -> Watermark {
     item_watermark(
         Position::Events {
-            checkpoint: cp,
             tx_seq: tx_lo + transaction_index,
             event_index,
+            public_position: LedgerPoint::event(cp, transaction_index, event_index),
         },
-        LedgerPoint::event(cp, transaction_index, event_index),
         ScanDirection::Ascending,
         boundary,
     )
@@ -365,10 +363,9 @@ fn event_item_watermark(
 fn transaction_tick_watermark(cp: u64, tx_hi: u64, boundary: Option<u64>) -> Watermark {
     boundary_watermark(
         Position::Transactions {
-            checkpoint: cp + 1,
             tx_seq: tx_hi,
+            public_position: LedgerPoint::checkpoint_start(cp + 1),
         },
-        LedgerPoint::checkpoint_start(cp + 1),
         boundary,
     )
 }
@@ -377,11 +374,10 @@ fn transaction_tick_watermark(cp: u64, tx_hi: u64, boundary: Option<u64>) -> Wat
 fn event_tick_watermark(cp: u64, tx_hi: u64, boundary: Option<u64>) -> Watermark {
     boundary_watermark(
         Position::Events {
-            checkpoint: cp + 1,
             tx_seq: tx_hi,
             event_index: 0,
+            public_position: LedgerPoint::checkpoint_start(cp + 1),
         },
-        LedgerPoint::checkpoint_start(cp + 1),
         boundary,
     )
 }
@@ -572,6 +568,8 @@ mod tests {
     use haneul_types::test_checkpoint_data_builder::TestCheckpointBuilder;
 
     use super::*;
+    use crate::ledger_history::cursor::CursorToken;
+
     #[test]
     fn initial_watermark_tick_covers_checkpoint_before_entry() {
         let options = QueryOptions::subscription();
@@ -588,20 +586,19 @@ mod tests {
 
         assert_eq!(entry_checkpoint, Some(42));
         assert_eq!(watermark.checkpoint, Some(41));
-        let cursor = Position::Transactions {
-            checkpoint: 42,
-            tx_seq: 100,
-        };
         let point = LedgerPoint::checkpoint_start(42);
+        let cursor = Position::Transactions {
+            tx_seq: 100,
+            public_position: point,
+        };
         assert_eq!(
             watermark.cursor,
-            Some(
-                haneul_rpc_cursor::CursorToken::boundary(cursor)
-                    .with_public_position(point.public_position(&cursor))
-                    .encode()
-            )
+            Some(CursorToken::boundary(cursor).encode())
         );
-        assert_eq!(watermark.cursor_position, Some(point.to_proto(&cursor)));
+        assert_eq!(
+            watermark.cursor_position,
+            Some(point.to_ledger_position(&cursor))
+        );
     }
 
     /// Item frames resume right after their item; progress ticks at the start of the checkpoint
@@ -645,45 +642,30 @@ mod tests {
         // Item frames keep Item cursors carrying their item's key; ticks carry Boundary cursors
         // carrying the checkpoint start they name.
         let cursor = |watermark: &Watermark| {
-            haneul_rpc_cursor::CursorToken::decode(watermark.cursor.as_ref().unwrap()).unwrap()
+            CursorToken::decode(watermark.cursor.as_ref().unwrap()).unwrap()
         };
         assert_eq!(
             cursor(&transaction_frames[0]),
-            haneul_rpc_cursor::CursorToken::item(Position::Transactions {
-                checkpoint: 7,
+            CursorToken::item(Position::Transactions {
                 tx_seq: 30,
+                public_position: LedgerPoint::transaction(7, 0),
             })
-            .with_public_position(Some(haneul_rpc_cursor::PublicPosition {
-                checkpoint: 7,
-                transaction_index: 0,
-                event_index: 0,
-            }))
         );
         assert_eq!(
             cursor(&event_frames[1]),
-            haneul_rpc_cursor::CursorToken::item(Position::Events {
-                checkpoint: 7,
+            CursorToken::item(Position::Events {
                 tx_seq: 31,
                 event_index: 1,
+                public_position: LedgerPoint::event(7, 1, 1),
             })
-            .with_public_position(Some(haneul_rpc_cursor::PublicPosition {
-                checkpoint: 7,
-                transaction_index: 1,
-                event_index: 1,
-            }))
         );
         assert_eq!(
             cursor(&event_frames[2]),
-            haneul_rpc_cursor::CursorToken::boundary(Position::Events {
-                checkpoint: 8,
+            CursorToken::boundary(Position::Events {
                 tx_seq: 33,
                 event_index: 0,
+                public_position: LedgerPoint::checkpoint_start(8),
             })
-            .with_public_position(Some(haneul_rpc_cursor::PublicPosition {
-                checkpoint: 8,
-                transaction_index: 0,
-                event_index: 0,
-            }))
         );
     }
 

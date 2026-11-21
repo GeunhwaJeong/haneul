@@ -4,11 +4,9 @@
 
 module bridged_usdc::usdc {
     use std::option;
-
     use haneul::coin;
     use haneul::transfer;
-    use haneul::tx_context;
-    use haneul::tx_context::TxContext;
+    use haneul::tx_context::{Self, TxContext};
 
     struct USDC has drop {}
 
@@ -22,7 +20,7 @@ module bridged_usdc::usdc {
             b"USD Coin",
             b"Bridged USD Coin token",
             option::none(),
-            ctx
+            ctx,
         );
         transfer::public_freeze_object(metadata);
         transfer::public_transfer(treasury_cap, tx_context::sender(ctx));

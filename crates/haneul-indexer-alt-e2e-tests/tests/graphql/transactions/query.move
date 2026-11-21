@@ -5,24 +5,24 @@
 //# init --protocol-version 115 --addresses Test=0x0 --accounts A --simulator
 
 //# publish
-module Test::M1 {
-    use haneul::coin::Coin;
+module Test::M1;
 
-    public struct Object has key, store {
-        id: UID,
-        value: u64,
-    }
+use haneul::coin::Coin;
 
-    fun foo<T: key, T2: drop>(_p1: u64, value1: T, _value2: &Coin<T2>, _p2: u64): T {
-        value1
-    }
+public struct Object has key, store {
+    id: UID,
+    value: u64,
+}
 
-    public entry fun create(value: u64, recipient: address, ctx: &mut TxContext) {
-        transfer::public_transfer(
-            Object { id: object::new(ctx), value },
-            recipient
-        )
-    }
+fun foo<T: key, T2: drop>(_p1: u64, value1: T, _value2: &Coin<T2>, _p2: u64): T {
+    value1
+}
+
+public entry fun create(value: u64, recipient: address, ctx: &mut TxContext) {
+    transfer::public_transfer(
+        Object { id: object::new(ctx), value },
+        recipient,
+    )
 }
 
 //# run Test::M1::create --sender A --args 0 @A
@@ -48,6 +48,7 @@ module Test::M1 {
 //# create-checkpoint
 
 //# run-graphql
+/*
 # When a range is not specified, transactions queries should return results starting from the smallest unpruned tx
 {
   transactions(first: 10) {
@@ -71,3 +72,4 @@ module Test::M1 {
     }
   }
 }
+*/

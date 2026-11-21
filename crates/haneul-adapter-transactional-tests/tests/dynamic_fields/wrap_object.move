@@ -7,7 +7,7 @@
 //# init --addresses a=0x0 --accounts A
 
 //# publish
-module a::m {
+module a::m;
 
 use haneul::dynamic_field;
 use haneul::dynamic_object_field;
@@ -37,21 +37,17 @@ entry fun take_and_take(obj: &mut Obj, ctx: &mut TxContext) {
     haneul::transfer::public_transfer(v, ctx.sender())
 }
 
-}
-
 //# run a::m::mint --sender A
 
 //# view-object 2,1
 
 //# run a::m::take_and_wrap --sender A --args object(2,0)
 
-
 //# run a::m::mint --sender A
 
 //# view-object 5,2
 
 //# run a::m::take_and_destroy --sender A --args object(5,0)
-
 
 //# run a::m::mint --sender A
 

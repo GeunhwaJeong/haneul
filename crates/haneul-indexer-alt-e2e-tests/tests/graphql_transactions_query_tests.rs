@@ -2,17 +2,14 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-use fastcrypto::encoding::Base64;
-use fastcrypto::encoding::Encoding;
 use serde::Deserialize;
 use serde_json::json;
 
 use haneul_indexer_alt_e2e_tests::FullCluster;
 use haneul_indexer_alt_e2e_tests::graphql;
+use haneul_indexer_alt_e2e_tests::graphql::place_tx_cursor;
 use haneul_indexer_alt_e2e_tests::transaction::DEFAULT_GAS_BUDGET;
 use haneul_indexer_alt_e2e_tests::transaction::send_haneul;
-use haneul_rpc_cursor::CursorToken;
-use haneul_rpc_cursor::Position;
 
 const TX_QUERY: &str = r#"
 query($first: Int, $last: Int, $after: String, $before: String) {
@@ -166,11 +163,7 @@ async fn test_transactions_query_cursor_pagination() {
     assert!(page.page_info.has_previous_page);
     assert!(!page.page_info.has_next_page);
 
-    let beyond = CursorToken::item(Position::Transactions {
-        checkpoint: 0,
-        tx_seq: 100,
-    });
-    let beyond_cursor = Base64::encode(beyond.encode());
+    let beyond_cursor = place_tx_cursor(100, 0);
     let page = transactions(&cluster, Some(2), None, Some(beyond_cursor), None)
         .await
         .unwrap();

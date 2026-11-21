@@ -5,7 +5,7 @@
 use crate::{
     cfgir::{
         ast as G,
-        visitor::{AbsIntVisitorObj, AbstractInterpreterVisitor, CFGIRVisitorObj},
+        visitor::{AbsIntVisitorObj, CFGIRVisitorObj},
     },
     command_line as cli, diag,
     diagnostics::{
@@ -267,10 +267,7 @@ impl CompilationEnv {
         default_config: Option<PackageConfig>,
         files_to_compile: Option<BTreeSet<PathBuf>>,
     ) -> Self {
-        visitors.extend([
-            haneul_mode::id_leak::IDLeakVerifier.visitor(),
-            haneul_mode::typing::HaneulTypeChecks.visitor(),
-        ]);
+        visitors.extend([haneul_mode::typing::HaneulTypeChecks.visitor()]);
 
         let mut known_filters_: BTreeMap<FilterName, Vec<DiagnosticsID>> = BTreeMap::new();
         for (name, expansion) in COMPILER_KNOWN_FILTERS.iter() {

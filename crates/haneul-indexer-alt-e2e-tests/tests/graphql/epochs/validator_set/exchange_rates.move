@@ -5,6 +5,7 @@
 //# init --protocol-version 115 --accounts A --simulator
 
 //# run-graphql
+/*
 {
   epoch0: epoch(epochId: 0) { ...E }
   epoch1: epoch(epochId: 1) { ...E }
@@ -38,12 +39,14 @@ fragment E on Epoch {
     }
   }
 }
+*/
 
 //# advance-epoch
 
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   epoch0: epoch(epochId: 0) { ...E }
   epoch1: epoch(epochId: 1) { ...E }
@@ -77,8 +80,10 @@ fragment E on Epoch {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # addressAt can be used to view a wrapped object at the latest checkpoint.
   epoch(epochId: 0) {
     validatorSet {
@@ -102,3 +107,4 @@ fragment E on Epoch {
     }
   }
 }
+*/

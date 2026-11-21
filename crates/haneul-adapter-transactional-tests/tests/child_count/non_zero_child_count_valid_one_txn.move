@@ -10,25 +10,24 @@
 
 //# publish
 
-module test::m {
-    use haneul::dynamic_object_field as ofield;
+module test::m;
 
-    public struct S has key, store {
-        id: haneul::object::UID,
-    }
+use haneul::dynamic_object_field as ofield;
 
-    public struct R has key, store {
-        id: haneul::object::UID,
-        s: S,
-    }
+public struct S has key, store {
+    id: haneul::object::UID,
+}
 
-    public entry fun share(ctx: &mut TxContext) {
-        let mut id = haneul::object::new(ctx);
-        let child = S { id: haneul::object::new(ctx) };
-        ofield::add(&mut id, 0u64, child);
-        haneul::transfer::public_share_object(S { id })
-    }
+public struct R has key, store {
+    id: haneul::object::UID,
+    s: S,
+}
 
+public entry fun share(ctx: &mut TxContext) {
+    let mut id = haneul::object::new(ctx);
+    let child = S { id: haneul::object::new(ctx) };
+    ofield::add(&mut id, 0u64, child);
+    haneul::transfer::public_share_object(S { id })
 }
 
 //

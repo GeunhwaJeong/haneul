@@ -4,11 +4,9 @@
 
 module bridged_ka::ka {
     use std::option;
-
     use haneul::coin;
     use haneul::transfer;
-    use haneul::tx_context;
-    use haneul::tx_context::TxContext;
+    use haneul::tx_context::{Self, TxContext};
 
     struct KA has drop {}
 
@@ -22,7 +20,7 @@ module bridged_ka::ka {
             b"Ka Coin",
             b"Ka, the opposite of Haneul",
             option::none(),
-            ctx
+            ctx,
         );
         transfer::public_freeze_object(metadata);
         transfer::public_transfer(treasury_cap, tx_context::sender(ctx));

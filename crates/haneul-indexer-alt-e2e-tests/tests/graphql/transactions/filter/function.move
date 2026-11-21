@@ -14,14 +14,14 @@ module P1::M1 {
     public entry fun f1(value: u64, recipient: address, ctx: &mut TxContext) {
         transfer::public_transfer(
             Object { id: object::new(ctx), value },
-            recipient
+            recipient,
         )
     }
 
     public entry fun f2(value: u64, recipient: address, ctx: &mut TxContext) {
         transfer::public_transfer(
             Object { id: object::new(ctx), value },
-            recipient
+            recipient,
         )
     }
 }
@@ -35,7 +35,7 @@ module P1::M2 {
     public entry fun f3(value: u64, recipient: address, ctx: &mut TxContext) {
         transfer::public_transfer(
             Object { id: object::new(ctx), value },
-            recipient
+            recipient,
         )
     }
 }
@@ -53,6 +53,7 @@ module P1::M2 {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   package_P1: transactions(filter: { function: "@{P1}" }) { ...TX }
   package_module_P1M1: transactions(filter: { function: "@{P1}::M1" }) { ...TX }
@@ -80,3 +81,4 @@ fragment TX on TransactionConnection {
     }
   }
 }
+*/

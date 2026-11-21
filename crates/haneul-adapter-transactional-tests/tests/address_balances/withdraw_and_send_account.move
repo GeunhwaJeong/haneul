@@ -23,7 +23,6 @@
 //> 0: haneul::balance::redeem_funds<haneul::haneul::HANEUL>(Input(0));
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(1));
 
-
 //# create-checkpoint
 
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> A
@@ -34,7 +33,6 @@
 //# programmable --sender B --inputs withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(500) @B
 //> 0: haneul::balance::redeem_funds<haneul::haneul::HANEUL>(Input(0));
 //> 1: haneul::balance::send_funds<haneul::haneul::HANEUL>(Result(0), Input(1));
-
 
 //# create-checkpoint
 

@@ -9,17 +9,17 @@
 
 //# publish
 
-module test::m {
-    public struct S has key, store {
-        id: haneul::object::UID,
-    }
+module test::m;
 
-    public entry fun t(ctx: &mut TxContext) {
-        let mut parent = haneul::object::new(ctx);
-        let child = S { id: haneul::object::new(ctx) };
-        haneul::dynamic_object_field::add(&mut parent, 0u64, child);
-        haneul::object::delete(parent);
-    }
+public struct S has key, store {
+    id: haneul::object::UID,
+}
+
+public entry fun t(ctx: &mut TxContext) {
+    let mut parent = haneul::object::new(ctx);
+    let child = S { id: haneul::object::new(ctx) };
+    haneul::dynamic_object_field::add(&mut parent, 0u64, child);
+    haneul::object::delete(parent);
 }
 
 //# run test::m::t --sender A

@@ -2,8 +2,8 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-module b::b {
-    public fun b(): u64 {
-        42
-    }
+module b::b;
+
+public fun b(): u64 {
+    42
 }

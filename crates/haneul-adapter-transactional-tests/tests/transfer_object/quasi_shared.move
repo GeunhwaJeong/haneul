@@ -8,19 +8,19 @@
 
 //# publish
 
-module test::m {
-    public struct S has key { id: UID }
-    public struct Child has key, store { id: UID }
+module test::m;
 
-    public entry fun mint_s(ctx: &mut TxContext) {
-        let id = object::new(ctx);
-        transfer::share_object(S { id })
-    }
+public struct S has key { id: UID }
+public struct Child has key, store { id: UID }
 
-    public entry fun mint_child(s: &mut S, ctx: &mut TxContext) {
-        let id = object::new(ctx);
-        haneul::dynamic_object_field::add(&mut s.id, 0u64, Child { id });
-    }
+public entry fun mint_s(ctx: &mut TxContext) {
+    let id = object::new(ctx);
+    transfer::share_object(S { id })
+}
+
+public entry fun mint_child(s: &mut S, ctx: &mut TxContext) {
+    let id = object::new(ctx);
+    haneul::dynamic_object_field::add(&mut s.id, 0u64, Child { id });
 }
 
 //# run test::m::mint_s

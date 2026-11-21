@@ -5,22 +5,21 @@
 //# init --addresses test=0x0 --accounts A
 
 //# publish
-module test::m1 {
-    use haneul::coin::{Self, Coin};
-    use haneul::haneul::HANEUL;
+module test::m1;
 
-    public struct CoolMarker has key, store { id: UID }
+use haneul::coin::{Self, Coin};
+use haneul::haneul::HANEUL;
 
-    public entry fun purchase(coin: Coin<HANEUL>, ctx: &mut TxContext) {
-        transfer::public_transfer(purchase_(coin, ctx), tx_context::sender(ctx))
-    }
+public struct CoolMarker has key, store { id: UID }
 
-    public fun purchase_(coin: Coin<HANEUL>, ctx: &mut TxContext): CoolMarker {
-        assert!(coin::value(&coin) >= 100, 0);
-        transfer::public_transfer(coin, @0x70DD);
-        CoolMarker { id: object::new(ctx) }
-    }
+public entry fun purchase(coin: Coin<HANEUL>, ctx: &mut TxContext) {
+    transfer::public_transfer(purchase_(coin, ctx), tx_context::sender(ctx))
+}
 
+public fun purchase_(coin: Coin<HANEUL>, ctx: &mut TxContext): CoolMarker {
+    assert!(coin::value(&coin) >= 100, 0);
+    transfer::public_transfer(coin, @0x70DD);
+    CoolMarker { id: object::new(ctx) }
 }
 
 // call an entry function

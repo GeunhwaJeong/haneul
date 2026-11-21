@@ -5,9 +5,9 @@
 //# init --protocol-version 115 --accounts A --addresses P=0x0 --simulator
 
 //# publish
-module P::M {
-  public fun foo(): u64 { 42 }
-}
+module P::M;
+
+public fun foo(): u64 { 42 }
 
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -16,7 +16,9 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   gas: object(address: "@{obj_2_0}") { storageRebate }
   pkg: package(address: "@{P}") { storageRebate }
 }
+*/

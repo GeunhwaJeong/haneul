@@ -6,33 +6,33 @@
 
 //# publish
 
-module t2::o2 {
-    use haneul::haneul::HANEUL;
-    use haneul::coin::{Self, Coin};
+module t2::o2;
 
-    public struct Obj2 has key, store {
-        id: UID,
-    }
+use haneul::coin::{Self, Coin};
+use haneul::haneul::HANEUL;
 
-    public fun mint_shared_coin(ctx: &mut TxContext) {
-        transfer::public_share_object(coin::zero<HANEUL>(ctx))
-    }
+public struct Obj2 has key, store {
+    id: UID,
+}
 
-    public fun create(ctx: &mut TxContext) {
-        let o = Obj2 { id: object::new(ctx) };
-        transfer::public_share_object(o)
-    }
+public fun mint_shared_coin(ctx: &mut TxContext) {
+    transfer::public_share_object(coin::zero<HANEUL>(ctx))
+}
 
-    public fun deleter(o2: Obj2) {
-        let Obj2 { id } = o2;
-        object::delete(id);
-    }
+public fun create(ctx: &mut TxContext) {
+    let o = Obj2 { id: object::new(ctx) };
+    transfer::public_share_object(o)
+}
 
-    public fun id<T>(i: T): T { i }
+public fun deleter(o2: Obj2) {
+    let Obj2 { id } = o2;
+    object::delete(id);
+}
 
-    public fun share_coin(o2: Coin<HANEUL>) {
-        transfer::public_share_object(o2);
-    }
+public fun id<T>(i: T): T { i }
+
+public fun share_coin(o2: Coin<HANEUL>) {
+    transfer::public_share_object(o2);
 }
 
 //# run t2::o2::create

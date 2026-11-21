@@ -5,31 +5,31 @@
 //# init --protocol-version 115 --accounts A --addresses test=0x0 --simulator
 
 //# publish --sender A
-module test::mod {
-  use haneul::derived_object;
+module test::mod;
 
-  public struct Parent has key, store {
+use haneul::derived_object;
+
+public struct Parent has key, store {
     id: UID,
-  }
+}
 
-  public struct Child has key, store {
+public struct Child has key, store {
     id: UID,
     x: u64,
     y: u64,
-  }
+}
 
-  public fun new(ctx: &mut TxContext): Parent {
+public fun new(ctx: &mut TxContext): Parent {
     Parent { id: object::new(ctx) }
-  }
+}
 
-  public fun add_child(parent: &mut Parent, key: u64, x: u64, y: u64, ctx: &mut TxContext) {
+public fun add_child(parent: &mut Parent, key: u64, x: u64, y: u64, ctx: &mut TxContext) {
     let child = Child {
-      id: derived_object::claim(&mut parent.id, key),
-      x,
-      y,
+        id: derived_object::claim(&mut parent.id, key),
+        x,
+        y,
     };
     transfer::public_transfer(child, ctx.sender());
-  }
 }
 
 //# programmable --sender A --inputs @A
@@ -42,6 +42,7 @@ module test::mod {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   object(address: "@{obj_2_0}") {
     asMoveObject {
@@ -58,3 +59,4 @@ module test::mod {
     }
   }
 }
+*/

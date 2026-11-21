@@ -4,13 +4,10 @@
 
 //# init --addresses Test_DepDepV1=0x0 Test_DepDepV2=0x0 Test_DepDepV3=0x0 Test_DepV1=0x0 Test_DepV2=0x0 Test_V1=0x0 Test_V2=0x0 Test_V3=0x0 Test_V4=0x0 --accounts A
 
-
 // 3 versions of the transitive dependency
-
 
 //# publish --upgradeable --sender A
 module Test_DepDepV1::DepDepM1 {
-
     public struct Obj has key, store { id: haneul::object::UID, v: u64 }
 
     public fun foo(ctx: &mut haneul::tx_context::TxContext) {
@@ -20,7 +17,6 @@ module Test_DepDepV1::DepDepM1 {
 
 //# upgrade --package Test_DepDepV1 --upgrade-capability 1,1 --sender A
 module Test_DepDepV2::DepDepM1 {
-
     public struct Obj has key, store { id: haneul::object::UID, v: u64 }
 
     public fun foo(ctx: &mut haneul::tx_context::TxContext) {
@@ -30,7 +26,6 @@ module Test_DepDepV2::DepDepM1 {
 
 //# upgrade --package Test_DepDepV2 --upgrade-capability 1,1 --sender A
 module Test_DepDepV3::DepDepM1 {
-
     public struct Obj has key, store { id: haneul::object::UID, v: u64 }
 
     public fun foo(ctx: &mut haneul::tx_context::TxContext) {
@@ -38,9 +33,7 @@ module Test_DepDepV3::DepDepM1 {
     }
 }
 
-
 // 2 versions of the direct dependency
-
 
 //# publish --upgradeable --dependencies Test_DepDepV1 --sender A
 module Test_DepV1::DepM1 {
@@ -53,12 +46,10 @@ module Test_DepV1::DepM1 {
 module Test_DepV2::DepM1 {
     use Test_DepDepV2::DepDepM1;
 
-    public fun bar(ctx: &mut haneul::tx_context::TxContext) { DepDepM1::foo(ctx)  }
+    public fun bar(ctx: &mut haneul::tx_context::TxContext) { DepDepM1::foo(ctx) }
 }
 
-
 // 3 versions of the root package
-
 
 //# publish --upgradeable --dependencies Test_DepV1 Test_DepDepV1 --sender A
 module Test_V1::M1 {
@@ -110,7 +101,6 @@ module Test_V3::M1 {
 
 //# view-object 16,0
 
-
 // expected upgrade errors
 
 // missing direct dependency (should fail)
@@ -118,6 +108,7 @@ module Test_V3::M1 {
 //# upgrade --package Test_V3 --upgrade-capability 6,1 --dependencies Test_DepDepV1 --sender A
 module Test_V4::M1 {
     use Test_DepV1::DepM1;
+
     public entry fun baz(ctx: &mut haneul::tx_context::TxContext) { DepM1::bar(ctx) }
 }
 
@@ -126,6 +117,7 @@ module Test_V4::M1 {
 //# upgrade --package Test_V3 --upgrade-capability 6,1 --dependencies Test_DepV2 --sender A
 module Test_V4::M1 {
     use Test_DepV2::DepM1;
+
     public entry fun baz(ctx: &mut haneul::tx_context::TxContext) { DepM1::bar(ctx) }
 }
 
@@ -134,5 +126,6 @@ module Test_V4::M1 {
 //# upgrade --package Test_V3 --upgrade-capability 6,1 --dependencies Test_DepV2 Test_DepDepV1 --sender A
 module Test_V4::M1 {
     use Test_DepV2::DepM1;
+
     public entry fun baz(ctx: &mut haneul::tx_context::TxContext) { DepM1::bar(ctx) }
 }

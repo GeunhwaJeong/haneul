@@ -6,10 +6,9 @@
 
 //# publish
 
-module Test::M {
-    public entry fun create(_value: u64, _recipient: address) {}
+module Test::M;
 
-}
+public entry fun create(_value: u64, _recipient: address) {}
 
 // wrong number of args
 //# run Test::M::create --args 10

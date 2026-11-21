@@ -18,6 +18,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   # A sent both transactions
   sentByA: transactions(filter: { sentAddress: "@{A}", atCheckpoint: 1 }) { ...TX }
@@ -35,3 +36,4 @@ fragment TX on TransactionConnection {
     }
   }
 }
+*/

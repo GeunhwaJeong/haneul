@@ -13,51 +13,51 @@
 
 //# publish
 
-module t2::o2 {
-    use haneul::dynamic_field as df;
-    use haneul::dynamic_object_field as dof;
-    use haneul::haneul::HANEUL;
-    use haneul::coin::{Self, Coin};
+module t2::o2;
 
-    public struct Obj2 has key, store {
-        id: UID,
-    }
+use haneul::coin::{Self, Coin};
+use haneul::dynamic_field as df;
+use haneul::dynamic_object_field as dof;
+use haneul::haneul::HANEUL;
 
-    public fun mint_shared_coin(ctx: &mut TxContext) {
-        transfer::public_share_object(coin::zero<HANEUL>(ctx))
-    }
+public struct Obj2 has key, store {
+    id: UID,
+}
 
-    public fun mint_shared_obj(ctx: &mut TxContext) {
-        transfer::public_share_object(Obj2 { id: object::new(ctx) });
-    }
+public fun mint_shared_coin(ctx: &mut TxContext) {
+    transfer::public_share_object(coin::zero<HANEUL>(ctx))
+}
 
-    public fun mint_owned_coin(ctx: &mut TxContext) {
-        transfer::public_transfer(coin::zero<HANEUL>(ctx), @A)
-    }
+public fun mint_shared_obj(ctx: &mut TxContext) {
+    transfer::public_share_object(Obj2 { id: object::new(ctx) });
+}
 
-    public fun deleter(o2: Coin<HANEUL>) {
-        coin::destroy_zero(o2);
-    }
+public fun mint_owned_coin(ctx: &mut TxContext) {
+    transfer::public_transfer(coin::zero<HANEUL>(ctx), @A)
+}
 
-    public fun freezer(o2: Coin<HANEUL>) {
-        transfer::public_freeze_object(o2);
-    }
+public fun deleter(o2: Coin<HANEUL>) {
+    coin::destroy_zero(o2);
+}
 
-    public fun dofer(parent: &mut Obj2, o2: Coin<HANEUL>) {
-        dof::add(&mut parent.id, 0u64, o2);
-    }
+public fun freezer(o2: Coin<HANEUL>) {
+    transfer::public_freeze_object(o2);
+}
 
-    public fun dfer(parent: &mut Obj2, o2: Coin<HANEUL>) {
-        df::add(&mut parent.id, 0u64, o2);
-    }
+public fun dofer(parent: &mut Obj2, o2: Coin<HANEUL>) {
+    dof::add(&mut parent.id, 0u64, o2);
+}
 
-    public fun transferer(o2: Coin<HANEUL>) {
-        transfer::public_transfer(o2, @0x0);
-    }
+public fun dfer(parent: &mut Obj2, o2: Coin<HANEUL>) {
+    df::add(&mut parent.id, 0u64, o2);
+}
 
-    public fun sharer(o2: Coin<HANEUL>) {
-        transfer::public_share_object(o2);
-    }
+public fun transferer(o2: Coin<HANEUL>) {
+    transfer::public_transfer(o2, @0x0);
+}
+
+public fun sharer(o2: Coin<HANEUL>) {
+    transfer::public_share_object(o2);
 }
 
 //# run t2::o2::mint_shared_coin

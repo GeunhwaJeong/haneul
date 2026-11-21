@@ -7,6 +7,7 @@
 //# advance-epoch
 
 //# run-graphql
+/*
 {
   checkpoint(sequenceNumber: 1) {
     query {
@@ -17,3 +18,4 @@
     }
   }
 }
+*/

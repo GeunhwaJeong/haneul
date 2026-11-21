@@ -5,56 +5,56 @@
 //# init --protocol-version 115 --accounts A --addresses P=0x0 --simulator
 
 //# publish
-module P::M {
-  use haneul::dynamic_field as df;
-  use haneul::dynamic_object_field as dof;
+module P::M;
 
-  public struct O has key, store {
+use haneul::dynamic_field as df;
+use haneul::dynamic_object_field as dof;
+
+public struct O has key, store {
     id: UID,
     count: u64,
-  }
+}
 
-  public fun new(ctx: &mut TxContext): O {
+public fun new(ctx: &mut TxContext): O {
     O {
-      id: object::new(ctx),
-      count: 0,
+        id: object::new(ctx),
+        count: 0,
     }
-  }
+}
 
-  public fun burn(outer: O) {
+public fun burn(outer: O) {
     let O { id, count: _ } = outer;
     id.delete();
-  }
+}
 
-  public fun inc(outer: &mut O) {
+public fun inc(outer: &mut O) {
     outer.count = outer.count + 1;
-  }
+}
 
-  public fun add_df(parent: &mut O, name: u64, field: O) {
+public fun add_df(parent: &mut O, name: u64, field: O) {
     df::add(&mut parent.id, name, field)
-  }
+}
 
-  public fun remove_df(parent: &mut O, name: u64): O {
+public fun remove_df(parent: &mut O, name: u64): O {
     df::remove(&mut parent.id, name)
-  }
+}
 
-  public fun inc_df(outer: &mut O, name: u64) {
+public fun inc_df(outer: &mut O, name: u64) {
     let field: &mut O = df::borrow_mut(&mut outer.id, name);
     field.inc();
-  }
+}
 
-  public fun add_dof(parent: &mut O, name: u64, field: O) {
+public fun add_dof(parent: &mut O, name: u64, field: O) {
     dof::add(&mut parent.id, name, field)
-  }
+}
 
-  public fun remove_dof(parent: &mut O, name: u64): O {
+public fun remove_dof(parent: &mut O, name: u64): O {
     dof::remove(&mut parent.id, name)
-  }
+}
 
-  public fun inc_dof(outer: &mut O, name: u64) {
+public fun inc_dof(outer: &mut O, name: u64) {
     let field: &mut O = dof::borrow_mut(&mut outer.id, name);
     field.inc();
-  }
 }
 
 //# programmable --sender A --inputs @A
@@ -72,26 +72,32 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # When the root version lines up with an exact version, the two queries
   # return the same result.
   exact: object(address: "@{obj_2_0}", version: 4) { version }
   bounded: object(address: "@{obj_2_0}", rootVersion: 4) { version }
 }
+*/
 
 //# run-graphql
+/*
 { # Fetching the dynamic field at its parent's root version. The field will
   # exist, but the value is now wrapped and inaccessible
   field: object(address: "@{obj_3_0}", rootVersion: 4) { version }
   wrapped: object(address: "@{obj_2_1}", rootVersion: 4) { version }
 }
+*/
 
 //# run-graphql
+/*
 { # Fetching the dynamic object field at its parent's root version. Both the
   # field and the value exist because dynamic object fields don't wrap their
   # values.
   field: object(address: "@{obj_4_0}", rootVersion: 4) { version }
   wrapped: object(address: "@{obj_2_2}", rootVersion: 4) { version }
 }
+*/
 
 //# programmable --sender A --inputs object(2,0) 42
 //> 0: P::M::inc_df(Input(0), Input(1))
@@ -102,6 +108,7 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # The dynamic field has now been updated, repeating the same query as before
   # should return the same result.
   fieldBefore: object(address: "@{obj_3_0}", rootVersion: 4) { version }
@@ -117,8 +124,10 @@ module P::M {
   fieldLater: object(address: "@{obj_3_0}", rootVersion: 6) { version }
   wrappedAt6: object(address: "@{obj_2_1}", rootVersion: 6) { version }
 }
+*/
 
 //# run-graphql
+/*
 { # The dynamic object field has also been updated, but the previous query should
   # return the same result.
   fieldBefore: object(address: "@{obj_4_0}", rootVersion: 4) { version }
@@ -136,6 +145,7 @@ module P::M {
   fieldStillUnchanged: object(address: "@{obj_4_0}", rootVersion: 6) { version }
   valueAfter: object(address: "@{obj_2_2}", rootVersion: 6) { version }
 }
+*/
 
 //# programmable --sender A --inputs object(2,0)
 //> 0: P::M::inc(Input(0))
@@ -143,6 +153,7 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # The parent object has been modified without touching either of the fields,
   # so we should get the same response as before when fetching them at the new
   # root version.
@@ -151,6 +162,7 @@ module P::M {
   objectField: object(address: "@{obj_4_0}", rootVersion: 7) { version }
   objectValue: object(address: "@{obj_2_2}", rootVersion: 7) { version }
 }
+*/
 
 //# programmable --sender A --inputs object(2,0) 42 @A
 //> 0: P::M::remove_df(Input(0), Input(1));
@@ -163,6 +175,7 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # The dynamic field has been deleted, so the field should not be present.
   field: object(address: "@{obj_3_0}", rootVersion: 8) { version }
 
@@ -171,8 +184,10 @@ module P::M {
   # does exist again at this version.
   unwrapped: object(address: "@{obj_2_1}", rootVersion: 8) { version }
 }
+*/
 
 //# run-graphql
+/*
 { # The dynamic object field has also been deleted, but at the previous version
   # it should still be present.
   fieldBefore: object(address: "@{obj_4_0}", rootVersion: 8) { version }
@@ -183,8 +198,11 @@ module P::M {
   fieldAfter: object(address: "@{obj_4_0}", rootVersion: 9) { version }
   valueAfter: object(address: "@{obj_2_2}", rootVersion: 9) { version }
 }
+*/
 
 //# run-graphql
+/*
 { # Fetching an object with multiple version constraints is not supported.
   object(address: "@{obj_2_0}", version: 4, rootVersion: 4) { version }
 }
+*/

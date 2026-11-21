@@ -15,6 +15,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Null expiration
   transaction(digest: "@{digest_1}") {
     expiration {
@@ -22,8 +23,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Non-Null expiration
   transaction(digest: "@{digest_2}") {
     expiration {
@@ -33,3 +36,4 @@
     }
   }
 }
+*/

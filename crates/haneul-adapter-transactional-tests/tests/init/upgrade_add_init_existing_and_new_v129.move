@@ -10,7 +10,9 @@
 //# init --protocol-version 120 --addresses v0=0x0 v1=0x0 --accounts A
 
 //# publish --upgradeable --sender A
-module v0::a;
+module v0::a {
+
+}
 
 //# upgrade --package v0 --upgrade-capability 1,1 --sender A
 module v1::a {

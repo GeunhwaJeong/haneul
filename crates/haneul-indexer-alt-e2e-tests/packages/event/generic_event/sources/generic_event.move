@@ -2,18 +2,18 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-module generic_event::generic_event {
-    use haneul::event;
+module generic_event::generic_event;
 
-    public struct GenericEvent<phantom T> has copy, drop {
-        value: u64,
-    }
+use haneul::event;
 
-    public fun emit_u64() {
-        event::emit(GenericEvent<u64> { value: 1 });
-    }
+public struct GenericEvent<phantom T> has copy, drop {
+    value: u64,
+}
 
-    public fun emit_address() {
-        event::emit(GenericEvent<address> { value: 2 });
-    }
+public fun emit_u64() {
+    event::emit(GenericEvent<u64> { value: 1 });
+}
+
+public fun emit_address() {
+    event::emit(GenericEvent<address> { value: 2 });
 }

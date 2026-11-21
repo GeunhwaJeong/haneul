@@ -9,39 +9,39 @@
 
 //# publish
 
-module test::m {
-    use haneul::dynamic_object_field as ofield;
+module test::m;
 
-    public struct S has key, store {
-        id: haneul::object::UID,
-    }
+use haneul::dynamic_object_field as ofield;
 
-    public struct R has key {
-        id: haneul::object::UID,
-        s: S,
-    }
+public struct S has key, store {
+    id: haneul::object::UID,
+}
 
-    public entry fun mint(ctx: &mut TxContext) {
-        let s = S { id: haneul::object::new(ctx) };
-        haneul::transfer::transfer(s, tx_context::sender(ctx))
-    }
+public struct R has key {
+    id: haneul::object::UID,
+    s: S,
+}
 
-    public entry fun add(parent: &mut S, idx: u64, ctx: &mut TxContext) {
-        let child = S { id: haneul::object::new(ctx) };
-        ofield::add(&mut parent.id, idx, child);
-    }
+public entry fun mint(ctx: &mut TxContext) {
+    let s = S { id: haneul::object::new(ctx) };
+    haneul::transfer::transfer(s, tx_context::sender(ctx))
+}
 
-    public entry fun wrap(s: S, ctx: &mut TxContext) {
-        let r = R { id: haneul::object::new(ctx), s };
-        haneul::transfer::transfer(r, tx_context::sender(ctx))
-    }
+public entry fun add(parent: &mut S, idx: u64, ctx: &mut TxContext) {
+    let child = S { id: haneul::object::new(ctx) };
+    ofield::add(&mut parent.id, idx, child);
+}
 
-    public entry fun delete(r: R) {
-        let R { id, s } = r;
-        haneul::object::delete(id);
-        let S { id } = s;
-        haneul::object::delete(id);
-    }
+public entry fun wrap(s: S, ctx: &mut TxContext) {
+    let r = R { id: haneul::object::new(ctx), s };
+    haneul::transfer::transfer(r, tx_context::sender(ctx))
+}
+
+public entry fun delete(r: R) {
+    let R { id, s } = r;
+    haneul::object::delete(id);
+    let S { id } = s;
+    haneul::object::delete(id);
 }
 
 //# run test::m::mint --sender A

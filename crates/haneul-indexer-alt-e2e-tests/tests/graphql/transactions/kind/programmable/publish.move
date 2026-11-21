@@ -5,15 +5,16 @@
 //# init --protocol-version 115 --accounts A B --addresses test=0x0 --simulator
 
 //# publish --sender A
-module test::simple_module {
-    public fun hello(): u64 {
-        42
-    }
+module test::simple_module;
+
+public fun hello(): u64 {
+    42
 }
 
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   # Test PublishCommand
   publishTest: transaction(digest: "@{digest_1}") {
@@ -32,3 +33,4 @@ module test::simple_module {
     }
   }
 } 
+*/

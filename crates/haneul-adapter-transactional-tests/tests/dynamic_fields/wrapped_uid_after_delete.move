@@ -9,7 +9,7 @@
 //# init --addresses a=0x0 --accounts A
 
 //# publish
-module a::m {
+module a::m;
 
 use haneul::dynamic_field::{add, exists, borrow, borrow_mut};
 
@@ -78,8 +78,6 @@ entry fun t5(wrapper: Wrapper) {
     object::delete(id);
     object::delete(old);
     // does not delete counter
-}
-
 }
 
 //# run a::m::t0 --sender A

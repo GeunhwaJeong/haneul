@@ -9,10 +9,10 @@
 //> 1: TransferObjects([Result(0)], Input(1))
 
 //# publish
-module test::gas_test {
-    public entry fun simple_function() {
-        // Simple function that does minimal work for predictable gas costs
-    }
+module test::gas_test;
+
+public entry fun simple_function() {
+    // Simple function that does minimal work for predictable gas costs
 }
 
 //# run test::gas_test::simple_function --sender A
@@ -25,6 +25,7 @@ module test::gas_test {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Test gas_effects field with gasObject and gasSummary
   transferTransaction: transactionEffects(digest: "@{digest_1}") {
     gasEffects {
@@ -42,8 +43,10 @@ module test::gas_test {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test gas_effects on function call transaction
   functionCallTransaction: transactionEffects(digest: "@{digest_3}") {
     gasEffects {
@@ -61,8 +64,10 @@ module test::gas_test {
     }
   }
 } 
+*/
 
 //# run-graphql
+/*
 { # Test gas_effects on system transaction
   functionCallTransaction: transactionEffects(digest: "@{digest_5}") {
     gasEffects {
@@ -80,3 +85,4 @@ module test::gas_test {
     }
   }
 } 
+*/

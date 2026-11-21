@@ -84,7 +84,7 @@ where
             .for_each_indexed_bit(checkpoint, |bucket_id, bit_position, dim, value| {
                 crate::tables::encode_bitmap_row_key_parts_into(
                     &mut row_key,
-                    P::SCHEMA_VERSION,
+                    P::SCHEMA,
                     P::BUCKET_ID_WIDTH,
                     dim.tag_byte(),
                     value,
@@ -123,6 +123,13 @@ where
 {
     type Store = BigTableStore;
     type Batch = BitmapBatch;
+
+    /// Under back-pressure the collector cuts batches of about this many rows. Every commit
+    /// rewrites the full accumulated bitmap of each row it changes, so small batches multiply the
+    /// bitmap bytes written per row: on a mainnet backfill (~1,600 rows per checkpoint), the
+    /// sequential default of 5,000 rows wrote ~4x the bitmap bytes per row of 300-checkpoint
+    /// batches, and 50,000 rows wrote ~1.7x.
+    const MAX_PENDING_ROWS: usize = 50_000;
 
     fn batch(&self, batch: &mut Self::Batch, values: std::vec::IntoIter<Self::Value>) {
         for v in values {

@@ -11,11 +11,9 @@
 //# publish
 module test::m;
 
-public fun gen_mut<T>(_: &mut T) {
-}
+public fun gen_mut<T>(_: &mut T) {}
 
-public fun gen_imm<T>(_: &T) {
-}
+public fun gen_imm<T>(_: &T) {}
 
 //# programmable
 // &mut T unifies to &mut TxContext; the slot is auto-injected

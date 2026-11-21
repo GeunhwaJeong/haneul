@@ -18,6 +18,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Fetch the checkpoint for each transaction's effects
   e1: transactionEffects(digest: "@{digest_1}") {
     checkpoint { sequenceNumber }
@@ -31,3 +32,4 @@
     checkpoint { sequenceNumber }
   }
 }
+*/

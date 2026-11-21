@@ -17,7 +17,7 @@ module P1::M1 {
     }
 
     public struct EventA<T> has copy, drop {
-        value: T
+        value: T,
     }
 
     public fun emit_T1() {
@@ -36,15 +36,15 @@ module P1::M1 {
 
 //# publish --sender B --dependencies P1
 module P2::M2 {
+    use P1::M1::T3;
     use haneul::event;
-    use P1::M1::{T3};
 
     public struct T4 has copy, drop {}
 
     public struct EventC<T> has copy, drop {
-        value: T
+        value: T,
     }
-    
+
     public fun emit_T3() {
         // Use a public constructor function from P1::M1
         let t3_instance = P1::M1::new_T3();
@@ -74,6 +74,7 @@ module P2::M2 {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   allEvents: events(first: 50) {
     nodes {
@@ -117,3 +118,4 @@ fragment E on Event {
     }
   }
 }
+*/

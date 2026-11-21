@@ -11,7 +11,7 @@ public fun gas_checks(price: u64, delta: u64, ctx: &TxContext) {
     let rgp = ctx.reference_gas_price();
     let gas_price = ctx.gas_price();
     assert!(rgp == 700, 100);
-    assert!(gas_price == price , 101);
+    assert!(gas_price == price, 101);
     assert!(gas_price >= rgp + delta, 102);
 }
 
@@ -26,4 +26,3 @@ public fun gas_checks(price: u64, delta: u64, ctx: &TxContext) {
 //# programmable --sender A --gas-price 800 --inputs 800 300
 // failure, gas price(800) lower than reference gas price(700) + 300
 //> test::gas_test::gas_checks(Input(0), Input(1))
-

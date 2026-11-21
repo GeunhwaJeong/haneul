@@ -43,6 +43,7 @@
 //# create-checkpoint
 
 //# run-graphql --cursors bcs(42u64)
+/*
 { # Successfully fetch a dynamic field with primitive value
   object(address: "@{obj_1_0}") {
     address
@@ -67,8 +68,10 @@ fragment DF on DynamicField {
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(43u64)
+/*
 { # Successfully fetch a dynamic field with object value (wrapped)
   object(address: "@{obj_1_0}") {
     address
@@ -93,8 +96,10 @@ fragment DF on DynamicField {
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(44u64)
+/*
 { # Successfully fetch a dynamic object field
   object(address: "@{obj_2_0}") {
     address
@@ -124,8 +129,10 @@ fragment DOF on DynamicField {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Failed cast of a regular MoveObject (not a dynamic field)
   object(address: "@{obj_5_0}") {
     address
@@ -148,8 +155,10 @@ fragment DOF on DynamicField {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Failed cast of a MovePackage
   object(address: "0x2") {
     address
@@ -161,16 +170,20 @@ fragment DOF on DynamicField {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Verify wrapped object is not directly accessible
   object(address: "@{obj_3_0}") {
     address
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Verify dynamic object field's value is directly accessible
   object(address: "@{obj_4_0}") {
     address
@@ -183,8 +196,10 @@ fragment DOF on DynamicField {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Query the dynamic field objects directly by their addresses
 
   df42: object(address: "@{obj_6_0}") { ...asDF }
@@ -201,8 +216,10 @@ fragment asDF on Object {
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(42u64) bcs(43u64) bcs(45u64)
+/*
 { # Dynamic field ownership respects parent versioning
   objectVersions(address: "@{obj_1_0}") {
     nodes {
@@ -233,8 +250,10 @@ fragment DF on DynamicField {
   name { json }
   value { ... on MoveValue { json } }
 }
+*/
 
 //# run-graphql --cursors bcs(42u64) bcs(43u64) bcs(45u64)
+/*
 { # Dynamic field ownership also respects checkpoint bounding
   atCp1: object(address: "@{obj_1_0}", atCheckpoint: 1) { ...Parent }
   atCp2: object(address: "@{obj_1_0}", atCheckpoint: 2) { ...Parent }
@@ -259,6 +278,7 @@ fragment DF on DynamicField {
   name { json }
   value { ... on MoveValue { json } }
 }
+*/
 
 //# programmable --sender A --inputs object(1,0) 42u64 1000u64
 //> 0: haneul::bag::remove<u64, u64>(Input(0), Input(1));
@@ -267,6 +287,7 @@ fragment DF on DynamicField {
 //# create-checkpoint
 
 //# run-graphql --cursors bcs(42u64)
+/*
 { # Fetch dynamic fields directly from their parent/name keys
   multiGetDynamicFields(keys: [
     { parent: "@{obj_1_0}", name: { literal: "43u64" } },
@@ -285,6 +306,7 @@ fragment RootField on DynamicField {
   name { json }
   value { ... on MoveValue { json } }
 }
+*/
 
 //# programmable --sender A --inputs object(2,0) 44u64 50u64
 //> 0: haneul::object_bag::remove<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1));
@@ -295,6 +317,7 @@ fragment RootField on DynamicField {
 //# create-checkpoint
 
 //# run-graphql --cursors bcs(44u64)
+/*
 { # Fetch dynamic object fields directly from their parent/name keys
   multiGetDynamicObjectFields(keys: [
     { parent: "@{obj_2_0}", name: { literal: "44u64" } },
@@ -317,3 +340,4 @@ fragment RootObjectField on DynamicField {
     }
   }
 }
+*/

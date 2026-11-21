@@ -52,8 +52,9 @@ use haneul_kvstore::TransactionData;
 use haneul_kvstore::TxCheckpointPosition;
 use haneul_kvstore::TxSeqDigestData;
 use haneul_rpc_api::RpcError;
-use haneul_rpc_api::ledger_history::ledger_point::RowPlacement;
+use haneul_rpc_api::ledger_history::cursor::LedgerPoint;
 use haneul_rpc_api::ledger_history::query_options::IntraTxCoordinate;
+use haneul_rpc_api::ledger_history::row_placement::RowPlacement;
 use haneul_types::digests::TransactionDigest;
 use haneul_types::messages_checkpoint::CheckpointSequenceNumber;
 use haneul_types::object::Object;
@@ -65,8 +66,6 @@ use prometheus::register_histogram_vec_with_registry;
 use prometheus::register_int_counter_vec_with_registry;
 use tokio::sync::OwnedSemaphorePermit;
 use tokio::sync::Semaphore;
-
-use crate::pipeline::PlacedFrontier;
 
 /// Stage label values for the permit timing metrics. `&'static str` so they
 /// satisfy `with_label_values` zero-allocation.
@@ -462,17 +461,15 @@ impl BigTableClient {
 
     /// Place a scan frontier by the one `tx_seq_digest` row `placement` names
     /// (see [`RowPlacement::transaction_boundary`] and
-    /// [`RowPlacement::event_boundary`]): `None`, without a read, for the
-    /// ascending genesis frontier, which covers no checkpoint and lies at
-    /// [`LedgerPoint::GENESIS`]. A missing row is `Internal`.
-    ///
-    /// [`LedgerPoint::GENESIS`]: haneul_rpc_api::ledger_history::ledger_point::LedgerPoint::GENESIS
+    /// [`RowPlacement::event_boundary`]), or at [`LedgerPoint::GENESIS`],
+    /// without a read, for the ascending genesis frontier, which covers no
+    /// checkpoint. A missing row is `Internal`.
     pub(crate) async fn place_frontier(
         &self,
         placement: Option<RowPlacement>,
-    ) -> Result<Option<PlacedFrontier>, RpcError> {
+    ) -> Result<LedgerPoint, RpcError> {
         let Some(placement) = placement else {
-            return Ok(None);
+            return Ok(LedgerPoint::GENESIS);
         };
         let position = self
             .tx_checkpoint_position(placement.tx_seq)
@@ -486,10 +483,7 @@ impl BigTableClient {
                     ),
                 )
             })?;
-        Ok(Some(PlacedFrontier {
-            checkpoint: position.checkpoint_number,
-            point: placement.point(position.checkpoint_number, position.tx_offset as u64),
-        }))
+        Ok(placement.point(position.checkpoint_number, position.tx_offset as u64))
     }
 
     /// Build a resolver closure for tx-bitmap watermarks (identity
@@ -532,7 +526,7 @@ impl BigTableClient {
 /// Future returned by resolver closures from
 /// [`BigTableClient::tx_wm_resolver`] and [`BigTableClient::event_wm_resolver`].
 pub(crate) type WmResolverFut =
-    std::pin::Pin<Box<dyn Future<Output = Result<Option<PlacedFrontier>, ScanStop>> + Send>>;
+    std::pin::Pin<Box<dyn Future<Output = Result<LedgerPoint, ScanStop>> + Send>>;
 
 /// How a gated read ended, recorded once when its permit is released.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -671,7 +665,7 @@ mod tests {
 
     use super::*;
     use haneul_kvstore::tables::tx_seq_digest;
-    use haneul_rpc_api::ledger_history::ledger_point::LedgerPoint;
+    use haneul_rpc_api::ledger_history::cursor::LedgerPoint;
 
     /// A `tx_cp_resolve` permit, plus the registry its metrics are recorded in.
     async fn test_permit(limiter: &Arc<Semaphore>) -> (LimitedPermit, Registry) {
@@ -853,19 +847,20 @@ mod tests {
         mock.clear_read_rows_calls().await;
         let ascending = ScanDirection::Ascending;
         let descending = ScanDirection::Descending;
-        let placed = |checkpoint, point| Some(PlacedFrontier { checkpoint, point });
-
         for (placement, expected) in [
             // After transaction 1, the last of checkpoint 0: an index past its end.
             (
                 RowPlacement::transaction_boundary(2, ascending),
-                placed(0, LedgerPoint::transaction(0, 2)),
+                LedgerPoint::transaction(0, 2),
             ),
             (
                 RowPlacement::transaction_boundary(2, descending),
-                placed(1, LedgerPoint::transaction(1, 0)),
+                LedgerPoint::transaction(1, 0),
             ),
-            (RowPlacement::transaction_boundary(0, ascending), None),
+            (
+                RowPlacement::transaction_boundary(0, ascending),
+                LedgerPoint::GENESIS,
+            ),
             (
                 RowPlacement::event_boundary(
                     IntraTxCoordinate {
@@ -874,7 +869,7 @@ mod tests {
                     },
                     ascending,
                 ),
-                placed(0, LedgerPoint::event(0, 1, 3)),
+                LedgerPoint::event(0, 1, 3),
             ),
         ] {
             assert_eq!(

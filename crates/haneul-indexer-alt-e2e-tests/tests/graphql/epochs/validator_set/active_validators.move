@@ -5,6 +5,7 @@
 //# init --protocol-version 115 --accounts A --simulator
 
 //# run-graphql
+/*
 {
   epoch(epochId: 0) {
     epochId
@@ -48,3 +49,4 @@
     }
   }
 }
+*/

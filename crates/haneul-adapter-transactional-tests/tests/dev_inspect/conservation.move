@@ -8,13 +8,13 @@
 
 //# publish
 
-module test::m {
-    use haneul::haneul::HANEUL;
-    use haneul::coin::Coin;
+module test::m;
 
-    public fun transfer_back(c: Coin<HANEUL>, ctx: &mut TxContext) {
-        haneul::transfer::public_transfer(c, tx_context::sender(ctx))
-    }
+use haneul::coin::Coin;
+use haneul::haneul::HANEUL;
+
+public fun transfer_back(c: Coin<HANEUL>, ctx: &mut TxContext) {
+    haneul::transfer::public_transfer(c, tx_context::sender(ctx))
 }
 
 //# programmable --sender A --inputs struct(@empty,1) --dev-inspect

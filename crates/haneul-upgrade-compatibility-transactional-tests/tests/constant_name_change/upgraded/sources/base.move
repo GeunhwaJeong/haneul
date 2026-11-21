@@ -2,16 +2,17 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-module base::base_module {
+module base::base_module;
 
-    const B: u64 = 0;
+const B: u64 = 0;
 
-    public struct X {
-        field0: u64,
-        field1: u64,
-    }
-
-    public fun public_fun(): u64 { B }
-    fun private_fun(): u64 { B }
-    entry fun private_entry_fun(_x: u64) { }
+public struct X {
+    field0: u64,
+    field1: u64,
 }
+
+public fun public_fun(): u64 { B }
+
+fun private_fun(): u64 { B }
+
+entry fun private_entry_fun(_x: u64) {}

@@ -1,0 +1,10 @@
+[package]
+name = "derived_object_release"
+version = "0.0.1"
+edition = "2024.beta"
+
+[dependencies]
+Haneul = { local = "../../../../haneul-framework/packages/haneul-framework" }
+
+[addresses]
+derived_object_release = "0x0"

@@ -6,10 +6,13 @@
 module haneul::object_tests;
 
 use haneul::address;
+use haneul::test_scenario;
 
 const EDifferentAddress: u64 = 0xF000;
 const EDifferentBytes: u64 = 0xF001;
 const EAddressRoundTrip: u64 = 0xF002;
+
+public struct Obj has key { id: UID }
 
 #[test]
 fun test_bytes_address_roundtrip() {
@@ -31,4 +34,30 @@ fun test_bytes_address_roundtrip() {
 
     uid0.delete();
     uid1.delete();
+}
+
+#[test]
+fun test_is_shared_input() {
+    let sender = @0xA;
+    let mut scenario = test_scenario::begin(sender);
+    transfer::share_object(Obj { id: object::new(scenario.ctx()) });
+    transfer::transfer(Obj { id: object::new(scenario.ctx()) }, sender);
+    transfer::freeze_object(Obj { id: object::new(scenario.ctx()) });
+
+    scenario.next_tx(sender);
+    let shared = scenario.take_shared<Obj>();
+    let owned = scenario.take_from_sender<Obj>();
+    let frozen = scenario.take_immutable<Obj>();
+    let new = Obj { id: object::new(scenario.ctx()) };
+    assert!(shared.id.is_shared_input());
+    assert!(!owned.id.is_shared_input());
+    assert!(!frozen.id.is_shared_input());
+    assert!(!new.id.is_shared_input());
+
+    test_scenario::return_shared(shared);
+    scenario.return_to_sender(owned);
+    test_scenario::return_immutable(frozen);
+    let Obj { id } = new;
+    id.delete();
+    scenario.end();
 }

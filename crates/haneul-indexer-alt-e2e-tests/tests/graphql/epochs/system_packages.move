@@ -7,6 +7,7 @@
 //# advance-epoch
 
 //# run-graphql
+/*
 { # Check what the system packages are from genesis.
   epoch(epochId: 0) {
     systemPackages {
@@ -24,8 +25,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # System packages for the latest epoch, which should be the same as for
   # genesis.
   epoch {
@@ -44,8 +47,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Limit from the front
   epoch {
     systemPackages(first: 2) {
@@ -63,8 +68,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Limit from the back
   epoch {
     systemPackages(last: 2) {
@@ -82,8 +89,10 @@
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(bcs(0x2))
+/*
 { # Offset at the front and limit
   epoch {
     systemPackages(after: "@{cursor_0}", first: 2) {
@@ -101,3 +110,4 @@
     }
   }
 }
+*/

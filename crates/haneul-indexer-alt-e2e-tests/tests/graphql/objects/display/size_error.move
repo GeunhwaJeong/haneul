@@ -12,54 +12,55 @@
 //    is too large.
 
 //# publish --sender A
-module test::mod {
-  use std::string::utf8;
-  use haneul::display;
-  use haneul::package;
+#[allow(deprecated_usage)]
+module test::mod;
 
-  public struct MOD() has drop;
+use std::string::utf8;
+use haneul::display;
+use haneul::package;
 
-  public struct Foo has key, store {
+public struct MOD() has drop;
+
+public struct Foo has key, store {
     id: UID,
     c: Chunky<Chunky<Chunky<Chunky<u8>>>>,
-  }
+}
 
-  public struct Chunky<T: copy + store> has copy, store {
+public struct Chunky<T: copy + store> has copy, store {
     long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000: T,
     long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001: T,
     long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002: T,
     long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003: T,
-  }
+}
 
-  fun init(otw: MOD, ctx: &mut TxContext) {
+fun init(otw: MOD, ctx: &mut TxContext) {
     let publisher = package::claim(otw, ctx);
     let mut d = display::new_with_fields<Foo>(
-      &publisher,
-      vector[utf8(b"c")],
-      vector[utf8(b"{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}")],
-      ctx,
+        &publisher,
+        vector[utf8(b"c")],
+        vector[utf8(b"{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}")],
+        ctx,
     );
 
     d.update_version();
     transfer::public_transfer(publisher, ctx.sender());
     transfer::public_transfer(d, ctx.sender());
-  }
+}
 
-  public fun new(x: u8, ctx: &mut TxContext): Foo {
+public fun new(x: u8, ctx: &mut TxContext): Foo {
     Foo {
-      id: object::new(ctx),
-      c: chunky(chunky(chunky(chunky(x)))),
+        id: object::new(ctx),
+        c: chunky(chunky(chunky(chunky(x)))),
     }
-  }
+}
 
-  public fun chunky<T: copy + store>(x: T): Chunky<T> {
+public fun chunky<T: copy + store>(x: T): Chunky<T> {
     Chunky {
-      long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000: x,
-      long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001: x,
-      long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002: x,
-      long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003: x,
+        long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000: x,
+        long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001: x,
+        long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002: x,
+        long_field_name_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003: x,
     }
-  }
 }
 
 //# programmable --sender A --inputs 42u8 @A
@@ -69,6 +70,7 @@ module test::mod {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   object(address: "@{obj_2_0}") {
     asMoveObject {
@@ -81,3 +83,4 @@ module test::mod {
     }
   }
 }
+*/

@@ -384,13 +384,16 @@ pub struct PipelineLayer {
     pub objects: ConcurrentLayer,
     pub epoch_start: ConcurrentLayer,
     pub epoch_end: ConcurrentLayer,
+    /// Configures `kvstore_protocol_configs` and `kvstore_protocol_configs_v2`.
     pub protocol_configs: ConcurrentLayer,
     pub packages: ConcurrentLayer,
     pub packages_by_id: ConcurrentLayer,
     pub packages_by_checkpoint: ConcurrentLayer,
     pub system_packages: ConcurrentLayer,
     pub tx_seq_digest: ConcurrentLayer,
+    /// Configures `kvstore_transaction_dimensions` and `kvstore_transaction_dimensions_v2`.
     pub transaction_bitmap_index: SequentialLayer,
+    /// Configures `kvstore_event_dimensions` and `kvstore_event_dimensions_v2`.
     pub event_bitmap_index: SequentialLayer,
     pub object_versions_by_checkpoint: ConcurrentLayer,
     pub object_tombstones: ConcurrentLayer,

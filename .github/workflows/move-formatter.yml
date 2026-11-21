@@ -1,4 +1,4 @@
-# Checks formatting in all examples and system packages (TBD for Haneul System and Bridge)
+# Checks formatting of all Move files outside external-crates, except deepbook.
 # Uses a fixed NPM version to separate prettier-move release changes from system package
 # changes.
 #
@@ -30,11 +30,9 @@ jobs:
     strategy:
       matrix:
         working-directory:
-          - examples # run on all examples
-          - crates/haneul-framework/packages/haneul-framework # haneul framework
-          - crates/haneul-framework/packages/move-stdlib # move stdlib
-          - crates/haneul-framework/packages/haneul-system # haneul system
-          - crates/haneul-framework/packages/bridge # bridge
+          - examples
+          - crates
+          - bridge
     defaults:
       run:
         working-directory: ${{ matrix.working-directory }}
@@ -43,4 +41,4 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # pin@v6.2.0
       - run: npm install --no-warnings @haneullabs/prettier-plugin-move@${{ env.FORMATTER_VERSION }}
-      - run: npx prettier-move -c **/*.move
+      - run: git ls-files '*.move' ':(top,exclude)crates/haneul-framework/packages/deepbook/**' | xargs npx prettier-move -c

@@ -7,18 +7,14 @@
 //# init --addresses test=0x0 --accounts A
 
 //# publish
-module test::m {
+module test::m;
 
-    public fun borrow_mut(
-        c: &mut haneul::coin::Coin<haneul::haneul::HANEUL>,
-    ): &mut haneul::coin::Coin<haneul::haneul::HANEUL> {
-        c
-    }
+public fun borrow_mut(c: &mut haneul::coin::Coin<haneul::haneul::HANEUL>): &mut haneul::coin::Coin<haneul::haneul::HANEUL> {
+    c
+}
 
-    public fun new_mut(): &mut haneul::coin::Coin<haneul::haneul::HANEUL> {
-        abort 0
-    }
-
+public fun new_mut(): &mut haneul::coin::Coin<haneul::haneul::HANEUL> {
+    abort 0
 }
 
 //# programmable --inputs 10 @A

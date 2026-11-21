@@ -46,7 +46,7 @@ use haneul_indexer_alt_reader::fullnode_client::FullnodeClient;
 use haneul_indexer_alt_reader::kv_loader::KvArgs;
 use haneul_indexer_alt_reader::kv_loader::KvLoader;
 use haneul_indexer_alt_reader::monotonic_read::CheckpointFloor;
-use haneul_indexer_alt_reader::package_resolver::DbPackageStore;
+use haneul_indexer_alt_reader::package_resolver::GrpcPackageStore;
 use haneul_indexer_alt_reader::package_resolver::PackageCache;
 use haneul_indexer_alt_reader::pg_reader::PgReader;
 use haneul_indexer_alt_reader::pg_reader::db::DbArgs;
@@ -376,11 +376,15 @@ pub async fn start_rpc(
 
     let kv_loader = KvLoader::new(ledger_grpc_reader.clone());
 
-    let package_store = Arc::new(PackageCache::new(DbPackageStore::new(pg_loader.clone())));
+    // Package resolution reads packages from the ledger gRPC service (kv-rpc or fullnode).
+    let package_store = Arc::new(PackageCache::new(GrpcPackageStore::new(
+        &ledger_grpc_reader,
+    )));
 
     let system_package_task = SystemPackageTask::new(
         system_package_task_args,
-        pg_reader.clone(),
+        ledger_grpc_reader.clone(),
+        ledger_grpc_floor.clone(),
         package_store.clone(),
     );
 
@@ -482,7 +486,7 @@ pub async fn start_rpc(
     let s_watermark = watermark_task.run();
 
     // Spawn the streaming tasks and wait for subscriptions to be ready before
-    // binding the listener, so the schema is only advertised once `kv_packages`
+    // binding the listener, so the schema is only advertised once `ledger_grpc`
     // has caught up to the first streamed checkpoint.
     let streaming_handles = if let Some((
         stream_task,
