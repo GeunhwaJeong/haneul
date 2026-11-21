@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 24 tasks
 
@@ -74,7 +73,7 @@ task 12, line 41:
 //# create-checkpoint
 Checkpoint created: 6
 
-task 13, lines 44-90:
+task 13, lines 43-91:
 //# run-graphql
 Response: {
   "data": {
@@ -219,7 +218,7 @@ Response: {
   }
 }
 
-task 14, lines 92-109:
+task 14, lines 93-112:
 //# run-graphql --cursors bcs(0u8,2u8,6)
 Response: {
   "data": {
@@ -245,7 +244,7 @@ Response: {
   }
 }
 
-task 15, lines 111-128:
+task 15, lines 114-133:
 //# run-graphql --cursors bcs(0u8,2u8,0)
 Response: {
   "data": {
@@ -271,7 +270,7 @@ Response: {
   }
 }
 
-task 16, lines 130-147:
+task 16, lines 135-154:
 //# run-graphql --cursors bcs(0u8,2u8,4)
 Response: {
   "data": {
@@ -306,7 +305,7 @@ Response: {
   }
 }
 
-task 17, lines 149-166:
+task 17, lines 156-175:
 //# run-graphql --cursors bcs(0u8,2u8,0)
 Response: {
   "data": {
@@ -350,7 +349,7 @@ Response: {
   }
 }
 
-task 18, lines 168-185:
+task 18, lines 177-196:
 //# run-graphql  --cursors bcs(0u8,2u8,3)
 Response: {
   "data": {
@@ -394,7 +393,7 @@ Response: {
   }
 }
 
-task 19, lines 187-219:
+task 19, lines 198-232:
 //# run-graphql  --cursors bcs(0u8,2u8,0) bcs(0u8,2u8,3)
 Response: {
   "data": {
@@ -439,7 +438,7 @@ Response: {
   }
 }
 
-task 20, lines 221-238:
+task 20, lines 234-253:
 //# run-graphql  --cursors bcs(0u8,2u8,6)
 Response: {
   "data": {
@@ -474,7 +473,7 @@ Response: {
   }
 }
 
-task 21, lines 240-256:
+task 21, lines 255-273:
 //# run-graphql --cursors bcs(0u8,2u8,1)
 Response: {
   "data": {
@@ -496,7 +495,7 @@ Response: {
   }
 }
 
-task 22, lines 258-274:
+task 22, lines 275-293:
 //# run-graphql --cursors bcs(0u8,2u8,0)
 Response: {
   "data": {
@@ -512,7 +511,7 @@ Response: {
   }
 }
 
-task 23, lines 275-297:
+task 23, lines 294-318:
 //# run-graphql --cursors bcs(0u8,2u8,2) bcs(0u8,2u8,5)
 Response: {
   "data": {

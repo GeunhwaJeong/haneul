@@ -5,7 +5,7 @@ processed 2 tasks
 
 // Test of a basic GraphQL query.
 
-task 1, lines 9-12:
+task 1, lines 9-14:
 //# run-graphql
 Response: {
   "data": {

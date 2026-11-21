@@ -41,7 +41,7 @@ task 5, line 72:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 6, lines 74-79:
+task 6, lines 74-81:
 //# run-graphql
 Response: {
   "data": {
@@ -54,7 +54,7 @@ Response: {
   }
 }
 
-task 7, lines 81-86:
+task 7, lines 83-90:
 //# run-graphql
 Response: {
   "data": {
@@ -65,7 +65,7 @@ Response: {
   }
 }
 
-task 8, lines 88-94:
+task 8, lines 92-100:
 //# run-graphql
 Response: {
   "data": {
@@ -78,23 +78,23 @@ Response: {
   }
 }
 
-task 9, lines 96-97:
+task 9, lines 102-103:
 //# programmable --sender A --inputs object(2,0) 42
 //> 0: P::M::inc_df(Input(0), Input(1))
 mutated: object(0,0), object(2,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 4248400,  storage_rebate: 4205916, non_refundable_storage_fee: 42484
 
-task 10, lines 99-100:
+task 10, lines 105-106:
 //# programmable --sender A --inputs object(2,0) 43
 //> 0: P::M::inc_dof(Input(0), Input(1))
 mutated: object(0,0), object(2,0), object(2,2)
 gas summary: computation_cost: 1000000, storage_cost: 3526400,  storage_rebate: 3491136, non_refundable_storage_fee: 35264
 
-task 11, line 102:
+task 11, line 108:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 12, lines 104-119:
+task 12, lines 110-127:
 //# run-graphql
 Response: {
   "data": {
@@ -113,7 +113,7 @@ Response: {
   }
 }
 
-task 13, lines 121-138:
+task 13, lines 129-148:
 //# run-graphql
 Response: {
   "data": {
@@ -138,17 +138,17 @@ Response: {
   }
 }
 
-task 14, lines 140-141:
+task 14, lines 150-151:
 //# programmable --sender A --inputs object(2,0)
 //> 0: P::M::inc(Input(0))
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2257200,  storage_rebate: 2234628, non_refundable_storage_fee: 22572
 
-task 15, line 143:
+task 15, line 153:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 16, lines 145-153:
+task 16, lines 155-165:
 //# run-graphql
 Response: {
   "data": {
@@ -165,7 +165,7 @@ Response: {
   }
 }
 
-task 17, lines 155-157:
+task 17, lines 167-169:
 //# programmable --sender A --inputs object(2,0) 42 @A
 //> 0: P::M::remove_df(Input(0), Input(1));
 //> 1: TransferObjects([Result(0)], Input(2))
@@ -174,7 +174,7 @@ unwrapped: object(2,1)
 deleted: object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 3526400,  storage_rebate: 4205916, non_refundable_storage_fee: 42484
 
-task 18, lines 159-161:
+task 18, lines 171-173:
 //# programmable --sender A --inputs object(2,0) 43 @A
 //> 0: P::M::remove_dof(Input(0), Input(1));
 //> 1: TransferObjects([Result(0)], Input(2))
@@ -182,11 +182,11 @@ mutated: object(0,0), object(2,0), object(2,2)
 deleted: object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 3526400,  storage_rebate: 5921388, non_refundable_storage_fee: 59812
 
-task 19, line 163:
+task 19, line 175:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 20, lines 165-173:
+task 20, lines 177-187:
 //# run-graphql
 Response: {
   "data": {
@@ -197,7 +197,7 @@ Response: {
   }
 }
 
-task 21, lines 175-185:
+task 21, lines 189-201:
 //# run-graphql
 Response: {
   "data": {
@@ -214,7 +214,7 @@ Response: {
   }
 }
 
-task 22, lines 187-190:
+task 22, lines 203-208:
 //# run-graphql
 Response: {
   "data": {

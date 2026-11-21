@@ -6,7 +6,7 @@ processed 2 tasks
 init:
 A: object(0,0)
 
-task 1, lines 7-18:
+task 1, lines 7-20:
 //# run-graphql
 Response: {
   "data": {

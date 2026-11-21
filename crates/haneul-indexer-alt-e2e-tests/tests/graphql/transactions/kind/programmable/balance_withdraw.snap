@@ -47,7 +47,7 @@ task 5, line 29:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 6, lines 31-76:
+task 6, lines 31-78:
 //# run-graphql
 Response: {
   "data": {
@@ -113,7 +113,7 @@ Response: {
   }
 }
 
-task 7, lines 78-81:
+task 7, lines 80-83:
 //# programmable --sender B --inputs withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100) @A
 // B withdraws 100 from their own balance: a plain sender withdrawal.
 //> 0: haneul::balance::redeem_funds<haneul::haneul::HANEUL>(Input(0));
@@ -122,7 +122,7 @@ mutated: object(0,1)
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 100), (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 100)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, lines 83-86:
+task 8, lines 85-88:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(200,@A,object(3,0)) mutshared(3,0) immshared(6) @B
 // A second spend moves the allowance past the version the first spend wrote.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2));
@@ -132,11 +132,11 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(1,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 200), (object(4,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 200)
 gas summary: computation_cost: 1000000, storage_cost: 4172400,  storage_rebate: 4130676, non_refundable_storage_fee: 41724
 
-task 9, line 88:
+task 9, line 90:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 10, lines 90-118:
+task 10, lines 92-122:
 //# run-graphql
 Response: {
   "data": {
@@ -163,7 +163,7 @@ Response: {
   }
 }
 
-task 11, lines 120-161:
+task 11, lines 124-167:
 //# run-graphql
 Response: {
   "data": {

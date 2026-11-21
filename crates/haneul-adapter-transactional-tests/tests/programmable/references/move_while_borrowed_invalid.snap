@@ -10,19 +10,19 @@ processed 43 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 11-73:
+task 1, lines 11-111:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 18962000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 75-78:
+task 2, lines 113-116:
 //# publish --upgradeable --sender A
 created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5084400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 4, lines 85-87:
+task 4, lines 123-125:
 //# programmable --sender A --inputs @A
 //> 0: test::m::new();
 //> 1: TransferObjects([Result(0)], Input(0));
@@ -30,14 +30,14 @@ created: object(4,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 5, lines 89-90:
+task 5, lines 127-128:
 //# programmable --sender A
 //> 0: test::m::share();
 created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 6, lines 92-94:
+task 6, lines 130-132:
 //# programmable --sender A --inputs @A
 //> 0: test::m::new_parent();
 //> 1: TransferObjects([Result(0)], Input(0));
@@ -45,14 +45,14 @@ created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2234400,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 7, lines 96-97:
+task 7, lines 134-135:
 //# programmable --sender A --inputs object(6,0)
 //> 0: test::m::new_child(Input(0));
 created: object(7,0)
 mutated: object(0,0), object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 3473200,  storage_rebate: 2234177, non_refundable_storage_fee: 223
 
-task 8, lines 99-102:
+task 8, lines 137-140:
 //# programmable --sender A --inputs 1000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: haneul::coin::into_balance<haneul::haneul::HANEUL>(Result(0));
@@ -61,13 +61,13 @@ mutated: object(0,0)
 accumulators_written: (object(8,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 1000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 9, line 104:
+task 9, line 142:
 //# create-checkpoint
 Checkpoint created: 1
 
 // --- a result moved while a reference into it is live ---
 
-task 10, lines 108-113:
+task 10, lines 146-151:
 //# programmable --inputs 1
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, `&mut` child live
 //> 0: test::m::nc();
@@ -77,7 +77,7 @@ task 10, lines 108-113:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 11, lines 115-120:
+task 11, lines 153-158:
 //# programmable
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, `&` child live
 //> 0: test::m::nc();
@@ -87,7 +87,7 @@ task 11, lines 115-120:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 12, lines 122-128:
+task 12, lines 160-166:
 //# programmable --inputs 1
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 3, grandchild live
 //> 0: test::m::outer();
@@ -100,7 +100,7 @@ Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { k
 
 // --- a value and a reference into it in one call, in both orders ---
 
-task 13, lines 132-135:
+task 13, lines 170-173:
 //# programmable
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 1, `&` then the value
 //> 0: test::m::nc();
@@ -108,7 +108,7 @@ task 13, lines 132-135:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 14, lines 137-140:
+task 14, lines 175-178:
 //# programmable
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 1, `&mut` then the value
 //> 0: test::m::nc();
@@ -116,7 +116,7 @@ task 14, lines 137-140:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 15, lines 142-145:
+task 15, lines 180-183:
 //# programmable
 // INVALID: ArgumentWithoutValue at arg 1 of command 1, the value then a `&` of it
 //> 0: test::m::nc();
@@ -124,7 +124,7 @@ task 15, lines 142-145:
 Error: Transaction Effects Status: Invalid command argument at 1. Specified argument location does not have a value and cannot be used
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: ArgumentWithoutValue }, source: None, command: Some(1) } }
 
-task 16, lines 147-150:
+task 16, lines 185-188:
 //# programmable
 // INVALID: ArgumentWithoutValue at arg 1 of command 1, the value then a `&mut` of it
 //> 0: test::m::nc();
@@ -132,7 +132,7 @@ task 16, lines 147-150:
 Error: Transaction Effects Status: Invalid command argument at 1. Specified argument location does not have a value and cannot be used
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: ArgumentWithoutValue }, source: None, command: Some(1) } }
 
-task 17, lines 152-156:
+task 17, lines 190-194:
 //# programmable
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, the value moved with its own field reference
 //> 0: test::m::nc();
@@ -141,7 +141,7 @@ task 17, lines 152-156:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 18, lines 158-162:
+task 18, lines 196-200:
 //# programmable
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 2, the field reference first
 //> 0: test::m::nc();
@@ -150,7 +150,7 @@ task 18, lines 158-162:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 19, lines 164-168:
+task 19, lines 202-206:
 //# programmable
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 2, a frozen `&mut` result lives through the call, unlike a read
 //> 0: test::m::nc();
@@ -159,7 +159,7 @@ task 19, lines 164-168:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 20, lines 170-174:
+task 20, lines 208-212:
 //# programmable --inputs 1
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, the root is moved before a last-use read releases the reference
 //> 0: test::m::nc();
@@ -168,7 +168,7 @@ task 20, lines 170-174:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 21, lines 176-180:
+task 21, lines 214-218:
 //# programmable --sender A --inputs @A
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, TransferObjects processes objects before the recipient read
 //> 0: test::m::new_tagged(Input(0));
@@ -179,7 +179,7 @@ Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { k
 
 // --- object inputs ---
 
-task 22, lines 184-187:
+task 22, lines 222-225:
 //# programmable --sender A --inputs object(4,0)
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 1, an owned input by value then its `&mut Inner`
 //> 0: test::m::inner_mut(Input(0));
@@ -187,7 +187,7 @@ task 22, lines 184-187:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 23, lines 189-192:
+task 23, lines 227-230:
 //# programmable --sender A --inputs object(4,0)
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 1, `&mut Inner` then the owned input by value
 //> 0: test::m::inner_mut(Input(0));
@@ -195,7 +195,7 @@ task 23, lines 189-192:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 24, lines 194-199:
+task 24, lines 232-237:
 //# programmable --sender A --inputs object(4,0) @B 1
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, an owned input transferred while borrowed
 //> 0: test::m::inner_mut(Input(0));
@@ -205,7 +205,7 @@ task 24, lines 194-199:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 25, lines 201-206:
+task 25, lines 239-244:
 //# programmable --sender A --inputs object(4,0)
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, an owned input put in a vector while borrowed
 //> 0: test::m::inner_mut(Input(0));
@@ -215,7 +215,7 @@ task 25, lines 201-206:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 26, lines 208-212:
+task 26, lines 246-250:
 //# programmable --sender A --inputs object(4,0)
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 1, an owned input deleted while its id is borrowed
 //> 0: haneul::object::borrow_id<test::m::Obj>(Input(0));
@@ -224,7 +224,7 @@ task 26, lines 208-212:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 27, lines 214-218:
+task 27, lines 252-256:
 //# programmable --sender A --inputs object(5,0)
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 1, a shared input deleted while borrowed
 //> 0: test::m::inner_mut(Input(0));
@@ -233,7 +233,7 @@ task 27, lines 214-218:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Debug of error: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue } at command Some(1)
 
-task 28, lines 220-225:
+task 28, lines 258-263:
 //# programmable --sender A
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 2, the parent by value while the sibling reference from one call is live
 //> 0: test::m::new();
@@ -245,7 +245,7 @@ Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { k
 
 // --- receiving inputs ---
 
-task 29, lines 229-233:
+task 29, lines 267-271:
 //# programmable --sender A --inputs object(6,0) receiving(7,0)
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 1, received while a `&mut` into the receiving input is live
 //> 0: test::m::recv_mut(Input(1));
@@ -254,7 +254,7 @@ task 29, lines 229-233:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 30, lines 235-239:
+task 30, lines 273-277:
 //# programmable --sender A --inputs object(6,0) receiving(7,0)
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 1, received while a `&` into the receiving input is live
 //> 0: test::m::recv(Input(1));
@@ -263,14 +263,14 @@ task 30, lines 235-239:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 31, lines 241-243:
+task 31, lines 279-281:
 //# programmable --sender A --inputs receiving(7,0)
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 0, `&` then by value in one call
 //> 0: test::m::r_then_v(Input(0), Input(0));
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(0) } }
 
-task 32, lines 245-247:
+task 32, lines 283-285:
 //# programmable --sender A --inputs receiving(7,0)
 // INVALID: ArgumentWithoutValue at arg 1 of command 0, by value then `&` in one call
 //> 0: test::m::v_then_r(Input(0), Input(0));
@@ -279,7 +279,7 @@ Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { k
 
 // --- gas, coins, withdrawals ---
 
-task 33, lines 251-255:
+task 33, lines 289-293:
 //# programmable --sender A --inputs @B
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 1, the gas coin transferred while borrowed
 //> 0: test::m::id_mut<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas);
@@ -288,7 +288,7 @@ task 33, lines 251-255:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 34, lines 257-261:
+task 34, lines 295-299:
 //# programmable --sender A --inputs @B
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 1, send_funds takes the gas coin by value while borrowed
 //> 0: test::m::id_mut<haneul::coin::Coin<haneul::haneul::HANEUL>>(Gas);
@@ -297,7 +297,7 @@ task 34, lines 257-261:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 35, lines 263-267:
+task 35, lines 301-305:
 //# programmable --sender A --inputs @B
 // INVALID: ArgumentWithoutValue at arg 0 of command 1, the gas coin borrowed after it was transferred
 //> 0: TransferObjects([Gas], Input(0));
@@ -306,7 +306,7 @@ task 35, lines 263-267:
 Error: Transaction Effects Status: Invalid command argument at 0. Specified argument location does not have a value and cannot be used
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: ArgumentWithoutValue }, source: None, command: Some(1) } }
 
-task 36, lines 269-274:
+task 36, lines 307-312:
 //# programmable --sender A --inputs 1000 @A
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 2, a coin merged into a reference to itself
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -316,7 +316,7 @@ task 36, lines 269-274:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 37, lines 276-280:
+task 37, lines 314-318:
 //# programmable --sender A --inputs 1000 @A
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 1, a coin merged into itself by value
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -325,7 +325,7 @@ task 37, lines 276-280:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 38, lines 282-288:
+task 38, lines 320-326:
 //# programmable --sender A --inputs 100 @B
 // INVALID: CannotMoveBorrowedValue at arg 1 of command 2, a coin merged away while borrowed
 //> 0: SplitCoins(Gas, [Input(0), Input(0)]);
@@ -336,7 +336,7 @@ task 38, lines 282-288:
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 39, lines 290-295:
+task 39, lines 328-333:
 //# programmable --sender A --inputs 100 @B
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, a coin transferred while borrowed
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -346,7 +346,7 @@ task 39, lines 290-295:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(2) } }
 
-task 40, lines 297-301:
+task 40, lines 335-339:
 //# programmable --sender A --inputs withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100) @B
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 1, a withdrawal redeemed while borrowed
 //> 0: test::m::id_mut<haneul::funds_accumulator::Withdrawal<haneul::balance::Balance<haneul::haneul::HANEUL>>>(Input(0));
@@ -357,7 +357,7 @@ Debug of error: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue
 
 // --- upgrade caps and tickets ---
 
-task 41, lines 305-309:
+task 41, lines 343-347:
 //# programmable --sender A --inputs object(2,1)
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 1, the cap by value while a reference into it is live
 //> 0: test::m::id_mut<haneul::package::UpgradeCap>(Input(0));
@@ -366,7 +366,7 @@ task 41, lines 305-309:
 Error: Transaction Effects Status: Invalid command argument at 0. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: CannotMoveBorrowedValue }, source: None, command: Some(1) } }
 
-task 42, lines 311-317:
+task 42, lines 349-355:
 //# programmable --sender A --inputs object(2,1) 0u8 digest(q_2)
 // INVALID: CannotMoveBorrowedValue at arg 0 of command 2, Upgrade consumes the ticket while a reference into it is live
 //> 0: haneul::package::authorize_upgrade(Input(0), Input(1), Input(2));

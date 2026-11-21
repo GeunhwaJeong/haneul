@@ -16,7 +16,7 @@ task 2, line 22:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 24-31:
+task 3, lines 24-33:
 //# run-graphql
 Response: {
   "data": null,
@@ -36,7 +36,7 @@ Response: {
   ]
 }
 
-task 4, lines 33-40:
+task 4, lines 35-44:
 //# run-graphql
 Response: {
   "data": null,
@@ -56,7 +56,7 @@ Response: {
   ]
 }
 
-task 5, lines 42-49:
+task 5, lines 46-55:
 //# run-graphql
 Response: {
   "data": null,
@@ -76,7 +76,7 @@ Response: {
   ]
 }
 
-task 6, lines 51-58:
+task 6, lines 57-66:
 //# run-graphql
 Response: {
   "data": null,
@@ -96,7 +96,7 @@ Response: {
   ]
 }
 
-task 7, lines 60-67:
+task 7, lines 68-77:
 //# run-graphql
 Response: {
   "data": null,
@@ -116,7 +116,7 @@ Response: {
   ]
 }
 
-task 8, lines 69-76:
+task 8, lines 79-88:
 //# run-graphql
 Response: {
   "data": null,

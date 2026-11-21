@@ -3,19 +3,19 @@ source: external-crates/move/crates/move-transactional-test-runner/src/framework
 ---
 processed 18 tasks
 
-task 1, lines 7-40:
+task 1, lines 7-52:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 9978800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 42:
+task 2, line 54:
 //# run tto::M1::start
 created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 3420000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 3, line 44:
+task 3, line 56:
 //# view-object 2,0
 Owner: Account Address ( _ )
 Version: 3
@@ -27,7 +27,7 @@ Contents: tto::M1::A {
     },
 }
 
-task 4, line 46:
+task 4, line 58:
 //# view-object 2,1
 Owner: Account Address ( fake(2,0) )
 Version: 3
@@ -39,75 +39,75 @@ Contents: tto::M1::B {
     },
 }
 
-task 5, line 48:
+task 5, line 60:
 //# run tto::M1::call_mut_ref --args object(2,0) receiving(2,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 2203780, non_refundable_storage_fee: 220
 
-task 6, line 50:
+task 6, line 62:
 //# run tto::M1::call_immut_ref --args object(2,0) receiving(2,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 2203780, non_refundable_storage_fee: 220
 
-task 7, line 52:
+task 7, line 64:
 //# run tto::M1::call_mut_ref_ret --args object(2,0) receiving(2,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 2203780, non_refundable_storage_fee: 220
 
-task 8, line 54:
+task 8, line 66:
 //# run tto::M1::call_mut_ref_immut_ret --args object(2,0) receiving(2,1)
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 2203780, non_refundable_storage_fee: 220
 
-task 9, lines 56-57:
+task 9, lines 68-69:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::immut_immut_ref(Input(0), Input(0))
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 10, lines 59-60:
+task 10, lines 71-72:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::immut_mut_ref(Input(0), Input(0))
 Error: Transaction Effects Status: Invalid command argument at 1. The argument specified cannot be used as a reference argument in the Move call. Either the argument is a mutable reference and it conflicts with another argument to the call, or the argument is mutable and another reference extends it and will be used in a later command.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: InvalidReferenceArgument }, source: None, command: Some(0) } }
 
-task 11, lines 62-63:
+task 11, lines 74-75:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::mut_immut_ref(Input(0), Input(0))
 Error: Transaction Effects Status: Invalid command argument at 0. The argument specified cannot be used as a reference argument in the Move call. Either the argument is a mutable reference and it conflicts with another argument to the call, or the argument is mutable and another reference extends it and will be used in a later command.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument }, source: None, command: Some(0) } }
 
-task 12, lines 65-66:
+task 12, lines 77-78:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::mut_mut_ref(Input(0), Input(0))
 Error: Transaction Effects Status: Invalid command argument at 0. The argument specified cannot be used as a reference argument in the Move call. Either the argument is a mutable reference and it conflicts with another argument to the call, or the argument is mutable and another reference extends it and will be used in a later command.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidReferenceArgument }, source: None, command: Some(0) } }
 
-task 13, lines 68-69:
+task 13, lines 80-81:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::take_mut_ref(Input(0), Input(0))
 Error: Transaction Effects Status: Invalid command argument at 1. Specified argument location does not have a value and cannot be used
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: ArgumentWithoutValue }, source: None, command: Some(0) } }
 
-task 14, lines 71-72:
+task 14, lines 83-84:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::take_immut_ref(Input(0), Input(0))
 Error: Transaction Effects Status: Invalid command argument at 1. Specified argument location does not have a value and cannot be used
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: ArgumentWithoutValue }, source: None, command: Some(0) } }
 
-task 15, lines 74-75:
+task 15, lines 86-87:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::immut_ref_take(Input(0), Input(0))
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(0) } }
 
-task 16, lines 77-78:
+task 16, lines 89-90:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::mut_ref_take(Input(0), Input(0))
 Error: Transaction Effects Status: Invalid command argument at 1. Cannot move a borrowed value. The value's type does resulted in this argument usage being inferred as a move. This is likely due to the type not having the `copy` ability; although in rare cases, it could also be this is the last usage of a value without the `drop` ability.
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 1, kind: CannotMoveBorrowedValue }, source: None, command: Some(0) } }
 
-task 17, lines 80-81:
+task 17, lines 92-93:
 //# programmable --inputs receiving(2,1)
 //> tto::M1::double_take(Input(0), Input(0))
 Error: Transaction Effects Status: Invalid command argument at 1. Specified argument location does not have a value and cannot be used

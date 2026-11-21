@@ -1,13 +1,12 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 16 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 7-15:
+task 1, lines 7-17:
 //# run-graphql
 Response: {
   "data": {
@@ -20,7 +19,7 @@ Response: {
   }
 }
 
-task 2, lines 17-19:
+task 2, lines 19-21:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -28,7 +27,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 21-23:
+task 3, lines 23-25:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -36,11 +35,11 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, line 25:
+task 4, line 27:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 27-35:
+task 5, lines 29-39:
 //# run-graphql
 Response: {
   "data": {
@@ -49,7 +48,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "3L8wCaHRtKJEC6fVqGHBPMZoLUw5MHUy3kbdjs8P1CUQ",
               "effects": {
@@ -63,7 +62,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "2yDQFdMx33zdkdxoyjGiXYHoTZXC9uMYVkKqgeRdXp5i",
               "effects": {
@@ -77,7 +76,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARADSgQIARACAQABAAAAAAAAAAIAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQA0oECAEQAgEAAQAAAAAAAAACAAAAAAAAAA==",
             "node": {
               "digest": "FnRLaJFCiQDLmx8HEJsaNfLAnGX1TULDnuLWBhDrLACm",
               "effects": {
@@ -96,7 +95,7 @@ Response: {
   }
 }
 
-task 6, lines 37-39:
+task 6, lines 41-43:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -104,7 +103,7 @@ created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, lines 41-43:
+task 7, lines 45-47:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -112,11 +111,11 @@ created: object(7,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, line 45:
+task 8, line 49:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 9, lines 47-55:
+task 9, lines 51-61:
 //# run-graphql
 Response: {
   "data": {
@@ -125,7 +124,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIAhAESgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBEoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "Hw9QektYGuRcYgzJS7v1ZQmUsXAZEqZrb5nqvvJvE95k",
               "effects": {
@@ -139,7 +138,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAhAFSgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBUoECAIQAQEAAgAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "2QxF54i3FqKDnQuxoQqybqRoMztXGY3utGRJoyMXKDRs",
               "effects": {
@@ -153,7 +152,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAhAGSgQIAhACAQACAAAAAAAAAAIAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBkoECAIQAgEAAgAAAAAAAAACAAAAAAAAAA==",
             "node": {
               "digest": "2iEZQGAgJYgzmcNC2eLrbNejeTJHJxY4Xy4yKj7R3D8g",
               "effects": {
@@ -172,11 +171,11 @@ Response: {
   }
 }
 
-task 10, line 57:
+task 10, line 63:
 //# advance-epoch
 Epoch advanced: 1
 
-task 11, lines 59-61:
+task 11, lines 65-67:
 //# programmable --sender A --inputs 43 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -184,18 +183,18 @@ created: object(11,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 12, lines 63-65:
+task 12, lines 69-71:
 //# programmable --sender A --inputs 1
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 13, line 67:
+task 13, line 73:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 14, lines 69-83:
+task 14, lines 75-91:
 //# run-graphql
 Response: {
   "data": {
@@ -204,7 +203,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIBBAISgIIBAEABAAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQCEoCCAQBAAQAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "idMq7oAKxzsUwUinEqL4qAz2XNsHdNNDCjh4ds27ZSZ",
               "effects": {
@@ -218,7 +217,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIBBAJSgQIBBABAQAEAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQCUoECAQQAQEABAAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "5vjWGGM35heZ68iHcHJq8GJC79L1tQ3DbWdd7ZjcRtp3",
               "effects": {
@@ -232,7 +231,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIBBAKSgQIBBACAQAEAAAAAAAAAAIAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQCkoECAQQAgEABAAAAAAAAAACAAAAAAAAAA==",
             "node": {
               "digest": "9Jgpen4tvpn3ZjDhQyZoykZG2VF4bmJ2uZsjV9jWbACU",
               "effects": {
@@ -257,6 +256,6 @@ Response: {
   }
 }
 
-task 15, line 85:
+task 15, line 93:
 //# create-checkpoint
 Checkpoint created: 5

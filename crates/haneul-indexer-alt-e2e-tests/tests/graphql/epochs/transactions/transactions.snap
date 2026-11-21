@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 17 tasks
 
@@ -85,7 +84,7 @@ task 13, lines 45-47:
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 14, lines 49-64:
+task 14, lines 49-66:
 //# run-graphql
 Response: {
   "data": {
@@ -95,12 +94,12 @@ Response: {
         "pageInfo": {
           "hasPreviousPage": false,
           "hasNextPage": false,
-          "startCursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
-          "endCursor": "AAABDCgCOgQIAhACSgIIAgEBAgAAAAAAAAAAAAAAAAAAAA=="
+          "startCursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
+          "endCursor": "AAABCigCOgIQAkoCCAIBAQIAAAAAAAAAAAAAAAAAAAA="
         },
         "edges": [
           {
-            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
+            "cursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -110,7 +109,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -125,7 +124,7 @@ Response: {
   }
 }
 
-task 15, lines 66-81:
+task 15, lines 68-85:
 //# run-graphql
 Response: {
   "data": {
@@ -136,12 +135,12 @@ Response: {
         "pageInfo": {
           "hasPreviousPage": false,
           "hasNextPage": false,
-          "startCursor": "AAABDCgBOgQIAhACSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
-          "endCursor": "AAABDCgCOgQIBhALSgIIBgEBBgAAAAAAAAAAAAAAAAAAAA=="
+          "startCursor": "AAABCigBOgIQAkoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
+          "endCursor": "AAABCigCOgIQC0oCCAYBAQYAAAAAAAAAAAAAAAAAAAA="
         },
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIAhACSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQAkoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -151,7 +150,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAhADSgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQA0oECAIQAQEAAgAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -161,7 +160,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAhAESgQIAhACAQACAAAAAAAAAAIAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBEoECAIQAgEAAgAAAAAAAAACAAAAAAAAAA==",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -171,7 +170,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAhAFSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBUoECAIQAwEAAgAAAAAAAAADAAAAAAAAAA==",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -181,7 +180,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIAxAGSgIIAwEAAwAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBkoCCAMBAAMAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -191,7 +190,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAxAHSgQIAxABAQADAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQB0oECAMQAQEAAwAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -201,7 +200,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIBBAISgIIBAEABAAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQCEoCCAQBAAQAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -211,7 +210,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIBRAJSgIIBQEABQAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQCUoCCAUBAAUAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -221,7 +220,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIBRAKSgQIBRABAQAFAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQCkoECAUQAQEABQAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "effects": {
                 "checkpoint": {
@@ -236,7 +235,7 @@ Response: {
   }
 }
 
-task 16, lines 83-97:
+task 16, lines 87-103:
 //# run-graphql
 Response: {
   "data": {

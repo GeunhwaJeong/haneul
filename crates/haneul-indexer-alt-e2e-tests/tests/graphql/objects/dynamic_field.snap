@@ -88,7 +88,7 @@ task 12, line 43:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 13, lines 45-69:
+task 13, lines 45-71:
 //# run-graphql --cursors bcs(42u64)
 Response: {
   "data": {
@@ -156,7 +156,7 @@ Response: {
   }
 }
 
-task 14, lines 71-95:
+task 14, lines 73-99:
 //# run-graphql --cursors bcs(43u64)
 Response: {
   "data": {
@@ -236,7 +236,7 @@ Response: {
   }
 }
 
-task 15, lines 97-126:
+task 15, lines 101-132:
 //# run-graphql --cursors bcs(44u64)
 Response: {
   "data": {
@@ -332,7 +332,7 @@ Response: {
   }
 }
 
-task 16, lines 128-150:
+task 16, lines 134-158:
 //# run-graphql
 Response: {
   "data": {
@@ -340,7 +340,7 @@ Response: {
   }
 }
 
-task 17, lines 152-163:
+task 17, lines 160-173:
 //# run-graphql
 Response: {
   "data": {
@@ -351,7 +351,7 @@ Response: {
   }
 }
 
-task 18, lines 165-171:
+task 18, lines 175-183:
 //# run-graphql
 Response: {
   "data": {
@@ -359,7 +359,7 @@ Response: {
   }
 }
 
-task 19, lines 173-185:
+task 19, lines 185-199:
 //# run-graphql
 Response: {
   "data": {
@@ -381,7 +381,7 @@ Response: {
   }
 }
 
-task 20, lines 187-203:
+task 20, lines 201-219:
 //# run-graphql
 Response: {
   "data": {
@@ -440,7 +440,7 @@ Response: {
   }
 }
 
-task 21, lines 205-235:
+task 21, lines 221-253:
 //# run-graphql --cursors bcs(42u64) bcs(43u64) bcs(45u64)
 Response: {
   "data": {
@@ -723,7 +723,7 @@ Response: {
   }
 }
 
-task 22, lines 237-261:
+task 22, lines 255-281:
 //# run-graphql --cursors bcs(42u64) bcs(43u64) bcs(45u64)
 Response: {
   "data": {
@@ -865,18 +865,18 @@ Response: {
   }
 }
 
-task 23, lines 263-265:
+task 23, lines 283-285:
 //# programmable --sender A --inputs object(1,0) 42u64 1000u64
 //> 0: haneul::bag::remove<u64, u64>(Input(0), Input(1));
 //> 1: haneul::bag::add<u64, u64>(Input(0), Input(1), Input(2));
 mutated: object(0,0), object(1,0), object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 3754400,  storage_rebate: 3716856, non_refundable_storage_fee: 37544
 
-task 24, line 267:
+task 24, line 287:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 25, lines 269-287:
+task 25, lines 289-309:
 //# run-graphql --cursors bcs(42u64)
 Response: {
   "data": {
@@ -946,7 +946,7 @@ Response: {
   }
 }
 
-task 26, lines 289-293:
+task 26, lines 311-315:
 //# programmable --sender A --inputs object(2,0) 44u64 50u64
 //> 0: haneul::object_bag::remove<u64, haneul::coin::Coin<haneul::haneul::HANEUL>>(Input(0), Input(1));
 //> 1: SplitCoins(Gas, [Input(2)]);
@@ -955,11 +955,11 @@ task 26, lines 289-293:
 mutated: object(0,0), object(2,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 3374400,  storage_rebate: 3340656, non_refundable_storage_fee: 33744
 
-task 27, line 295:
+task 27, line 317:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 28, lines 297-319:
+task 28, lines 319-343:
 //# run-graphql --cursors bcs(44u64)
 Response: {
   "data": {

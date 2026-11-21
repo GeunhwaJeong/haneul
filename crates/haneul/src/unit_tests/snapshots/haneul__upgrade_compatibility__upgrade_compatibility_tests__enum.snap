@@ -3,299 +3,299 @@ source: crates/haneul/src/upgrade_compatibility/../unit_tests/upgrade_compatibil
 expression: normalize_path(err.to_string())
 ---
 error[EUC01003]: ability mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:10:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:10:13
    │
-10 │     public enum EnumAddAbility has copy, drop { // add drop
-   │                 ^^^^^^^^^^^^^^ Unexpected ability: 'drop'
+10 │ public enum EnumAddAbility has copy, drop {
+   │             ^^^^^^^^^^^^^^ Unexpected ability: 'drop'
    │
    = Enums are part of a module's public interface and cannot be removed or changed during a 'compatible' upgrade.
    = Restore the original ability of the enum: 'copy' for enum 'EnumAddAbility'.
 
 error[EUC01003]: ability mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:14:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:15:13
    │
-14 │     public enum EnumRemoveAbility has copy { // drop removed
-   │                 ^^^^^^^^^^^^^^^^^ Missing ability: 'drop'
+15 │ public enum EnumRemoveAbility has copy {
+   │             ^^^^^^^^^^^^^^^^^ Missing ability: 'drop'
    │
    = Enums are part of a module's public interface and cannot be removed or changed during a 'compatible' upgrade.
    = Restore the original abilities of the enum: 'copy' and 'drop' for enum 'EnumRemoveAbility'.
 
 error[EUC01003]: ability mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:18:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:20:13
    │
-18 │     public enum EnumAddAndRemoveAbility has copy, store { // change drop to store
-   │                 ^^^^^^^^^^^^^^^^^^^^^^^ Mismatched abilities: missing 'drop', unexpected 'store'
+20 │ public enum EnumAddAndRemoveAbility has copy, store {
+   │             ^^^^^^^^^^^^^^^^^^^^^^^ Mismatched abilities: missing 'drop', unexpected 'store'
    │
    = Enums are part of a module's public interface and cannot be removed or changed during a 'compatible' upgrade.
    = Restore the original abilities of the enum: 'copy' and 'drop' for enum 'EnumAddAndRemoveAbility'.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:24:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:27:5
    │
-22 │     public enum EnumAddVariant {
-   │                 -------------- Enum definition
-23 │         A,
-24 │         B, // added
-   │         ^ New unexpected variant 'B'.
+25 │ public enum EnumAddVariant {
+   │             -------------- Enum definition
+26 │     A,
+27 │     B, // added
+   │     ^ New unexpected variant 'B'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variant for enum 'EnumAddVariant' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:27:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:30:13
    │
-27 │     public enum EnumRemoveVariant {
-   │                 ^^^^^^^^^^^^^^^^^ Missing variant 'B'.
+30 │ public enum EnumRemoveVariant {
+   │             ^^^^^^^^^^^^^^^^^ Missing variant 'B'.
    │
    = Enums are part of a module's public interface and cannot be changed during an upgrade.
    = Restore the original enum's variant 'B' for enum 'EnumRemoveVariant' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:34:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:37:5
    │
-32 │     public enum EnumChangeVariant {
-   │                 ----------------- Enum definition
-33 │         A,
-34 │         C, // changed from B
-   │         ^ Mismatched variant 'C', expected 'B'.
+35 │ public enum EnumChangeVariant {
+   │             ----------------- Enum definition
+36 │     A,
+37 │     C, // changed from B
+   │     ^ Mismatched variant 'C', expected 'B'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangeVariant' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:39:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:42:5
    │
-37 │     public enum EnumChangeAndAddVariant {
-   │                 ----------------------- Enum definition
-38 │         A,
-39 │         C, // to be changed to C
-   │         ^ Mismatched variant 'C', expected 'B'.
-   │
-   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
-   = Restore the original enum's variants for enum 'EnumChangeAndAddVariant' including the ordering.
-
-error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:39:9
-   │
-37 │     public enum EnumChangeAndAddVariant {
-   │                 ----------------------- Enum definition
-38 │         A,
-39 │         C, // to be changed to C
-   │         ^ New unexpected variant 'C'.
+40 │ public enum EnumChangeAndAddVariant {
+   │             ----------------------- Enum definition
+41 │     A,
+42 │     C, // to be changed to C
+   │     ^ Mismatched variant 'C', expected 'B'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangeAndAddVariant' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:40:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:42:5
    │
-37 │     public enum EnumChangeAndAddVariant {
-   │                 ----------------------- Enum definition
+40 │ public enum EnumChangeAndAddVariant {
+   │             ----------------------- Enum definition
+41 │     A,
+42 │     C, // to be changed to C
+   │     ^ New unexpected variant 'C'.
+   │
+   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
+   = Restore the original enum's variants for enum 'EnumChangeAndAddVariant' including the ordering.
+
+error[EUC02001]: variant mismatch
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:43:5
+   │
+40 │ public enum EnumChangeAndAddVariant {
+   │             ----------------------- Enum definition
    ·
-40 │         D // added
-   │         ^ New unexpected variant 'D'.
+43 │     D, // added
+   │     ^ New unexpected variant 'D'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangeAndAddVariant' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:43:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:46:13
    │
-43 │     public enum EnumChangeAndRemoveVariant {
-   │                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing variant 'C'.
+46 │ public enum EnumChangeAndRemoveVariant {
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing variant 'C'.
    │
    = Enums are part of a module's public interface and cannot be changed during an upgrade.
    = Restore the original enum's variant 'C' for enum 'EnumChangeAndRemoveVariant' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:45:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:48:5
    │
-43 │     public enum EnumChangeAndRemoveVariant {
-   │                 -------------------------- Enum definition
-44 │         A,
-45 │         C, // changed to C
-   │         ^ Mismatched variant 'C', expected 'B'.
+46 │ public enum EnumChangeAndRemoveVariant {
+   │             -------------------------- Enum definition
+47 │     A,
+48 │     C, // changed to C
+   │     ^ Mismatched variant 'C', expected 'B'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangeAndRemoveVariant' including the ordering.
 
 error[EUC01003]: ability mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:50:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:53:13
    │
-50 │     public enum EnumAddAbilityWithTypes has copy, drop { // drop added
-   │                 ^^^^^^^^^^^^^^^^^^^^^^^ Unexpected ability: 'drop'
+53 │ public enum EnumAddAbilityWithTypes has copy, drop {
+   │             ^^^^^^^^^^^^^^^^^^^^^^^ Unexpected ability: 'drop'
    │
    = Enums are part of a module's public interface and cannot be removed or changed during a 'compatible' upgrade.
    = Restore the original ability of the enum: 'copy' for enum 'EnumAddAbilityWithTypes'.
 
 error[EUC01003]: ability mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:54:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:58:13
    │
-54 │     public enum EnumRemoveAbilityWithTypes has copy { // drop removed
-   │                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing ability: 'drop'
+58 │ public enum EnumRemoveAbilityWithTypes has copy {
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing ability: 'drop'
    │
    = Enums are part of a module's public interface and cannot be removed or changed during a 'compatible' upgrade.
    = Restore the original abilities of the enum: 'copy' and 'drop' for enum 'EnumRemoveAbilityWithTypes'.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:60:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:65:5
    │
-58 │     public enum EnumAddVariantWithTypes {
-   │                 ----------------------- Enum definition
-59 │         A { a: u8 },
-60 │         B { b: u8 }, // added
-   │         ^^^^^^^^^^^ New unexpected variant 'B'.
+63 │ public enum EnumAddVariantWithTypes {
+   │             ----------------------- Enum definition
+64 │     A { a: u8 },
+65 │     B { b: u8 }, // added
+   │     ^^^^^^^^^^^ New unexpected variant 'B'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variant for enum 'EnumAddVariantWithTypes' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:63:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:68:13
    │
-63 │     public enum EnumRemoveVariantWithTypes {
-   │                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing variant 'B'.
+68 │ public enum EnumRemoveVariantWithTypes {
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing variant 'B'.
    │
    = Enums are part of a module's public interface and cannot be changed during an upgrade.
    = Restore the original enum's variant 'B' for enum 'EnumRemoveVariantWithTypes' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:70:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:75:5
    │
-68 │     public enum EnumChangeVariantWithTypes {
-   │                 -------------------------- Enum definition
-69 │         A { a: u8 },
-70 │         C { b: u8 }, // changed to C
-   │         ^^^^^^^^^^^ Mismatched variant 'C', expected 'B'.
+73 │ public enum EnumChangeVariantWithTypes {
+   │             -------------------------- Enum definition
+74 │     A { a: u8 },
+75 │     C { b: u8 }, // changed to C
+   │     ^^^^^^^^^^^ Mismatched variant 'C', expected 'B'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangeVariantWithTypes' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:75:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:80:5
    │
-73 │     public enum EnumChangeAndAddVariantWithTypes {
-   │                 -------------------------------- Enum definition
-74 │         A { a: u8 },
-75 │         C { b: u8 }, // to be changed to C
-   │         ^^^^^^^^^^^ Mismatched variant 'C', expected 'B'.
-   │
-   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
-   = Restore the original enum's variants for enum 'EnumChangeAndAddVariantWithTypes' including the ordering.
-
-error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:75:9
-   │
-73 │     public enum EnumChangeAndAddVariantWithTypes {
-   │                 -------------------------------- Enum definition
-74 │         A { a: u8 },
-75 │         C { b: u8 }, // to be changed to C
-   │         ^^^^^^^^^^^ New unexpected variant 'C'.
+78 │ public enum EnumChangeAndAddVariantWithTypes {
+   │             -------------------------------- Enum definition
+79 │     A { a: u8 },
+80 │     C { b: u8 }, // to be changed to C
+   │     ^^^^^^^^^^^ Mismatched variant 'C', expected 'B'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangeAndAddVariantWithTypes' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:76:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:80:5
    │
-73 │     public enum EnumChangeAndAddVariantWithTypes {
-   │                 -------------------------------- Enum definition
+78 │ public enum EnumChangeAndAddVariantWithTypes {
+   │             -------------------------------- Enum definition
+79 │     A { a: u8 },
+80 │     C { b: u8 }, // to be changed to C
+   │     ^^^^^^^^^^^ New unexpected variant 'C'.
+   │
+   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
+   = Restore the original enum's variants for enum 'EnumChangeAndAddVariantWithTypes' including the ordering.
+
+error[EUC02001]: variant mismatch
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:81:5
+   │
+78 │ public enum EnumChangeAndAddVariantWithTypes {
+   │             -------------------------------- Enum definition
    ·
-76 │         D { d: u8 }, // added
-   │         ^^^^^^^^^^^ New unexpected variant 'D'.
+81 │     D { d: u8 }, // added
+   │     ^^^^^^^^^^^ New unexpected variant 'D'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangeAndAddVariantWithTypes' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:79:17
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:84:13
    │
-79 │     public enum EnumChangeAndRemoveVariantWithPositionalTypes {
-   │                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing variant 'C'.
+84 │ public enum EnumChangeAndRemoveVariantWithPositionalTypes {
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing variant 'C'.
    │
    = Enums are part of a module's public interface and cannot be changed during an upgrade.
    = Restore the original enum's variant 'C' for enum 'EnumChangeAndRemoveVariantWithPositionalTypes' including the ordering.
 
 error[EUC02001]: variant mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:81:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:86:5
    │
-79 │     public enum EnumChangeAndRemoveVariantWithPositionalTypes {
-   │                 --------------------------------------------- Enum definition
-80 │         A(u8),
-81 │         C(u8), // changed to C
-   │         ^^^^^ Mismatched variant 'C', expected 'B'.
+84 │ public enum EnumChangeAndRemoveVariantWithPositionalTypes {
+   │             --------------------------------------------- Enum definition
+85 │     A(u8),
+86 │     C(u8), // changed to C
+   │     ^^^^^ Mismatched variant 'C', expected 'B'.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangeAndRemoveVariantWithPositionalTypes' including the ordering.
 
 error[EUC01004]: field mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:86:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:91:5
    │
-85 │     public enum EnumChangePositionalType {
-   │                 ------------------------ Enum definition
-86 │         A(u8), // add u8
-   │         ^^^^^ Mismatched variant field count, expected 0, found 1.
-   │
-   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
-   = Restore the original enum's variants for enum 'EnumChangePositionalType' including the ordering.
-
-error[EUC01002]: type mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:87:9
-   │
-85 │     public enum EnumChangePositionalType {
-   │                 ------------------------ Enum definition
-86 │         A(u8), // add u8
-87 │         B(u16), // changed to u16
-   │         ^^^^^^ Mismatched field type 'u16', expected 'u8'.
-   │
-   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
-   = Restore the original enum's variants for enum 'EnumChangePositionalType' including the ordering.
-
-error[EUC01004]: field mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:88:9
-   │
-85 │     public enum EnumChangePositionalType {
-   │                 ------------------------ Enum definition
-   ·
-88 │         C(u8), // removed u8
-   │         ^^^^^ Mismatched variant field count, expected 2, found 1.
-   │
-   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
-   = Restore the original enum's variants for enum 'EnumChangePositionalType' including the ordering.
-
-error[EUC01004]: field mismatch
-   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:89:9
-   │
-85 │     public enum EnumChangePositionalType {
-   │                 ------------------------ Enum definition
-   ·
-89 │         D, // removed u8 from variant
-   │         ^ Mismatched variant field count, expected 1, found 0.
+90 │ public enum EnumChangePositionalType {
+   │             ------------------------ Enum definition
+91 │     A(u8), // add u8
+   │     ^^^^^ Mismatched variant field count, expected 0, found 1.
    │
    = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
    = Restore the original enum's variants for enum 'EnumChangePositionalType' including the ordering.
 
 error[EUC01002]: type mismatch
-    ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:101:9
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:92:5
+   │
+90 │ public enum EnumChangePositionalType {
+   │             ------------------------ Enum definition
+91 │     A(u8), // add u8
+92 │     B(u16), // changed to u16
+   │     ^^^^^^ Mismatched field type 'u16', expected 'u8'.
+   │
+   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
+   = Restore the original enum's variants for enum 'EnumChangePositionalType' including the ordering.
+
+error[EUC01004]: field mismatch
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:93:5
+   │
+90 │ public enum EnumChangePositionalType {
+   │             ------------------------ Enum definition
+   ·
+93 │     C(u8), // removed u8
+   │     ^^^^^ Mismatched variant field count, expected 2, found 1.
+   │
+   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
+   = Restore the original enum's variants for enum 'EnumChangePositionalType' including the ordering.
+
+error[EUC01004]: field mismatch
+   ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:94:5
+   │
+90 │ public enum EnumChangePositionalType {
+   │             ------------------------ Enum definition
+   ·
+94 │     D, // removed u8 from variant
+   │     ^ Mismatched variant field count, expected 1, found 0.
+   │
+   = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
+   = Restore the original enum's variants for enum 'EnumChangePositionalType' including the ordering.
+
+error[EUC01002]: type mismatch
+    ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:106:5
     │
-100 │     public enum EnumWithPositionalChanged {
-    │                 ------------------------- Enum definition
-101 │         A(ChangeFieldB), // changed to ChangeFieldB
-    │         ^^^^^^^^^^^^^^^ Mismatched field type '0x0::upgrades::ChangeFieldB', expected '0x0::upgrades::ChangeFieldA'.
+105 │ public enum EnumWithPositionalChanged {
+    │             ------------------------- Enum definition
+106 │     A(ChangeFieldB), // changed to ChangeFieldB
+    │     ^^^^^^^^^^^^^^^ Mismatched field type '0x0::upgrades::ChangeFieldB', expected '0x0::upgrades::ChangeFieldA'.
     │
     = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
     = Restore the original enum's variant for enum 'EnumWithPositionalChanged' including the ordering.
 
 error[EUC01002]: type mismatch
-    ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:105:9
+    ┌─ /fixtures/upgrade_errors/enum_errors_v2/sources/UpgradeErrors.move:110:5
     │  
-104 │       public enum EnumWithNamedChanged {
-    │                   -------------------- Enum definition
-105 │ ╭         A {
-106 │ │             x: ChangeFieldA,
-107 │ │             y: ChangeFieldA,
-108 │ │             z: ChangeFieldB, // changed to ChangeFieldB
-109 │ │         },
-    │ ╰─────────^ Mismatched field type '0x0::upgrades::ChangeFieldB', expected '0x0::upgrades::ChangeFieldA'.
+109 │   public enum EnumWithNamedChanged {
+    │               -------------------- Enum definition
+110 │ ╭     A {
+111 │ │         x: ChangeFieldA,
+112 │ │         y: ChangeFieldA,
+113 │ │         z: ChangeFieldB, // changed to ChangeFieldB
+114 │ │     },
+    │ ╰─────^ Mismatched field type '0x0::upgrades::ChangeFieldB', expected '0x0::upgrades::ChangeFieldA'.
     │  
     = Enums are part of a module's public interface and cannot be removed or changed during an upgrade.
     = Restore the original enum's variant for enum 'EnumWithNamedChanged' including the ordering.
