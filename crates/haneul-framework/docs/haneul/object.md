@@ -38,8 +38,10 @@ Haneul object identifiers
 -  [Function `id_address`](#haneul_object_id_address)
 -  [Function `borrow_uid`](#haneul_object_borrow_uid)
 -  [Function `new_uid_from_hash`](#haneul_object_new_uid_from_hash)
+-  [Function `is_shared_input`](#haneul_object_is_shared_input)
 -  [Function `delete_impl`](#haneul_object_delete_impl)
 -  [Function `record_new_uid_from_hash`](#haneul_object_record_new_uid_from_hash)
+-  [Function `is_shared_input_impl`](#haneul_object_is_shared_input_impl)
 
 
 <pre><code><b>use</b> <a href="../haneul/address.md#haneul_address">haneul::address</a>;
@@ -1033,6 +1035,31 @@ Generate a new UID specifically used for creating a UID from a hash
 
 </details>
 
+<a name="haneul_object_is_shared_input"></a>
+
+## Function `is_shared_input`
+
+Returns true if <code><a href="../haneul/object.md#haneul_object_id">id</a></code> belongs to a shared object that is an input to this transaction.
+
+
+<pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/object.md#haneul_object_is_shared_input">is_shared_input</a>(<a href="../haneul/object.md#haneul_object_id">id</a>: &<a href="../haneul/object.md#haneul_object_UID">haneul::object::UID</a>): bool
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/object.md#haneul_object_is_shared_input">is_shared_input</a>(<a href="../haneul/object.md#haneul_object_id">id</a>: &<a href="../haneul/object.md#haneul_object_UID">UID</a>): bool {
+    <a href="../haneul/object.md#haneul_object_is_shared_input_impl">is_shared_input_impl</a>(<a href="../haneul/object.md#haneul_object_id">id</a>.<a href="../haneul/object.md#haneul_object_id">id</a>.bytes)
+}
+</code></pre>
+
+
+
+</details>
+
 <a name="haneul_object_delete_impl"></a>
 
 ## Function `delete_impl`
@@ -1071,6 +1098,28 @@ Generate a new UID specifically used for creating a UID from a hash
 
 
 <pre><code><b>native</b> <b>fun</b> <a href="../haneul/object.md#haneul_object_record_new_uid_from_hash">record_new_uid_from_hash</a>(parent: <b>address</b>, bytes: <b>address</b>);
+</code></pre>
+
+
+
+</details>
+
+<a name="haneul_object_is_shared_input_impl"></a>
+
+## Function `is_shared_input_impl`
+
+
+
+<pre><code><b>fun</b> <a href="../haneul/object.md#haneul_object_is_shared_input_impl">is_shared_input_impl</a>(<a href="../haneul/object.md#haneul_object_id">id</a>: <b>address</b>): bool
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>native</b> <b>fun</b> <a href="../haneul/object.md#haneul_object_is_shared_input_impl">is_shared_input_impl</a>(<a href="../haneul/object.md#haneul_object_id">id</a>: <b>address</b>): bool;
 </code></pre>
 
 

@@ -13,7 +13,8 @@ Key features:
 
 The derived UIDs, once created, are independent and do not require sequencing on the parent
 object. They can be used without affecting the parent. The parent only maintains a record of
-which derived addresses have been claimed to prevent duplicates.
+which derived addresses have been claimed to prevent duplicates. Releasing a derived UID removes
+its record, so the same address can be claimed again.
 
 
 -  [Struct `Claimed`](#haneul_derived_object_Claimed)
@@ -21,6 +22,7 @@ which derived addresses have been claimed to prevent duplicates.
 -  [Enum `ClaimedStatus`](#haneul_derived_object_ClaimedStatus)
 -  [Constants](#@Constants_0)
 -  [Function `claim`](#haneul_derived_object_claim)
+-  [Function `release`](#haneul_derived_object_release)
 -  [Function `exists`](#haneul_derived_object_exists)
 -  [Function `derive_address`](#haneul_derived_object_derive_address)
 
@@ -115,7 +117,8 @@ We make it an enum to make upgradeability easier in the future.
 Variant <code>Reserved</code>
 </dt>
 <dd>
- The UID has been claimed and cannot be re-claimed or used.
+ The UID has been claimed. It may be in use or deleted with <code><a href="../haneul/object.md#haneul_object_delete">object::delete</a></code>.
+ <code><a href="../haneul/derived_object.md#haneul_derived_object_release">release</a></code> removes the marker.
 </dd>
 </dl>
 
@@ -134,6 +137,28 @@ Tries to create an object twice with the same parent-key combination.
 
 <pre><code>#[error]
 <b>const</b> <a href="../haneul/derived_object.md#haneul_derived_object_EObjectAlreadyExists">EObjectAlreadyExists</a>: vector&lt;u8&gt; = b"Derived <a href="../haneul/object.md#haneul_object">object</a> is already claimed.";
+</code></pre>
+
+
+
+<a name="haneul_derived_object_EObjectNotClaimed"></a>
+
+Tries to release a UID that is not claimed under the given parent.
+
+
+<pre><code>#[error]
+<b>const</b> <a href="../haneul/derived_object.md#haneul_derived_object_EObjectNotClaimed">EObjectNotClaimed</a>: vector&lt;u8&gt; = b"Derived <a href="../haneul/object.md#haneul_object">object</a> is not claimed by this parent.";
+</code></pre>
+
+
+
+<a name="haneul_derived_object_ESharedObjectRelease"></a>
+
+Tries to release the UID of a shared object.
+
+
+<pre><code>#[error]
+<b>const</b> <a href="../haneul/derived_object.md#haneul_derived_object_ESharedObjectRelease">ESharedObjectRelease</a>: vector&lt;u8&gt; = b"Shared objects cannot be released.";
 </code></pre>
 
 
@@ -167,12 +192,47 @@ Claim a deterministic UID, using the parent's UID & any key.
 
 </details>
 
+<a name="haneul_derived_object_release"></a>
+
+## Function `release`
+
+Deletes <code>id</code>, claimed under <code>parent</code>, so that its address can be claimed again.
+Dynamic fields of <code>id</code>, objects sent to its address, and its address balances persist and are
+reachable again once it is re-claimed.
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../haneul/derived_object.md#haneul_derived_object_release">release</a>(parent: &<b>mut</b> <a href="../haneul/object.md#haneul_object_UID">haneul::object::UID</a>, id: <a href="../haneul/object.md#haneul_object_UID">haneul::object::UID</a>)
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../haneul/derived_object.md#haneul_derived_object_release">release</a>(parent: &<b>mut</b> UID, id: UID) {
+    <b>assert</b>!(!id.is_shared_input(), <a href="../haneul/derived_object.md#haneul_derived_object_ESharedObjectRelease">ESharedObjectRelease</a>);
+    <b>let</b> claimed = <a href="../haneul/derived_object.md#haneul_derived_object_Claimed">Claimed</a>(id.to_inner());
+    <b>assert</b>!(df::exists(parent, claimed), <a href="../haneul/derived_object.md#haneul_derived_object_EObjectNotClaimed">EObjectNotClaimed</a>);
+    <b>let</b> status: <a href="../haneul/derived_object.md#haneul_derived_object_ClaimedStatus">ClaimedStatus</a> = df::remove(parent, claimed);
+    match (status) {
+        ClaimedStatus::Reserved =&gt; (),
+    };
+    id.delete()
+}
+</code></pre>
+
+
+
+</details>
+
 <a name="haneul_derived_object_exists"></a>
 
 ## Function `exists`
 
 Checks if a provided <code>key</code> has been claimed for the given parent.
-Note: If the UID has been deleted through <code><a href="../haneul/object.md#haneul_object_delete">object::delete</a></code>, this will always return true.
+Note: If the UID has been deleted through <code><a href="../haneul/object.md#haneul_object_delete">object::delete</a></code> rather than <code><a href="../haneul/derived_object.md#haneul_derived_object_release">release</a></code>, this will
+always return true.
 
 
 <pre><code><b>public</b> <b>fun</b> <a href="../haneul/derived_object.md#haneul_derived_object_exists">exists</a>&lt;K: <b>copy</b>, drop, store&gt;(parent: &<a href="../haneul/object.md#haneul_object_UID">haneul::object::UID</a>, key: K): bool
