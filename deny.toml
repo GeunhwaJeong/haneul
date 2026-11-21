@@ -101,10 +101,21 @@ ignore = [
     # request decompression via tonic, remote checkpoint ingestion).
     "RUSTSEC-2026-0391",
     "RUSTSEC-2026-0403",
-    # `pin-utils` is unmaintained, with no maintained release to move to. It comes in
-    # transitively through futures-util, the AWS SDK and wasm timers. Remove once
-    # those dependencies drop it.
+    # `pin-utils` is unmaintained (repo archived 2026-10-01), no patched release.
+    # Transitive only: aws-smithy-http 0.62 / aws-smithy-runtime / aws-smithy-types
+    # (aws-config, aws-sdk-kms in the haneul crate), futures-util 0.3.31 and
+    # scoped-futures. futures-util >= 0.3.34 dropped it; remove once the AWS SDK
+    # crates are upgraded past their pin-utils dependency.
     "RUSTSEC-2026-0441",
+    # `humantime` is unmaintained, no patched release. Used directly by
+    # haneul-node, haneul-checkpoint-blob-indexer and haneul-metric-checker, and
+    # transitively by object_store, env_logger and console-subscriber; remove
+    # once those move to a maintained replacement.
+    "RUSTSEC-2026-0542",
+    # `chrono` is unmaintained, no patched release. Used widely across the
+    # workspace and its dependencies; migrating off it is a large, separate
+    # effort.
+    "RUSTSEC-2026-0543",
 ]
 # Threshold for security vulnerabilities, any vulnerability with a CVSS score
 # lower than the range specified will be ignored. Note that ignored advisories
