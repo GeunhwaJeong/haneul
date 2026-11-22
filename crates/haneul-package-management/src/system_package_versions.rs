@@ -137,6 +137,12 @@ fn test_gap_version() {
         system_packages_for_protocol(131.into()).unwrap(),
         system_packages_for_protocol(130.into()).unwrap(),
     );
+    // version 132 upgrades the Haneul framework (clock::borrow and
+    // derived_object::release) and gets its own entry.
+    assert_ne!(
+        system_packages_for_protocol(132.into()).unwrap(),
+        system_packages_for_protocol(131.into()).unwrap(),
+    );
 }
 
 #[test]
