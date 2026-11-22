@@ -14,7 +14,9 @@ use haneul::coin::Coin;
 use haneul::haneul::HANEUL;
 
 public fun id_mut<T>(t: &mut T): &mut T { t }
+
 public fun use_mut<T>(_: &mut T) {}
+
 public fun amount_ref(_: &Coin<HANEUL>, x: &u64): &u64 { x }
 
 //# programmable --sender A --inputs 1000 @B

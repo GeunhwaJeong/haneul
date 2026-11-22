@@ -9,19 +9,19 @@ processed 33 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 10-41:
+task 1, lines 10-62:
 //# publish
 created: object(1,0)
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 11886400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 43-46:
+task 2, lines 64-67:
 //# publish --upgradeable --sender A
 created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5084400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 5, lines 61-63:
+task 5, lines 83-85:
 //# programmable --sender A --inputs @A
 //> 0: test::m::new();
 //> 1: TransferObjects([Result(0)], Input(0));
@@ -29,14 +29,14 @@ created: object(5,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 6, lines 65-66:
+task 6, lines 87-88:
 //# programmable --sender A
 //> 0: test::m::share();
 created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 7, lines 68-70:
+task 7, lines 90-92:
 //# programmable --sender A --inputs 1000 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1));
@@ -46,7 +46,7 @@ gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 
 
 // --- reads in the same transaction see the write ---
 
-task 8, lines 74-81:
+task 8, lines 96-103:
 //# programmable --inputs 5
 // VALID: a frozen read of the parent after a write through the child
 //> 0: test::m::new();
@@ -58,7 +58,7 @@ task 8, lines 74-81:
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 9, lines 83-91:
+task 9, lines 105-113:
 //# programmable --inputs 5
 // VALID: an immutable child taken after the write sees it
 //> 0: test::m::new();
@@ -71,7 +71,7 @@ task 9, lines 83-91:
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 10, lines 93-102:
+task 10, lines 115-124:
 //# programmable --inputs 5 6
 // VALID: two writes through two successive references, the last wins
 //> 0: test::m::new();
@@ -85,7 +85,7 @@ task 10, lines 93-102:
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 11, lines 104-109:
+task 11, lines 126-131:
 //# programmable --inputs 0 7
 // VALID: a pure input written through `&mut`, then seen by reference and by value
 //> 0: test::m::id_mut<u64>(Input(0));
@@ -95,7 +95,7 @@ task 11, lines 104-109:
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 12, lines 111-118:
+task 12, lines 133-140:
 //# programmable --inputs 0 7 8
 // VALID: a second reference sees the first write and its own write is seen after
 //> 0: test::m::id_mut<u64>(Input(0));
@@ -107,7 +107,7 @@ task 12, lines 111-118:
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 13, lines 120-124:
+task 13, lines 142-146:
 //# programmable --inputs 0 7
 // VALID: two by-value uses of the input both see the write
 //> 0: test::m::id_mut<u64>(Input(0));
@@ -116,7 +116,7 @@ task 13, lines 120-124:
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 14, lines 126-131:
+task 14, lines 148-153:
 //# programmable --inputs 0u8 7u8 false
 // VALID: the bool view of a pure input is a different value from the u8 view
 //> 0: test::m::id_mut<u8>(Input(0));
@@ -126,7 +126,7 @@ task 14, lines 126-131:
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 15, lines 133-141:
+task 15, lines 155-163:
 //# programmable --inputs 1 2 0 1 9
 // VALID: writes to two vector elements through separate references
 //> 0: MakeMoveVec<u64>([Input(0), Input(1)]);
@@ -139,7 +139,7 @@ task 15, lines 133-141:
 mutated: object(0,2)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 16, lines 143-153:
+task 16, lines 165-175:
 //# programmable --sender A --inputs object(5,0) 1 2 9
 // VALID: a dynamic field added, written, read, and removed through references into the UID
 //> 0: test::m::uid_mut(Input(0));
@@ -156,7 +156,7 @@ gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 
 
 // --- writes persist in objects ---
 
-task 17, lines 157-160:
+task 17, lines 179-182:
 //# programmable --sender A --inputs object(5,0) 1 2
 // VALID: both field writes through the returned struct reference persist in an owned object
 //> 0: test::m::inner_mut(Input(0));
@@ -164,7 +164,7 @@ task 17, lines 157-160:
 mutated: object(0,0), object(5,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 2332967, non_refundable_storage_fee: 233
 
-task 18, line 162:
+task 18, line 184:
 //# view-object 5,0
 Owner: Account Address ( A )
 Version: 7
@@ -180,7 +180,7 @@ Contents: test::m::Obj {
     },
 }
 
-task 19, lines 164-169:
+task 19, lines 186-191:
 //# programmable --sender A --inputs object(5,0) 3 4
 // VALID: writes through sibling field references persist
 //> 0: test::m::inner_mut(Input(0));
@@ -190,7 +190,7 @@ task 19, lines 164-169:
 mutated: object(0,0), object(5,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 2332967, non_refundable_storage_fee: 233
 
-task 20, line 171:
+task 20, line 193:
 //# view-object 5,0
 Owner: Account Address ( A )
 Version: 8
@@ -206,7 +206,7 @@ Contents: test::m::Obj {
     },
 }
 
-task 21, lines 173-177:
+task 21, lines 195-199:
 //# programmable --sender A --inputs object(6,0) 7
 // VALID: a write through a reference into a shared object persists
 //> 0: test::m::inner_mut(Input(0));
@@ -215,7 +215,7 @@ task 21, lines 173-177:
 mutated: object(0,0), object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 2332967, non_refundable_storage_fee: 233
 
-task 22, line 179:
+task 22, line 201:
 //# view-object 6,0
 Owner: Shared( 4 )
 Version: 9
@@ -231,7 +231,7 @@ Contents: test::m::Obj {
     },
 }
 
-task 23, lines 181-185:
+task 23, lines 203-207:
 //# programmable --sender A --inputs immshared(6,0) 7
 // VALID: an immutable reference into a read-only shared object sees the persisted write
 //> 0: test::m::inner(Input(0));
@@ -241,7 +241,7 @@ mutated: object(0,0)
 unchanged_shared: object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 24, lines 187-193:
+task 24, lines 209-215:
 //# programmable --sender A --inputs 42 @A
 // VALID: a fresh object mutated through a reference is transferred with the mutation
 //> 0: test::m::new();
@@ -253,7 +253,7 @@ created: object(24,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2333200,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 25, line 195:
+task 25, line 217:
 //# view-object 24,0
 Owner: Account Address ( A )
 Version: 11
@@ -269,7 +269,7 @@ Contents: test::m::Obj {
     },
 }
 
-task 26, lines 197-202:
+task 26, lines 219-224:
 //# programmable --sender A --inputs object(7,0) 300 @B
 // VALID: a split through a `&mut Balance` into a coin input is a new coin and a smaller input
 //> 0: haneul::coin::balance_mut<haneul::haneul::HANEUL>(Input(0));
@@ -280,7 +280,7 @@ created: object(26,0)
 mutated: object(0,0), object(7,0)
 gas summary: computation_cost: 1000000, storage_cost: 2964000,  storage_rebate: 1975802, non_refundable_storage_fee: 198
 
-task 27, line 204:
+task 27, line 226:
 //# view-object 7,0
 Owner: Account Address ( A )
 Version: 12
@@ -295,7 +295,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
     },
 }
 
-task 28, line 206:
+task 28, line 228:
 //# view-object 26,0
 Owner: Account Address ( B )
 Version: 12
@@ -312,7 +312,7 @@ Contents: haneul::coin::Coin<haneul::haneul::HANEUL> {
 
 // --- references live across Publish and Upgrade ---
 
-task 29, lines 210-216:
+task 29, lines 232-238:
 //# programmable --sender A --inputs object(5,0) 7 @A
 // VALID: Publish with an `init` between a reference's creation and its use
 //> 0: test::m::inner_mut(Input(0));
@@ -324,7 +324,7 @@ created: object(29,0), object(29,1), object(29,2)
 mutated: object(0,0), object(5,0)
 gas summary: computation_cost: 1000000, storage_cost: 9287200,  storage_rebate: 2332967, non_refundable_storage_fee: 233
 
-task 30, line 218:
+task 30, line 240:
 //# view-object 5,0
 Owner: Account Address ( A )
 Version: 13
@@ -340,7 +340,7 @@ Contents: test::m::Obj {
     },
 }
 
-task 31, lines 220-227:
+task 31, lines 242-249:
 //# programmable --sender A --inputs object(2,1) 0u8 digest(q_2) object(5,0) 9
 // VALID: Upgrade between a reference's creation and its use
 //> 0: haneul::package::authorize_upgrade(Input(0), Input(1), Input(2));
@@ -353,7 +353,7 @@ created: object(31,0)
 mutated: object(0,0), object(2,1), object(5,0)
 gas summary: computation_cost: 1000000, storage_cost: 6429600,  storage_rebate: 3966803, non_refundable_storage_fee: 397
 
-task 32, line 229:
+task 32, line 251:
 //# view-object 5,0
 Owner: Account Address ( A )
 Version: 14

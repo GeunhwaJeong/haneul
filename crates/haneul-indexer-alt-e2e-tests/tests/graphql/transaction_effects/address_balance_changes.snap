@@ -75,7 +75,7 @@ task 10, line 38:
 //# view-funds haneul::balance::Balance<haneul::haneul::HANEUL> B
 992012000
 
-task 11, lines 40-57:
+task 11, lines 40-59:
 //# run-graphql
 Response: {
   "data": {
@@ -119,7 +119,7 @@ Response: {
   }
 }
 
-task 12, lines 59-76:
+task 12, lines 61-80:
 //# run-graphql
 Response: {
   "data": {
@@ -154,7 +154,7 @@ Response: {
   }
 }
 
-task 13, lines 78-95:
+task 13, lines 82-101:
 //# run-graphql
 Response: {
   "data": {

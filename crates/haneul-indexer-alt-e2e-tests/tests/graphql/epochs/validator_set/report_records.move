@@ -5,6 +5,7 @@
 //# init --protocol-version 115 --accounts A --simulator --num-custom-validator-accounts 2
 
 //# run-graphql
+/*
 {
   epoch(epochId: 0) {
     epochId
@@ -29,3 +30,4 @@ fragment V on Validator {
     name: format(format: "{metadata.name}")
   }
 }
+*/

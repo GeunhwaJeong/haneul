@@ -10,7 +10,7 @@ module Test_V0::base_module {
         V0 {
             field0: u64,
             field1: u64,
-        }
+        },
     }
 
     public fun public_fun(): u64 { 0 }
@@ -22,7 +22,7 @@ module Test_V1::base_module {
         V0 {
             field0: u64,
             field1: u64,
-        }
+        },
     }
 
     public fun public_fun(): u64 { 0 }
@@ -34,7 +34,7 @@ module Test_V1::base_module {
         V1 {
             field0: u64,
             field1: u64,
-        }
+        },
     }
 
     public fun public_fun(): u64 { 0 }
@@ -51,7 +51,7 @@ module Test_V1::base_module {
         V0 {
             field2: u64,
             field1: u64,
-        }
+        },
     }
 
     public fun public_fun(): u64 { 0 }
@@ -72,7 +72,7 @@ module Test_V1::base_module {
         V0 {
             field1: u64,
             field0: u64,
-        }
+        },
     }
 
     public fun public_fun(): u64 { 0 }
@@ -85,7 +85,7 @@ module Test_V1::base_module {
             field0: u64,
             field1: u64,
         },
-        V1
+        V1,
     }
 
     public fun public_fun(): u64 { 0 }

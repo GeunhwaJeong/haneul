@@ -11,6 +11,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Query epoch with valid fields and an error field (invalid pagination).
   epoch(epochId: 0) {
     epochId
@@ -23,8 +24,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 {
   # Test partial error at query root level
   # One epoch query succeeds with all fields, another has partial error
@@ -43,3 +46,4 @@
     }
   }
 }
+*/

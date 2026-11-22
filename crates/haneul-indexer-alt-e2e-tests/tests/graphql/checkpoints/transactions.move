@@ -5,6 +5,7 @@
 //# init --protocol-version 115 --accounts A B --simulator
 
 //# run-graphql
+/*
 { # Fetch a checkpoint
   checkpoint(sequenceNumber: 0) {
     sequenceNumber
@@ -20,6 +21,7 @@
     }
   }
 }
+*/
 
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -50,6 +52,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Fetch a checkpoint's transactions filtered by sentAddress, should have sequence numbers 1,2,3,4,5
   checkpoint(sequenceNumber: 1) {
     sequenceNumber
@@ -74,8 +77,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Fetch non-existent checkpoint
   checkpoint(sequenceNumber: 6) {
     sequenceNumber
@@ -91,3 +96,4 @@
     }
   }
 }
+*/

@@ -8,13 +8,13 @@
 
 //# publish
 
-module test::m1 {
-    use haneul::haneul::HANEUL;
-    use haneul::coin;
+module test::m1;
 
-    public fun mint_shared(ctx: &mut TxContext) {
-        transfer::public_share_object(coin::zero<HANEUL>(ctx))
-    }
+use haneul::coin;
+use haneul::haneul::HANEUL;
+
+public fun mint_shared(ctx: &mut TxContext) {
+    transfer::public_share_object(coin::zero<HANEUL>(ctx))
 }
 
 //# run test::m1::mint_shared

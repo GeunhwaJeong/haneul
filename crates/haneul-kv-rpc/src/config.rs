@@ -11,6 +11,7 @@ use std::time::Duration;
 
 use anyhow::Context;
 use haneul_inverted_index::SkipPolicy;
+use haneul_kvstore::BitmapSchema;
 use haneul_kvstore::PoolConfig;
 use haneul_kvstore::ReadRowsRetryConfig;
 use serde::Deserialize;
@@ -422,6 +423,17 @@ pub struct LedgerHistoryConfig {
     /// Defaults to `10` if not specified.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub max_bitmap_filter_literals: Option<usize>,
+
+    /// Which bitmap index tables the filtered List APIs read. `v1` reads
+    /// `transaction_bitmap_index` and `event_bitmap_index`, written by the
+    /// `kvstore_transaction_dimensions` and `kvstore_event_dimensions` pipelines. `v2` reads
+    /// `transaction_bitmap_index_v2` and `event_bitmap_index_v2`, written by the
+    /// `kvstore_transaction_dimensions_v2` and `kvstore_event_dimensions_v2` pipelines. The
+    /// watermarks of the pipelines that write the chosen tables bound the served checkpoint.
+    ///
+    /// Defaults to `v1` if not specified.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bitmap_schema: Option<BitmapSchema>,
 }
 
 impl LedgerHistoryConfig {
@@ -469,6 +481,10 @@ impl LedgerHistoryConfig {
     pub fn max_bitmap_filter_literals(&self) -> usize {
         self.max_bitmap_filter_literals
             .unwrap_or(DEFAULT_MAX_BITMAP_FILTER_LITERALS)
+    }
+
+    pub fn bitmap_schema(&self) -> BitmapSchema {
+        self.bitmap_schema.unwrap_or(BitmapSchema::V1)
     }
 
     /// Reject configurations that cannot make forward progress. Each filter
@@ -663,9 +679,9 @@ pub struct KvRpcConfig {
     /// every pipeline it runs that had a readable stored watermark row when it started or has
     /// advanced since, so the first response from an indexer that runs every served pipeline is
     /// enough, even during a chain halt. A served pipeline that no listed indexer runs keeps this
-    /// instance unavailable, and is named in a warning. In this mode `/health` reports readiness:
-    /// use it for a readiness probe, not a liveness probe, which would restart an instance that is
-    /// still waiting for watermarks.
+    /// instance unavailable, and is named in a warning. In either mode `/health` reports readiness,
+    /// answering 503 until the instance knows its served checkpoint: use it for a readiness probe,
+    /// not a liveness probe, which would restart an instance that is still waiting for watermarks.
     ///
     /// Streamed watermarks carry no `reader_lo`, so this mode assumes no pipeline has pruned past
     /// its watermark; the kvstore does not prune.
@@ -861,8 +877,6 @@ impl KvRpcConfig {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::DEFAULT_SERVICE_INFO_WATERMARK_PIPELINES;
-    use crate::LIST_API_SERVICE_INFO_WATERMARK_PIPELINES;
     use crate::service_info_watermark_pipelines;
 
     #[test]
@@ -1148,20 +1162,32 @@ render-ahead = 3
     }
 
     #[test]
-    fn watermark_set_always_includes_the_list_api_pipelines() {
-        let cfg = KvRpcConfig::default();
-        let pipelines = service_info_watermark_pipelines();
-        for name in LIST_API_SERVICE_INFO_WATERMARK_PIPELINES {
-            assert!(pipelines.contains(&name), "{name} must bound the height");
+    fn bitmap_schema_selects_the_bitmap_pipelines_that_bound_the_height() {
+        let v1 = KvRpcConfig::default();
+        v1.validate().unwrap();
+        let v1_pipelines = service_info_watermark_pipelines(v1.ledger_history().bitmap_schema());
+
+        let v2: KvRpcConfig =
+            serde_yaml::from_str("ledger-history:\n  bitmap-schema: v2\n").unwrap();
+        v2.validate().unwrap();
+        let v2_pipelines = service_info_watermark_pipelines(v2.ledger_history().bitmap_schema());
+
+        for (pipeline, in_v1, in_v2) in [
+            ("kvstore_tx_seq_digest", true, true),
+            ("kvstore_transaction_dimensions", true, false),
+            ("kvstore_event_dimensions", true, false),
+            ("kvstore_transaction_dimensions_v2", false, true),
+            ("kvstore_event_dimensions_v2", false, true),
+        ] {
+            assert_eq!(v1_pipelines.contains(&pipeline), in_v1, "{pipeline} in v1");
+            assert_eq!(v2_pipelines.contains(&pipeline), in_v2, "{pipeline} in v2");
         }
-        cfg.validate().unwrap();
     }
 
     #[test]
     fn deprecated_keys_load_but_are_ignored() {
         // Existing configs pinning a pipeline set or switching the List APIs
-        // off must still load, and must not change the watermark set the
-        // server reports.
+        // off must still load. Nothing reads these keys.
         let yaml = r#"
 watermark-pipeline:
   - kvstore_checkpoints
@@ -1171,11 +1197,6 @@ enable-experimental-query-apis: false
 "#;
         let cfg: KvRpcConfig = serde_yaml::from_str(yaml).expect("stale key must not hard-fail");
         cfg.validate().unwrap();
-        assert_eq!(
-            service_info_watermark_pipelines().len(),
-            DEFAULT_SERVICE_INFO_WATERMARK_PIPELINES.len()
-                + LIST_API_SERVICE_INFO_WATERMARK_PIPELINES.len(),
-        );
     }
 
     #[test]

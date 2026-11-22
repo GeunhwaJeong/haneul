@@ -5,33 +5,33 @@
 //# init --protocol-version 115 --accounts A B --addresses test=0x0 --simulator
 
 //# publish
-module test::events_test {
-    use std::ascii;
-    use haneul::event;
+module test::events_test;
 
-    public struct TestEvent has copy, drop {
-        message: ascii::String,
-        value: u64,
-    }
+use std::ascii;
+use haneul::event;
 
-    public entry fun emit_event(value: u64) {
-        event::emit(TestEvent {
-            message: ascii::string(b"Hello from test event"),
-            value,
-        });
-    }
+public struct TestEvent has copy, drop {
+    message: ascii::String,
+    value: u64,
+}
 
-    public entry fun emit_multiple_events() {
-        event::emit(TestEvent {
-            message: ascii::string(b"First event"),
-            value: 1,
-        });
+public entry fun emit_event(value: u64) {
+    event::emit(TestEvent {
+        message: ascii::string(b"Hello from test event"),
+        value,
+    });
+}
 
-        event::emit(TestEvent {
-            message: ascii::string(b"Second event"),
-            value: 2,
-        });
-    }
+public entry fun emit_multiple_events() {
+    event::emit(TestEvent {
+        message: ascii::string(b"First event"),
+        value: 1,
+    });
+
+    event::emit(TestEvent {
+        message: ascii::string(b"Second event"),
+        value: 2,
+    });
 }
 
 // Transaction that emits a single event
@@ -48,6 +48,7 @@ module test::events_test {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Test events field on transaction with single event
   singleEventTransaction: transactionEffects(digest: "@{digest_2}") {
     events {
@@ -77,8 +78,10 @@ module test::events_test {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test events field on transaction with multiple events
   multipleEventsTransaction: transactionEffects(digest: "@{digest_3}") {
     events {
@@ -108,8 +111,10 @@ module test::events_test {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test pagination functionality with multiple events
   paginationTest: transactionEffects(digest: "@{digest_3}") {
     events(first: 1) {
@@ -139,8 +144,10 @@ module test::events_test {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test backward pagination functionality with with multiple events
   backwardPaginationTest: transactionEffects(digest: "@{digest_3}") {
     events(last: 1) {
@@ -170,8 +177,10 @@ module test::events_test {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test events field on transaction with no events
   noEventsTransaction: transactionEffects(digest: "@{digest_4}") {
     events {
@@ -201,8 +210,10 @@ module test::events_test {
     }
   }
 }
+*/
 
 //# run-graphql --cursors 1000 2000
+/*
 { # Test cursors being out of bounds
   outOfBounds: transactionEffects(digest: "@{digest_3}") {
     events(after: "@{cursor_0}", before: "@{cursor_1}") {
@@ -216,3 +227,4 @@ module test::events_test {
     }
   }
 }
+*/

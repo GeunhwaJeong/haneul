@@ -8,6 +8,7 @@ use crate::keytool::CommandOutput;
 use crate::keytool::read_authority_keypair_from_file;
 use crate::keytool::read_keypair_from_file;
 
+use super::Key;
 use super::KeyToolCommand;
 use super::write_keypair_to_file;
 use anyhow::Ok;
@@ -476,6 +477,48 @@ async fn test_mnemonics_secp256r1() -> Result<(), anyhow::Error> {
 }
 
 #[test]
+async fn test_mnemonics_mldsa65() -> Result<(), anyhow::Error> {
+    // Test case matches with ts-sdks packages/haneul/test/unit/cryptography/mldsa65-keypair.test.ts
+    const TEST_CASES: [[&str; 3]; 3] = [
+        [
+            "act wing dilemma glory episode region allow mad tourist humble muffin oblige",
+            "haneulprivkey1q7fuczett79pecf5v2ctztfcnrf905gw22aue6a2kg3mjxerlmkgvup9u3e",
+            "0xd85fa9e9cb91990925c12a1675189f0fee161ccc3d64a67eabe91d4f1fe6980d",
+        ],
+        [
+            "flag rebel cabbage captain minimum purpose long already valley horn enrich salt",
+            "haneulprivkey1qu8e5p69dxtc59ccgqrs7aum7l52mxlyklzfmvk4h5dhj5gtd5t46x7qg8j",
+            "0x92e0be10c2b881ab98c2ff80458269ae436e6402292dcab3aa20027f7c9f7179",
+        ],
+        [
+            "area renew bar language pudding trial small host remind supreme cabbage era",
+            "haneulprivkey1qa3y0eu08uaanftxumjscryxf7jprw3dfqzejmysph28jp2x2hq8g9848gg",
+            "0xafc2e4ed712619ba35bd4fad34ddedd13f674999a4978673e45dcff511120c97",
+        ],
+    ];
+
+    for [mnemonics, sk, address] in TEST_CASES {
+        let keystore = Keystore::from(InMemKeystore::new_insecure_for_tests(0));
+        let mut context = WalletContext::new_for_tests(keystore, None, None);
+        KeyToolCommand::Import {
+            alias: None,
+            input_string: mnemonics.to_string(),
+            key_scheme: SignatureScheme::MLDSA65,
+            derivation_path: None,
+        }
+        .execute(&mut context)
+        .await?;
+
+        let kp = HaneulKeyPair::decode(sk).unwrap();
+        let addr = HaneulAddress::from_str(address).unwrap();
+        assert_eq!(HaneulAddress::from(&kp.public()), addr);
+        assert!(context.config.keystore.addresses().contains(&addr));
+    }
+
+    Ok(())
+}
+
+#[test]
 async fn test_invalid_derivation_path() -> Result<(), anyhow::Error> {
     let keystore = Keystore::from(InMemKeystore::new_insecure_for_tests(0));
     let mut context = WalletContext::new_for_tests(keystore, None, None);
@@ -538,6 +581,21 @@ async fn test_invalid_derivation_path() -> Result<(), anyhow::Error> {
         .await
         .is_err()
     );
+
+    // ML-DSA-65 takes purpose 94 and is hardened at every level.
+    for path in ["m/44'/8282'/0'/0'/0'", "m/94'/8282'/0'/0/0"] {
+        assert!(
+            KeyToolCommand::Import {
+                alias: None,
+                input_string: TEST_MNEMONIC.to_string(),
+                key_scheme: SignatureScheme::MLDSA65,
+                derivation_path: Some(path.parse().unwrap()),
+            }
+            .execute(&mut context)
+            .await
+            .is_err()
+        );
+    }
 
     Ok(())
 }
@@ -610,6 +668,22 @@ async fn test_valid_derivation_path() -> Result<(), anyhow::Error> {
 }
 
 #[test]
+async fn test_keytool_generate_mldsa65() -> Result<(), anyhow::Error> {
+    let keystore = Keystore::from(InMemKeystore::new_insecure_for_tests(0));
+    let mut context = WalletContext::new_for_tests(keystore, None, None);
+    for derivation_path in [None, Some("m/94'/8282'/1'/0'/0'".parse().unwrap())] {
+        KeyToolCommand::Generate {
+            key_scheme: SignatureScheme::MLDSA65,
+            derivation_path,
+            word_length: None,
+        }
+        .execute(&mut context)
+        .await?;
+    }
+    Ok(())
+}
+
+#[test]
 async fn test_keytool_bls12381() -> Result<(), anyhow::Error> {
     let keystore = Keystore::from(InMemKeystore::new_insecure_for_tests(0));
     let mut context = WalletContext::new_for_tests(keystore, None, None);
@@ -678,4 +752,25 @@ async fn test_sign_command() -> Result<(), anyhow::Error> {
     .execute(&mut context)
     .await?;
     Ok(())
+}
+
+#[tokio::test]
+async fn keytool_list_abbreviates_mldsa65_keys_only() {
+    let mldsa = Key::from(&HaneulKeyPair::decode(MLDSA65_TEST_HANEULPRIVKEY).unwrap());
+    let ed25519_kp = HaneulKeyPair::Ed25519(get_key_pair().1);
+    let full_mldsa = mldsa.public_base64_key.clone();
+    let full_ed25519 = Key::from(&ed25519_kp).public_base64_key.clone();
+
+    let shown = format!(
+        "{}",
+        CommandOutput::List(vec![mldsa, Key::from(&ed25519_kp)])
+    );
+    assert!(!shown.contains(&full_mldsa));
+    assert!(shown.contains("add --json for the full key"));
+    assert!(shown.contains(&full_ed25519));
+
+    // Without an ML-DSA-65 key the table is untouched.
+    let shown = format!("{}", CommandOutput::List(vec![Key::from(&ed25519_kp)]));
+    assert!(shown.contains(&full_ed25519));
+    assert!(!shown.contains("add --json for the full key"));
 }

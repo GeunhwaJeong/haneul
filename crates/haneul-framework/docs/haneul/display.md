@@ -29,7 +29,6 @@ More entry functions might be added in the future depending on the use cases.
 -  [Function `version`](#haneul_display_version)
 -  [Function `fields`](#haneul_display_fields)
 -  [Function `destroy`](#haneul_display_destroy)
--  [Function `create_internal`](#haneul_display_create_internal)
 -  [Function `add_internal`](#haneul_display_add_internal)
 
 
@@ -214,6 +213,17 @@ don't match in their lengths.
 
 
 
+<a name="haneul_display_ENoLongerSupported"></a>
+
+Creation of Display V1 is no longer available, see <code><a href="../haneul/display_registry.md#haneul_display_registry">display_registry</a></code> for
+options for creating Display V2.
+
+
+<pre><code><b>const</b> <a href="../haneul/display.md#haneul_display_ENoLongerSupported">ENoLongerSupported</a>: u64 = 2;
+</code></pre>
+
+
+
 <a name="haneul_display_new"></a>
 
 ## Function `new`
@@ -232,8 +242,7 @@ with data right away via cheaper <code>set_owned</code> method.
 
 
 <pre><code><b>public</b> <b>fun</b> <a href="../haneul/display.md#haneul_display_new">new</a>&lt;T: key&gt;(pub: &Publisher, ctx: &<b>mut</b> TxContext): <a href="../haneul/display.md#haneul_display_Display">Display</a>&lt;T&gt; {
-    <b>assert</b>!(<a href="../haneul/display.md#haneul_display_is_authorized">is_authorized</a>&lt;T&gt;(pub), <a href="../haneul/display.md#haneul_display_ENotOwner">ENotOwner</a>);
-    <a href="../haneul/display.md#haneul_display_create_internal">create_internal</a>(ctx)
+    <b>abort</b> <a href="../haneul/display.md#haneul_display_ENoLongerSupported">ENoLongerSupported</a>
 }
 </code></pre>
 
@@ -248,7 +257,7 @@ with data right away via cheaper <code>set_owned</code> method.
 Create a new Display<T> object with a set of fields.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../haneul/display.md#haneul_display_new_with_fields">new_with_fields</a>&lt;T: key&gt;(pub: &<a href="../haneul/package.md#haneul_package_Publisher">haneul::package::Publisher</a>, <a href="../haneul/display.md#haneul_display_fields">fields</a>: vector&lt;<a href="../std/string.md#std_string_String">std::string::String</a>&gt;, values: vector&lt;<a href="../std/string.md#std_string_String">std::string::String</a>&gt;, ctx: &<b>mut</b> <a href="../haneul/tx_context.md#haneul_tx_context_TxContext">haneul::tx_context::TxContext</a>): <a href="../haneul/display.md#haneul_display_Display">haneul::display::Display</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../haneul/display.md#haneul_display_new_with_fields">new_with_fields</a>&lt;T: key&gt;(_pub: &<a href="../haneul/package.md#haneul_package_Publisher">haneul::package::Publisher</a>, _fields: vector&lt;<a href="../std/string.md#std_string_String">std::string::String</a>&gt;, _values: vector&lt;<a href="../std/string.md#std_string_String">std::string::String</a>&gt;, _ctx: &<b>mut</b> <a href="../haneul/tx_context.md#haneul_tx_context_TxContext">haneul::tx_context::TxContext</a>): <a href="../haneul/display.md#haneul_display_Display">haneul::display::Display</a>&lt;T&gt;
 </code></pre>
 
 
@@ -258,16 +267,12 @@ Create a new Display<T> object with a set of fields.
 
 
 <pre><code><b>public</b> <b>fun</b> <a href="../haneul/display.md#haneul_display_new_with_fields">new_with_fields</a>&lt;T: key&gt;(
-    pub: &Publisher,
-    <a href="../haneul/display.md#haneul_display_fields">fields</a>: vector&lt;String&gt;,
-    values: vector&lt;String&gt;,
-    ctx: &<b>mut</b> TxContext,
+    _pub: &Publisher,
+    _fields: vector&lt;String&gt;,
+    _values: vector&lt;String&gt;,
+    _ctx: &<b>mut</b> TxContext,
 ): <a href="../haneul/display.md#haneul_display_Display">Display</a>&lt;T&gt; {
-    <b>let</b> len = <a href="../haneul/display.md#haneul_display_fields">fields</a>.length();
-    <b>assert</b>!(len == values.length(), <a href="../haneul/display.md#haneul_display_EVecLengthMismatch">EVecLengthMismatch</a>);
-    <b>let</b> <b>mut</b> <a href="../haneul/display.md#haneul_display">display</a> = <a href="../haneul/display.md#haneul_display_new">new</a>&lt;T&gt;(pub, ctx);
-    <a href="../haneul/display.md#haneul_display_fields">fields</a>.zip_do!(values, |field, value| <a href="../haneul/display.md#haneul_display">display</a>.<a href="../haneul/display.md#haneul_display_add_internal">add_internal</a>(field, value));
-    <a href="../haneul/display.md#haneul_display">display</a>
+    <b>abort</b> <a href="../haneul/display.md#haneul_display_ENoLongerSupported">ENoLongerSupported</a>
 }
 </code></pre>
 
@@ -292,7 +297,7 @@ Create a new empty Display<T> object and keep it.
 
 
 <pre><code><b>public</b> <b>entry</b> <b>fun</b> <a href="../haneul/display.md#haneul_display_create_and_keep">create_and_keep</a>&lt;T: key&gt;(pub: &Publisher, ctx: &<b>mut</b> TxContext) {
-    <a href="../haneul/transfer.md#haneul_transfer_public_transfer">transfer::public_transfer</a>(<a href="../haneul/display.md#haneul_display_new">new</a>&lt;T&gt;(pub, ctx), ctx.sender())
+    <b>abort</b> <a href="../haneul/display.md#haneul_display_ENoLongerSupported">ENoLongerSupported</a>
 }
 </code></pre>
 
@@ -532,39 +537,6 @@ Allow destroying legacy display objects.
 <pre><code><b>public</b>(<a href="../haneul/package.md#haneul_package">package</a>) <b>fun</b> <a href="../haneul/display.md#haneul_display_destroy">destroy</a>&lt;T: key&gt;(<a href="../haneul/display.md#haneul_display">display</a>: <a href="../haneul/display.md#haneul_display_Display">Display</a>&lt;T&gt;) {
     <b>let</b> <a href="../haneul/display.md#haneul_display_Display">Display</a> { id, .. } = <a href="../haneul/display.md#haneul_display">display</a>;
     id.delete();
-}
-</code></pre>
-
-
-
-</details>
-
-<a name="haneul_display_create_internal"></a>
-
-## Function `create_internal`
-
-Internal function to create a new <code><a href="../haneul/display.md#haneul_display_Display">Display</a>&lt;T&gt;</code>.
-
-
-<pre><code><b>fun</b> <a href="../haneul/display.md#haneul_display_create_internal">create_internal</a>&lt;T: key&gt;(ctx: &<b>mut</b> <a href="../haneul/tx_context.md#haneul_tx_context_TxContext">haneul::tx_context::TxContext</a>): <a href="../haneul/display.md#haneul_display_Display">haneul::display::Display</a>&lt;T&gt;
-</code></pre>
-
-
-
-<details>
-<summary>Implementation</summary>
-
-
-<pre><code><b>fun</b> <a href="../haneul/display.md#haneul_display_create_internal">create_internal</a>&lt;T: key&gt;(ctx: &<b>mut</b> TxContext): <a href="../haneul/display.md#haneul_display_Display">Display</a>&lt;T&gt; {
-    <b>let</b> uid = <a href="../haneul/object.md#haneul_object_new">object::new</a>(ctx);
-    <a href="../haneul/event.md#haneul_event_emit">event::emit</a>(<a href="../haneul/display.md#haneul_display_DisplayCreated">DisplayCreated</a>&lt;T&gt; {
-        id: uid.to_inner(),
-    });
-    <a href="../haneul/display.md#haneul_display_Display">Display</a> {
-        id: uid,
-        <a href="../haneul/display.md#haneul_display_fields">fields</a>: <a href="../haneul/vec_map.md#haneul_vec_map_empty">vec_map::empty</a>(),
-        <a href="../haneul/display.md#haneul_display_version">version</a>: 0,
-    }
 }
 </code></pre>
 

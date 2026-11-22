@@ -5,13 +5,14 @@
 //# init --protocol-version 115 --accounts A --addresses P1=0x0 --simulator
 
 //# publish --upgradeable --sender A
-module P1::M {
-  public struct S1 { }
-}
+module P1::M;
+
+public struct S1 {}
 
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   package(address: "@{obj_1_0}") {
     typeOrigins {
@@ -21,3 +22,4 @@ module P1::M {
     }
   }
 }
+*/

@@ -8,10 +8,12 @@
 
 //# publish --upgradeable --sender A
 module v0::m {
+
 }
 
 //# stage-package
 module v1::m {
+
 }
 module v1::b {
     fun init(_: &mut TxContext) {

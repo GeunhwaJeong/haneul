@@ -485,10 +485,9 @@ impl PingType {
 
 pub struct WaitForEffectsRequest {
     pub transaction_digest: Option<crate::digests::TransactionDigest>,
-    /// If consensus position is provided, waits in the server handler for the transaction in it to execute,
-    /// either in fastpath outputs or finalized.
-    /// If it is not provided, only waits for finalized effects of the transaction in the server handler,
-    /// but not for fastpath outputs.
+    /// If consensus position is provided, the server handler also watches the transaction's consensus
+    /// status, so it responds promptly if consensus rejected or dropped the transaction.
+    /// Either way, the handler waits for the transaction's finalized effects.
     pub consensus_position: Option<crate::messages_consensus::ConsensusPosition>,
     /// Whether to include details of the effects,
     /// including the effects content, events, input objects, and output objects.
@@ -540,9 +539,9 @@ pub struct RawWaitForEffectsRequest {
     #[prost(bytes = "bytes", optional, tag = "1")]
     pub transaction_digest: Option<Bytes>,
 
-    /// If provided, wait for the consensus position to execute and wait for fastpath outputs of the transaction,
-    /// in addition to waiting for finalized effects.
-    /// If not provided, only wait for finalized effects.
+    /// If provided, also watch the transaction's consensus status at this position, so a rejected or
+    /// dropped transaction gets a response without waiting for effects that will not be produced.
+    /// Finalized effects are waited for in either case.
     #[prost(bytes = "bytes", optional, tag = "2")]
     pub consensus_position: Option<Bytes>,
 
@@ -551,7 +550,7 @@ pub struct RawWaitForEffectsRequest {
     #[prost(bool, tag = "3")]
     pub include_details: bool,
 
-    /// Set when this is a ping request, to differentiate between fastpath and consensus pings.
+    /// Set when this is a ping request.
     #[prost(enumeration = "PingType", optional, tag = "4")]
     pub ping_type: Option<i32>,
 }
@@ -624,6 +623,10 @@ pub struct ValidatorHealthResponse {
     pub last_committed_leader_round: u32,
     /// Last locally built checkpoint sequence number
     pub last_locally_built_checkpoint: u64,
+    /// Whether the validator is currently staggering consensus submission of
+    /// transactions without allowed proposers; `None` from validators predating the
+    /// field.
+    pub staggering_active: Option<bool>,
 }
 
 /// Raw protobuf request for validator health information (evolvable)
@@ -645,6 +648,10 @@ pub struct RawValidatorHealthResponse {
     /// Current checkpoint sequence number
     #[prost(uint64, optional, tag = "4")]
     pub checkpoint_sequence: Option<u64>,
+    /// Whether the validator is currently staggering submissions; see
+    /// [`ValidatorHealthResponse::staggering_active`].
+    #[prost(bool, optional, tag = "5")]
+    pub staggering_active: Option<bool>,
 }
 
 // =========== Parse helpers ===========
@@ -1067,6 +1074,7 @@ impl TryFrom<ValidatorHealthResponse> for RawValidatorHealthResponse {
             inflight_consensus_messages: Some(value.num_inflight_consensus_transactions),
             consensus_round: Some(value.last_committed_leader_round as u64),
             checkpoint_sequence: Some(value.last_locally_built_checkpoint),
+            staggering_active: value.staggering_active,
         })
     }
 }
@@ -1080,6 +1088,7 @@ impl TryFrom<RawValidatorHealthResponse> for ValidatorHealthResponse {
             num_inflight_execution_transactions: value.pending_certificates.unwrap_or(0),
             last_locally_built_checkpoint: value.checkpoint_sequence.unwrap_or(0),
             last_committed_leader_round: value.consensus_round.unwrap_or(0) as u32,
+            staggering_active: value.staggering_active,
         })
     }
 }

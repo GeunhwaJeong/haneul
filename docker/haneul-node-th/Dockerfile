@@ -43,6 +43,8 @@ COPY --from=builder /haneul/target/release/haneul      /opt/haneul/bin/haneul-th
 COPY --from=builder /haneul/target/release/haneul-tool /opt/haneul/bin/haneul-tool-th
 COPY --from=builder /haneul/target/release/stress   /opt/haneul/bin/stress-th
 
+ENV PATH="$PATH:/opt/haneul/bin"
+
 ARG BUILD_DATE
 ARG GIT_REVISION
 LABEL build-date=$BUILD_DATE

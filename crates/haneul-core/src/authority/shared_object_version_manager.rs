@@ -49,10 +49,8 @@ pub struct AssignedVersions {
     /// version of the object.
     ///
     /// Today this holds the accumulator root version (as of the beginning of the consensus
-    /// commit this transaction belongs to) and the forwarding address registry version (as of the
-    /// point in the commit at which this transaction is sequenced). The accumulator root qualifies
-    /// because it is written at the end of every commit, so there is always a well-defined prior
-    /// version to read from.
+    /// commit this transaction belongs to), and the forwarding address registry and Clock
+    /// versions (as of the point in the commit at which this transaction is sequenced).
     pub system_object_versions: SystemObjectVersions,
 }
 
@@ -88,11 +86,8 @@ impl AssignedVersions {
     /// that execute directly: the test version-assignment helper assigns no root version,
     /// but execution reads the root implicitly for any object funds withdraw.
     pub fn with_accumulator_version_for_testing(mut self, version: ConsensusObjectVersion) -> Self {
-        self.system_object_versions = SystemObjectVersions::new(
-            Some(version),
-            self.system_object_versions
-                .get(&haneul_types::HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID),
-        );
+        self.system_object_versions
+            .insert_for_testing(HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, version);
         self
     }
 
@@ -105,12 +100,19 @@ impl AssignedVersions {
     ) -> Self {
         Self::new(
             shared_object_versions,
-            SystemObjectVersions::new(
-                accumulator_version.map(|v| ConsensusObjectVersion {
-                    initial_shared_version: haneul_types::object::OBJECT_START_VERSION,
-                    version: v,
-                }),
-                None,
+            SystemObjectVersions::from_map(
+                accumulator_version
+                    .map(|v| {
+                        (
+                            HANEUL_ACCUMULATOR_ROOT_OBJECT_ID,
+                            ConsensusObjectVersion {
+                                initial_shared_version: haneul_types::object::OBJECT_START_VERSION,
+                                version: v,
+                            },
+                        )
+                    })
+                    .into_iter()
+                    .collect(),
             ),
         )
     }
@@ -667,6 +669,7 @@ fn implicitly_read_system_objects(
             initial_shared_version,
         ));
     }
+    objects.push((HANEUL_CLOCK_OBJECT_ID, HANEUL_CLOCK_OBJECT_SHARED_VERSION));
     objects
 }
 
@@ -725,13 +728,79 @@ mod tests {
             initial_shared_version: haneul_types::object::OBJECT_START_VERSION,
             version: v,
         };
+        let versions = [
+            (HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, accumulator_version),
+            (
+                HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID,
+                forwarding_address_registry_version,
+            ),
+            // Only a consensus commit prologue advances the Clock, and these tests sequence
+            // none, so the Clock stays at its genesis version.
+            (
+                HANEUL_CLOCK_OBJECT_ID,
+                Some(HANEUL_CLOCK_OBJECT_SHARED_VERSION),
+            ),
+        ]
+        .into_iter()
+        .filter_map(|(id, version)| Some((id, at_start_version(version?))))
+        .collect();
         AssignedVersions::new(
             shared_object_versions,
-            SystemObjectVersions::new(
-                accumulator_version.map(at_start_version),
-                forwarding_address_registry_version.map(at_start_version),
-            ),
+            SystemObjectVersions::from_map(versions),
         )
+    }
+
+    #[tokio::test]
+    async fn test_clock_version_follows_consensus_commit_prologue() {
+        let authority = TestAuthorityBuilder::new().build().await;
+        let epoch_store = authority.epoch_store_for_testing();
+        let clock_key = (HANEUL_CLOCK_OBJECT_ID, HANEUL_CLOCK_OBJECT_SHARED_VERSION);
+        let certs = [
+            generate_shared_objs_tx_with_gas_version(&[], 3),
+            generate_shared_objs_tx_with_gas_version(&[], 5),
+        ];
+        let assignables = [
+            Schedulable::Transaction(&certs[0]),
+            Schedulable::ConsensusCommitPrologue(epoch_store.epoch(), 1, 0),
+            Schedulable::Transaction(&certs[1]),
+        ];
+        let ConsensusSharedObjVerAssignment {
+            shared_input_next_versions,
+            assigned_versions,
+        } = SharedObjVerManager::assign_versions_from_consensus(
+            &epoch_store,
+            authority.get_object_cache_reader().as_ref(),
+            assignables.iter(),
+            &BTreeMap::new(),
+        )
+        .unwrap();
+        let clock_versions = assigned_versions
+            .0
+            .iter()
+            .map(|(_, versions)| {
+                versions
+                    .system_object_versions
+                    .get(&HANEUL_CLOCK_OBJECT_ID)
+                    .unwrap()
+                    .version
+            })
+            .collect::<Vec<_>>();
+        let next_clock_version = *shared_input_next_versions.get(&clock_key).unwrap();
+        assert!(next_clock_version > HANEUL_CLOCK_OBJECT_SHARED_VERSION);
+        // The transaction sequenced before the prologue reads the genesis Clock; the one after it
+        // reads the Clock the prologue writes.
+        assert_eq!(
+            clock_versions,
+            vec![
+                HANEUL_CLOCK_OBJECT_SHARED_VERSION,
+                HANEUL_CLOCK_OBJECT_SHARED_VERSION,
+                next_clock_version,
+            ]
+        );
+        assert_eq!(
+            assigned_versions.0[1].1.shared_object_versions,
+            vec![(clock_key, HANEUL_CLOCK_OBJECT_SHARED_VERSION)]
+        );
     }
 
     #[tokio::test]
@@ -1011,19 +1080,19 @@ mod tests {
             &epoch_store,
             authority.get_object_cache_reader().as_ref(),
         );
-        let system_object_versions = SystemObjectVersions::new(
-            None,
-            Some(ConsensusObjectVersion {
+        let system_object_versions = SystemObjectVersions::from_map(BTreeMap::from([(
+            HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID,
+            ConsensusObjectVersion {
                 initial_shared_version: registry_initial_version,
                 version: registry_version,
-            }),
-        );
+            },
+        )]));
         assert_eq!(
             assigned_versions.0,
             vec![
                 (
                     certs[0].key(),
-                    AssignedVersions::new(vec![], system_object_versions)
+                    AssignedVersions::new(vec![], system_object_versions.clone())
                 ),
                 (
                     certs[1].key(),
@@ -1266,6 +1335,8 @@ mod tests {
             HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID,
             SequenceNumber::from_u64(1),
         ));
+        shared_input_next_versions
+            .remove(&(HANEUL_CLOCK_OBJECT_ID, HANEUL_CLOCK_OBJECT_SHARED_VERSION));
         assert_eq!(
             shared_input_next_versions,
             HashMap::from([
@@ -1393,34 +1464,30 @@ mod tests {
             vec![
                 (
                     certs[0].key(),
-                    assigned_versions_for_testing(
+                    AssignedVersions::new(
                         vec![((id, init_shared_version), init_shared_version)],
-                        None,
-                        None
+                        SystemObjectVersions::empty()
                     )
                 ),
                 (
                     certs[1].key(),
-                    assigned_versions_for_testing(
+                    AssignedVersions::new(
                         vec![((id, init_shared_version), SequenceNumber::from_u64(4))],
-                        None,
-                        None
+                        SystemObjectVersions::empty()
                     )
                 ),
                 (
                     certs[2].key(),
-                    assigned_versions_for_testing(
+                    AssignedVersions::new(
                         vec![((id, init_shared_version), SequenceNumber::from_u64(4))],
-                        None,
-                        None
+                        SystemObjectVersions::empty()
                     )
                 ),
                 (
                     certs[3].key(),
-                    assigned_versions_for_testing(
+                    AssignedVersions::new(
                         vec![((id, init_shared_version), SequenceNumber::from_u64(10))],
-                        None,
-                        None
+                        SystemObjectVersions::empty()
                     )
                 ),
             ]
@@ -1611,10 +1678,16 @@ mod tests {
                         )
                     ),
                 ]),
-                shared_input_next_versions: HashMap::from([(
-                    (HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, acc_version),
-                    acc_version.next()
-                )]),
+                shared_input_next_versions: HashMap::from([
+                    (
+                        (HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, acc_version),
+                        acc_version.next()
+                    ),
+                    (
+                        (HANEUL_CLOCK_OBJECT_ID, HANEUL_CLOCK_OBJECT_SHARED_VERSION),
+                        HANEUL_CLOCK_OBJECT_SHARED_VERSION
+                    ),
+                ]),
             }
         );
     }
@@ -1697,10 +1770,16 @@ mod tests {
                         )
                     ),
                 ]),
-                shared_input_next_versions: HashMap::from([(
-                    (HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, acc_version),
-                    acc_version.next().next().next()
-                )]),
+                shared_input_next_versions: HashMap::from([
+                    (
+                        (HANEUL_ACCUMULATOR_ROOT_OBJECT_ID, acc_version),
+                        acc_version.next().next().next()
+                    ),
+                    (
+                        (HANEUL_CLOCK_OBJECT_ID, HANEUL_CLOCK_OBJECT_SHARED_VERSION),
+                        HANEUL_CLOCK_OBJECT_SHARED_VERSION
+                    ),
+                ]),
             }
         );
     }
@@ -1756,6 +1835,10 @@ mod tests {
                     (
                         (shared_obj_id, shared_obj_version),
                         shared_obj_version.next()
+                    ),
+                    (
+                        (HANEUL_CLOCK_OBJECT_ID, HANEUL_CLOCK_OBJECT_SHARED_VERSION),
+                        HANEUL_CLOCK_OBJECT_SHARED_VERSION
                     ),
                 ]),
             }

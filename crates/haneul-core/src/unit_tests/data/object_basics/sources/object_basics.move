@@ -144,6 +144,13 @@ public fun generic_test<T>() {}
 
 public fun use_clock(_clock: &Clock) {}
 
+public fun create_with_clock_timestamp(recipient: address, ctx: &mut TxContext) {
+    transfer::public_transfer(
+        Object { id: object::new(ctx), value: haneul::clock::borrow().timestamp_ms() },
+        recipient,
+    )
+}
+
 public fun use_auth_state(_auth_state: &AuthenticatorState) {}
 
 public fun use_random(_random: &Random) {}

@@ -7,6 +7,7 @@
 // Various error cases related to dynamic field names.
 
 //# run-graphql --cursors bcs(42u64)
+/*
 { # Missing type information
   address(address: "@{obj_0_0}") {
     dynamicField(name: { bcs: "@{cursor_0}" }) {
@@ -14,8 +15,10 @@
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(42u64)
+/*
 { # Missing BCS
   address(address: "@{obj_0_0}") {
     dynamicField(name: { type: "u64" }) {
@@ -23,8 +26,10 @@
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(42u64)
+/*
 { # Mixing literal and type/BCS
   address(address: "@{obj_0_0}") {
     dynamicField(name: { type: "u64", bcs: "@{cursor_0}", literal: "42u64" }) {
@@ -32,8 +37,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Literal parsing error
   address(address: "@{obj_0_0}") {
     dynamicField(name: { literal: "'hello" }) {
@@ -41,8 +48,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Field access
   address(address: "@{obj_0_0}") {
     dynamicField(name: { literal: "0x1::ascii::String(foo)" }) {
@@ -50,3 +59,4 @@
     }
   }
 }
+*/

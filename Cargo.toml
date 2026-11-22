@@ -159,7 +159,6 @@ members = [
   "crates/haneul-rosetta",
   "crates/haneul-rpc-api",
   "crates/haneul-rpc-benchmark",
-  "crates/haneul-rpc-cursor",
   "crates/haneul-rpc-resolver",
   "crates/haneul-rpc-store",
   "crates/haneul-sdk",
@@ -219,7 +218,7 @@ members = [
 
 [workspace.package]
 # This version string will be inherited by haneul-core, haneul-faucet, haneul-node, haneul-tools, haneul-sdk, haneul-move-build, and haneul crates.
-version = "1.15.0"
+version = "1.16.0"
 authors = ["Geunhwa Jeong <jeonggh892@gmail.com>"]
 repository = "https://github.com/GeunhwaJeong/haneul"
 
@@ -286,19 +285,19 @@ unnecessary_get_then_check = "allow"
 
 # Dependencies that should be kept in sync through the whole workspace
 [workspace.dependencies]
-anemo = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "68adc31d4ea1f4573f08c2c75317fcb205b823de" }
+anemo = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e" }
 anemo-benchmark = { path = "crates/anemo-benchmark" }
-anemo-build = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "68adc31d4ea1f4573f08c2c75317fcb205b823de" }
-anemo-cli = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "68adc31d4ea1f4573f08c2c75317fcb205b823de" }
-anemo-tower = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "68adc31d4ea1f4573f08c2c75317fcb205b823de" }
+anemo-build = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e" }
+anemo-cli = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e" }
+anemo-tower = { git = "https://github.com/GeunhwaJeong/anemo.git", rev = "845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e" }
 
 # core-types from the new sdk for use in gRPC
 antithesis_sdk = "0.2.5"
 anyhow = "1.0.71"
 arc-swap = { version = "1.5.1", features = ["serde"] }
 argon2 = { version = "0.6.0", default-features = false }
-arrow = "59.3"
-arrow-array = "59.3"
+arrow = "57.3"
+arrow-array = "57.3"
 assert_cmd = "2.0.6"
 async-graphql = "=7.0.1"
 async-graphql-axum = "=7.0.1"
@@ -387,13 +386,13 @@ either = "1.8.0"
 enum_dispatch = "^0.3"
 expect-test = "1.4.0"
 eyre = "0.6.8"
-fastcrypto = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430" }
-fastcrypto-pq = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430" }
-fastcrypto-tbls = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430" }
-fastcrypto-vdf = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430", features = [
+fastcrypto = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "0a263279c31a45ba4bcd986a82b7e99c63ed16c0" }
+fastcrypto-pq = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "0a263279c31a45ba4bcd986a82b7e99c63ed16c0" }
+fastcrypto-tbls = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "0a263279c31a45ba4bcd986a82b7e99c63ed16c0" }
+fastcrypto-vdf = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "0a263279c31a45ba4bcd986a82b7e99c63ed16c0", features = [
   "experimental",
 ] }
-fastcrypto-zkp = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "da61cd46013fdd65361e57f7b9d4ae2244f86430", package = "fastcrypto-zkp" }
+fastcrypto-zkp = { git = "https://github.com/GeunhwaJeong/fastcrypto", rev = "0a263279c31a45ba4bcd986a82b7e99c63ed16c0", package = "fastcrypto-zkp" }
 fdlimit = "0.2.1"
 flate2 = "1.0.28"
 fs_extra = "1.3.0"
@@ -481,7 +480,6 @@ haneul-rpc = { git = "https://github.com/GeunhwaJeong/haneul-rust-sdk.git", rev 
 
 ### Workspace Members ###
 haneul-rpc-api = { path = "crates/haneul-rpc-api" }
-haneul-rpc-cursor = { path = "crates/haneul-rpc-cursor" }
 haneul-rpc-resolver = { path = "crates/haneul-rpc-resolver" }
 haneul-rpc-store = { path = "crates/haneul-rpc-store" }
 haneul-sdk = { path = "crates/haneul-sdk" }
@@ -570,8 +568,8 @@ move-transactional-test-runner = { path = "external-crates/move/crates/move-tran
 move-unit-test = { path = "external-crates/move/crates/move-unit-test" }
 move-vm-config = { path = "external-crates/move/crates/move-vm-config" }
 move-vm-profiler = { path = "external-crates/move/crates/move-vm-profiler" }
-msim = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "5110cb5afdb4e1298cdb06f190365bd78b1acf2c", package = "msim" }
-msim-macros = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "5110cb5afdb4e1298cdb06f190365bd78b1acf2c", package = "msim-macros" }
+msim = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "13c14bdf0932e13f374857bcdd77ede55e8c2237", package = "msim" }
+msim-macros = { git = "https://github.com/GeunhwaJeong/mysten-sim.git", rev = "13c14bdf0932e13f374857bcdd77ede55e8c2237", package = "msim-macros" }
 multiaddr = "0.18.2"
 nexlint = { git = "https://github.com/GeunhwaJeong/nexlint.git", rev = "7ce56bd591242a57660ed05f14ca2483c37d895b" }
 nexlint-lints = { git = "https://github.com/GeunhwaJeong/nexlint.git", rev = "7ce56bd591242a57660ed05f14ca2483c37d895b" }
@@ -596,7 +594,7 @@ p384 = { version = "0.13.0", default-features = false, features = [
   "sha384",
 ] }
 parking_lot = { version = "0.12.3", features = ["arc_lock"] }
-parquet = "59.3"
+parquet = "57.3"
 passkey-authenticator = { version = "0.4.0" }
 passkey-client = { version = "0.4.0" }
 passkey-types = { version = "0.4.0" }

@@ -6,25 +6,35 @@
 
 //# publish --upgradeable --sender A
 module A0::base {
-    public enum Foo<phantom T> { V0 }
+    public enum Foo<phantom T> {
+        V0,
+    }
 }
 
 //# upgrade --package A0 --upgrade-capability 1,1 --sender A
 module A1::base {
-    public enum Foo<T: store> { V0 }
+    public enum Foo<T: store> {
+        V0,
+    }
 }
 
 //# upgrade --package A0 --upgrade-capability 1,1 --sender A
 module A1::base {
-    public enum Foo<T: copy> { V0 }
+    public enum Foo<T: copy> {
+        V0,
+    }
 }
 
 //# upgrade --package A0 --upgrade-capability 1,1 --sender A
 module A1::base {
-    public enum Foo<T: drop> { V0 }
+    public enum Foo<T: drop> {
+        V0,
+    }
 }
 
 //# upgrade --package A0 --upgrade-capability 1,1 --sender A
 module A1::base {
-    public enum Foo<T: copy + drop + key> { V0 }
+    public enum Foo<T: copy + drop + key> {
+        V0,
+    }
 }

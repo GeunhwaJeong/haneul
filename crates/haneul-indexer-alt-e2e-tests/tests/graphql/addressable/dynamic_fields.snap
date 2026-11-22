@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 15 tasks
 
@@ -88,7 +87,7 @@ task 10, line 70:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 11, lines 72-126:
+task 11, lines 72-128:
 //# run-graphql
 Response: {
   "data": {
@@ -227,7 +226,7 @@ Response: {
   }
 }
 
-task 12, lines 128-168:
+task 12, lines 130-172:
 //# run-graphql
 Response: {
   "data": {
@@ -490,7 +489,7 @@ Response: {
   ]
 }
 
-task 13, lines 170-180:
+task 13, lines 174-186:
 //# run-graphql
 Response: {
   "data": {
@@ -518,7 +517,7 @@ Response: {
   ]
 }
 
-task 14, lines 182-194:
+task 14, lines 188-202:
 //# run-graphql
 Response: {
   "data": {

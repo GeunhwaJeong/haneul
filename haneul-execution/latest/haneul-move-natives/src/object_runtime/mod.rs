@@ -43,7 +43,7 @@ use move_core_types::{
     u256::U256,
     vm_status::StatusCode,
 };
-use move_vm_runtime::execution::values::{GlobalValue, Value};
+use move_vm_runtime::execution::values::{GlobalValue, Reference, StructRef, Value};
 use move_vm_runtime::natives::extensions::NativeExtensionMarker;
 use object_store::{ActiveChildObject, ChildObjectStore};
 use std::{
@@ -141,6 +141,12 @@ pub(crate) struct ObjectRuntimeState {
 pub struct ObjectRuntime<'a> {
     child_object_store: ChildObjectStore<'a>,
     system_object_resolver: &'a dyn ImplicitSystemObjectResolver,
+    /// The Clock pinned for this transaction, loaded on first borrow. References handed out by
+    /// `borrow_clock` point into it, so it lives as long as the runtime; it is kept outside
+    /// `ObjectRuntimeState`, which test scenarios reset at the end of every transaction.
+    // TODO: if another implicitly read system object becomes borrowable, group these loaded
+    // values in a struct instead of adding more fields here.
+    clock: Option<GlobalValue>,
     // inventories for test scenario
     pub(crate) test_inventories: TestInventories,
     // the internal state
@@ -226,6 +232,7 @@ impl<'a> ObjectRuntime<'a> {
                 epoch_id,
             ),
             system_object_resolver,
+            clock: None,
             test_inventories: TestInventories::new(),
             state: ObjectRuntimeState {
                 input_objects: input_object_owners,
@@ -248,6 +255,50 @@ impl<'a> ObjectRuntime<'a> {
             protocol_config,
             metrics,
         }
+    }
+
+    pub fn borrow_clock(&mut self, layout: &R::MoveTypeLayout) -> PartialVMResult<Value> {
+        if self.clock.is_none() {
+            let clock = self.system_object_resolver.clock().map_err(|e| {
+                PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                    .with_message(format!("Failed to read the Clock: {e}"))
+            })?;
+            let contents = clock
+                .data
+                .try_as_move()
+                .ok_or_else(|| {
+                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                        .with_message("The Clock is not a Move object".to_string())
+                })?
+                .contents();
+            let value = Value::simple_deserialize(contents, layout).ok_or_else(|| {
+                PartialVMError::new(StatusCode::FAILED_TO_DESERIALIZE_RESOURCE)
+                    .with_message("Failed to deserialize the Clock".to_string())
+            })?;
+            self.clock = Some(GlobalValue::create(value)?);
+        }
+        self.clock
+            .as_ref()
+            .ok_or_else(|| {
+                PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                    .with_message("The Clock was not loaded".to_string())
+            })
+            .and_then(|clock| clock.borrow_global())
+    }
+
+    /// If the clock is loaded, we write `timestamp_ms` into the loaded Clock `Value` so any and all
+    /// live references see it. This means that they will observe the updated time, even without
+    /// calling `clock::borrow` again to get a "fresh" reference.
+    pub fn write_clock_timestamp_ms_for_testing(
+        &mut self,
+        timestamp_ms: u64,
+    ) -> PartialVMResult<()> {
+        let Some(clock) = &self.clock else {
+            return Ok(());
+        };
+        let clock: StructRef = clock.borrow_global()?.value_as()?;
+        let timestamp: Reference = clock.borrow_field(1)?.value_as()?;
+        timestamp.write_ref(Value::u64(timestamp_ms))
     }
 
     pub fn check_object_funds_sufficiency(
@@ -329,9 +380,10 @@ impl<'a> ObjectRuntime<'a> {
         Ok(())
     }
 
-    /// Marks `id` as new via `new_id` and, when `parent` has a tracked root version, records the
-    /// same root version for `id`. When `parent` is untracked it must itself be newly created in
-    /// this transaction (and transitively to its root), so no root version is recorded.
+    /// Marks `id` as new via `new_id` and, when `parent` has a tracked root version and `id` does
+    /// not, records the same root version for `id`. When `parent` is untracked it must itself be
+    /// newly created in this transaction (and transitively to its root), so no root version is
+    /// recorded.
     pub fn new_id_from_hash(&mut self, parent: ObjectID, id: ObjectID) -> PartialVMResult<()> {
         self.new_id(id)?;
         self.child_object_store
@@ -748,6 +800,10 @@ impl<'a> ObjectRuntime<'a> {
 
     pub fn is_deleted(&self, id: &ObjectID) -> bool {
         self.state.deleted_ids.contains(id)
+    }
+
+    pub fn input_owner(&self, id: &ObjectID) -> Option<&Owner> {
+        self.state.input_objects.get(id)
     }
 
     pub fn is_transferred(&self, id: &ObjectID) -> Option<Owner> {

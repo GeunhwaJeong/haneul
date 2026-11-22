@@ -41,6 +41,7 @@ prost-types.workspace = true
 roaring.workspace = true
 rustc-hash.workspace = true
 rustls.workspace = true
+schemars.workspace = true
 scoped-futures.workspace = true
 serde.workspace = true
 toml.workspace = true
@@ -67,7 +68,9 @@ haneul-indexer-alt-framework = { workspace = true, features = ["cluster"] }
 haneul-indexer-alt-framework-store-traits = { workspace = true, features = ["testing"] }
 haneul-keys.workspace = true
 haneul-rpc.workspace = true
+haneul-synthetic-ingestion.workspace = true
 haneul-test-transaction-builder.workspace = true
+tempfile.workspace = true
 test-cluster.workspace = true
 tokio-stream.workspace = true
 url.workspace = true

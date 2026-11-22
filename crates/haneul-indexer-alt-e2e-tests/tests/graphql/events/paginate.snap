@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 14 tasks
 
@@ -47,14 +46,14 @@ task 6, line 67:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 7, lines 69-104:
+task 7, lines 69-106:
 //# run-graphql
 Response: {
   "data": {
     "allEvents": {
       "pageInfo": {
-        "startCursor": "AAEBECgBQgYIARACGABKBAgBEAEBAAEAAAAAAAAAAQAAAAAAAAAAAAAA",
-        "endCursor": "AAEBDigCQgYIAhAHGABKAggCAQECAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "startCursor": "AAEBDigBQgQQAhgASgQIARABAQABAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+        "endCursor": "AAEBDCgCQgQQBxgASgIIAgEBAgAAAAAAAAAAAAAAAAAAAAAAAAA=",
         "hasNextPage": false,
         "hasPreviousPage": false
       },
@@ -154,8 +153,8 @@ Response: {
     },
     "eventsHasNext": {
       "pageInfo": {
-        "startCursor": "AAEBECgBQgYIARACGABKBAgBEAEBAAEAAAAAAAAAAQAAAAAAAAAAAAAA",
-        "endCursor": "AAEBECgBQgYIARADGABKBAgBEAIBAAEAAAAAAAAAAgAAAAAAAAAAAAAA",
+        "startCursor": "AAEBDigBQgQQAhgASgQIARABAQABAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+        "endCursor": "AAEBDigBQgQQAxgASgQIARACAQABAAAAAAAAAAIAAAAAAAAAAAAAAA==",
         "hasNextPage": true,
         "hasPreviousPage": false
       },
@@ -178,8 +177,8 @@ Response: {
     },
     "eventsHasPrevious": {
       "pageInfo": {
-        "startCursor": "AAEBEigBQgYIARAEGAhKBggBEAMYCAEAAQAAAAAAAAADAAAAAAAAAAgAAAA=",
-        "endCursor": "AAEBEigBQgYIARAEGAlKBggBEAMYCQEAAQAAAAAAAAADAAAAAAAAAAkAAAA=",
+        "startCursor": "AAEBECgBQgQQBBgISgYIARADGAgBAAEAAAAAAAAAAwAAAAAAAAAIAAAA",
+        "endCursor": "AAEBECgBQgQQBBgJSgYIARADGAkBAAEAAAAAAAAAAwAAAAAAAAAJAAAA",
         "hasNextPage": false,
         "hasPreviousPage": true
       },
@@ -203,8 +202,8 @@ Response: {
   }
 }
 
-task 8, lines 106-114:
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,2u8,24u8,0u8)
+task 8, lines 108-119:
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,1,0u32)
 Response: {
   "data": {
     "eventsAfterT2E0HasPreviousPage": {
@@ -216,8 +215,8 @@ Response: {
   }
 }
 
-task 9, lines 116-124:
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,4u8,24u8,9u8)
+task 9, lines 121-131:
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,3,9u32)
 Response: {
   "data": {
     "eventsBeforeT3E9HasNextPage": {
@@ -229,8 +228,8 @@ Response: {
   }
 }
 
-task 10, lines 126-151:
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,2u8,24u8,0u8) bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,4u8,24u8,9u8)
+task 10, lines 133-160:
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,1,0u32) bcs(0u8,1u8,0u8,0u8,1,3,9u32)
 Response: {
   "data": {
     "firstEventBetweenT2E0AndT4E9": {
@@ -261,14 +260,14 @@ Response: {
   }
 }
 
-task 11, lines 154-169:
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,2u8,24u8,0u8)
+task 11, lines 162-179:
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,1,0u32)
 Response: {
   "data": {
     "eventsAfterTransaction2AndEvent0": {
       "pageInfo": {
-        "startCursor": "AAEBECgBQgYIARADGABKBAgBEAIBAAEAAAAAAAAAAgAAAAAAAAAAAAAA",
-        "endCursor": "AAEBECgBQgYIARADGABKBAgBEAIBAAEAAAAAAAAAAgAAAAAAAAAAAAAA",
+        "startCursor": "AAEBDigBQgQQAxgASgQIARACAQABAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+        "endCursor": "AAEBDigBQgQQAxgASgQIARACAQABAAAAAAAAAAIAAAAAAAAAAAAAAA==",
         "hasNextPage": true,
         "hasPreviousPage": true
       },
@@ -285,14 +284,14 @@ Response: {
   }
 }
 
-task 12, lines 171-186:
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,3u8,24u8,0u8)
+task 12, lines 181-198:
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,2,0u32)
 Response: {
   "data": {
     "eventsBeforeTransaction3AndEvent0": {
       "pageInfo": {
-        "startCursor": "AAEBECgBQgYIARACGABKBAgBEAEBAAEAAAAAAAAAAQAAAAAAAAAAAAAA",
-        "endCursor": "AAEBECgBQgYIARACGABKBAgBEAEBAAEAAAAAAAAAAQAAAAAAAAAAAAAA",
+        "startCursor": "AAEBDigBQgQQAhgASgQIARABAQABAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+        "endCursor": "AAEBDigBQgQQAhgASgQIARABAQABAAAAAAAAAAEAAAAAAAAAAAAAAA==",
         "hasNextPage": true,
         "hasPreviousPage": false
       },
@@ -309,14 +308,14 @@ Response: {
   }
 }
 
-task 13, lines 188-203:
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,3u8,24u8,1u8)
+task 13, lines 200-217:
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,2,1u32)
 Response: {
   "data": {
     "eventsBeforeTransaction3AndEvent1FromBack": {
       "pageInfo": {
-        "startCursor": "AAEBDCgCQgYIABAAGABKAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-        "endCursor": "AAEBECgBQgYIARADGABKBAgBEAIBAAEAAAAAAAAAAgAAAAAAAAAAAAAA",
+        "startCursor": "AAEBCigCQgQQABgASgABAQAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "endCursor": "AAEBDigBQgQQAxgASgQIARACAQABAAAAAAAAAAIAAAAAAAAAAAAAAA==",
         "hasNextPage": true,
         "hasPreviousPage": false
       },

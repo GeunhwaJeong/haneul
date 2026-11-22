@@ -47,6 +47,7 @@
 //> MergeCoins(Gas, [Result(0)])
 
 //# run-graphql
+/*
 { # Fetch an epoch and its transactions, should have 2 transactions.
   # One in Checkpoint 0, one in Checkpoint 1.
   epoch(epochId: 0) {
@@ -62,8 +63,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Fetch an epoch and its transactions: 5 programmable + 4 from SystemProgrammableTransaction per checkpoint
   epoch(epochId: 1) {
     totalTransactions
@@ -79,8 +82,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Fetch nonexistent epoch
   epoch(epochId: 5) {
     totalTransactions
@@ -95,3 +100,4 @@
     }
   }
 }
+*/

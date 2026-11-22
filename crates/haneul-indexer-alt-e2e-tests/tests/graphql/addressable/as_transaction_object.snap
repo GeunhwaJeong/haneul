@@ -18,7 +18,7 @@ task 2, line 11:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 3, lines 13-52:
+task 3, lines 13-54:
 //# run-graphql
 Response: {
   "data": {
@@ -49,17 +49,17 @@ Response: {
   }
 }
 
-task 4, lines 54-77:
+task 4, lines 56-79:
 //# publish
 created: object(4,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6680400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 5, line 79:
+task 5, line 81:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 6, lines 81-83:
+task 6, lines 83-85:
 //# programmable --sender A --inputs 7u64 @A
 //> 0: P::M::create_object(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1));
@@ -67,22 +67,22 @@ created: object(6,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, line 85:
+task 7, line 87:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 8, lines 87-88:
+task 8, lines 89-90:
 //# programmable --sender A --inputs object(6,0) 99u64
 //> 0: P::M::mutate_and_emit(Input(0), Input(1));
 events: Event { package_id: P, transaction_module: Identifier("M"), sender: A, type_: StructTag { address: P, module: Identifier("M"), name: Identifier("TestAddressEvent"), type_params: [] }, contents: [242, 7, 32, 155, 199, 87, 220, 206, 164, 234, 213, 169, 226, 156, 38, 247, 253, 79, 71, 62, 70, 255, 120, 50, 158, 89, 94, 255, 11, 157, 59, 179] }
 mutated: object(0,0), object(6,0)
 gas summary: computation_cost: 1000000, storage_cost: 2325600,  storage_rebate: 2302344, non_refundable_storage_fee: 23256
 
-task 9, line 90:
+task 9, line 92:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 10, lines 92-117:
+task 10, lines 94-121:
 //# run-graphql
 Response: {
   "data": {
@@ -126,7 +126,7 @@ Response: {
   }
 }
 
-task 11, lines 119-146:
+task 11, lines 123-152:
 //# run-graphql
 Response: {
   "data": {

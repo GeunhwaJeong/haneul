@@ -28,7 +28,7 @@ task 4, line 34:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 5, lines 36-39:
+task 5, lines 36-41:
 //# run-graphql
 Response: {
   "data": {
@@ -38,11 +38,11 @@ Response: {
   }
 }
 
-task 6, line 41:
+task 6, line 43:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 7, lines 43-46:
+task 7, lines 45-50:
 //# run-graphql
 Response: {
   "data": {
@@ -52,18 +52,18 @@ Response: {
   }
 }
 
-task 8, lines 48-50:
+task 8, lines 52-54:
 //# programmable --sender A --inputs 43 object(3,0)
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: MergeCoins(Input(1), [Result(0)])
 mutated: object(0,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 9, line 52:
+task 9, line 56:
 //# create-checkpoint
 Checkpoint created: 4
 
-task 10, lines 54-57:
+task 10, lines 58-63:
 //# run-graphql
 Response: {
   "data": {
@@ -73,25 +73,25 @@ Response: {
   }
 }
 
-task 11, lines 59-61:
+task 11, lines 65-67:
 //# programmable --sender A --inputs 44 object(3,0)
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: MergeCoins(Input(1), [Result(0)])
 mutated: object(0,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 12, lines 63-65:
+task 12, lines 69-71:
 //# programmable --sender A --inputs 45 object(3,0)
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: MergeCoins(Input(1), [Result(0)])
 mutated: object(0,0), object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 13, line 67:
+task 13, line 73:
 //# create-checkpoint
 Checkpoint created: 5
 
-task 14, lines 69-72:
+task 14, lines 75-80:
 //# run-graphql
 Response: {
   "data": {
@@ -101,7 +101,7 @@ Response: {
   }
 }
 
-task 15, lines 74-76:
+task 15, lines 82-84:
 //# programmable --sender A --inputs object(3,0) @A
 //> 0: P::M::wrap(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -110,11 +110,11 @@ mutated: object(0,0)
 wrapped: object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 2546000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 16, line 78:
+task 16, line 86:
 //# create-checkpoint
 Checkpoint created: 6
 
-task 17, lines 80-83:
+task 17, lines 88-93:
 //# run-graphql
 Response: {
   "data": {
@@ -122,7 +122,7 @@ Response: {
   }
 }
 
-task 18, lines 85-87:
+task 18, lines 95-97:
 //# programmable --sender A --inputs object(15,0) @A
 //> 0: P::M::unwrap(Input(0));
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -131,11 +131,11 @@ unwrapped: object(3,0)
 deleted: object(15,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 2520540, non_refundable_storage_fee: 25460
 
-task 19, line 89:
+task 19, line 99:
 //# create-checkpoint
 Checkpoint created: 7
 
-task 20, lines 91-94:
+task 20, lines 101-106:
 //# run-graphql
 Response: {
   "data": {
@@ -145,18 +145,18 @@ Response: {
   }
 }
 
-task 21, lines 96-97:
+task 21, lines 108-109:
 //# programmable --sender A --inputs object(3,0)
 //> 0: MergeCoins(Gas, [Input(0)])
 mutated: object(0,0)
 deleted: object(3,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 1956240, non_refundable_storage_fee: 19760
 
-task 22, line 99:
+task 22, line 111:
 //# create-checkpoint
 Checkpoint created: 8
 
-task 23, lines 101-104:
+task 23, lines 113-118:
 //# run-graphql
 Response: {
   "data": {
@@ -164,7 +164,7 @@ Response: {
   }
 }
 
-task 24, lines 106-134:
+task 24, lines 120-150:
 //# run-graphql
 Response: {
   "data": {
@@ -189,7 +189,7 @@ Response: {
   }
 }
 
-task 25, lines 136-139:
+task 25, lines 152-157:
 //# run-graphql
 Response: {
   "data": {

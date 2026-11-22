@@ -8,13 +8,13 @@ processed 7 tasks
 init:
 A: object(0,0)
 
-task 1, lines 9-32:
+task 1, lines 9-35:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 7607600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 34-37:
+task 2, lines 37-40:
 // unused object
 //# programmable --sender A --inputs @A
 //> 0: test::m1::r();
@@ -23,7 +23,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 39-43:
+task 3, lines 42-46:
 // unused inputs and unused objects and unused results of various kinds
 //# programmable --sender A --inputs object(2,0) 0 vector[@0,@0]
 //> 0: test::m1::droppable();
@@ -32,7 +32,7 @@ task 3, lines 39-43:
 mutated: object(0,0), object(2,0)
 gas summary: computation_cost: 1000000, storage_cost: 2204000,  storage_rebate: 2203780, non_refundable_storage_fee: 220
 
-task 4, lines 45-51:
+task 4, lines 48-54:
 // unconsumed copyable value, but most recent usage was by-value
 //# programmable --sender A
 //> 0: test::m1::copyable();
@@ -43,14 +43,14 @@ task 4, lines 45-51:
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 5, lines 53-55:
+task 5, lines 56-58:
 // unused pure that was cast
 //# programmable --sender A --inputs 0
 //> test::m1::num_mut(Input(0))
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 6, lines 57-59:
+task 6, lines 60-62:
 //# programmable --sender A
 //> 0: test::m1::copyable();
 //> test::m1::borrow_and_copy(Result(0), Result(0));

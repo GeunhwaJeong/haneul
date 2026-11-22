@@ -8,46 +8,42 @@
 
 //# publish --sender A
 #[allow(deprecated_usage)]
-module P::coin {
-  use haneul::coin::{Self, CoinMetadata, DenyCapV2, TreasuryCap};
-  use haneul::deny_list::DenyList;
+module P::coin;
 
-  public struct COIN() has drop;
+use haneul::coin::{Self, CoinMetadata, DenyCapV2, TreasuryCap};
+use haneul::deny_list::DenyList;
 
-  public struct Bundle has key, store {
+public struct COIN() has drop;
+
+public struct Bundle has key, store {
     id: UID,
     treasury: TreasuryCap<COIN>,
     deny: DenyCapV2<COIN>,
     metadata: CoinMetadata<COIN>,
-  }
+}
 
-  fun init(otw: COIN, ctx: &mut TxContext) {
+fun init(otw: COIN, ctx: &mut TxContext) {
     let (treasury, deny, metadata) = coin::create_regulated_currency_v2(
-      otw,
-      9,
-      b"COIN",
-      b"Coin",
-      b"A test coin",
-      option::none(),
-      true,
-      ctx,
+        otw,
+        9,
+        b"COIN",
+        b"Coin",
+        b"A test coin",
+        option::none(),
+        true,
+        ctx,
     );
 
     transfer::public_share_object(Bundle {
-      id: object::new(ctx),
-      treasury,
-      deny,
-      metadata,
+        id: object::new(ctx),
+        treasury,
+        deny,
+        metadata,
     });
-  }
+}
 
-  public fun poke_deny_list(
-    deny_list: &mut DenyList,
-    bundle: &mut Bundle,
-    ctx: &mut TxContext,
-  ) {
+public fun poke_deny_list(deny_list: &mut DenyList, bundle: &mut Bundle, ctx: &mut TxContext) {
     coin::deny_list_v2_add(deny_list, &mut bundle.deny, @0x1234, ctx)
-  }
 }
 
 //# programmable --sender A --inputs object(0x403) object(2,2)
@@ -60,6 +56,7 @@ module P::coin {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   e0: epoch(epochId: 0) {
     coinDenyList { address version }
@@ -73,3 +70,4 @@ module P::coin {
     coinDenyList { address version }
   }
 }
+*/

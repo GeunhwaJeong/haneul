@@ -5,55 +5,55 @@
 //# init --protocol-version 115 --addresses P=0x0 --accounts A B --simulator
 
 //# publish
-module P::M {
-  use haneul::transfer::Receiving;
+module P::M;
 
-  public struct Object has key, store {
+use haneul::transfer::Receiving;
+
+public struct Object has key, store {
     id: UID,
     xs: u64,
-  }
+}
 
-  public struct Wrapper has key, store {
+public struct Wrapper has key, store {
     id: UID,
     obj: Object,
-  }
+}
 
-  public fun new(xs: u64, ctx: &mut TxContext): Object {
+public fun new(xs: u64, ctx: &mut TxContext): Object {
     Object { id: object::new(ctx), xs }
-  }
+}
 
-  public fun inc(o: &mut Object) {
+public fun inc(o: &mut Object) {
     o.xs = o.xs + 1;
-  }
+}
 
-  public fun destroy(o: Object) {
+public fun destroy(o: Object) {
     let Object { id, xs: _ } = o;
     id.delete();
-  }
+}
 
-  public fun wrap(o: Object, ctx: &mut TxContext): Wrapper {
+public fun wrap(o: Object, ctx: &mut TxContext): Wrapper {
     Wrapper { id: object::new(ctx), obj: o }
-  }
+}
 
-  public fun incw(w: &mut Wrapper) {
+public fun incw(w: &mut Wrapper) {
     w.obj.xs = w.obj.xs + 1;
-  }
+}
 
-  public fun unwrap(w: Wrapper): Object {
+public fun unwrap(w: Wrapper): Object {
     let Wrapper { id, obj } = w;
     id.delete();
     obj
-  }
+}
 
-  public fun receive(p: &mut Object, r: Receiving<Object>): Object {
+public fun receive(p: &mut Object, r: Receiving<Object>): Object {
     transfer::receive(&mut p.id, r)
-  }
+}
 
-  public fun drop_receiving(_: Receiving<Object>) {}
+public fun drop_receiving(_: Receiving<Object>) {}
 
-  public fun transfer(to: &Object, from: Object) {
+public fun transfer(to: &Object, from: Object) {
     transfer::transfer(from, to.id.to_address())
-  }
 }
 
 //# programmable --sender A --inputs 1 @A
@@ -128,6 +128,7 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   all: transactions { ...TX }
   affect2: transactions(filter: { affectedObject: "@{obj_2_0}" }) { ...TX }
@@ -144,3 +145,4 @@ fragment TX on TransactionConnection {
     digest
   }
 }
+*/

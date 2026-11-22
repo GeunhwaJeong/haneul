@@ -5,43 +5,43 @@ processed 8 tasks
 
 // tests multiple &TxContext parameters
 
-task 1, lines 9-28:
+task 1, lines 9-22:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5038800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 30-31:
+task 2, lines 24-25:
 //# programmable
 //> test::m::t2();
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 3, lines 33-34:
+task 3, lines 27-28:
 //# programmable
 //> test::m::t3();
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 4, lines 36-37:
+task 4, lines 30-31:
 //# programmable
 //> test::m::t4();
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 5, lines 39-40:
+task 5, lines 33-34:
 //# programmable --inputs 0
 //> test::m::t3_u1(Input(0));
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 6, lines 42-43:
+task 6, lines 36-37:
 //# programmable --inputs 0 0
 //> test::m::t3_u2(Input(0), Input(1));
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 7, lines 45-47:
+task 7, lines 39-41:
 //# programmable
 // a generic &T unifying to &TxContext alongside a concrete &TxContext is two immutable usages
 //> test::m::gen_imm_tx<haneul::tx_context::TxContext>();

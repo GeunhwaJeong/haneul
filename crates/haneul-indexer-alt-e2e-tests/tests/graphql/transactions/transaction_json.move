@@ -11,13 +11,16 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Test transactionJson field - basic query
   transaction(digest: "@{digest_1}") {
     transactionJson
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test transactionJson through effects.transaction
   transactionEffects(digest: "@{digest_1}") {
     transaction {
@@ -25,10 +28,13 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test transactionJson for non-existent transaction
   transaction(digest: "11111111111111111111111111111111") {
     transactionJson
   }
 }
+*/

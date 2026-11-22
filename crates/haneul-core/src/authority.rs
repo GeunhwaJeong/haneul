@@ -1226,11 +1226,9 @@ impl AuthorityState {
     /// or sees a transaction from consensus. Performs the same types of checks as
     /// transaction signing, but does not explicitly sign the transaction.
     /// Note that if the transaction has been executed, we still go through the
-    /// same checks. If the transaction has only been executed through mysticeti fastpath,
-    /// but not yet finalized, the signing will still work since the objects are still available.
-    /// But if the transaction has been finalized, the signing will fail.
-    /// TODO(mysticeti-fastpath): Assess whether we want to optimize the case when the transaction
-    /// has already been finalized executed.
+    /// same checks, which fail if the transaction consumed owned input versions.
+    /// TODO: Assess whether we want to optimize the case when the transaction
+    /// has already been executed.
     #[instrument(level = "trace", skip_all, fields(tx_digest = ?transaction.digest()))]
     pub fn handle_vote_transaction(
         &self,
@@ -2040,8 +2038,11 @@ impl AuthorityState {
             self.config.certificate_deny_config.certificate_deny_set(),
             &execution_env.funds_withdraw_status,
         );
-        let system_object_versions = execution_env.assigned_versions.system_object_versions;
         let accumulator_version = execution_env.assigned_versions.accumulator_version();
+        let system_object_versions = execution_env
+            .assigned_versions
+            .system_object_versions
+            .clone();
         let execution_params = match early_execution_error {
             None => ExecutionOrEarlyError::ok(accumulator_version),
             Some(errors) => ExecutionOrEarlyError::failed(errors, accumulator_version),

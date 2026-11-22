@@ -6,12 +6,12 @@
 
 //# publish --upgradeable --sender A
 module V0::base {
-    fun f() { }
+    fun f() {}
 }
 
 //# upgrade --package V0 --upgrade-capability 1,1 --sender A
 module V1::base {
-    fun f(_x: u64) { }
+    fun f(_x: u64) {}
 }
 
 //# upgrade --package V1 --upgrade-capability 1,1 --sender A
@@ -31,6 +31,7 @@ module V4::base {
 
 //# upgrade --package V4 --upgrade-capability 1,1 --sender A
 module V5::base {
+
 }
 
 //# upgrade --package V5 --upgrade-capability 1,1 --sender A

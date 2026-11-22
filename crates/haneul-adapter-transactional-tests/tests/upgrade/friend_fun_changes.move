@@ -44,8 +44,8 @@ module V2::base_module {
 
     public fun public_fun(x: u64, recipient: address, ctx: &mut TxContext): u64 {
         transfer::public_transfer(
-            Object { id: object::new(ctx), field0: x, field1: x},
-            recipient
+            Object { id: object::new(ctx), field0: x, field1: x },
+            recipient,
         );
         x
     }
@@ -69,11 +69,12 @@ module V3::base_module {
 
     public fun public_fun(x: u64, recipient: address, ctx: &mut TxContext): u64 {
         transfer::public_transfer(
-            Object { id: object::new(ctx), field0: x, field1: x},
-            recipient
+            Object { id: object::new(ctx), field0: x, field1: x },
+            recipient,
         );
         x
     }
+
     public fun public_fun2(x: u64): u64 { x }
 }
 module V3::friend_module {

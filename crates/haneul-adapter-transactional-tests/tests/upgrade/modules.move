@@ -21,7 +21,8 @@ module V0::b {
     public fun public_fun(): u64 { 0 }
 }
 module V0::other_module {
-    public struct Y { }
+    public struct Y {}
+
     fun public_fun(): u64 { 0 }
 }
 
@@ -79,7 +80,8 @@ module V1::a {
     fun call_friend(): u64 { V0::base_module::public_fun() }
 }
 module V1::other_module {
-    public struct Y { }
+    public struct Y {}
+
     fun public_fun(): u64 { 0 }
 }
 
@@ -98,6 +100,7 @@ module V0::b {
     public fun public_fun(): u64 { 0 }
 }
 module V0::other_module {
-    public struct Y { }
+    public struct Y {}
+
     fun public_fun(): u64 { 0 }
 }

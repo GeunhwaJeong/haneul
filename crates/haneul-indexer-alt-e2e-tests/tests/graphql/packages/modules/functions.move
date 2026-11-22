@@ -5,20 +5,22 @@
 //# init --protocol-version 115 --accounts A --addresses P=0x0 --simulator
 
 //# publish
-module P::M {
-  public fun f(): u64 { 42 }
-  entry fun g(): u64 { 43 }
+module P::M;
 
-  public(package) fun h<T: drop + store, U: copy + drop>(xs: vector<T>, ys: vector<U>): u64 {
+public fun f(): u64 { 42 }
+
+entry fun g(): u64 { 43 }
+
+public(package) fun h<T: drop + store, U: copy + drop>(xs: vector<T>, ys: vector<U>): u64 {
     xs.length() + ys.length()
-  }
-
-  public fun i(x: u64): (u64, u64) { (x, x + 1) }
 }
+
+public fun i(x: u64): (u64, u64) { (x, x + 1) }
 
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   package(address: "@{P}") {
     module(name: "M") {
@@ -41,8 +43,10 @@ fragment F on MoveFunction {
   typeParameters { constraints }
   visibility
 }
+*/
 
 //# run-graphql --cursors "f" "i"
+/*
 {
   package(address: "@{P}") {
     module(name: "M") {
@@ -71,3 +75,4 @@ fragment F on MoveFunctionConnection {
     fullyQualifiedName
   }
 }
+*/

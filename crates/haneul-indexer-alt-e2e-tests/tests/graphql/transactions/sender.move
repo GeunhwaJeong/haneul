@@ -15,6 +15,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   a: address(address: "@{A}") { address }
   b: address(address: "@{B}") { address }
@@ -27,3 +28,4 @@
     sender { address }
   }
 }
+*/

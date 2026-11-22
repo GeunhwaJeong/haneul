@@ -6,7 +6,7 @@ processed 14 tasks
 init:
 A: object(0,0)
 
-task 1, lines 7-23:
+task 1, lines 7-25:
 //# run-graphql
 Response: {
   "data": {
@@ -383,7 +383,7 @@ Response: {
   }
 }
 
-task 2, lines 25-39:
+task 2, lines 27-43:
 //# run-graphql
 Response: {
   "data": {
@@ -414,7 +414,7 @@ Response: {
   }
 }
 
-task 3, lines 41-44:
+task 3, lines 45-50:
 //# run-graphql
 Response: {
   "data": null,
@@ -434,7 +434,7 @@ Response: {
   ]
 }
 
-task 4, lines 46-53:
+task 4, lines 52-61:
 //# run-graphql
 Response: {
   "data": {
@@ -442,7 +442,7 @@ Response: {
   }
 }
 
-task 5, lines 55-60:
+task 5, lines 63-70:
 //# run-graphql
 Response: {
   "data": {
@@ -450,7 +450,7 @@ Response: {
   }
 }
 
-task 6, lines 62-77:
+task 6, lines 72-89:
 //# run-graphql
 Response: {
   "data": {
@@ -475,7 +475,7 @@ Response: {
   ]
 }
 
-task 7, lines 79-84:
+task 7, lines 91-98:
 //# run-graphql
 Response: {
   "data": {
@@ -500,17 +500,17 @@ Response: {
   ]
 }
 
-task 8, lines 86-103:
+task 8, lines 100-109:
 //# publish --upgradeable --sender A
 created: object(8,0), object(8,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 6095200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 9, line 105:
+task 9, line 111:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 10, lines 107-112:
+task 10, lines 113-120:
 //# run-graphql
 Response: {
   "data": {
@@ -538,7 +538,7 @@ Response: {
   ]
 }
 
-task 11, lines 114-131:
+task 11, lines 122-131:
 //# upgrade --package P0 --upgrade-capability 8,1 --sender A
 created: object(11,0)
 mutated: object(0,0), object(8,1)
@@ -548,7 +548,7 @@ task 12, line 133:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 13, lines 135-144:
+task 13, lines 135-146:
 //# run-graphql
 Response: {
   "data": {

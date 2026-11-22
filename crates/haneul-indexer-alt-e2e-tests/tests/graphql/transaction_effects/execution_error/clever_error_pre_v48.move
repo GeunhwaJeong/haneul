@@ -18,14 +18,14 @@ module test::clever_error_pre_v48 {
 module test::clever_error_pre_v48 {
     #[error]
     const ESimpleError: vector<u8> = b"Clever error from v2";
-    
+
     #[error]
     const ENewError: vector<u8> = b"New error in v2";
 
     public entry fun test_clever_error() {
         abort ESimpleError
     }
-    
+
     public entry fun test_new_error() {
         abort ENewError
     }
@@ -36,6 +36,7 @@ module test::clever_error_pre_v48 {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   # Display package address to verify the upgraded package is being used in executionError
   originalPackage: object(address: "@{obj_1_0}") {
@@ -65,3 +66,4 @@ module test::clever_error_pre_v48 {
     }
   }
 }
+*/

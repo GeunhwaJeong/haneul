@@ -2,10 +2,10 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-module haneul_system::validator_wrapper {
-    use haneul::versioned::Versioned;
+module haneul_system::validator_wrapper;
 
-    public struct ValidatorWrapper has store {
-        inner: Versioned
-    }
+use haneul::versioned::Versioned;
+
+public struct ValidatorWrapper has store {
+    inner: Versioned,
 }

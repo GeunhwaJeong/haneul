@@ -32,6 +32,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Test epoch field across multiple epochs
   epoch0Transaction: transactionEffects(digest: "@{digest_1}") {
     epoch {
@@ -51,3 +52,4 @@
     }
   }
 }
+*/

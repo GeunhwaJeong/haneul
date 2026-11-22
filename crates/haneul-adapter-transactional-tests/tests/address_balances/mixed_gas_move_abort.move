@@ -12,6 +12,7 @@
 
 //# publish
 module test::boom;
+
 public fun boom() { abort 7 }
 
 // Seed A's address balance.

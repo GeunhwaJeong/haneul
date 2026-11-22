@@ -5,6 +5,7 @@
 //# init --protocol-version 115 --accounts A --addresses P0=0x0 P1=0x0 --simulator
 
 //# run-graphql
+/*
 {
   package(address: "@{P0}") {
     module(name: "option") {
@@ -32,37 +33,39 @@ fragment E on MoveEnum {
     }
   }
 }
+*/
 
 //# publish --upgradeable --sender A
 module P0::M {
-  public enum Status has copy, drop {
-    Active,
-    Inactive { reason: vector<u8> }
-  }
+    public enum Status has copy, drop {
+        Active,
+        Inactive { reason: vector<u8> },
+    }
 }
 
 //# upgrade --package P0 --upgrade-capability 2,1 --sender A
 module P1::M {
-  public enum Status has copy, drop {
-    Active,
-    Inactive { reason: vector<u8> }
-  }
+    public enum Status has copy, drop {
+        Active,
+        Inactive { reason: vector<u8> },
+    }
 
-  public enum Result<T: drop, E: drop> has drop {
-    Ok(T),
-    Err(E)
-  }
+    public enum Result<T: drop, E: drop> has drop {
+        Ok(T),
+        Err(E),
+    }
 
-  public enum Complex<T: store> has store {
-    Empty,
-    Single(T),
-    Pair { first: T, second: T }
-  }
+    public enum Complex<T: store> has store {
+        Empty,
+        Single(T),
+        Pair { first: T, second: T },
+    }
 }
 
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   packageVersions(address: "@{P0}") {
     nodes {
@@ -95,8 +98,10 @@ fragment E on MoveEnum {
     }
   }
 }
+*/
 
 //# run-graphql --cursors "Complex" "Status"
+/*
 {
   package(address: "@{P1}") {
     module(name: "M") {
@@ -125,8 +130,10 @@ fragment E on MoveEnumConnection {
     fullyQualifiedName
   }
 }
+*/
 
 //# run-graphql
+/*
 {
   package(address: "@{P0}") {
     module(name: "M") {
@@ -170,3 +177,4 @@ fragment EnumDetails on MoveEnum {
     }
   }
 }
+*/

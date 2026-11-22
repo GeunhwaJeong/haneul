@@ -80,9 +80,6 @@ pub(crate) enum Error {
 
     #[error("Page size of {limit} exceeds max of {max} for connection")]
     TooLarge { limit: u64, max: u32 },
-
-    #[error("This cursor cannot be used here; restart pagination without a cursor")]
-    UnsupportedCursor,
 }
 
 impl PaginationConfig {

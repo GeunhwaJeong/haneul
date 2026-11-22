@@ -5,49 +5,49 @@
 //# init --protocol-version 115 --accounts A B --addresses P1=0x0 --simulator
 
 //# publish
-module P1::M1 {
-    use haneul::event;
-    use std::ascii;
+module P1::M1;
 
-    public struct EventA has copy, drop {
-        message: ascii::String,
-        value: u64,
-    }
+use std::ascii;
+use haneul::event;
 
-    public struct EventB has copy, drop {
-        message: ascii::String,
-        value: u64,
-    }
+public struct EventA has copy, drop {
+    message: ascii::String,
+    value: u64,
+}
 
-    public entry fun emit_event(value: u64) {
+public struct EventB has copy, drop {
+    message: ascii::String,
+    value: u64,
+}
+
+public entry fun emit_event(value: u64) {
+    event::emit(EventA {
+        message: ascii::string(b"Hello from test event"),
+        value,
+    });
+}
+
+public entry fun emit_multiple_events() {
+    event::emit(EventA {
+        message: ascii::string(b"First event"),
+        value: 1,
+    });
+
+    event::emit(EventB {
+        message: ascii::string(b"Second event"),
+        value: 2,
+    });
+}
+
+public entry fun emit_events_by_count(count: u64) {
+    let mut i = 0;
+    while (i < count) {
         event::emit(EventA {
-            message: ascii::string(b"Hello from test event"),
-            value,
+            message: ascii::string(b"Event from loop"),
+            value: i + 1,
         });
-    }
-
-    public entry fun emit_multiple_events() {
-        event::emit(EventA {
-            message: ascii::string(b"First event"),
-            value: 1,
-        });
-
-        event::emit(EventB {
-            message: ascii::string(b"Second event"),
-            value: 2,
-        });
-    }
-
-    public entry fun emit_events_by_count(count: u64) {
-        let mut i = 0;
-        while (i < count) {
-            event::emit(EventA {
-                message: ascii::string(b"Event from loop"),
-                value: i + 1,
-            });
-            i = i + 1;
-        };
-    }
+        i = i + 1;
+    };
 }
 
 // Transaction that emits a single event
@@ -67,6 +67,7 @@ module P1::M1 {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   allEvents: events(first: 50) {
     pageInfo { ...pageInfo }
@@ -102,9 +103,12 @@ fragment E on Event {
     digest
   }
 }
+*/
 
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,2u8,24u8,0u8)
-{ # Cursors are legacy protobuf items: events { checkpoint: 0, tx_seq: 2, event_index: 0 }.
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,1,0u32)
+/*
+{ # Cursors are GraphQL item cursors at (checkpoint, transaction index, event index). Checkpoint 1
+  # holds transactions T1 (publish) to T5 at indices 0 to 4, so T2E0 is (1, 1, 0).
   eventsAfterT2E0HasPreviousPage: events(first: 50, after: "@{cursor_0}") {
     pageInfo { 
       hasNextPage
@@ -112,8 +116,10 @@ fragment E on Event {
     }
   }
 }
+*/
 
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,4u8,24u8,9u8)
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,3,9u32)
+/*
 {
   eventsBeforeT3E9HasNextPage: events(last: 50, before: "@{cursor_0}") {
     pageInfo { 
@@ -122,8 +128,10 @@ fragment E on Event {
     }
   }
 }
+*/
 
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,2u8,24u8,0u8) bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,4u8,24u8,9u8)
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,1,0u32) bcs(0u8,1u8,0u8,0u8,1,3,9u32)
+/*
 {
   firstEventBetweenT2E0AndT4E9: events(first: 1, after: "@{cursor_0}", before: "@{cursor_1}") {
     nodes {
@@ -149,9 +157,10 @@ fragment E on Event {
     digest
   }
 }
+*/
 
-
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,2u8,24u8,0u8)
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,1,0u32)
+/*
 {
   eventsAfterTransaction2AndEvent0: events(first: 1, after: "@{cursor_0}") {
     pageInfo { 
@@ -167,8 +176,10 @@ fragment E on Event {
     }
   }
 }
+*/
 
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,3u8,24u8,0u8)
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,2,0u32)
+/*
 {
   eventsBeforeTransaction3AndEvent0: events(first: 1, before: "@{cursor_0}") {
     pageInfo { 
@@ -184,8 +195,10 @@ fragment E on Event {
     }
   }
 }
+*/
 
-//# run-graphql --cursors bcs(40u8,1u8,66u8,6u8,8u8,0u8,16u8,3u8,24u8,1u8)
+//# run-graphql --cursors bcs(0u8,1u8,0u8,0u8,1,2,1u32)
+/*
 {
   eventsBeforeTransaction3AndEvent1FromBack: events(last: 2, before: "@{cursor_0}") {
     pageInfo { 
@@ -201,3 +214,4 @@ fragment E on Event {
     }
   }
 }
+*/

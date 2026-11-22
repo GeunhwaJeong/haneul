@@ -9,6 +9,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   # Test EndOfEpochTransaction with multiple transaction types
   endOfEpochTransaction: transactions(last: 1) {
@@ -68,3 +69,4 @@
     }
   }
 }
+*/

@@ -11,7 +11,7 @@ processed 9 tasks
 init:
 A: object(0,0)
 
-task 1, lines 12-25:
+task 1, lines 12-203:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
@@ -19,7 +19,7 @@ gas summary: computation_cost: 1000000, storage_cost: 13011200,  storage_rebate:
 
 // --- live references ---
 
-task 2, lines 29-40:
+task 2, lines 207-218:
 //# programmable --inputs 0
 // VALID: 63 stored references plus a copied argument reaches exactly 64
 //> 0: MakeMoveVec<u64>([Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0)]);
@@ -35,7 +35,7 @@ task 2, lines 29-40:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 3, lines 42-53:
+task 3, lines 220-231:
 //# programmable --inputs 0
 // VALID: 59 stored, a call copying 3 and returning 2 peaks at 64
 //> 0: MakeMoveVec<u64>([Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0)]);
@@ -51,7 +51,7 @@ task 3, lines 42-53:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 4, lines 55-122:
+task 4, lines 233-300:
 //# programmable --inputs 0
 // VALID: 65 commands each returning one unused reference, each freed at the end of its command
 //> 0: MakeMoveVec<u64>([Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0)]);
@@ -123,7 +123,7 @@ task 4, lines 55-122:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 5, lines 124-126:
+task 5, lines 302-304:
 //# programmable
 // VALID: twenty `&TxContext` parameters are not counted
 //> 0: test::m::many_ctx();
@@ -132,7 +132,7 @@ gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 9
 
 // --- returned references ---
 
-task 6, lines 130-134:
+task 6, lines 308-312:
 //# programmable --inputs 0
 // VALID: 16 references returned by one command
 //> 0: MakeMoveVec<u64>([Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0)]);
@@ -141,7 +141,7 @@ task 6, lines 130-134:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 7, lines 136-140:
+task 7, lines 314-318:
 //# programmable --inputs 0
 // VALID: 16 references and a value returned by one command
 //> 0: MakeMoveVec<u64>([Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0)]);
@@ -150,7 +150,7 @@ task 7, lines 136-140:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 8, lines 142-160:
+task 8, lines 320-338:
 //# programmable --inputs 0
 // VALID: 256 references returned over the transaction, none used
 //> 0: MakeMoveVec<u64>([Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0), Input(0)]);

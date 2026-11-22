@@ -39,6 +39,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Only the outermost Bag is still accessible, the rest are wrapped.
   multiGetObjects(keys: [
     { address: "@{obj_1_0}" },
@@ -52,8 +53,10 @@
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # At the previous checkpoint, they were all accessible
   checkpoint(sequenceNumber: 1) {
     query {
@@ -71,8 +74,10 @@
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(1u64)
+/*
 { # The outermost Bag can be accessed with `address` or `object`
   address(address: "@{obj_1_0}") {
     dynamicField(name: { type: "u64", bcs: "@{cursor_0}" }) {
@@ -88,8 +93,10 @@
     }
   }
 }
+*/
 
 //# run-graphql --cursors bcs(2u64) bcs(3u64)
+/*
 { # The middle Bag is not accessible, so we need to use `address` to root
   # further dynamic field queries.
   address(address: "@{obj_2_0}", rootVersion: 7) {
@@ -105,8 +112,10 @@
 fragment DF on DynamicField {
   value { ... on MoveValue { json } }
 }
+*/
 
 //# run-graphql --cursors bcs(400u64) bcs(500u64)
+/*
 { # Accessing the elements of the ObjectBag via `object` and `address`.
   object(address: "@{obj_5_0}") {
     asMoveObject {
@@ -132,8 +141,10 @@ fragment DF on DynamicField {
 fragment DOF on DynamicField {
   value { ... on MoveObject { contents { json } } }
 }
+*/
 
 //# run-graphql
+/*
 { # Fetching an address at another checkpoint, and fetching its objects,
   # balances, and transactions. The owned objects and balances are scoped to
   # the address' checkpoint, while the transactions are scoped by the
@@ -182,10 +193,13 @@ fragment DOF on DynamicField {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Error - cannot query owned objects on an address with root version set
   address(address: "0x2", rootVersion: 1) {
     objects { nodes { address } }
   }
 }
+*/

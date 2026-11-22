@@ -8,7 +8,7 @@
 //# init --addresses a=0x0 --accounts A
 
 //# publish
-module a::m {
+module a::m;
 
 use haneul::dynamic_field::{add, exists_with_type, borrow, borrow_mut, remove};
 
@@ -73,8 +73,6 @@ entry fun t7(obj: &Obj) {
 entry fun t8(obj: Obj) {
     let Obj { id } = obj;
     object::delete(id);
-}
-
 }
 
 //# run a::m::t0 --sender A

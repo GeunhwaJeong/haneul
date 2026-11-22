@@ -254,8 +254,8 @@ pub struct SubscriptionConfig {
     /// Subscribers that fall behind by this many checkpoints receive a lagged error.
     pub broadcast_buffer: usize,
 
-    /// How often (in milliseconds) the eviction task checks the `kv_packages` watermark
-    /// and evicts indexed packages from the streaming index.
+    /// How often (in milliseconds) the eviction task checks the `ledger_grpc` watermark
+    /// and evicts indexed packages, transactions, and objects from the streamed caches.
     pub package_eviction_interval_ms: u64,
 
     /// Number of checkpoints fetched concurrently per chunk during upstream gap recovery.
@@ -284,9 +284,8 @@ pub struct SubscriptionConfig {
     /// is rejected instead. Raising this admits starts further past the tip, at the cost of
     /// connections parked waiting longer.
     ///
-    /// `afterCheckpoint` and cursors that name a checkpoint are checked when the subscription
-    /// starts. A cursor that names none (a legacy cursor without a checkpoint label, as
-    /// Postgres-backed pagination mints, or a ledger cursor GraphQL could not place) is not checked.
+    /// `afterCheckpoint` and the `after` cursor's checkpoint are checked when the subscription
+    /// starts.
     pub max_start_checkpoints_ahead_of_tip: u64,
 
     /// For a subscription that opted into progress (the `progress` argument), the number of

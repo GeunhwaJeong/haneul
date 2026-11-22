@@ -1,13 +1,12 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 12 tasks
 
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 7-22:
+task 1, lines 7-24:
 //# run-graphql
 Response: {
   "data": {
@@ -18,12 +17,12 @@ Response: {
         "pageInfo": {
           "hasPreviousPage": false,
           "hasNextPage": false,
-          "startCursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
-          "endCursor": "AAABDCgCOgQIARABSgIIAQEBAQAAAAAAAAAAAAAAAAAAAA=="
+          "startCursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
+          "endCursor": "AAABCigCOgIQAUoCCAEBAQEAAAAAAAAAAAAAAAAAAAA="
         },
         "edges": [
           {
-            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
+            "cursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
             "node": {
               "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
               "sender": null
@@ -35,7 +34,7 @@ Response: {
   }
 }
 
-task 2, lines 24-26:
+task 2, lines 26-28:
 //# programmable --sender A --inputs 42 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -43,7 +42,7 @@ created: object(2,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 28-30:
+task 3, lines 30-32:
 //# programmable --sender A --inputs 43 @A
 //> 0: SplitCoins(Gas, [Input(0)]);
 //> 1: TransferObjects([Result(0)], Input(1))
@@ -51,43 +50,43 @@ created: object(3,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 4, lines 32-34:
+task 4, lines 34-36:
 //# programmable --sender A --inputs 1
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 5, lines 36-38:
+task 5, lines 38-40:
 //# programmable --sender A --inputs 2
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 6, lines 40-42:
+task 6, lines 42-44:
 //# programmable --sender A --inputs 3
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 7, line 44:
+task 7, line 46:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 8, lines 46-48:
+task 8, lines 48-50:
 //# programmable --sender A --inputs 1
 //> SplitCoins(Gas, [Input(0)]);
 //> MergeCoins(Gas, [Result(0)])
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 9, line 50:
+task 9, line 52:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 10, lines 52-76:
+task 10, lines 54-80:
 //# run-graphql
 Response: {
   "data": {
@@ -98,12 +97,12 @@ Response: {
         "pageInfo": {
           "hasPreviousPage": false,
           "hasNextPage": false,
-          "startCursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
-          "endCursor": "AAABDCgCOgQIAhAHSgIIAgEBAgAAAAAAAAAAAAAAAAAAAA=="
+          "startCursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
+          "endCursor": "AAABCigCOgIQB0oCCAIBAQIAAAAAAAAAAAAAAAAAAAA="
         },
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "3L8wCaHRtKJEC6fVqGHBPMZoLUw5MHUy3kbdjs8P1CUQ",
               "sender": {
@@ -112,7 +111,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "AAFqyrKf4EP2vhVdwK5dnxcGXye5QY8stbxQohhYAajp",
               "sender": {
@@ -121,7 +120,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARADSgQIARACAQABAAAAAAAAAAIAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQA0oECAEQAgEAAQAAAAAAAAACAAAAAAAAAA==",
             "node": {
               "digest": "5Tehwy1bpMGk7PuR5mnMtobMzYJRYUuFNoYjpup5Qdov",
               "sender": {
@@ -130,7 +129,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARAESgQIARADAQABAAAAAAAAAAMAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBEoECAEQAwEAAQAAAAAAAAADAAAAAAAAAA==",
             "node": {
               "digest": "BhEDWiVNbFgA4B44S6pyxyeFyaJL1ezbBKwM8JuKEdwm",
               "sender": {
@@ -139,7 +138,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARAFSgQIARAEAQABAAAAAAAAAAQAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBUoECAEQBAEAAQAAAAAAAAAEAAAAAAAAAA==",
             "node": {
               "digest": "BFbn121D6ChUbLYipBPBmhJiPxtrvM8crAxDDTgKHbd4",
               "sender": {
@@ -153,12 +152,12 @@ Response: {
         "pageInfo": {
           "hasPreviousPage": false,
           "hasNextPage": false,
-          "startCursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
-          "endCursor": "AAABDCgCOgQIAhAHSgIIAgEBAgAAAAAAAAAAAAAAAAAAAA=="
+          "startCursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
+          "endCursor": "AAABCigCOgIQB0oCCAIBAQIAAAAAAAAAAAAAAAAAAAA="
         },
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "3L8wCaHRtKJEC6fVqGHBPMZoLUw5MHUy3kbdjs8P1CUQ",
               "sender": {
@@ -167,7 +166,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "AAFqyrKf4EP2vhVdwK5dnxcGXye5QY8stbxQohhYAajp",
               "sender": {
@@ -176,7 +175,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARADSgQIARACAQABAAAAAAAAAAIAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQA0oECAEQAgEAAQAAAAAAAAACAAAAAAAAAA==",
             "node": {
               "digest": "5Tehwy1bpMGk7PuR5mnMtobMzYJRYUuFNoYjpup5Qdov",
               "sender": {
@@ -185,7 +184,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARAESgQIARADAQABAAAAAAAAAAMAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBEoECAEQAwEAAQAAAAAAAAADAAAAAAAAAA==",
             "node": {
               "digest": "BhEDWiVNbFgA4B44S6pyxyeFyaJL1ezbBKwM8JuKEdwm",
               "sender": {
@@ -194,7 +193,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARAFSgQIARAEAQABAAAAAAAAAAQAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBUoECAEQBAEAAQAAAAAAAAAEAAAAAAAAAA==",
             "node": {
               "digest": "BFbn121D6ChUbLYipBPBmhJiPxtrvM8crAxDDTgKHbd4",
               "sender": {
@@ -203,7 +202,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARAGSgQIARAFAQABAAAAAAAAAAUAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBkoECAEQBQEAAQAAAAAAAAAFAAAAAAAAAA==",
             "node": {
               "digest": "FnRLaJFCiQDLmx8HEJsaNfLAnGX1TULDnuLWBhDrLACm",
               "sender": null
@@ -215,7 +214,7 @@ Response: {
   }
 }
 
-task 11, lines 78-93:
+task 11, lines 82-99:
 //# run-graphql
 Response: {
   "data": {

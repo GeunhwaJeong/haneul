@@ -8,17 +8,24 @@
 
 //# publish --sender A
 #[allow(deprecated_usage)]
-module test::fake {
-    use haneul::coin;
+module test::fake;
 
-    public struct FAKE has drop {}
+use haneul::coin;
 
-    fun init(witness: FAKE, ctx: &mut TxContext) {
-        let (treasury_cap, metadata) = coin::create_currency(witness, 2, b"FAKE", b"", b"", option::none(), ctx);
-        transfer::public_freeze_object(metadata);
-        transfer::public_transfer(treasury_cap, tx_context::sender(ctx));
-    }
+public struct FAKE has drop {}
 
+fun init(witness: FAKE, ctx: &mut TxContext) {
+    let (treasury_cap, metadata) = coin::create_currency(
+        witness,
+        2,
+        b"FAKE",
+        b"",
+        b"",
+        option::none(),
+        ctx,
+    );
+    transfer::public_freeze_object(metadata);
+    transfer::public_transfer(treasury_cap, tx_context::sender(ctx));
 }
 
 //# programmable --sender A --inputs object(1,1) 100 @A
@@ -33,7 +40,6 @@ module test::fake {
 
 //# programmable --sender A --inputs object(2,0)
 //> MergeCoins(Gas, [Input(0)])
-
 
 //# programmable --sender A --inputs object(1,1) 100 object(2,0)
 //> 0: haneul::coin::mint<test::fake::FAKE>(Input(0), Input(1));

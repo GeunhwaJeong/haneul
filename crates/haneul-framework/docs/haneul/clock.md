@@ -9,6 +9,8 @@ shared object that is created at 0x6 during genesis.
 -  [Struct `Clock`](#haneul_clock_Clock)
 -  [Constants](#@Constants_0)
 -  [Function `timestamp_ms`](#haneul_clock_timestamp_ms)
+-  [Function `borrow`](#haneul_clock_borrow)
+-  [Function `native_borrow`](#haneul_clock_native_borrow)
 -  [Function `create`](#haneul_clock_create)
 -  [Function `consensus_commit_prologue`](#haneul_clock_consensus_commit_prologue)
 
@@ -107,6 +109,60 @@ milliseconds since an arbitrary point in the past.
 <pre><code><b>public</b> <b>fun</b> <a href="../haneul/clock.md#haneul_clock_timestamp_ms">timestamp_ms</a>(<a href="../haneul/clock.md#haneul_clock">clock</a>: &<a href="../haneul/clock.md#haneul_clock_Clock">Clock</a>): u64 {
     <a href="../haneul/clock.md#haneul_clock">clock</a>.<a href="../haneul/clock.md#haneul_clock_timestamp_ms">timestamp_ms</a>
 }
+</code></pre>
+
+
+
+</details>
+
+<a name="haneul_clock_borrow"></a>
+
+## Function `borrow`
+
+A reference to the <code><a href="../haneul/clock.md#haneul_clock_Clock">Clock</a></code> without it being a transaction input.
+It is the same <code><a href="../haneul/clock.md#haneul_clock_Clock">Clock</a></code>, at the same timestamp, as one passed into
+the transaction.
+
+New code should read the time this way rather than take a <code><a href="../haneul/clock.md#haneul_clock_Clock">Clock</a></code>
+parameter, so that callers do not change when a function starts to
+need the time. Existing functions with <code>&<a href="../haneul/clock.md#haneul_clock_Clock">Clock</a></code> arguments can be
+supplied one from anywhere via <code><a href="../haneul/borrow.md#haneul_borrow">borrow</a>()</code>.
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../haneul/borrow.md#haneul_borrow">borrow</a>(): &<a href="../haneul/clock.md#haneul_clock_Clock">haneul::clock::Clock</a>
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>public</b> <b>fun</b> <a href="../haneul/borrow.md#haneul_borrow">borrow</a>(): &<a href="../haneul/clock.md#haneul_clock_Clock">Clock</a> {
+    <a href="../haneul/clock.md#haneul_clock_native_borrow">native_borrow</a>()
+}
+</code></pre>
+
+
+
+</details>
+
+<a name="haneul_clock_native_borrow"></a>
+
+## Function `native_borrow`
+
+
+
+<pre><code><b>fun</b> <a href="../haneul/clock.md#haneul_clock_native_borrow">native_borrow</a>(): &<a href="../haneul/clock.md#haneul_clock_Clock">haneul::clock::Clock</a>
+</code></pre>
+
+
+
+<details>
+<summary>Implementation</summary>
+
+
+<pre><code><b>native</b> <b>fun</b> <a href="../haneul/clock.md#haneul_clock_native_borrow">native_borrow</a>(): &<a href="../haneul/clock.md#haneul_clock_Clock">Clock</a>;
 </code></pre>
 
 

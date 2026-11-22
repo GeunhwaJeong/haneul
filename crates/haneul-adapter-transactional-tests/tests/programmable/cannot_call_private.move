@@ -7,9 +7,9 @@
 //# init --addresses test=0x0 --accounts A
 
 //# publish
-module test::m1 {
-    fun priv(_: &mut haneul::tx_context::TxContext) {}
-}
+module test::m1;
+
+fun priv(_: &mut haneul::tx_context::TxContext) {}
 
 //# programmable
 //> 0: test::m1::priv();

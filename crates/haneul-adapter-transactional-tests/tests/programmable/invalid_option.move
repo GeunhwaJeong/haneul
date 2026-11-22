@@ -7,11 +7,11 @@
 //# init --addresses test=0x0 --accounts A
 
 //# publish
-module test::m1 {
-    public entry fun option_prim<T: copy + drop>(opt: Option<T>) {
-        if (option::is_some(&opt)) {
-            option::destroy_some(opt);
-        }
+module test::m1;
+
+public entry fun option_prim<T: copy + drop>(opt: Option<T>) {
+    if (option::is_some(&opt)) {
+        option::destroy_some(opt);
     }
 }
 
@@ -41,7 +41,6 @@ module test::m1 {
 
 //# programmable --inputs vector[@0,@0]
 //> test::m1::option_prim<haneul::object::ID>(Input(0));
-
 
 // vectors
 

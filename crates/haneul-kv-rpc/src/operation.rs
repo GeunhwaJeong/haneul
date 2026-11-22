@@ -12,8 +12,6 @@ use haneul_inverted_index::BitmapQuery;
 use haneul_inverted_index::SkipPolicy;
 use haneul_inverted_index::WatermarkPacing;
 use haneul_kvstore::BitmapIndexSpec;
-use haneul_kvstore::tables::event_bitmap_index;
-use haneul_kvstore::tables::transaction_bitmap_index;
 use haneul_rpc::proto::haneul::rpc::v2::EventFilter;
 use haneul_rpc::proto::haneul::rpc::v2::TransactionFilter;
 use haneul_rpc_api::RpcError;
@@ -25,6 +23,7 @@ use crate::KvRpcServer;
 use crate::PackageResolver;
 use crate::bigtable_client::BigTableClient;
 use crate::config::{LedgerHistoryConfig, PipelineStage, ResolvedStageConfig, StagesConfig};
+use crate::served_height::ServedHeight;
 use haneul_rpc_api::ledger_history::filter::event_filter_to_query;
 use haneul_rpc_api::ledger_history::filter::transaction_filter_to_query;
 
@@ -93,20 +92,16 @@ impl QueryContext {
         self.checkpoint_hi_exclusive
     }
 
-    /// Per-request evaluated-bucket budget for `spec`. Handlers pass this
-    /// into `eval_bitmap_query_stream`, which constructs a
-    /// `BitmapScanBudget` internally and reports the resulting
-    /// `BitmapScanMetrics` via the `on_metrics` callback. The budget caps
-    /// evaluated buckets, not backend reads — see
-    /// `eval_bitmap_query_stream` for the (≤ unique_leaf_count) slop at
-    /// exhaustion.
-    pub(crate) fn scan_budget(&self, spec: BitmapIndexSpec) -> u64 {
-        match spec.table_name {
-            transaction_bitmap_index::NAME => self.ledger_history.bitmap_bucket_budget_tx(),
-            event_bitmap_index::NAME => self.ledger_history.bitmap_bucket_budget_event(),
-            other => panic!("unknown bitmap index table {other}; add a budget for it"),
-        }
+    /// The transaction bitmap index table the List APIs read.
+    pub(crate) fn tx_bitmap_spec(&self) -> BitmapIndexSpec {
+        BitmapIndexSpec::tx(self.ledger_history.bitmap_schema())
     }
+
+    /// The event bitmap index table the List APIs read.
+    pub(crate) fn event_bitmap_spec(&self) -> BitmapIndexSpec {
+        BitmapIndexSpec::event(self.ledger_history.bitmap_schema())
+    }
+
     pub(crate) fn bitmap_skip_policy(&self) -> SkipPolicy {
         self.ledger_history.bitmap_skip_policy()
     }
@@ -227,25 +222,23 @@ impl KvRpcServer {
         )
     }
 
-    fn cached_checkpoint_hi_exclusive(&self) -> Result<u64, RpcError> {
-        self.served_height()?
-            .checkpoint
-            .checked_add(1)
-            .ok_or_else(|| {
-                RpcError::new(
-                    tonic::Code::Internal,
-                    "cached checkpoint height cannot be represented as an exclusive bound",
-                )
-            })
-    }
-
-    async fn query_context(&self, operation: &'static str) -> Result<QueryContext, RpcError> {
+    fn query_context(
+        &self,
+        operation: &'static str,
+        served_height: ServedHeight,
+    ) -> Result<QueryContext, RpcError> {
+        let checkpoint_hi_exclusive = served_height.checkpoint.checked_add(1).ok_or_else(|| {
+            RpcError::new(
+                tonic::Code::Internal,
+                "served checkpoint height cannot be represented as an exclusive bound",
+            )
+        })?;
         Ok(QueryContext::new(
             self.limited_client(operation),
             self.package_resolver.clone(),
             self.metrics.clone(),
             operation,
-            self.cached_checkpoint_hi_exclusive()?,
+            checkpoint_hi_exclusive,
             self.ledger_history.clone(),
             self.stages.clone(),
         ))
@@ -264,18 +257,15 @@ impl KvRpcServer {
         Fut: Future<Output = Result<BoxStream<'static, Result<T, RpcError>>, RpcError>> + Send,
     {
         let deadline = Instant::now() + spec.timeout;
-        let request = request.into_inner();
+        let ctx = self.query_context(spec.name, ServedHeight::of(&request)?)?;
 
-        let stream = tokio::time::timeout_at(deadline, async move {
-            let ctx = self.query_context(spec.name).await?;
-            handler(ctx, request).await
-        })
-        .await
-        .map_err(|_| {
-            tracing::warn!(operation = spec.name, "construction phase timed out");
-            tonic::Status::deadline_exceeded(format!("{} request deadline exceeded", spec.name))
-        })?
-        .map_err(tonic::Status::from)?;
+        let stream = tokio::time::timeout_at(deadline, handler(ctx, request.into_inner()))
+            .await
+            .map_err(|_| {
+                tracing::warn!(operation = spec.name, "construction phase timed out");
+                tonic::Status::deadline_exceeded(format!("{} request deadline exceeded", spec.name))
+            })?
+            .map_err(tonic::Status::from)?;
 
         let stream = stream.map_err(tonic::Status::from);
         Ok(tonic::Response::new(

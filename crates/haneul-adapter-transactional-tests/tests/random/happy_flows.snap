@@ -6,13 +6,13 @@ processed 8 tasks
 init:
 A: object(0,0), B: object(0,1)
 
-task 1, lines 7-24:
+task 1, lines 7-27:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 6247200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 26-28:
+task 2, lines 29-31:
 // Good tx - use Random
 //# programmable --sender A --inputs immshared(8)
 //> test::random::use_random(Input(0));
@@ -20,7 +20,7 @@ mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000008
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 3, lines 30-33:
+task 3, lines 33-36:
 // Good tx - use Clock and then Random
 //# programmable --sender A --inputs immshared(6) immshared(8) @A
 //> test::random::use_clock(Input(0));
@@ -29,7 +29,7 @@ mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000008
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 4, lines 35-38:
+task 4, lines 38-41:
 // Good tx - use value and then Random
 //# programmable --sender A --inputs 10 immshared(8) @A
 //> test::random::use_value(Input(0));
@@ -38,7 +38,7 @@ mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000008
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 5, lines 40-45:
+task 5, lines 43-48:
 // Good tx - use Clock, then Random, then transfer
 //# programmable --sender A --inputs 10 immshared(6) immshared(8) @B
 //> SplitCoins(Gas, [Input(0)]);
@@ -50,7 +50,7 @@ mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000008
 gas summary: computation_cost: 1000000, storage_cost: 1976000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 6, lines 47-52:
+task 6, lines 50-55:
 // Good tx - use Clock, then Random, then merge
 //# programmable --sender A --inputs 10 immshared(6) immshared(8) @B
 //> SplitCoins(Gas, [Input(0)]);
@@ -61,7 +61,7 @@ mutated: object(0,0)
 unchanged_shared: 0x0000000000000000000000000000000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000000000000000000000000008
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 7, lines 54-56:
+task 7, lines 57-59:
 // Good tx - use Random twice in the same call
 //# programmable --sender A --inputs immshared(8)
 //> test::random::use_random_twice(Input(0), Input(0));

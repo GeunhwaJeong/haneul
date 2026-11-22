@@ -5,23 +5,26 @@
 //! GraphQL's own cursor format for transactions, events, and checkpoints.
 //!
 //! A cursor the ledger service minted is carried verbatim and never interpreted. Next to it, GraphQL
-//! records where it places that cursor in ledger order, from data it saw itself: an item's payload,
-//! a page's coverage claim, the request that produced the page. Cursors GraphQL mints from data it
-//! holds (a live checkpoint, a preloaded checkpoint) carry only that place. A change to the ledger
-//! service's cursor format therefore never changes how GraphQL reads its cursors.
+//! records the cursor's exact place in ledger order, as the ledger service reported it: an item's
+//! key, read from its payload, or the `cursor_position` of a frame without an item. Cursors GraphQL
+//! mints from data it holds (a live checkpoint, a preloaded checkpoint) carry only that place. A
+//! change to the ledger service's cursor format therefore never changes how GraphQL reads its
+//! cursors.
 //!
 //! A cursor in this format is [`FORMAT_MARKER`] followed by the BCS encoding of an envelope naming
-//! the cursor's type. Bytes without the marker are read as a legacy cursor ([`legacy`]).
+//! the cursor's type.
 
-use std::cmp::Ordering;
 use std::fmt;
 
 use anyhow::Context as _;
 use bytes::Bytes;
+use haneul_rpc::proto::haneul::rpc::v2;
 use serde::Deserialize;
 use serde::Serialize;
 
-pub(crate) mod legacy;
+use crate::api::scalars::cursor::ByteCursor;
+use crate::api::scalars::cursor::OpaqueCursor;
+
 pub(crate) mod scan;
 
 /// Leading byte of every cursor in GraphQL's own format. It is not a valid protobuf field key (field
@@ -45,7 +48,8 @@ pub struct EventKey {
     pub event_index: u32,
 }
 
-/// A key that orders items in ledger order.
+/// A key that orders items in ledger order. A key also names a position: the boundary just before
+/// the item with that key, whether or not an item has it.
 pub trait LedgerKey: Copy + Ord + fmt::Debug + Send + Sync + 'static {
     /// The checkpoint holding the item.
     fn checkpoint(&self) -> u64;
@@ -55,6 +59,18 @@ pub trait LedgerKey: Copy + Ord + fmt::Debug + Send + Sync + 'static {
 
     /// The key right after this one, whether or not an item has it.
     fn successor(&self) -> Self;
+
+    /// The key naming a position the ledger service reported, with unset fields read as 0.
+    fn from_position(position: &v2::LedgerPosition) -> Self;
+
+    /// The key's transaction index and event index within its checkpoint, 0 where it has none.
+    fn transaction_and_event_index(&self) -> (u64, u32);
+
+    /// Decode a cursor over this key from GraphQL's own format, rejecting cursors of other types.
+    fn decode_owned(bytes: &[u8]) -> anyhow::Result<OwnedCursor<Self>>;
+
+    /// Encode a cursor over this key in GraphQL's own format.
+    fn encode_owned(cursor: &OwnedCursor<Self>) -> Bytes;
 }
 
 /// A place in ledger order that a cursor names.
@@ -79,12 +95,20 @@ pub enum OwnedCursor<K> {
     Ledger {
         bytes: Bytes,
 
-        /// Where GraphQL places the ledger cursor. Exact for an item (read from its payload). For a
-        /// page boundary, a place with the same matches on either side as the boundary, for the
-        /// query that produced it. `None` when nothing GraphQL saw bounds the boundary.
-        point: Option<Point<K>>,
+        /// Where the ledger cursor sits: at its item's key for an item, or before the frame's
+        /// `cursor_position` for a frame without an item. Encoded as an `Option` that is always
+        /// set; a cursor without it does not decode.
+        #[serde(with = "required_point")]
+        point: Point<K>,
     },
 }
+
+/// A decoded transaction or event cursor, over items ordered by `K`.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct LedgerToken<K>(OwnedCursor<K>);
+
+/// A transaction or event cursor as the GraphQL schema carries it.
+pub type LedgerCursor<K> = OpaqueCursor<LedgerToken<K>>;
 
 /// What follows [`FORMAT_MARKER`]. BCS encodes by position, so the layout of every type inside it
 /// is frozen: variants may only be appended, here or in a nested enum, and no field may be added,
@@ -155,22 +179,13 @@ impl<K: LedgerKey> Point<K> {
             Self::Before(key) => Some(key.checkpoint()),
         }
     }
-
-    /// Orders the gap before a key ahead of the item at it.
-    fn rank(&self) -> (K, u8) {
-        match self {
-            Self::Before(key) => (*key, 0),
-            Self::At(key) => (*key, 1),
-        }
-    }
 }
 
 impl<K: Copy> OwnedCursor<K> {
-    /// Where GraphQL places this cursor, if it can.
-    pub fn point(&self) -> Option<Point<K>> {
+    /// Where this cursor sits in ledger order.
+    pub fn point(&self) -> Point<K> {
         match self {
-            Self::Point(point) => Some(*point),
-            Self::Ledger { point, .. } => *point,
+            Self::Point(point) | Self::Ledger { point, .. } => *point,
         }
     }
 
@@ -183,12 +198,56 @@ impl<K: Copy> OwnedCursor<K> {
     }
 }
 
+impl<K: LedgerKey> LedgerToken<K> {
+    /// The cursor of the item at `key`, minted from data GraphQL holds.
+    pub(crate) fn at(key: K) -> LedgerCursor<K> {
+        Self::from_point(Point::At(key))
+    }
+
+    /// The cursor at the start of `checkpoint`: a page after it starts with the checkpoint's first
+    /// item.
+    pub(crate) fn checkpoint_start(checkpoint: u64) -> LedgerCursor<K> {
+        Self::from_point(Point::checkpoint_start(checkpoint))
+    }
+
+    /// A cursor at `point`, with no ledger bytes.
+    pub(crate) fn from_point(point: Point<K>) -> LedgerCursor<K> {
+        OpaqueCursor::new(Self(OwnedCursor::Point(point)))
+    }
+
+    /// A cursor for ledger bytes that sit at `point`.
+    pub(crate) fn from_ledger(bytes: Bytes, point: Point<K>) -> LedgerCursor<K> {
+        OpaqueCursor::new(Self(OwnedCursor::Ledger { bytes, point }))
+    }
+
+    /// Where this cursor sits in ledger order.
+    pub fn point(&self) -> Point<K> {
+        self.0.point()
+    }
+
+    /// The ledger service's cursor, if this cursor came from a ledger List stream.
+    pub(crate) fn ledger_bytes(&self) -> Option<&Bytes> {
+        self.0.ledger_bytes()
+    }
+}
+
+impl<K: LedgerKey> ByteCursor for LedgerToken<K> {
+    fn decode_cursor(bytes: &[u8]) -> anyhow::Result<Self> {
+        Ok(Self(K::decode_owned(bytes)?))
+    }
+
+    fn encode_cursor(&self) -> Bytes {
+        K::encode_owned(&self.0)
+    }
+}
+
 impl Envelope {
-    /// Decode a cursor in GraphQL's own format, or `None` if `bytes` does not start with
-    /// [`FORMAT_MARKER`].
-    pub(crate) fn decode(bytes: &[u8]) -> Option<anyhow::Result<Self>> {
-        let payload = bytes.strip_prefix(&[FORMAT_MARKER])?;
-        Some(bcs::from_bytes(payload).context("Invalid cursor"))
+    /// Decode a cursor in GraphQL's own format.
+    pub(crate) fn decode(bytes: &[u8]) -> anyhow::Result<Self> {
+        let payload = bytes
+            .strip_prefix(&[FORMAT_MARKER])
+            .context("Invalid cursor")?;
+        bcs::from_bytes(payload).context("Invalid cursor")
     }
 }
 
@@ -218,6 +277,29 @@ impl LedgerKey for TransactionKey {
             transaction_index: self.transaction_index.saturating_add(1),
         }
     }
+
+    /// `ListTransactions` positions carry no event index.
+    fn from_position(position: &v2::LedgerPosition) -> Self {
+        Self {
+            checkpoint: position.checkpoint.unwrap_or_default(),
+            transaction_index: position.transaction_index.unwrap_or_default(),
+        }
+    }
+
+    fn transaction_and_event_index(&self) -> (u64, u32) {
+        (self.transaction_index, 0)
+    }
+
+    fn decode_owned(bytes: &[u8]) -> anyhow::Result<OwnedCursor<Self>> {
+        let Envelope::Transaction(cursor) = Envelope::decode(bytes)? else {
+            anyhow::bail!("Not a transaction cursor");
+        };
+        Ok(cursor)
+    }
+
+    fn encode_owned(cursor: &OwnedCursor<Self>) -> Bytes {
+        EnvelopeRef::Transaction(cursor).encode()
+    }
 }
 
 impl LedgerKey for EventKey {
@@ -239,17 +321,57 @@ impl LedgerKey for EventKey {
             ..*self
         }
     }
-}
 
-impl<K: LedgerKey> Ord for Point<K> {
-    fn cmp(&self, other: &Self) -> Ordering {
-        self.rank().cmp(&other.rank())
+    fn from_position(position: &v2::LedgerPosition) -> Self {
+        Self {
+            checkpoint: position.checkpoint.unwrap_or_default(),
+            transaction_index: position.transaction_index.unwrap_or_default(),
+            event_index: position.event_index.unwrap_or_default(),
+        }
+    }
+
+    fn transaction_and_event_index(&self) -> (u64, u32) {
+        (self.transaction_index, self.event_index)
+    }
+
+    fn decode_owned(bytes: &[u8]) -> anyhow::Result<OwnedCursor<Self>> {
+        let Envelope::Event(cursor) = Envelope::decode(bytes)? else {
+            anyhow::bail!("Not an event cursor");
+        };
+        Ok(cursor)
+    }
+
+    fn encode_owned(cursor: &OwnedCursor<Self>) -> Bytes {
+        EnvelopeRef::Event(cursor).encode()
     }
 }
 
-impl<K: LedgerKey> PartialOrd for Point<K> {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
+/// Encodes [`OwnedCursor::Ledger`]'s point as a `Some` and rejects a `None`, so a ledger cursor
+/// always has an exact place.
+mod required_point {
+    use serde::Deserialize;
+    use serde::Deserializer;
+    use serde::Serialize;
+    use serde::Serializer;
+    use serde::de::Error as _;
+
+    use super::Point;
+
+    pub(super) fn serialize<K: Serialize, S: Serializer>(
+        point: &Point<K>,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error> {
+        Some(point).serialize(serializer)
+    }
+
+    pub(super) fn deserialize<'de, K: Deserialize<'de>, D: Deserializer<'de>>(
+        deserializer: D,
+    ) -> Result<Point<K>, D::Error> {
+        Option::<Point<K>>::deserialize(deserializer)?.ok_or_else(|| {
+            D::Error::custom(
+                "ledger cursor has no position in ledger order; restart pagination without a cursor",
+            )
+        })
     }
 }
 
@@ -262,23 +384,6 @@ mod tests {
             checkpoint,
             transaction_index,
         }
-    }
-
-    /// The gap before a key sorts between the item before it and the item at it.
-    #[test]
-    fn gaps_sort_between_items() {
-        use Point::At;
-        use Point::Before;
-
-        let points = [
-            At(tx(4, 9)),
-            Before(tx(5, 0)),
-            At(tx(5, 0)),
-            Before(tx(5, 1)),
-            At(tx(5, 1)),
-            Before(tx(6, 0)),
-        ];
-        assert!(points.windows(2).all(|pair| pair[0] < pair[1]));
     }
 
     /// An item cursor excludes its item from pages on both sides; a gap cursor puts the item at its
@@ -322,6 +427,35 @@ mod tests {
         );
     }
 
+    /// A ledger position reads as a key with unset fields as 0; a transaction key reads no event
+    /// index.
+    #[test]
+    fn keys_from_positions() {
+        let position = v2::LedgerPosition::default()
+            .with_checkpoint(7)
+            .with_transaction_index(2)
+            .with_event_index(1);
+        assert_eq!(TransactionKey::from_position(&position), tx(7, 2));
+        assert_eq!(
+            EventKey::from_position(&position),
+            EventKey {
+                checkpoint: 7,
+                transaction_index: 2,
+                event_index: 1,
+            }
+        );
+
+        let checkpoint_only = v2::LedgerPosition::default().with_checkpoint(7);
+        assert_eq!(
+            TransactionKey::from_position(&checkpoint_only),
+            TransactionKey::checkpoint_start(7)
+        );
+        assert_eq!(
+            EventKey::from_position(&checkpoint_only),
+            EventKey::checkpoint_start(7)
+        );
+    }
+
     /// The exact bytes of one cursor of each shape. A reordered field or variant still round-trips,
     /// but decodes cursors clients already hold into different places; these pins catch that.
     #[test]
@@ -329,7 +463,7 @@ mod tests {
         // `tx(7, 2)`: checkpoint, then transaction index, as little-endian u64s.
         const TX_7_2: [u8; 16] = [7, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0];
 
-        let decode_transaction = |bytes: &[u8]| match Envelope::decode(bytes).unwrap().unwrap() {
+        let decode_transaction = |bytes: &[u8]| match Envelope::decode(bytes).unwrap() {
             Envelope::Transaction(cursor) => cursor,
             _ => panic!("expected a transaction cursor"),
         };
@@ -348,7 +482,7 @@ mod tests {
             (
                 OwnedCursor::Ledger {
                     bytes: Bytes::from_static(&[0xaa, 0xbb]),
-                    point: Some(Point::At(tx(7, 2))),
+                    point: Point::At(tx(7, 2)),
                 },
                 [
                     &[0x00, 0x00, 0x01, 0x02, 0xaa, 0xbb, 0x01, 0x00][..],
@@ -356,12 +490,13 @@ mod tests {
                 ]
                 .concat(),
             ),
+            // `Ledger`, the length-prefixed ledger bytes, then `Some(Before(..))`.
             (
                 OwnedCursor::Ledger {
                     bytes: Bytes::from_static(&[0xaa]),
-                    point: None,
+                    point: Point::Before(tx(7, 2)),
                 },
-                vec![0x00, 0x00, 0x01, 0x01, 0xaa, 0x00],
+                [&[0x00, 0x00, 0x01, 0x01, 0xaa, 0x01, 0x01][..], &TX_7_2].concat(),
             ),
         ];
         for (cursor, expected) in transactions {
@@ -377,7 +512,7 @@ mod tests {
         }));
         let expected = [&[0x00, 0x01, 0x00, 0x00][..], &TX_7_2, &[1, 0, 0, 0]].concat();
         assert_eq!(EnvelopeRef::Event(&event).encode()[..], expected[..]);
-        let Envelope::Event(decoded) = Envelope::decode(&expected).unwrap().unwrap() else {
+        let Envelope::Event(decoded) = Envelope::decode(&expected).unwrap() else {
             panic!("expected an event cursor");
         };
         assert_eq!(decoded, event);
@@ -385,64 +520,33 @@ mod tests {
         // Marker, `Checkpoint`, then the sequence number.
         let expected = [0x00, 0x02, 9, 0, 0, 0, 0, 0, 0, 0];
         assert_eq!(EnvelopeRef::Checkpoint(9).encode()[..], expected[..]);
-        let Envelope::Checkpoint(decoded) = Envelope::decode(&expected).unwrap().unwrap() else {
+        let Envelope::Checkpoint(decoded) = Envelope::decode(&expected).unwrap() else {
             panic!("expected a checkpoint cursor");
         };
         assert_eq!(decoded, 9);
     }
 
-    /// Bytes without the marker are not this format; marked bytes that do not parse are an error.
+    /// A ledger cursor whose point is `None` has no place in ledger order, so it is an invalid
+    /// cursor, for transactions and events alike.
     #[test]
-    fn decode_requires_the_marker() {
-        assert!(Envelope::decode(&[0x28, 0x01]).is_none());
-        assert!(Envelope::decode(&[]).is_none());
-        assert!(Envelope::decode(&[FORMAT_MARKER]).unwrap().is_err());
-        assert!(Envelope::decode(&[FORMAT_MARKER, 0x7f]).unwrap().is_err());
-    }
-
-    /// GraphQL releases before this format read byte cursors as protobuf messages (the schema they
-    /// last minted is frozen in [`legacy`]; `0x00` is not a valid field key in any schema), and
-    /// event and checkpoint cursors with a JSON fallback. Every cursor in this format fails all of
-    /// them, so an earlier release rejects it instead of resuming from a wrong position.
-    #[test]
-    fn earlier_releases_reject_this_format() {
-        // A cursor the ledger minted, valid in the legacy format on its own.
-        let ledger = Bytes::from_static(&[0x28, 0x01, 0x3a, 0x02, 0x10, 0x0a]);
-        let event = EventKey {
-            checkpoint: 5,
-            transaction_index: 1,
-            event_index: 2,
-        };
-
-        let cursors = [
-            EnvelopeRef::Transaction(&OwnedCursor::Point(Point::At(tx(5, 1)))).encode(),
-            EnvelopeRef::Transaction(&OwnedCursor::Point(Point::checkpoint_start(0))).encode(),
-            EnvelopeRef::Transaction(&OwnedCursor::Ledger {
-                bytes: ledger.clone(),
-                point: Some(Point::At(tx(5, 1))),
-            })
-            .encode(),
-            EnvelopeRef::Transaction(&OwnedCursor::Ledger {
-                bytes: ledger.clone(),
-                point: None,
-            })
-            .encode(),
-            EnvelopeRef::Event(&OwnedCursor::Point(Point::At(event))).encode(),
-            EnvelopeRef::Event(&OwnedCursor::Ledger {
-                bytes: ledger,
-                point: Some(Point::Before(event)),
-            })
-            .encode(),
-            EnvelopeRef::Checkpoint(0).encode(),
-            EnvelopeRef::Checkpoint(u64::MAX).encode(),
-        ];
-
-        for bytes in cursors {
-            assert!(legacy::LegacyToken::decode(&bytes).is_err(), "{bytes:?}");
+    fn ledger_cursor_without_a_point_is_rejected() {
+        // Marker, `Transaction`/`Event`, `Ledger`, the length-prefixed ledger bytes, then `None`.
+        for envelope in [0x00, 0x01] {
+            let unplaced = [0x00, envelope, 0x01, 0x01, 0xaa, 0x00];
+            let error = Envelope::decode(&unplaced).err().expect("rejected");
             assert!(
-                serde_json::from_slice::<serde_json::Value>(&bytes).is_err(),
-                "{bytes:?}"
+                format!("{error:#}").contains("ledger cursor has no position"),
+                "{error:#}"
             );
         }
+    }
+
+    /// Bytes without the marker, and marked bytes that do not parse, are an error.
+    #[test]
+    fn decode_requires_the_marker() {
+        assert!(Envelope::decode(&[0x28, 0x01]).is_err());
+        assert!(Envelope::decode(&[]).is_err());
+        assert!(Envelope::decode(&[FORMAT_MARKER]).is_err());
+        assert!(Envelope::decode(&[FORMAT_MARKER, 0x7f]).is_err());
     }
 }

@@ -4,11 +4,9 @@
 
 module bridged_btc::btc {
     use std::option;
-
     use haneul::coin;
     use haneul::transfer;
-    use haneul::tx_context;
-    use haneul::tx_context::TxContext;
+    use haneul::tx_context::{Self, TxContext};
 
     struct BTC has drop {}
 
@@ -22,7 +20,7 @@ module bridged_btc::btc {
             b"Bitcoin",
             b"Bridged Bitcoin token",
             option::none(),
-            ctx
+            ctx,
         );
         transfer::public_freeze_object(metadata);
         transfer::public_transfer(treasury_cap, tx_context::sender(ctx));

@@ -15,6 +15,7 @@
 //# advance-epoch
 
 //# run-graphql
+/*
 {
   latest: epoch { ...E }
 
@@ -64,8 +65,10 @@ fragment E on Epoch {
   }
   liveObjectSetDigest
 }
+*/
 
 //# run-graphql
+/*
 { # This checkpoint is half way through an earlier epoch, which should be
   # reflected in the latest epoch we get a start time for and an end time for.
   checkpoint(sequenceNumber: 2) {
@@ -116,3 +119,4 @@ fragment E on Epoch {
   }
   liveObjectSetDigest
 }
+*/

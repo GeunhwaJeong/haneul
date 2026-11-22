@@ -5,22 +5,22 @@
 //# init --protocol-version 115 --accounts A --addresses test=0x0 --simulator
 
 //# publish
-module test::simple {
-    public struct Counter has key {
-        id: UID,
-        value: u64,
-    }
+module test::simple;
 
-    fun init(ctx: &mut TxContext) {
-        transfer::share_object(Counter {
-            id: object::new(ctx),
-            value: 0,
-        })
-    }
+public struct Counter has key {
+    id: UID,
+    value: u64,
+}
 
-    public fun increment(counter: &mut Counter) {
-        counter.value = counter.value + 1;
-    }
+fun init(ctx: &mut TxContext) {
+    transfer::share_object(Counter {
+        id: object::new(ctx),
+        value: 0,
+    })
+}
+
+public fun increment(counter: &mut Counter) {
+    counter.value = counter.value + 1;
 }
 
 // Digest 2: Basic transaction with single gas payment
@@ -45,6 +45,7 @@ module test::simple {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Test basic single gas payment transaction
   basicTransaction: transaction(digest: "@{digest_2}") {
     gasInput {
@@ -66,8 +67,10 @@ module test::simple {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test multiple gas payments using split coins from previous transaction
   multipleGasPaymentsTransaction: transaction(digest: "@{digest_4}") {
     gasInput {
@@ -89,9 +92,10 @@ module test::simple {
     }
   }
 }
-
+*/
 
 //# run-graphql
+/*
 { # Test pagination functionality with multiple gas payments
   paginationTest: transaction(digest: "@{digest_4}") {
     gasInput {
@@ -109,8 +113,10 @@ module test::simple {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test backward pagination functionality with multiple gas payments
   backwardPaginationTest: transaction(digest: "@{digest_4}") {
     gasInput {
@@ -128,8 +134,10 @@ module test::simple {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Test system transaction GasInput
   systemTransaction: transaction(digest: "@{digest_6}") {
     gasInput {
@@ -151,3 +159,4 @@ module test::simple {
     }
   }
 }
+*/

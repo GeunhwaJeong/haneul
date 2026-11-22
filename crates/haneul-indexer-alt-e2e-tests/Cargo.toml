@@ -85,7 +85,7 @@ haneul-framework.workspace = true
 haneul-keys.workspace = true
 haneul-macros.workspace = true
 haneul-name-service.workspace = true
-haneul-rpc-cursor.workspace = true
+haneul-rpc-api.workspace = true
 haneul-sdk.workspace = true
 haneul-swarm-config.workspace = true
 haneul-transactional-test-runner = { workspace = true, features = ["testing"] }

@@ -2,8 +2,8 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
-module matrix_fixture::m {
-    public fun v(): u64 {
-        7
-    }
+module matrix_fixture::m;
+
+public fun v(): u64 {
+    7
 }

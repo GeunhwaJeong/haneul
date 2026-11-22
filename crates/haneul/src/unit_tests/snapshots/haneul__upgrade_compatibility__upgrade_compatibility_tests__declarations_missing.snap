@@ -5,17 +5,17 @@ expression: normalize_path(err.to_string())
 error[EUC01001]: missing public declaration
   ┌─ /fixtures/upgrade_errors/declaration_errors_v2/sources/func.move:5:8
   │
-5 │ module upgrades::func_ {
+5 │ module upgrades::func_;
   │        ^^^^^^^^^^^^^^^ public function 'fun_to_be_removed' is missing
   │
   = Public functions are part of a module's public interface and cannot be removed or changed during a 'compatible' upgrade.
   = Add missing public function 'fun_to_be_removed' back to the module 'func_'.
 
 error[EUC01001]: missing public declaration
-  ┌─ /fixtures/upgrade_errors/declaration_errors_v2/sources/func.move:8:9
+  ┌─ /fixtures/upgrade_errors/declaration_errors_v2/sources/func.move:9:5
   │
-8 │     fun fun_to_lose_public(): u64 {
-  │         ^^^^^^^^^^^^^^^^^^ Function 'fun_to_lose_public' has lost its public visibility
+9 │ fun fun_to_lose_public(): u64 {
+  │     ^^^^^^^^^^^^^^^^^^ Function 'fun_to_lose_public' has lost its public visibility
   │
   = Functions are part of a module's public interface and cannot be removed or changed during an upgrade.
   = Restore the original function's 'public' visibility for function 'fun_to_lose_public'.
@@ -23,7 +23,7 @@ error[EUC01001]: missing public declaration
 error[EUC01001]: missing public declaration
   ┌─ /fixtures/upgrade_errors/declaration_errors_v2/sources/enum.move:5:8
   │
-5 │ module upgrades::enum_ {
+5 │ module upgrades::enum_;
   │        ^^^^^^^^^^^^^^^ enum 'EnumToBeRemoved' is missing
   │
   = Enums are part of a module's public interface and cannot be removed or changed during a 'compatible' upgrade.
@@ -43,7 +43,7 @@ error[EUC01006]: module missing
 error[EUC01001]: missing public declaration
   ┌─ /fixtures/upgrade_errors/declaration_errors_v2/sources/struct.move:5:8
   │
-5 │ module upgrades::struct_ {
+5 │ module upgrades::struct_;
   │        ^^^^^^^^^^^^^^^^^ struct 'StructToBeRemoved' is missing
   │
   = Structs are part of a module's public interface and cannot be removed or changed during a 'compatible' upgrade.

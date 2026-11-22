@@ -167,6 +167,7 @@ pub const HANEUL_CLOCK_OBJECT_SHARED_VERSION: SequenceNumber = OBJECT_START_VERS
 pub const IMPLICITLY_READ_SYSTEM_OBJECTS: &[ObjectID] = &[
     HANEUL_ACCUMULATOR_ROOT_OBJECT_ID,
     HANEUL_FORWARDING_ADDRESS_REGISTRY_OBJECT_ID,
+    HANEUL_CLOCK_OBJECT_ID,
 ];
 
 pub fn haneul_framework_address_concat_string(suffix: &str) -> String {

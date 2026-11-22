@@ -2068,6 +2068,7 @@ impl ValidatorService {
             num_inflight_execution_transactions,
             last_locally_built_checkpoint,
             last_committed_leader_round,
+            staggering_active: Some(epoch_store.staggered_submission().is_active()),
         };
 
         let raw_response =

@@ -654,7 +654,7 @@ dependencies = [
  "alloy-rlp",
  "alloy-serde",
  "alloy-sol-types",
- "itertools 0.13.0",
+ "itertools 0.14.0",
  "serde",
  "serde_json",
  "serde_with",
@@ -871,7 +871,7 @@ dependencies = [
 [[package]]
 name = "anemo"
 version = "0.0.0"
-source = "git+https://github.com/GeunhwaJeong/anemo.git?rev=68adc31d4ea1f4573f08c2c75317fcb205b823de#68adc31d4ea1f4573f08c2c75317fcb205b823de"
+source = "git+https://github.com/GeunhwaJeong/anemo.git?rev=845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e#845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -919,7 +919,7 @@ dependencies = [
 [[package]]
 name = "anemo-build"
 version = "0.0.0"
-source = "git+https://github.com/GeunhwaJeong/anemo.git?rev=68adc31d4ea1f4573f08c2c75317fcb205b823de#68adc31d4ea1f4573f08c2c75317fcb205b823de"
+source = "git+https://github.com/GeunhwaJeong/anemo.git?rev=845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e#845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e"
 dependencies = [
  "prettyplease",
  "proc-macro2",
@@ -930,7 +930,7 @@ dependencies = [
 [[package]]
 name = "anemo-cli"
 version = "0.0.0"
-source = "git+https://github.com/GeunhwaJeong/anemo.git?rev=68adc31d4ea1f4573f08c2c75317fcb205b823de#68adc31d4ea1f4573f08c2c75317fcb205b823de"
+source = "git+https://github.com/GeunhwaJeong/anemo.git?rev=845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e#845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e"
 dependencies = [
  "anemo",
  "anemo-tower",
@@ -946,7 +946,7 @@ dependencies = [
 [[package]]
 name = "anemo-tower"
 version = "0.0.0"
-source = "git+https://github.com/GeunhwaJeong/anemo.git?rev=68adc31d4ea1f4573f08c2c75317fcb205b823de#68adc31d4ea1f4573f08c2c75317fcb205b823de"
+source = "git+https://github.com/GeunhwaJeong/anemo.git?rev=845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e#845a9b5aab1f8b78fb67c0e8e1998cb2e6a4d72e"
 dependencies = [
  "anemo",
  "bytes",
@@ -1504,49 +1504,49 @@ dependencies = [
 
 [[package]]
 name = "arrow"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3f04e0a89cc175eaf3740282537851e6fd9d7276f97730b9d0ea2859c11a85df"
+checksum = "e4754a624e5ae42081f464514be454b39711daae0458906dacde5f4c632f33a8"
 dependencies = [
  "arrow-arith",
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
  "arrow-cast",
  "arrow-csv",
- "arrow-data 59.3.2",
- "arrow-ipc 59.3.2",
+ "arrow-data",
+ "arrow-ipc",
  "arrow-json",
  "arrow-ord",
  "arrow-row",
- "arrow-schema 59.3.2",
- "arrow-select 59.3.2",
+ "arrow-schema",
+ "arrow-select",
  "arrow-string",
 ]
 
 [[package]]
 name = "arrow-arith"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "157943c720919e8f5b6731407ce5cd4c9a5ef47a75bf10edaf24b7081b5763ef"
+checksum = "f7b3141e0ec5145a22d8694ea8b6d6f69305971c4fa1c1a13ef0195aef2d678b"
 dependencies = [
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
- "arrow-schema 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
+ "arrow-data",
+ "arrow-schema",
  "chrono",
  "num-traits",
 ]
 
 [[package]]
 name = "arrow-array"
-version = "57.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b67610949fd1bfd49b85d85acf24b3811838c7c2495368fdcbb53a2e43049c8b"
+checksum = "4c8955af33b25f3b175ee10af580577280b4bd01f7e823d94c7cdef7cf8c9aef"
 dependencies = [
  "ahash 0.8.12",
- "arrow-buffer 57.3.2",
- "arrow-data 57.3.2",
- "arrow-schema 57.3.2",
+ "arrow-buffer",
+ "arrow-data",
+ "arrow-schema",
  "chrono",
  "half 2.3.1",
  "hashbrown 0.16.1",
@@ -1556,28 +1556,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "arrow-array"
-version = "59.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "72b5b1682924f11ecf6929689c16cbc69efbb6dd141b06ad98ee1cb10d858c43"
-dependencies = [
- "ahash 0.8.12",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
- "arrow-schema 59.3.2",
- "chrono",
- "half 2.3.1",
- "hashbrown 0.17.1",
- "num-complex",
- "num-integer",
- "num-traits",
-]
-
-[[package]]
 name = "arrow-buffer"
-version = "57.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9d1f6c599fe82bc5bab08bcefaded604b6049e337195e0309e8da346c8ed725"
+checksum = "c697ddca96183182f35b3a18e50b9110b11e916d7b7799cbfd4d34662f2c56c2"
 dependencies = [
  "bytes",
  "half 2.3.1",
@@ -1586,31 +1568,19 @@ dependencies = [
 ]
 
 [[package]]
-name = "arrow-buffer"
-version = "59.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5d687afc6c927965a8a759f3b68de91933d9dfa2e1bb6e156bac84b85665e92"
-dependencies = [
- "bytes",
- "half 2.3.1",
- "num-bigint 0.5.1",
- "num-traits",
-]
-
-[[package]]
 name = "arrow-cast"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3f23c3379feede42135ef27ca60e67f6e643cd4343ae74e4c8b16c83f55afd85"
+checksum = "646bbb821e86fd57189c10b4fcdaa941deaf4181924917b0daa92735baa6ada5"
 dependencies = [
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
+ "arrow-data",
  "arrow-ord",
- "arrow-schema 59.3.2",
- "arrow-select 59.3.2",
+ "arrow-schema",
+ "arrow-select",
  "atoi",
- "base64 0.23.1",
+ "base64 0.22.1",
  "chrono",
  "half 2.3.1",
  "lexical-core",
@@ -1620,13 +1590,13 @@ dependencies = [
 
 [[package]]
 name = "arrow-csv"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85b1984628b091b8319b3c305fce21d04f9e9b2578bb733b0d0108462ae1d698"
+checksum = "8da746f4180004e3ce7b83c977daf6394d768332349d3d913998b10a120b790a"
 dependencies = [
- "arrow-array 59.3.2",
+ "arrow-array",
  "arrow-cast",
- "arrow-schema 59.3.2",
+ "arrow-schema",
  "chrono",
  "csv",
  "csv-core",
@@ -1635,25 +1605,12 @@ dependencies = [
 
 [[package]]
 name = "arrow-data"
-version = "57.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c8ffe1898115a178cb3b39a34eb3038512da1d3a8421afb1a026d1174b1ec1af"
+checksum = "1fdd994a9d28e6365aa78e15da3f3950c0fdcea6b963a12fa1c391afb637b304"
 dependencies = [
- "arrow-buffer 57.3.2",
- "arrow-schema 57.3.2",
- "half 2.3.1",
- "num-integer",
- "num-traits",
-]
-
-[[package]]
-name = "arrow-data"
-version = "59.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb0a031c7ff5e2bdb443117054fb466af1d4df5b7f0ecbe197713dc8b113b1ba"
-dependencies = [
- "arrow-buffer 59.3.2",
- "arrow-schema 59.3.2",
+ "arrow-buffer",
+ "arrow-schema",
  "half 2.3.1",
  "num-integer",
  "num-traits",
@@ -1665,40 +1622,25 @@ version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "abf7df950701ab528bf7c0cf7eeadc0445d03ef5d6ffc151eaae6b38a58feff1"
 dependencies = [
- "arrow-array 57.3.2",
- "arrow-buffer 57.3.2",
- "arrow-data 57.3.2",
- "arrow-schema 57.3.2",
- "arrow-select 57.3.0",
- "flatbuffers",
-]
-
-[[package]]
-name = "arrow-ipc"
-version = "59.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f5dd1afadda2eb821aaf851bb4c0adef60c30cc0f1a29bd02fb99dd07fb9f58d"
-dependencies = [
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
- "arrow-schema 59.3.2",
- "arrow-select 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
+ "arrow-data",
+ "arrow-schema",
+ "arrow-select",
  "flatbuffers",
 ]
 
 [[package]]
 name = "arrow-json"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2bc4d56a0dad84cc51c5812ccff48b642047a1f3be80349cd84318983e79edb"
+checksum = "0ff8357658bedc49792b13e2e862b80df908171275f8e6e075c460da5ee4bf86"
 dependencies = [
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
  "arrow-cast",
- "arrow-ord",
- "arrow-schema 59.3.2",
- "arrow-select 59.3.2",
+ "arrow-data",
+ "arrow-schema",
  "chrono",
  "half 2.3.1",
  "indexmap 2.8.0",
@@ -1714,41 +1656,35 @@ dependencies = [
 
 [[package]]
 name = "arrow-ord"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "561b8209faa2cd489764b7fd07d7cb9e8d274d78048c38de59f77c41140cb834"
+checksum = "f7d8f1870e03d4cbed632959498bcc84083b5a24bded52905ae1695bd29da45b"
 dependencies = [
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
- "arrow-schema 59.3.2",
- "arrow-select 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
+ "arrow-data",
+ "arrow-schema",
+ "arrow-select",
 ]
 
 [[package]]
 name = "arrow-row"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d8c68b87a569f92b90c46cb0a09d86bd9609ddc9b1bf1fc5a503c8c6907c14e"
+checksum = "18228633bad92bff92a95746bbeb16e5fc318e8382b75619dec26db79e4de4c0"
 dependencies = [
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
- "arrow-schema 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
+ "arrow-data",
+ "arrow-schema",
  "half 2.3.1",
 ]
 
 [[package]]
 name = "arrow-schema"
-version = "57.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aa4512df738ac4c7b03ac93f185fefa294e4548ec0f8561e5f733a4a93f82cec"
-
-[[package]]
-name = "arrow-schema"
-version = "59.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e87acb0c6bf6237fca7a50d7b51e801c98a18a5fe6f3bb34f7d77b85ca165388"
+checksum = "8c872d36b7bf2a6a6a2b40de9156265f0242910791db366a2c17476ba8330d68"
 
 [[package]]
 name = "arrow-select"
@@ -1757,38 +1693,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "68bf3e3efbd1278f770d67e5dc410257300b161b93baedb3aae836144edcaf4b"
 dependencies = [
  "ahash 0.8.12",
- "arrow-array 57.3.2",
- "arrow-buffer 57.3.2",
- "arrow-data 57.3.2",
- "arrow-schema 57.3.2",
- "num-traits",
-]
-
-[[package]]
-name = "arrow-select"
-version = "59.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c844141958d805b47d1208e0d12aac53fcf388ce8011639fe82aa492adde0bb4"
-dependencies = [
- "ahash 0.8.12",
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
- "arrow-schema 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
+ "arrow-data",
+ "arrow-schema",
  "num-traits",
 ]
 
 [[package]]
 name = "arrow-string"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc130892b1a9552da77971924b390e06cf375d1f7e4344a7b7b40ca4426fa470"
+checksum = "85e968097061b3c0e9fe3079cf2e703e487890700546b5b0647f60fca1b5a8d8"
 dependencies = [
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
- "arrow-schema 59.3.2",
- "arrow-select 59.3.2",
+ "arrow-array",
+ "arrow-buffer",
+ "arrow-data",
+ "arrow-schema",
+ "arrow-select",
  "memchr",
  "num-traits",
  "regex",
@@ -2762,12 +2684,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 
 [[package]]
-name = "base64"
-version = "0.23.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ac07cdecf99051d9a5238b80f35af32cdeba5b336e55d957b318b50137e18da5"
-
-[[package]]
 name = "base64-simd"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2890,7 +2806,7 @@ checksum = "230c5f1ca6a325a32553f8640d31ac9b49f2411e901e427570154868b46da4f7"
 
 [[package]]
 name = "bin-version"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "const-str",
  "git-version",
@@ -5529,7 +5445,7 @@ dependencies = [
 [[package]]
 name = "fastcrypto"
 version = "0.1.11"
-source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=da61cd46013fdd65361e57f7b9d4ae2244f86430#da61cd46013fdd65361e57f7b9d4ae2244f86430"
+source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=0a263279c31a45ba4bcd986a82b7e99c63ed16c0#0a263279c31a45ba4bcd986a82b7e99c63ed16c0"
 dependencies = [
  "aes",
  "aes-gcm",
@@ -5585,7 +5501,6 @@ dependencies = [
  "static_assertions",
  "thiserror 1.0.69",
  "tokio",
- "tracing",
  "typenum",
  "x509-parser",
  "zeroize",
@@ -5594,16 +5509,16 @@ dependencies = [
 [[package]]
 name = "fastcrypto-derive"
 version = "0.1.4"
-source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=da61cd46013fdd65361e57f7b9d4ae2244f86430#da61cd46013fdd65361e57f7b9d4ae2244f86430"
+source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=0a263279c31a45ba4bcd986a82b7e99c63ed16c0#0a263279c31a45ba4bcd986a82b7e99c63ed16c0"
 dependencies = [
  "quote",
- "syn 1.0.107",
+ "syn 2.0.117",
 ]
 
 [[package]]
 name = "fastcrypto-pq"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=da61cd46013fdd65361e57f7b9d4ae2244f86430#da61cd46013fdd65361e57f7b9d4ae2244f86430"
+source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=0a263279c31a45ba4bcd986a82b7e99c63ed16c0#0a263279c31a45ba4bcd986a82b7e99c63ed16c0"
 dependencies = [
  "bincode 1.3.3",
  "digest 0.10.7",
@@ -5620,13 +5535,13 @@ dependencies = [
 [[package]]
 name = "fastcrypto-tbls"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=da61cd46013fdd65361e57f7b9d4ae2244f86430#da61cd46013fdd65361e57f7b9d4ae2244f86430"
+source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=0a263279c31a45ba4bcd986a82b7e99c63ed16c0#0a263279c31a45ba4bcd986a82b7e99c63ed16c0"
 dependencies = [
  "bcs",
  "digest 0.10.7",
  "fastcrypto",
  "hex",
- "itertools 0.10.5",
+ "itertools 0.12.1",
  "rand 0.8.5",
  "reed-solomon-erasure",
  "serde",
@@ -5640,7 +5555,7 @@ dependencies = [
 [[package]]
 name = "fastcrypto-vdf"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=da61cd46013fdd65361e57f7b9d4ae2244f86430#da61cd46013fdd65361e57f7b9d4ae2244f86430"
+source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=0a263279c31a45ba4bcd986a82b7e99c63ed16c0#0a263279c31a45ba4bcd986a82b7e99c63ed16c0"
 dependencies = [
  "bcs",
  "fastcrypto",
@@ -5657,7 +5572,7 @@ dependencies = [
 [[package]]
 name = "fastcrypto-zkp"
 version = "0.1.4"
-source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=da61cd46013fdd65361e57f7b9d4ae2244f86430#da61cd46013fdd65361e57f7b9d4ae2244f86430"
+source = "git+https://github.com/GeunhwaJeong/fastcrypto?rev=0a263279c31a45ba4bcd986a82b7e99c63ed16c0#0a263279c31a45ba4bcd986a82b7e99c63ed16c0"
 dependencies = [
  "ark-bn254",
  "ark-ec",
@@ -6423,7 +6338,7 @@ dependencies = [
 
 [[package]]
 name = "haneul"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anemo",
  "anyhow",
@@ -6693,11 +6608,11 @@ dependencies = [
 
 [[package]]
 name = "haneul-analytics-indexer"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "arrow",
- "arrow-array 59.3.2",
+ "arrow-array",
  "async-trait",
  "bcs",
  "bytes",
@@ -6752,7 +6667,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-analytics-indexer-derive"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -6805,6 +6720,7 @@ dependencies = [
  "indicatif",
  "itertools 0.13.0",
  "move-core-types",
+ "nonempty",
  "prometheus",
  "prost 0.14.1",
  "rand 0.8.5",
@@ -6825,7 +6741,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-bridge"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "alloy",
  "alloy-multiprovider-strategy",
@@ -6883,7 +6799,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-bridge-cli"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "alloy",
  "anyhow",
@@ -6979,7 +6895,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-checkpoint-blob-indexer"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7009,7 +6925,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-cluster-test"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7075,7 +6991,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-consistent-store"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7320,7 +7236,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-display"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7344,7 +7260,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-e2e-tests"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7369,7 +7285,6 @@ dependencies = [
  "haneul-protocol-config",
  "haneul-rpc",
  "haneul-rpc-api",
- "haneul-rpc-cursor",
  "haneul-sdk",
  "haneul-sdk-types",
  "haneul-simulator",
@@ -7513,7 +7428,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-faucet"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "axum 0.8.3",
@@ -7541,14 +7456,14 @@ dependencies = [
 
 [[package]]
 name = "haneul-field-count"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "haneul-field-count-derive",
 ]
 
 [[package]]
 name = "haneul-field-count-derive"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "quote",
  "syn 1.0.107",
@@ -7556,7 +7471,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-fork"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7597,7 +7512,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-fork-e2e-tests"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "datatest-stable",
@@ -7635,7 +7550,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-framework-snapshot"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7679,7 +7594,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-futures"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "futures",
@@ -7744,7 +7659,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7776,7 +7691,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-consistent-api"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "prost 0.14.1",
  "prost-types 0.14.1",
@@ -7789,7 +7704,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-consistent-store"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7876,7 +7791,7 @@ dependencies = [
  "haneul-pg-db",
  "haneul-protocol-config",
  "haneul-rpc",
- "haneul-rpc-cursor",
+ "haneul-rpc-api",
  "haneul-sdk",
  "haneul-simulator",
  "haneul-swarm-config",
@@ -7913,7 +7828,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-framework"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7932,6 +7847,7 @@ dependencies = [
  "haneul-http",
  "haneul-indexer-alt-framework-store-traits",
  "haneul-indexer-alt-metrics",
+ "haneul-indexer-alt-object-store",
  "haneul-pg-db",
  "haneul-rpc",
  "haneul-synthetic-ingestion",
@@ -7963,7 +7879,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-framework-store-traits"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7975,7 +7891,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-graphql"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -8020,7 +7936,6 @@ dependencies = [
  "move-ir-types",
  "pin-project",
  "prometheus",
- "prost 0.14.1",
  "prost-types 0.14.1",
  "regex",
  "reqwest",
@@ -8044,7 +7959,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-metrics"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "axum 0.8.3",
@@ -8059,7 +7974,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-object-store"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8073,7 +7988,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-reader"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -8098,6 +8013,7 @@ dependencies = [
  "haneullabs-common",
  "http 1.3.1",
  "http-body-util",
+ "move-binary-format",
  "move-core-types",
  "prometheus",
  "prost-types 0.14.1",
@@ -8112,7 +8028,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-indexer-alt-schema"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8128,7 +8044,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-inverted-index"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -8208,6 +8124,7 @@ dependencies = [
  "bip32",
  "colored",
  "fastcrypto",
+ "fastcrypto-pq",
  "haneul-types",
  "haneullabs-common",
  "jsonrpc",
@@ -8227,7 +8144,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-kv-rpc"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -8248,7 +8165,6 @@ dependencies = [
  "haneul-protocol-config",
  "haneul-rpc",
  "haneul-rpc-api",
- "haneul-rpc-cursor",
  "haneul-types",
  "haneullabs-common",
  "haneullabs-metrics",
@@ -8277,7 +8193,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-kvstore"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -8300,6 +8216,7 @@ dependencies = [
  "haneul-keys",
  "haneul-protocol-config",
  "haneul-rpc",
+ "haneul-synthetic-ingestion",
  "haneul-test-transaction-builder",
  "haneul-types",
  "haneullabs-common",
@@ -8316,9 +8233,11 @@ dependencies = [
  "roaring",
  "rustc-hash 2.1.1",
  "rustls",
+ "schemars 0.8.21",
  "scoped-futures",
  "serde",
  "telemetry-subscribers",
+ "tempfile",
  "test-cluster",
  "tokio",
  "tokio-stream",
@@ -8334,7 +8253,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-light-client"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8384,7 +8303,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-metric-checker"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "backoff",
@@ -8421,7 +8340,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-move"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "bin-version",
@@ -8467,7 +8386,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-move-build"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "fastcrypto",
@@ -8493,7 +8412,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-move-lsp"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "bin-version",
  "clap",
@@ -8608,7 +8527,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-name-service"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "bcs",
  "haneul-types",
@@ -8676,7 +8595,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-node"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anemo",
  "anemo-tower",
@@ -8731,7 +8650,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-oracle"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8761,7 +8680,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-package-alt"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8780,7 +8699,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-package-dump"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8796,7 +8715,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-package-management"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "haneul-framework-snapshot",
@@ -8829,7 +8748,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-pg-db"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8869,7 +8788,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-prompt"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -8998,7 +8917,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-rosetta"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9093,7 +9012,6 @@ dependencies = [
  "haneul-package-resolver",
  "haneul-protocol-config",
  "haneul-rpc",
- "haneul-rpc-cursor",
  "haneul-sdk-types",
  "haneul-transaction-builder",
  "haneul-transaction-checks",
@@ -9106,7 +9024,9 @@ dependencies = [
  "move-core-types",
  "prometheus",
  "prost 0.14.1",
+ "prost-build",
  "prost-types 0.14.1",
+ "protox",
  "rand 0.8.5",
  "roaring",
  "serde",
@@ -9122,11 +9042,12 @@ dependencies = [
  "tower 0.5.3",
  "tracing",
  "tracing-subscriber",
+ "walkdir",
 ]
 
 [[package]]
 name = "haneul-rpc-benchmark"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "bb8",
@@ -9150,20 +9071,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "haneul-rpc-cursor"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "bytes",
- "prost 0.14.1",
- "prost-build",
- "protox",
- "walkdir",
-]
-
-[[package]]
 name = "haneul-rpc-resolver"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9182,7 +9091,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-rpc-store"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9212,7 +9121,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-sdk"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "bcs",
@@ -9284,7 +9193,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-single-node-benchmark"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "bcs",
  "clap",
@@ -9343,7 +9252,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-source-verification"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "colored",
@@ -9389,7 +9298,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-sql-macro"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "quote",
  "syn 1.0.107",
@@ -9445,7 +9354,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-surfer"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "bcs",
  "clap",
@@ -9558,7 +9467,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-test-validator"
-version = "1.15.0"
+version = "1.16.0"
 
 [[package]]
 name = "haneul-tls"
@@ -9584,7 +9493,7 @@ dependencies = [
 
 [[package]]
 name = "haneul-tool"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anemo",
  "anemo-cli",
@@ -11201,7 +11110,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc2f4eb4bc735547cfed7c0a4922cbd04a4655978c09b54f1f7b228750664c34"
 dependencies = [
  "cfg-if",
- "windows-targets 0.48.0",
+ "windows-targets 0.52.6",
 ]
 
 [[package]]
@@ -11563,12 +11472,6 @@ name = "lz4_flex"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98c23545df7ecf1b16c303910a69b079e8e251d60f7dd2cc9b4177f2afaf1746"
-
-[[package]]
-name = "lz4_flex"
-version = "0.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ecbdfe44b1bd960b68170b417450a628c43f7cf56bb3c5317e61cb230ee7f226"
 dependencies = [
  "twox-hash 2.1.2",
 ]
@@ -11787,7 +11690,7 @@ dependencies = [
 [[package]]
 name = "minibytes"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=94c518c58ece5ba97305f5aeb82ce8c74452de01#94c518c58ece5ba97305f5aeb82ce8c74452de01"
+source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=3ff977d28675c814537b7e9aa39a52ba69197af8#3ff977d28675c814537b7e9aa39a52ba69197af8"
 dependencies = [
  "bytes",
  "memmap2 0.7.1",
@@ -12760,7 +12663,7 @@ dependencies = [
 [[package]]
 name = "msim"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/mysten-sim.git?rev=5110cb5afdb4e1298cdb06f190365bd78b1acf2c#5110cb5afdb4e1298cdb06f190365bd78b1acf2c"
+source = "git+https://github.com/GeunhwaJeong/mysten-sim.git?rev=13c14bdf0932e13f374857bcdd77ede55e8c2237#13c14bdf0932e13f374857bcdd77ede55e8c2237"
 dependencies = [
  "ahash 0.7.8",
  "async-task",
@@ -12789,7 +12692,7 @@ dependencies = [
 [[package]]
 name = "msim-macros"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/mysten-sim.git?rev=5110cb5afdb4e1298cdb06f190365bd78b1acf2c#5110cb5afdb4e1298cdb06f190365bd78b1acf2c"
+source = "git+https://github.com/GeunhwaJeong/mysten-sim.git?rev=13c14bdf0932e13f374857bcdd77ede55e8c2237#13c14bdf0932e13f374857bcdd77ede55e8c2237"
 dependencies = [
  "darling 0.14.2",
  "proc-macro2",
@@ -13101,7 +13004,7 @@ version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -13139,16 +13042,6 @@ dependencies = [
  "num-traits",
  "rand 0.8.5",
  "serde",
-]
-
-[[package]]
-name = "num-bigint"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "93e7820bc0a80a0238e650327316f929ba18d5be054b647490a3a6a339f3e7c0"
-dependencies = [
- "num-integer",
- "num-traits",
 ]
 
 [[package]]
@@ -13762,31 +13655,34 @@ dependencies = [
 
 [[package]]
 name = "parquet"
-version = "59.3.2"
+version = "57.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8eb260d566f2fbdabe356d26aaa5d13403aac29b5b4e44463b8f9bd7b2b12680"
+checksum = "6ee96b29972a257b855ff2341b37e61af5f12d6af1158b6dcdb5b31ea07bb3cb"
 dependencies = [
  "ahash 0.8.12",
- "arrow-array 59.3.2",
- "arrow-buffer 59.3.2",
- "arrow-data 59.3.2",
- "arrow-ipc 59.3.2",
- "arrow-schema 59.3.2",
- "arrow-select 59.3.2",
- "base64 0.23.1",
+ "arrow-array",
+ "arrow-buffer",
+ "arrow-cast",
+ "arrow-data",
+ "arrow-ipc",
+ "arrow-schema",
+ "arrow-select",
+ "base64 0.22.1",
  "brotli",
  "bytes",
  "chrono",
  "flate2",
  "half 2.3.1",
- "hashbrown 0.17.1",
- "lz4_flex 0.14.0",
- "num-bigint 0.5.1",
+ "hashbrown 0.16.1",
+ "lz4_flex",
+ "num-bigint 0.4.6",
  "num-integer",
  "num-traits",
+ "paste",
  "seq-macro",
  "simdutf8",
  "snap",
+ "thrift",
  "twox-hash 2.1.2",
  "zstd 0.13.2",
 ]
@@ -14540,8 +14436,8 @@ version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ac6c3320f9abac597dcbc668774ef006702672474aad53c6d596b62e487b40b1"
 dependencies = [
- "heck 0.5.0",
- "itertools 0.12.1",
+ "heck 0.4.1",
+ "itertools 0.14.0",
  "log",
  "multimap",
  "once_cell",
@@ -14563,7 +14459,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8a56d757972c98b346a9b766e3f02746cde6dd1cd1d1d563472929fdd74bec4d"
 dependencies = [
  "anyhow",
- "itertools 0.12.1",
+ "itertools 0.14.0",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -14576,7 +14472,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9120690fafc389a67ba3803df527d0ec9cbbc9cc45e4cc20b332996dfb672425"
 dependencies = [
  "anyhow",
- "itertools 0.12.1",
+ "itertools 0.14.0",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -14818,7 +14714,7 @@ dependencies = [
  "once_cell",
  "socket2 0.6.3",
  "tracing",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -15216,7 +15112,6 @@ checksum = "7263373d500d4d4f505d43a2a662d475a894aa94503a1ee28e9188b5f3960d4f"
 dependencies = [
  "libm",
  "lru 0.7.8",
- "parking_lot 0.11.2",
  "smallvec",
  "spin 0.9.9",
 ]
@@ -16606,9 +16501,9 @@ version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "750d804cda4e3c45aae115aac73b4938ec1481f3ded5a15fcfb8c267a591f6f1"
 dependencies = [
- "arrow-array 57.3.2",
- "arrow-ipc 57.3.0",
- "arrow-schema 57.3.2",
+ "arrow-array",
+ "arrow-ipc",
+ "arrow-schema",
  "async-trait",
  "base64 0.22.1",
  "bytes",
@@ -17490,9 +17385,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "thrift"
+version = "0.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7e54bc85fc7faa8bc175c4bab5b92ba8d9a3ce893d0e9f42cc455c8ab16a9e09"
+dependencies = [
+ "byteorder",
+ "integer-encoding",
+ "ordered-float 2.10.1",
+]
+
+[[package]]
 name = "tideconsole"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=94c518c58ece5ba97305f5aeb82ce8c74452de01#94c518c58ece5ba97305f5aeb82ce8c74452de01"
+source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=3ff977d28675c814537b7e9aa39a52ba69197af8#3ff977d28675c814537b7e9aa39a52ba69197af8"
 dependencies = [
  "anyhow",
  "clap",
@@ -17507,7 +17413,7 @@ dependencies = [
 [[package]]
 name = "tidehunter"
 version = "0.1.0"
-source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=94c518c58ece5ba97305f5aeb82ce8c74452de01#94c518c58ece5ba97305f5aeb82ce8c74452de01"
+source = "git+https://github.com/GeunhwaJeong/tidehunter.git?rev=3ff977d28675c814537b7e9aa39a52ba69197af8#3ff977d28675c814537b7e9aa39a52ba69197af8"
 dependencies = [
  "arc-swap",
  "bincode 1.3.3",
@@ -17517,7 +17423,7 @@ dependencies = [
  "fastbloom",
  "libc",
  "lru 0.12.5",
- "lz4_flex 0.12.1",
+ "lz4_flex",
  "memmap2 0.7.1",
  "minibytes",
  "parking_lot 0.12.3",
@@ -19764,7 +19670,7 @@ dependencies = [
 
 [[package]]
 name = "x"
-version = "1.15.0"
+version = "1.16.0"
 dependencies = [
  "anyhow",
  "camino",

@@ -9,13 +9,13 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 1, lines 10-59:
+task 1, lines 10-57:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 8101600,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 61-79:
+task 2, lines 59-77:
 //# programmable --sender A --inputs @A
 // Entangled before being made hot multiple times, should fail
 //> 0: test::m::a();
@@ -38,7 +38,7 @@ task 2, lines 61-79:
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid argument to private entry function. These functions cannot take arguments from other Move functions
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidArgumentToPrivateEntryFunction }, source: None, command: Some(14) } }
 
-task 3, lines 81-102:
+task 3, lines 79-100:
 //# programmable --sender A --inputs @A
 // Entangled before being made hot multiple times, succeeds since all cooled
 //> 0: test::m::a();
@@ -64,7 +64,7 @@ task 3, lines 81-102:
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 4, lines 104-122:
+task 4, lines 102-120:
 //# programmable --sender A --inputs @A
 // Entangled after being made hot multiple times, should fail
 //> 0: test::m::a();
@@ -87,7 +87,7 @@ task 4, lines 104-122:
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid argument to private entry function. These functions cannot take arguments from other Move functions
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidArgumentToPrivateEntryFunction }, source: None, command: Some(14) } }
 
-task 5, lines 124-145:
+task 5, lines 122-143:
 //# programmable --sender A --inputs @A
 // Entangled after being made hot multiple times, succeeds since all cooled
 //> 0: test::m::a();
@@ -113,7 +113,7 @@ task 5, lines 124-145:
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 6, lines 147-165:
+task 6, lines 145-163:
 //# programmable --sender A --inputs @A
 // Entangled before and after being made hot multiple times, should fail
 //> 0: test::m::a();
@@ -136,7 +136,7 @@ task 6, lines 147-165:
 Error: Transaction Effects Status: Invalid command argument at 0. Invalid argument to private entry function. These functions cannot take arguments from other Move functions
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: CommandArgumentError { arg_idx: 0, kind: InvalidArgumentToPrivateEntryFunction }, source: None, command: Some(14) } }
 
-task 7, lines 167-188:
+task 7, lines 165-186:
 //# programmable --sender A --inputs @A
 // Entangled before and after being made hot multiple times, succeeds since all cooled
 //> 0: test::m::a();

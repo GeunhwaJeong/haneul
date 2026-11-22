@@ -11,13 +11,13 @@ processed 18 tasks
 init:
 A: object(0,0), B: object(0,1), C: object(0,2)
 
-task 1, lines 12-52:
+task 1, lines 12-58:
 //# publish --sender A
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 9530400,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 54-57:
+task 2, lines 60-63:
 //# programmable --sender A --inputs 5000 @A
 // Fund A's (the funder) address balance.
 //> 0: SplitCoins(Gas, [Input(0)]);
@@ -26,11 +26,11 @@ mutated: object(0,0)
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 5000)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 3, line 59:
+task 3, line 65:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 61-65:
+task 4, lines 67-71:
 //# programmable --sender A --inputs b"app" @B vector[1000u256] vector[] vector[99999999999999]
 // A proposes an app-bound allowance to B and the app issues it.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -40,7 +40,7 @@ created: object(4,0), object(4,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 7083200,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 5, lines 67-70:
+task 5, lines 73-76:
 //# programmable --sender A --inputs b"plain" @B vector[1000u256] vector[] vector[99999999999999]
 // A issues a plain allowance to B, for the composed spend below.
 //> 0: std::option::none<haneul::allowance::RateLimit>();
@@ -49,7 +49,7 @@ created: object(5,0), object(5,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 6528400,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 6, lines 72-74:
+task 6, lines 78-80:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(400,@A,object(4,0)) mutshared(4,0) immshared(6) @B
 // B spends the app-bound allowance through the app.
 //> 0: test::app::app_pay<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2), Input(3));
@@ -58,7 +58,7 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 400), (object(6,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 400)
 gas summary: computation_cost: 1000000, storage_cost: 4742400,  storage_rebate: 3754025, non_refundable_storage_fee: 375
 
-task 7, lines 76-79:
+task 7, lines 82-85:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(4,0)) mutshared(4,0) immshared(6) @B
 // A plain spend on the app-bound allowance: aborts.
 //> 0: haneul::allowance::balance_spend<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2));
@@ -66,7 +66,7 @@ task 7, lines 76-79:
 Error: Transaction Effects Status: Move Abort in haneul::allowance::balance_spend (function index 10) at offset 13 at line 267 with clever code 9
 Debug of error: MoveAbort(MoveLocation { module: ModuleId { address: haneul, name: Identifier("allowance") }, function: 10, instruction: 13, function_name: Some("balance_spend") }, 13837592476830007315) at command Some(0)
 
-task 8, lines 81-83:
+task 8, lines 87-89:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(250,@A,object(5,0)) mutshared(5,0) immshared(6) @B
 // B spends the plain allowance through the third-party function.
 //> 0: test::app::forward_plain<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2), Input(3));
@@ -75,20 +75,20 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 250), (object(6,0), B, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 250)
 gas summary: computation_cost: 1000000, storage_cost: 4187600,  storage_rebate: 4187181, non_refundable_storage_fee: 419
 
-task 9, lines 85-87:
+task 9, lines 91-93:
 //# programmable --sender A --inputs mutshared(4,0) @C
 // The app rotates the spender to C.
 //> 0: test::app::rotate<haneul::balance::Balance<haneul::haneul::HANEUL>>(Input(0), Input(1));
 mutated: object(0,0), object(4,0)
 gas summary: computation_cost: 1000000, storage_cost: 4742400,  storage_rebate: 4741926, non_refundable_storage_fee: 474
 
-task 10, lines 89-91:
+task 10, lines 95-97:
 //# programmable --sender B --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(100,@A,object(4,0)) mutshared(4,0) immshared(6) @B
 // The old spender after the rotation: rejected at signing.
 //> 0: test::app::app_pay<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2), Input(3));
 Error: Error checking transaction input objects: Invalid withdraw reservation: Transaction sender is not the spender of allowance object(4,0)
 
-task 11, lines 93-95:
+task 11, lines 99-101:
 //# programmable --sender C --inputs allowance_withdraw<haneul::balance::Balance<haneul::haneul::HANEUL>>(300,@A,object(4,0)) mutshared(4,0) immshared(6) @C
 // The new spender works.
 //> 0: test::app::app_pay<haneul::haneul::HANEUL>(Input(1), Input(0), Input(2), Input(3));
@@ -97,7 +97,7 @@ unchanged_shared: 0x000000000000000000000000000000000000000000000000000000000000
 accumulators_written: (object(2,0), A, haneul::balance::Balance<haneul::haneul::HANEUL>, Split, 300), (object(11,0), C, haneul::balance::Balance<haneul::haneul::HANEUL>, Merge, 300)
 gas summary: computation_cost: 1000000, storage_cost: 4742400,  storage_rebate: 3754025, non_refundable_storage_fee: 375
 
-task 12, lines 97-98:
+task 12, lines 103-104:
 //# view-object 4,0
 Owner: Shared( 4 )
 Version: 8
@@ -225,7 +225,7 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 700u256,
 }
 
-task 13, lines 100-101:
+task 13, lines 106-107:
 //# view-object 5,0
 Owner: Shared( 5 )
 Version: 7
@@ -274,11 +274,11 @@ Contents: haneul::allowance::Allowance<haneul::balance::Balance<haneul::haneul::
     current_spend: 250u256,
 }
 
-task 14, line 103:
+task 14, line 109:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 15, lines 105-106:
+task 15, lines 111-112:
 //# view-object 2,0
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 3
@@ -296,7 +296,7 @@ Contents: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::balance:
     },
 }
 
-task 16, lines 108-109:
+task 16, lines 114-115:
 //# view-object 6,0
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 3
@@ -314,7 +314,7 @@ Contents: haneul::dynamic_field::Field<haneul::accumulator::Key<haneul::balance:
     },
 }
 
-task 17, lines 111-112:
+task 17, lines 117-118:
 //# view-object 11,0
 Owner: Object ID: ( 0x0000000000000000000000000000000000000000000000000000000000000acc )
 Version: 3

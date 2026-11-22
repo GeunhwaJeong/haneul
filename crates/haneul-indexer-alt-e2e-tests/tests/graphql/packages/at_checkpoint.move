@@ -6,19 +6,19 @@
 
 //# publish --upgradeable --sender A
 module P1::M {
-  public fun foo(): u64 { 42 }
+    public fun foo(): u64 { 42 }
 }
 
 //# create-checkpoint
 
 //# upgrade --package P1 --upgrade-capability 1,1 --sender A
 module P2::M {
-  public fun foo(): u64 { 43 }
+    public fun foo(): u64 { 43 }
 }
 
 //# upgrade --package P2 --upgrade-capability 1,1 --sender A
 module P3::M {
-  public fun foo(): u64 { 44 }
+    public fun foo(): u64 { 44 }
 }
 
 //# programmable --sender A --inputs 42 @A
@@ -28,6 +28,7 @@ module P3::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Fetching packages as objects, to confirm their addresses and versions
   p1: object(address: "@{obj_1_0}") {
     address
@@ -44,8 +45,10 @@ module P3::M {
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Look up packages at checkpoints
 
   # Without a filter, the RPC watermark is used.
@@ -73,8 +76,10 @@ module P3::M {
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # The ID of any package version works as an anchor
 
   latest: package(address: "@{obj_3_0}") {
@@ -97,8 +102,10 @@ module P3::M {
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Works for system packages as well
   implicit: package(address: "0x1") {
     address
@@ -120,13 +127,17 @@ module P3::M {
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Error - Querying a checkpoint in the future.
   future: package(address: "@{obj_3_0}", atCheckpoint: 3) { version }
 }
+*/
 
 //# run-graphql
+/*
 { # If the object is not a move package, then there is no response
   implicit: package(address: "@{obj_5_0}") {
     address
@@ -143,3 +154,4 @@ module P3::M {
     version
   }
 }
+*/

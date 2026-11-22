@@ -9,27 +9,27 @@
 
 //# publish
 
-module test::m {
-    public struct S has key, store {
-        id: haneul::object::UID,
-    }
+module test::m;
 
-    public struct R has key {
-        id: haneul::object::UID,
-        s: S,
-    }
+public struct S has key, store {
+    id: haneul::object::UID,
+}
 
-    public entry fun create(ctx: &mut TxContext) {
-        let parent = haneul::object::new(ctx);
-        let child = S { id: haneul::object::new(ctx) };
-        haneul::transfer::transfer(R { id: parent, s: child }, tx_context::sender(ctx))
-    }
+public struct R has key {
+    id: haneul::object::UID,
+    s: S,
+}
 
-    public entry fun unwrap_and_transfer(r: R, ctx: &mut TxContext) {
-        let R { id, s } = r;
-        haneul::object::delete(id);
-        haneul::transfer::transfer(s, tx_context::sender(ctx));
-    }
+public entry fun create(ctx: &mut TxContext) {
+    let parent = haneul::object::new(ctx);
+    let child = S { id: haneul::object::new(ctx) };
+    haneul::transfer::transfer(R { id: parent, s: child }, tx_context::sender(ctx))
+}
+
+public entry fun unwrap_and_transfer(r: R, ctx: &mut TxContext) {
+    let R { id, s } = r;
+    haneul::object::delete(id);
+    haneul::transfer::transfer(s, tx_context::sender(ctx));
 }
 
 //

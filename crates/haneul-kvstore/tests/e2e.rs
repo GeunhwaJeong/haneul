@@ -32,11 +32,13 @@ use haneul_kvstore::BigTableClient;
 use haneul_kvstore::BigTableIndexer;
 use haneul_kvstore::BitmapIndexSpec;
 use haneul_kvstore::BitmapQuery;
+use haneul_kvstore::BitmapSchema;
 use haneul_kvstore::IndexerConfig;
 use haneul_kvstore::KeyValueStoreReader;
 use haneul_kvstore::OBJECT_TOMBSTONES_PIPELINE;
 use haneul_kvstore::OBJECT_VERSIONS_BY_CHECKPOINT_PIPELINE;
 use haneul_kvstore::ObjectStatus;
+use haneul_kvstore::PROTOCOL_CONFIGS_V2_PIPELINE;
 use haneul_kvstore::PipelineLayer;
 use haneul_kvstore::ScanDirection;
 use haneul_kvstore::default_committer_config;
@@ -46,6 +48,8 @@ use haneul_kvstore::testing::INSTANCE_ID;
 use haneul_kvstore::testing::create_tables;
 use haneul_kvstore::testing::require_bigtable_emulator;
 use haneul_protocol_config::Chain;
+use haneul_protocol_config::ProtocolConfig;
+use haneul_protocol_config::ProtocolVersion;
 use haneul_rpc::client::Client as GrpcClient;
 use haneul_rpc::field::FieldMaskUtil;
 use haneul_rpc::proto::haneul::rpc::v2::BatchGetTransactionsRequest;
@@ -936,7 +940,7 @@ async fn test_indexer_e2e() -> Result<()> {
             harness.bigtable_client(),
             BitmapQuery::scan(sender_dim_key.clone())?,
             tx_range.clone(),
-            BitmapIndexSpec::tx(),
+            BitmapIndexSpec::tx(BitmapSchema::V2),
             ScanDirection::Ascending,
         )
         .try_collect::<Vec<_>>()
@@ -962,7 +966,7 @@ async fn test_indexer_e2e() -> Result<()> {
             harness.bigtable_client(),
             BitmapQuery::scan(sender_dim_key)?,
             event_range,
-            BitmapIndexSpec::event(),
+            BitmapIndexSpec::event(BitmapSchema::V2),
             ScanDirection::Ascending,
         )
         .try_collect::<Vec<_>>()
@@ -1138,9 +1142,9 @@ async fn test_object_versions_by_checkpoint() -> Result<()> {
     let last_cp = changes.last().unwrap().0;
     harness.wait_for_watermark(last_cp, 0).await?;
 
-    // Check every checkpoint from just before creation through deletion. Checkpoints between two
-    // changes must resolve to the earlier change.
-    for checkpoint in first_cp - 1..=last_cp {
+    // Check every checkpoint from just before creation through deletion, and the last possible
+    // checkpoint. Checkpoints between two changes must resolve to the earlier change.
+    for checkpoint in (first_cp - 1..=last_cp).chain([u64::MAX]) {
         for id in [object, wrapper] {
             let expected = changes
                 .iter()
@@ -1171,6 +1175,57 @@ async fn test_object_versions_by_checkpoint() -> Result<()> {
             }
         }
     }
+
+    Ok(())
+}
+
+/// The genesis checkpoint writes the genesis protocol version's attributes and feature flags to
+/// separate columns, and a version the chain never ran has no row.
+#[tokio::test]
+async fn test_protocol_configs_v2() -> Result<()> {
+    let mut harness = TestHarness::new().await?;
+
+    // Alpha pipelines are opt-in: an indexer that does not name them does not register them.
+    let default_indexer = build_indexer(&harness.client, harness.cluster.rpc_url(), &[]).await?;
+    assert!(
+        !default_indexer
+            .pipeline_names()
+            .contains(&PROTOCOL_CONFIGS_V2_PIPELINE),
+        "alpha pipeline registered by default",
+    );
+    drop(default_indexer);
+
+    harness.wait_for_watermark(0, 0).await?;
+    let genesis_version = harness
+        .client
+        .get_epoch(0)
+        .await?
+        .and_then(|epoch| epoch.protocol_version)
+        .context("epoch 0 has no protocol version")?;
+
+    let configs = harness
+        .client
+        .get_protocol_configs_v2(genesis_version)
+        .await?
+        .context("no row for the genesis protocol version")?;
+    let expected =
+        ProtocolConfig::get_for_version(ProtocolVersion::new(genesis_version), Chain::Unknown);
+    assert_eq!(configs.feature_flags, expected.feature_map());
+    assert_eq!(
+        configs.attributes,
+        expected
+            .render::<prost_types::Value>(&mut haneullabs_common::rpc_format::Unmetered)
+            .context("rendering protocol config")?,
+    );
+
+    assert!(
+        harness
+            .client
+            .get_protocol_configs_v2(genesis_version + 1)
+            .await?
+            .is_none(),
+        "row for a protocol version the chain never ran",
+    );
 
     Ok(())
 }

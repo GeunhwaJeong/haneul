@@ -5,7 +5,7 @@ expression: normalize_path(err.to_string())
 error[EUC01010]: new declaration
   ┌─ /fixtures/upgrade_errors/deponly_errors_v2/sources/UpgradeErrors.move:5:8
   │
-5 │ module upgrades::upgrades {
+5 │ module upgrades::upgrades;
   │        ^^^^^^^^^^^^^^^^^^ New unexpected enum 'NewEnum'.
   │
   = Enums cannot be added during a 'dependency only' upgrade.
@@ -14,17 +14,17 @@ error[EUC01010]: new declaration
 error[EUC01010]: new declaration
   ┌─ /fixtures/upgrade_errors/deponly_errors_v2/sources/UpgradeErrors.move:5:8
   │
-5 │ module upgrades::upgrades {
+5 │ module upgrades::upgrades;
   │        ^^^^^^^^^^^^^^^^^^ New unexpected function 'new_function'.
   │
   = Functions cannot be added during a 'dependency only' upgrade.
   = Remove the function 'new_function' from its module.
 
 error[EUC01010]: new declaration
-  ┌─ /fixtures/upgrade_errors/deponly_errors_v2/sources/UpgradeErrors.move:8:19
+  ┌─ /fixtures/upgrade_errors/deponly_errors_v2/sources/UpgradeErrors.move:8:15
   │
-8 │     public struct NewStruct {
-  │                   ^^^^^^^^^ New unexpected struct 'NewStruct'.
+8 │ public struct NewStruct {
+  │               ^^^^^^^^^ New unexpected struct 'NewStruct'.
   │
   = Structs cannot be added during a 'dependency only' upgrade.
   = Remove the struct 'NewStruct' from its module.

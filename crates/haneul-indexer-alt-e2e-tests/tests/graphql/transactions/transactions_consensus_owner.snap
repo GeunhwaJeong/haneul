@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 5 tasks
 
@@ -30,20 +29,20 @@ task 3, line 18:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 4, lines 20-37:
+task 4, lines 20-39:
 //# run-graphql
 Response: {
   "data": {
     "sentByA": {
       "edges": [
         {
-          "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
+          "cursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
           "node": {
             "digest": "G1skPEdHfxVBYe5i1zDP9GxxUHb1y4jXpKU3kpV7ej6B"
           }
         },
         {
-          "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
           "node": {
             "digest": "z5WEx5U2Wpy3WfDvaxVM4pHVVcVMK3Li9QKvjjaC6S4"
           }
@@ -53,7 +52,7 @@ Response: {
     "affectedB": {
       "edges": [
         {
-          "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
+          "cursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
           "node": {
             "digest": "G1skPEdHfxVBYe5i1zDP9GxxUHb1y4jXpKU3kpV7ej6B"
           }
@@ -63,7 +62,7 @@ Response: {
     "affectedC": {
       "edges": [
         {
-          "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
           "node": {
             "digest": "z5WEx5U2Wpy3WfDvaxVM4pHVVcVMK3Li9QKvjjaC6S4"
           }

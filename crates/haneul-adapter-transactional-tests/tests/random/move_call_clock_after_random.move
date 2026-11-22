@@ -5,13 +5,14 @@
 //# init --accounts A B --addresses test=0x0
 
 //# publish --sender A
-module test::random {
-    use haneul::clock::Clock;
-    use haneul::random::Random;
+module test::random;
 
-    public fun use_clock(_clock: &Clock) {}
-    public fun use_random(_random: &Random) {}
-}
+use haneul::clock::Clock;
+use haneul::random::Random;
+
+public fun use_clock(_clock: &Clock) {}
+
+public fun use_random(_random: &Random) {}
 
 // bad tx - use_random, use_clock
 //# programmable --sender A --inputs immshared(8) immshared(6) @A

@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 9 tasks
 
@@ -46,7 +45,7 @@ task 7, line 35:
 //# create-checkpoint
 Checkpoint created: 3
 
-task 8, lines 37-112:
+task 8, lines 37-114:
 //# run-graphql
 Response: {
   "data": {
@@ -54,7 +53,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "7coC1D1s3aSoY8iojosFAvyTgAe1578VDf6FDSAKphF8",
               "effects": {
@@ -66,7 +65,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIAhAESgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBEoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "73pLQ1K11gAk3cAUNAwcBe93pPAc6U7wKE9mv95xLtrt",
               "effects": {
@@ -84,7 +83,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "7coC1D1s3aSoY8iojosFAvyTgAe1578VDf6FDSAKphF8",
               "effects": {
@@ -96,7 +95,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIAhAESgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBEoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "73pLQ1K11gAk3cAUNAwcBe93pPAc6U7wKE9mv95xLtrt",
               "effects": {
@@ -114,7 +113,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
+            "cursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
             "node": {
               "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
               "effects": {
@@ -126,7 +125,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "7coC1D1s3aSoY8iojosFAvyTgAe1578VDf6FDSAKphF8",
               "effects": {
@@ -138,7 +137,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIAhAESgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBEoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "73pLQ1K11gAk3cAUNAwcBe93pPAc6U7wKE9mv95xLtrt",
               "effects": {
@@ -150,7 +149,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIAxAGSgIIAwEAAwAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBkoCCAMBAAMAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "Dw5QhkTcUkBMFjfC1t54cV4XfabttgnU71HdqhjEV5oF",
               "effects": {
@@ -168,7 +167,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIAxAGSgIIAwEAAwAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBkoCCAMBAAMAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "Dw5QhkTcUkBMFjfC1t54cV4XfabttgnU71HdqhjEV5oF",
               "effects": {
@@ -186,7 +185,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
+            "cursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
             "node": {
               "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858",
               "effects": {
@@ -198,7 +197,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIAhAESgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBEoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "73pLQ1K11gAk3cAUNAwcBe93pPAc6U7wKE9mv95xLtrt",
               "effects": {
@@ -210,7 +209,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIAxAGSgIIAwEAAwAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBkoCCAMBAAMAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "Dw5QhkTcUkBMFjfC1t54cV4XfabttgnU71HdqhjEV5oF",
               "effects": {
@@ -228,7 +227,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDigBOgQIARACSgQIARABAQABAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQAkoECAEQAQEAAQAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "7coC1D1s3aSoY8iojosFAvyTgAe1578VDf6FDSAKphF8",
               "effects": {
@@ -240,7 +239,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIAhAESgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQBEoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "73pLQ1K11gAk3cAUNAwcBe93pPAc6U7wKE9mv95xLtrt",
               "effects": {
@@ -259,12 +258,12 @@ Response: {
         "pageInfo": {
           "hasNextPage": true,
           "hasPreviousPage": false,
-          "startCursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
-          "endCursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA="
+          "startCursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
+          "endCursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA"
         },
         "edges": [
           {
-            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
+            "cursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
             "node": {
               "digest": "FnUTjLzsuxk5c9WtUtNkSHkoQYrvJzXJph2ctBJqS858"
             }

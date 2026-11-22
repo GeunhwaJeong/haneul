@@ -10,9 +10,7 @@ use std::time::Instant;
 use futures::StreamExt;
 use futures::TryStreamExt;
 use futures::stream::BoxStream;
-use haneul_inverted_index::ScanDirection;
 use haneul_inverted_index::ScanStop;
-use haneul_kvstore::BitmapIndexSpec;
 use haneul_kvstore::TransactionData;
 use haneul_kvstore::TxSeqDigestData;
 use haneul_kvstore::tables::tx_seq_digest;
@@ -25,7 +23,8 @@ use haneul_rpc::proto::haneul::rpc::v2::QueryEndReason;
 use haneul_rpc::proto::haneul::rpc::v2::Watermark;
 use haneul_rpc_api::RpcError;
 use haneul_rpc_api::ledger_history::checkpoint_positions::CheckpointPositions;
-use haneul_rpc_api::ledger_history::ledger_point::LedgerPoint;
+use haneul_rpc_api::ledger_history::cursor::LedgerPoint;
+use haneul_rpc_api::ledger_history::cursor::Position;
 use haneul_rpc_api::ledger_history::query_options::QueryOptions;
 use haneul_rpc_api::ledger_history::query_options::ResolvedCheckpointRange;
 use haneul_rpc_api::ledger_history::query_options::ResolvedScan;
@@ -35,8 +34,6 @@ use haneul_rpc_api::ledger_history::watermark::ScanTerminal;
 use haneul_rpc_api::ledger_history::watermark::advance_covered_bound_before_checkpoint;
 use haneul_rpc_api::ledger_history::watermark::boundary_watermark;
 use haneul_rpc_api::ledger_history::watermark::item_watermark;
-use haneul_rpc_api::ledger_history::watermark::scan_frontier_cursor_cp;
-use haneul_rpc_cursor::Position;
 use haneul_types::digests::TransactionDigest;
 use prost::Message;
 use tracing::Instrument;
@@ -48,7 +45,6 @@ use crate::config::PipelineStage;
 use crate::object_cache::ObjectMap;
 use crate::operation::QueryContext;
 use crate::pipeline::InputOrderEmitter;
-use crate::pipeline::PlacedFrontier;
 use crate::pipeline::RenderAheadError;
 use crate::pipeline::ResolvedScanStop;
 use crate::pipeline::ResolvedWatermarked;
@@ -162,11 +158,12 @@ pub(crate) async fn list_transactions(
     // keyspace directly, bounded by limit_items.
     let digest_stream: BoxStream<'static, Result<Watermarked<TxSeqDigestData>, ScanStop>> =
         if let Some(query) = filter_query {
-            let scan_budget = ctx.scan_budget(BitmapIndexSpec::tx());
+            let spec = ctx.tx_bitmap_spec();
+            let scan_budget = ctx.ledger_history().bitmap_bucket_budget_tx();
             let seq_stream = client.eval_bitmap_query_stream(
                 query,
                 tx_range.clone(),
-                BitmapIndexSpec::tx(),
+                spec,
                 options.scan_direction(),
                 scan_budget,
                 ctx.bitmap_skip_policy(),
@@ -326,10 +323,12 @@ pub(crate) async fn list_transactions(
                     );
                     let watermark = item_watermark(
                         Position::Transactions {
-                            checkpoint: item_checkpoint,
                             tx_seq,
+                            public_position: LedgerPoint::transaction(
+                                item_checkpoint,
+                                tx_offset as u64,
+                            ),
                         },
-                        LedgerPoint::transaction(item_checkpoint, tx_offset as u64),
                         direction,
                         covered_checkpoint_bound,
                     );
@@ -378,12 +377,11 @@ pub(crate) async fn list_transactions(
                 Ok(ResolvedWatermarked::Watermark { position, frontier }) => {
                     let watermark = transaction_frontier_watermark(
                         &options,
-                        direction,
                         entry_checkpoint,
                         &mut covered_checkpoint_bound,
                         position,
-                        Some(frontier),
-                    )?;
+                        frontier,
+                    );
                     let response = watermark_response(watermark);
                     ctx.inc_stream_watermark_frames();
                     if !first_frame_emitted {
@@ -398,7 +396,6 @@ pub(crate) async fn list_transactions(
                     let response = terminal_response_from_scan_stop(
                         stop,
                         &options,
-                        direction,
                         entry_checkpoint,
                         &mut covered_checkpoint_bound,
                     )?;
@@ -439,46 +436,29 @@ fn watermark_response(watermark: Watermark) -> ListTransactionsResponse {
 /// placed as `frontier` (see [`ResolvedScanStop`]).
 fn transaction_frontier_watermark(
     options: &QueryOptions,
-    direction: ScanDirection,
     entry_checkpoint: u64,
     covered_checkpoint_bound: &mut Option<u64>,
     position: u64,
-    frontier: Option<PlacedFrontier>,
-) -> Result<Watermark, RpcError> {
-    let checkpoint_at_frontier = frontier.map(|frontier| frontier.checkpoint);
-    if let Some(checkpoint) = checkpoint_at_frontier {
-        *covered_checkpoint_bound = advance_covered_bound_before_checkpoint(
-            *covered_checkpoint_bound,
-            checkpoint,
-            entry_checkpoint,
-            options,
-        );
-    }
-    let cursor_checkpoint = scan_frontier_cursor_cp(checkpoint_at_frontier, position, direction)
-        .ok_or_else(|| {
-            RpcError::new(
-                tonic::Code::Internal,
-                format!("transaction scan frontier {position} has no checkpoint mapping"),
-            )
-        })?;
-    Ok(boundary_watermark(
-        Position::Transactions {
-            checkpoint: cursor_checkpoint,
-            tx_seq: position,
-        },
-        // Unplaced only at the genesis or numeric-edge frontier, which starts its checkpoint.
-        frontier.map_or(
-            LedgerPoint::checkpoint_start(cursor_checkpoint),
-            |frontier| frontier.point,
-        ),
+    frontier: LedgerPoint,
+) -> Watermark {
+    *covered_checkpoint_bound = advance_covered_bound_before_checkpoint(
         *covered_checkpoint_bound,
-    ))
+        frontier.checkpoint,
+        entry_checkpoint,
+        options,
+    );
+    boundary_watermark(
+        Position::Transactions {
+            tx_seq: position,
+            public_position: frontier,
+        },
+        *covered_checkpoint_bound,
+    )
 }
 
 fn terminal_response_from_scan_stop(
     stop: ResolvedScanStop<u64>,
     options: &QueryOptions,
-    direction: ScanDirection,
     entry_checkpoint: u64,
     covered_checkpoint_bound: &mut Option<u64>,
 ) -> Result<ListTransactionsResponse, RpcError> {
@@ -486,12 +466,11 @@ fn terminal_response_from_scan_stop(
     let terminal = ScanTerminal::ScanLimit {
         watermark: transaction_frontier_watermark(
             options,
-            direction,
             entry_checkpoint,
             covered_checkpoint_bound,
             position,
             frontier,
-        )?,
+        ),
     };
     let reason = terminal.reason()?;
     Ok(end_response(
@@ -646,8 +625,9 @@ async fn resolve_tx_range(
         .await?;
     let window = positions.transaction_window(&cp_range.range, boundary)?;
     let resolved = ResolvedScan::<u64>::resolve(cp_range, window.clone(), options)?;
-    let range_end = resolved.range_end(&window, options, |checkpoint, tx_seq| {
-        Position::Transactions { checkpoint, tx_seq }
+    let range_end = resolved.range_end(&window, options, |tx_seq, point| Position::Transactions {
+        tx_seq,
+        public_position: point,
     });
     Ok((resolved, range_end))
 }
@@ -711,7 +691,8 @@ mod tests {
     use super::*;
     use crate::config::StagesConfig;
     use crate::v2::get_transaction::get_transaction;
-    use haneul_rpc_cursor::CursorToken;
+    use haneul_inverted_index::ScanDirection;
+    use haneul_rpc_api::ledger_history::cursor::CursorToken;
 
     use crate::v2::test_utils::{
         ascending_options, assert_identity_only_object_mask, assert_list_metric_absent,
@@ -734,8 +715,8 @@ mod tests {
             .build_checkpoint();
         insert_checkpoint_rows(&mock, &checkpoint).await;
         let after_past_tip = CursorToken::boundary(Position::Transactions {
-            checkpoint: 1_000,
             tx_seq: 1_000_000,
+            public_position: LedgerPoint::checkpoint_start(1_000),
         })
         .encode();
         for (start_checkpoint, after) in [(Some(1_000), None), (None, Some(after_past_tip))] {
@@ -982,10 +963,9 @@ mod tests {
             .as_ref()
             .expect("ledger exhaustion proves a terminal boundary");
         let expected_cursor = CursorToken::boundary(Position::Transactions {
-            checkpoint: 0,
             tx_seq: 0,
+            public_position: LedgerPoint::GENESIS,
         })
-        .with_public_position(Some(haneul_rpc_cursor::PublicPosition::default()))
         .encode();
         assert_eq!(watermark.cursor.as_ref(), Some(&expected_cursor));
         assert_eq!(watermark.checkpoint, None);
@@ -1014,43 +994,64 @@ mod tests {
 
     #[test]
     fn scan_limit_terminal_frames_use_transaction_domain_in_both_directions() {
-        for (
-            direction,
-            position,
-            checkpoint,
-            entry_checkpoint,
-            initial_proof,
-            expected_checkpoint,
-            expected_proof,
-        ) in [
-            (ScanDirection::Ascending, 0, None, 0, None, 0, None),
+        // The frontier is the placing row's point, or genesis at the ascending genesis frontier
+        // no row places, and the cursor carries it. A frontier past the entry checkpoint claims
+        // the checkpoint before its own in scan direction.
+        for (direction, position, frontier, entry_checkpoint, initial_proof, expected_proof) in [
             (
-                ScanDirection::Descending,
-                u64::MAX,
+                ScanDirection::Ascending,
+                0,
+                LedgerPoint::GENESIS,
+                0,
                 None,
-                u64::MAX,
-                None,
-                u64::MAX,
                 None,
             ),
-            (ScanDirection::Ascending, 50, Some(10), 10, None, 10, None),
-            (ScanDirection::Descending, 50, Some(10), 10, None, 11, None),
             (
                 ScanDirection::Ascending,
                 50,
-                Some(10),
+                LedgerPoint::transaction(10, 7),
+                10,
+                None,
+                None,
+            ),
+            (
+                ScanDirection::Descending,
+                50,
+                LedgerPoint::transaction(10, 7),
+                10,
+                None,
+                None,
+            ),
+            (
+                ScanDirection::Ascending,
+                50,
+                LedgerPoint::transaction(12, 7),
+                10,
+                None,
+                Some(11),
+            ),
+            (
+                ScanDirection::Descending,
+                50,
+                LedgerPoint::transaction(8, 7),
+                10,
+                None,
+                Some(9),
+            ),
+            (
+                ScanDirection::Ascending,
+                50,
+                LedgerPoint::transaction(10, 7),
                 10,
                 Some(15),
-                10,
                 Some(15),
             ),
             (
                 ScanDirection::Descending,
                 50,
-                Some(10),
+                LedgerPoint::transaction(10, 7),
                 10,
                 Some(5),
-                11,
                 Some(5),
             ),
         ] {
@@ -1062,19 +1063,13 @@ mod tests {
             let options =
                 QueryOptions::transactions_from_proto(Some(&proto_options), 10, 100).unwrap();
             let mut covered = initial_proof;
-            // The placing row's point, distinct from the cursor's coordinates.
-            let frontier = checkpoint.map(|checkpoint| PlacedFrontier {
-                checkpoint,
-                point: LedgerPoint::transaction(checkpoint, 7),
-            });
             let response = terminal_response_from_scan_stop(
                 ResolvedScanStop::ScanLimit { position, frontier },
                 &options,
-                direction,
                 entry_checkpoint,
                 &mut covered,
             )
-            .expect("representable transaction frontier");
+            .expect("scan-limit stop");
 
             assert!(response.transaction.is_none(), "terminal has no payload");
             assert_eq!(
@@ -1083,23 +1078,16 @@ mod tests {
             );
             let watermark = response.watermark.expect("terminal watermark");
             let cursor = Position::Transactions {
-                checkpoint: expected_checkpoint,
                 tx_seq: position,
+                public_position: frontier,
             };
-            // The row's point, or, at the genesis and descending numeric-edge frontiers no row
-            // places, the start of the cursor's checkpoint. The cursor carries the same point.
-            let expected_point = frontier.map_or(
-                LedgerPoint::checkpoint_start(expected_checkpoint),
-                |frontier| frontier.point,
-            );
             assert_eq!(
                 CursorToken::decode(watermark.cursor.as_deref().expect("cursor")).unwrap(),
                 CursorToken::boundary(cursor)
-                    .with_public_position(expected_point.public_position(&cursor))
             );
             assert_eq!(
                 watermark.cursor_position,
-                Some(expected_point.to_proto(&cursor))
+                Some(frontier.to_ledger_position(&cursor))
             );
             assert_eq!(
                 watermark.checkpoint, expected_proof,
@@ -1109,41 +1097,6 @@ mod tests {
                 covered, expected_proof,
                 "accumulated checkpoint proof must match the emitted watermark"
             );
-        }
-    }
-
-    #[test]
-    fn scan_limit_terminal_rejects_missing_non_edge_checkpoint_mapping() {
-        for (direction, position) in [
-            (ScanDirection::Ascending, 1),
-            (ScanDirection::Descending, u64::MAX - 1),
-        ] {
-            let mut proto_options = ascending_options();
-            if !direction.is_ascending() {
-                proto_options.ordering =
-                    Some(haneul_rpc::proto::haneul::rpc::v2::Ordering::Descending as i32);
-            }
-            let options =
-                QueryOptions::transactions_from_proto(Some(&proto_options), 10, 100).unwrap();
-            let entry_checkpoint = if direction.is_ascending() {
-                0
-            } else {
-                u64::MAX
-            };
-            let mut covered = None;
-            let error = terminal_response_from_scan_stop(
-                ResolvedScanStop::ScanLimit {
-                    position,
-                    frontier: None,
-                },
-                &options,
-                direction,
-                entry_checkpoint,
-                &mut covered,
-            )
-            .expect_err("only numeric-edge frontiers may omit a checkpoint mapping");
-
-            assert_eq!(error.into_status_proto().code, tonic::Code::Internal as i32);
         }
     }
 
@@ -1169,10 +1122,12 @@ mod tests {
         let wm = || {
             item_watermark(
                 Position::Transactions {
-                    checkpoint: row.checkpoint_number,
                     tx_seq: row.tx_sequence_number,
+                    public_position: LedgerPoint::transaction(
+                        row.checkpoint_number,
+                        row.tx_offset as u64,
+                    ),
                 },
-                LedgerPoint::transaction(row.checkpoint_number, row.tx_offset as u64),
                 ScanDirection::Ascending,
                 Some(8),
             )
@@ -1187,15 +1142,10 @@ mod tests {
         assert_eq!(
             digest_wm.cursor.as_ref(),
             Some(
-                &haneul_rpc_cursor::CursorToken::item(Position::Transactions {
-                    checkpoint: row.checkpoint_number,
+                &CursorToken::item(Position::Transactions {
                     tx_seq: 42,
+                    public_position: LedgerPoint::transaction(9, 5),
                 })
-                .with_public_position(Some(haneul_rpc_cursor::PublicPosition {
-                    checkpoint: 9,
-                    transaction_index: 5,
-                    event_index: 0,
-                }))
                 .encode()
             )
         );

@@ -4,12 +4,13 @@
 
 use super::*;
 use crate::validator_client_monitor::stats::{ClientObservedStats, ValidatorClientStats};
+use arc_swap::ArcSwap;
 use haneul_config::validator_client_monitor_config::ValidatorClientMonitorConfig;
 use haneul_types::base_types::{AuthorityName, ConciseableName};
-use haneul_types::committee::Committee;
+use haneul_types::committee::{Committee, CommitteeTrait as _};
 use haneul_types::crypto::{AuthorityKeyPair, KeypairTraits, get_key_pair};
 use std::sync::Arc;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 mod client_stats_tests {
 
@@ -38,6 +39,7 @@ mod client_stats_tests {
             authority_name: validator,
             display_name: validator.concise().to_string(),
             operation: OperationType::Submit,
+            tx_class: None,
             ping_type: None,
             result: Ok(Duration::from_millis(100)),
         };
@@ -51,7 +53,7 @@ mod client_stats_tests {
         // Check latency was recorded
         let submit_latency = validator_stats
             .average_latencies
-            .get(&OperationType::Submit)
+            .get(&(OperationType::Submit, TransactionClass::Unrestricted))
             .unwrap();
         assert_eq!(submit_latency.get(), Duration::from_millis(100));
     }
@@ -71,6 +73,7 @@ mod client_stats_tests {
             authority_name: validator1,
             display_name: validator1.concise().to_string(),
             operation: OperationType::SharedObjectFinality,
+            tx_class: None,
             ping_type: None,
             result: Ok(Duration::from_millis(50)),
         });
@@ -80,6 +83,7 @@ mod client_stats_tests {
             authority_name: validator2,
             display_name: validator2.concise().to_string(),
             operation: OperationType::SharedObjectFinality,
+            tx_class: None,
             ping_type: None,
             result: Ok(Duration::from_millis(200)),
         });
@@ -89,6 +93,7 @@ mod client_stats_tests {
             authority_name: validator2,
             display_name: validator2.concise().to_string(),
             operation: OperationType::Submit,
+            tx_class: None,
             ping_type: None,
             result: Err(()),
         });
@@ -99,7 +104,7 @@ mod client_stats_tests {
             vec![(validator1, 1), (validator2, 1)].into_iter().collect(),
         );
 
-        let all_stats = stats.get_all_validator_stats(&committee);
+        let all_stats = stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
         assert_eq!(all_stats.len(), 2);
 
         // Validator 1 should be faster (lower latency) than validator 2
@@ -121,6 +126,7 @@ mod client_stats_tests {
                 authority_name: *validator,
                 display_name: validator.concise().to_string(),
                 operation: OperationType::Submit,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis(100)),
             });
@@ -142,23 +148,23 @@ mod client_stats_tests {
     async fn test_validator_stats_update_latency() {
         let mut stats = ValidatorClientStats::new(1.0, 40, 40);
 
-        // First update creates the entry
-        stats.update_average_latency(OperationType::Submit, Duration::from_millis(100));
-        assert_eq!(stats.average_latencies.len(), 1);
+        // A class-neutral update creates one entry per transaction class.
+        stats.update_average_latency(OperationType::Submit, None, Duration::from_millis(100));
+        assert_eq!(stats.average_latencies.len(), 2);
         assert_eq!(
             stats
                 .average_latencies
-                .get(&OperationType::Submit)
+                .get(&(OperationType::Submit, TransactionClass::Unrestricted))
                 .unwrap()
                 .get(),
             Duration::from_millis(100)
         );
 
         // Second update calculates arithmetic mean of the moving window
-        stats.update_average_latency(OperationType::Submit, Duration::from_millis(200));
+        stats.update_average_latency(OperationType::Submit, None, Duration::from_millis(200));
         let latency = stats
             .average_latencies
-            .get(&OperationType::Submit)
+            .get(&(OperationType::Submit, TransactionClass::Unrestricted))
             .unwrap()
             .get();
 
@@ -179,6 +185,7 @@ mod client_stats_tests {
             authority_name: validator,
             display_name: validator.concise().to_string(),
             operation: OperationType::Submit,
+            tx_class: None,
             ping_type: None,
             result: Ok(Duration::from_millis(100)),
         });
@@ -189,7 +196,7 @@ mod client_stats_tests {
             vec![(validator, 1)].into_iter().collect(),
         );
 
-        let all_stats = stats.get_all_validator_stats(&committee);
+        let all_stats = stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
         // Should have a partial latency even with only one operation type
         let latency = *all_stats.get(&validator).unwrap();
         assert!(latency > Duration::ZERO);
@@ -208,6 +215,7 @@ mod client_stats_tests {
             authority_name: validator,
             display_name: validator.concise().to_string(),
             operation: OperationType::Submit,
+            tx_class: None,
             ping_type: None,
             result: Ok(Duration::from_millis(100)),
         });
@@ -225,6 +233,7 @@ mod client_stats_tests {
             authority_name: validator,
             display_name: validator.concise().to_string(),
             operation: OperationType::Submit,
+            tx_class: None,
             ping_type: None,
             result: Err(()),
         });
@@ -250,6 +259,7 @@ mod client_stats_tests {
             authority_name: validator,
             display_name: validator.concise().to_string(),
             operation: OperationType::Submit,
+            tx_class: None,
             ping_type: None,
             result: Ok(Duration::from_millis(100)),
         });
@@ -260,7 +270,7 @@ mod client_stats_tests {
             .get(&validator)
             .unwrap()
             .average_latencies
-            .get(&OperationType::Submit)
+            .get(&(OperationType::Submit, TransactionClass::Unrestricted))
             .unwrap()
             .get();
         assert_eq!(validator_latency, Duration::from_millis(100));
@@ -270,6 +280,7 @@ mod client_stats_tests {
             authority_name: validator,
             display_name: validator.concise().to_string(),
             operation: OperationType::Submit,
+            tx_class: None,
             ping_type: None,
             result: Ok(Duration::from_millis(50)),
         });
@@ -280,7 +291,7 @@ mod client_stats_tests {
             .get(&validator)
             .unwrap()
             .average_latencies
-            .get(&OperationType::Submit)
+            .get(&(OperationType::Submit, TransactionClass::Unrestricted))
             .unwrap()
             .get();
         assert_eq!(validator_latency, Duration::from_millis(75));
@@ -307,7 +318,7 @@ mod client_stats_tests {
 
         println!("Case 1: Unknown validator should return MAX_LATENCY");
         {
-            let latency = stats.get_all_validator_stats(&committee);
+            let latency = stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
             // MAX_LATENCY
             assert_eq!(*latency.get(&validator3).unwrap(), Duration::from_secs(10));
         }
@@ -318,11 +329,12 @@ mod client_stats_tests {
                 authority_name: validator1,
                 display_name: validator1.concise().to_string(),
                 operation: OperationType::SharedObjectFinality,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis(100)), // 0.1s
             });
 
-            let latency = stats.get_all_validator_stats(&committee);
+            let latency = stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
             // 100ms from history, without reliability penalty.
             assert_eq!(
                 *latency.get(&validator1).unwrap(),
@@ -336,6 +348,7 @@ mod client_stats_tests {
                 authority_name: validator2,
                 display_name: validator2.concise().to_string(),
                 operation: OperationType::SharedObjectFinality,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis(100)),
             });
@@ -345,11 +358,12 @@ mod client_stats_tests {
                 authority_name: validator2,
                 display_name: validator2.concise().to_string(),
                 operation: OperationType::Submit,
+                tx_class: None,
                 ping_type: None,
                 result: Err(()),
             });
 
-            let latency = stats.get_all_validator_stats(&committee);
+            let latency = stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
             let validator2_latency = *latency.get(&validator2).unwrap();
             // Reliability should be 0.66, so latency = 0.1 + (1.0 - 0.66) * 1.0 * 10.0 = 0.1 + 0.34 * 1.0 * 10.0 = 0.1 + 3.4 = 3.5
             assert!(
@@ -367,12 +381,13 @@ mod client_stats_tests {
                     authority_name: validator2,
                     display_name: validator2.concise().to_string(),
                     operation: OperationType::Submit,
+                    tx_class: None,
                     ping_type: None,
                     result: Err(()),
                 });
             }
 
-            let latency = stats.get_all_validator_stats(&committee);
+            let latency = stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
             // MAX_LATENCY due to exclusion
             assert_eq!(*latency.get(&validator2).unwrap(), Duration::from_secs(10));
         }
@@ -384,12 +399,13 @@ mod client_stats_tests {
                     authority_name: validator2,
                     display_name: validator2.concise().to_string(),
                     operation: OperationType::Submit,
+                    tx_class: None,
                     ping_type: None,
                     result: Ok(Duration::from_millis(100)),
                 });
             }
 
-            let latency = stats.get_all_validator_stats(&committee);
+            let latency = stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
             let validator2_latency = *latency.get(&validator2).unwrap();
             // Should be back to calculated latency, not MAX_LATENCY
             assert!(validator2_latency < Duration::from_secs(10));
@@ -415,6 +431,7 @@ mod client_stats_tests {
                 authority_name: validator,
                 display_name: validator.concise().to_string(),
                 operation: OperationType::SharedObjectFinality,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis(100)), // 0.1s
             });
@@ -423,6 +440,7 @@ mod client_stats_tests {
                 authority_name: validator,
                 display_name: validator.concise().to_string(),
                 operation: OperationType::Submit,
+                tx_class: None,
                 ping_type: None,
                 result: Err(()), // failure
             });
@@ -433,7 +451,8 @@ mod client_stats_tests {
             );
 
             // Get latencies for both configurations
-            let latencies = stats.get_all_validator_stats(&committee);
+            let latencies =
+                stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
             let latency = *latencies.get(&validator).unwrap();
             assert!((latency.as_secs_f64() - 3.433).abs() < 0.001);
         }
@@ -450,6 +469,7 @@ mod client_stats_tests {
                 authority_name: validator,
                 display_name: validator.concise().to_string(),
                 operation: OperationType::SharedObjectFinality,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis(100)),
             });
@@ -458,6 +478,7 @@ mod client_stats_tests {
                 authority_name: validator,
                 display_name: validator.concise().to_string(),
                 operation: OperationType::Submit,
+                tx_class: None,
                 ping_type: None,
                 result: Err(()), // failure
             });
@@ -467,7 +488,8 @@ mod client_stats_tests {
                 validators.iter().map(|v| (*v, 1)).collect(),
             );
 
-            let latencies = stats.get_all_validator_stats(&committee);
+            let latencies =
+                stats.get_all_validator_stats(&committee, TransactionClass::Unrestricted);
             let latency = *latencies.get(&validator).unwrap();
             assert_eq!(latency, Duration::from_millis(100));
         }
@@ -507,6 +529,7 @@ mod client_monitor_tests {
                 authority_name: *validator,
                 display_name: auth_agg.get_display_name(validator),
                 operation: OperationType::SharedObjectFinality,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis((i as u64 + 1) * 50)),
             });
@@ -516,7 +539,11 @@ mod client_monitor_tests {
         monitor.force_update_cached_latencies(&auth_agg);
 
         // Select validators with delta = 100% (50, 100)
-        let selected = monitor.select_shuffled_preferred_validators(&committee, 1.0);
+        let selected = monitor.select_shuffled_preferred_validators(
+            &committee,
+            1.0,
+            TransactionClass::Unrestricted,
+        );
         assert_eq!(selected.len(), 4); // Should return all 4 validators from committee
 
         // The first 2 positions should contain the best two validators (but shuffled)
@@ -545,6 +572,7 @@ mod client_monitor_tests {
                 authority_name: *validator,
                 display_name: auth_agg.get_display_name(validator),
                 operation: OperationType::SharedObjectFinality,
+                tx_class: None,
                 ping_type: None,
                 result: if i < 2 {
                     Ok(Duration::from_millis((i as u64 + 1) * 50))
@@ -558,7 +586,11 @@ mod client_monitor_tests {
         monitor.force_update_cached_latencies(&auth_agg);
 
         // Select validators with delta = 200% (50, 100, 150)
-        let selected = monitor.select_shuffled_preferred_validators(&committee, 2.0);
+        let selected = monitor.select_shuffled_preferred_validators(
+            &committee,
+            2.0,
+            TransactionClass::Unrestricted,
+        );
 
         // Should return all 5 validators
         assert_eq!(selected.len(), 5);
@@ -606,6 +638,7 @@ mod client_monitor_tests {
                     authority_name: *validator,
                     display_name: auth_agg.get_display_name(validator),
                     operation: op,
+                    tx_class: None,
                     ping_type: None,
                     result: Ok(Duration::from_millis(100)),
                 });
@@ -616,7 +649,11 @@ mod client_monitor_tests {
         monitor.force_update_cached_latencies(&auth_agg);
 
         // Should still select validators from the provided committee
-        let selected = monitor.select_shuffled_preferred_validators(&other_committee, 1.0);
+        let selected = monitor.select_shuffled_preferred_validators(
+            &other_committee,
+            1.0,
+            TransactionClass::Unrestricted,
+        );
         assert_eq!(selected.len(), 3); // Should return all 3 validators from other_committee
         for validator in &selected {
             assert!(other_committee.authority_exists(validator));
@@ -642,6 +679,7 @@ mod client_monitor_tests {
                     authority_name: *validator,
                     display_name: auth_agg.get_display_name(validator),
                     operation: op,
+                    tx_class: None,
                     ping_type: None,
                     result: Ok(Duration::from_millis(100)),
                 });
@@ -652,7 +690,11 @@ mod client_monitor_tests {
         monitor.force_update_cached_latencies(&auth_agg);
 
         // Request higher delta than actual values.
-        let selected = monitor.select_shuffled_preferred_validators(&committee, 1000.0);
+        let selected = monitor.select_shuffled_preferred_validators(
+            &committee,
+            1000.0,
+            TransactionClass::Unrestricted,
+        );
         // Should return all available validators
         assert_eq!(selected.len(), 2);
         assert!(selected.contains(&validators[0]));
@@ -676,6 +718,7 @@ mod client_monitor_tests {
                 authority_name: *validator,
                 display_name: auth_agg.get_display_name(validator),
                 operation: OperationType::SharedObjectFinality,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis((i as u64 + 1) * 50)),
             });
@@ -685,7 +728,11 @@ mod client_monitor_tests {
         monitor.force_update_cached_latencies(&auth_agg);
 
         // Select validators with delta = 100%
-        let selected = monitor.select_shuffled_preferred_validators(&committee, 1.0);
+        let selected = monitor.select_shuffled_preferred_validators(
+            &committee,
+            1.0,
+            TransactionClass::Unrestricted,
+        );
         assert_eq!(selected.len(), 4); // Should return all 4 validators from committee
 
         // The first 2 positions should contain the best two validators (but shuffled)
@@ -720,6 +767,7 @@ mod client_monitor_tests {
                 authority_name: *validator,
                 display_name: initial_auth_agg.get_display_name(validator),
                 operation: OperationType::Submit,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis(100)),
             });
@@ -798,6 +846,7 @@ mod client_monitor_tests {
                 authority_name: *validator,
                 display_name: initial_auth_agg.get_display_name(validator),
                 operation: OperationType::HealthCheck,
+                tx_class: None,
                 ping_type: None,
                 result: Ok(Duration::from_millis(100)),
             });
@@ -871,6 +920,7 @@ mod client_monitor_tests {
                 authority_name: validators[0],
                 display_name: auth_agg.get_display_name(&validators[0]),
                 operation: OperationType::HealthCheck,
+                tx_class: None,
                 ping_type: None,
                 result: Err(()),
             });
@@ -880,17 +930,308 @@ mod client_monitor_tests {
             authority_name: validators[1],
             display_name: auth_agg.get_display_name(&validators[1]),
             operation: OperationType::HealthCheck,
+            tx_class: None,
             ping_type: None,
             result: Ok(Duration::from_millis(50)),
         });
         monitor.force_update_cached_latencies(&auth_agg);
 
         // The failing validator must come last; use delta 0 so equal scores stay grouped.
-        let selected = monitor.select_shuffled_preferred_validators(&committee, 0.0);
+        let selected = monitor.select_shuffled_preferred_validators(
+            &committee,
+            0.0,
+            TransactionClass::Unrestricted,
+        );
         assert_eq!(selected.len(), 4);
         assert_eq!(
             selected[3], validators[0],
             "validator known to be failing health checks should rank last"
         );
+    }
+
+    #[tokio::test]
+    async fn test_staggering_active_requires_f_plus_one_stake() {
+        let auth_agg = get_authority_aggregator(4);
+        let metrics = Arc::new(ValidatorClientMetrics::new_for_tests());
+        let monitor = ValidatorClientMonitor::new(
+            ValidatorClientMonitorConfig::default(),
+            metrics.clone(),
+            Arc::new(ArcSwap::new(auth_agg.clone())),
+        );
+        let validators: Vec<_> = auth_agg.committee.names().cloned().collect();
+        let validator_stake = auth_agg.committee.weight(&validators[0]) as i64;
+
+        assert!(!monitor.staggering_active());
+        assert_eq!(metrics.staggering_active.get(), 0);
+        assert_eq!(metrics.staggering_active_stake.get(), 0);
+
+        // One of four equal-stake validators is below the validity threshold.
+        monitor.record_staggering_report(validators[0], Some(true));
+        assert!(!monitor.staggering_active());
+        assert_eq!(metrics.staggering_active.get(), 0);
+        assert_eq!(metrics.staggering_active_stake.get(), validator_stake);
+
+        // A second fresh report reaches f+1 stake: flips on immediately.
+        monitor.record_staggering_report(validators[1], Some(true));
+        assert!(monitor.staggering_active());
+        assert_eq!(metrics.staggering_active.get(), 1);
+        assert_eq!(metrics.staggering_active_stake.get(), 2 * validator_stake);
+
+        // A validator revising its report to inactive withdraws its stake.
+        monitor.record_staggering_report(validators[1], Some(false));
+        assert!(!monitor.staggering_active());
+        assert_eq!(metrics.staggering_active.get(), 0);
+        assert_eq!(metrics.staggering_active_stake.get(), validator_stake);
+
+        // Reports without the field carry no information and change nothing.
+        monitor.record_staggering_report(validators[0], None);
+        monitor.record_staggering_report(validators[1], Some(true));
+        assert!(monitor.staggering_active());
+        monitor.record_staggering_report(validators[0], None);
+        assert!(monitor.staggering_active());
+    }
+
+    #[tokio::test]
+    async fn test_staggering_active_reports_age_out() {
+        let auth_agg = get_authority_aggregator(4);
+        let monitor = ValidatorClientMonitor::new_for_test(auth_agg.clone());
+        let validators: Vec<_> = auth_agg.committee.names().cloned().collect();
+        let config = ValidatorClientMonitorConfig::default();
+
+        let stale = Instant::now() - (config.health_check_interval * 2 + Duration::from_secs(1));
+        monitor.record_staggering_report_at(validators[0], true, stale);
+        monitor.record_staggering_report_at(validators[1], true, stale);
+        assert!(!monitor.staggering_active(), "stale reports must not count");
+
+        // Fresh reports count again once enough stake refreshes.
+        monitor.record_staggering_report(validators[0], Some(true));
+        assert!(!monitor.staggering_active());
+        monitor.record_staggering_report(validators[1], Some(true));
+        assert!(monitor.staggering_active());
+    }
+
+    /// A requested health round runs within a round trip (plus spacing) instead of at
+    /// the next interval tick, so the staggering view flips on the validators' own
+    /// reports as soon as the driver has reason to ask.
+    #[tokio::test]
+    async fn test_requested_health_check_flips_staggering_view_before_the_interval() {
+        let auth_agg = get_authority_aggregator(4);
+        let config = ValidatorClientMonitorConfig {
+            health_check_interval: Duration::from_secs(3600),
+            ..Default::default()
+        };
+        let monitor = ValidatorClientMonitor::new(
+            config,
+            Arc::new(ValidatorClientMetrics::new_for_tests()),
+            Arc::new(ArcSwap::new(auth_agg.clone())),
+        );
+        // The startup round sees every validator inactive.
+        wait_until(|| monitor.has_observed_latencies(), "startup health round").await;
+        assert!(!monitor.staggering_active());
+
+        for client in auth_agg.authority_clients.values() {
+            client
+                .authority_client()
+                .staggering_active
+                .store(true, std::sync::atomic::Ordering::Relaxed);
+        }
+        // Nothing asks, so the next scheduled round is an hour away.
+        tokio::time::sleep(Duration::from_millis(300)).await;
+        assert!(!monitor.staggering_active());
+
+        monitor.request_health_check();
+        wait_until(|| monitor.staggering_active(), "requested health round").await;
+
+        // With the view on, requests are ignored: validators going quiet is learned on
+        // the scheduled cadence, where lag is harmless.
+        let rounds = health_check_rounds(&auth_agg);
+        for client in auth_agg.authority_clients.values() {
+            client
+                .authority_client()
+                .staggering_active
+                .store(false, std::sync::atomic::Ordering::Relaxed);
+        }
+        monitor.request_health_check();
+        tokio::time::sleep(Duration::from_secs(3)).await;
+        assert_eq!(health_check_rounds(&auth_agg), rounds);
+        assert!(monitor.staggering_active());
+    }
+
+    /// While the view is off, at most two requested rounds run per scheduled interval,
+    /// two seconds apart; further requests wait for the scheduled round. This bounds
+    /// what a validator rejecting while the network is not staggering can cost.
+    #[tokio::test]
+    async fn test_requested_health_checks_are_capped_per_interval() {
+        let auth_agg = get_authority_aggregator(4);
+        let config = ValidatorClientMonitorConfig {
+            health_check_interval: Duration::from_secs(3600),
+            ..Default::default()
+        };
+        let monitor = ValidatorClientMonitor::new(
+            config,
+            Arc::new(ValidatorClientMetrics::new_for_tests()),
+            Arc::new(ArcSwap::new(auth_agg.clone())),
+        );
+        wait_until(|| monitor.has_observed_latencies(), "startup health round").await;
+        let startup = health_check_rounds(&auth_agg);
+
+        monitor.request_health_check();
+        wait_until(
+            || health_check_rounds(&auth_agg) == startup + 1,
+            "first request",
+        )
+        .await;
+        let first = Instant::now();
+        monitor.request_health_check();
+        wait_until(
+            || health_check_rounds(&auth_agg) == startup + 2,
+            "second request",
+        )
+        .await;
+        assert!(
+            first.elapsed() >= Duration::from_millis(1500),
+            "rounds must be spaced"
+        );
+
+        // The budget is spent: even an activation now waits for the scheduled round.
+        for client in auth_agg.authority_clients.values() {
+            client
+                .authority_client()
+                .staggering_active
+                .store(true, std::sync::atomic::Ordering::Relaxed);
+        }
+        monitor.request_health_check();
+        tokio::time::sleep(Duration::from_secs(3)).await;
+        assert_eq!(health_check_rounds(&auth_agg), startup + 2);
+        assert!(!monitor.staggering_active());
+    }
+
+    /// Completed health-check rounds, as the number of checks the first mock
+    /// validator has answered.
+    fn health_check_rounds(auth_agg: &AuthorityAggregator<MockAuthorityApi>) -> u32 {
+        auth_agg
+            .authority_clients
+            .values()
+            .next()
+            .unwrap()
+            .authority_client()
+            .health_checks
+            .load(std::sync::atomic::Ordering::Relaxed)
+    }
+
+    async fn wait_until(condition: impl Fn() -> bool, what: &str) {
+        let deadline = Instant::now() + Duration::from_secs(10);
+        while !condition() {
+            assert!(Instant::now() < deadline, "timed out waiting for {what}");
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+    }
+
+    #[tokio::test]
+    async fn test_class_split_isolates_restricted_ranking() {
+        let auth_agg = get_authority_aggregator(4);
+        let monitor = ValidatorClientMonitor::new_for_test(auth_agg.clone());
+        let validators: Vec<_> = auth_agg.committee.names().cloned().collect();
+
+        // Restricted-class observations: validator 0 is clearly the fastest.
+        for (i, validator) in validators.iter().enumerate() {
+            monitor.record_interaction_result(OperationFeedback {
+                authority_name: *validator,
+                display_name: auth_agg.get_display_name(validator),
+                operation: OperationType::SharedObjectFinality,
+                tx_class: Some(TransactionClass::Restricted),
+                ping_type: None,
+                result: Ok(Duration::from_millis(50 + (i as u64) * 50)),
+            });
+        }
+        // Unrestricted-class observations: staggering holds make validator 0 look
+        // terrible for unrestricted traffic.
+        for (i, validator) in validators.iter().enumerate() {
+            monitor.record_interaction_result(OperationFeedback {
+                authority_name: *validator,
+                display_name: auth_agg.get_display_name(validator),
+                operation: OperationType::SharedObjectFinality,
+                tx_class: Some(TransactionClass::Unrestricted),
+                ping_type: None,
+                result: Ok(if i == 0 {
+                    Duration::from_millis(5000)
+                } else {
+                    Duration::from_millis(300)
+                }),
+            });
+        }
+        monitor.force_update_cached_latencies(&auth_agg);
+
+        // The restricted view is unaffected by the unrestricted-class inflation...
+        let restricted = monitor.select_shuffled_preferred_validators(
+            &auth_agg.committee,
+            0.0,
+            TransactionClass::Restricted,
+        );
+        assert_eq!(restricted[0], validators[0]);
+
+        // ...while the unrestricted view reflects it.
+        let unrestricted = monitor.select_shuffled_preferred_validators(
+            &auth_agg.committee,
+            0.0,
+            TransactionClass::Unrestricted,
+        );
+        assert_eq!(unrestricted[3], validators[0]);
+    }
+
+    #[tokio::test]
+    async fn test_class_split_falls_back_when_class_is_sparse() {
+        let auth_agg = get_authority_aggregator(2);
+        let monitor = ValidatorClientMonitor::new_for_test(auth_agg.clone());
+        let validators: Vec<_> = auth_agg.committee.names().cloned().collect();
+
+        // Only unrestricted observations exist; the restricted view falls back to
+        // them instead of treating the validators as unmeasured.
+        for (i, validator) in validators.iter().enumerate() {
+            monitor.record_interaction_result(OperationFeedback {
+                authority_name: *validator,
+                display_name: auth_agg.get_display_name(validator),
+                operation: OperationType::SharedObjectFinality,
+                tx_class: Some(TransactionClass::Unrestricted),
+                ping_type: None,
+                result: Ok(Duration::from_millis(100 + (i as u64) * 100)),
+            });
+        }
+        monitor.force_update_cached_latencies(&auth_agg);
+
+        let restricted = monitor.select_shuffled_preferred_validators(
+            &auth_agg.committee,
+            0.0,
+            TransactionClass::Restricted,
+        );
+        assert_eq!(restricted[0], validators[0]);
+    }
+
+    #[tokio::test]
+    async fn test_class_neutral_observations_count_toward_both_classes() {
+        let auth_agg = get_authority_aggregator(2);
+        let monitor = ValidatorClientMonitor::new_for_test(auth_agg.clone());
+        let validators: Vec<_> = auth_agg.committee.names().cloned().collect();
+
+        monitor.record_interaction_result(OperationFeedback {
+            authority_name: validators[0],
+            display_name: auth_agg.get_display_name(&validators[0]),
+            operation: OperationType::SharedObjectFinality,
+            tx_class: None,
+            ping_type: None,
+            result: Ok(Duration::from_millis(100)),
+        });
+
+        let stats = monitor.get_client_stats_for_test(&validators[0]);
+        for class in [TransactionClass::Restricted, TransactionClass::Unrestricted] {
+            assert_eq!(
+                stats
+                    .average_latencies
+                    .get(&(OperationType::SharedObjectFinality, class))
+                    .unwrap()
+                    .get(),
+                Duration::from_millis(100)
+            );
+        }
     }
 }

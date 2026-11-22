@@ -5,18 +5,18 @@ processed 4 tasks
 
 // test old behavior of invariant violation
 
-task 1, lines 9-43:
+task 1, lines 9-44:
 //# publish
 created: object(1,0)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 4522000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, line 45:
+task 2, line 46:
 //# run test::m::t1 --args true
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 3, line 47:
+task 3, line 48:
 //# run test::m::t2 --args true
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99

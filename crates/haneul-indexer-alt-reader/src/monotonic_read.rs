@@ -28,7 +28,7 @@ use tower::Service;
 use tower::ServiceExt;
 
 /// Header carrying the lowest checkpoint a replica must be able to serve before it answers the
-/// request, as decimal ASCII. The server side is `haneul_kv_rpc::monotonic_read`.
+/// request, as decimal ASCII. The server side is `haneul_kv_rpc::admission`.
 pub const X_HANEUL_MIN_CHECKPOINT: &str = "x-haneul-min-checkpoint";
 
 /// Total attempts for a request that keeps being answered `Unavailable`.

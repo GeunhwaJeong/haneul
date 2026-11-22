@@ -6,7 +6,7 @@ processed 8 tasks
 init:
 A: object(0,0)
 
-task 1, lines 7-34:
+task 1, lines 7-36:
 //# run-graphql
 Response: {
   "data": {
@@ -14,23 +14,23 @@ Response: {
   }
 }
 
-task 2, lines 36-42:
+task 2, lines 38-44:
 //# publish --upgradeable --sender A
 created: object(2,0), object(2,1)
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 5487200,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 3, lines 44-61:
+task 3, lines 46-63:
 //# upgrade --package P0 --upgrade-capability 2,1 --sender A
 created: object(3,0)
 mutated: object(0,0), object(2,1)
 gas summary: computation_cost: 1000000, storage_cost: 6878000,  storage_rebate: 2595780, non_refundable_storage_fee: 26220
 
-task 4, line 63:
+task 4, line 65:
 //# create-checkpoint
 Checkpoint created: 1
 
-task 5, lines 65-97:
+task 5, lines 67-101:
 //# run-graphql
 Response: {
   "data": {
@@ -240,7 +240,7 @@ Response: {
   }
 }
 
-task 6, lines 99-127:
+task 6, lines 103-133:
 //# run-graphql --cursors "Complex" "Status"
 Response: {
   "data": {
@@ -363,7 +363,7 @@ Response: {
   }
 }
 
-task 7, lines 129-172:
+task 7, lines 135-180:
 //# run-graphql
 Response: {
   "data": {

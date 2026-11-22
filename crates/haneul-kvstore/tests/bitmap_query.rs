@@ -33,6 +33,7 @@ use haneul_kvstore::ScanDirection;
 use haneul_kvstore::TxCheckpointPosition;
 use haneul_kvstore::TxSeqDigestData;
 use haneul_kvstore::tables;
+use haneul_kvstore::tables::BitmapSchema;
 use haneul_kvstore::tables::transaction_bitmap_index;
 use haneul_kvstore::testing::BigTableEmulator;
 use haneul_kvstore::testing::INSTANCE_ID;
@@ -43,6 +44,9 @@ use haneul_types::digests::TransactionDigest;
 use haneul_types::messages_checkpoint::CheckpointSequenceNumber;
 use haneul_types::messages_checkpoint::CheckpointSummary;
 use roaring::RoaringBitmap;
+
+/// The bitmap tables these tests write and query.
+const SCHEMA: BitmapSchema = BitmapSchema::V2;
 
 /// Create a BigTable client connected to a fresh emulator with all tables created.
 async fn setup_emulator() -> Result<(BigTableClient, BigTableEmulator)> {
@@ -108,11 +112,7 @@ async fn write_bitmap(
     let mut buf = Vec::new();
     bm.serialize_into(&mut buf)?;
 
-    let row_key = transaction_bitmap_index::encode_row_key(
-        transaction_bitmap_index::SCHEMA_VERSION,
-        dimension_key,
-        bucket_id,
-    );
+    let row_key = transaction_bitmap_index::encode_row_key(SCHEMA, dimension_key, bucket_id);
     let entry = tables::make_entry(
         row_key,
         vec![(transaction_bitmap_index::col::BITMAP, Bytes::from(buf))],
@@ -120,7 +120,7 @@ async fn write_bitmap(
     );
     client
         .write_entries(
-            transaction_bitmap_index::NAME,
+            transaction_bitmap_index::NAME_V2,
             vec![entry],
             CheckpointSpan::single(0),
         )
@@ -266,7 +266,7 @@ async fn test_eval_bitmap_query_and() -> Result<()> {
         &client,
         query,
         0..100_000,
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()
@@ -299,7 +299,7 @@ async fn test_zero_address_sender_key_isolation() -> Result<()> {
         &client,
         query,
         0..100_000,
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()
@@ -321,7 +321,7 @@ async fn test_zero_address_sender_key_isolation() -> Result<()> {
         &client,
         query,
         0..100_000,
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()
@@ -341,7 +341,7 @@ async fn test_zero_address_sender_key_isolation() -> Result<()> {
         &client,
         query,
         0..100_000,
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()
@@ -360,7 +360,7 @@ async fn filters_seek_past_skewed_gap_against_emulator() -> Result<()> {
     let (mut client, _emulator) = setup_emulator().await?;
     let dimension_x = encode_dimension_key(IndexDimension::Sender, &[0x11; 32]);
     let dimension_y = encode_dimension_key(IndexDimension::MoveCall, &[0x22; 32]);
-    let spec = BitmapIndexSpec::tx();
+    let spec = BitmapIndexSpec::tx(SCHEMA);
     let bucket_size = spec.bucket_size;
 
     for bucket in [0, 40] {
@@ -425,7 +425,7 @@ async fn test_eval_bitmap_query_or() -> Result<()> {
         &client,
         query,
         0..100_000,
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()
@@ -456,7 +456,7 @@ async fn test_eval_bitmap_query_not() -> Result<()> {
         &client,
         query,
         0..100_000,
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()
@@ -631,7 +631,7 @@ async fn test_full_pipeline() -> Result<()> {
         &client,
         query,
         tx_range.clone(),
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()
@@ -657,7 +657,7 @@ async fn test_full_pipeline() -> Result<()> {
         &client,
         query,
         tx_range.clone(),
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()
@@ -673,7 +673,7 @@ async fn test_full_pipeline() -> Result<()> {
         &client,
         query,
         tx_range,
-        BitmapIndexSpec::tx(),
+        BitmapIndexSpec::tx(SCHEMA),
         ScanDirection::Ascending,
     )
     .try_collect()

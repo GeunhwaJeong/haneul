@@ -9,10 +9,8 @@ use std::time::Instant;
 use futures::StreamExt;
 use futures::TryStreamExt;
 use futures::stream::BoxStream;
-use haneul_inverted_index::ScanDirection;
 use haneul_inverted_index::ScanStop;
 use haneul_inverted_index::event_seq;
-use haneul_kvstore::BitmapIndexSpec;
 use haneul_kvstore::RowFilter;
 use haneul_kvstore::TransactionData;
 use haneul_kvstore::TxSeqDigestData;
@@ -31,7 +29,8 @@ use haneul_rpc::proto::haneul::rpc::v2::Watermark;
 use haneul_rpc_api::ErrorReason;
 use haneul_rpc_api::RpcError;
 use haneul_rpc_api::ledger_history::checkpoint_positions::CheckpointPositions;
-use haneul_rpc_api::ledger_history::ledger_point::LedgerPoint;
+use haneul_rpc_api::ledger_history::cursor::LedgerPoint;
+use haneul_rpc_api::ledger_history::cursor::Position;
 use haneul_rpc_api::ledger_history::query_options::IntraTxCoordinate;
 use haneul_rpc_api::ledger_history::query_options::IntraTxScanBounds;
 use haneul_rpc_api::ledger_history::query_options::QueryOptions;
@@ -43,9 +42,7 @@ use haneul_rpc_api::ledger_history::watermark::ScanTerminal;
 use haneul_rpc_api::ledger_history::watermark::advance_covered_bound_before_checkpoint;
 use haneul_rpc_api::ledger_history::watermark::boundary_watermark;
 use haneul_rpc_api::ledger_history::watermark::item_watermark;
-use haneul_rpc_api::ledger_history::watermark::scan_frontier_cursor_cp;
 use haneul_rpc_api::proto::google::rpc::bad_request::FieldViolation;
-use haneul_rpc_cursor::Position;
 use haneul_types::digests::TransactionDigest;
 use prost::Message;
 use tracing::Instrument;
@@ -58,7 +55,6 @@ use crate::config::PipelineStage;
 use crate::config::ResolvedStageConfig;
 use crate::operation::QueryContext;
 use crate::pipeline::InputOrderEmitter;
-use crate::pipeline::PlacedFrontier;
 use crate::pipeline::RenderAheadError;
 use crate::pipeline::ResolvedScanStop;
 use crate::pipeline::ResolvedWatermarked;
@@ -153,7 +149,8 @@ pub(crate) async fn list_events(
         .boxed());
     }
 
-    let scan_budget = ctx.scan_budget(BitmapIndexSpec::event());
+    let spec = ctx.event_bitmap_spec();
+    let scan_budget = ctx.ledger_history().bitmap_bucket_budget_event();
     let frontier_to_position: fn(u64) -> IntraTxCoordinate = if filtered {
         |seq| IntraTxCoordinate::from(event_seq::decode_event_seq(seq))
     } else {
@@ -171,7 +168,7 @@ pub(crate) async fn list_events(
             .eval_bitmap_query_stream(
                 query,
                 event_seq::packed_range(event_bounds.lo, event_bounds.hi),
-                BitmapIndexSpec::event(),
+                spec,
                 options.scan_direction(),
                 scan_budget,
                 ctx.bitmap_skip_policy(),
@@ -300,15 +297,14 @@ pub(crate) async fn list_events(
                     );
                     let watermark = item_watermark(
                         Position::Events {
-                            checkpoint: item_checkpoint,
                             tx_seq: rendered.position.tx_seq,
                             event_index: rendered.position.index,
+                            public_position: LedgerPoint::event(
+                                item_checkpoint,
+                                rendered.tx_offset as u64,
+                                rendered.position.index,
+                            ),
                         },
-                        LedgerPoint::event(
-                            item_checkpoint,
-                            rendered.tx_offset as u64,
-                            rendered.position.index,
-                        ),
                         direction,
                         covered_checkpoint_bound,
                     );
@@ -336,12 +332,11 @@ pub(crate) async fn list_events(
                 Ok(ResolvedWatermarked::Watermark { position, frontier }) => {
                     let watermark = event_frontier_watermark(
                         &options,
-                        direction,
                         entry_checkpoint,
                         &mut covered_checkpoint_bound,
                         position,
-                        Some(frontier),
-                    )?;
+                        frontier,
+                    );
                     let response = watermark_response(watermark);
                     ctx.inc_stream_watermark_frames();
                     if !first_frame_emitted {
@@ -356,7 +351,6 @@ pub(crate) async fn list_events(
                     let response = terminal_response_from_scan_stop(
                         stop,
                         &options,
-                        direction,
                         entry_checkpoint,
                         &mut covered_checkpoint_bound,
                     )?;
@@ -672,52 +666,30 @@ fn range_end_response(
 /// `frontier` (see [`ResolvedScanStop`]).
 fn event_frontier_watermark(
     options: &QueryOptions,
-    direction: ScanDirection,
     entry_checkpoint: u64,
     covered_checkpoint_bound: &mut Option<u64>,
     position: IntraTxCoordinate,
-    frontier: Option<PlacedFrontier>,
-) -> Result<Watermark, RpcError> {
-    let checkpoint_at_frontier = frontier.map(|frontier| frontier.checkpoint);
-    if let Some(checkpoint) = checkpoint_at_frontier {
-        *covered_checkpoint_bound = advance_covered_bound_before_checkpoint(
-            *covered_checkpoint_bound,
-            checkpoint,
-            entry_checkpoint,
-            options,
-        );
-    }
-    let cursor_checkpoint =
-        scan_frontier_cursor_cp(checkpoint_at_frontier, position.tx_seq, direction).ok_or_else(
-            || {
-                RpcError::new(
-                    tonic::Code::Internal,
-                    format!(
-                        "event scan frontier {}/{} has no checkpoint mapping",
-                        position.tx_seq, position.index
-                    ),
-                )
-            },
-        )?;
-    Ok(boundary_watermark(
+    frontier: LedgerPoint,
+) -> Watermark {
+    *covered_checkpoint_bound = advance_covered_bound_before_checkpoint(
+        *covered_checkpoint_bound,
+        frontier.checkpoint,
+        entry_checkpoint,
+        options,
+    );
+    boundary_watermark(
         Position::Events {
-            checkpoint: cursor_checkpoint,
             tx_seq: position.tx_seq,
             event_index: position.index,
+            public_position: frontier,
         },
-        // Unplaced only at the genesis or numeric-edge frontier, which starts its checkpoint.
-        frontier.map_or(
-            LedgerPoint::checkpoint_start(cursor_checkpoint),
-            |frontier| frontier.point,
-        ),
         *covered_checkpoint_bound,
-    ))
+    )
 }
 
 fn terminal_response_from_scan_stop(
     stop: ResolvedScanStop<IntraTxCoordinate>,
     options: &QueryOptions,
-    direction: ScanDirection,
     entry_checkpoint: u64,
     covered_checkpoint_bound: &mut Option<u64>,
 ) -> Result<ListEventsResponse, RpcError> {
@@ -725,12 +697,11 @@ fn terminal_response_from_scan_stop(
     let terminal = ScanTerminal::ScanLimit {
         watermark: event_frontier_watermark(
             options,
-            direction,
             entry_checkpoint,
             covered_checkpoint_bound,
             position,
             frontier,
-        )?,
+        ),
     };
     let reason = terminal.reason()?;
     Ok(end_response(
@@ -874,10 +845,10 @@ async fn resolve_event_range(
         .await?;
     let window = positions.event_window(&cp_range.range, boundary)?;
     let resolved = ResolvedScan::<IntraTxCoordinate>::resolve(cp_range, window.clone(), options)?;
-    let range_end = resolved.range_end(&window, options, |checkpoint, position| Position::Events {
-        checkpoint,
+    let range_end = resolved.range_end(&window, options, |position, point| Position::Events {
         tx_seq: position.tx_seq,
         event_index: position.index,
+        public_position: point,
     });
     Ok((resolved, range_end))
 }
@@ -894,7 +865,7 @@ mod tests {
         query_context_with_registry, unparseable_event_filter,
     };
     use haneul_rpc::proto::haneul::rpc::v2 as proto;
-    use haneul_rpc_cursor::CursorToken;
+    use haneul_rpc_api::ledger_history::cursor::CursorToken;
     use haneul_types::test_checkpoint_data_builder::TestCheckpointBuilder;
     use haneul_types::{base_types::ObjectID, event::Event, gas_coin::GAS};
     use move_core_types::ident_str;
@@ -912,9 +883,9 @@ mod tests {
             .build_checkpoint();
         insert_checkpoint_rows(&mock, &checkpoint).await;
         let after_past_tip = CursorToken::boundary(Position::Events {
-            checkpoint: 1_000,
             tx_seq: 1_000_000,
             event_index: 0,
+            public_position: LedgerPoint::checkpoint_start(1_000),
         })
         .encode();
         for (start_checkpoint, after) in [(Some(1_000), None), (None, Some(after_past_tip))] {
@@ -1226,11 +1197,10 @@ mod tests {
             .as_ref()
             .expect("ledger exhaustion proves a terminal boundary");
         let expected_cursor = CursorToken::boundary(Position::Events {
-            checkpoint: 0,
             tx_seq: 0,
             event_index: 0,
+            public_position: LedgerPoint::GENESIS,
         })
-        .with_public_position(Some(haneul_rpc_cursor::PublicPosition::default()))
         .encode();
         assert_eq!(watermark.cursor.as_ref(), Some(&expected_cursor));
         assert_eq!(watermark.checkpoint, None);

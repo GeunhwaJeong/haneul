@@ -8,7 +8,7 @@
 //# init --addresses a=0x0 --accounts A
 
 //# publish
-module a::m {
+module a::m;
 
 use haneul::dynamic_field::{add, borrow};
 
@@ -24,8 +24,6 @@ entry fun add_then_freeze(ctx: &mut TxContext) {
 
 entry fun read_from_frozen(obj: &Obj) {
     let _ = borrow<u64, u64>(&obj.id, 0);
-}
-
 }
 
 //# run a::m::add_then_freeze --sender A

@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 9 tasks
 
@@ -49,7 +48,7 @@ task 7, lines 25-27:
 mutated: object(0,0)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 978120, non_refundable_storage_fee: 9880
 
-task 8, lines 29-67:
+task 8, lines 29-69:
 //# run-graphql
 Response: {
   "data": {
@@ -58,7 +57,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
+            "cursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
             "node": {
               "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
               "effects": {
@@ -72,7 +71,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDCgBOgQIARABSgIIAQEAAQAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQAUoCCAEBAAEAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "CNoqJw7gBs5UuB9LKVpicrrbYQDmoTMswooLqMTYGxHM",
               "effects": {
@@ -93,7 +92,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABCigBOgQIABAASgABAAAAAAAAAAAAAAAAAAAAAAA=",
+            "cursor": "AAABCCgBOgIQAEoAAQAAAAAAAAAAAAAAAAAAAAAA",
             "node": {
               "digest": "5KUU2A1vz54ZVF5M8gpLX74LgfWK6nQj9wFHgGfH2xZQ",
               "effects": {
@@ -120,7 +119,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIAhACSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQAkoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
               "effects": {
@@ -134,7 +133,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAhADSgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQA0oECAIQAQEAAgAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
               "effects": {
@@ -155,7 +154,7 @@ Response: {
       "transactions": {
         "edges": [
           {
-            "cursor": "AAABDCgBOgQIAhACSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+            "cursor": "AAABCigBOgIQAkoCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
             "node": {
               "digest": "BmPVLNDhZoGook2n1VQbtgFovH1N88fBuAF6kqGubsoe",
               "effects": {
@@ -169,7 +168,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAhADSgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQA0oECAIQAQEAAgAAAAAAAAABAAAAAAAAAA==",
             "node": {
               "digest": "9E98DNSy9WtzW2yk51Y8HW9W393ZVFKbDEwzYdLqt5e1",
               "effects": {
@@ -183,7 +182,7 @@ Response: {
             }
           },
           {
-            "cursor": "AAABDigBOgQIAhAESgQIAhACAQACAAAAAAAAAAIAAAAAAAAA",
+            "cursor": "AAABDCgBOgIQBEoECAIQAgEAAgAAAAAAAAACAAAAAAAAAA==",
             "node": {
               "digest": "5QdTEu1h7fuRih364SecoELKZ8BQvetNyZHhrGV8YF2i",
               "effects": {

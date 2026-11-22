@@ -2,6 +2,7 @@
 // Modifications Copyright (c) 2026 Geunhwa Jeong
 // SPDX-License-Identifier: Apache-2.0
 
+#[allow(deprecated_usage)]
 module demo::demo_bear;
 
 use std::string::{String, utf8};

@@ -6,21 +6,30 @@
 
 //# publish --sender A
 #[allow(deprecated_usage)]
-module P::fake {
-    use haneul::coin;
+module P::fake;
 
-    public struct FAKE has drop {}
+use haneul::coin;
 
-    fun init(witness: FAKE, ctx: &mut TxContext){
-        let (treasury_cap, metadata) = coin::create_currency(witness, 2, b"FAKE", b"", b"", option::none(), ctx);
-        transfer::public_freeze_object(metadata);
-        transfer::public_transfer(treasury_cap, @0x0);
-    }
+public struct FAKE has drop {}
+
+fun init(witness: FAKE, ctx: &mut TxContext) {
+    let (treasury_cap, metadata) = coin::create_currency(
+        witness,
+        2,
+        b"FAKE",
+        b"",
+        b"",
+        option::none(),
+        ctx,
+    );
+    transfer::public_freeze_object(metadata);
+    transfer::public_transfer(treasury_cap, @0x0);
 }
 
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   coinMetadata(coinType: "@{P}::fake::FAKE") {
     decimals
@@ -32,3 +41,4 @@ module P::fake {
     supplyState
   }
 }
+*/

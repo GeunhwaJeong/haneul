@@ -9,47 +9,47 @@
 //> 1: MergeCoins(Gas, [Result(0)])
 
 //# publish
-module P::M {
-  public struct Outer has key, store {
+module P::M;
+
+public struct Outer has key, store {
     id: UID,
     inner: Option<Inner>,
-  }
+}
 
-  public struct Inner has key, store {
+public struct Inner has key, store {
     id: UID,
-    x: u64
-  }
+    x: u64,
+}
 
-  public fun outer(ctx: &mut TxContext): Outer {
+public fun outer(ctx: &mut TxContext): Outer {
     Outer {
-      id: object::new(ctx),
-      inner: option::none(),
+        id: object::new(ctx),
+        inner: option::none(),
     }
-  }
+}
 
-  public fun inner(ctx: &mut TxContext): Inner {
+public fun inner(ctx: &mut TxContext): Inner {
     Inner {
-      id: object::new(ctx),
-      x: 0,
+        id: object::new(ctx),
+        x: 0,
     }
-  }
+}
 
-  public fun inc(inner: &mut Inner) {
+public fun inc(inner: &mut Inner) {
     inner.x = inner.x + 1;
-  }
+}
 
-  public fun wrap(outer: &mut Outer, inner: Inner) {
+public fun wrap(outer: &mut Outer, inner: Inner) {
     outer.inner.fill(inner);
-  }
+}
 
-  public fun unwrap(outer: &mut Outer): Inner {
+public fun unwrap(outer: &mut Outer): Inner {
     outer.inner.extract()
-  }
+}
 
-  public fun burn(inner: Inner) {
+public fun burn(inner: Inner) {
     let Inner { id, x: _ } = inner;
     id.delete();
-  }
 }
 
 //# programmable --sender A --inputs @A
@@ -79,6 +79,7 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # A simple transaction where only gas has been modified.
   transactionEffects(digest: "@{digest_1}") {
     objectChanges {
@@ -95,8 +96,10 @@ module P::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # A publish transaction
   transactionEffects(digest: "@{digest_2}") {
     objectChanges {
@@ -113,8 +116,10 @@ module P::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Transactions that create Move objects
   outer: transactionEffects(digest: "@{digest_3}") {
     objectChanges {
@@ -146,8 +151,10 @@ module P::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Mutating an object
   transactionEffects(digest: "@{digest_5}") {
     objectChanges {
@@ -164,8 +171,10 @@ module P::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Transfers look like mutations
   transactionEffects(digest: "@{digest_6}") {
     objectChanges {
@@ -182,8 +191,10 @@ module P::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Wraps look like deletions, except for the id fields
   transactionEffects(digest: "@{digest_7}") {
     objectChanges {
@@ -200,8 +211,10 @@ module P::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Unwraps look like creations, except for the id fields
   transactionEffects(digest: "@{digest_8}") {
     objectChanges {
@@ -218,8 +231,10 @@ module P::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Deletions cause the content to disappear, and also affects the id fields
   transactionEffects(digest: "@{digest_9}") {
     objectChanges {
@@ -236,3 +251,4 @@ module P::M {
     }
   }
 }
+*/

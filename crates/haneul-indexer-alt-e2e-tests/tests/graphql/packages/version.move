@@ -6,19 +6,19 @@
 
 //# publish --upgradeable --sender A
 module P1::M {
-  public fun foo(): u64 { 42 }
+    public fun foo(): u64 { 42 }
 }
 
 //# create-checkpoint
 
 //# upgrade --package P1 --upgrade-capability 1,1 --sender A
 module P2::M {
-  public fun foo(): u64 { 43 }
+    public fun foo(): u64 { 43 }
 }
 
 //# upgrade --package P2 --upgrade-capability 1,1 --sender A
 module P3::M {
-  public fun foo(): u64 { 44 }
+    public fun foo(): u64 { 44 }
 }
 
 //# programmable --sender A --inputs 42 @A
@@ -28,6 +28,7 @@ module P3::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 { # Fetching packages as objects, to confirm their addresses and versions
   p1: object(address: "@{obj_1_0}") {
     address
@@ -44,8 +45,10 @@ module P3::M {
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Look up package versions using the original package address
 
   # To get the initial version, the version needs to be set explicitly
@@ -72,8 +75,10 @@ module P3::M {
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # The ID of any package version works as an anchor
   p1: package(address: "@{obj_4_0}", version: 1) {
     address
@@ -95,8 +100,10 @@ module P3::M {
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # Works for system packages as well
   explicit: package(address: "0x1", version: 1) {
     address
@@ -108,8 +115,10 @@ module P3::M {
     version
   }
 }
+*/
 
 //# run-graphql
+/*
 { # If the object is not a move package, then there is no response
   package(address: "@{obj_5_0}", version: 5) {
     address
@@ -121,3 +130,4 @@ module P3::M {
     version
   }
 }
+*/

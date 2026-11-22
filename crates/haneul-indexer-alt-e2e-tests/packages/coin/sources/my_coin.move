@@ -4,9 +4,8 @@
 
 module coin::my_coin;
 
-use haneul::coin::{Self, TreasuryCap};
 use haneul::balance;
-
+use haneul::coin::{Self, TreasuryCap};
 
 // The type identifier of coin. The coin will have a type
 // tag of kind: `Coin<package_object::mycoin::MYCOIN>`

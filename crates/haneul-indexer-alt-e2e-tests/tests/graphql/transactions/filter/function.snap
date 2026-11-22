@@ -1,6 +1,5 @@
 ---
 source: external-crates/move/crates/move-transactional-test-runner/src/framework.rs
-assertion_line: 977
 ---
 processed 9 tasks
 
@@ -45,20 +44,20 @@ task 7, line 53:
 //# create-checkpoint
 Checkpoint created: 2
 
-task 8, lines 55-82:
+task 8, lines 55-84:
 //# run-graphql
 Response: {
   "data": {
     "package_P1": {
       "pageInfo": {
-        "startCursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
-        "endCursor": "AAABDCgCOgQIAxAISgIIAwEBAwAAAAAAAAAAAAAAAAAAAA==",
+        "startCursor": "AAABCigBOgIQA0oCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
+        "endCursor": "AAABCigCOgIQCEoCCAMBAQMAAAAAAAAAAAAAAAAAAAA=",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+          "cursor": "AAABCigBOgIQA0oCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
           "node": {
             "digest": "AEvqpuWoBBAdoYA885UmKMzpu6rP4K39Wf7xhkWjTZ7f",
             "effects": {
@@ -70,7 +69,7 @@ Response: {
           }
         },
         {
-          "cursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQBEoECAIQAQEAAgAAAAAAAAABAAAAAAAAAA==",
           "node": {
             "digest": "3unDi5DPufwXibrWGrsPmtwo5YhAgceXxZy3ykC2PZi1",
             "effects": {
@@ -82,7 +81,7 @@ Response: {
           }
         },
         {
-          "cursor": "AAABDigBOgQIAhAFSgQIAhACAQACAAAAAAAAAAIAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQBUoECAIQAgEAAgAAAAAAAAACAAAAAAAAAA==",
           "node": {
             "digest": "CSneXRNJDPEJZbkEBxExANKwcw7qdLj3z8UTke3eJ6Fm",
             "effects": {
@@ -94,7 +93,7 @@ Response: {
           }
         },
         {
-          "cursor": "AAABDigBOgQIAhAGSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQBkoECAIQAwEAAgAAAAAAAAADAAAAAAAAAA==",
           "node": {
             "digest": "Hv3DehFU2DJepv6RKdZVjULVYdtWuqDR55YJhYEB6HhU",
             "effects": {
@@ -109,14 +108,14 @@ Response: {
     },
     "package_module_P1M1": {
       "pageInfo": {
-        "startCursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
-        "endCursor": "AAABDCgCOgQIAxAISgIIAwEBAwAAAAAAAAAAAAAAAAAAAA==",
+        "startCursor": "AAABCigBOgIQA0oCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
+        "endCursor": "AAABCigCOgIQCEoCCAMBAQMAAAAAAAAAAAAAAAAAAAA=",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "AAABDCgBOgQIAhADSgIIAgEAAgAAAAAAAAAAAAAAAAAAAA==",
+          "cursor": "AAABCigBOgIQA0oCCAIBAAIAAAAAAAAAAAAAAAAAAAA=",
           "node": {
             "digest": "AEvqpuWoBBAdoYA885UmKMzpu6rP4K39Wf7xhkWjTZ7f",
             "effects": {
@@ -128,7 +127,7 @@ Response: {
           }
         },
         {
-          "cursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQBEoECAIQAQEAAgAAAAAAAAABAAAAAAAAAA==",
           "node": {
             "digest": "3unDi5DPufwXibrWGrsPmtwo5YhAgceXxZy3ykC2PZi1",
             "effects": {
@@ -140,7 +139,7 @@ Response: {
           }
         },
         {
-          "cursor": "AAABDigBOgQIAhAGSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQBkoECAIQAwEAAgAAAAAAAAADAAAAAAAAAA==",
           "node": {
             "digest": "Hv3DehFU2DJepv6RKdZVjULVYdtWuqDR55YJhYEB6HhU",
             "effects": {
@@ -155,14 +154,14 @@ Response: {
     },
     "package_module_member_P1M1f2": {
       "pageInfo": {
-        "startCursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
-        "endCursor": "AAABDCgCOgQIAxAISgIIAwEBAwAAAAAAAAAAAAAAAAAAAA==",
+        "startCursor": "AAABDCgBOgIQBEoECAIQAQEAAgAAAAAAAAABAAAAAAAAAA==",
+        "endCursor": "AAABCigCOgIQCEoCCAMBAQMAAAAAAAAAAAAAAAAAAAA=",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "AAABDigBOgQIAhAESgQIAhABAQACAAAAAAAAAAEAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQBEoECAIQAQEAAgAAAAAAAAABAAAAAAAAAA==",
           "node": {
             "digest": "3unDi5DPufwXibrWGrsPmtwo5YhAgceXxZy3ykC2PZi1",
             "effects": {
@@ -177,14 +176,14 @@ Response: {
     },
     "package_P1_sentAddress_B": {
       "pageInfo": {
-        "startCursor": "AAABDigBOgQIAhAGSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
-        "endCursor": "AAABDCgCOgQIAxAISgIIAwEBAwAAAAAAAAAAAAAAAAAAAA==",
+        "startCursor": "AAABDCgBOgIQBkoECAIQAwEAAgAAAAAAAAADAAAAAAAAAA==",
+        "endCursor": "AAABCigCOgIQCEoCCAMBAQMAAAAAAAAAAAAAAAAAAAA=",
         "hasPreviousPage": false,
         "hasNextPage": false
       },
       "edges": [
         {
-          "cursor": "AAABDigBOgQIAhAGSgQIAhADAQACAAAAAAAAAAMAAAAAAAAA",
+          "cursor": "AAABDCgBOgIQBkoECAIQAwEAAgAAAAAAAAADAAAAAAAAAA==",
           "node": {
             "digest": "Hv3DehFU2DJepv6RKdZVjULVYdtWuqDR55YJhYEB6HhU",
             "effects": {

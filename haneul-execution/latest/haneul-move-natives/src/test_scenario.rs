@@ -12,8 +12,9 @@ use crate::{
 };
 use better_any::{Tid, TidAble};
 use haneul_types::{
-    TypeTag,
+    HANEUL_CLOCK_OBJECT_ID, HANEUL_CLOCK_OBJECT_SHARED_VERSION, TypeTag,
     base_types::{HaneulAddress, MoveObjectType, ObjectID, SequenceNumber},
+    clock::Clock,
     config,
     digests::{ObjectDigest, TransactionDigest},
     dynamic_field::DynamicFieldInfo,
@@ -53,7 +54,7 @@ use move_vm_runtime::{
 use smallvec::smallvec;
 use std::{
     borrow::Borrow,
-    cell::RefCell,
+    cell::{Cell, RefCell},
     collections::{BTreeMap, BTreeSet, VecDeque},
 };
 
@@ -83,10 +84,17 @@ pub struct InMemoryTestStore {
     /// for a transaction's funds withdrawal inputs. Object withdrawals are reserved by the object
     /// runtime instead, under different rules.
     address_reservations: RefCell<BTreeMap<(HaneulAddress, TypeTag), U256>>,
+    /// Timestamp of the Clock `clock::borrow` returns. Unit tests have no consensus commits,
+    /// so the test-only Clock helpers set it; it starts at the genesis Clock's 0.
+    clock_timestamp_ms: Cell<u64>,
 }
 impl<'a> NativeExtensionMarker<'a> for &'a InMemoryTestStore {}
 
 impl InMemoryTestStore {
+    pub(crate) fn set_clock_timestamp_ms(&self, timestamp_ms: u64) {
+        self.clock_timestamp_ms.set(timestamp_ms);
+    }
+
     fn settled_funds(&self, owner: HaneulAddress, type_: &TypeTag) -> u128 {
         self.funds
             .borrow()
@@ -167,6 +175,30 @@ impl ImplicitSystemObjectResolver for InMemoryTestStore {
         type_: &TypeTag,
     ) -> haneul_types::error::HaneulResult<u128> {
         Ok(self.settled_funds(owner, type_))
+    }
+
+    fn clock(&self) -> haneul_types::error::HaneulResult<Object> {
+        let clock = Clock {
+            id: UID::new(HANEUL_CLOCK_OBJECT_ID),
+            timestamp_ms: self.clock_timestamp_ms.get(),
+        };
+        let move_object = unsafe {
+            MoveObject::new_from_execution_with_limit(
+                Clock::type_().into(),
+                false,
+                HANEUL_CLOCK_OBJECT_SHARED_VERSION,
+                bcs::to_bytes(&clock).expect("Clock serializes"),
+                250 * 1024,
+            )
+        }
+        .expect("Clock fits the object size limit");
+        Ok(Object::new_move(
+            move_object,
+            Owner::Shared {
+                initial_shared_version: HANEUL_CLOCK_OBJECT_SHARED_VERSION,
+            },
+            TransactionDigest::default(),
+        ))
     }
 }
 

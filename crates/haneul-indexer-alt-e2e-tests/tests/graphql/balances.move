@@ -8,38 +8,38 @@
 
 //# publish --sender A
 #[allow(deprecated_usage)]
-module T::test {
-    use haneul::coin::{Self, TreasuryCap};
-    use haneul::balance;
+module T::test;
 
-    public struct TEST has drop {}
+use haneul::balance;
+use haneul::coin::{Self, TreasuryCap};
 
-    fun init(otw: TEST, ctx: &mut TxContext){
-        let (treasury, metadata) = coin::create_currency(otw, 6, b"", b"", b"", option::none(), ctx);
-        transfer::public_freeze_object(metadata);
-        transfer::public_transfer(treasury, ctx.sender());
-    }
+public struct TEST has drop {}
 
-    // Create A_COINS using the TreasuryCap.
-    public fun mint_coin(
-        treasury_cap: &mut TreasuryCap<TEST>,
-        amount: u64,
-        recipient: address,
-        ctx: &mut TxContext,
-    ) {
-        let coin = coin::mint(treasury_cap, amount, ctx);
-        transfer::public_transfer(coin, recipient)
-    }
+fun init(otw: TEST, ctx: &mut TxContext) {
+    let (treasury, metadata) = coin::create_currency(otw, 6, b"", b"", b"", option::none(), ctx);
+    transfer::public_freeze_object(metadata);
+    transfer::public_transfer(treasury, ctx.sender());
+}
 
-    // Mint to address balance
-    public fun mint_balance(
-        treasury_cap: &mut TreasuryCap<TEST>,
-        amount: u64,
-        recipient: address,
-        ctx: &mut TxContext,
-    ) {
-        balance::send_funds(coin::into_balance(coin::mint(treasury_cap, amount, ctx)), recipient);
-    }
+// Create A_COINS using the TreasuryCap.
+public fun mint_coin(
+    treasury_cap: &mut TreasuryCap<TEST>,
+    amount: u64,
+    recipient: address,
+    ctx: &mut TxContext,
+) {
+    let coin = coin::mint(treasury_cap, amount, ctx);
+    transfer::public_transfer(coin, recipient)
+}
+
+// Mint to address balance
+public fun mint_balance(
+    treasury_cap: &mut TreasuryCap<TEST>,
+    amount: u64,
+    recipient: address,
+    ctx: &mut TxContext,
+) {
+    balance::send_funds(coin::into_balance(coin::mint(treasury_cap, amount, ctx)), recipient);
 }
 
 //# view-object 1,1
@@ -51,6 +51,7 @@ module T::test {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
     address(address: "@{A}") {
         balance(coinType: "@{T}::test::TEST") {
@@ -83,3 +84,4 @@ module T::test {
         addressBalance
     }
 }
+*/

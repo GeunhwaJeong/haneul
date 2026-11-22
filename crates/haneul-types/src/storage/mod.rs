@@ -256,6 +256,8 @@ pub trait RuntimeObjectResolver: BackingPackageStore {
 pub trait ImplicitSystemObjectResolver {
     fn object_available_balance(&self, owner: HaneulAddress, type_: &TypeTag)
     -> HaneulResult<u128>;
+
+    fn clock(&self) -> HaneulResult<Object>;
 }
 
 pub struct DenyListResult {

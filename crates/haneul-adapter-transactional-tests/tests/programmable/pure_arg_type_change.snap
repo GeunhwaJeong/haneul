@@ -8,13 +8,13 @@ processed 6 tasks
 init:
 A: object(0,0)
 
-task 1, lines 9-26:
+task 1, lines 9-27:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 5434000,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 28-34:
+task 2, lines 29-35:
 //# programmable --inputs "hello"
 //> 0: test::m1::ascii_(Input(0));
 //> 1: test::m1::string(Input(0));
@@ -24,7 +24,7 @@ task 2, lines 28-34:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 3, lines 36-42:
+task 3, lines 37-43:
 //# programmable --inputs @A
 //> 0: test::m1::addr(Input(0));
 //> 1: test::m1::id(Input(0));
@@ -34,7 +34,7 @@ task 3, lines 36-42:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 4, lines 44-50:
+task 4, lines 45-51:
 //# programmable --inputs vector[0u64]
 //> 0: test::m1::vec<u64>(Input(0));
 //> 1: test::m1::opt<u64>(Input(0));
@@ -44,7 +44,7 @@ task 4, lines 44-50:
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 988000,  storage_rebate: 987901, non_refundable_storage_fee: 99
 
-task 5, lines 52-58:
+task 5, lines 53-59:
 //# programmable --inputs vector[]
 //> 0: test::m1::vec<u64>(Input(0));
 //> 1: test::m1::opt<u64>(Input(0));

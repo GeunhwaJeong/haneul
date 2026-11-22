@@ -47,8 +47,6 @@ public fun delete(b: B) {
 // b2
 //# view-object 2,2
 
-
-
 // b1:
 // 1. Receive the object
 // 2. Transfer to party
@@ -60,11 +58,7 @@ public fun delete(b: B) {
 //> 0: haneul::party::single_owner(Input(1));
 //> haneul::transfer::public_party_transfer<ex::m::B>(Input(0), Result(0))
 
-
 //# run ex::m::receive --args object(2,0) receiving(2,1)@3 @A
-
-
-
 
 // b2:
 // 1. Receive the object

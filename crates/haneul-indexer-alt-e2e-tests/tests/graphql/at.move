@@ -27,6 +27,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   # Query APIs always default to the viewed checkpoint
   object(address: "@{obj_1_0}") { version }
@@ -48,3 +49,4 @@
     }
   }
 }
+*/

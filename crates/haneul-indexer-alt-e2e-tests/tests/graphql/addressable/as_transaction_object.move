@@ -11,6 +11,7 @@
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   # Address present in the tx as a newly created object → ObjectChange variant.
   changed: address(address: "@{obj_1_0}") {
@@ -50,30 +51,31 @@
     }
   }
 }
+*/
 
 //# publish
-module P::M {
-    use haneul::event;
+module P::M;
 
-    public struct TestAddressEvent has copy, drop {
-        address_event_id: address,
-    }
+use haneul::event;
 
-    public struct TestObject has key, store {
-        id: UID,
-        value: u64,
-    }
+public struct TestAddressEvent has copy, drop {
+    address_event_id: address,
+}
 
-    public fun create_object(value: u64, ctx: &mut TxContext): TestObject {
-        TestObject { id: object::new(ctx), value }
-    }
+public struct TestObject has key, store {
+    id: UID,
+    value: u64,
+}
 
-    public fun mutate_and_emit(obj: &mut TestObject, new_value: u64) {
-        obj.value = new_value;
-        event::emit(TestAddressEvent {
-            address_event_id: object::id(obj).to_address(),
-        });
-    }
+public fun create_object(value: u64, ctx: &mut TxContext): TestObject {
+    TestObject { id: object::new(ctx), value }
+}
+
+public fun mutate_and_emit(obj: &mut TestObject, new_value: u64) {
+    obj.value = new_value;
+    event::emit(TestAddressEvent {
+        address_event_id: object::id(obj).to_address(),
+    });
 }
 
 //# create-checkpoint
@@ -90,6 +92,7 @@ module P::M {
 //# create-checkpoint
 
 //# run-graphql
+/*
 {
   # `asTransactionObject` is called without a `transactionDigest`. Resolution defaults to
   # the parent event's transaction because `EffectsContents::events` anchors each yielded
@@ -115,8 +118,10 @@ module P::M {
     }
   }
 }
+*/
 
 //# run-graphql
+/*
 {
   # Same implicit case as above, but entering via `transaction(...).effects` instead of
   # `transactionEffects(...)`. `From<Transaction> for TransactionEffects` propagates the
@@ -144,3 +149,4 @@ module P::M {
     }
   }
 }
+*/

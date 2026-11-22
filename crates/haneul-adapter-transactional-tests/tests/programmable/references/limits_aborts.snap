@@ -10,13 +10,13 @@ processed 6 tasks
 init:
 A: object(0,0)
 
-task 1, lines 11-20:
+task 1, lines 11-97:
 //# publish
 created: object(1,0)
 mutated: object(0,1)
 gas summary: computation_cost: 1000000, storage_cost: 6102800,  storage_rebate: 0, non_refundable_storage_fee: 0
 
-task 2, lines 22-32:
+task 2, lines 99-109:
 //# programmable
 // ABORTS: a move of a `&mut` at 64 live references creates nothing, boom16 aborts with code 0
 //> 0: test::m::boom16();
@@ -31,7 +31,7 @@ task 2, lines 22-32:
 Error: Transaction Effects Status: Move Runtime Abort. Location: test::m::boom16 (function index 0) at offset 1, Abort Code: 0
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("m") }, function: 0, instruction: 1, function_name: Some("boom16") }, 0), source: Some(VMError { major_status: ABORTED, sub_status: Some(0), message: Some("test::m::boom16 at offset 1"), exec_state: None, location: Module(ModuleId { address: test, name: Identifier("m") }), indices: [], offsets: [(FunctionDefinitionIndex(0), 1)] }), command: Some(0) } }
 
-task 3, lines 34-44:
+task 3, lines 111-121:
 //# programmable
 // ABORTS: a frozen move of a `&mut` at 64 live references frees one and creates one, boom16 aborts with code 0
 //> 0: test::m::boom16();
@@ -46,7 +46,7 @@ task 3, lines 34-44:
 Error: Transaction Effects Status: Move Runtime Abort. Location: test::m::boom16 (function index 0) at offset 1, Abort Code: 0
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("m") }, function: 0, instruction: 1, function_name: Some("boom16") }, 0), source: Some(VMError { major_status: ABORTED, sub_status: Some(0), message: Some("test::m::boom16 at offset 1"), exec_state: None, location: Module(ModuleId { address: test, name: Identifier("m") }), indices: [], offsets: [(FunctionDefinitionIndex(0), 1)] }), command: Some(0) } }
 
-task 4, lines 46-56:
+task 4, lines 123-133:
 //# programmable --inputs 0
 // ABORTS: a last-use read at 64 live references frees one, boom16 aborts with code 0
 //> 0: test::m::boom16();
@@ -61,7 +61,7 @@ task 4, lines 46-56:
 Error: Transaction Effects Status: Move Runtime Abort. Location: test::m::boom16 (function index 0) at offset 1, Abort Code: 0
 Execution Error: ExecutionError: ExecutionError { inner: ExecutionErrorInner { kind: MoveAbort(MoveLocation { module: ModuleId { address: test, name: Identifier("m") }, function: 0, instruction: 1, function_name: Some("boom16") }, 0), source: Some(VMError { major_status: ABORTED, sub_status: Some(0), message: Some("test::m::boom16 at offset 1"), exec_state: None, location: Module(ModuleId { address: test, name: Identifier("m") }), indices: [], offsets: [(FunctionDefinitionIndex(0), 1)] }), command: Some(0) } }
 
-task 5, lines 58-68:
+task 5, lines 135-145:
 //# programmable
 // ABORTS: twenty `&TxContext` parameters at 64 live references are not counted, boom16 aborts with code 0
 //> 0: test::m::boom16();
